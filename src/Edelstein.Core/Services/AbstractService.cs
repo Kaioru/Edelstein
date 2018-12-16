@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Edelstein.Core.Services.Peers;
+using Foundatio.Caching;
 using Foundatio.Messaging;
 
 namespace Edelstein.Core.Services
@@ -21,14 +22,21 @@ namespace Edelstein.Core.Services
 
         private Timer _timer;
         private readonly TInfo _info;
+        private readonly ICacheClient _cache;
         private readonly IMessageBus _messageBus;
         private readonly IDictionary<string, PeerServiceInfo> _peers;
 
-        protected AbstractService(TInfo info, IMessageBus messageBus)
+        private const string MigrationCacheScope = "migration";
+        public ICacheClient MigrationCache { get; }
+
+        protected AbstractService(TInfo info, ICacheClient cache, IMessageBus messageBus)
         {
             _info = info;
+            _cache = cache;
             _messageBus = messageBus;
             _peers = new ConcurrentDictionary<string, PeerServiceInfo>();
+
+            MigrationCache = new ScopedCacheClient(_cache, MigrationCacheScope);
         }
 
         public virtual async Task Start()
