@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Edelstein.Network\Edelstein.Network.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Foundatio" Version="7.1.1845" />
+    </ItemGroup>
+
+</Project>
