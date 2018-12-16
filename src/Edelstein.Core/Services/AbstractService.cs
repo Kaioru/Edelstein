@@ -51,14 +51,14 @@ namespace Edelstein.Core.Services
                 Status = PeerServiceStatus.Online,
                 Info = _info
             });
-            var timer = new Timer
+
+            _timer = new Timer
             {
                 Interval = 20000,
                 AutoReset = true
             };
-
-            timer.Elapsed += async (sender, args) => await _messageBus.PublishAsync(createMessage());
-            timer.Start();
+            _timer.Elapsed += async (sender, args) => await _messageBus.PublishAsync(createMessage());
+            _timer.Start();
 
             await _messageBus.PublishAsync(createMessage());
         }
