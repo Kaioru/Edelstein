@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C672ECFE-AE58-422A-88A3-0798532A81E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{948E4280-5F95-42B9-B519-424B6A213A44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Network", "src\Edelstein.Network\Edelstein.Network.csproj", "{63BD9EC3-0C15-46FA-A842-398F385A31E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Network.Tests", "test\Edelstein.Network.Tests\Edelstein.Network.Tests.csproj", "{66E4DD56-DA64-45D0-9373-D78659BF0086}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{63BD9EC3-0C15-46FA-A842-398F385A31E0} = {C672ECFE-AE58-422A-88A3-0798532A81E5}
+		{66E4DD56-DA64-45D0-9373-D78659BF0086} = {948E4280-5F95-42B9-B519-424B6A213A44}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63BD9EC3-0C15-46FA-A842-398F385A31E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63BD9EC3-0C15-46FA-A842-398F385A31E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63BD9EC3-0C15-46FA-A842-398F385A31E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63BD9EC3-0C15-46FA-A842-398F385A31E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E4DD56-DA64-45D0-9373-D78659BF0086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E4DD56-DA64-45D0-9373-D78659BF0086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E4DD56-DA64-45D0-9373-D78659BF0086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E4DD56-DA64-45D0-9373-D78659BF0086}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
