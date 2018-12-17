@@ -1,0 +1,3 @@
+[submodule "src/PKG1"]
+	path = src/PKG1
+	url = https://github.com/Kaioru/PKG1

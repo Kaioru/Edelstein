@@ -4,7 +4,10 @@ using System.Threading.Tasks;
 using Autofac;
 using Edelstein.Core.Services.Startup.Modules;
 using Edelstein.Data.Context;
+using Edelstein.Provider.Parser;
+using Edelstein.Provider.Parser.WZ;
 using Microsoft.Extensions.Configuration;
+using PKG1;
 using Serilog;
 using StackExchange.Redis;
 using Logger = Serilog.Core.Logger;
@@ -77,6 +80,17 @@ namespace Edelstein.Core.Services.Startup
                     connection = c.Resolve<IConfigurationRoot>()["DatabaseConnectionString"];
                 return new MySQLDataContextFactory(connection);
             }).As<IDataContextFactory>();
+            return this;
+        }
+        
+        public ServiceBootstrap<TService> WithWZProvider(string path = null)
+        {
+            _builder.Register(c =>
+            {
+                if (path == null)
+                    path = c.Resolve<IConfigurationRoot>()["BaseWZDirectoryPath"];
+                return new WZDataPackageCollection(path);
+            }).As<IDataDirectoryCollection>();
             return this;
         }
 
