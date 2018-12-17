@@ -62,40 +62,41 @@ namespace Edelstein.Core.Services
         {
             await _messageBus.SubscribeAsync<PeerServiceStatusMessage>(msg =>
             {
+                var info = msg.GetInfo();
+
                 if (msg.Status == PeerServiceStatus.Online)
                 {
                     var expiry = DateTime.Now.AddSeconds(30);
 
-                    if (_peers.ContainsKey(msg.Info.Name))
+                    if (_peers.ContainsKey(info.Name))
                     {
-                        var peer = _peers[msg.Info.Name];
+                        var peer = _peers[info.Name];
 
                         if (peer.Expiry < DateTime.Now)
-                            Logger.Debug($"Reconnected peer service, {msg.Info.Name} to {Info.Name}");
-                        _peers[msg.Info.Name].Expiry = expiry;
+                            Logger.Debug($"Reconnected peer service, {info.Name} to {Info.Name}");
+                        _peers[info.Name].Expiry = expiry;
                     }
                     else
                     {
-                        _peers[msg.Info.Name] = new PeerServiceInfo
+                        _peers[info.Name] = new PeerServiceInfo
                         {
-                            Info = msg.Info,
+                            Info = info,
                             Expiry = expiry
                         };
-                        Logger.Debug($"Registered peer service, {msg.Info.Name} to {Info.Name}");
+                        Logger.Debug($"Registered peer service, {info.Name} to {Info.Name}");
                     }
                 }
                 else
                 {
-                    _peers.Remove(msg.Info.Name);
-                    Logger.Debug($"Removed peer service, {msg.Info.Name} from {Info.Name}");
+                    _peers.Remove(info.Name);
+                    Logger.Debug($"Removed peer service, {info.Name} from {Info.Name}");
                 }
             });
 
-            var createMessage = new Func<PeerServiceStatusMessage>(() => new PeerServiceStatusMessage
-            {
-                Status = PeerServiceStatus.Online,
-                Info = Info
-            });
+            var createMessage =
+                new Func<PeerServiceStatusMessage>(() =>
+                    PeerServiceStatusMessage.Create(PeerServiceStatus.Online, Info)
+                );
 
             _timer = new Timer
             {
@@ -111,11 +112,9 @@ namespace Edelstein.Core.Services
         public virtual async Task Stop()
         {
             _timer.Stop();
-            await _messageBus.PublishAsync(new PeerServiceStatusMessage
-            {
-                Status = PeerServiceStatus.Offline,
-                Info = Info
-            });
+            await _messageBus.PublishAsync(
+                PeerServiceStatusMessage.Create(PeerServiceStatus.Offline, Info)
+            );
         }
     }
 }
