@@ -15,6 +15,7 @@ namespace Edelstein.Service.Login
                 .WithConfig("WvsLogin", new WvsLoginOptions())
                 .WithDistributed()
                 .WithMySQLDatabase()
+                .WithWZProvider()
                 .Run()
                 .Wait();
     }

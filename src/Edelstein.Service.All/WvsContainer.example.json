@@ -45,5 +45,6 @@
       "AdultChannel": false
     }
   ],
-  "DatabaseConnectionString": "Server=localhost;Uid=root;Database=Edelstein;"
+  "DatabaseConnectionString": "Server=localhost;Uid=root;Database=Edelstein;",
+  "BaseWZDirectoryPath": "C:\\Nexon\\Library\\maplestory\\appdata\\Base.wz"
 }
