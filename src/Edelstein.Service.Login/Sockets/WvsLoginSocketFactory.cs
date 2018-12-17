@@ -1,7 +1,7 @@
 using DotNetty.Transport.Channels;
 using Edelstein.Network;
 
-namespace Edelstein.Service.Login
+namespace Edelstein.Service.Login.Sockets
 {
     public class WvsLoginSocketFactory : ISocketFactory
     {

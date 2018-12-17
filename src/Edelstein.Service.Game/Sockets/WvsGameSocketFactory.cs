@@ -1,7 +1,7 @@
 using DotNetty.Transport.Channels;
 using Edelstein.Network;
 
-namespace Edelstein.Service.Game
+namespace Edelstein.Service.Game.Sockets
 {
     public class WvsGameSocketFactory : ISocketFactory
     {

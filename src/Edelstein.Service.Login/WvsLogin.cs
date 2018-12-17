@@ -3,6 +3,7 @@ using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Network;
 using Edelstein.Service.Login.Logging;
+using Edelstein.Service.Login.Sockets;
 using Foundatio.Caching;
 using Foundatio.Messaging;
 

@@ -4,7 +4,7 @@ using DotNetty.Transport.Channels;
 using Edelstein.Network;
 using Edelstein.Network.Packets;
 
-namespace Edelstein.Service.Game
+namespace Edelstein.Service.Game.Sockets
 {
     public class WvsGameSocket : AbstractSocket
     {

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Network;
+using Edelstein.Service.Game.Sockets;
 using Foundatio.Caching;
 using Foundatio.Messaging;
 
