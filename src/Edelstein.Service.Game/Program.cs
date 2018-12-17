@@ -8,7 +8,7 @@ namespace Edelstein.Service.Game
     {
         private static void Main(string[] args)
             => ServiceBootstrap<WvsGame>.Build()
-                .WithLogging(() => new LoggerConfiguration()
+                .WithLogging(new LoggerConfiguration()
                     .MinimumLevel.Verbose()
                     .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                     .CreateLogger())

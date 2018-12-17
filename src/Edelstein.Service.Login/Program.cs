@@ -8,7 +8,7 @@ namespace Edelstein.Service.Login
     {
         private static void Main(string[] args)
             => ServiceBootstrap<WvsLogin>.Build()
-                .WithLogging(() => new LoggerConfiguration()
+                .WithLogging(new LoggerConfiguration()
                     .MinimumLevel.Verbose()
                     .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                     .CreateLogger())

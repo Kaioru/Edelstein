@@ -28,9 +28,9 @@ namespace Edelstein.Core.Services.Startup
         public static ServiceBootstrap<TService> Build()
             => new ServiceBootstrap<TService>();
 
-        public ServiceBootstrap<TService> WithLogging(Func<Logger> f)
+        public ServiceBootstrap<TService> WithLogging(Logger logger)
         {
-            Log.Logger = f.Invoke();
+            Log.Logger = logger;
             return this;
         }
 
