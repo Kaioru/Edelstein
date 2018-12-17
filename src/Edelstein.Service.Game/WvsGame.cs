@@ -3,6 +3,7 @@ using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Data.Context;
 using Edelstein.Network;
+using Edelstein.Provider.Templates;
 using Edelstein.Service.Game.Sockets;
 using Foundatio.Caching;
 using Foundatio.Messaging;
@@ -12,24 +13,26 @@ namespace Edelstein.Service.Game
     public class WvsGame : AbstractService<GameServiceInfo>
     {
         private IServer Server { get; set; }
+        public ITemplateManager TemplateManager { get; }
 
         public WvsGame(
             GameServiceInfo info,
             ICacheClient cache,
             IMessageBus messageBus,
-            IDataContextFactory dataContextFactory
+            IDataContextFactory dataContextFactory,
+            ITemplateManager templateManager
         ) : base(info, cache, messageBus, dataContextFactory)
-        {
-        }
-        
+            => TemplateManager = templateManager;
+
         public WvsGame(
             WvsGameOptions options,
             ICacheClient cache,
             IMessageBus messageBus,
-            IDataContextFactory dataContextFactory
-        ) : base(options.Service, cache, messageBus, dataContextFactory)
-        {
-        }
+            IDataContextFactory dataContextFactory,
+            ITemplateManager templateManager
+        ) : base(options.Service, cache,
+            messageBus, dataContextFactory)
+            => TemplateManager = templateManager;
 
         public override async Task Start()
         {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
 using Edelstein.Data.Context;
+using Edelstein.Provider.Templates;
 using Edelstein.Service.Game;
 using Edelstein.Service.Login;
 using Foundatio.Caching;
@@ -19,6 +20,7 @@ namespace Edelstein.Service.All
         private readonly IMessageBus _messageBus;
         private readonly ILockProvider _lockProvider;
         private readonly IDataContextFactory _dataContextFactory;
+        private readonly ITemplateManager _templateManager;
         private readonly ICollection<IService> _services;
 
         public WvsContainer(
@@ -26,23 +28,26 @@ namespace Edelstein.Service.All
             ICacheClient cache,
             IMessageBus messageBus,
             ILockProvider lockProvider,
-            IDataContextFactory dataContextFactory)
+            IDataContextFactory dataContextFactory,
+            ITemplateManager templateManager
+        )
         {
             _options = options;
             _cache = cache;
             _messageBus = messageBus;
             _lockProvider = lockProvider;
             _dataContextFactory = dataContextFactory;
+            _templateManager = templateManager;
             _services = new List<IService>();
         }
 
         public Task Start()
         {
             _options.LoginServices
-                .Select(o => new WvsLogin(o, _cache, _messageBus, _lockProvider, _dataContextFactory))
+                .Select(o => new WvsLogin(o, _cache, _messageBus, _lockProvider, _dataContextFactory, _templateManager))
                 .ForEach(_services.Add);
             _options.GameServices
-                .Select(o => new WvsGame(o, _cache, _messageBus, _dataContextFactory))
+                .Select(o => new WvsGame(o, _cache, _messageBus, _dataContextFactory, _templateManager))
                 .ForEach(_services.Add);
             return Task.WhenAll(_services.Select(s => s.Start()));
         }

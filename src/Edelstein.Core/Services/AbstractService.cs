@@ -22,7 +22,7 @@ namespace Edelstein.Core.Services
 
         public TInfo Info { get; }
 
-        public ICollection<ServiceInfo> Peers => _peers
+        public IEnumerable<ServiceInfo> Peers => _peers
             .Values
             .Where(p => p.Expiry > DateTime.Now)
             .Select(p => p.Info)

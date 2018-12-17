@@ -3,6 +3,7 @@ using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Data.Context;
 using Edelstein.Network;
+using Edelstein.Provider.Templates;
 using Edelstein.Service.Login.Logging;
 using Edelstein.Service.Login.Sockets;
 using Foundatio.Caching;
@@ -15,24 +16,33 @@ namespace Edelstein.Service.Login
     {
         private IServer Server { get; set; }
         public ILockProvider LockProvider { get; }
+        public ITemplateManager TemplateManager { get; }
 
         public WvsLogin(
             LoginServiceInfo info,
             ICacheClient cache,
             IMessageBus messageBus,
             ILockProvider lockProvider,
-            IDataContextFactory dataContextFactory
+            IDataContextFactory dataContextFactory,
+            ITemplateManager templateManager
         ) : base(info, cache, messageBus, dataContextFactory)
-            => LockProvider = lockProvider;
-        
+        {
+            LockProvider = lockProvider;
+            TemplateManager = templateManager;
+        }
+
         public WvsLogin(
             WvsLoginOptions options,
             ICacheClient cache,
             IMessageBus messageBus,
             ILockProvider lockProvider,
-            IDataContextFactory dataContextFactory
+            IDataContextFactory dataContextFactory,
+            ITemplateManager templateManager
         ) : base(options.Service, cache, messageBus, dataContextFactory)
-            => LockProvider = lockProvider;
+        {
+            LockProvider = lockProvider;
+            TemplateManager = templateManager;
+        }
 
         public override async Task Start()
         {

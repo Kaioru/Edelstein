@@ -6,6 +6,7 @@ using Edelstein.Core.Services.Startup.Modules;
 using Edelstein.Data.Context;
 using Edelstein.Provider.Parser;
 using Edelstein.Provider.Parser.WZ;
+using Edelstein.Provider.Templates;
 using Microsoft.Extensions.Configuration;
 using PKG1;
 using Serilog;
@@ -82,7 +83,7 @@ namespace Edelstein.Core.Services.Startup
             }).As<IDataContextFactory>();
             return this;
         }
-        
+
         public ServiceBootstrap<TService> WithWZProvider(string path = null)
         {
             _builder.Register(c =>
@@ -91,6 +92,12 @@ namespace Edelstein.Core.Services.Startup
                     path = c.Resolve<IConfigurationRoot>()["BaseWZDirectoryPath"];
                 return new WZDataPackageCollection(path);
             }).As<IDataDirectoryCollection>();
+            return WithTemplates();
+        }
+
+        private ServiceBootstrap<TService> WithTemplates()
+        {
+            _builder.RegisterType<TemplateManager>().As<ITemplateManager>();
             return this;
         }
 
