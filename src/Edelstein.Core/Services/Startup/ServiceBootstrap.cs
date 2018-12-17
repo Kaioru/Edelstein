@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using Autofac;
@@ -90,6 +89,8 @@ namespace Edelstein.Core.Services.Startup
             {
                 if (path == null)
                     path = c.Resolve<IConfigurationRoot>()["BaseWZDirectoryPath"];
+                
+                WZReader.InitializeKeys();
                 return new WZDataPackageCollection(path);
             }).As<IDataDirectoryCollection>();
             return WithTemplates();

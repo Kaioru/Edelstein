@@ -11,7 +11,6 @@ using Edelstein.Core.Services.Peers;
 using Edelstein.Data.Context;
 using Foundatio.Caching;
 using Foundatio.Messaging;
-using Serilog;
 
 namespace Edelstein.Core.Services
 {

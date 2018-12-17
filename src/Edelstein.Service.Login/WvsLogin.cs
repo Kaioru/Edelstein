@@ -4,7 +4,6 @@ using Edelstein.Core.Services.Info;
 using Edelstein.Data.Context;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
-using Edelstein.Service.Login.Logging;
 using Edelstein.Service.Login.Sockets;
 using Foundatio.Caching;
 using Foundatio.Lock;
