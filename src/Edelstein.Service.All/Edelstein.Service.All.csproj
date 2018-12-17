@@ -16,4 +16,10 @@
       <PackageReference Include="morelinq" Version="3.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="*.example.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>
