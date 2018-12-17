@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Edelstein.Core.Services.Info
 {
@@ -7,6 +8,7 @@ namespace Edelstein.Core.Services.Info
     public class LoginServiceInfo : ServerServiceInfo
     {
         public ICollection<WorldInfo> Worlds { get; set; }
+        public ICollection<LoginBalloonInfo> Balloons { get; set; }
 
         [Serializable]
         public class WorldInfo
@@ -18,6 +20,13 @@ namespace Edelstein.Core.Services.Info
             public short EventEXP { get; set; }
             public short EventDrop { get; set; }
             public bool BlockCharCreation { get; set; }
+        }
+        
+        [Serializable]
+        public class LoginBalloonInfo
+        {
+            public Point Position { get; set; }
+            public string Message { get; set; }
         }
     }
 }

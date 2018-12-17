@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
@@ -103,10 +104,15 @@ namespace Edelstein.Service.Login.Sockets
                         p.Encode<int>(0); // UserNo
                         p.Encode<byte>(g.WorldID);
                         p.Encode<byte>(g.ID);
-                        p.Encode<bool>(false); // AdultChannel
+                        p.Encode<bool>(false);
                     });
-                    
-                    p.Encode<short>(0); // Balloon Count
+
+                    p.Encode<short>((short) WvsLogin.Info.Balloons.Count);
+                    WvsLogin.Info.Balloons.ForEach(b =>
+                    {
+                        p.Encode<Point>(b.Position);
+                        p.Encode<string>(b.Message);
+                    });
                     return SendPacket(p);
                 }
             }));

@@ -6,5 +6,6 @@ namespace Edelstein.Core.Services.Info
     public class GameServiceInfo : ServerServiceInfo
     {
         public byte WorldID { get; set; }
+        public bool AdultChannel { get; set; }
     }
 }

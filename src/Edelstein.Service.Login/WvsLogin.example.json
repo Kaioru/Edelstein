@@ -14,6 +14,15 @@
         "EventDrop": 100.0,
         "BlockCharCreation": false
       }
+    ],
+    "Balloons": [
+      {
+        "Position": {
+          "X": 110,
+          "Y": 320
+        },
+        "Message": "Hello world!"
+      }
     ]
   },
   "RedisConnectionString": "localhost",

@@ -4,7 +4,8 @@
     "Name": "Scania0",
     "Host": "127.0.0.1",
     "Port": 7575,
-    "WorldID": 0
+    "WorldID": 0,
+    "AdultChannel": false
   },
   "RedisConnectionString": "localhost",
   "DatabaseConnectionString": "Server=localhost;Uid=root;Database=Edelstein;"
