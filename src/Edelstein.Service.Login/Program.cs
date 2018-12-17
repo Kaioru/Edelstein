@@ -7,7 +7,7 @@ namespace Edelstein.Service.Login
     internal static class Program
     {
         private static void Main(string[] args)
-            => new ServiceBootstrap<WvsLogin>()
+            => ServiceBootstrap<WvsLogin>.Build()
                 .WithLogging(() => new LoggerConfiguration()
                     .MinimumLevel.Verbose()
                     .WriteTo.Console(theme: AnsiConsoleTheme.Code)

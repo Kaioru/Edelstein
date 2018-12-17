@@ -7,7 +7,7 @@ namespace Edelstein.Service.Game
     internal static class Program
     {
         private static void Main(string[] args)
-            => new ServiceBootstrap<WvsGame>()
+            => ServiceBootstrap<WvsGame>.Build()
                 .WithLogging(() => new LoggerConfiguration()
                     .MinimumLevel.Verbose()
                     .WriteTo.Console(theme: AnsiConsoleTheme.Code)

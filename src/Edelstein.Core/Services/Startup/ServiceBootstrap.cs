@@ -15,11 +15,14 @@ namespace Edelstein.Core.Services.Startup
     {
         private ContainerBuilder _builder;
 
-        public ServiceBootstrap()
+        private ServiceBootstrap()
         {
             _builder = new ContainerBuilder();
             _builder.RegisterType<TService>().As<IService>();
         }
+
+        public static ServiceBootstrap<TService> Build()
+            => new ServiceBootstrap<TService>();
 
         public ServiceBootstrap<TService> WithLogging(Func<Logger> f)
         {
