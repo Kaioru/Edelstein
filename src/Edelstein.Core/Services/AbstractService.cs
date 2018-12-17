@@ -5,15 +5,22 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using Edelstein.Core.Logging;
+using Edelstein.Core.Services.Info;
 using Edelstein.Core.Services.Peers;
 using Foundatio.Caching;
 using Foundatio.Messaging;
+using Serilog;
 
 namespace Edelstein.Core.Services
 {
-    public abstract class AbstractService<TInfo>
+    public abstract class AbstractService<TInfo> : IService
         where TInfo : ServiceInfo
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
+        public TInfo Info { get; }
+
         public ICollection<ServiceInfo> Peers => _peers
             .Values
             .Where(p => p.Expiry > DateTime.Now)
@@ -21,7 +28,6 @@ namespace Edelstein.Core.Services
             .ToImmutableList();
 
         private Timer _timer;
-        private readonly TInfo _info;
         private readonly ICacheClient _cache;
         private readonly IMessageBus _messageBus;
         private readonly IDictionary<string, PeerServiceInfo> _peers;
@@ -31,7 +37,7 @@ namespace Edelstein.Core.Services
 
         protected AbstractService(TInfo info, ICacheClient cache, IMessageBus messageBus)
         {
-            _info = info;
+            Info = info;
             _cache = cache;
             _messageBus = messageBus;
             _peers = new ConcurrentDictionary<string, PeerServiceInfo>();
@@ -45,24 +51,42 @@ namespace Edelstein.Core.Services
             {
                 if (msg.Status == PeerServiceStatus.Online)
                 {
-                    _peers[msg.Info.Name] = new PeerServiceInfo
+                    var expiry = DateTime.Now.AddSeconds(30);
+
+                    if (_peers.ContainsKey(msg.Info.Name))
                     {
-                        Info = msg.Info,
-                        Expiry = DateTime.Now.AddSeconds(30)
-                    };
+                        var peer = _peers[msg.Info.Name];
+                        
+                        if (peer.Expiry < DateTime.Now)
+                            Logger.Debug($"Reconnected peer service, {msg.Info.Name}");
+                        _peers[msg.Info.Name].Expiry = expiry;
+                    }
+                    else
+                    {
+                        _peers[msg.Info.Name] = new PeerServiceInfo
+                        {
+                            Info = msg.Info,
+                            Expiry = expiry
+                        };
+                        Logger.Debug($"Registered peer service, {msg.Info.Name}");
+                    }
                 }
-                else _peers.Remove(msg.Info.Name);
+                else
+                {
+                    _peers.Remove(msg.Info.Name);
+                    Logger.Debug($"Removed peer service, {msg.Info.Name}");
+                }
             });
 
             var createMessage = new Func<PeerServiceStatusMessage>(() => new PeerServiceStatusMessage
             {
                 Status = PeerServiceStatus.Online,
-                Info = _info
+                Info = Info
             });
 
             _timer = new Timer
             {
-                Interval = 20000,
+                Interval = 15000,
                 AutoReset = true
             };
             _timer.Elapsed += async (sender, args) => await _messageBus.PublishAsync(createMessage());
@@ -77,7 +101,7 @@ namespace Edelstein.Core.Services
             await _messageBus.PublishAsync(new PeerServiceStatusMessage
             {
                 Status = PeerServiceStatus.Offline,
-                Info = _info
+                Info = Info
             });
         }
     }

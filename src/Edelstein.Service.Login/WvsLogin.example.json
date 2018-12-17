@@ -1,0 +1,9 @@
+{
+  "Service": {
+    "ID": 0,
+    "Name": "Login0",
+    "Host": "127.0.0.1",
+    "Port": 8484
+  },
+  "RedisConnectionString": "localhost"
+}

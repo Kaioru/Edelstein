@@ -1,3 +1,4 @@
+using System;
 using DotNetty.Transport.Channels;
 using Edelstein.Network.Crypto;
 using Edelstein.Network.Logging;
@@ -53,7 +54,25 @@ namespace Edelstein.Network
                 }
 
                 context.Channel.GetAttribute(AbstractSocket.SocketKey).Set(newSocket);
+                Logger.Debug($"Established connection to {context.Channel.RemoteAddress}");
             }
+        }
+
+        public override void ChannelInactive(IChannelHandlerContext context)
+        {
+            var socket = context.Channel.GetAttribute(AbstractSocket.SocketKey).Get();
+
+            socket?.OnDisconnect();
+            base.ChannelInactive(context);
+
+            Logger.Debug($"Released connection to {context.Channel.RemoteAddress}");
+        }
+
+
+        public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
+        {
+            var socket = context.Channel.GetAttribute(AbstractSocket.SocketKey).Get();
+            socket?.OnException(exception);
         }
     }
 }

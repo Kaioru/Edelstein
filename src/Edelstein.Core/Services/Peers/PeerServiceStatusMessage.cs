@@ -1,4 +1,5 @@
 using System;
+using Edelstein.Core.Services.Info;
 
 namespace Edelstein.Core.Services.Peers
 {

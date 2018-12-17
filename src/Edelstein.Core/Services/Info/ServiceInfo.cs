@@ -1,6 +1,6 @@
 using System;
 
-namespace Edelstein.Core.Services
+namespace Edelstein.Core.Services.Info
 {
     [Serializable]
     public class ServiceInfo
