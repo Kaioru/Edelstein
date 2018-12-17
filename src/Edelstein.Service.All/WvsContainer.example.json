@@ -4,7 +4,18 @@
       "ID": 0,
       "Name": "Login0",
       "Host": "127.0.0.1",
-      "Port": 8484
+      "Port": 8484,
+      "Worlds": [
+        {
+          "ID": 0,
+          "Name": "Scania",
+          "State": 0,
+          "EventDesc": "",
+          "EventEXP": 100.0,
+          "EventDrop": 100.0,
+          "BlockCharCreation": false
+        }
+      ]
     }
   ],
   "GameServices": [
@@ -12,13 +23,15 @@
       "ID": 0,
       "Name": "Scania0",
       "Host": "127.0.0.1",
-      "Port": 7575
+      "Port": 7575,
+      "WorldID": 0
     },
     {
       "ID": 1,
       "Name": "Scania1",
       "Host": "127.0.0.1",
-      "Port": 7576
+      "Port": 7576,
+      "WorldID": 0
     }
   ],
   "DatabaseConnectionString": "Server=localhost;Uid=root;Database=Edelstein;"

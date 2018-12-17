@@ -1,5 +1,6 @@
 using Autofac;
 using Foundatio.Caching;
+using Foundatio.Lock;
 using Foundatio.Messaging;
 using StackExchange.Redis;
 
@@ -20,6 +21,7 @@ namespace Edelstein.Core.Services.Startup.Modules
                     o.Subscriber(c.Resolve<ConnectionMultiplexer>().GetSubscriber())
                 )
             ).As<IMessageBus>();
+            builder.RegisterType<CacheLockProvider>().As<ILockProvider>().SingleInstance();
         }
     }
 }

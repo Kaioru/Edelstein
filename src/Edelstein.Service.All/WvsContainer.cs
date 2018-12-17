@@ -6,6 +6,7 @@ using Edelstein.Data.Context;
 using Edelstein.Service.Game;
 using Edelstein.Service.Login;
 using Foundatio.Caching;
+using Foundatio.Lock;
 using Foundatio.Messaging;
 using MoreLinq;
 
@@ -16,6 +17,7 @@ namespace Edelstein.Service.All
         private readonly WvsContainerOptions _options;
         private readonly ICacheClient _cache;
         private readonly IMessageBus _messageBus;
+        private readonly ILockProvider _lockProvider;
         private readonly IDataContextFactory _dataContextFactory;
         private readonly ICollection<IService> _services;
 
@@ -23,12 +25,13 @@ namespace Edelstein.Service.All
             WvsContainerOptions options,
             ICacheClient cache,
             IMessageBus messageBus,
-            IDataContextFactory dataContextFactory
-        )
+            ILockProvider lockProvider,
+            IDataContextFactory dataContextFactory)
         {
             _options = options;
             _cache = cache;
             _messageBus = messageBus;
+            _lockProvider = lockProvider;
             _dataContextFactory = dataContextFactory;
             _services = new List<IService>();
         }
@@ -36,7 +39,7 @@ namespace Edelstein.Service.All
         public Task Start()
         {
             _options.LoginServices
-                .Select(o => new WvsLogin(o, _cache, _messageBus, _dataContextFactory))
+                .Select(o => new WvsLogin(o, _cache, _messageBus, _lockProvider, _dataContextFactory))
                 .ForEach(_services.Add);
             _options.GameServices
                 .Select(o => new WvsGame(o, _cache, _messageBus, _dataContextFactory))

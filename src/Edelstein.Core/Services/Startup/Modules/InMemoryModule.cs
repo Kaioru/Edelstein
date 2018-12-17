@@ -1,5 +1,6 @@
 using Autofac;
 using Foundatio.Caching;
+using Foundatio.Lock;
 using Foundatio.Messaging;
 
 namespace Edelstein.Core.Services.Startup.Modules
@@ -10,6 +11,7 @@ namespace Edelstein.Core.Services.Startup.Modules
         {
             builder.RegisterType<InMemoryCacheClient>().As<ICacheClient>().SingleInstance();
             builder.RegisterType<InMemoryMessageBus>().As<IMessageBus>().SingleInstance();
+            builder.RegisterType<CacheLockProvider>().As<ILockProvider>().SingleInstance();
         }
     }
 }
