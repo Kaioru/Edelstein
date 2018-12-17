@@ -8,6 +8,7 @@ using System.Timers;
 using Edelstein.Core.Logging;
 using Edelstein.Core.Services.Info;
 using Edelstein.Core.Services.Peers;
+using Edelstein.Data.Context;
 using Foundatio.Caching;
 using Foundatio.Messaging;
 using Serilog;
@@ -32,17 +33,29 @@ namespace Edelstein.Core.Services
         private readonly IMessageBus _messageBus;
         private readonly IDictionary<string, PeerServiceInfo> _peers;
 
-        private const string MigrationCacheScope = "migration";
-        public ICacheClient MigrationCache { get; }
+        public IDataContextFactory DataContextFactory { get; }
 
-        protected AbstractService(TInfo info, ICacheClient cache, IMessageBus messageBus)
+        private const string MigrationCacheScope = "migration";
+        private const string AccountStatusCacheScope = "accountStatus";
+        public ICacheClient MigrationCache { get; }
+        public ICacheClient AccountStatusCache { get; }
+
+        protected AbstractService(
+            TInfo info,
+            ICacheClient cache,
+            IMessageBus messageBus,
+            IDataContextFactory dataContextFactory
+        )
         {
             Info = info;
             _cache = cache;
             _messageBus = messageBus;
             _peers = new ConcurrentDictionary<string, PeerServiceInfo>();
 
+            DataContextFactory = dataContextFactory;
+
             MigrationCache = new ScopedCacheClient(_cache, MigrationCacheScope);
+            AccountStatusCache = new ScopedCacheClient(_cache, AccountStatusCacheScope);
         }
 
         public virtual async Task Start()
@@ -56,7 +69,7 @@ namespace Edelstein.Core.Services
                     if (_peers.ContainsKey(msg.Info.Name))
                     {
                         var peer = _peers[msg.Info.Name];
-                        
+
                         if (peer.Expiry < DateTime.Now)
                             Logger.Debug($"Reconnected peer service, {msg.Info.Name} to {Info.Name}");
                         _peers[msg.Info.Name].Expiry = expiry;

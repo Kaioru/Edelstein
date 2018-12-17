@@ -14,6 +14,7 @@ namespace Edelstein.Service.Game
                     .CreateLogger())
                 .WithConfig("WvsGame", new WvsGameOptions())
                 .WithDistributed()
+                .WithMySQLDatabase()
                 .Run()
                 .Wait();
     }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
+using Edelstein.Data.Context;
 using Edelstein.Service.Game;
 using Edelstein.Service.Login;
 using Foundatio.Caching;
@@ -15,27 +16,30 @@ namespace Edelstein.Service.All
         private readonly WvsContainerOptions _options;
         private readonly ICacheClient _cache;
         private readonly IMessageBus _messageBus;
+        private readonly IDataContextFactory _dataContextFactory;
         private readonly ICollection<IService> _services;
 
         public WvsContainer(
             WvsContainerOptions options,
             ICacheClient cache,
-            IMessageBus messageBus
+            IMessageBus messageBus,
+            IDataContextFactory dataContextFactory
         )
         {
             _options = options;
             _cache = cache;
             _messageBus = messageBus;
+            _dataContextFactory = dataContextFactory;
             _services = new List<IService>();
         }
 
         public Task Start()
         {
             _options.LoginServices
-                .Select(o => new WvsLogin(o, _cache, _messageBus))
+                .Select(o => new WvsLogin(o, _cache, _messageBus, _dataContextFactory))
                 .ForEach(_services.Add);
             _options.GameServices
-                .Select(o => new WvsGame(o, _cache, _messageBus))
+                .Select(o => new WvsGame(o, _cache, _messageBus, _dataContextFactory))
                 .ForEach(_services.Add);
             return Task.WhenAll(_services.Select(s => s.Start()));
         }

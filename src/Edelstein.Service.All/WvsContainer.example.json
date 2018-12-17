@@ -20,5 +20,6 @@
       "Host": "127.0.0.1",
       "Port": 7576
     }
-  ]
+  ],
+  "DatabaseConnectionString": "Server=localhost;Uid=root;Database=Edelstein;"
 }

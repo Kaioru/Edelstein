@@ -1,13 +1,16 @@
 using System;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
+using Edelstein.Core.Services;
 using Edelstein.Network;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Login.Logging;
 
 namespace Edelstein.Service.Login.Sockets
 {
-    public class WvsLoginSocket : AbstractSocket
+    public partial class WvsLoginSocket : AbstractSocket
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
         public WvsLogin WvsLogin { get; }
 
         public WvsLoginSocket(
@@ -20,9 +23,16 @@ namespace Edelstein.Service.Login.Sockets
             WvsLogin = wvsLogin;
         }
 
-        public override Task OnPacket(IPacket packet)
+        public override async Task OnPacket(IPacket packet)
         {
-            throw new NotImplementedException();
+            var operation = (RecvPacketOperations) packet.Decode<short>();
+
+            switch (operation)
+            {
+                default:
+                    Logger.Warn($"Unhandled packet operation {operation}");
+                    break;
+            }
         }
 
         public override Task OnDisconnect()
@@ -32,7 +42,8 @@ namespace Edelstein.Service.Login.Sockets
 
         public override Task OnException(Exception exception)
         {
-            throw new NotImplementedException();
+            Logger.Error(exception, "Caught exception in socket handling");
+            return Task.CompletedTask;
         }
     }
 }

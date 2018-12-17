@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
+using Edelstein.Data.Context;
 using Edelstein.Network;
 using Edelstein.Service.Login.Logging;
 using Edelstein.Service.Login.Sockets;
@@ -16,16 +17,18 @@ namespace Edelstein.Service.Login
         public WvsLogin(
             LoginServiceInfo info,
             ICacheClient cache,
-            IMessageBus messageBus
-        ) : base(info, cache, messageBus)
+            IMessageBus messageBus,
+            IDataContextFactory dataContextFactory
+        ) : base(info, cache, messageBus, dataContextFactory)
         {
         }
         
         public WvsLogin(
             WvsLoginOptions options,
             ICacheClient cache,
-            IMessageBus messageBus
-        ) : base(options.Service, cache, messageBus)
+            IMessageBus messageBus,
+            IDataContextFactory dataContextFactory
+        ) : base(options.Service, cache, messageBus, dataContextFactory)
         {
         }
 

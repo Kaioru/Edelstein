@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
+using Edelstein.Data.Context;
 using Edelstein.Network;
 using Edelstein.Service.Game.Sockets;
 using Foundatio.Caching;
@@ -15,16 +16,18 @@ namespace Edelstein.Service.Game
         public WvsGame(
             GameServiceInfo info,
             ICacheClient cache,
-            IMessageBus messageBus
-        ) : base(info, cache, messageBus)
+            IMessageBus messageBus,
+            IDataContextFactory dataContextFactory
+        ) : base(info, cache, messageBus, dataContextFactory)
         {
         }
         
         public WvsGame(
             WvsGameOptions options,
             ICacheClient cache,
-            IMessageBus messageBus
-        ) : base(options.Service, cache, messageBus)
+            IMessageBus messageBus,
+            IDataContextFactory dataContextFactory
+        ) : base(options.Service, cache, messageBus, dataContextFactory)
         {
         }
 

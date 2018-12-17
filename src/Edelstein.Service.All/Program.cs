@@ -14,6 +14,7 @@ namespace Edelstein.Service.All
                     .CreateLogger())
                 .WithConfig("WvsContainer", new WvsContainerOptions())
                 .WithInMemory()
+                .WithMySQLDatabase()
                 .Run()
                 .Wait();
     }

@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Autofac;
 using Edelstein.Core.Services.Startup.Modules;
+using Edelstein.Data.Context;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using StackExchange.Redis;
@@ -59,6 +60,23 @@ namespace Edelstein.Core.Services.Startup
                 return ConnectionMultiplexer.Connect(connection);
             });
             _builder.RegisterModule<RedisModule>();
+            return this;
+        }
+
+        public ServiceBootstrap<TService> WithInMemoryDatabase()
+        {
+            _builder.RegisterInstance(new InMemoryDataContextFactory("memory")).As<IDataContextFactory>();
+            return this;
+        }
+
+        public ServiceBootstrap<TService> WithMySQLDatabase(string connection = null)
+        {
+            _builder.Register(c =>
+            {
+                if (connection == null)
+                    connection = c.Resolve<IConfigurationRoot>()["DatabaseConnectionString"];
+                return new MySQLDataContextFactory(connection);
+            }).As<IDataContextFactory>();
             return this;
         }
 
