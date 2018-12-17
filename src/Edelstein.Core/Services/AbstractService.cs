@@ -58,7 +58,7 @@ namespace Edelstein.Core.Services
                         var peer = _peers[msg.Info.Name];
                         
                         if (peer.Expiry < DateTime.Now)
-                            Logger.Debug($"Reconnected peer service, {msg.Info.Name}");
+                            Logger.Debug($"Reconnected peer service, {msg.Info.Name} to {Info.Name}");
                         _peers[msg.Info.Name].Expiry = expiry;
                     }
                     else
@@ -68,13 +68,13 @@ namespace Edelstein.Core.Services
                             Info = msg.Info,
                             Expiry = expiry
                         };
-                        Logger.Debug($"Registered peer service, {msg.Info.Name}");
+                        Logger.Debug($"Registered peer service, {msg.Info.Name} to {Info.Name}");
                     }
                 }
                 else
                 {
                     _peers.Remove(msg.Info.Name);
-                    Logger.Debug($"Removed peer service, {msg.Info.Name}");
+                    Logger.Debug($"Removed peer service, {msg.Info.Name} from {Info.Name}");
                 }
             });
 

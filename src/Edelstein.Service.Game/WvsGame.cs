@@ -12,6 +12,14 @@ namespace Edelstein.Service.Game
         private IServer Server { get; set; }
 
         public WvsGame(
+            GameServiceInfo info,
+            ICacheClient cache,
+            IMessageBus messageBus
+        ) : base(info, cache, messageBus)
+        {
+        }
+        
+        public WvsGame(
             WvsGameOptions options,
             ICacheClient cache,
             IMessageBus messageBus

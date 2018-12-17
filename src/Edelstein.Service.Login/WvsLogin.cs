@@ -13,6 +13,14 @@ namespace Edelstein.Service.Login
         private IServer Server { get; set; }
 
         public WvsLogin(
+            LoginServiceInfo info,
+            ICacheClient cache,
+            IMessageBus messageBus
+        ) : base(info, cache, messageBus)
+        {
+        }
+        
+        public WvsLogin(
             WvsLoginOptions options,
             ICacheClient cache,
             IMessageBus messageBus
