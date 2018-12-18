@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider.Parser;
+using Edelstein.Provider.Templates.Item;
 
 namespace Edelstein.Provider.Templates
 {
     public class TemplateManager : ITemplateManager
     {
-        private IDataDirectoryCollection _collection;
-        private IDictionary<Type, ITemplateCollection> _dictionary;
+        private readonly IDataDirectoryCollection _collection;
+        private readonly IDictionary<Type, ITemplateCollection> _dictionary;
 
         public TemplateManager(IDataDirectoryCollection collection)
         {
             _collection = collection;
-            _dictionary = new Dictionary<Type, ITemplateCollection>();
+            _dictionary = new Dictionary<Type, ITemplateCollection>
+            {
+                [typeof(ItemTemplate)] = new ItemTemplateManager(_collection)
+            };
         }
 
         public T Get<T>(int id)
