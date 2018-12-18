@@ -16,6 +16,8 @@ namespace Edelstein.Service.Game.Fields.User
             var channel = packet.Decode<byte>();
             var service = Socket.WvsGame.Peers
                 .OfType<GameServiceInfo>()
+                .Where(g => g.WorldID == Socket.WvsGame.Info.WorldID)
+                .OrderBy(g => g.ID)
                 .ToList()[channel];
 
             if (service != null)
