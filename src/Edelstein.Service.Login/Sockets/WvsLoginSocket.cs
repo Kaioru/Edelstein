@@ -43,6 +43,10 @@ namespace Edelstein.Service.Login.Sockets
                     return OnSelectWorld(packet);
                 case RecvPacketOperations.CheckUserLimit:
                     return OnCheckUserLimit(packet);
+                case RecvPacketOperations.CheckDuplicatedID:
+                    return OnCheckDuplicatedID(packet);
+                case RecvPacketOperations.CreateNewCharacter:
+                    return OnCreateNewCharacter(packet);
                 default:
                     Logger.Warn($"Unhandled packet operation {operation}");
                     return Task.CompletedTask;

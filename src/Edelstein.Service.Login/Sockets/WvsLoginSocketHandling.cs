@@ -5,10 +5,14 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Extensions;
+using Edelstein.Core.Inventories;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
+using Edelstein.Data;
 using Edelstein.Data.Entities;
+using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packets;
+using Edelstein.Provider.Templates.Item;
 using Edelstein.Service.Login.Types;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq.Extensions;
@@ -142,14 +146,18 @@ namespace Edelstein.Service.Login.Sockets
 
             using (var p = new Packet(SendPacketOperations.SelectWorldResult))
             {
-                byte result = 0x0;
+                var result = LoginResult.Success;
                 var service = WvsLogin.Peers
                     .OfType<GameServiceInfo>()
                     .SingleOrDefault(g => g.ID == channelID &&
                                           g.WorldID == worldID);
-                if (service == null) result = 0x1;
+                if (service == null) result = LoginResult.NotConnectableWorld;
+                else
+                {
+                    if (service.AdultChannel) result = LoginResult.NotAdult; // TODO: proper checks
+                }
 
-                p.Encode<byte>(result);
+                p.Encode<byte>((byte) result);
 
                 if (result == 0)
                 {
@@ -206,6 +214,107 @@ namespace Edelstein.Service.Login.Sockets
 
                 await SendPacket(p);
             }
+        }
+
+        private async Task OnCheckDuplicatedID(IPacket packet)
+        {
+            var name = packet.Decode<string>();
+
+            await WvsLogin.LockProvider.AcquireAsync("characterCreationLock");
+
+            using (var db = WvsLogin.DataContextFactory.Create())
+            {
+                var isDuplicatedID = db.Characters.Any(c => c.Name.Equals(name));
+
+                using (var p = new Packet(SendPacketOperations.CheckDuplicatedIDResult))
+                {
+                    p.Encode<string>(name);
+                    p.Encode<bool>(isDuplicatedID);
+
+                    await SendPacket(p);
+                }
+            }
+
+            await WvsLogin.LockProvider.ReleaseAsync("characterCreationLock");
+        }
+
+        private async Task OnCreateNewCharacter(IPacket packet)
+        {
+            var name = packet.Decode<string>();
+            var race = packet.Decode<int>();
+            var subJob = packet.Decode<short>();
+            var face = packet.Decode<int>();
+            var hair = packet.Decode<int>() + packet.Decode<int>();
+            var skin = packet.Decode<int>();
+            var top = packet.Decode<int>();
+            var bottom = packet.Decode<int>();
+            var shoes = packet.Decode<int>();
+            var weapon = packet.Decode<int>();
+            var gender = packet.Decode<byte>();
+
+            await WvsLogin.LockProvider.AcquireAsync("characterCreationLock");
+
+            using (var p = new Packet(SendPacketOperations.CreateNewCharacterResult))
+            using (var db = WvsLogin.DataContextFactory.Create())
+            {
+                var result = LoginResult.Success;
+                var character = new Character
+                {
+                    Name = name,
+                    Job = 0,
+                    Face = face,
+                    Hair = hair,
+                    Skin = (byte) skin,
+                    Gender = gender,
+                    FieldID = 310000000,
+                    FieldPortal = 0,
+                    Level = 1,
+                    HP = 50,
+                    MaxHP = 50,
+                    MP = 50,
+                    MaxMP = 50,
+                    Inventories = new List<ItemInventory>()
+                };
+
+
+                var inventories = character.Inventories;
+
+                inventories.Add(new ItemInventory(ItemInventoryType.Equip, 24));
+                inventories.Add(new ItemInventory(ItemInventoryType.Use, 24));
+                inventories.Add(new ItemInventory(ItemInventoryType.Setup, 24));
+                inventories.Add(new ItemInventory(ItemInventoryType.Etc, 24));
+                inventories.Add(new ItemInventory(ItemInventoryType.Cash, 24));
+
+                var context = new ModifyInventoryContext(character);
+                var templates = WvsLogin.TemplateManager;
+
+                context.Set(templates.Get<ItemTemplate>(top), -5);
+                if (bottom > 0)
+                    context.Set(templates.Get<ItemTemplate>(bottom), -6);
+                context.Set(templates.Get<ItemTemplate>(shoes), -7);
+                context.Set(templates.Get<ItemTemplate>(weapon), -11);
+
+                var data = Account.Data.FirstOrDefault(a => a.WorldID == SelectedService.WorldID);
+                if (data == null) result = LoginResult.DBFail;
+
+                p.Encode<byte>((byte) result);
+
+                if (result == LoginResult.Success)
+                {
+                    data.Characters.Add(character);
+                    db.Update(Account);
+                    db.SaveChanges();
+
+                    character.EncodeStats(p);
+                    character.EncodeLook(p);
+                    p.Encode<bool>(false);
+                    p.Encode<bool>(false);
+                }
+
+                await SendPacket(p);
+            }
+            
+            await WvsLogin.LockProvider.ReleaseAsync("characterCreationLock");
         }
     }
 }
