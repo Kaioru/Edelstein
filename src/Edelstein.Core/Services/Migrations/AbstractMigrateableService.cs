@@ -20,20 +20,20 @@ namespace Edelstein.Core.Services.Migrations
         {
         }
 
-        public async Task<bool> TryMigrateTo(int id, ServiceInfo to)
+        public async Task<bool> TryMigrateTo(int accountID, int characterID, ServiceInfo to)
         {
-            if (await MigrationCache.ExistsAsync(id.ToString()))
+            if (await MigrationCache.ExistsAsync(characterID.ToString()))
                 return false;
             await AccountStatusCache.SetAsync(
-                id.ToString(),
+                accountID.ToString(),
                 AccountState.MigratingIn,
                 15.Seconds()
             );
             await MigrationCache.AddAsync(
-                id.ToString(),
+                characterID.ToString(),
                 new MigrationInfo
                 {
-                    ID = id,
+                    ID = characterID,
                     FromService = Info.Name,
                     ToService = to.Name
                 },
@@ -42,12 +42,12 @@ namespace Edelstein.Core.Services.Migrations
             return true;
         }
 
-        public async Task<bool> TryMigrateFrom(int id)
+        public async Task<bool> TryMigrateFrom(int accountID, int characterID)
         {
-            if (!await MigrationCache.ExistsAsync(id.ToString()))
+            if (!await MigrationCache.ExistsAsync(characterID.ToString()))
                 return false;
-            await AccountStatusCache.SetAsync(id.ToString(), AccountState.LoggedIn);
-            await MigrationCache.RemoveAsync(id.ToString());
+            await AccountStatusCache.SetAsync(accountID.ToString(), AccountState.LoggedIn);
+            await MigrationCache.RemoveAsync(characterID.ToString());
             return true;
         }
     }

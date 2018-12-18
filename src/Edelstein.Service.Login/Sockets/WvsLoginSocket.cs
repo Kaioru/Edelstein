@@ -84,7 +84,7 @@ namespace Edelstein.Service.Login.Sockets
         public async Task<bool> Migrate(ServerServiceInfo info)
         {
             if (SelectedCharacter == null) return false;
-            if (!await WvsLogin.TryMigrateTo(SelectedCharacter.ID, info)) return false;
+            if (!await WvsLogin.TryMigrateTo(Account.ID, SelectedCharacter.ID, info)) return false;
 
             using (var p = new Packet(SendPacketOperations.SelectCharacterResult))
             {

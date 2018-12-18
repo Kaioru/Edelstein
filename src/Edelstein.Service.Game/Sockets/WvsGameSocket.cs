@@ -53,10 +53,10 @@ namespace Edelstein.Service.Game.Sockets
             {
                 var character = FieldUser.Character;
                 var account = character.Data.Account;
-                var state = await WvsGame.AccountStatusCache.GetAsync<AccountState>(account.ToString());
+                var state = await WvsGame.AccountStatusCache.GetAsync<AccountState>(account.ID.ToString());
 
                 if (state.HasValue && state.Value != AccountState.MigratingIn)
-                    await WvsGame.AccountStatusCache.RemoveAsync(account.ToString());
+                    await WvsGame.AccountStatusCache.RemoveAsync(account.ID.ToString());
 
                 character.FieldPortal = (byte) FieldUser.Field.Template.Portals
                     .Values

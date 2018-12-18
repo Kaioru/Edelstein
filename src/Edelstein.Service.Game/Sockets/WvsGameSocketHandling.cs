@@ -12,9 +12,6 @@ namespace Edelstein.Service.Game.Sockets
         {
             var characterID = packet.Decode<int>();
 
-            if (!await WvsGame.TryMigrateFrom(characterID))
-                await Disconnect();
-
             using (var db = WvsGame.DataContextFactory.Create())
             {
                 var character = db.Characters
@@ -23,6 +20,10 @@ namespace Edelstein.Service.Game.Sockets
                     .Include(c => c.Inventories)
                     .ThenInclude(c => c.Items)
                     .Single(c => c.ID == characterID);
+
+                if (!await WvsGame.TryMigrateFrom(character.Data.Account.ID, characterID))
+                    await Disconnect();
+
                 var field = WvsGame.FieldManager.Get(character.FieldID);
                 var fieldUser = new FieldUser(this, character);
 
