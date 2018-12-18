@@ -2,14 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Provider.Logging;
 using Edelstein.Provider.Parser;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Item;
+using Edelstein.Provider.Templates.Item.Option;
+using Edelstein.Provider.Templates.Item.Set;
 
 namespace Edelstein.Provider.Templates
 {
     public class TemplateManager : ITemplateManager
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         private readonly IDataDirectoryCollection _collection;
         private readonly IDictionary<Type, ITemplateCollection> _dictionary;
 
@@ -18,6 +23,8 @@ namespace Edelstein.Provider.Templates
             _collection = collection;
             _dictionary = new Dictionary<Type, ITemplateCollection>
             {
+                [typeof(ItemOptionTemplate)] = new ItemOptionTemplateCollection(_collection),
+                [typeof(SetItemInfoTemplate)] = new SetItemInfoTemplateCollection(_collection),
                 [typeof(ItemTemplate)] = new ItemTemplateCollection(_collection),
                 [typeof(FieldTemplate)] = new FieldTemplateCollection(_collection)
             };
@@ -29,9 +36,17 @@ namespace Edelstein.Provider.Templates
         public Task<T> GetAsync<T>(int id)
             => Task.Run(() => Get<T>(id));
 
-        public Task Load()
-            => Task.WhenAll(_dictionary.Values
+        public async Task Load()
+        {
+            Logger.Info("Loading templates..");
+            await Task.WhenAll(_dictionary.Values
                 .OfType<AbstractEagerTemplateCollection>()
-                .Select(c => c.LoadAll()));
+                .Select(async c =>
+                {
+                    await c.LoadAll();
+                    Logger.Info($"Loaded {c.GetType().Name} with {c.Cache.Count()} templates");
+                }));
+            Logger.Info("Finished loading templates..");
+        }
     }
 }

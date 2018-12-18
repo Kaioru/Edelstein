@@ -89,7 +89,7 @@ namespace Edelstein.Core.Services.Startup
             {
                 if (path == null)
                     path = c.Resolve<IConfigurationRoot>()["BaseWZDirectoryPath"];
-                
+
                 WZReader.InitializeKeys();
                 return new WZDataPackageCollection(path);
             }).As<IDataDirectoryCollection>();
@@ -98,7 +98,8 @@ namespace Edelstein.Core.Services.Startup
 
         private ServiceBootstrap<TService> WithTemplates()
         {
-            _builder.RegisterType<TemplateManager>().As<ITemplateManager>();
+            _builder.RegisterType<TemplateManager>().As<ITemplateManager>()
+                .OnActivated(async args => await args.Instance.Load());
             return this;
         }
 

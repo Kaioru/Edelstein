@@ -43,7 +43,7 @@ namespace Edelstein.Service.Game
         public override async Task Start()
         {
             Server = new Server(new WvsGameSocketFactory(this));
-
+            
             await base.Start();
             await Server.Start(Info.Host, Info.Port);
         }
