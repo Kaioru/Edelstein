@@ -21,7 +21,7 @@ namespace Edelstein.Service.Game.Sockets
                     .ThenInclude(c => c.Items)
                     .Single(c => c.ID == characterID);
 
-                if (!await WvsGame.TryMigrateFrom(character.Data.Account.ID, characterID))
+                if (!await WvsGame.TryMigrateFrom(character, WvsGame.Info))
                     await Disconnect();
 
                 var field = WvsGame.FieldManager.Get(character.FieldID);

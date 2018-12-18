@@ -22,7 +22,7 @@ namespace Edelstein.Service.Game.Fields.User
 
             if (service != null)
             {
-                if (await Socket.WvsGame.TryMigrateTo(Character.Data.Account.ID, Character.ID, service))
+                if (await Socket.WvsGame.TryMigrateTo(Character, service))
                 {
                     using (var p = new Packet(SendPacketOperations.MigrateCommand))
                     {

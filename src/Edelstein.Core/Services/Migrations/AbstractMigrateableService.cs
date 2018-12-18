@@ -20,20 +20,20 @@ namespace Edelstein.Core.Services.Migrations
         {
         }
 
-        public async Task<bool> TryMigrateTo(int accountID, int characterID, ServiceInfo to)
+        public async Task<bool> TryMigrateTo(Character character, ServiceInfo to)
         {
-            if (await MigrationCache.ExistsAsync(characterID.ToString()))
+            if (await MigrationCache.ExistsAsync(character.ID.ToString()))
                 return false;
             await AccountStatusCache.SetAsync(
-                accountID.ToString(),
+                character.Data.Account.ID.ToString(),
                 AccountState.MigratingIn,
                 15.Seconds()
             );
             await MigrationCache.AddAsync(
-                characterID.ToString(),
+                character.ID.ToString(),
                 new MigrationInfo
                 {
-                    ID = characterID,
+                    ID = character.ID,
                     FromService = Info.Name,
                     ToService = to.Name
                 },
@@ -42,12 +42,15 @@ namespace Edelstein.Core.Services.Migrations
             return true;
         }
 
-        public async Task<bool> TryMigrateFrom(int accountID, int characterID)
+        public async Task<bool> TryMigrateFrom(Character character, ServiceInfo current)
         {
-            if (!await MigrationCache.ExistsAsync(characterID.ToString()))
+            if (!await MigrationCache.ExistsAsync(character.ID.ToString()))
                 return false;
-            await AccountStatusCache.SetAsync(accountID.ToString(), AccountState.LoggedIn);
-            await MigrationCache.RemoveAsync(characterID.ToString());
+            var migration = await MigrationCache.GetAsync<MigrationInfo>(character.ID.ToString());
+            if (migration.Value.ToService != current.Name)
+                return false;
+            await AccountStatusCache.SetAsync(character.Data.Account.ID.ToString(), AccountState.LoggedIn);
+            await MigrationCache.RemoveAsync(character.ID.ToString());
             return true;
         }
     }
