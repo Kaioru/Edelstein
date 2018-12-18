@@ -5,6 +5,7 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.User.Stats;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Sockets;
 
@@ -18,10 +19,40 @@ namespace Edelstein.Service.Game.Fields.User
         public WvsGameSocket Socket { get; }
         public Character Character { get; }
 
+        public BasicStat BasicStat { get; set; }
+        public SecondaryStat SecondaryStat { get; set; }
+        public ForcedStat ForcedStat { get; set; }
+
         public FieldUser(WvsGameSocket socket, Character character)
         {
             Socket = socket;
             Character = character;
+            ValidateStat();
+        }
+
+        public void ValidateStat()
+        {
+            BasicStat.Calculate();
+            SecondaryStat.Calculate();
+
+            if (Character.HP > BasicStat.MaxHP) ModifyStats(s => s.HP = BasicStat.MaxHP);
+            if (Character.MP > BasicStat.MaxMP) ModifyStats(s => s.MP = BasicStat.MaxMP);
+        }
+
+        public void AvatarModified()
+        {
+            using (var p = new Packet(SendPacketOperations.UserAvatarModified))
+            {
+                p.Encode<int>(ID);
+                p.Encode<byte>(0x1); // Flag
+                Character.EncodeLook(p);
+                p.Encode<bool>(false); // bCouple
+                p.Encode<bool>(false); // bFriendship
+                p.Encode<bool>(false); // Marriage
+                p.Encode<int>(BasicStat.CompletedSetItemID);
+
+                Field.BroadcastPacket(this, p);
+            }
         }
 
         public Task OnPacket(RecvPacketOperations operation, IPacket packet)
