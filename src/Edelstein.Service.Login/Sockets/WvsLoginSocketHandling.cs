@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Drawing;
@@ -8,7 +7,6 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Inventories;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
-using Edelstein.Data;
 using Edelstein.Data.Entities;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packets;
