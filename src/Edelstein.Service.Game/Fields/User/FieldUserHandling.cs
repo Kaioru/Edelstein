@@ -25,26 +25,9 @@ namespace Edelstein.Service.Game.Fields.User
 
             if (service == null) result = 0x1;
             else if (service.AdultChannel) result = 0x1;
-            else if (!await Socket.WvsGame.TryMigrateTo(Character, service)) result = 0x1;
+            else if (!await Socket.WvsGame.TryMigrateTo(Socket, Character, service)) result = 0x1;
 
-            if (result == 0x0)
-            {
-                using (var p = new Packet(SendPacketOperations.MigrateCommand))
-                {
-                    p.Encode<bool>(true);
-
-                    var endpoint = new IPEndPoint(IPAddress.Parse(service.Host), service.Port);
-                    var address = endpoint.Address.MapToIPv4().GetAddressBytes();
-                    var port = endpoint.Port;
-
-                    address.ForEach(b => p.Encode<byte>(b));
-                    p.Encode<short>((short) port);
-                    await SendPacket(p);
-                }
-
-                return;
-            }
-
+            if (result == 0x0) return;
             using (var p = new Packet(SendPacketOperations.TransferChannelReqIgnored))
             {
                 p.Encode<byte>(result);
@@ -65,26 +48,9 @@ namespace Edelstein.Service.Game.Fields.User
             if (Field.Template.Limit.HasFlag(FieldOpt.MigrateLimit)) return;
 
             if (service == null) result = 0x2;
-            else if (!await Socket.WvsGame.TryMigrateTo(Character, service)) result = 0x2;
+            else if (!await Socket.WvsGame.TryMigrateTo(Socket, Character, service)) result = 0x2;
 
-            if (result == 0x0)
-            {
-                using (var p = new Packet(SendPacketOperations.MigrateCommand))
-                {
-                    p.Encode<bool>(true);
-
-                    var endpoint = new IPEndPoint(IPAddress.Parse(service.Host), service.Port);
-                    var address = endpoint.Address.MapToIPv4().GetAddressBytes();
-                    var port = endpoint.Port;
-
-                    address.ForEach(b => p.Encode<byte>(b));
-                    p.Encode<short>((short) port);
-                    await SendPacket(p);
-                }
-
-                return;
-            }
-
+            if (result == 0x0) return;
             using (var p = new Packet(SendPacketOperations.TransferChannelReqIgnored))
             {
                 p.Encode<byte>(result);

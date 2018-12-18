@@ -69,25 +69,8 @@ namespace Edelstein.Service.Shop.Sockets
                 .FirstOrDefault();
 
             if (service != null &&
-                await WvsShop.TryMigrateTo(Character, service))
-            {
-                using (var p = new Packet(SendPacketOperations.MigrateCommand))
-                {
-                    p.Encode<bool>(true);
-
-                    var endpoint = new IPEndPoint(IPAddress.Parse(service.Host), service.Port);
-                    var address = endpoint.Address.MapToIPv4().GetAddressBytes();
-                    var port = endpoint.Port;
-
-                    address.ForEach(b => p.Encode<byte>(b));
-                    p.Encode<short>((short) port);
-                    await SendPacket(p);
-                }
-
-                return;
-            }
-
-            await Disconnect();
+                !await WvsShop.TryMigrateTo(this, Character, service))
+                await Disconnect();
         }
     }
 }

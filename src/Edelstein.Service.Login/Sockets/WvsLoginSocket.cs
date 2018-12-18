@@ -82,28 +82,29 @@ namespace Edelstein.Service.Login.Sockets
         public async Task<bool> Migrate(ServerServiceInfo info)
         {
             if (SelectedCharacter == null) return false;
-            if (!await WvsLogin.TryMigrateTo(SelectedCharacter, info)) return false;
+            return await WvsLogin.TryMigrateTo(
+                this, SelectedCharacter, info,
+                to =>
+                {
+                    using (var p = new Packet(SendPacketOperations.SelectCharacterResult))
+                    {
+                        p.Encode<byte>(0);
+                        p.Encode<byte>(0);
 
-            using (var p = new Packet(SendPacketOperations.SelectCharacterResult))
-            {
-                p.Encode<byte>(0);
-                p.Encode<byte>(0);
+                        var endpoint = new IPEndPoint(IPAddress.Parse(to.Host), to.Port);
+                        var address = endpoint.Address.MapToIPv4().GetAddressBytes();
+                        var port = endpoint.Port;
 
-                var endpoint = new IPEndPoint(IPAddress.Parse(info.Host), info.Port);
-                var address = endpoint.Address.MapToIPv4().GetAddressBytes();
-                var port = endpoint.Port;
+                        address.ForEach(b => p.Encode<byte>(b));
+                        p.Encode<short>((short) port);
 
-                address.ForEach(b => p.Encode<byte>(b));
-                p.Encode<short>((short) port);
+                        p.Encode<int>(SelectedCharacter.ID);
+                        p.Encode<byte>(0);
+                        p.Encode<int>(0);
 
-                p.Encode<int>(SelectedCharacter.ID);
-                p.Encode<byte>(0);
-                p.Encode<int>(0);
-
-                await SendPacket(p);
-            }
-
-            return true;
+                        return p;
+                    }
+                });
         }
     }
 }

@@ -1,10 +1,15 @@
+using System;
+using System.Net;
 using System.Threading.Tasks;
 using Edelstein.Core.Services.Info;
 using Edelstein.Data.Context;
 using Edelstein.Data.Entities;
+using Edelstein.Network;
+using Edelstein.Network.Packets;
 using Foundatio.Caching;
 using Foundatio.Messaging;
 using Humanizer;
+using MoreLinq;
 
 namespace Edelstein.Core.Services.Migrations
 {
@@ -20,7 +25,9 @@ namespace Edelstein.Core.Services.Migrations
         {
         }
 
-        public async Task<bool> TryMigrateTo(Character character, ServiceInfo to)
+        public async Task<bool> TryMigrateTo(
+            ISocket socket, Character character, ServerServiceInfo to,
+            Func<ServerServiceInfo, IPacket> getMigrationCommand = null)
         {
             var accountID = character.Data.Account.ID.ToString();
             var characterID = character.ID.ToString();
@@ -42,10 +49,28 @@ namespace Edelstein.Core.Services.Migrations
                 },
                 15.Seconds()
             );
+
+            if (getMigrationCommand == null)
+                getMigrationCommand = info =>
+                {
+                    using (var p = new Packet(SendPacketOperations.MigrateCommand))
+                    {
+                        p.Encode<bool>(true);
+
+                        var endpoint = new IPEndPoint(IPAddress.Parse(info.Host), info.Port);
+                        var address = endpoint.Address.MapToIPv4().GetAddressBytes();
+                        var port = endpoint.Port;
+
+                        address.ForEach(b => p.Encode<byte>(b));
+                        p.Encode<short>((short) port);
+                        return p;
+                    }
+                };
+            await socket.SendPacket(getMigrationCommand.Invoke(to));
             return true;
         }
 
-        public async Task<bool> TryMigrateFrom(Character character, ServiceInfo current)
+        public async Task<bool> TryMigrateFrom(Character character, ServerServiceInfo current)
         {
             var accountID = character.Data.Account.ID.ToString();
             var characterID = character.ID.ToString();
