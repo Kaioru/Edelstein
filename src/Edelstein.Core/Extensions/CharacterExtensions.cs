@@ -4,6 +4,7 @@ using System.Linq;
 using Edelstein.Data.Entities;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packets;
+using MoreLinq;
 
 namespace Edelstein.Core.Extensions
 {
@@ -50,11 +51,11 @@ namespace Edelstein.Core.Extensions
             {
                 void EncodeEquips(IEnumerable<ItemSlot> items, short offset = 0)
                 {
-                    foreach (var i in items)
+                    items.ForEach(i =>
                     {
                         p.Encode<short>((short) (Math.Abs(i.Position) + offset));
                         (i as ItemSlotEquip).Encode(p);
-                    }
+                    });
                 }
 
                 var equipItems = inventoryEquip.Items.Where(i => i.Position >= 0 && i.Position < 100);
@@ -77,12 +78,12 @@ namespace Edelstein.Core.Extensions
 
             void EncodeItems(IEnumerable<ItemSlot> items)
             {
-                foreach (var i in items)
+                items.ForEach(i =>
                 {
                     p.Encode<byte>((byte) i.Position);
                     if (i is ItemSlotBundle bundle) bundle.Encode(p);
                     if (i is ItemSlotPet pet) pet.Encode(p);
-                }
+                });
             }
 
             if ((flag & 0x8) != 0)

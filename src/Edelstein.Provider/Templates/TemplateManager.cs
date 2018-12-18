@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider.Parser;
+using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Item;
 
 namespace Edelstein.Provider.Templates
@@ -17,7 +18,8 @@ namespace Edelstein.Provider.Templates
             _collection = collection;
             _dictionary = new Dictionary<Type, ITemplateCollection>
             {
-                [typeof(ItemTemplate)] = new ItemTemplateManager(_collection)
+                [typeof(ItemTemplate)] = new ItemTemplateCollection(_collection),
+                [typeof(FieldTemplate)] = new FieldTemplateCollection(_collection)
             };
         }
 

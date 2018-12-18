@@ -4,9 +4,9 @@ using Edelstein.Provider.Parser;
 
 namespace Edelstein.Provider.Templates.Item
 {
-    public class ItemTemplateManager : AbstractLazyTemplateCollection
+    public class ItemTemplateCollection : AbstractLazyTemplateCollection
     {
-        public ItemTemplateManager(IDataDirectoryCollection collection) : base(collection)
+        public ItemTemplateCollection(IDataDirectoryCollection collection) : base(collection)
         {
         }
 

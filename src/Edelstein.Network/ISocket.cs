@@ -16,6 +16,8 @@ namespace Edelstein.Network
         Task OnPacket(IPacket packet);
         Task OnDisconnect();
         Task OnException(Exception exception);
+
+        Task Disconnect();
         Task SendPacket(IPacket packet);
     }
 }

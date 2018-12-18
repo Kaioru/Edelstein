@@ -38,10 +38,8 @@ namespace Edelstein.Service.Login
             ILockProvider lockProvider,
             IDataContextFactory dataContextFactory,
             ITemplateManager templateManager
-        ) : base(options.Service, cache, messageBus, dataContextFactory)
+        ) : this(options.Service, cache, messageBus, lockProvider, dataContextFactory, templateManager)
         {
-            LockProvider = lockProvider;
-            TemplateManager = templateManager;
         }
 
         public override async Task Start()

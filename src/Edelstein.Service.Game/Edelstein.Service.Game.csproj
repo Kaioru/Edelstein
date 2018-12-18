@@ -22,4 +22,8 @@
       <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Fields\Objects" />
+    </ItemGroup>
+
 </Project>

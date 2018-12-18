@@ -24,9 +24,10 @@ namespace Edelstein.Network.Packets
         public IPacket Encode<T>(T value)
         {
             var type = typeof(T);
-            if (value == null) throw new NotSupportedException();
-            if (PacketMethods.EncodeMethods.ContainsKey(type))
-                PacketMethods.EncodeMethods[type](_byteBuffer, value);
+            if (value == null) value = default(T);
+            if (!PacketMethods.EncodeMethods.ContainsKey(type))
+                throw new NotSupportedException();
+            PacketMethods.EncodeMethods[type](_byteBuffer, value);
             return this;
         }
 
@@ -46,6 +47,6 @@ namespace Edelstein.Network.Packets
         }
 
         public void Dispose()
-            => _byteBuffer.Release();
+            => _byteBuffer.DiscardReadBytes();
     }
 }
