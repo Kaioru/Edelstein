@@ -1,6 +1,5 @@
 using System.Drawing;
 using System.Threading.Tasks;
-using Amazon.Runtime.Internal.Util;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities;
