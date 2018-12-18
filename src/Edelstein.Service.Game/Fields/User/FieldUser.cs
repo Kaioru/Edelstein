@@ -1,17 +1,18 @@
-using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using Amazon.Runtime.Internal.Util;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities;
-using Edelstein.Network;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Sockets;
 
 namespace Edelstein.Service.Game.Fields.User
 {
-    public class FieldUser : AbstractFieldLife
+    public partial class FieldUser : AbstractFieldLife
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
         public override FieldObjType Type => FieldObjType.User;
 
         public WvsGameSocket Socket { get; }
@@ -23,14 +24,26 @@ namespace Edelstein.Service.Game.Fields.User
             Character = character;
         }
 
+        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
+        {
+            switch (operation)
+            {
+                case RecvPacketOperations.UserTransferChannelRequest:
+                    return OnUserTransferChannelRequest(packet);
+                default:
+                    Logger.Warn($"Unhandled packet operation {operation}");
+                    return Task.CompletedTask;
+            }
+        }
+
         public IPacket GetSetFieldPacket()
         {
             using (var p = new Packet(SendPacketOperations.SetField))
             {
                 p.Encode<short>(0); // ClientOpt
 
-                p.Encode<int>(0);
-                p.Encode<int>(0);
+                p.Encode<int>(Socket.WvsGame.Info.ID);
+                p.Encode<int>(Socket.WvsGame.Info.WorldID);
 
                 p.Encode<bool>(true); // sNotifierMessage._m_pStr
                 p.Encode<bool>(!Socket.IsInstantiated);

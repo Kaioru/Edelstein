@@ -41,8 +41,7 @@ namespace Edelstein.Service.Game.Sockets
                 case RecvPacketOperations.MigrateIn:
                     return OnMigrateIn(packet);
                 default:
-                    Logger.Warn($"Unhandled packet operation {operation}");
-                    return Task.CompletedTask;
+                    return FieldUser?.OnPacket(operation, packet);
             }
         }
 
