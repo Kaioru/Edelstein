@@ -15,18 +15,16 @@ namespace Edelstein.Provider.Templates
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        private readonly IDataDirectoryCollection _collection;
         private readonly IDictionary<Type, ITemplateCollection> _dictionary;
 
         public TemplateManager(IDataDirectoryCollection collection)
         {
-            _collection = collection;
             _dictionary = new Dictionary<Type, ITemplateCollection>
             {
-                [typeof(ItemOptionTemplate)] = new ItemOptionTemplateCollection(_collection),
-                [typeof(SetItemInfoTemplate)] = new SetItemInfoTemplateCollection(_collection),
-                [typeof(ItemTemplate)] = new ItemTemplateCollection(_collection),
-                [typeof(FieldTemplate)] = new FieldTemplateCollection(_collection)
+                [typeof(ItemOptionTemplate)] = new ItemOptionTemplateCollection(collection),
+                [typeof(SetItemInfoTemplate)] = new SetItemInfoTemplateCollection(collection),
+                [typeof(ItemTemplate)] = new ItemTemplateCollection(collection),
+                [typeof(FieldTemplate)] = new FieldTemplateCollection(collection)
             };
         }
 
