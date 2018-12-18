@@ -54,6 +54,8 @@ namespace Edelstein.Service.Game.Fields
                 await BroadcastPacket(user, getEnterPacket?.Invoke() ?? user.GetEnterFieldPacket());
 
                 if (!user.Socket.IsInstantiated) user.Socket.IsInstantiated = true;
+
+                await user.ResetForcedStats();
                 GetObjects()
                     .Where(o => o != user)
                     .ForEach(o => user.SendPacket(o.GetEnterFieldPacket()));
