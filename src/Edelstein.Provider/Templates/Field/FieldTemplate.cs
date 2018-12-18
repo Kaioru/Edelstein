@@ -7,6 +7,8 @@ namespace Edelstein.Provider.Templates.Field
     {
         public int ID { get; set; }
 
+        public FieldOpt Limit { get; set; }
+        
         public Rectangle Bounds { get; set; }
         public Size Size { get; set; }
 

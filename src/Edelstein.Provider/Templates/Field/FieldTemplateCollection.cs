@@ -23,6 +23,7 @@ namespace Edelstein.Provider.Templates.Field
             var res = new FieldTemplate
             {
                 ID = id,
+                Limit = (FieldOpt) (p.Resolve<int>("fieldLimit") ?? 0),
                 Footholds = p.Resolve("foothold").Children
                     .SelectMany(c => c.Children)
                     .SelectMany(c => c.Children)
