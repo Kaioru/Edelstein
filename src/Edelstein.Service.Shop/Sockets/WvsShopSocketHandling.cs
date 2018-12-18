@@ -65,8 +65,7 @@ namespace Edelstein.Service.Shop.Sockets
             var service = WvsShop.Peers
                 .OfType<GameServiceInfo>()
                 .Where(g => g.WorldID == Character.Data.WorldID)
-                .OrderBy(g => g.ID)
-                .FirstOrDefault();
+                .FirstOrDefault(g => g.Name == Character.Data.Account.PreviousConnectedService);
 
             if (service != null &&
                 !await WvsShop.TryMigrateTo(this, Character, service))

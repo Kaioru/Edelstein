@@ -130,7 +130,7 @@ namespace Edelstein.Service.Login.Sockets
 
             using (var p = new Packet(SendPacketOperations.LatestConnectedWorld))
             {
-                p.Encode<int>(WvsLogin.Info.Worlds.FirstOrDefault()?.ID ?? 0);
+                p.Encode<int>(Account.LatestConnectedWorld);
                 await SendPacket(p);
             }
         }
@@ -164,7 +164,8 @@ namespace Edelstein.Service.Login.Sockets
                     using (var db = WvsLogin.DataContextFactory.Create())
                     {
                         var data = Account.Data.SingleOrDefault(d => d.WorldID == worldID);
-
+                        Account.LatestConnectedWorld = worldID;
+                        
                         if (data == null)
                         {
                             data = new AccountData
@@ -175,9 +176,10 @@ namespace Edelstein.Service.Login.Sockets
                             };
 
                             Account.Data.Add(data);
-                            db.Update(Account);
-                            db.SaveChanges();
                         }
+                        
+                        db.Update(Account);
+                        db.SaveChanges();
 
                         var characters = data.Characters;
 

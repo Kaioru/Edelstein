@@ -13,6 +13,10 @@ namespace Edelstein.Data.Entities
         [MaxLength(13)] public string Username { get; set; }
         [MaxLength(128)] public string Password { get; set; }
         [MaxLength(128)] public string SecondPassword { get; set; }
+        
+        public byte LatestConnectedWorld { get; set; }
+        public string LatestConnectedService { get; set; }
+        public string PreviousConnectedService { get; set; }
 
         public ICollection<AccountData> Data { get; set; }
     }

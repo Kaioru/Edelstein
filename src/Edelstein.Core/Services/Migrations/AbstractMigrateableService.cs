@@ -77,9 +77,13 @@ namespace Edelstein.Core.Services.Migrations
 
             if (!await MigrationCache.ExistsAsync(characterID))
                 return false;
-            var migration = await MigrationCache.GetAsync<MigrationInfo>(characterID);
-            if (migration.Value.ToService != current.Name)
+
+            var migration = (await MigrationCache.GetAsync<MigrationInfo>(characterID)).Value;
+
+            if (migration.ToService != current.Name)
                 return false;
+            character.Data.Account.LatestConnectedService = migration.ToService;
+            character.Data.Account.PreviousConnectedService = migration.FromService;
             await AccountStatusCache.SetAsync(accountID, AccountState.LoggedIn);
             await MigrationCache.RemoveAsync(characterID);
             return true;
