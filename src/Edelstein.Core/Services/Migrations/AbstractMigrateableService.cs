@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Services.Info;
 using Edelstein.Data.Context;
@@ -24,13 +25,22 @@ namespace Edelstein.Core.Services.Migrations
         {
             if (await MigrationCache.ExistsAsync(id.ToString()))
                 return false;
-            await AccountStatusCache.SetAsync(id.ToString(), AccountState.MigratingIn);
-            await MigrationCache.AddAsync(id.ToString(), new MigrationInfo
-            {
-                ID = id,
-                FromService = Info.Name,
-                ToService = to.Name
-            }, 15.Seconds());
+            var expire = DateTime.Now.Add(15.Seconds());
+            await AccountStatusCache.SetAsync(
+                id.ToString(),
+                AccountState.MigratingIn,
+                expire
+            );
+            await MigrationCache.AddAsync(
+                id.ToString(),
+                new MigrationInfo
+                {
+                    ID = id,
+                    FromService = Info.Name,
+                    ToService = to.Name
+                },
+                expire
+            );
             return true;
         }
 
