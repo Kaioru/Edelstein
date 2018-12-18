@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
+using Edelstein.Core.Services.Migrations;
 using Edelstein.Data.Context;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
@@ -10,7 +11,7 @@ using Foundatio.Messaging;
 
 namespace Edelstein.Service.Game
 {
-    public class WvsGame : AbstractService<GameServiceInfo>
+    public class WvsGame : AbstractMigrateableService<GameServiceInfo>
     {
         private IServer Server { get; set; }
         public ITemplateManager TemplateManager { get; }

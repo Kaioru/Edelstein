@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
+using Edelstein.Core.Services.Migrations;
 using Edelstein.Data.Context;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
@@ -11,7 +12,7 @@ using Foundatio.Messaging;
 
 namespace Edelstein.Service.Login
 {
-    public class WvsLogin : AbstractService<LoginServiceInfo>
+    public class WvsLogin : AbstractMigrateableService<LoginServiceInfo>
     {
         private IServer Server { get; set; }
         public ILockProvider LockProvider { get; }

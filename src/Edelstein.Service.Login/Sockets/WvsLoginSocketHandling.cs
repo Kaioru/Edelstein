@@ -313,8 +313,92 @@ namespace Edelstein.Service.Login.Sockets
 
                 await SendPacket(p);
             }
-            
+
             await WvsLogin.LockProvider.ReleaseAsync("characterCreationLock");
+        }
+
+        private async Task OnEnableSPWRequest(IPacket packet, bool vac)
+        {
+            packet.Decode<bool>(); // ?
+            var characterID = packet.Decode<int>();
+
+            if (vac) packet.Decode<int>(); // Unknown
+
+            packet.Decode<string>(); // sMacAddress
+            packet.Decode<string>(); // sMacAddressWithHDDSerial
+            var spw = packet.Decode<string>();
+
+            var result = LoginResult.Success;
+
+            using (var db = WvsLogin.DataContextFactory.Create())
+            {
+                var character = Account.Data
+                    .SelectMany(a => a.Characters)
+                    .Single(c => c.ID == characterID);
+                SelectedCharacter = character;
+                if (!string.IsNullOrEmpty(Account.SecondPassword)) result = LoginResult.Unknown;
+                if (BCrypt.Net.BCrypt.Verify(spw, Account.Password)) result = LoginResult.SamePasswordAndSPW;
+
+                if (result == LoginResult.Success)
+                {
+                    Account.SecondPassword = BCrypt.Net.BCrypt.HashPassword(spw);
+                    db.Update(Account);
+                    db.SaveChanges();
+
+                    if (vac)
+                    {
+                        SelectedService = WvsLogin.Peers
+                            .OfType<GameServiceInfo>()
+                            .First(g => g.WorldID == character.Data.WorldID);
+                    }
+
+                    if (!await Migrate(SelectedService)) result = LoginResult.AlreadyConnected;
+                }
+
+                if (result == LoginResult.Success) return;
+                using (var p = new Packet(SendPacketOperations.EnableSPWResult))
+                {
+                    p.Encode<bool>(false);
+                    p.Encode<byte>((byte) result);
+                    await SendPacket(p);
+                }
+            }
+        }
+
+        private async Task OnCheckSPWRequest(IPacket packet, bool vac)
+        {
+            var spw = packet.Decode<string>();
+            var characterID = packet.Decode<int>();
+            packet.Decode<string>(); // sMacAddress
+            packet.Decode<string>(); // sMacAddressWithHDDSerial
+
+            var result = LoginResult.Success;
+            var character = Account.Data
+                .SelectMany(a => a.Characters)
+                .Single(c => c.ID == characterID);
+            SelectedCharacter = character;
+
+            if (string.IsNullOrEmpty(Account.SecondPassword)) result = LoginResult.Unknown;
+            else if (!BCrypt.Net.BCrypt.Verify(spw, Account.SecondPassword)) result = LoginResult.IncorrectSPW;
+
+            if (result == LoginResult.Success)
+            {
+                if (vac)
+                {
+                    SelectedService = WvsLogin.Peers
+                        .OfType<GameServiceInfo>()
+                        .First(g => g.WorldID == character.Data.WorldID);
+                }
+
+                if (!await Migrate(SelectedService)) result = LoginResult.AlreadyConnected;
+            }
+
+            if (result == LoginResult.Success) return;
+            using (var p = new Packet(SendPacketOperations.CheckSPWResult))
+            {
+                p.Encode<byte>((byte) result);
+                await SendPacket(p);
+            }
         }
     }
 }
