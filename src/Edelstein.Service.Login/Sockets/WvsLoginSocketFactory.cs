@@ -8,9 +8,7 @@ namespace Edelstein.Service.Login.Sockets
         private readonly WvsLogin _wvsLogin;
 
         public WvsLoginSocketFactory(WvsLogin wvsLogin)
-        {
-            _wvsLogin = wvsLogin;
-        }
+            => _wvsLogin = wvsLogin;
 
         public ISocket Build(IChannel channel, uint seqSend, uint seqRecv)
             => new WvsLoginSocket(channel, seqSend, seqRecv, _wvsLogin);

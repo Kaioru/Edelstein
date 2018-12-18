@@ -62,6 +62,8 @@ namespace Edelstein.Service.Game.Fields.User
             {
                 case RecvPacketOperations.UserTransferChannelRequest:
                     return OnUserTransferChannelRequest(packet);
+                case RecvPacketOperations.UserMigrateToCashShopRequest:
+                    return OnUserMigrateToCashShopRequest(packet);
                 case RecvPacketOperations.UserMove:
                     return OnUserMove(packet);
                 default:

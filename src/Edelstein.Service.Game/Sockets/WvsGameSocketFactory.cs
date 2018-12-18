@@ -8,9 +8,7 @@ namespace Edelstein.Service.Game.Sockets
         private readonly WvsGame _wvsGame;
 
         public WvsGameSocketFactory(WvsGame wvsGame)
-        {
-            _wvsGame = wvsGame;
-        }
+            => _wvsGame = wvsGame;
 
         public ISocket Build(IChannel channel, uint seqSend, uint seqRecv)
             => new WvsGameSocket(channel, seqSend, seqRecv, _wvsGame);

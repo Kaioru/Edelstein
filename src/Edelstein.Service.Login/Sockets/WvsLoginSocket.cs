@@ -27,9 +27,7 @@ namespace Edelstein.Service.Login.Sockets
             uint seqRecv,
             WvsLogin wvsLogin
         ) : base(channel, seqSend, seqRecv)
-        {
-            WvsLogin = wvsLogin;
-        }
+            => WvsLogin = wvsLogin;
 
         public override Task OnPacket(IPacket packet)
         {

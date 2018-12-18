@@ -28,9 +28,7 @@ namespace Edelstein.Service.Game.Sockets
             uint seqRecv,
             WvsGame wvsGame
         ) : base(channel, seqSend, seqRecv)
-        {
-            WvsGame = wvsGame;
-        }
+            => WvsGame = wvsGame;
 
         public override Task OnPacket(IPacket packet)
         {

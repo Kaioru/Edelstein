@@ -52,6 +52,46 @@ namespace Edelstein.Service.Game.Fields.User
             }
         }
 
+        private async Task OnUserMigrateToCashShopRequest(IPacket packet)
+        {
+            byte result = 0x0;
+            var service = Socket.WvsGame.Peers
+                .OfType<ShopServiceInfo>()
+                .Where(g => g.Worlds.Contains(Socket.WvsGame.Info.WorldID))
+                .OrderBy(g => g.ID)
+                .FirstOrDefault();
+            // TODO: selection prompt when multiple?
+
+            if (Field.Template.Limit.HasFlag(FieldOpt.MigrateLimit)) return;
+
+            if (service == null) result = 0x2;
+            else if (!await Socket.WvsGame.TryMigrateTo(Character, service)) result = 0x2;
+
+            if (result == 0x0)
+            {
+                using (var p = new Packet(SendPacketOperations.MigrateCommand))
+                {
+                    p.Encode<bool>(true);
+
+                    var endpoint = new IPEndPoint(IPAddress.Parse(service.Host), service.Port);
+                    var address = endpoint.Address.MapToIPv4().GetAddressBytes();
+                    var port = endpoint.Port;
+
+                    address.ForEach(b => p.Encode<byte>(b));
+                    p.Encode<short>((short) port);
+                    await SendPacket(p);
+                }
+
+                return;
+            }
+
+            using (var p = new Packet(SendPacketOperations.TransferChannelReqIgnored))
+            {
+                p.Encode<byte>(result);
+                await SendPacket(p);
+            }
+        }
+
         private Task OnUserMove(IPacket packet)
         {
             packet.Decode<long>();
