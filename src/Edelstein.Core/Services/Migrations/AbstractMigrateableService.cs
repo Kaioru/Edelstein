@@ -25,11 +25,10 @@ namespace Edelstein.Core.Services.Migrations
         {
             if (await MigrationCache.ExistsAsync(id.ToString()))
                 return false;
-            var expire = DateTime.Now.Add(15.Seconds());
             await AccountStatusCache.SetAsync(
                 id.ToString(),
                 AccountState.MigratingIn,
-                expire
+                15.Seconds()
             );
             await MigrationCache.AddAsync(
                 id.ToString(),
@@ -39,7 +38,7 @@ namespace Edelstein.Core.Services.Migrations
                     FromService = Info.Name,
                     ToService = to.Name
                 },
-                expire
+                15.Seconds()
             );
             return true;
         }
