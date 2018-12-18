@@ -18,13 +18,16 @@ namespace Edelstein.Service.Game.Fields.User
         public WvsGameSocket Socket { get; }
         public Character Character { get; }
 
-        public BasicStat BasicStat { get; set; }
-        public ForcedStat ForcedStat { get; set; }
+        public BasicStat BasicStat { get; }
+        public ForcedStat ForcedStat { get; }
 
         public FieldUser(WvsGameSocket socket, Character character)
         {
             Socket = socket;
             Character = character;
+
+            BasicStat = new BasicStat(this);
+            ForcedStat = new ForcedStat();
             ValidateStat();
         }
 
