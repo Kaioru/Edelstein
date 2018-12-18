@@ -20,7 +20,6 @@ namespace Edelstein.Service.Game.Fields.User
         public Character Character { get; }
 
         public BasicStat BasicStat { get; set; }
-        public SecondaryStat SecondaryStat { get; set; }
         public ForcedStat ForcedStat { get; set; }
 
         public FieldUser(WvsGameSocket socket, Character character)
@@ -33,7 +32,6 @@ namespace Edelstein.Service.Game.Fields.User
         public void ValidateStat()
         {
             BasicStat.Calculate();
-            SecondaryStat.Calculate();
 
             if (Character.HP > BasicStat.MaxHP) ModifyStats(s => s.HP = BasicStat.MaxHP);
             if (Character.MP > BasicStat.MaxMP) ModifyStats(s => s.MP = BasicStat.MaxMP);

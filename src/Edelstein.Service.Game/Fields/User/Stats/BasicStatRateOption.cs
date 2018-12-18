@@ -9,5 +9,12 @@ namespace Edelstein.Service.Game.Fields.User.Stats
 
         public int MaxHPr { get; set; }
         public int MaxMPr { get; set; }
+        
+        public int PADr { get; set; }
+        public int PDDr { get; set; }
+        public int MADr { get; set; }
+        public int MDDr { get; set; }
+        public int ACCr { get; set; }
+        public int EVAr { get; set; }
     }
 }
