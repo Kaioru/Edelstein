@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Services;
+using Edelstein.Core.Services.Info;
 using Edelstein.Data.Entities;
 using Edelstein.Network;
 using Edelstein.Network.Packets;
@@ -15,6 +16,7 @@ namespace Edelstein.Service.Login.Sockets
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
         public WvsLogin WvsLogin { get; }
         public Account Account { get; set; }
+        public GameServiceInfo SelectedService { get; set; }
 
         public WvsLoginSocket(
             IChannel channel,
@@ -37,6 +39,8 @@ namespace Edelstein.Service.Login.Sockets
                 case RecvPacketOperations.WorldInfoRequest:
                 case RecvPacketOperations.WorldRequest:
                     return OnWorldInfoRequest(packet);
+                case RecvPacketOperations.SelectWorld:
+                    return OnSelectWorld(packet);
                 case RecvPacketOperations.CheckUserLimit:
                     return OnCheckUserLimit(packet);
                 default:

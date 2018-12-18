@@ -1,7 +1,10 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Data.Entities;
@@ -94,6 +97,7 @@ namespace Edelstein.Service.Login.Sockets
                     var services = WvsLogin.Peers
                         .OfType<GameServiceInfo>()
                         .Where(g => g.WorldID == w.ID)
+                        .OrderBy(g => g.ID)
                         .ToImmutableList();
 
                     p.Encode<byte>((byte) services.Count);
@@ -103,7 +107,7 @@ namespace Edelstein.Service.Login.Sockets
                         p.Encode<int>(0); // UserNo
                         p.Encode<byte>(g.WorldID);
                         p.Encode<byte>(g.ID);
-                        p.Encode<bool>(false);
+                        p.Encode<bool>(g.AdultChannel);
                     });
 
                     p.Encode<short>((short) WvsLogin.Info.Balloons.Count);
@@ -125,6 +129,70 @@ namespace Edelstein.Service.Login.Sockets
             using (var p = new Packet(SendPacketOperations.LatestConnectedWorld))
             {
                 p.Encode<int>(WvsLogin.Info.Worlds.FirstOrDefault()?.ID ?? 0);
+                await SendPacket(p);
+            }
+        }
+
+        private async Task OnSelectWorld(IPacket packet)
+        {
+            packet.Decode<byte>();
+
+            var worldID = packet.Decode<byte>();
+            var channelID = packet.Decode<byte>();
+
+            using (var p = new Packet(SendPacketOperations.SelectWorldResult))
+            {
+                byte result = 0x0;
+                var service = WvsLogin.Peers
+                    .OfType<GameServiceInfo>()
+                    .SingleOrDefault(g => g.ID == channelID &&
+                                          g.WorldID == worldID);
+                if (service == null) result = 0x1;
+
+                p.Encode<byte>(result);
+
+                if (result == 0)
+                {
+                    SelectedService = service;
+
+                    using (var db = WvsLogin.DataContextFactory.Create())
+                    {
+                        var data = Account.Data.SingleOrDefault(d => d.WorldID == worldID);
+
+                        if (data == null)
+                        {
+                            data = new AccountData
+                            {
+                                WorldID = worldID,
+                                SlotCount = 3,
+                                Characters = new List<Character>()
+                            };
+
+                            Account.Data.Add(data);
+                            db.Update(Account);
+                            db.SaveChanges();
+                        }
+
+                        var characters = data.Characters;
+
+                        p.Encode<byte>((byte) characters.Count);
+                        characters.ForEach(c =>
+                        {
+                            c.EncodeStats(p);
+                            c.EncodeLook(p);
+
+                            p.Encode<bool>(false);
+                            p.Encode<bool>(false);
+                        });
+
+                        p.Encode<bool>(
+                            !string.IsNullOrEmpty(Account.SecondPassword)
+                        ); // bLoginOpt TODO: proper bLoginOpt stuff
+                        p.Encode<int>(data.SlotCount); // nSlotCount
+                        p.Encode<int>(0); // nBuyCharCount
+                    }
+                }
+
                 await SendPacket(p);
             }
         }
