@@ -39,5 +39,17 @@ namespace Edelstein.Service.Game.Fields.User
                 }
             }
         }
+
+        private Task OnUserMove(IPacket packet)
+        {
+            packet.Decode<long>();
+            packet.Decode<byte>();
+            packet.Decode<long>();
+            packet.Decode<int>();
+            packet.Decode<int>();
+            packet.Decode<int>();
+
+            return Move(packet);
+        }
     }
 }

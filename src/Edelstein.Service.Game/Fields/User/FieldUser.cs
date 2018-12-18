@@ -4,6 +4,7 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.Movement;
 using Edelstein.Service.Game.Fields.User.Stats;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Sockets;
@@ -61,6 +62,8 @@ namespace Edelstein.Service.Game.Fields.User
             {
                 case RecvPacketOperations.UserTransferChannelRequest:
                     return OnUserTransferChannelRequest(packet);
+                case RecvPacketOperations.UserMove:
+                    return OnUserMove(packet);
                 default:
                     Logger.Warn($"Unhandled packet operation {operation}");
                     return Task.CompletedTask;
@@ -101,6 +104,17 @@ namespace Edelstein.Service.Game.Fields.User
                 }
 
                 p.Encode<long>(0);
+                return p;
+            }
+        }
+
+
+        public override IPacket GetMovePacket(MovementPath path)
+        {
+            using (var p = new Packet(SendPacketOperations.UserMove))
+            {
+                p.Encode<int>(ID);
+                path.Encode(p);
                 return p;
             }
         }
