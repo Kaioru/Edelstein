@@ -86,14 +86,16 @@ namespace Edelstein.Core.Services.Startup
 
         public ServiceBootstrap<TService> WithInferredProvider(string type = null, string path = null)
         {
-            _builder.Register(c =>
+            _builder.Register<IDataDirectoryCollection>(c =>
             {
                 type = type ?? c.Resolve<IConfigurationRoot>()["DataDirectoryType"];
                 path = path ?? c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
 
-                return type.ToLower() == "nx"
-                    ? (IDataDirectoryCollection) new NXDataDirectoryCollection(path)
-                    : (IDataDirectoryCollection) new WZDataDirectoryCollection(path);
+                if (type.ToLower() == "nx")
+                    return new NXDataDirectoryCollection(path);
+
+                WZReader.InitializeKeys();
+                return new WZDataDirectoryCollection(path);
             }).As<IDataDirectoryCollection>();
             return WithTemplates();
         }
