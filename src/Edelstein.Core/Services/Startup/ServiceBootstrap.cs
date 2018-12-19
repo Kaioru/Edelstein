@@ -4,6 +4,7 @@ using Autofac;
 using Edelstein.Core.Services.Startup.Modules;
 using Edelstein.Data.Context;
 using Edelstein.Provider.Parser;
+using Edelstein.Provider.Parser.NX;
 using Edelstein.Provider.Parser.WZ;
 using Edelstein.Provider.Templates;
 using Microsoft.Extensions.Configuration;
@@ -83,15 +84,27 @@ namespace Edelstein.Core.Services.Startup
             return this;
         }
 
+        public ServiceBootstrap<TService> WithNXProvider(string path = null)
+        {
+            _builder.Register(c =>
+            {
+                if (path == null)
+                    path = c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
+
+                return new NXDataDirectoryCollection(path);
+            }).As<IDataDirectoryCollection>();
+            return WithTemplates();
+        }
+
         public ServiceBootstrap<TService> WithWZProvider(string path = null)
         {
             _builder.Register(c =>
             {
                 if (path == null)
-                    path = c.Resolve<IConfigurationRoot>()["BaseWZDirectoryPath"];
+                    path = c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
 
                 WZReader.InitializeKeys();
-                return new WZDataPackageCollection(path);
+                return new WZDataDirectoryCollection(path);
             }).As<IDataDirectoryCollection>();
             return WithTemplates();
         }

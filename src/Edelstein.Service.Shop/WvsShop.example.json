@@ -10,5 +10,5 @@
   },
   "RedisConnectionString": "localhost",
   "DatabaseConnectionString": "Server=localhost;Uid=root;Database=Edelstein;",
-  "BaseWZDirectoryPath": "C:\\Nexon\\Library\\maplestory\\appdata\\Base.wz"
+  "DataDirectoryPath": "C:\\Nexon\\Library\\maplestory\\appdata"
 }

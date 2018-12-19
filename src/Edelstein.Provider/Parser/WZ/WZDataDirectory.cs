@@ -4,7 +4,7 @@ using PKG1;
 
 namespace Edelstein.Provider.Parser.WZ
 {
-    public class WZDataPackage : IDataDirectory
+    public class WZDataDirectory : IDataDirectory
     {
         private readonly Package _package;
 
@@ -14,10 +14,8 @@ namespace Edelstein.Provider.Parser.WZ
         public IEnumerable<IDataProperty> Children =>
             new List<IDataProperty> {new WZDataProperty(_package.MainDirectory)};
 
-        public WZDataPackage(Package package)
-        {
-            _package = package;
-        }
+        public WZDataDirectory(Package package)
+            => _package = package;
 
         public IDataProperty Resolve(string path = null)
             => new WZDataProperty(_package.Resolve(path));

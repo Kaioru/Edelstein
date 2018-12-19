@@ -1,26 +1,27 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using PKG1;
 
 namespace Edelstein.Provider.Parser.WZ
 {
-    public class WZDataPackageCollection : IDataDirectoryCollection
+    public class WZDataDirectoryCollection : IDataDirectoryCollection
     {
         private readonly PackageCollection _collection;
 
         public IDataProperty Parent => null;
 
         public IEnumerable<IDataDirectory> Children => _collection.Packages.Values
-            .Select(p => new WZDataPackage(p));
+            .Select(p => new WZDataDirectory(p));
 
-        public WZDataPackageCollection(PackageCollection collection)
+        public WZDataDirectoryCollection(PackageCollection collection)
         {
             _collection = collection;
             WZReader.InitializeKeys();
         }
 
-        public WZDataPackageCollection(string path) : this(new PackageCollection(path))
+        public WZDataDirectoryCollection(string path) : this(new PackageCollection(Path.Combine(path, "Base.wz")))
         {
         }
 

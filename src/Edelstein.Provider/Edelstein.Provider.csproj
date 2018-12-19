@@ -5,11 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PKG1\PKG1.csproj" />
+        <PackageReference Include="LibLog" Version="5.0.3" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="LibLog" Version="5.0.3" />
+      <ProjectReference Include="..\..\Duey\Duey.NX\Duey.NX.csproj" />
+      <ProjectReference Include="..\..\PKG1\PKG1.csproj" />
     </ItemGroup>
 
 </Project>

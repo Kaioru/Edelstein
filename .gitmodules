@@ -1,3 +1,6 @@
-[submodule "src/PKG1"]
-	path = src/PKG1
+[submodule "Duey"]
+	path = Duey
+	url = https://github.com/Kaioru/Duey
+[submodule "PKG1"]
+	path = PKG1
 	url = https://github.com/Kaioru/PKG1
