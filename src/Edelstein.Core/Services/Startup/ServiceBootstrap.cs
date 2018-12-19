@@ -84,12 +84,25 @@ namespace Edelstein.Core.Services.Startup
             return this;
         }
 
+        public ServiceBootstrap<TService> WithInferredProvider(string type = null, string path = null)
+        {
+            _builder.Register(c =>
+            {
+                type = type ?? c.Resolve<IConfigurationRoot>()["DataDirectoryType"];
+                path = path ?? c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
+
+                return type.ToLower() == "nx"
+                    ? (IDataDirectoryCollection) new NXDataDirectoryCollection(path)
+                    : (IDataDirectoryCollection) new WZDataDirectoryCollection(path);
+            }).As<IDataDirectoryCollection>();
+            return WithTemplates();
+        }
+
         public ServiceBootstrap<TService> WithNXProvider(string path = null)
         {
             _builder.Register(c =>
             {
-                if (path == null)
-                    path = c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
+                path = path ?? c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
 
                 return new NXDataDirectoryCollection(path);
             }).As<IDataDirectoryCollection>();
@@ -100,8 +113,7 @@ namespace Edelstein.Core.Services.Startup
         {
             _builder.Register(c =>
             {
-                if (path == null)
-                    path = c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
+                path = path ?? c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
 
                 WZReader.InitializeKeys();
                 return new WZDataDirectoryCollection(path);

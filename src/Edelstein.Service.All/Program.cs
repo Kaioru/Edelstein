@@ -15,7 +15,7 @@ namespace Edelstein.Service.All
                 .WithConfig("WvsContainer", new WvsContainerOptions())
                 .WithInMemory()
                 .WithMySQLDatabase()
-                .WithNXProvider()
+                .WithInferredProvider()
                 .Run()
                 .Wait();
     }

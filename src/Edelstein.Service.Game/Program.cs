@@ -15,7 +15,7 @@ namespace Edelstein.Service.Game
                 .WithConfig("WvsGame", new WvsGameOptions())
                 .WithDistributed()
                 .WithMySQLDatabase()
-                .WithWZProvider()
+                .WithInferredProvider()
                 .Run()
                 .Wait();
     }
