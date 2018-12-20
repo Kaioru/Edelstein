@@ -61,6 +61,8 @@ namespace Edelstein.Service.Game.Fields
                     .ForEach(o => user.SendPacket(o.GetEnterFieldPacket()));
             }
             else await BroadcastPacket(getEnterPacket?.Invoke() ?? obj.GetEnterFieldPacket());
+
+            UpdateControlledObjects();
         }
 
         public async Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket)
@@ -69,6 +71,19 @@ namespace Edelstein.Service.Game.Fields
             else await BroadcastPacket(getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket());
 
             await GetPool(obj.Type).Leave(obj);
+            UpdateControlledObjects();
+        }
+
+        public void UpdateControlledObjects()
+        {
+            var controllers = GetObjects().OfType<FieldUser>().Shuffle().ToList();
+            var controlled = GetObjects().OfType<AbstractFieldControlledLife>().ToList();
+
+            controlled
+                .Where(
+                    c => c.Controller == null ||
+                         !controllers.Contains(c.Controller))
+                .ForEach(c => c.ChangeController(controllers.FirstOrDefault()));
         }
 
         public IFieldPool GetPool(FieldObjType type)

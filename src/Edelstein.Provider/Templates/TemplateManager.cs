@@ -9,6 +9,7 @@ using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Item.Option;
 using Edelstein.Provider.Templates.Item.Set;
+using Edelstein.Provider.Templates.NPC;
 
 namespace Edelstein.Provider.Templates
 {
@@ -25,7 +26,8 @@ namespace Edelstein.Provider.Templates
                 [typeof(ItemOptionTemplate)] = new ItemOptionTemplateCollection(collection),
                 [typeof(SetItemInfoTemplate)] = new SetItemInfoTemplateCollection(collection),
                 [typeof(ItemTemplate)] = new ItemTemplateCollection(collection),
-                [typeof(FieldTemplate)] = new FieldTemplateCollection(collection)
+                [typeof(FieldTemplate)] = new FieldTemplateCollection(collection),
+                [typeof(NPCTemplate)] = new NPCTemplateCollection(collection)
             };
         }
 

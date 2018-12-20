@@ -16,8 +16,8 @@ namespace Edelstein.Service.Game.Fields.Objects.Drop
 
         public override async Task PickUp(FieldUser user)
         {
-            await user.ModifyInventory(i => i.Add(_item), true);
             await Field.Leave(this, () => GetLeaveFieldPacket(0x2, user));
+            await user.ModifyInventory(i => i.Add(_item), true);
         }
     }
 }

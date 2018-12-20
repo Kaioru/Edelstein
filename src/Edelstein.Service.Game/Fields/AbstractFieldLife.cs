@@ -10,16 +10,14 @@ namespace Edelstein.Service.Game.Fields
         public byte MoveAction { get; set; }
         public short Foothold { get; set; }
 
-        public async Task Move(IPacket packet)
+        public MovementPath Move(IPacket packet)
         {
             var movementPath = new MovementPath();
             movementPath.Decode(packet);
             Position = new Point(movementPath.X, movementPath.Y);
             MoveAction = movementPath.MoveActionLast;
             Foothold = movementPath.FHLast;
-            await Field.BroadcastPacket(this, GetMovePacket(movementPath));
+            return movementPath;
         }
-
-        public abstract IPacket GetMovePacket(MovementPath path);
     }
 }

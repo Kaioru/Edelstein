@@ -94,17 +94,6 @@ namespace Edelstein.Service.Game.Fields.User
             }
         }
 
-
-        public override IPacket GetMovePacket(MovementPath path)
-        {
-            using (var p = new Packet(SendPacketOperations.UserMove))
-            {
-                p.Encode<int>(ID);
-                path.Encode(p);
-                return p;
-            }
-        }
-
         public override IPacket GetEnterFieldPacket()
         {
             using (var p = new Packet(SendPacketOperations.UserEnterField))

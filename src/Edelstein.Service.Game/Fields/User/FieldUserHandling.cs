@@ -5,6 +5,7 @@ using Edelstein.Core.Services.Info;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
+using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Drop;
 using Edelstein.Service.Game.Logging;
 
@@ -32,6 +33,10 @@ namespace Edelstein.Service.Game.Fields.User
                     return OnUserDropMoneyRequest(packet);
                 case RecvPacketOperations.DropPickUpRequest:
                     return OnDropPickUpRequest(packet);
+                case RecvPacketOperations.NpcMove:
+                    return Field
+                        .GetObject<FieldNPC>(packet.Decode<int>())?
+                        .OnNpcMove(packet);
                 default:
                     Logger.Warn($"Unhandled packet operation {operation}");
                     return Task.CompletedTask;
@@ -85,7 +90,7 @@ namespace Edelstein.Service.Game.Fields.User
             }
         }
 
-        private Task OnUserMove(IPacket packet)
+        private async Task OnUserMove(IPacket packet)
         {
             packet.Decode<long>();
             packet.Decode<byte>();
@@ -94,7 +99,14 @@ namespace Edelstein.Service.Game.Fields.User
             packet.Decode<int>();
             packet.Decode<int>();
 
-            return Move(packet);
+            var path = Move(packet);
+
+            using (var p = new Packet(SendPacketOperations.UserMove))
+            {
+                p.Encode<int>(ID);
+                path.Encode(p);
+                await Field.BroadcastPacket(p);
+            }
         }
 
         private async Task OnUserGatherItemRequest(IPacket packet)
@@ -158,7 +170,7 @@ namespace Edelstein.Service.Game.Fields.User
             if (toSlot == 0)
             {
                 if (Field.Template.Limit.HasFlag(FieldOpt.DropLimit)) return;
-                
+
                 await ModifyInventory(i =>
                 {
                     var item = Character.GetInventory(inventoryType).Items
@@ -178,7 +190,7 @@ namespace Edelstein.Service.Game.Fields.User
         {
             packet.Decode<int>();
             var money = packet.Decode<int>();
-            
+
             if (Field.Template.Limit.HasFlag(FieldOpt.DropLimit)) return;
 
             await ModifyStats(s =>
