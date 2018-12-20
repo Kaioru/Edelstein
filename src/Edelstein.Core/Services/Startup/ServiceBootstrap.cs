@@ -5,10 +5,8 @@ using Edelstein.Core.Services.Startup.Modules;
 using Edelstein.Data.Context;
 using Edelstein.Provider.Parser;
 using Edelstein.Provider.Parser.NX;
-using Edelstein.Provider.Parser.WZ;
 using Edelstein.Provider.Templates;
 using Microsoft.Extensions.Configuration;
-using PKG1;
 using Serilog;
 using StackExchange.Redis;
 using Logger = Serilog.Core.Logger;
@@ -84,22 +82,6 @@ namespace Edelstein.Core.Services.Startup
             return this;
         }
 
-        public ServiceBootstrap<TService> WithInferredProvider(string type = null, string path = null)
-        {
-            _builder.Register<IDataDirectoryCollection>(c =>
-            {
-                type = type ?? c.Resolve<IConfigurationRoot>()["DataDirectoryType"];
-                path = path ?? c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
-
-                if (type.ToLower() == "nx")
-                    return new NXDataDirectoryCollection(path);
-
-                WZReader.InitializeKeys();
-                return new WZDataDirectoryCollection(path);
-            }).As<IDataDirectoryCollection>();
-            return WithTemplates();
-        }
-
         public ServiceBootstrap<TService> WithNXProvider(string path = null)
         {
             _builder.Register(c =>
@@ -107,18 +89,6 @@ namespace Edelstein.Core.Services.Startup
                 path = path ?? c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
 
                 return new NXDataDirectoryCollection(path);
-            }).As<IDataDirectoryCollection>();
-            return WithTemplates();
-        }
-
-        public ServiceBootstrap<TService> WithWZProvider(string path = null)
-        {
-            _builder.Register(c =>
-            {
-                path = path ?? c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
-
-                WZReader.InitializeKeys();
-                return new WZDataDirectoryCollection(path);
             }).As<IDataDirectoryCollection>();
             return WithTemplates();
         }

@@ -15,7 +15,7 @@ namespace Edelstein.Service.Shop
                 .WithConfig("WvsShop", new WvsShopOptions())
                 .WithDistributed()
                 .WithMySQLDatabase()
-                .WithInferredProvider()
+                .WithNXProvider()
                 .Run()
                 .Wait();
     }

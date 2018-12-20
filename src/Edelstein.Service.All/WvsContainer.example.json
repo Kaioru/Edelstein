@@ -57,6 +57,5 @@
     }
   ],
   "DatabaseConnectionString": "Server=localhost;Uid=root;Database=Edelstein;",
-  "DataDirectoryType": "WZ",
   "DataDirectoryPath": "C:\\Nexon\\Library\\maplestory\\appdata"
 }
