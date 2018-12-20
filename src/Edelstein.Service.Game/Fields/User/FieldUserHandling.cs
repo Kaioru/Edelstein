@@ -100,7 +100,6 @@ namespace Edelstein.Service.Game.Fields.User
         private async Task OnUserGatherItemRequest(IPacket packet)
         {
             packet.Decode<int>();
-
             var inventoryType = (ItemInventoryType) packet.Decode<byte>();
             var inventoryCopy = Character.GetInventory(inventoryType).Items
                 .Where(i => i.Position > 0)
@@ -126,7 +125,6 @@ namespace Edelstein.Service.Game.Fields.User
         private async Task OnUserSortItemRequest(IPacket packet)
         {
             packet.Decode<int>();
-
             var inventoryType = (ItemInventoryType) packet.Decode<byte>();
             var inventoryCopy = Character.GetInventory(inventoryType).Items
                 .Where(i => i.Position > 0)
@@ -151,7 +149,6 @@ namespace Edelstein.Service.Game.Fields.User
         private async Task OnUserChangeSlotPositionRequest(IPacket packet)
         {
             packet.Decode<int>();
-
             var inventoryType = (ItemInventoryType) packet.Decode<byte>();
             var fromSlot = packet.Decode<short>();
             var toSlot = packet.Decode<short>();
@@ -160,6 +157,8 @@ namespace Edelstein.Service.Game.Fields.User
 
             if (toSlot == 0)
             {
+                if (Field.Template.Limit.HasFlag(FieldOpt.DropLimit)) return;
+                
                 await ModifyInventory(i =>
                 {
                     var item = Character.GetInventory(inventoryType).Items
@@ -178,8 +177,9 @@ namespace Edelstein.Service.Game.Fields.User
         private async Task OnUserDropMoneyRequest(IPacket packet)
         {
             packet.Decode<int>();
-
             var money = packet.Decode<int>();
+            
+            if (Field.Template.Limit.HasFlag(FieldOpt.DropLimit)) return;
 
             await ModifyStats(s =>
             {
