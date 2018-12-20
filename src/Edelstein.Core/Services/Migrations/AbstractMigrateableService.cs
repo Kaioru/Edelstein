@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Edelstein.Core.Logging;
 using Edelstein.Core.Services.Info;
 using Edelstein.Data.Context;
 using Edelstein.Data.Entities;
@@ -18,6 +19,8 @@ namespace Edelstein.Core.Services.Migrations
     public class AbstractMigrateableService<TInfo> : AbstractService<TInfo>, IMigrateable
         where TInfo : ServiceInfo
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         public AbstractMigrateableService(
             TInfo info,
             ICacheClient cache,
@@ -31,9 +34,19 @@ namespace Edelstein.Core.Services.Migrations
         {
             using (var db = DataContextFactory.Create())
             {
-                await AccountStatusCache.RemoveAllAsync(db.Accounts
+                var accounts = db.Accounts
                     .Where(a => a.LatestConnectedService == Info.Name)
-                    .Select(a => a.ID.ToString()));
+                    .Select(a => a.ID.ToString());
+
+                if (accounts.Any())
+                {
+                    await AccountStatusCache.RemoveAllAsync(db.Accounts
+                        .Where(a => a.LatestConnectedService == Info.Name)
+                        .Select(a => a.ID.ToString()));
+                    Logger.Info(
+                        $"Forcibly reset account states of {"account".ToQuantity(accounts.Count())} previously connected to {Info.Name}"
+                    );
+                }
             }
 
             await base.Start();
