@@ -11,6 +11,10 @@ namespace Edelstein.Network.Packets.Codecs
         protected override void Encode(IChannelHandlerContext context, Packet message, IByteBuffer output)
         {
             var socket = context.Channel.GetAttribute(AbstractSocket.SocketKey).Get();
+            var dataLen = (short) message.Length;
+            var buffer = new byte[dataLen];
+
+            Array.Copy(message.Buffer, buffer, dataLen);
 
             if (socket != null)
             {
@@ -18,10 +22,6 @@ namespace Edelstein.Network.Packets.Codecs
                 {
                     var seqSend = socket.SeqSend;
                     var rawSeq = (short) ((seqSend >> 16) ^ -(AESCipher.Version + 1));
-                    var dataLen = (short) message.Length;
-                    var buffer = new byte[dataLen];
-
-                    Array.Copy(message.Buffer, buffer, dataLen);
 
                     if (socket.EncryptData)
                     {
@@ -40,12 +40,7 @@ namespace Edelstein.Network.Packets.Codecs
             }
             else
             {
-                var length = message.Length;
-                var buffer = new byte[length];
-
-                Array.Copy(message.Buffer, buffer, length);
-
-                output.WriteShortLE(length);
+                output.WriteShortLE(dataLen);
                 output.WriteBytes(buffer);
             }
         }
