@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Edelstein.Core.Services.Info;
@@ -10,6 +11,7 @@ using Foundatio.Caching;
 using Foundatio.Messaging;
 using Humanizer;
 using MoreLinq;
+using ICacheClient = Foundatio.Caching.ICacheClient;
 
 namespace Edelstein.Core.Services.Migrations
 {
@@ -23,6 +25,18 @@ namespace Edelstein.Core.Services.Migrations
             IDataContextFactory dataContextFactory
         ) : base(info, cache, messageBus, dataContextFactory)
         {
+        }
+
+        public override async Task Start()
+        {
+            using (var db = DataContextFactory.Create())
+            {
+                await AccountStatusCache.RemoveAllAsync(db.Accounts
+                    .Where(a => a.LatestConnectedService == Info.Name)
+                    .Select(a => a.ID.ToString()));
+            }
+
+            await base.Start();
         }
 
         public async Task<bool> TryMigrateTo(
@@ -66,6 +80,8 @@ namespace Edelstein.Core.Services.Migrations
                         return p;
                     }
                 };
+            character.Data.Account.LatestConnectedService = to.Name;
+            character.Data.Account.PreviousConnectedService = Info.Name;
             await socket.SendPacket(getMigrationCommand.Invoke(to));
             return true;
         }
@@ -77,9 +93,7 @@ namespace Edelstein.Core.Services.Migrations
 
             if (!await MigrationCache.ExistsAsync(characterID))
                 return false;
-
             var migration = (await MigrationCache.GetAsync<MigrationInfo>(characterID)).Value;
-
             if (migration.ToService != current.Name)
                 return false;
             character.Data.Account.LatestConnectedService = migration.ToService;
