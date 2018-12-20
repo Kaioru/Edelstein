@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -5,17 +6,16 @@ namespace Edelstein.Network.Crypto
 {
     public class ShandaCipher
     {
-        public static byte[] EncryptTransform(IEnumerable<byte> input)
+        public static void EncryptTransform(Span<byte> input)
         {
-            var buffer = input.ToArray();
-            var size = buffer.Length;
+            var size = input.Length;
             for (var i = 0; i < 3; i++)
             {
                 byte a = 0;
                 byte c;
                 for (var j = size; j > 0; j--)
                 {
-                    c = buffer[size - j];
+                    c = input[size - j];
                     c = RollLeft(c, 3);
                     c = (byte) (c + j);
                     c ^= a;
@@ -23,30 +23,27 @@ namespace Edelstein.Network.Crypto
                     c = RollRight(a, j);
                     c ^= 0xFF;
                     c += 0x48;
-                    buffer[size - j] = c;
+                    input[size - j] = c;
                 }
 
                 a = 0;
-                for (var j = buffer.Length; j > 0; j--)
+                for (var j = input.Length; j > 0; j--)
                 {
-                    c = buffer[j - 1];
+                    c = input[j - 1];
                     c = RollLeft(c, 4);
                     c = (byte) (c + j);
                     c ^= a;
                     a = c;
                     c ^= 0x13;
                     c = RollRight(c, 3);
-                    buffer[j - 1] = c;
+                    input[j - 1] = c;
                 }
             }
-
-            return buffer;
         }
 
-        public static byte[] DecryptTransform(IEnumerable<byte> input)
+        public static void DecryptTransform(Span<byte> input)
         {
-            var buffer = input.ToArray();
-            var size = buffer.Length;
+            var size = input.Length;
             for (var i = 0; i < 3; i++)
             {
                 byte a;
@@ -54,7 +51,7 @@ namespace Edelstein.Network.Crypto
                 byte c;
                 for (var j = size; j > 0; j--)
                 {
-                    c = buffer[j - 1];
+                    c = input[j - 1];
                     c = RollLeft(c, 3);
                     c ^= 0x13;
                     a = c;
@@ -62,13 +59,13 @@ namespace Edelstein.Network.Crypto
                     c = (byte) (c - j);
                     c = RollRight(c, 4);
                     b = a;
-                    buffer[j - 1] = c;
+                    input[j - 1] = c;
                 }
 
                 b = 0;
                 for (var j = size; j > 0; j--)
                 {
-                    c = buffer[size - j];
+                    c = input[size - j];
                     c -= 0x48;
                     c ^= 0xFF;
                     c = RollLeft(c, j);
@@ -77,11 +74,9 @@ namespace Edelstein.Network.Crypto
                     c = (byte) (c - j);
                     c = RollRight(c, 3);
                     b = a;
-                    buffer[size - j] = c;
+                    input[size - j] = c;
                 }
             }
-
-            return buffer;
         }
 
         private static byte RollLeft(byte value, int shift)

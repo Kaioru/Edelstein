@@ -27,8 +27,8 @@ namespace Edelstein.Network.Packets.Codecs
                     {
                         dataLen ^= rawSeq;
 
-                        buffer = ShandaCipher.EncryptTransform(buffer);
-                        buffer = AESCipher.Transform(buffer, seqSend);
+                        ShandaCipher.EncryptTransform(buffer);
+                        AESCipher.Transform(buffer, seqSend);
                     }
 
                     output.WriteShortLE(rawSeq);
@@ -44,7 +44,7 @@ namespace Edelstein.Network.Packets.Codecs
                 var buffer = new byte[length];
 
                 Array.Copy(message.Buffer, buffer, length);
-                
+
                 output.WriteShortLE(length);
                 output.WriteBytes(buffer);
             }

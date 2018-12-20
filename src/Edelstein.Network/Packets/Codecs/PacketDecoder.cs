@@ -66,8 +66,8 @@ namespace Edelstein.Network.Packets.Codecs
 
                                 if (socket.EncryptData)
                                 {
-                                    buffer = AESCipher.Transform(buffer, seqRecv);
-                                    buffer = ShandaCipher.DecryptTransform(buffer);
+                                    AESCipher.Transform(buffer, seqRecv);
+                                    ShandaCipher.DecryptTransform(buffer);
                                 }
 
                                 socket.SeqRecv = IGCipher.InnoHash(seqRecv, 4, 0);

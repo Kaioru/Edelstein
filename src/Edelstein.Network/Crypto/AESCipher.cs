@@ -25,10 +25,9 @@ namespace Edelstein.Network.Crypto
             return res;
         }
 
-        public static byte[] Transform(IEnumerable<byte> input, uint pSrc)
+        public static void Transform(Span<byte> input, uint pSrc)
         {
-            var buffer = input.ToArray();
-            var remaining = buffer.Length;
+            var remaining = input.Length;
             var length = 0x5B0;
             var start = 0;
 
@@ -56,15 +55,13 @@ namespace Edelstein.Network.Crypto
                         }
                     }
 
-                    buffer[i] ^= srcExp[sub % srcExp.Length];
+                    input[i] ^= srcExp[sub % srcExp.Length];
                 }
 
                 start += length;
                 remaining -= length;
                 length = 0x5B4;
             }
-
-            return buffer;
         }
     }
 }
