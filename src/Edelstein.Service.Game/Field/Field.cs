@@ -109,6 +109,10 @@ namespace Edelstein.Service.Game.Field
             => BroadcastPacket(null, packet);
 
         public Task BroadcastPacket(IFieldObj source, IPacket packet)
-            => Task.WhenAll(GetObjects<FieldUser>().Select(u => u.SendPacket(packet)));
+            => Task.WhenAll(
+                GetObjects<FieldUser>()
+                    .Where(u => u != source)
+                    .Select(u => u.SendPacket(packet))
+            );
     }
 }
