@@ -12,21 +12,25 @@ namespace Edelstein.Provider.Templates.Item.Option
         public int OptionType { get; set; }
         public IDictionary<int, ItemOptionLevelTemplate> LevelData;
 
-        public static ItemOptionTemplate Parse(int id, IDataProperty p)
+        public static ItemOptionTemplate Parse(int id, IDataProperty property)
         {
-            var info = p.Resolve("info");
-            
-            return new ItemOptionTemplate
+            var t = new ItemOptionTemplate {ID = id};
+
+            property.Resolve(p =>
             {
-                ID = id,
-                ReqLevel = info?.Resolve<short>("reqLevel") ?? 0,
-                OptionType = info?.Resolve<short>("optionType") ?? 0,
-                LevelData = p.Resolve("level").Children
+                p.Resolve("info")?.Resolve(i =>
+                {
+                    t.ReqLevel = i?.Resolve<short>("reqLevel") ?? 0;
+                    t.OptionType = i?.Resolve<short>("optionType") ?? 0;
+                });
+
+                t.LevelData = p.Resolve("level").Children
                     .ToDictionary(
-                        c => Convert.ToInt32(c.Name),
-                        c => ItemOptionLevelTemplate.Parse(Convert.ToInt32(p.Name), c)
-                    )
-            };
+                        l => Convert.ToInt32(l.Name),
+                        l => ItemOptionLevelTemplate.Parse(Convert.ToInt32(l.Name), l)
+                    );
+            });
+            return t;
         }
     }
 }

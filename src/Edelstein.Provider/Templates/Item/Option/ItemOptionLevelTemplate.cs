@@ -60,61 +60,63 @@ namespace Edelstein.Provider.Templates.Item.Option
         public short Level { get; set; }
         public short Boss { get; set; }
 
-        public static ItemOptionLevelTemplate Parse(int id, IDataProperty p)
+        public static ItemOptionLevelTemplate Parse(int id, IDataProperty property)
         {
-            return new ItemOptionLevelTemplate
+            var t = new ItemOptionLevelTemplate {ID = id};
+
+            property.Resolve(p =>
             {
-                ID = id,
-                Prob = p.Resolve<int>("prop") ?? 0,
-                Time = p.Resolve<int>("time") ?? 0,
-                IncSTR = p.Resolve<short>("incSTR") ?? 0,
-                IncDEX = p.Resolve<short>("incDEX") ?? 0,
-                IncINT = p.Resolve<short>("incINT") ?? 0,
-                IncLUK = p.Resolve<short>("incLUK") ?? 0,
-                IncHP = p.Resolve<int>("incHP") ?? 0,
-                IncMP = p.Resolve<int>("incMP") ?? 0,
-                IncACC = p.Resolve<short>("incACC") ?? 0,
-                IncEVA = p.Resolve<short>("incEVA") ?? 0,
-                IncSpeed = p.Resolve<short>("incSpeed") ?? 0,
-                IncJump = p.Resolve<short>("incJump") ?? 0,
-                IncMaxHP = p.Resolve<short>("incMHP") ?? 0,
-                IncMaxMP = p.Resolve<short>("incMMP") ?? 0,
-                IncPAD = p.Resolve<short>("incPAD") ?? 0,
-                IncMAD = p.Resolve<short>("incMAD") ?? 0,
-                IncPDD = p.Resolve<short>("incPDD") ?? 0,
-                IncMDD = p.Resolve<short>("incMDD") ?? 0,
+                t.Prob = p.Resolve<int>("prop") ?? 0;
+                t.Time = p.Resolve<int>("time") ?? 0;
+                t.IncSTR = p.Resolve<short>("incSTR") ?? 0;
+                t.IncDEX = p.Resolve<short>("incDEX") ?? 0;
+                t.IncINT = p.Resolve<short>("incINT") ?? 0;
+                t.IncLUK = p.Resolve<short>("incLUK") ?? 0;
+                t.IncHP = p.Resolve<int>("incHP") ?? 0;
+                t.IncMP = p.Resolve<int>("incMP") ?? 0;
+                t.IncACC = p.Resolve<short>("incACC") ?? 0;
+                t.IncEVA = p.Resolve<short>("incEVA") ?? 0;
+                t.IncSpeed = p.Resolve<short>("incSpeed") ?? 0;
+                t.IncJump = p.Resolve<short>("incJump") ?? 0;
+                t.IncMaxHP = p.Resolve<short>("incMHP") ?? 0;
+                t.IncMaxMP = p.Resolve<short>("incMMP") ?? 0;
+                t.IncPAD = p.Resolve<short>("incPAD") ?? 0;
+                t.IncMAD = p.Resolve<short>("incMAD") ?? 0;
+                t.IncPDD = p.Resolve<short>("incPDD") ?? 0;
+                t.IncMDD = p.Resolve<short>("incMDD") ?? 0;
 
-                IncSTRr = p.Resolve<short>("incSTRr") ?? 0,
-                IncDEXr = p.Resolve<short>("incDEXr") ?? 0,
-                IncINTr = p.Resolve<short>("incINTr") ?? 0,
-                IncLUKr = p.Resolve<short>("incLUKr") ?? 0,
-                IncACCr = p.Resolve<short>("incACCr") ?? 0,
-                IncEVAr = p.Resolve<short>("incEVAr") ?? 0,
-                IncMaxHPr = p.Resolve<short>("incMHPr") ?? 0,
-                IncMaxMPr = p.Resolve<short>("incMMPr") ?? 0,
-                IncPADr = p.Resolve<short>("incPADr") ?? 0,
-                IncMADr = p.Resolve<short>("incMADr") ?? 0,
-                IncPDDr = p.Resolve<short>("incPDDr") ?? 0,
-                IncMDDr = p.Resolve<short>("incMDDr") ?? 0,
+                t.IncSTRr = p.Resolve<short>("incSTRr") ?? 0;
+                t.IncDEXr = p.Resolve<short>("incDEXr") ?? 0;
+                t.IncINTr = p.Resolve<short>("incINTr") ?? 0;
+                t.IncLUKr = p.Resolve<short>("incLUKr") ?? 0;
+                t.IncACCr = p.Resolve<short>("incACCr") ?? 0;
+                t.IncEVAr = p.Resolve<short>("incEVAr") ?? 0;
+                t.IncMaxHPr = p.Resolve<short>("incMHPr") ?? 0;
+                t.IncMaxMPr = p.Resolve<short>("incMMPr") ?? 0;
+                t.IncPADr = p.Resolve<short>("incPADr") ?? 0;
+                t.IncMADr = p.Resolve<short>("incMADr") ?? 0;
+                t.IncPDDr = p.Resolve<short>("incPDDr") ?? 0;
+                t.IncMDDr = p.Resolve<short>("incMDDr") ?? 0;
 
-                IncCr = p.Resolve<short>("incCr") ?? 0,
-                IncAllSkill = p.Resolve<short>("incAllskill") ?? 0,
-                RecoveryHP = p.Resolve<short>("RecoveryHP") ?? 0,
-                RecoveryMP = p.Resolve<short>("RecoveryMP") ?? 0,
-                RecoveryUP = p.Resolve<short>("RecoveryUP") ?? 0,
-                MPConReduce = p.Resolve<short>("mpconReduce") ?? 0,
-                MPConRestore = p.Resolve<short>("mpRestore") ?? 0,
-                IgnoreTargetDEF = p.Resolve<short>("ignoreTargetDEF") ?? 0,
-                IgnoreDAM = p.Resolve<short>("ignoreDAM") ?? 0,
-                IgnoreDAMr = p.Resolve<short>("ignoreDAMr") ?? 0,
-                IncDAMr = p.Resolve<short>("incDAMr") ?? 0,
-                DAMReflect = p.Resolve<short>("DAMreflect") ?? 0,
-                AttackType = p.Resolve<short>("attackType") ?? 0,
-                IncMesoProb = p.Resolve<int>("incMesoProp") ?? 0,
-                IncRewardProb = p.Resolve<int>("incRewardProp") ?? 0,
-                Level = p.Resolve<short>("level") ?? 0,
-                Boss = p.Resolve<short>("boss") ?? 0
-            };
+                t.IncCr = p.Resolve<short>("incCr") ?? 0;
+                t.IncAllSkill = p.Resolve<short>("incAllskill") ?? 0;
+                t.RecoveryHP = p.Resolve<short>("RecoveryHP") ?? 0;
+                t.RecoveryMP = p.Resolve<short>("RecoveryMP") ?? 0;
+                t.RecoveryUP = p.Resolve<short>("RecoveryUP") ?? 0;
+                t.MPConReduce = p.Resolve<short>("mpconReduce") ?? 0;
+                t.MPConRestore = p.Resolve<short>("mpRestore") ?? 0;
+                t.IgnoreTargetDEF = p.Resolve<short>("ignoreTargetDEF") ?? 0;
+                t.IgnoreDAM = p.Resolve<short>("ignoreDAM") ?? 0;
+                t.IgnoreDAMr = p.Resolve<short>("ignoreDAMr") ?? 0;
+                t.IncDAMr = p.Resolve<short>("incDAMr") ?? 0;
+                t.DAMReflect = p.Resolve<short>("DAMreflect") ?? 0;
+                t.AttackType = p.Resolve<short>("attackType") ?? 0;
+                t.IncMesoProb = p.Resolve<int>("incMesoProp") ?? 0;
+                t.IncRewardProb = p.Resolve<int>("incRewardProp") ?? 0;
+                t.Level = p.Resolve<short>("level") ?? 0;
+                t.Boss = p.Resolve<short>("boss") ?? 0;
+            });
+            return t;
         }
     }
 }

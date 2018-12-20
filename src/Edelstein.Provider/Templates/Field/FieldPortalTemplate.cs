@@ -17,23 +17,24 @@ namespace Edelstein.Provider.Templates.Field
 
         public Point Position { get; set; }
 
-        public static FieldPortalTemplate Parse(IDataProperty p)
+        public static FieldPortalTemplate Parse(IDataProperty property)
         {
-            var res = new FieldPortalTemplate
+            var t = new FieldPortalTemplate();
+
+            property.Resolve(p =>
             {
-                ID = Convert.ToInt32(p.Name),
-                Name = p.ResolveOrDefault<string>("pn"),
-                Type = (FieldPortalType) (p.Resolve<int>("pt") ?? 0),
-                Script = p.ResolveOrDefault<string>("script"),
-                ToMap = p.Resolve<int>("tm") ?? int.MinValue,
-                ToName = p.ResolveOrDefault<string>("tn"),
-                Position = new Point(
+                t.ID = Convert.ToInt32(p.Name);
+                t.Name = p.ResolveOrDefault<string>("pn");
+                t.Type = (FieldPortalType) (p.Resolve<int>("pt") ?? 0);
+                t.Script = p.ResolveOrDefault<string>("script");
+                t.ToMap = p.Resolve<int>("tm") ?? int.MinValue;
+                t.ToName = p.ResolveOrDefault<string>("tn");
+                t.Position = new Point(
                     p.Resolve<int>("x") ?? int.MinValue,
                     p.Resolve<int>("y") ?? int.MinValue
-                )
-            };
-
-            return res;
+                );
+            });
+            return t;
         }
     }
 }

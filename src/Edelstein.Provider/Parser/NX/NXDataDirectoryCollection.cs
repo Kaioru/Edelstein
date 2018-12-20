@@ -25,7 +25,7 @@ namespace Edelstein.Provider.Parser.NX
             if (string.IsNullOrEmpty(path)) return null;
 
             var split = path.Split('/');
-            return new NXDataProperty(_files[split[0]]?.Resolve(string.Join("/", split.Skip(1).ToArray())));
+            return new NXDataProperty(_files[split[0]]?.ResolvePath(string.Join("/", split.Skip(1).ToArray())));
         }
 
         public Task<IDataProperty> ResolveAsync(string path = null)

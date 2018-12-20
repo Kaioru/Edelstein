@@ -14,25 +14,26 @@ namespace Edelstein.Provider.Templates.Field
         public int RX1 { get; set; }
         public int FH { get; set; }
 
-        public static FieldLifeTemplate Parse(IDataProperty p)
+        public static FieldLifeTemplate Parse(IDataProperty property)
         {
-            var res = new FieldLifeTemplate
+            var t = new FieldLifeTemplate();
+
+            property.Resolve(p =>
             {
-                ID = p.Resolve<int>("id") ?? -1,
-                Type = p.ResolveOrDefault<string>("type").ToLower() == "n"
+                t.ID = p.Resolve<int>("id") ?? -1;
+                t.Type = p.ResolveOrDefault<string>("type").ToLower() == "n"
                     ? FieldLifeType.NPC
-                    : FieldLifeType.Monster,
-                F = (byte) (p.Resolve<bool>("f") ?? false ? 0 : 1),
-                Position = new Point(
+                    : FieldLifeType.Monster;
+                t.F = (byte) (p.Resolve<bool>("f") ?? false ? 0 : 1);
+                t.Position = new Point(
                     p.Resolve<int>("x") ?? int.MinValue,
                     p.Resolve<int>("y") ?? int.MinValue
-                ),
-                RX0 = p.Resolve<int>("rx0") ?? int.MinValue,
-                RX1 = p.Resolve<int>("rx1") ?? int.MinValue,
-                FH = p.Resolve<int>("fh") ?? 0
-            };
-
-            return res;
+                );
+                t.RX0 = p.Resolve<int>("rx0") ?? int.MinValue;
+                t.RX1 = p.Resolve<int>("rx1") ?? int.MinValue;
+                t.FH = p.Resolve<int>("fh") ?? 0;
+            });
+            return t;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,21 +8,24 @@ namespace Edelstein.Provider.Parser.NX
 {
     public class NXDataProperty : IDataProperty
     {
-        private readonly NXNode _node;
+        private readonly INXNode _node;
 
         public string Name => _node.Name;
         public string Path => _node.Name;
         public IDataProperty Parent => new NXDataProperty(_node.Parent);
         public IEnumerable<IDataProperty> Children => _node.Children.Select(c => new NXDataProperty(c));
 
-        public NXDataProperty(NXNode node)
+        public NXDataProperty(INXNode node)
             => _node = node;
 
         public IDataProperty Resolve(string path = null)
         {
-            var node = _node.Resolve(path);
+            var node = _node.ResolvePath(path);
             return node == null ? null : new NXDataProperty(node);
         }
+
+        public void Resolve(Action<IDataProperty> context)
+            => context.Invoke(new NXDataProperty(new NXResolutionNode(_node)));
 
         public T? Resolve<T>(string path = null) where T : struct
             => _node.Resolve<T>(path);

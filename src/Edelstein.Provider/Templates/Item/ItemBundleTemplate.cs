@@ -8,11 +8,12 @@ namespace Edelstein.Provider.Templates.Item
 
         public override void Parse(int id, IDataProperty p)
         {
-            var info = p.Resolve("info");
-            
-            base.Parse(id, info);
+            p.Resolve("info").Resolve(info =>
+            {
+                base.Parse(id, info);
 
-            MaxPerSlot = info.Resolve<short>("slotMax") ?? 100;
+                MaxPerSlot = info.Resolve<short>("slotMax") ?? 100;
+            });
         }
     }
 }

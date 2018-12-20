@@ -13,21 +13,24 @@ namespace Edelstein.Provider.Templates.Item.Set
         public ICollection<int> ItemTemplateID { get; set; }
         public IDictionary<int, SetItemEffectTemplate> Effect { get; set; }
 
-        public static SetItemInfoTemplate Parse(int id, IDataProperty p)
+        public static SetItemInfoTemplate Parse(int id, IDataProperty property)
         {
-            return new SetItemInfoTemplate
+            var t = new SetItemInfoTemplate {ID = id};
+
+            property.Resolve(p =>
             {
-                ID = id,
-                SetCompleteCount = p.Resolve<int>("completeCount") ?? 0,
-                ItemTemplateID = p.Resolve("itemID").Children
+                t.SetCompleteCount = p.Resolve<int>("completeCount") ?? 0;
+
+                t.ItemTemplateID = p.Resolve("itemID")?.Children
                     .Select(c => c.Resolve<int>() ?? 0)
-                    .ToList(),
-                Effect = p.Resolve("Effect").Children
+                    .ToList();
+                t.Effect = p.Resolve("Effect")?.Children
                     .ToDictionary(
                         c => Convert.ToInt32(c.Name),
                         c => SetItemEffectTemplate.Parse(Convert.ToInt32(c.Name), c)
-                    )
-            };
+                    );
+            });
+            return t;
         }
     }
 }

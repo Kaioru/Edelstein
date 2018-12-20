@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider.Logging;
@@ -41,8 +42,9 @@ namespace Edelstein.Provider.Templates
                 .OfType<AbstractEagerTemplateCollection>()
                 .Select(async c =>
                 {
+                    var watch = Stopwatch.StartNew();
                     await c.LoadAll();
-                    Logger.Info($"Loaded {c.GetType().Name} with {c.Cache.Count()} templates");
+                    Logger.Info($"Loaded {c.GetType().Name} with {c.Cache.Count()} templates in {watch.ElapsedMilliseconds}ms");
                 }));
             Logger.Info("Finished loading templates..");
         }
