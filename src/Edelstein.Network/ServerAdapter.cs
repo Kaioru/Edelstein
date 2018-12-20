@@ -43,9 +43,9 @@ namespace Edelstein.Network
             }
 
             context.Channel.GetAttribute(AbstractSocket.SocketKey).Set(socket);
-            _server.Sockets.Add(socket);
-
             Logger.Debug($"Accepted connection from {context.Channel.RemoteAddress}");
+            
+            lock(_server) _server.Sockets.Add(socket);
         }
 
         public override void ChannelInactive(IChannelHandlerContext context)
@@ -53,10 +53,10 @@ namespace Edelstein.Network
             var socket = context.Channel.GetAttribute(AbstractSocket.SocketKey).Get();
 
             socket?.OnDisconnect();
-            _server.Sockets.Remove(socket);
             base.ChannelInactive(context);
-
             Logger.Debug($"Released connection from {context.Channel.RemoteAddress}");
+            
+            lock(_server) _server.Sockets.Remove(socket);
         }
 
         public override void ChannelRead(IChannelHandlerContext context, object message)
