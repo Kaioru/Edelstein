@@ -5,9 +5,7 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities;
 using Edelstein.Network.Packet;
-using Edelstein.Service.Game.Conversation;
-using Edelstein.Service.Game.Conversation.Impl;
-using Edelstein.Service.Game.Conversation.Speakers;
+using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Field.User.Stats;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Sockets;
@@ -40,10 +38,10 @@ namespace Edelstein.Service.Game.Field.User
         public Task Prompt(Func<ISpeaker, ISpeaker, Task> func)
         {
             var context = new ConversationContext(Socket);
-            var conversation = new FuncConversation(
+            var conversation = new Conversation(
                 context,
-                new DefaultSpeaker(context),
-                new DefaultSpeaker(context, 9010000, ScriptMessageParam.NPCReplacedByUser),
+                new Speaker(context),
+                new Speaker(context, 9010000, ScriptMessageParam.NPCReplacedByUser),
                 func
             );
             return Converse(conversation);
@@ -51,12 +49,14 @@ namespace Edelstein.Service.Game.Field.User
 
         public Task Converse(IConversation conversation)
         {
-            if (ConversationContext != null) throw new Exception("Already having a conversation"); // TODO: custom exception
+            if (ConversationContext != null)
+                throw new Exception("Already having a conversation"); // TODO: custom exception
             ConversationContext = conversation.Context;
             return Task
                 .Run(conversation.Start, ConversationContext.TokenSource.Token)
                 .ContinueWith(async t =>
                 {
+                    ConversationContext?.Dispose();
                     ConversationContext = null;
                     await ModifyStats(exclRequest: true);
                 });

@@ -1,6 +1,6 @@
 using Edelstein.Network.Packet;
 
-namespace Edelstein.Service.Game.Conversation
+namespace Edelstein.Service.Game.Conversations
 {
     public abstract class AbstractMessage : IMessage
     {

@@ -9,5 +9,6 @@
   },
   "RedisConnectionString": "localhost",
   "DatabaseConnectionString": "Server=localhost;Uid=root;Database=Edelstein;",
-  "DataDirectoryPath": "C:\\Nexon\\Library\\maplestory\\appdata"
+  "DataDirectoryPath": "C:\\Nexon\\Library\\maplestory\\appdata",
+  "ScriptDirectoryPath": "Scripts"
 }

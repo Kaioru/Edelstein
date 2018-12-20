@@ -1,11 +1,12 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Network;
 using Foundatio.AsyncEx;
 
-namespace Edelstein.Service.Game.Conversation
+namespace Edelstein.Service.Game.Conversations
 {
-    public interface IConversationContext
+    public interface IConversationContext : IDisposable
     {
         ISocket Socket { get; }
         CancellationTokenSource TokenSource { get; }

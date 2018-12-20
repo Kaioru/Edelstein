@@ -1,4 +1,5 @@
 ﻿using Edelstein.Core.Services.Startup;
+using Edelstein.Service.Game;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 
@@ -16,6 +17,7 @@ namespace Edelstein.Service.All
                 .WithInMemory()
                 .WithMySQLDatabase()
                 .WithNXProvider()
+                .WithLuaScripts()
                 .Run()
                 .Wait();
     }

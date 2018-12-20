@@ -4,6 +4,7 @@ using Edelstein.Core.Services.Migrations;
 using Edelstein.Data.Context;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
+using Edelstein.Service.Game.Conversations.Scripts;
 using Edelstein.Service.Game.Field;
 using Edelstein.Service.Game.Sockets;
 using Foundatio.Caching;
@@ -15,6 +16,7 @@ namespace Edelstein.Service.Game
     {
         private IServer Server { get; set; }
         public ITemplateManager TemplateManager { get; }
+        public IScriptConversationManager ConversationManager { get; }
 
         public FieldManager FieldManager { get; }
 
@@ -23,10 +25,12 @@ namespace Edelstein.Service.Game
             ICacheClient cache,
             IMessageBus messageBus,
             IDataContextFactory dataContextFactory,
-            ITemplateManager templateManager
+            ITemplateManager templateManager,
+            IScriptConversationManager conversationManager
         ) : base(info, cache, messageBus, dataContextFactory)
         {
             TemplateManager = templateManager;
+            ConversationManager = conversationManager;
             FieldManager = new FieldManager(TemplateManager);
         }
 
@@ -35,15 +39,16 @@ namespace Edelstein.Service.Game
             ICacheClient cache,
             IMessageBus messageBus,
             IDataContextFactory dataContextFactory,
-            ITemplateManager templateManager
-        ) : this(options.Service, cache, messageBus, dataContextFactory, templateManager)
+            ITemplateManager templateManager,
+            IScriptConversationManager conversationManager
+        ) : this(options.Service, cache, messageBus, dataContextFactory, templateManager, conversationManager)
         {
         }
 
         public override async Task Start()
         {
             Server = new Server(new WvsGameSocketFactory(this));
-            
+
             await base.Start();
             await Server.Start(Info.Host, Info.Port);
         }

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Autofac;
@@ -16,12 +17,12 @@ namespace Edelstein.Core.Services.Startup
     public class ServiceBootstrap<TService>
         where TService : IService
     {
-        private ContainerBuilder _builder;
+        public ContainerBuilder Builder { get; }
 
         private ServiceBootstrap()
         {
-            _builder = new ContainerBuilder();
-            _builder.RegisterType<TService>().As<IService>();
+            Builder = new ContainerBuilder();
+            Builder.RegisterType<TService>().As<IService>();
         }
 
         public static ServiceBootstrap<TService> Build()
@@ -42,38 +43,38 @@ namespace Edelstein.Core.Services.Startup
             var config = configBuilder.Build();
 
             config.Bind(obj);
-            _builder.RegisterInstance(config).As<IConfigurationRoot>();
-            _builder.RegisterInstance(obj).AsSelf();
+            Builder.RegisterInstance(config).As<IConfigurationRoot>();
+            Builder.RegisterInstance(obj).AsSelf();
             return this;
         }
 
         public ServiceBootstrap<TService> WithInMemory()
         {
-            _builder.RegisterModule<InMemoryModule>();
+            Builder.RegisterModule<InMemoryModule>();
             return this;
         }
 
         public ServiceBootstrap<TService> WithDistributed(string connection = null)
         {
-            _builder.Register(c =>
+            Builder.Register(c =>
             {
                 if (connection == null)
                     connection = c.Resolve<IConfigurationRoot>()["RedisConnectionString"];
                 return ConnectionMultiplexer.Connect(connection);
             });
-            _builder.RegisterModule<RedisModule>();
+            Builder.RegisterModule<RedisModule>();
             return this;
         }
 
         public ServiceBootstrap<TService> WithInMemoryDatabase()
         {
-            _builder.RegisterInstance(new InMemoryDataContextFactory("memory")).As<IDataContextFactory>();
+            Builder.RegisterInstance(new InMemoryDataContextFactory("memory")).As<IDataContextFactory>();
             return this;
         }
 
         public ServiceBootstrap<TService> WithMySQLDatabase(string connection = null)
         {
-            _builder.Register(c =>
+            Builder.Register(c =>
             {
                 if (connection == null)
                     connection = c.Resolve<IConfigurationRoot>()["DatabaseConnectionString"];
@@ -84,7 +85,7 @@ namespace Edelstein.Core.Services.Startup
 
         public ServiceBootstrap<TService> WithNXProvider(string path = null)
         {
-            _builder.Register(c =>
+            Builder.Register(c =>
             {
                 path = path ?? c.Resolve<IConfigurationRoot>()["DataDirectoryPath"];
 
@@ -95,14 +96,20 @@ namespace Edelstein.Core.Services.Startup
 
         private ServiceBootstrap<TService> WithTemplates()
         {
-            _builder.RegisterType<TemplateManager>().As<ITemplateManager>()
+            Builder.RegisterType<TemplateManager>().As<ITemplateManager>()
                 .OnActivated(async args => await args.Instance.Load());
+            return this;
+        }
+
+        public ServiceBootstrap<TService> WithAdditional(Action<ContainerBuilder> action)
+        {
+            action.Invoke(Builder);
             return this;
         }
 
         public Task Run()
         {
-            var container = _builder.Build();
+            var container = Builder.Build();
             var service = container.Resolve<IService>();
             return service.Start();
         }

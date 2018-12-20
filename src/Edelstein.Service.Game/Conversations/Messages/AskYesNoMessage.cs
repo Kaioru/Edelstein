@@ -1,6 +1,6 @@
 using Edelstein.Network.Packet;
 
-namespace Edelstein.Service.Game.Conversation.Messages
+namespace Edelstein.Service.Game.Conversations.Messages
 {
     public class AskYesNoMessage : AbstractMessage
     {

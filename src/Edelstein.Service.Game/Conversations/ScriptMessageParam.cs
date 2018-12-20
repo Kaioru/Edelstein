@@ -1,6 +1,6 @@
 using System;
 
-namespace Edelstein.Service.Game.Conversation
+namespace Edelstein.Service.Game.Conversations
 {
     [Flags]
     public enum ScriptMessageParam : byte

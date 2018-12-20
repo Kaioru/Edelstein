@@ -5,7 +5,7 @@ using Edelstein.Core.Services.Info;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Field;
-using Edelstein.Service.Game.Conversation;
+using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Field.Objects;
 using Edelstein.Service.Game.Field.Objects.Drop;
 using Edelstein.Service.Game.Logging;
@@ -121,7 +121,7 @@ namespace Edelstein.Service.Game.Field.User
             var answers = ConversationContext.Responses;
             var answer = packet.Decode<byte>();
 
-            if (answer == 0)
+            if (answer == byte.MaxValue)
             {
                 ConversationContext.TokenSource.Cancel();
                 return;

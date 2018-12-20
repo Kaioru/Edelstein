@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Edelstein.Service.Game.Conversation
+namespace Edelstein.Service.Game.Conversations
 {
     public abstract class AbstractConversation : IConversation
     {

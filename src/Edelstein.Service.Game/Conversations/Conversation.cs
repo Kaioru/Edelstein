@@ -1,13 +1,13 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Edelstein.Service.Game.Conversation.Impl
+namespace Edelstein.Service.Game.Conversations
 {
-    public class FuncConversation : AbstractConversation
+    public class Conversation : AbstractConversation
     {
         private readonly Func<ISpeaker, ISpeaker, Task> _func;
 
-        public FuncConversation(
+        public Conversation(
             IConversationContext context,
             ISpeaker self,
             ISpeaker target,

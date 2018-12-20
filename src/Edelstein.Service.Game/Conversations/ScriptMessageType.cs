@@ -1,4 +1,4 @@
-namespace Edelstein.Service.Game.Conversation
+namespace Edelstein.Service.Game.Conversations
 {
     public enum ScriptMessageType : byte
     {

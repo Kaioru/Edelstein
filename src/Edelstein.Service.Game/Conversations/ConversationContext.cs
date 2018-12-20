@@ -5,7 +5,7 @@ using Edelstein.Network;
 using Edelstein.Network.Packet;
 using Foundatio.AsyncEx;
 
-namespace Edelstein.Service.Game.Conversation
+namespace Edelstein.Service.Game.Conversations
 {
     public class ConversationContext : IConversationContext
     {
@@ -36,7 +36,14 @@ namespace Edelstein.Service.Game.Conversation
                 await Socket.SendPacket(p);
             }
 
-            return (T) await Responses.DequeueAsync();
+            return (T) await Responses.DequeueAsync(TokenSource.Token);
+        }
+
+        public void Dispose()
+        {
+            TokenSource?.Cancel();
+            TokenSource?.Dispose();
+            Responses?.CompleteAdding();
         }
     }
 }

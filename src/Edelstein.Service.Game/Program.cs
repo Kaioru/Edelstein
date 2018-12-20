@@ -1,10 +1,17 @@
-﻿using Edelstein.Core.Services.Startup;
+﻿using Autofac;
+using Edelstein.Core.Services;
+using Edelstein.Core.Services.Startup;
+using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Conversations.Scripts;
+using Edelstein.Service.Game.Conversations.Scripts.Lua;
+using Microsoft.Extensions.Configuration;
+using MoonSharp.Interpreter;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Edelstein.Service.Game
 {
-    internal static class Program
+    public static class Program
     {
         private static void Main(string[] args)
             => ServiceBootstrap<WvsGame>.Build()
@@ -16,7 +23,21 @@ namespace Edelstein.Service.Game
                 .WithDistributed()
                 .WithMySQLDatabase()
                 .WithNXProvider()
+                .WithLuaScripts()
                 .Run()
                 .Wait();
+
+        public static ServiceBootstrap<T> WithLuaScripts<T>(this ServiceBootstrap<T> bootstrap) where T : IService
+        {
+            bootstrap.Builder.Register(c =>
+            {
+                var path = c.Resolve<IConfigurationRoot>()["ScriptDirectoryPath"];
+                var converters = Script.GlobalOptions.CustomConverters;
+
+                UserData.RegisterType<Speaker>();
+                return new LuaScriptConversationManager(path);
+            }).As<IScriptConversationManager>();
+            return bootstrap;
+        }
     }
 }

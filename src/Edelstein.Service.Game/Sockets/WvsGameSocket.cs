@@ -58,7 +58,7 @@ namespace Edelstein.Service.Game.Sockets
                 db.SaveChanges();
             }
 
-            FieldUser.ConversationContext?.TokenSource.Cancel();
+            FieldUser.ConversationContext?.Dispose();
             FieldUser.Field?.Leave(FieldUser);
         }
 
