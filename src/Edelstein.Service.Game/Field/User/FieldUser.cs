@@ -35,14 +35,14 @@ namespace Edelstein.Service.Game.Field.User
             ValidateStat();
         }
 
-        public Task Prompt(Func<ISpeaker, ISpeaker, Task> func)
+        public Task Prompt(Action<ISpeaker, ISpeaker> action)
         {
             var context = new ConversationContext(Socket);
             var conversation = new Conversation(
                 context,
                 new Speaker(context),
                 new Speaker(context, 9010000, ScriptMessageParam.NPCReplacedByUser),
-                func
+                action
             );
             return Converse(conversation);
         }

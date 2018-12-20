@@ -5,17 +5,20 @@ namespace Edelstein.Service.Game.Conversations
 {
     public class Conversation : AbstractConversation
     {
-        private readonly Func<ISpeaker, ISpeaker, Task> _func;
+        private readonly Action<ISpeaker, ISpeaker> _action;
 
         public Conversation(
             IConversationContext context,
             ISpeaker self,
             ISpeaker target,
-            Func<ISpeaker, ISpeaker, Task> func
+            Action<ISpeaker, ISpeaker> action
         ) : base(context, self, target)
-            => _func = func;
+            => _action = action;
 
         public override Task Start()
-            => _func.Invoke(Self, Target);
+        {
+            _action.Invoke(Self, Target);
+            return Task.CompletedTask;
+        }
     }
 }
