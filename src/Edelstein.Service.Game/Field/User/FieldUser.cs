@@ -1,9 +1,13 @@
+using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities;
 using Edelstein.Network.Packet;
+using Edelstein.Service.Game.Conversation;
+using Edelstein.Service.Game.Conversation.Impl;
+using Edelstein.Service.Game.Conversation.Speakers;
 using Edelstein.Service.Game.Field.User.Stats;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Sockets;
@@ -21,6 +25,8 @@ namespace Edelstein.Service.Game.Field.User
         public BasicStat BasicStat { get; }
         public ForcedStat ForcedStat { get; }
 
+        public IConversationContext ConversationContext { get; private set; }
+
         public FieldUser(WvsGameSocket socket, Character character)
         {
             Socket = socket;
@@ -31,28 +37,29 @@ namespace Edelstein.Service.Game.Field.User
             ValidateStat();
         }
 
-        public void ValidateStat()
+        public Task Prompt(Func<ISpeaker, ISpeaker, Task> func)
         {
-            BasicStat.Calculate();
-
-            if (Character.HP > BasicStat.MaxHP) ModifyStats(s => s.HP = BasicStat.MaxHP);
-            if (Character.MP > BasicStat.MaxMP) ModifyStats(s => s.MP = BasicStat.MaxMP);
+            var context = new ConversationContext(Socket);
+            var conversation = new FuncConversation(
+                context,
+                new DefaultSpeaker(context),
+                new DefaultSpeaker(context, 9010000, ScriptMessageParam.NPCReplacedByUser),
+                func
+            );
+            return Converse(conversation);
         }
 
-        public void AvatarModified()
+        public Task Converse(IConversation conversation)
         {
-            using (var p = new Packet(SendPacketOperations.UserAvatarModified))
-            {
-                p.Encode<int>(ID);
-                p.Encode<byte>(0x1); // Flag
-                Character.EncodeLook(p);
-                p.Encode<bool>(false); // bCouple
-                p.Encode<bool>(false); // bFriendship
-                p.Encode<bool>(false); // Marriage
-                p.Encode<int>(BasicStat.CompletedSetItemID);
-
-                Field.BroadcastPacket(this, p);
-            }
+            if (ConversationContext != null) throw new Exception("Already having a conversation"); // TODO: custom exception
+            ConversationContext = conversation.Context;
+            return Task
+                .Run(conversation.Start, ConversationContext.TokenSource.Token)
+                .ContinueWith(async t =>
+                {
+                    ConversationContext = null;
+                    await ModifyStats(exclRequest: true);
+                });
         }
 
         public IPacket GetSetFieldPacket()

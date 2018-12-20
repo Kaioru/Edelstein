@@ -1,8 +1,5 @@
-using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider.Parser;
-using MoreLinq.Extensions;
 
 namespace Edelstein.Provider.Templates.Field
 {

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Extensions;
 using Edelstein.Core.Inventories;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities.Inventory;
@@ -11,6 +12,30 @@ namespace Edelstein.Service.Game.Field.User
 {
     public partial class FieldUser
     {
+        public void ValidateStat()
+        {
+            BasicStat.Calculate();
+
+            if (Character.HP > BasicStat.MaxHP) ModifyStats(s => s.HP = BasicStat.MaxHP);
+            if (Character.MP > BasicStat.MaxMP) ModifyStats(s => s.MP = BasicStat.MaxMP);
+        }
+
+        public void AvatarModified()
+        {
+            using (var p = new Packet(SendPacketOperations.UserAvatarModified))
+            {
+                p.Encode<int>(ID);
+                p.Encode<byte>(0x1); // Flag
+                Character.EncodeLook(p);
+                p.Encode<bool>(false); // bCouple
+                p.Encode<bool>(false); // bFriendship
+                p.Encode<bool>(false); // Marriage
+                p.Encode<int>(BasicStat.CompletedSetItemID);
+
+                Field.BroadcastPacket(this, p);
+            }
+        }
+
         public async Task ModifyStats(Action<ModifyStatContext> action = null, bool exclRequest = false)
         {
             var context = new ModifyStatContext(Character);

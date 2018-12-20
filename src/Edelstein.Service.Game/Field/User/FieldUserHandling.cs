@@ -5,6 +5,7 @@ using Edelstein.Core.Services.Info;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Field;
+using Edelstein.Service.Game.Conversation;
 using Edelstein.Service.Game.Field.Objects;
 using Edelstein.Service.Game.Field.Objects.Drop;
 using Edelstein.Service.Game.Logging;
@@ -23,6 +24,8 @@ namespace Edelstein.Service.Game.Field.User
                     return OnUserMigrateToCashShopRequest(packet);
                 case RecvPacketOperations.UserMove:
                     return OnUserMove(packet);
+                case RecvPacketOperations.UserScriptMessageAnswer:
+                    return OnUserScriptMessageAnswer(packet);
                 case RecvPacketOperations.UserGatherItemRequest:
                     return OnUserGatherItemRequest(packet);
                 case RecvPacketOperations.UserSortItemRequest:
@@ -106,6 +109,42 @@ namespace Edelstein.Service.Game.Field.User
                 p.Encode<int>(ID);
                 path.Encode(p);
                 await Field.BroadcastPacket(p);
+            }
+        }
+
+        private async Task OnUserScriptMessageAnswer(IPacket packet)
+        {
+            if (ConversationContext == null) return;
+            var messageType = (ScriptMessageType) packet.Decode<byte>();
+
+            if (messageType != ConversationContext.ExpectedResponse) return;
+            var answers = ConversationContext.Responses;
+            var answer = packet.Decode<byte>();
+
+            if (answer == 0)
+            {
+                ConversationContext.TokenSource.Cancel();
+                return;
+            }
+
+            switch (messageType)
+            {
+                case ScriptMessageType.AskText:
+                case ScriptMessageType.AskBoxText:
+                    await answers.EnqueueAsync(packet.Decode<string>());
+                    break;
+                case ScriptMessageType.AskNumber:
+                case ScriptMessageType.AskMenu:
+                case ScriptMessageType.AskSlideMenu:
+                    await answers.EnqueueAsync(packet.Decode<int>());
+                    break;
+                case ScriptMessageType.AskAvatar:
+                case ScriptMessageType.AskMembershopAvatar:
+                    await answers.EnqueueAsync(packet.Decode<byte>());
+                    break;
+                default:
+                    await answers.EnqueueAsync(answer);
+                    break;
             }
         }
 
