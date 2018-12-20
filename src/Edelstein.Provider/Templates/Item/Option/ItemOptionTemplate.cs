@@ -14,11 +14,13 @@ namespace Edelstein.Provider.Templates.Item.Option
 
         public static ItemOptionTemplate Parse(int id, IDataProperty p)
         {
+            var info = p.Resolve("info");
+            
             return new ItemOptionTemplate
             {
                 ID = id,
-                ReqLevel = p.Resolve<short>("info/reqLevel") ?? 0,
-                OptionType = p.Resolve<short>("info/optionType") ?? 0,
+                ReqLevel = info?.Resolve<short>("reqLevel") ?? 0,
+                OptionType = info?.Resolve<short>("optionType") ?? 0,
                 LevelData = p.Resolve("level").Children
                     .ToDictionary(
                         c => Convert.ToInt32(c.Name),

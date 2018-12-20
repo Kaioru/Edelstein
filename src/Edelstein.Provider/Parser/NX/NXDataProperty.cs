@@ -18,7 +18,10 @@ namespace Edelstein.Provider.Parser.NX
             => _node = node;
 
         public IDataProperty Resolve(string path = null)
-            => new NXDataProperty(_node.Resolve(path));
+        {
+            var node = _node.Resolve(path);
+            return node == null ? null : new NXDataProperty(node);
+        }
 
         public T? Resolve<T>(string path = null) where T : struct
             => _node.Resolve<T>(path);

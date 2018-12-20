@@ -17,7 +17,8 @@ namespace Edelstein.Provider.Templates.Field
             var p = Collection.Resolve($"Map/Map/Map{id.ToString("D8")[0]}/{id:D8}.img");
             p = p ?? Collection.Resolve($"Map/Map/Map{id.ToString("D9")[0]}/{id:D9}.img");
 
-            var link = p.Resolve<int>("info/link");
+            var info = p.Resolve("info");
+            var link = info.Resolve<int>("link");
             if (link.HasValue) Load(link.Value);
 
             var res = new FieldTemplate
@@ -53,12 +54,12 @@ namespace Edelstein.Provider.Templates.Field
             );
 
             leftTop = new Point(
-                p.Resolve<int>("info/VRLeft") ?? leftTop.X,
-                p.Resolve<int>("info/VRTop") ?? leftTop.Y
+                info.Resolve<int>("VRLeft") ?? leftTop.X,
+                info.Resolve<int>("VRTop") ?? leftTop.Y
             );
             rightBottom = new Point(
-                p.Resolve<int>("info/VRRight") ?? rightBottom.X,
-                p.Resolve<int>("info/VRBottom") ?? rightBottom.Y
+                info.Resolve<int>("VRRight") ?? rightBottom.X,
+                info.Resolve<int>("VRBottom") ?? rightBottom.Y
             );
 
             res.Bounds = Rectangle.FromLTRB(leftTop.X, leftTop.Y, rightBottom.X, rightBottom.Y);

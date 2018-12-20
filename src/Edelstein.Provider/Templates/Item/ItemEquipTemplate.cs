@@ -55,45 +55,47 @@ namespace Edelstein.Provider.Templates.Item
 
         public override void Parse(int id, IDataProperty p)
         {
-            base.Parse(id, p);
+            var info = p.Resolve("info");
 
-            ReqSTR = p.Resolve<short>("info/reqSTR") ?? 0;
-            ReqDEX = p.Resolve<short>("info/reqDEX") ?? 0;
-            ReqINT = p.Resolve<short>("info/reqINT") ?? 0;
-            ReqLUK = p.Resolve<short>("info/reqLUK") ?? 0;
-            ReqPOP = p.Resolve<short>("info/reqPOP") ?? 0;
-            ReqJob = p.Resolve<short>("info/reqJob") ?? 0;
-            ReqLevel = p.Resolve<byte>("info/reqLevel") ?? 0;
+            base.Parse(id, info);
 
-            TUC = p.Resolve<byte>("info/tuc") ?? 0;
-            IncSTR = p.Resolve<short>("info/incSTR") ?? 0;
-            IncDEX = p.Resolve<short>("info/incDEX") ?? 0;
-            IncINT = p.Resolve<short>("info/incINT") ?? 0;
-            IncLUK = p.Resolve<short>("info/incLUK") ?? 0;
-            IncMaxHP = p.Resolve<int>("info/incMHP") ?? 0;
-            IncMaxMP = p.Resolve<int>("info/incMMP") ?? 0;
-            IncMaxHPr = p.Resolve<int>("info/incMHPr") ?? 0;
-            IncMaxMPr = p.Resolve<int>("info/incMMPr") ?? 0;
-            IncPAD = p.Resolve<short>("info/incPAD") ?? 0;
-            IncMAD = p.Resolve<short>("info/incMAD") ?? 0;
-            IncPDD = p.Resolve<short>("info/incPDD") ?? 0;
-            IncMDD = p.Resolve<short>("info/incMDD") ?? 0;
-            IncACC = p.Resolve<short>("info/incACC") ?? 0;
-            IncEVA = p.Resolve<short>("info/incEVA") ?? 0;
-            IncCraft = p.Resolve<short>("info/incCraft") ?? 0;
-            IncSpeed = p.Resolve<short>("info/incSpeed") ?? 0;
-            IncJump = p.Resolve<short>("info/incJump") ?? 0;
+            ReqSTR = info.Resolve<short>("reqSTR") ?? 0;
+            ReqDEX = info.Resolve<short>("reqDEX") ?? 0;
+            ReqINT = info.Resolve<short>("reqINT") ?? 0;
+            ReqLUK = info.Resolve<short>("reqLUK") ?? 0;
+            ReqPOP = info.Resolve<short>("reqPOP") ?? 0;
+            ReqJob = info.Resolve<short>("reqJob") ?? 0;
+            ReqLevel = info.Resolve<byte>("reqLevel") ?? 0;
 
-            OnlyEquip = p.Resolve<bool>("info/onlyEquip") ?? false;
-            TradeBlockEquip = p.Resolve<bool>("info/equipTradeBlock") ?? false;
+            TUC = info.Resolve<byte>("tuc") ?? 0;
+            IncSTR = info.Resolve<short>("incSTR") ?? 0;
+            IncDEX = info.Resolve<short>("incDEX") ?? 0;
+            IncINT = info.Resolve<short>("incINT") ?? 0;
+            IncLUK = info.Resolve<short>("incLUK") ?? 0;
+            IncMaxHP = info.Resolve<int>("incMHP") ?? 0;
+            IncMaxMP = info.Resolve<int>("incMMP") ?? 0;
+            IncMaxHPr = info.Resolve<int>("incMHPr") ?? 0;
+            IncMaxMPr = info.Resolve<int>("incMMPr") ?? 0;
+            IncPAD = info.Resolve<short>("incPAD") ?? 0;
+            IncMAD = info.Resolve<short>("incMAD") ?? 0;
+            IncPDD = info.Resolve<short>("incPDD") ?? 0;
+            IncMDD = info.Resolve<short>("incMDD") ?? 0;
+            IncACC = info.Resolve<short>("incACC") ?? 0;
+            IncEVA = info.Resolve<short>("incEVA") ?? 0;
+            IncCraft = info.Resolve<short>("incCraft") ?? 0;
+            IncSpeed = info.Resolve<short>("incSpeed") ?? 0;
+            IncJump = info.Resolve<short>("incJump") ?? 0;
 
-            NotExtend = p.Resolve<bool>("info/notExtend") ?? false;
-            SharableOnce = p.Resolve<bool>("info/sharableOnce") ?? false;
+            OnlyEquip = info.Resolve<bool>("onlyEquip") ?? false;
+            TradeBlockEquip = info.Resolve<bool>("equipTradeBlock") ?? false;
 
-            AppliableKarmaType = p.Resolve<byte>("info/tradeAvailable") ?? 0;
+            NotExtend = info.Resolve<bool>("notExtend") ?? false;
+            SharableOnce = info.Resolve<bool>("sharableOnce") ?? false;
 
-            SetItemID = p.Resolve<int>("info/setItemID") ?? 0;
-            Durability = p.Resolve<int>("info/durability") ?? -1;
+            AppliableKarmaType = info.Resolve<byte>("tradeAvailable") ?? 0;
+
+            SetItemID = info.Resolve<int>("setItemID") ?? 0;
+            Durability = info.Resolve<int>("durability") ?? -1;
         }
     }
 }

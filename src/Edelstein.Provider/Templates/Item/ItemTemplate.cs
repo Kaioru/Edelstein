@@ -23,26 +23,26 @@ namespace Edelstein.Provider.Templates.Item
         public bool AccountSharable { get; set; }
 
         public bool Cash { get; set; }
-        
-        public virtual void Parse(int id, IDataProperty p)
+
+        public virtual void Parse(int id, IDataProperty info)
         {
             ID = id;
 
-            SellPrice = p.Resolve<int>("info/price") ?? 0;
-            TimeLimited = p.Resolve<bool>("info/timeLimited") ?? false;
+            SellPrice = info.Resolve<int>("price") ?? 0;
+            TimeLimited = info.Resolve<bool>("timeLimited") ?? false;
 
             // TODO: replace
 
-            Quest = p.Resolve<bool>("info/quest") ?? false;
-            PartyQuest = p.Resolve<bool>("info/pquest") ?? false;
-            Only = p.Resolve<bool>("info/only") ?? false;
-            TradeBlock = p.Resolve<bool>("info/tradeBlock") ?? false;
-            NotSale = p.Resolve<bool>("info/notSale") ?? false;
-            BigSize = p.Resolve<bool>("info/bigSize") ?? false;
-            ExpireOnLogout = p.Resolve<bool>("info/expireOnLogout") ?? false;
-            AccountSharable = p.Resolve<bool>("info/accountSharable") ?? false;
+            Quest = info.Resolve<bool>("quest") ?? false;
+            PartyQuest = info.Resolve<bool>("pquest") ?? false;
+            Only = info.Resolve<bool>("only") ?? false;
+            TradeBlock = info.Resolve<bool>("tradeBlock") ?? false;
+            NotSale = info.Resolve<bool>("notSale") ?? false;
+            BigSize = info.Resolve<bool>("bigSize") ?? false;
+            ExpireOnLogout = info.Resolve<bool>("expireOnLogout") ?? false;
+            AccountSharable = info.Resolve<bool>("accountSharable") ?? false;
 
-            Cash = p.Resolve<bool>("info/cash") ?? false;
+            Cash = info.Resolve<bool>("cash") ?? false;
         }
     }
 }
