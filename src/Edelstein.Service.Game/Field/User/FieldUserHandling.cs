@@ -24,6 +24,8 @@ namespace Edelstein.Service.Game.Field.User
                     return OnUserMigrateToCashShopRequest(packet);
                 case RecvPacketOperations.UserMove:
                     return OnUserMove(packet);
+                case RecvPacketOperations.UserSelectNpc:
+                    return OnUserSelectNPC(packet);
                 case RecvPacketOperations.UserScriptMessageAnswer:
                     return OnUserScriptMessageAnswer(packet);
                 case RecvPacketOperations.UserGatherItemRequest:
@@ -110,6 +112,28 @@ namespace Edelstein.Service.Game.Field.User
                 path.Encode(p);
                 await Field.BroadcastPacket(p);
             }
+        }
+
+        private async Task OnUserSelectNPC(IPacket packet)
+        {
+            var npc = Field.GetObject<FieldNPC>(packet.Decode<int>());
+
+            if (npc == null) return;
+
+            var template = npc.Template;
+            var script = template.Scripts.FirstOrDefault()?.Script;
+
+            if (script == null) return;
+
+            var context = new ConversationContext(Socket);
+            var conversation = Socket.WvsGame.ConversationManager.Get(
+                script,
+                context,
+                new Speaker(context, template.ID),
+                new Speaker(context)
+            );
+
+            await Converse(conversation);
         }
 
         private async Task OnUserScriptMessageAnswer(IPacket packet)

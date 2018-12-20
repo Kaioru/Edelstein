@@ -52,10 +52,19 @@ namespace Edelstein.Service.Game.Field.User
             if (ConversationContext != null)
                 throw new Exception("Already having a conversation"); // TODO: custom exception
             ConversationContext = conversation.Context;
+
             return Task
                 .Run(conversation.Start, ConversationContext.TokenSource.Token)
                 .ContinueWith(async t =>
                 {
+                    if (t.IsFaulted)
+                    {
+                        var exception = t.Exception.Flatten().InnerException;
+
+                        if (!(exception is TaskCanceledException))
+                            Logger.Error(exception, "Caught exception when executing conversation");
+                    }
+
                     ConversationContext?.Dispose();
                     ConversationContext = null;
                     await ModifyStats(exclRequest: true);
