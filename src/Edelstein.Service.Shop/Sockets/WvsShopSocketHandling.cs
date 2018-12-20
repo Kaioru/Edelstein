@@ -1,12 +1,10 @@
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Network.Packets;
-using Edelstein.Provider.Templates.Field;
+using Edelstein.Service.Shop.Logging;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq;
 
@@ -14,6 +12,22 @@ namespace Edelstein.Service.Shop.Sockets
 {
     public partial class WvsShopSocket
     {
+        public override Task OnPacket(IPacket packet)
+        {
+            var operation = (RecvPacketOperations) packet.Decode<short>();
+
+            switch (operation)
+            {
+                case RecvPacketOperations.MigrateIn:
+                    return OnMigrateIn(packet);
+                case RecvPacketOperations.UserTransferFieldRequest:
+                    return OnTransferFieldRequest(packet);
+                default:
+                    Logger.Warn($"Unhandled packet operation {operation}");
+                    return Task.CompletedTask;
+            }
+        }
+
         private async Task OnMigrateIn(IPacket packet)
         {
             var characterID = packet.Decode<int>();

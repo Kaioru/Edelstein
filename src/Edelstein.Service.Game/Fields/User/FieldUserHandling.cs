@@ -1,16 +1,31 @@
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
-using MoreLinq.Extensions;
+using Edelstein.Service.Game.Logging;
 
 namespace Edelstein.Service.Game.Fields.User
 {
     public partial class FieldUser
     {
+        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
+        {
+            switch (operation)
+            {
+                case RecvPacketOperations.UserTransferChannelRequest:
+                    return OnUserTransferChannelRequest(packet);
+                case RecvPacketOperations.UserMigrateToCashShopRequest:
+                    return OnUserMigrateToCashShopRequest(packet);
+                case RecvPacketOperations.UserMove:
+                    return OnUserMove(packet);
+                default:
+                    Logger.Warn($"Unhandled packet operation {operation}");
+                    return Task.CompletedTask;
+            }
+        }
+
         private async Task OnUserTransferChannelRequest(IPacket packet)
         {
             byte result = 0x0;

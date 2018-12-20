@@ -56,22 +56,6 @@ namespace Edelstein.Service.Game.Fields.User
             }
         }
 
-        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
-        {
-            switch (operation)
-            {
-                case RecvPacketOperations.UserTransferChannelRequest:
-                    return OnUserTransferChannelRequest(packet);
-                case RecvPacketOperations.UserMigrateToCashShopRequest:
-                    return OnUserMigrateToCashShopRequest(packet);
-                case RecvPacketOperations.UserMove:
-                    return OnUserMove(packet);
-                default:
-                    Logger.Warn($"Unhandled packet operation {operation}");
-                    return Task.CompletedTask;
-            }
-        }
-
         public IPacket GetSetFieldPacket()
         {
             using (var p = new Packet(SendPacketOperations.SetField))

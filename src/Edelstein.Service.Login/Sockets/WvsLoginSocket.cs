@@ -29,39 +29,6 @@ namespace Edelstein.Service.Login.Sockets
         ) : base(channel, seqSend, seqRecv)
             => WvsLogin = wvsLogin;
 
-        public override Task OnPacket(IPacket packet)
-        {
-            var operation = (RecvPacketOperations) packet.Decode<short>();
-
-            switch (operation)
-            {
-                case RecvPacketOperations.CheckPassword:
-                    return OnCheckPassword(packet);
-                case RecvPacketOperations.WorldInfoRequest:
-                case RecvPacketOperations.WorldRequest:
-                    return OnWorldInfoRequest(packet);
-                case RecvPacketOperations.SelectWorld:
-                    return OnSelectWorld(packet);
-                case RecvPacketOperations.CheckUserLimit:
-                    return OnCheckUserLimit(packet);
-                case RecvPacketOperations.CheckDuplicatedID:
-                    return OnCheckDuplicatedID(packet);
-                case RecvPacketOperations.CreateNewCharacter:
-                    return OnCreateNewCharacter(packet);
-                case RecvPacketOperations.EnableSPWRequest:
-                    return OnEnableSPWRequest(packet, false);
-                case RecvPacketOperations.CheckSPWRequest:
-                    return OnCheckSPWRequest(packet, false);
-                case RecvPacketOperations.EnableSPWRequestByACV:
-                    return OnEnableSPWRequest(packet, true);
-                case RecvPacketOperations.CheckSPWRequestByACV:
-                    return OnCheckSPWRequest(packet, true);
-                default:
-                    Logger.Warn($"Unhandled packet operation {operation}");
-                    return Task.CompletedTask;
-            }
-        }
-
         public override async Task OnDisconnect()
         {
             if (Account != null)

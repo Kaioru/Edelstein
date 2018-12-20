@@ -1,11 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
-using Edelstein.Core.Services;
 using Edelstein.Data.Entities;
 using Edelstein.Network;
-using Edelstein.Network.Packets;
-using Edelstein.Provider.Templates.Field;
 using Edelstein.Service.Shop.Logging;
 using Foundatio.Caching;
 
@@ -25,22 +22,6 @@ namespace Edelstein.Service.Shop.Sockets
             WvsShop wvsShop
         ) : base(channel, seqSend, seqRecv)
             => WvsShop = wvsShop;
-
-        public override Task OnPacket(IPacket packet)
-        {
-            var operation = (RecvPacketOperations) packet.Decode<short>();
-
-            switch (operation)
-            {
-                case RecvPacketOperations.MigrateIn:
-                    return OnMigrateIn(packet);
-                case RecvPacketOperations.UserTransferFieldRequest:
-                    return OnTransferFieldRequest(packet);
-                default:
-                    Logger.Warn($"Unhandled packet operation {operation}");
-                    return Task.CompletedTask;
-            }
-        }
 
         public override async Task OnDisconnect()
         {

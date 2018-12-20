@@ -2,10 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
-using Edelstein.Core.Services;
 using Edelstein.Data.Entities;
 using Edelstein.Network;
-using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Service.Game.Fields.User;
 using Edelstein.Service.Game.Logging;
@@ -29,19 +27,6 @@ namespace Edelstein.Service.Game.Sockets
             WvsGame wvsGame
         ) : base(channel, seqSend, seqRecv)
             => WvsGame = wvsGame;
-
-        public override Task OnPacket(IPacket packet)
-        {
-            var operation = (RecvPacketOperations) packet.Decode<short>();
-
-            switch (operation)
-            {
-                case RecvPacketOperations.MigrateIn:
-                    return OnMigrateIn(packet);
-                default:
-                    return FieldUser?.OnPacket(operation, packet);
-            }
-        }
 
         public override async Task OnDisconnect()
         {
