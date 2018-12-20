@@ -7,7 +7,7 @@ using Edelstein.Core.Services.Info;
 using Edelstein.Data.Context;
 using Edelstein.Data.Entities;
 using Edelstein.Network;
-using Edelstein.Network.Packets;
+using Edelstein.Network.Packet;
 using Foundatio.Caching;
 using Foundatio.Messaging;
 using Humanizer;

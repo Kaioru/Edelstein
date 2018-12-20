@@ -1,7 +1,7 @@
 using System;
 using Edelstein.Core.Constants;
 using Edelstein.Data.Entities.Inventory;
-using Edelstein.Network.Packets;
+using Edelstein.Network.Packet;
 
 namespace Edelstein.Core.Extensions
 {

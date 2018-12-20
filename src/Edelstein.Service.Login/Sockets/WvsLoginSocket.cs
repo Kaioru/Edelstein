@@ -6,7 +6,7 @@ using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Data.Entities;
 using Edelstein.Network;
-using Edelstein.Network.Packets;
+using Edelstein.Network.Packet;
 using Edelstein.Service.Login.Logging;
 using Foundatio.Caching;
 using MoreLinq;

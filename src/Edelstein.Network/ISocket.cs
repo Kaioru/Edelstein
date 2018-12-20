@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Edelstein.Network.Packets;
+using Edelstein.Network.Packet;
 
 namespace Edelstein.Network
 {

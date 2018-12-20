@@ -7,7 +7,7 @@ using Edelstein.Core.Inventories.Exceptions;
 using Edelstein.Core.Inventories.Operations;
 using Edelstein.Data.Entities;
 using Edelstein.Data.Entities.Inventory;
-using Edelstein.Network.Packets;
+using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Item;
 using MoreLinq;
 

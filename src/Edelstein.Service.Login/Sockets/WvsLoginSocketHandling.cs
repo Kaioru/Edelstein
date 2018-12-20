@@ -9,7 +9,7 @@ using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Data.Entities;
 using Edelstein.Data.Entities.Inventory;
-using Edelstein.Network.Packets;
+using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Service.Login.Logging;
 using Edelstein.Service.Login.Types;

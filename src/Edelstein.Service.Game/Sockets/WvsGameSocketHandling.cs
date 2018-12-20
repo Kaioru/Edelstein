@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
-using Edelstein.Network.Packets;
-using Edelstein.Service.Game.Fields.User;
+using Edelstein.Network.Packet;
+using Edelstein.Service.Game.Field.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Service.Game.Sockets

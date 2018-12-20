@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Edelstein.Data.Entities;
 using Edelstein.Data.Entities.Inventory;
-using Edelstein.Network.Packets;
+using Edelstein.Network.Packet;
 using MoreLinq;
 
 namespace Edelstein.Core.Extensions

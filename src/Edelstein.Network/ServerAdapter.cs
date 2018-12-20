@@ -2,7 +2,6 @@ using System;
 using DotNetty.Transport.Channels;
 using Edelstein.Network.Crypto;
 using Edelstein.Network.Logging;
-using Edelstein.Network.Packets;
 
 namespace Edelstein.Network
 {
@@ -31,7 +30,7 @@ namespace Edelstein.Network
                 (uint) random.Next()
             );
 
-            using (var p = new Packet())
+            using (var p = new Packet.Packet())
             {
                 p.Encode<short>(AESCipher.Version);
                 p.Encode<string>("1");
@@ -62,7 +61,7 @@ namespace Edelstein.Network
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             var socket = context.Channel.GetAttribute(AbstractSocket.SocketKey).Get();
-            socket?.OnPacket((Packet) message);
+            socket?.OnPacket((Packet.Packet) message);
         }
 
         public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)

@@ -5,7 +5,7 @@ using DotNetty.Transport.Channels;
 using Edelstein.Data.Entities;
 using Edelstein.Network;
 using Edelstein.Provider.Templates.Field;
-using Edelstein.Service.Game.Fields.User;
+using Edelstein.Service.Game.Field.User;
 using Edelstein.Service.Game.Logging;
 using Foundatio.Caching;
 

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Services.Info;
 using Edelstein.Data.Entities;
 using Edelstein.Network;
-using Edelstein.Network.Packets;
+using Edelstein.Network.Packet;
 
 namespace Edelstein.Core.Services.Migrations
 {

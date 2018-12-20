@@ -5,7 +5,7 @@ using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using Edelstein.Network.Logging;
-using Edelstein.Network.Packets.Codecs;
+using Edelstein.Network.Packet.Codecs;
 
 namespace Edelstein.Network
 {

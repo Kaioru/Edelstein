@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
-using Edelstein.Network.Packets;
+using Edelstein.Network.Packet;
 using Edelstein.Service.Shop.Logging;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq;

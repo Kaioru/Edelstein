@@ -2,7 +2,6 @@ using System;
 using DotNetty.Transport.Channels;
 using Edelstein.Network.Crypto;
 using Edelstein.Network.Logging;
-using Edelstein.Network.Packets;
 
 namespace Edelstein.Network
 {
@@ -25,7 +24,7 @@ namespace Edelstein.Network
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             var socket = context.Channel.GetAttribute(AbstractSocket.SocketKey).Get();
-            var p = (Packet) message;
+            var p = (Packet.Packet) message;
 
             if (socket != null) socket.OnPacket(p);
             else
