@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using System;
 using Edelstein.Service.Game.Conversations.Messages;
 
 namespace Edelstein.Service.Game.Conversations
@@ -13,6 +13,21 @@ namespace Edelstein.Service.Game.Conversations
 
         public AbstractSpeaker(IConversationContext context)
             => _context = context;
+
+        public byte Say(string[] text, int current = 0)
+        {
+            byte result = 0;
+
+            while (current >= 0 && current < text.Length)
+            {
+                result = Say(text[current], current > 0, current < text.Length - 1);
+
+                if (result == 0) current = Math.Max(0, --current);
+                if (result == 1) current = Math.Min(text.Length, ++current);
+            }
+
+            return result;
+        }
 
         public byte Say(string text = "", bool prev = false, bool next = false)
             => _context.Send<byte>(new SayMessage(this, text, prev, next)).Result;

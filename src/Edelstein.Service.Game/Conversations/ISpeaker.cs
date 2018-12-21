@@ -6,6 +6,7 @@ namespace Edelstein.Service.Game.Conversations
         int TemplateID { get; }
         ScriptMessageParam Param { get; }
 
+        byte Say(string[] text, int current = 0);
         byte Say(string text = "", bool prev = false, bool next = false);
         bool AskYesNo(string text = "");
         bool AskAccept(string text = "");
