@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Edelstein.Service.Game.Conversations.Messages;
 
 namespace Edelstein.Service.Game.Conversations
@@ -46,5 +48,23 @@ namespace Edelstein.Service.Game.Conversations
 
         public int AskNumber(string text = "", int def = 0, int min = int.MinValue, int max = int.MaxValue)
             => _context.Send<int>(new AskNumberMessage(this, text, def, min, max)).Result;
+
+        public int AskMenu(string text, IDictionary<int, string> options)
+            => _context.Send<int>(new AskMenuMessage(
+                this,
+                text + "\r\n#b" + string.Join("\r\n", options.Select(p => "#L" + p.Key + "#" + p.Value + "#l"))
+            )).Result;
+
+        public byte AskAvatar(string text, int[] styles)
+            => _context.Send<byte>(new AskAvatarMessage(this, text, styles)).Result;
+
+        public byte AskMembershopAvatar(string text, int[] styles)
+            => _context.Send<byte>(new AskMembershopAvatarMessage(this, text, styles)).Result;
+
+        public int AskSlideMenu(IDictionary<int, string> options, int type = 0, int selected = 0)
+            => _context.Send<int>(new AskMenuMessage(
+                this,
+                string.Join("\r\n", options.Select(p => "#L" + p.Key + "#" + p.Value + "#l"))
+            )).Result;
     }
 }
