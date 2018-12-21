@@ -97,7 +97,7 @@ namespace Edelstein.Service.Game.Conversations
                     option.Type,
                     option.Answer,
                     correct,
-                    options.Count - completed + 1,
+                    options.Count - completed,
                     remainTime
                 );
 

@@ -1,4 +1,4 @@
-namespace Edelstein.Service.Game.Conversations.Messages
+namespace Edelstein.Service.Game.Conversations
 {
     public enum SpeedQuizType
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Edelstein.Service.Game.Conversations.Messages
+namespace Edelstein.Service.Game.Conversations
 {
     public class SpeedQuizOption
     {

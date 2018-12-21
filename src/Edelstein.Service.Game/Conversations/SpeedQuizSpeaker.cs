@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace Edelstein.Service.Game.Conversations.Messages
+namespace Edelstein.Service.Game.Conversations
 {
     public class SpeedQuizSpeaker : Speaker
     {
         private ICollection<SpeedQuizOption> _options;
+        public int Total => _options.Count;
 
         public SpeedQuizSpeaker(
             IConversationContext context,
