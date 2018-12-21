@@ -16,6 +16,8 @@ namespace Edelstein.Service.Game.Conversations
         public AbstractSpeaker(IConversationContext context)
             => _context = context;
 
+        public ISpeaker AsSpeedQuiz() => new SpeedQuizSpeaker(_context, TemplateID, Param);
+
         public byte Say(string[] text, int current = 0)
         {
             byte result = 0;
@@ -66,5 +68,44 @@ namespace Edelstein.Service.Game.Conversations
                 this,
                 string.Join("\r\n", options.Select(p => "#L" + p.Key + "#" + p.Value + "#l"))
             )).Result;
+
+        public string AskQuiz(
+            string title = "", string quizText = "", string hintText = "",
+            short minInput = 0, short maxInput = short.MaxValue, int remain = 15)
+            => _context.Send<string>(new AskQuizMessage(
+                this,
+                title, quizText, hintText,
+                minInput, maxInput, remain
+            )).Result;
+
+        public string AskSpeedQuiz(SpeedQuizType type, int answer, int correct = 0,
+            int remain = 1, int remainTime = 15)
+            => _context.Send<string>(new AskSpeedQuizMessage(
+                this,
+                type, answer, correct,
+                remain, remainTime
+            )).Result;
+
+        public int AskSpeedQuiz(ICollection<SpeedQuizOption> options, int remainTime = 15)
+        {
+            var completed = 0;
+            var correct = 0;
+
+            foreach (var option in options)
+            {
+                var result = AskSpeedQuiz(
+                    option.Type,
+                    option.Answer,
+                    correct,
+                    options.Count - completed + 1,
+                    remainTime
+                );
+
+                if (result.Equals(option.Validate)) correct++;
+                completed++;
+            }
+
+            return correct;
+        }
     }
 }

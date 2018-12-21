@@ -143,6 +143,14 @@ namespace Edelstein.Service.Game.Field.User
 
             if (messageType != ConversationContext.ExpectedResponse) return;
             var answers = ConversationContext.Responses;
+
+            if (messageType == ScriptMessageType.AskQuiz ||
+                messageType == ScriptMessageType.AskSpeedQuiz)
+            {
+                await answers.EnqueueAsync(packet.Decode<string>());
+                return;
+            }
+            
             var answer = packet.Decode<byte>();
 
             if (answer == byte.MaxValue)
