@@ -31,5 +31,16 @@ namespace Edelstein.Service.Game.Conversations.Messages
             packet.Encode<short>(_lenMin);
             packet.Encode<short>(_lenMax);
         }
+
+        public override bool Validate(object response)
+        {
+            if (response is string str)
+            {
+                return str.Length >= _lenMin &&
+                       str.Length <= _lenMax;
+            }
+
+            return false;
+        }
     }
 }

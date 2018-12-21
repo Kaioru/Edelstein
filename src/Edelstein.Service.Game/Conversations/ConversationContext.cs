@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
@@ -11,7 +13,7 @@ namespace Edelstein.Service.Game.Conversations
     {
         public ISocket Socket { get; }
         public CancellationTokenSource TokenSource { get; }
-        public ScriptMessageType ExpectedResponse { get; private set; }
+        public IMessage PreviousMessage { get; private set; }
         public AsyncProducerConsumerQueue<object> Responses { get; }
 
         public ConversationContext(ISocket socket, CancellationTokenSource tokenSource)
@@ -28,7 +30,7 @@ namespace Edelstein.Service.Game.Conversations
 
         public async Task<T> Send<T>(IMessage message)
         {
-            ExpectedResponse = message.Type;
+            PreviousMessage = message;
 
             using (var p = new Packet(SendPacketOperations.ScriptMessage))
             {
@@ -36,7 +38,10 @@ namespace Edelstein.Service.Game.Conversations
                 await Socket.SendPacket(p);
             }
 
-            return (T) await Responses.DequeueAsync(TokenSource.Token);
+            var response = (T) await Responses.DequeueAsync(TokenSource.Token);
+
+            if (!PreviousMessage.Validate(response)) throw new InvalidDataException("Invalid response value");
+            return response;
         }
 
         public void Dispose()

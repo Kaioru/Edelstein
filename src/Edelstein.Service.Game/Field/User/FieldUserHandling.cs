@@ -141,7 +141,7 @@ namespace Edelstein.Service.Game.Field.User
             if (ConversationContext == null) return;
             var messageType = (ScriptMessageType) packet.Decode<byte>();
 
-            if (messageType != ConversationContext.ExpectedResponse) return;
+            if (messageType != ConversationContext.PreviousMessage.Type) return;
             var answers = ConversationContext.Responses;
 
             if (messageType == ScriptMessageType.AskQuiz ||
@@ -150,7 +150,7 @@ namespace Edelstein.Service.Game.Field.User
                 await answers.EnqueueAsync(packet.Decode<string>());
                 return;
             }
-            
+
             var answer = packet.Decode<byte>();
 
             if (answer == byte.MaxValue)

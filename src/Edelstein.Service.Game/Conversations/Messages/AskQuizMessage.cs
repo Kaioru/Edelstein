@@ -40,5 +40,16 @@ namespace Edelstein.Service.Game.Conversations.Messages
             packet.Encode<int>(_maxInput);
             packet.Encode<int>(_remain);
         }
+
+        public override bool Validate(object response)
+        {
+            if (response is string str)
+            {
+                return str.Length >= _minInput &&
+                       str.Length <= _maxInput;
+            }
+
+            return false;
+        }
     }
 }

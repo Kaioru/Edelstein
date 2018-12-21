@@ -20,6 +20,8 @@ namespace Edelstein.Service.Game.Conversations
             EncodeData(packet);
         }
 
+        public virtual bool Validate(object response) => true;
+
         protected abstract void EncodeData(IPacket packet);
     }
 }

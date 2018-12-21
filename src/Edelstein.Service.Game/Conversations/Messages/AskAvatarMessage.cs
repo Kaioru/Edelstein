@@ -25,5 +25,12 @@ namespace Edelstein.Service.Game.Conversations.Messages
             packet.Encode<byte>((byte) _styles.Length);
             _styles.ForEach(s => packet.Encode<int>(s));
         }
+
+        public override bool Validate(object response)
+        {
+            if (response is byte b)
+                return b <= _styles.Length;
+            return false;
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace Edelstein.Service.Game.Conversations
         ISpeaker Speaker { get; }
 
         void Encode(IPacket packet);
+        bool Validate(object response);
     }
 }
