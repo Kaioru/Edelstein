@@ -39,10 +39,10 @@ namespace Edelstein.Service.Game.Conversations
             => _context.Send<byte>(new SayMessage(this, text, prev, next)).Result;
 
         public bool AskYesNo(string text = "")
-            => _context.Send<bool>(new AskYesNoMessage(this, text)).Result;
+            => _context.Send<byte>(new AskYesNoMessage(this, text)).Result > 0;
 
         public bool AskAccept(string text = "")
-            => _context.Send<bool>(new AskAcceptMessage(this, text)).Result;
+            => _context.Send<byte>(new AskAcceptMessage(this, text)).Result > 0;
 
         public string AskText(string text = "", string def = "", short lenMin = 0, short lenMax = short.MaxValue)
             => _context.Send<string>(new AskTextMessage(this, text, def, lenMin, lenMax)).Result;
