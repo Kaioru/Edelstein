@@ -35,6 +35,7 @@ namespace Edelstein.Service.Game
                 var path = c.Resolve<IConfigurationRoot>()["ScriptDirectoryPath"];
 
                 UserData.RegisterType<Speaker>();
+                UserData.RegisterType<QuizSpeaker>();
                 UserData.RegisterType<SpeedQuizSpeaker>();
                 return new LuaScriptConversationManager(path);
             }).As<IScriptConversationManager>();

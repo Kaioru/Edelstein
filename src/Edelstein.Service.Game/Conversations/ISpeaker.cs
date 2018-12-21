@@ -26,6 +26,8 @@ namespace Edelstein.Service.Game.Conversations
             string title = "", string quizText = "", string hintText = "",
             short minInput = 0, short maxInput = short.MaxValue, int remain = 15);
 
+        int AskQuiz(ICollection<QuizOption> options, int remain = 15);
+
         string AskSpeedQuiz(SpeedQuizType type, int answer, int correct = 0,
             int remain = 1, int remainTime = 15);
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Edelstein.Service.Game.Conversations.Messages;
+using MoreLinq;
 
 namespace Edelstein.Service.Game.Conversations
 {
@@ -16,6 +17,7 @@ namespace Edelstein.Service.Game.Conversations
         public AbstractSpeaker(IConversationContext context)
             => _context = context;
 
+        public ISpeaker AsQuiz() => new QuizSpeaker(_context, TemplateID, Param);
         public ISpeaker AsSpeedQuiz() => new SpeedQuizSpeaker(_context, TemplateID, Param);
 
         public byte Say(string[] text, int current = 0)
@@ -78,6 +80,25 @@ namespace Edelstein.Service.Game.Conversations
                 minInput, maxInput, remain
             )).Result;
 
+        public int AskQuiz(ICollection<QuizOption> options, int remain = 15)
+        {
+            var correct = 0;
+
+            options.ForEach(option =>
+            {
+                var result = AskQuiz(
+                    option.Title,
+                    option.QuizText,
+                    option.HintText,
+                    remain: remain
+                );
+
+                if (result.Equals(option.Validate)) correct++;
+            });
+
+            return correct;
+        }
+
         public string AskSpeedQuiz(SpeedQuizType type, int answer, int correct = 0,
             int remain = 1, int remainTime = 15)
             => _context.Send<string>(new AskSpeedQuizMessage(
@@ -91,7 +112,7 @@ namespace Edelstein.Service.Game.Conversations
             var completed = 0;
             var correct = 0;
 
-            foreach (var option in options)
+            options.ForEach(option =>
             {
                 var result = AskSpeedQuiz(
                     option.Type,
@@ -103,7 +124,7 @@ namespace Edelstein.Service.Game.Conversations
 
                 if (result.Equals(option.Validate)) correct++;
                 completed++;
-            }
+            });
 
             return correct;
         }
