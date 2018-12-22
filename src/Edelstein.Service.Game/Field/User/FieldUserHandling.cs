@@ -24,6 +24,10 @@ namespace Edelstein.Service.Game.Field.User
                     return OnUserMigrateToCashShopRequest(packet);
                 case RecvPacketOperations.UserMove:
                     return OnUserMove(packet);
+                case RecvPacketOperations.UserChat:
+                    return OnUserChat(packet);
+                case RecvPacketOperations.UserEmotion:
+                    return OnUserEmotion(packet);
                 case RecvPacketOperations.UserSelectNpc:
                     return OnUserSelectNPC(packet);
                 case RecvPacketOperations.UserScriptMessageAnswer:
@@ -111,6 +115,40 @@ namespace Edelstein.Service.Game.Field.User
                 p.Encode<int>(ID);
                 path.Encode(p);
                 await Field.BroadcastPacket(p);
+            }
+        }
+
+        private async Task OnUserChat(IPacket packet)
+        {
+            packet.Decode<int>();
+
+            var message = packet.Decode<string>();
+            var onlyBalloon = packet.Decode<bool>();
+
+
+            using (var p = new Packet(SendPacketOperations.UserChat))
+            {
+                p.Encode<int>(ID);
+                p.Encode<bool>(false);
+                p.Encode<string>(message);
+                p.Encode<bool>(onlyBalloon);
+                await Field.BroadcastPacket(p);
+            }
+        }
+
+        private async Task OnUserEmotion(IPacket packet)
+        {
+            var emotion = packet.Decode<int>();
+            var duration = packet.Decode<int>();
+            var byItemOption = packet.Decode<bool>();
+
+            using (var p = new Packet(SendPacketOperations.UserEmotion))
+            {
+                p.Encode<int>(ID);
+                p.Encode<int>(emotion);
+                p.Encode<int>(duration);
+                p.Encode<bool>(byItemOption);
+                await Field.BroadcastPacket(this, p);
             }
         }
 
