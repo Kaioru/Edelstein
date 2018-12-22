@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    working_directory: /temp
+    docker:
+      - image: microsoft/dotnet:sdk
+    environment:
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - run: dotnet restore
+      - run: dotnet build
+      - run: for d in test/*; do dotnet test "$d"; done
