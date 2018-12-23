@@ -8,6 +8,7 @@ namespace Edelstein.Provider.Templates
         IEnumerable<ITemplate> Cache { get; }
 
         ITemplate Get(int id);
+        IEnumerable<ITemplate> GetAll();
         Task<ITemplate> GetAsync(int id);
     }
 }

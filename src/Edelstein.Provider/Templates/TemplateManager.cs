@@ -10,6 +10,7 @@ using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Item.Option;
 using Edelstein.Provider.Templates.Item.Set;
 using Edelstein.Provider.Templates.NPC;
+using Edelstein.Provider.Templates.String;
 
 namespace Edelstein.Provider.Templates
 {
@@ -27,12 +28,17 @@ namespace Edelstein.Provider.Templates
                 [typeof(SetItemInfoTemplate)] = new SetItemInfoTemplateCollection(collection),
                 [typeof(ItemTemplate)] = new ItemTemplateCollection(collection),
                 [typeof(FieldTemplate)] = new FieldTemplateCollection(collection),
-                [typeof(NPCTemplate)] = new NPCTemplateCollection(collection)
+                [typeof(NPCTemplate)] = new NPCTemplateCollection(collection),
+                [typeof(ItemStringTemplate)] = new ItemStringTemplateCollection(collection),
+                [typeof(FieldStringTemplate)] = new FieldStringTemplateCollection(collection)
             };
         }
 
         public T Get<T>(int id)
             => (T) _dictionary[typeof(T)].Get(id);
+
+        public IEnumerable<T> GetAll<T>()
+            => _dictionary[typeof(T)].GetAll().OfType<T>();
 
         public Task<T> GetAsync<T>(int id)
             => Task.Run(() => Get<T>(id));
@@ -46,7 +52,8 @@ namespace Edelstein.Provider.Templates
                 {
                     var watch = Stopwatch.StartNew();
                     await c.LoadAll();
-                    Logger.Info($"Loaded {c.GetType().Name} with {c.Cache.Count()} templates in {watch.ElapsedMilliseconds}ms");
+                    Logger.Info(
+                        $"Loaded {c.GetType().Name} with {c.Cache.Count()} templates in {watch.ElapsedMilliseconds}ms");
                 }));
             Logger.Info("Finished loading templates..");
         }

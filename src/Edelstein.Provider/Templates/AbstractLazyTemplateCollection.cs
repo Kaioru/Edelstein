@@ -23,6 +23,9 @@ namespace Edelstein.Provider.Templates
             return Templates[id];
         }
 
+        public IEnumerable<ITemplate> GetAll()
+            => Templates.Values;
+
         public Task<ITemplate> GetAsync(int id)
             => Task.Run(() => Get(id));
 
