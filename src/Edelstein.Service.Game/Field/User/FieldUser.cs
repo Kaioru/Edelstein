@@ -35,6 +35,16 @@ namespace Edelstein.Service.Game.Field.User
             ValidateStat();
         }
 
+        public async Task<T> Prompt<T>(Func<ISpeaker, ISpeaker, T> func)
+        {
+            var result = default(T);
+
+            await Prompt(new Action<ISpeaker, ISpeaker>(
+                (self, target) => result = func.Invoke(self, target)
+            ));
+            return result;
+        }
+
         public Task Prompt(Action<ISpeaker, ISpeaker> action)
         {
             var context = new ConversationContext(Socket);

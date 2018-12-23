@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
@@ -81,12 +82,24 @@ namespace Edelstein.Service.Game.Field.User
         private async Task OnUserMigrateToCashShopRequest(IPacket packet)
         {
             byte result = 0x0;
-            var service = Socket.WvsGame.Peers
+            var services = Socket.WvsGame.Peers
                 .OfType<ShopServiceInfo>()
                 .Where(g => g.Worlds.Contains(Socket.WvsGame.Info.WorldID))
                 .OrderBy(g => g.ID)
-                .FirstOrDefault();
-            // TODO: selection prompt when multiple?
+                .ToList();
+            ServerServiceInfo service;
+
+            if (services.Count > 1)
+            {
+                var id = await Prompt<int>((self, target) => target.AskMenu(
+                    "Which service should I connect to?", services.ToDictionary(
+                        s => Convert.ToInt32(s.ID),
+                        s => s.Name
+                    ))
+                );
+                service = services.FirstOrDefault(s => s.ID == id);
+            }
+            else service = services.FirstOrDefault();
 
             if (Field.Template.Limit.HasFlag(FieldOpt.MigrateLimit)) return;
 
@@ -104,12 +117,25 @@ namespace Edelstein.Service.Game.Field.User
         private async Task OnUserMigrateToITCRequest(IPacket packet)
         {
             byte result = 0x0;
-            var service = Socket.WvsGame.Peers
+            var services = Socket.WvsGame.Peers
                 .OfType<TradeServiceInfo>()
                 .Where(g => g.Worlds.Contains(Socket.WvsGame.Info.WorldID))
                 .OrderBy(g => g.ID)
-                .FirstOrDefault();
-            // TODO: selection prompt when multiple?
+                .ToList();
+            ServerServiceInfo service;
+
+            if (services.Count > 1)
+            {
+                var id = await Prompt<int>((self, target) => target.AskMenu(
+                    "Which service should I connect to?", services.ToDictionary(
+                        s => Convert.ToInt32(s.ID),
+                        s => s.Name
+                    ))
+                );
+                service = services.FirstOrDefault(s => s.ID == id);
+            }
+            else service = services.FirstOrDefault();
+
 
             if (Field.Template.Limit.HasFlag(FieldOpt.MigrateLimit)) return;
 

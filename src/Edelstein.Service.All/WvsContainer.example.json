@@ -65,11 +65,11 @@
       "Worlds": [
         0
       ],
-      "RegisterFeeMeso": 5000,
-      "CommissionRate": 7,
-      "CommissionBase": 500,
-      "AuctionDurationMin": 24,
-      "AuctionDurationMax": 168
+      "RegisterFeeMeso": 100,
+      "CommissionRate": 4,
+      "CommissionBase": 10,
+      "AuctionDurationMin": 1,
+      "AuctionDurationMax": 7
     }
   ],
   "DatabaseConnectionString": "Server=localhost;Uid=root;Database=Edelstein;",

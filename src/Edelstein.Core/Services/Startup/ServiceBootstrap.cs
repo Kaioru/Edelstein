@@ -38,8 +38,8 @@ namespace Edelstein.Core.Services.Startup
         {
             var configBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile($"{name}.example.json")
-                .AddJsonFile($"{name}.json", true);
+                .AddJsonFile($"{name}.example.json", true)
+                .AddJsonFile($"{name}.json", false);
             var config = configBuilder.Build();
 
             config.Bind(obj);
