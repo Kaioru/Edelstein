@@ -14,9 +14,9 @@ namespace Edelstein.Provider.Templates.NPC
         public bool Trunk => TrunkPut > 0 || TrunkGet > 0;
         public bool StoreBank { get; set; }
         public bool Parcel { get; set; }
-        public bool Move { get; set; }
-
         public ICollection<NPCScriptTemplate> Scripts;
+        
+        public bool Move { get; set; }
 
         public static NPCTemplate Parse(int id, IDataProperty property)
         {
@@ -30,13 +30,13 @@ namespace Edelstein.Provider.Templates.NPC
                     t.TrunkGet = i.Resolve<int>("trunkGet") ?? 0;
                     t.StoreBank = i.Resolve<bool>("storeBank") ?? false;
                     t.Parcel = i.Resolve<bool>("parcel") ?? false;
-                    t.Move = i.Resolve("move") != null;
-
                     t.Scripts = i.Resolve("script")?.Children
                                     .Select(NPCScriptTemplate.Parse)
                                     .ToList()
                                 ?? new List<NPCScriptTemplate>();
                 });
+                
+                t.Move = p.Resolve("move") != null;
             });
             return t;
         }
