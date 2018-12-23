@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Autofac" Version="4.8.1" />
+        <PackageReference Include="DotNet.Glob" Version="2.1.1" />
         <PackageReference Include="LibLog" Version="5.0.3" />
         <PackageReference Include="MoonSharp" Version="2.0.0" />
         <PackageReference Include="Serilog" Version="2.7.1" />
@@ -22,10 +23,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Commands\Handling" />
     </ItemGroup>
 
 </Project>

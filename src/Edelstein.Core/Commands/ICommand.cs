@@ -11,6 +11,6 @@ namespace Edelstein.Core.Commands
         ICollection<ICommand> Commands { get; }
 
         Task Process(ICommandSender sender, string text);
-        Task Process(ICommandSender sender, IEnumerable<string> args);
+        Task Process(ICommandSender sender, Queue<string> args);
     }
 }

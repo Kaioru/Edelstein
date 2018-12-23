@@ -178,6 +178,23 @@ namespace Edelstein.Service.Game.Field.User
             var message = packet.Decode<string>();
             var onlyBalloon = packet.Decode<bool>();
 
+            if (message.StartsWith("!"))
+            {
+                try
+                {
+                    await Socket.WvsGame.CommandRegistry.Process(
+                        this,
+                        message.Substring(1)
+                    );
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, "Caught exception when executing command");
+                    await Message("An error has occured while executing that command.");
+                }
+
+                return;
+            }
 
             using (var p = new Packet(SendPacketOperations.UserChat))
             {

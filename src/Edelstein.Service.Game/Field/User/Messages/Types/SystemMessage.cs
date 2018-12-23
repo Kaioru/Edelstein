@@ -4,7 +4,7 @@ namespace Edelstein.Service.Game.Field.User.Messages.Types
 {
     public class SystemMessage : AbstractMessage
     {
-        public override MessageType Type { get; }
+        public override MessageType Type => MessageType.SystemMessage;
         private readonly string _text;
 
         public SystemMessage(string text)

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommandLine;
 
@@ -13,6 +14,6 @@ namespace Edelstein.Core.Commands
         }
 
         protected override Task Execute(ICommandSender sender, object option)
-            => base.Process(sender, new[] {"--help"});
+            => Process(sender, new Queue<string>(new[] {"--help"}));
     }
 }

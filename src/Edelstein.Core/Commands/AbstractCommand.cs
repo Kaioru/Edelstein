@@ -43,12 +43,29 @@ namespace Edelstein.Core.Commands
                     return res;
                 })
                 .ToList();
-
             return Process(sender, new Queue<string>(args));
         }
 
-        public Task Process(ICommandSender sender, IEnumerable<string> args)
+        public ICommand GetCommand(string name)
         {
+            return Commands.FirstOrDefault(c => c.Name.ToLower().StartsWith(name) ||
+                                                c.Aliases.Count(s => s.ToLower().StartsWith(name)) > 0);
+        }
+
+        public Task Process(ICommandSender sender, Queue<string> args)
+        {
+            if (args.Count > 0)
+            {
+                var first = args.Peek();
+                var command = GetCommand(first);
+
+                if (command != null)
+                {
+                    args.Dequeue();
+                    return command.Process(sender, args);
+                }
+            }
+
             var result = _parser.ParseArguments<T>(args);
 
             return Task.Run(() => result

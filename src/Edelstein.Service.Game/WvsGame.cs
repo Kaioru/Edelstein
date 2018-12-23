@@ -1,9 +1,12 @@
 using System.Threading.Tasks;
+using CommandLine;
+using Edelstein.Core.Commands;
 using Edelstein.Core.Services.Info;
 using Edelstein.Core.Services.Migrations;
 using Edelstein.Data.Context;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
+using Edelstein.Service.Game.Commands;
 using Edelstein.Service.Game.Conversations.Scripts;
 using Edelstein.Service.Game.Field;
 using Edelstein.Service.Game.Sockets;
@@ -19,6 +22,7 @@ namespace Edelstein.Service.Game
         public IScriptConversationManager ConversationManager { get; }
 
         public FieldManager FieldManager { get; }
+        public CommandRegistry CommandRegistry { get; }
 
         public WvsGame(
             GameServiceInfo info,
@@ -32,6 +36,13 @@ namespace Edelstein.Service.Game
             TemplateManager = templateManager;
             ConversationManager = conversationManager;
             FieldManager = new FieldManager(TemplateManager);
+            CommandRegistry = new GameCommandRegistry(
+                new Parser(settings =>
+                {
+                    settings.CaseSensitive = false;
+                    settings.CaseInsensitiveEnumValues = true;
+                })
+            );
         }
 
         public WvsGame(

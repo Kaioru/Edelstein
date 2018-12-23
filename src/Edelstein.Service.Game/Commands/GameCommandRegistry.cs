@@ -1,9 +1,6 @@
-using System;
-using System.Linq;
-using System.Reflection;
 using CommandLine;
-using CSharpx;
 using Edelstein.Core.Commands;
+using Edelstein.Service.Game.Commands.Handling;
 
 namespace Edelstein.Service.Game.Commands
 {
@@ -11,13 +8,8 @@ namespace Edelstein.Service.Game.Commands
     {
         public GameCommandRegistry(Parser parser) : base(parser)
         {
-            Assembly.GetExecutingAssembly().GetTypes()
-                .Where(t => t.Namespace.Equals($"{GetType().Namespace}.Handling"))
-                .Where(t => t.GetInterfaces().Contains(typeof(ICommand)))
-                .Where(t => t.GetConstructor(Type.EmptyTypes) != null)
-                .Select(Activator.CreateInstance)
-                .Cast<ICommand>()
-                .ForEach(Commands.Add);
+            Commands.Add(new FieldCommand(parser));
+            Commands.Add(new ItemCommand(parser));
         }
     }
 }
