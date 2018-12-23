@@ -45,7 +45,7 @@ namespace Edelstein.Service.Game.Commands
                             r => r.ID,
                             r => r.Name
                         )
-                    ));
+                    ), 0);
                 }
             }
 
