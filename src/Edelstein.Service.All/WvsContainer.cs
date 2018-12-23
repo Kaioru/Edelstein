@@ -8,6 +8,7 @@ using Edelstein.Service.Game;
 using Edelstein.Service.Game.Conversations.Scripts;
 using Edelstein.Service.Login;
 using Edelstein.Service.Shop;
+using Edelstein.Service.Trade;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Foundatio.Messaging;
@@ -54,6 +55,9 @@ namespace Edelstein.Service.All
                 .ForEach(_services.Add);
             _options.ShopServices
                 .Select(o => new WvsShop(o, _cache, _messageBus, _dataContextFactory, _templateManager))
+                .ForEach(_services.Add);
+            _options.TradeServices
+                .Select(o => new WvsTrade(o, _cache, _messageBus, _dataContextFactory, _templateManager))
                 .ForEach(_services.Add);
             return Task.WhenAll(_services.Select(s => s.Start()));
         }

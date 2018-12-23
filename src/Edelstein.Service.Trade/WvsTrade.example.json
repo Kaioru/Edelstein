@@ -1,0 +1,19 @@
+{
+  "Service": {
+    "ID": 0,
+    "Name": "Trade-0",
+    "Host": "127.0.0.1",
+    "Port": 6000,
+    "Worlds": [
+      0
+    ],
+    "RegisterFeeMeso": 5000,
+    "CommissionRate": 7,
+    "CommissionBase": 500,
+    "AuctionDurationMin": 24,
+    "AuctionDurationMax": 168
+  },
+  "RedisConnectionString": "localhost",
+  "DatabaseConnectionString": "Server=localhost;Uid=root;Database=Edelstein;",
+  "DataDirectoryPath": "C:\\Nexon\\Library\\maplestory\\appdata"
+}

@@ -22,6 +22,8 @@ namespace Edelstein.Service.Game.Field.User
                     return OnUserTransferChannelRequest(packet);
                 case RecvPacketOperations.UserMigrateToCashShopRequest:
                     return OnUserMigrateToCashShopRequest(packet);
+                case RecvPacketOperations.UserMigrateToITCRequest:
+                    return OnUserMigrateToITCRequest(packet);
                 case RecvPacketOperations.UserMove:
                     return OnUserMove(packet);
                 case RecvPacketOperations.UserChat:
@@ -90,6 +92,29 @@ namespace Edelstein.Service.Game.Field.User
 
             if (service == null) result = 0x2;
             else if (!await Socket.WvsGame.TryMigrateTo(Socket, Character, service)) result = 0x2;
+
+            if (result == 0x0) return;
+            using (var p = new Packet(SendPacketOperations.TransferChannelReqIgnored))
+            {
+                p.Encode<byte>(result);
+                await SendPacket(p);
+            }
+        }
+
+        private async Task OnUserMigrateToITCRequest(IPacket packet)
+        {
+            byte result = 0x0;
+            var service = Socket.WvsGame.Peers
+                .OfType<TradeServiceInfo>()
+                .Where(g => g.Worlds.Contains(Socket.WvsGame.Info.WorldID))
+                .OrderBy(g => g.ID)
+                .FirstOrDefault();
+            // TODO: selection prompt when multiple?
+
+            if (Field.Template.Limit.HasFlag(FieldOpt.MigrateLimit)) return;
+
+            if (service == null) result = 0x3;
+            else if (!await Socket.WvsGame.TryMigrateTo(Socket, Character, service)) result = 0x3;
 
             if (result == 0x0) return;
             using (var p = new Packet(SendPacketOperations.TransferChannelReqIgnored))
