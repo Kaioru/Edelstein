@@ -237,8 +237,8 @@ namespace Edelstein.Service.Game.Field.User
             var conversation = Socket.WvsGame.ConversationManager.Get(
                 script,
                 context,
-                new Speaker(context, template.ID),
-                new Speaker(context)
+                new FieldNPCSpeaker(context, npc),
+                new FieldUserSpeaker(context, this)
             );
 
             await Converse(conversation);

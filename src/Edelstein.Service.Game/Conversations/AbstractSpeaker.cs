@@ -8,17 +8,17 @@ namespace Edelstein.Service.Game.Conversations
 {
     public abstract class AbstractSpeaker : ISpeaker
     {
-        private readonly IConversationContext _context;
+        protected IConversationContext Context { get; }
 
         public abstract byte TypeID { get; }
         public abstract int TemplateID { get; }
         public abstract ScriptMessageParam Param { get; }
 
         public AbstractSpeaker(IConversationContext context)
-            => _context = context;
+            => Context = context;
 
-        public ISpeaker AsQuiz() => new QuizSpeaker(_context, TemplateID, Param);
-        public ISpeaker AsSpeedQuiz() => new SpeedQuizSpeaker(_context, TemplateID, Param);
+        public ISpeaker AsQuiz() => new QuizSpeaker(Context, TemplateID, Param);
+        public ISpeaker AsSpeedQuiz() => new SpeedQuizSpeaker(Context, TemplateID, Param);
 
         public byte Say(string[] text, int current = 0)
         {
@@ -36,37 +36,37 @@ namespace Edelstein.Service.Game.Conversations
         }
 
         public byte Say(string text = "", bool prev = false, bool next = false)
-            => _context.Send<byte>(new SayScriptMessage(this, text, prev, next)).Result;
+            => Context.Send<byte>(new SayScriptMessage(this, text, prev, next)).Result;
 
         public bool AskYesNo(string text = "")
-            => _context.Send<byte>(new AskYesNoScriptMessage(this, text)).Result > 0;
+            => Context.Send<byte>(new AskYesNoScriptMessage(this, text)).Result > 0;
 
         public bool AskAccept(string text = "")
-            => _context.Send<byte>(new AskAcceptScriptMessage(this, text)).Result > 0;
+            => Context.Send<byte>(new AskAcceptScriptMessage(this, text)).Result > 0;
 
         public string AskText(string text = "", string def = "", short lenMin = 0, short lenMax = short.MaxValue)
-            => _context.Send<string>(new AskTextScriptMessage(this, text, def, lenMin, lenMax)).Result;
+            => Context.Send<string>(new AskTextScriptMessage(this, text, def, lenMin, lenMax)).Result;
 
         public string AskBoxText(string text = "", string def = "", short cols = 24, short rows = 4)
-            => _context.Send<string>(new AskBoxTextScriptMessage(this, text, def, cols, rows)).Result;
+            => Context.Send<string>(new AskBoxTextScriptMessage(this, text, def, cols, rows)).Result;
 
         public int AskNumber(string text = "", int def = 0, int min = int.MinValue, int max = int.MaxValue)
-            => _context.Send<int>(new AskNumberScriptMessage(this, text, def, min, max)).Result;
+            => Context.Send<int>(new AskNumberScriptMessage(this, text, def, min, max)).Result;
 
         public int AskMenu(string text, IDictionary<int, string> options)
-            => _context.Send<int>(new AskMenuScriptMessage(
+            => Context.Send<int>(new AskMenuScriptMessage(
                 this,
                 text + "\r\n#b" + string.Join("\r\n", options.Select(p => "#L" + p.Key + "#" + p.Value + "#l"))
             )).Result;
 
         public byte AskAvatar(string text, int[] styles)
-            => _context.Send<byte>(new AskAvatarScriptMessage(this, text, styles)).Result;
+            => Context.Send<byte>(new AskAvatarScriptMessage(this, text, styles)).Result;
 
         public byte AskMembershopAvatar(string text, int[] styles)
-            => _context.Send<byte>(new AskMembershopAvatarScriptMessage(this, text, styles)).Result;
+            => Context.Send<byte>(new AskMembershopAvatarScriptMessage(this, text, styles)).Result;
 
         public int AskSlideMenu(IDictionary<int, string> options, int type = 0, int selected = 0)
-            => _context.Send<int>(new AskMenuScriptMessage(
+            => Context.Send<int>(new AskMenuScriptMessage(
                 this,
                 string.Join("\r\n", options.Select(p => "#L" + p.Key + "#" + p.Value + "#l"))
             )).Result;
@@ -74,7 +74,7 @@ namespace Edelstein.Service.Game.Conversations
         public string AskQuiz(
             string title = "", string quizText = "", string hintText = "",
             short minInput = 0, short maxInput = short.MaxValue, int remain = 15)
-            => _context.Send<string>(new AskQuizScriptMessage(
+            => Context.Send<string>(new AskQuizScriptMessage(
                 this,
                 title, quizText, hintText,
                 minInput, maxInput, remain
@@ -101,7 +101,7 @@ namespace Edelstein.Service.Game.Conversations
 
         public string AskSpeedQuiz(SpeedQuizType type, int answer, int correct = 0,
             int remain = 1, int remainTime = 15)
-            => _context.Send<string>(new AskSpeedQuizScriptMessage(
+            => Context.Send<string>(new AskSpeedQuizScriptMessage(
                 this,
                 type, answer, correct,
                 remain, remainTime

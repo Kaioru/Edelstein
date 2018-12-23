@@ -37,6 +37,10 @@ namespace Edelstein.Service.Game
                 UserData.RegisterType<Speaker>();
                 UserData.RegisterType<QuizSpeaker>();
                 UserData.RegisterType<SpeedQuizSpeaker>();
+
+                UserData.RegisterType<FieldSpeaker>();
+                UserData.RegisterType<FieldUserSpeaker>();
+                UserData.RegisterType<FieldNPCSpeaker>();
                 return new LuaScriptConversationManager(path);
             }).As<IScriptConversationManager>();
             return bootstrap;

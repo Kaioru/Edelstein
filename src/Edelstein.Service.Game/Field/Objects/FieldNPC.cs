@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
@@ -14,8 +15,13 @@ namespace Edelstein.Service.Game.Field.Objects
         public int RX0 { get; set; }
         public int RX1 { get; set; }
 
+        public IDictionary<string, string> Registry { get; }
+
         public FieldNPC(NPCTemplate template)
-            => Template = template;
+        {
+            Template = template;
+            Registry = new Dictionary<string, string>();
+        }
 
         public override IPacket GetEnterFieldPacket()
         {
