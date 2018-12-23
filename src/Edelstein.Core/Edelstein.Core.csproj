@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <PackageReference Include="Autofac" Version="4.8.1" />
+      <PackageReference Include="CommandLineParser" Version="2.3.0" />
       <PackageReference Include="Foundatio" Version="7.1.1845" />
       <PackageReference Include="Foundatio.Redis" Version="7.1.1608" />
       <PackageReference Include="Humanizer" Version="2.5.16" />

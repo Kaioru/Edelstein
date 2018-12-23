@@ -1,10 +1,10 @@
 namespace Edelstein.Service.Game.Conversations.Messages
 {
-    public class AskMembershopAvatarMessage : AskAvatarMessage
+    public class AskMembershopAvatarScriptMessage : AskAvatarScriptMessage
     {
         public override ScriptMessageType Type => ScriptMessageType.AskMembershopAvatar;
         
-        public AskMembershopAvatarMessage(
+        public AskMembershopAvatarScriptMessage(
             ISpeaker speaker,
             string text,
             int[] styles

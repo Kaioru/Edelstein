@@ -2,12 +2,12 @@ using Edelstein.Network.Packet;
 
 namespace Edelstein.Service.Game.Conversations
 {
-    public abstract class AbstractMessage : IMessage
+    public abstract class AbstractScriptMessage : IScriptMessage
     {
         public abstract ScriptMessageType Type { get; }
         public ISpeaker Speaker { get; }
 
-        public AbstractMessage(ISpeaker speaker)
+        public AbstractScriptMessage(ISpeaker speaker)
             => Speaker = speaker;
 
         public void Encode(IPacket packet)

@@ -36,37 +36,37 @@ namespace Edelstein.Service.Game.Conversations
         }
 
         public byte Say(string text = "", bool prev = false, bool next = false)
-            => _context.Send<byte>(new SayMessage(this, text, prev, next)).Result;
+            => _context.Send<byte>(new SayScriptMessage(this, text, prev, next)).Result;
 
         public bool AskYesNo(string text = "")
-            => _context.Send<byte>(new AskYesNoMessage(this, text)).Result > 0;
+            => _context.Send<byte>(new AskYesNoScriptMessage(this, text)).Result > 0;
 
         public bool AskAccept(string text = "")
-            => _context.Send<byte>(new AskAcceptMessage(this, text)).Result > 0;
+            => _context.Send<byte>(new AskAcceptScriptMessage(this, text)).Result > 0;
 
         public string AskText(string text = "", string def = "", short lenMin = 0, short lenMax = short.MaxValue)
-            => _context.Send<string>(new AskTextMessage(this, text, def, lenMin, lenMax)).Result;
+            => _context.Send<string>(new AskTextScriptMessage(this, text, def, lenMin, lenMax)).Result;
 
         public string AskBoxText(string text = "", string def = "", short cols = 24, short rows = 4)
-            => _context.Send<string>(new AskBoxTextMessage(this, text, def, cols, rows)).Result;
+            => _context.Send<string>(new AskBoxTextScriptMessage(this, text, def, cols, rows)).Result;
 
         public int AskNumber(string text = "", int def = 0, int min = int.MinValue, int max = int.MaxValue)
-            => _context.Send<int>(new AskNumberMessage(this, text, def, min, max)).Result;
+            => _context.Send<int>(new AskNumberScriptMessage(this, text, def, min, max)).Result;
 
         public int AskMenu(string text, IDictionary<int, string> options)
-            => _context.Send<int>(new AskMenuMessage(
+            => _context.Send<int>(new AskMenuScriptMessage(
                 this,
                 text + "\r\n#b" + string.Join("\r\n", options.Select(p => "#L" + p.Key + "#" + p.Value + "#l"))
             )).Result;
 
         public byte AskAvatar(string text, int[] styles)
-            => _context.Send<byte>(new AskAvatarMessage(this, text, styles)).Result;
+            => _context.Send<byte>(new AskAvatarScriptMessage(this, text, styles)).Result;
 
         public byte AskMembershopAvatar(string text, int[] styles)
-            => _context.Send<byte>(new AskMembershopAvatarMessage(this, text, styles)).Result;
+            => _context.Send<byte>(new AskMembershopAvatarScriptMessage(this, text, styles)).Result;
 
         public int AskSlideMenu(IDictionary<int, string> options, int type = 0, int selected = 0)
-            => _context.Send<int>(new AskMenuMessage(
+            => _context.Send<int>(new AskMenuScriptMessage(
                 this,
                 string.Join("\r\n", options.Select(p => "#L" + p.Key + "#" + p.Value + "#l"))
             )).Result;
@@ -74,7 +74,7 @@ namespace Edelstein.Service.Game.Conversations
         public string AskQuiz(
             string title = "", string quizText = "", string hintText = "",
             short minInput = 0, short maxInput = short.MaxValue, int remain = 15)
-            => _context.Send<string>(new AskQuizMessage(
+            => _context.Send<string>(new AskQuizScriptMessage(
                 this,
                 title, quizText, hintText,
                 minInput, maxInput, remain
@@ -101,7 +101,7 @@ namespace Edelstein.Service.Game.Conversations
 
         public string AskSpeedQuiz(SpeedQuizType type, int answer, int correct = 0,
             int remain = 1, int remainTime = 15)
-            => _context.Send<string>(new AskSpeedQuizMessage(
+            => _context.Send<string>(new AskSpeedQuizScriptMessage(
                 this,
                 type, answer, correct,
                 remain, remainTime

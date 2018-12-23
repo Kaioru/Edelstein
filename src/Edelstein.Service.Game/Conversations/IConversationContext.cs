@@ -10,9 +10,9 @@ namespace Edelstein.Service.Game.Conversations
     {
         ISocket Socket { get; }
         CancellationTokenSource TokenSource { get; }
-        IMessage PreviousMessage { get; }
+        IScriptMessage PreviousScriptMessage { get; }
         AsyncProducerConsumerQueue<object> Responses { get; }
 
-        Task<T> Send<T>(IMessage message);
+        Task<T> Send<T>(IScriptMessage scriptMessage);
     }
 }

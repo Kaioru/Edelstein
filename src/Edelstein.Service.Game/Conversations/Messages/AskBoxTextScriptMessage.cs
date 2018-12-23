@@ -2,7 +2,7 @@ using Edelstein.Network.Packet;
 
 namespace Edelstein.Service.Game.Conversations.Messages
 {
-    public class AskBoxTextMessage : AbstractMessage
+    public class AskBoxTextScriptMessage : AbstractScriptMessage
     {
         public override ScriptMessageType Type => ScriptMessageType.AskBoxText;
         private readonly string _text;
@@ -10,7 +10,7 @@ namespace Edelstein.Service.Game.Conversations.Messages
         private readonly short _cols;
         private readonly short _rows;
 
-        public AskBoxTextMessage(
+        public AskBoxTextScriptMessage(
             ISpeaker speaker,
             string text,
             string def,

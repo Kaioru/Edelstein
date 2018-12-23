@@ -2,7 +2,7 @@ using Edelstein.Network.Packet;
 
 namespace Edelstein.Service.Game.Conversations.Messages
 {
-    public class AskNumberMessage : AbstractMessage
+    public class AskNumberScriptMessage : AbstractScriptMessage
     {
         public override ScriptMessageType Type => ScriptMessageType.AskNumber;
         private readonly string _text;
@@ -10,7 +10,7 @@ namespace Edelstein.Service.Game.Conversations.Messages
         private readonly int _min;
         private readonly int _max;
 
-        public AskNumberMessage(
+        public AskNumberScriptMessage(
             ISpeaker speaker,
             string text,
             int def,

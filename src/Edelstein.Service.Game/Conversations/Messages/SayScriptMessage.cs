@@ -2,14 +2,14 @@ using Edelstein.Network.Packet;
 
 namespace Edelstein.Service.Game.Conversations.Messages
 {
-    public class SayMessage : AbstractMessage
+    public class SayScriptMessage : AbstractScriptMessage
     {
         public override ScriptMessageType Type => ScriptMessageType.Say;
         private readonly string _text;
         private readonly bool _prev;
         private readonly bool _next;
 
-        public SayMessage(
+        public SayScriptMessage(
             ISpeaker speaker,
             string text,
             bool prev,

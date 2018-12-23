@@ -1,18 +1,21 @@
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using Edelstein.Core.Commands;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities;
 using Edelstein.Network.Packet;
 using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Field.User.Messages;
+using Edelstein.Service.Game.Field.User.Messages.Types;
 using Edelstein.Service.Game.Field.User.Stats;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Sockets;
 
 namespace Edelstein.Service.Game.Field.User
 {
-    public partial class FieldUser : AbstractFieldLife
+    public partial class FieldUser : AbstractFieldLife, ICommandSender
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
         public override FieldObjType Type => FieldObjType.User;
@@ -33,6 +36,18 @@ namespace Edelstein.Service.Game.Field.User
             BasicStat = new BasicStat(this);
             ForcedStat = new ForcedStat();
             ValidateStat();
+        }
+
+        public Task Message(string text)
+            => Message(new SystemMessage(text));
+
+        public Task Message(IMessage message)
+        {
+            using (var p = new Packet(SendPacketOperations.Message))
+            {
+                message.Encode(p);
+                return SendPacket(p);
+            }
         }
 
         public async Task<T> Prompt<T>(Func<ISpeaker, ISpeaker, T> func,

@@ -2,7 +2,7 @@ using Edelstein.Network.Packet;
 
 namespace Edelstein.Service.Game.Conversations
 {
-    public interface IMessage
+    public interface IScriptMessage
     {
         ScriptMessageType Type { get; }
         ISpeaker Speaker { get; }

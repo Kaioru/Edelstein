@@ -2,7 +2,7 @@ using Edelstein.Network.Packet;
 
 namespace Edelstein.Service.Game.Conversations.Messages
 {
-    public class AskSpeedQuizMessage : AbstractMessage
+    public class AskSpeedQuizScriptMessage : AbstractScriptMessage
     {
         public override ScriptMessageType Type => ScriptMessageType.AskSpeedQuiz;
         private readonly SpeedQuizType _type;
@@ -11,7 +11,7 @@ namespace Edelstein.Service.Game.Conversations.Messages
         private readonly int _remain;
         private readonly int _remainTime;
 
-        public AskSpeedQuizMessage(
+        public AskSpeedQuizScriptMessage(
             ISpeaker speaker,
             SpeedQuizType type,
             int answer,

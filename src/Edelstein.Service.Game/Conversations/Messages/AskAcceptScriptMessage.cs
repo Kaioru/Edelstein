@@ -2,12 +2,12 @@ using Edelstein.Network.Packet;
 
 namespace Edelstein.Service.Game.Conversations.Messages
 {
-    public class AskAcceptMessage : AbstractMessage
+    public class AskAcceptScriptMessage : AbstractScriptMessage
     {
         public override ScriptMessageType Type => ScriptMessageType.AskAccept;
         private readonly string _text;
 
-        public AskAcceptMessage(
+        public AskAcceptScriptMessage(
             ISpeaker speaker,
             string text
         ) : base(speaker)

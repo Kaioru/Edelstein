@@ -3,13 +3,13 @@ using MoreLinq;
 
 namespace Edelstein.Service.Game.Conversations.Messages
 {
-    public class AskAvatarMessage : AbstractMessage
+    public class AskAvatarScriptMessage : AbstractScriptMessage
     {
         public override ScriptMessageType Type => ScriptMessageType.AskAvatar;
         private readonly string _text;
         private readonly int[] _styles;
 
-        public AskAvatarMessage(
+        public AskAvatarScriptMessage(
             ISpeaker speaker,
             string text,
             int[] styles

@@ -232,7 +232,7 @@ namespace Edelstein.Service.Game.Field.User
             if (ConversationContext == null) return;
             var messageType = (ScriptMessageType) packet.Decode<byte>();
 
-            if (messageType != ConversationContext.PreviousMessage.Type) return;
+            if (messageType != ConversationContext.PreviousScriptMessage.Type) return;
             var answers = ConversationContext.Responses;
 
             if (messageType == ScriptMessageType.AskQuiz ||

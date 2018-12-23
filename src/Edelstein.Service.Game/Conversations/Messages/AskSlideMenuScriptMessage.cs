@@ -2,14 +2,14 @@ using Edelstein.Network.Packet;
 
 namespace Edelstein.Service.Game.Conversations.Messages
 {
-    public class AskSlideMenuMessage : AbstractMessage
+    public class AskSlideMenuScriptMessage : AbstractScriptMessage
     {
         public override ScriptMessageType Type => ScriptMessageType.AskSlideMenu;
         private readonly int _type;
         private readonly int _selected;
         private readonly string _text;
 
-        public AskSlideMenuMessage(
+        public AskSlideMenuScriptMessage(
             ISpeaker speaker,
             int type,
             int selected,
