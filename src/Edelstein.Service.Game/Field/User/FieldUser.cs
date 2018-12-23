@@ -35,23 +35,24 @@ namespace Edelstein.Service.Game.Field.User
             ValidateStat();
         }
 
-        public async Task<T> Prompt<T>(Func<ISpeaker, ISpeaker, T> func)
+        public async Task<T> Prompt<T>(Func<ISpeaker, ISpeaker, T> func,
+            ScriptMessageParam param = ScriptMessageParam.NoESC)
         {
             var result = default(T);
 
             await Prompt(new Action<ISpeaker, ISpeaker>(
                 (self, target) => result = func.Invoke(self, target)
-            ));
+            ), param);
             return result;
         }
 
-        public Task Prompt(Action<ISpeaker, ISpeaker> action)
+        public Task Prompt(Action<ISpeaker, ISpeaker> action, ScriptMessageParam param = 0)
         {
             var context = new ConversationContext(Socket);
             var conversation = new Conversation(
                 context,
-                new Speaker(context),
-                new Speaker(context, 9010000, ScriptMessageParam.NPCReplacedByUser),
+                new Speaker(context, param: param),
+                new Speaker(context, 9010000, param | ScriptMessageParam.NPCReplacedByUser),
                 action
             );
             return Converse(conversation);
