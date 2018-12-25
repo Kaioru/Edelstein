@@ -9,7 +9,7 @@ namespace Edelstein.Service.Game.Conversations
         ScriptMessageParam Param { get; }
 
         byte Say(string[] text, int current = 0);
-        byte Say(string text = "", bool prev = false, bool next = false);
+        byte Say(string text = "", bool prev = false, bool next = true);
         bool AskYesNo(string text = "");
         bool AskAccept(string text = "");
         string AskText(string text = "", string def = "", short lenMin = 0, short lenMax = short.MaxValue);

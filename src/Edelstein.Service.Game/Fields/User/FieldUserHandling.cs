@@ -287,8 +287,13 @@ namespace Edelstein.Service.Game.Fields.User
             var answer = packet.Decode<byte>();
 
             if (
-                messageType != ScriptMessageType.Say && answer == byte.MinValue ||
-                messageType == ScriptMessageType.Say && answer == byte.MaxValue
+                messageType != ScriptMessageType.Say &&
+                messageType != ScriptMessageType.AskYesNo &&
+                messageType != ScriptMessageType.AskAccept &&
+                answer == byte.MinValue ||
+                (messageType == ScriptMessageType.Say ||
+                 messageType == ScriptMessageType.AskYesNo ||
+                 messageType == ScriptMessageType.AskAccept) && answer == byte.MaxValue
             )
             {
                 ConversationContext.TokenSource.Cancel();

@@ -128,6 +128,12 @@ namespace Edelstein.Service.Game.Conversations
             set => Obj.ModifyStats(s => s.TempEXP = value).Wait();
         }
 
+        public int Field
+        {
+            get => Obj.Field.ID;
+            set => TransferField(value);
+        }
+
         public bool TransferField(int id, string portal = "")
         {
             var fieldManager = Obj.Socket.WvsGame.FieldManager;

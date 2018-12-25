@@ -35,7 +35,7 @@ namespace Edelstein.Service.Game.Conversations
             return result;
         }
 
-        public byte Say(string text = "", bool prev = false, bool next = false)
+        public byte Say(string text = "", bool prev = false, bool next = true)
             => Context.Send<byte>(new SayScriptMessage(this, text, prev, next)).Result;
 
         public bool AskYesNo(string text = "")
