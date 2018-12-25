@@ -17,7 +17,7 @@ namespace Edelstein.Provider.Templates
         }
 
         public ITemplate Get(int id)
-            => Templates[id];
+            => !Templates.ContainsKey(id) ? null : Templates[id];
 
         public IEnumerable<ITemplate> GetAll()
             => Templates.Values;

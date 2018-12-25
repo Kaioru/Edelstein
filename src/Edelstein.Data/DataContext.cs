@@ -31,6 +31,13 @@ namespace Edelstein.Data
                 .WithOne(c => c.Data)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<AccountData>()
+                .HasOne(a => a.Trunk);
+            modelBuilder.Entity<ItemTrunk>()
+                .HasMany(i => i.Items)
+                .WithOne(i => i.ItemTrunk)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Character>()
                 .HasMany(c => c.Inventories)
                 .WithOne()
@@ -49,6 +56,9 @@ namespace Edelstein.Data
             {
                 var existing = Characters
                     .AsNoTracking()
+                    .Include(c => c.Data)
+                    .ThenInclude(c => c.Trunk)
+                    .ThenInclude(c => c.Items)
                     .Include(c => c.Inventories)
                     .ThenInclude(c => c.Items)
                     .FirstOrDefault(c => c.ID == character.ID);
@@ -62,6 +72,15 @@ namespace Edelstein.Data
                     {
                         if (currentItems.All(i => i.ID != existingItem.ID))
                             Entry(existingItem).State = EntityState.Deleted;
+                    }
+
+                    var existingTrunkItems = existing.Data.Trunk.Items.ToList();
+                    var currentTrunkItems = character.Data.Trunk.Items.ToList();
+
+                    foreach (var existingTrunkItem in existingTrunkItems)
+                    {
+                        if (currentTrunkItems.All(i => i.ID != existingTrunkItem.ID))
+                            Entry(existingTrunkItem).State = EntityState.Deleted;
                     }
                 }
             }

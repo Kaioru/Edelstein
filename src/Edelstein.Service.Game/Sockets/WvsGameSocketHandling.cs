@@ -31,6 +31,9 @@ namespace Edelstein.Service.Game.Sockets
                 var character = db.Characters
                     .Include(c => c.Data)
                     .ThenInclude(a => a.Account)
+                    .Include(c => c.Data)
+                    .ThenInclude(c => c.Trunk)
+                    .ThenInclude(c => c.Items)
                     .Include(c => c.Inventories)
                     .ThenInclude(c => c.Items)
                     .Single(c => c.ID == characterID);

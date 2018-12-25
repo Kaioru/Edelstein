@@ -39,10 +39,14 @@ namespace Edelstein.Provider.Templates
         }
 
         public T Get<T>(int id)
-            => (T) _dictionary[typeof(T)].Get(id);
+            => _dictionary.ContainsKey(typeof(T))
+                ? (T) _dictionary[typeof(T)].Get(id)
+                : default(T);
 
         public IEnumerable<T> GetAll<T>()
-            => _dictionary[typeof(T)].GetAll().OfType<T>();
+            => _dictionary.ContainsKey(typeof(T))
+                ? _dictionary[typeof(T)].GetAll().OfType<T>()
+                : new List<T>();
 
         public Task<T> GetAsync<T>(int id)
             => Task.Run(() => Get<T>(id));

@@ -2,7 +2,6 @@
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Startup;
 using Edelstein.Service.Game.Conversations;
-using Edelstein.Service.Game.Conversations.Messages;
 using Edelstein.Service.Game.Conversations.Scripts;
 using Edelstein.Service.Game.Conversations.Scripts.Lua;
 using Microsoft.Extensions.Configuration;

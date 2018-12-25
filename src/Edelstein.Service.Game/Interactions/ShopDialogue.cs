@@ -14,31 +14,35 @@ namespace Edelstein.Service.Game.Interactions
 {
     public class ShopDialogue : IDialogue
     {
+        private readonly FieldUser _user;
         private readonly NPCShopTemplate _template;
 
-        public ShopDialogue(NPCShopTemplate template)
-            => _template = template;
+        public ShopDialogue(FieldUser user, NPCShopTemplate template)
+        {
+            _user = user;
+            _template = template;
+        }
 
-        public Task OnPacket(FieldUser user, RecvPacketOperations operation, IPacket packet)
+        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
         {
             var type = (ShopRequest) packet.Decode<byte>();
 
             switch (type)
             {
                 case ShopRequest.Buy:
-                    return OnShopBuyRequest(user, packet);
+                    return OnShopBuyRequest(packet);
                 case ShopRequest.Sell:
-                    return OnShopSellRequest(user, packet);
+                    return OnShopSellRequest(packet);
                 case ShopRequest.Recharge:
-                    return OnShopRechargeRequest(user, packet);
+                    return OnShopRechargeRequest(packet);
                 case ShopRequest.Close:
-                    return user.Interact(this, true);
+                    return _user.Interact(this, true);
             }
 
             return Task.CompletedTask;
         }
 
-        private async Task OnShopBuyRequest(FieldUser user, IPacket packet)
+        private async Task OnShopBuyRequest(IPacket packet)
         {
             var pos = packet.Decode<short>();
             var templateID = packet.Decode<int>();
@@ -58,16 +62,16 @@ namespace Edelstein.Service.Game.Interactions
                     if (shopItem.Quantity > 1) count = 1;
                     if (count > shopItem.MaxPerSlot) count = shopItem.MaxPerSlot;
                     if (shopItem.Price > 0)
-                        if (user.Character.Money < shopItem.Price * count)
+                        if (_user.Character.Money < shopItem.Price * count)
                             result = ShopResult.BuyNoMoney;
                     if (shopItem.TokenTemplateID > 0)
-                        if (user.Character.GetItemCount(shopItem.TokenTemplateID) <
+                        if (_user.Character.GetItemCount(shopItem.TokenTemplateID) <
                             shopItem.TokenPrice * count)
                             result = ShopResult.BuyNoToken;
                     if (shopItem.Stock == 0) result = ShopResult.BuyNoStock;
-                    if (user.Character.Level < shopItem.LevelLimited) result = ShopResult.LimitLevel_Less;
+                    if (_user.Character.Level < shopItem.LevelLimited) result = ShopResult.LimitLevel_Less;
 
-                    var templates = user.Socket.WvsGame.TemplateManager;
+                    var templates = _user.Socket.WvsGame.TemplateManager;
                     var item = templates.Get<ItemTemplate>(shopItem.TemplateID).ToItemSlot();
 
                     if (item is ItemSlotBundle bundle)
@@ -75,14 +79,14 @@ namespace Edelstein.Service.Game.Interactions
                             bundle.Number = bundle.MaxNumber;
                         else
                             bundle.Number = (short) (count * shopItem.Quantity);
-                    if (!user.Character.HasSlotFor(item)) result = ShopResult.BuyUnknown;
+                    if (!_user.Character.HasSlotFor(item)) result = ShopResult.BuyUnknown;
 
                     if (result == ShopResult.BuySuccess)
                     {
                         if (shopItem.Price > 0)
-                            await user.ModifyStats(s => s.Money -= shopItem.Price * count);
+                            await _user.ModifyStats(s => s.Money -= shopItem.Price * count);
                         if (shopItem.TokenTemplateID > 0)
-                            await user.ModifyInventory(i => i.Remove(
+                            await _user.ModifyInventory(i => i.Remove(
                                 shopItem.TokenTemplateID,
                                 shopItem.TokenPrice * count
                             ));
@@ -91,22 +95,22 @@ namespace Edelstein.Service.Game.Interactions
                         if (shopItem.ItemPeriod > 0)
                             item.DateExpire = DateTime.Now.AddMinutes(shopItem.ItemPeriod);
 
-                        await user.ModifyInventory(i => i.Add(item));
+                        await _user.ModifyInventory(i => i.Add(item));
                     }
                 }
                 else result = ShopResult.CantBuyAnymore;
 
                 p.Encode<byte>((byte) result);
-                await user.SendPacket(p);
+                await _user.SendPacket(p);
             }
         }
 
-        private async Task OnShopSellRequest(FieldUser user, IPacket packet)
+        private async Task OnShopSellRequest(IPacket packet)
         {
             var pos = packet.Decode<short>();
             var templateID = packet.Decode<int>();
             var count = packet.Decode<short>();
-            var inventory = user.Character.GetInventory((ItemInventoryType) (templateID / 1000000));
+            var inventory = _user.Character.GetInventory((ItemInventoryType) (templateID / 1000000));
             var item = inventory.Items.FirstOrDefault(i => i.Position == pos);
 
             using (var p = new Packet(SendPacketOperations.ShopResult))
@@ -115,9 +119,9 @@ namespace Edelstein.Service.Game.Interactions
 
                 if (item != null)
                 {
-                    await user.ModifyInventory(i => i.Remove(item, count));
+                    await _user.ModifyInventory(i => i.Remove(item, count));
 
-                    var templates = user.Socket.WvsGame.TemplateManager;
+                    var templates = _user.Socket.WvsGame.TemplateManager;
                     var template = templates.Get<ItemTemplate>(item.TemplateID);
 
                     var price = template.SellPrice;
@@ -127,19 +131,19 @@ namespace Edelstein.Service.Game.Interactions
                                         (template as ItemBundleTemplate)?.UnitPrice ?? 0);
                     else price *= count;
 
-                    await user.ModifyStats(s => s.Money += price);
+                    await _user.ModifyStats(s => s.Money += price);
                 }
                 else result = ShopResult.SellUnkonwn;
 
                 p.Encode<byte>((byte) result);
-                await user.SendPacket(p);
+                await _user.SendPacket(p);
             }
         }
 
-        private async Task OnShopRechargeRequest(FieldUser user, IPacket packet)
+        private async Task OnShopRechargeRequest(IPacket packet)
         {
             var pos = packet.Decode<short>();
-            var inventory = user.Character.GetInventory(ItemInventoryType.Use);
+            var inventory = _user.Character.GetInventory(ItemInventoryType.Use);
             var item = inventory.Items.FirstOrDefault(i => i.Position == pos);
             var shopItem = _template.Items.Values
                 .Where(i => i.Price <= 0 && i.TokenPrice <= 0)
@@ -154,7 +158,7 @@ namespace Edelstein.Service.Game.Interactions
                 {
                     if (item is ItemSlotBundle bundle)
                     {
-                        var templates = user.Socket.WvsGame.TemplateManager;
+                        var templates = _user.Socket.WvsGame.TemplateManager;
                         var template = templates.Get<ItemTemplate>(item.TemplateID);
                         var count = bundle.MaxNumber - bundle.Number;
                         var price = (int) (
@@ -165,22 +169,22 @@ namespace Edelstein.Service.Game.Interactions
                         result = ShopResult.RechargeSuccess;
 
                         if (price > 0)
-                            if (user.Character.Money < price)
+                            if (_user.Character.Money < price)
                                 result = ShopResult.RechargeNoMoney;
                         if (count <= 0) result = ShopResult.RechargeUnknown;
 
                         if (result == ShopResult.RechargeSuccess)
                         {
                             bundle.Number = bundle.MaxNumber;
-                            await user.ModifyStats(s => s.Money -= price);
-                            await user.ModifyInventory(i => i.UpdateQuantity(bundle));
+                            await _user.ModifyStats(s => s.Money -= price);
+                            await _user.ModifyInventory(i => i.UpdateQuantity(bundle));
                         }
                     }
                 }
                 else result = ShopResult.RechargeIncorrectRequest;
 
                 p.Encode<byte>((byte) result);
-                await user.SendPacket(p);
+                await _user.SendPacket(p);
             }
         }
 

@@ -151,6 +151,7 @@ namespace Edelstein.Core.Inventories
             var inventoryItems = inventory.Items;
 
             item.ID = 0;
+            item.ItemInventory = null;
 
             if (item is ItemSlotBundle bundle &&
                 !ItemConstants.IsRechargeableItem(bundle.TemplateID))

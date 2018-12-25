@@ -38,7 +38,8 @@ namespace Edelstein.Service.Game.Field.User
                 case RecvPacketOperations.UserScriptMessageAnswer:
                     return OnUserScriptMessageAnswer(packet);
                 case RecvPacketOperations.UserShopRequest:
-                    return Dialogue?.OnPacket(this, operation, packet);
+                case RecvPacketOperations.UserTrunkRequest:
+                    return Dialogue?.OnPacket(operation, packet);
                 case RecvPacketOperations.UserGatherItemRequest:
                     return OnUserGatherItemRequest(packet);
                 case RecvPacketOperations.UserSortItemRequest:
@@ -233,12 +234,25 @@ namespace Edelstein.Service.Game.Field.User
             if (npc == null) return;
 
             var template = npc.Template;
+
+            if (template.Trunk)
+            {
+                await Interact(new TrunkDialogue(
+                    template.ID,
+                    this,
+                    Character.Data.Trunk,
+                    template.TrunkGet,
+                    template.TrunkPut
+                ));
+                return;
+            }
+
             var shop = Socket.WvsGame.TemplateManager.Get<NPCShopTemplate>(template.ID);
             var script = template.Scripts.FirstOrDefault()?.Script;
 
             if (shop != null)
             {
-                await Interact(new ShopDialogue(shop));
+                await Interact(new ShopDialogue(this, shop));
                 return;
             }
 

@@ -18,8 +18,13 @@ namespace Edelstein.Provider.Templates
 
         public ITemplate Get(int id)
         {
-            if (!Templates.ContainsKey(id))
-                Templates[id] = Load(id).Result;
+            if (Templates.ContainsKey(id)) return Templates[id];
+
+            var res = Load(id).Result;
+
+            if (res == null) return null;
+            Templates[id] = res;
+
             return Templates[id];
         }
 
