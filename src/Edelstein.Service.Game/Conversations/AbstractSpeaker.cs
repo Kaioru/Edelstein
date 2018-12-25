@@ -56,7 +56,8 @@ namespace Edelstein.Service.Game.Conversations
         public int AskMenu(string text, IDictionary<int, string> options)
             => Context.Send<int>(new AskMenuScriptMessage(
                 this,
-                text + "\r\n#b" + string.Join("\r\n", options.Select(p => "#L" + p.Key + "#" + p.Value + "#l"))
+                text,
+                options
             )).Result;
 
         public byte AskAvatar(string text, int[] styles)
@@ -66,9 +67,11 @@ namespace Edelstein.Service.Game.Conversations
             => Context.Send<byte>(new AskMembershopAvatarScriptMessage(this, text, styles)).Result;
 
         public int AskSlideMenu(IDictionary<int, string> options, int type = 0, int selected = 0)
-            => Context.Send<int>(new AskMenuScriptMessage(
+            => Context.Send<int>(new AskSlideMenuScriptMessage(
                 this,
-                string.Join("\r\n", options.Select(p => "#L" + p.Key + "#" + p.Value + "#l"))
+                type,
+                selected,
+                options
             )).Result;
 
         public string AskQuiz(
