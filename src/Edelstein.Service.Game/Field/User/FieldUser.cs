@@ -10,6 +10,7 @@ using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Field.User.Messages;
 using Edelstein.Service.Game.Field.User.Messages.Types;
 using Edelstein.Service.Game.Field.User.Stats;
+using Edelstein.Service.Game.Interactions;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Sockets;
 
@@ -27,6 +28,7 @@ namespace Edelstein.Service.Game.Field.User
         public ForcedStat ForcedStat { get; }
 
         public IConversationContext ConversationContext { get; private set; }
+        public IDialogue Dialogue { get; private set; }
 
         public FieldUser(WvsGameSocket socket, Character character)
         {
@@ -95,6 +97,20 @@ namespace Edelstein.Service.Game.Field.User
                     ConversationContext = null;
                     await ModifyStats(exclRequest: true);
                 });
+        }
+
+        public async Task Interact(IDialogue dialogue, bool close = false)
+        {
+            if (close)
+            {
+                Dialogue = null;
+                return;
+            }
+
+            if (Dialogue != null) return;
+
+            Dialogue = dialogue;
+            await SendPacket(Dialogue.GetStartDialoguePacket());
         }
 
         public IPacket GetSetFieldPacket()

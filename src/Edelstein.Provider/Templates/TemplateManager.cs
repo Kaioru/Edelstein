@@ -10,6 +10,7 @@ using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Item.Option;
 using Edelstein.Provider.Templates.Item.Set;
 using Edelstein.Provider.Templates.NPC;
+using Edelstein.Provider.Templates.Server.NPCShop;
 using Edelstein.Provider.Templates.String;
 
 namespace Edelstein.Provider.Templates
@@ -29,8 +30,11 @@ namespace Edelstein.Provider.Templates
                 [typeof(ItemTemplate)] = new ItemTemplateCollection(collection),
                 [typeof(FieldTemplate)] = new FieldTemplateCollection(collection),
                 [typeof(NPCTemplate)] = new NPCTemplateCollection(collection),
+
                 [typeof(ItemStringTemplate)] = new ItemStringTemplateCollection(collection),
-                [typeof(FieldStringTemplate)] = new FieldStringTemplateCollection(collection)
+                [typeof(FieldStringTemplate)] = new FieldStringTemplateCollection(collection),
+
+                [typeof(NPCShopTemplate)] = new NPCShopTemplateCollection(collection)
             };
         }
 

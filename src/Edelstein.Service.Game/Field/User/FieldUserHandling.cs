@@ -6,9 +6,11 @@ using Edelstein.Core.Services.Info;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Field;
+using Edelstein.Provider.Templates.Server.NPCShop;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Field.Objects;
 using Edelstein.Service.Game.Field.Objects.Drop;
+using Edelstein.Service.Game.Interactions;
 using Edelstein.Service.Game.Logging;
 
 namespace Edelstein.Service.Game.Field.User
@@ -35,6 +37,8 @@ namespace Edelstein.Service.Game.Field.User
                     return OnUserSelectNPC(packet);
                 case RecvPacketOperations.UserScriptMessageAnswer:
                     return OnUserScriptMessageAnswer(packet);
+                case RecvPacketOperations.UserShopRequest:
+                    return Dialogue?.OnPacket(this, operation, packet);
                 case RecvPacketOperations.UserGatherItemRequest:
                     return OnUserGatherItemRequest(packet);
                 case RecvPacketOperations.UserSortItemRequest:
@@ -229,7 +233,14 @@ namespace Edelstein.Service.Game.Field.User
             if (npc == null) return;
 
             var template = npc.Template;
+            var shop = Socket.WvsGame.TemplateManager.Get<NPCShopTemplate>(template.ID);
             var script = template.Scripts.FirstOrDefault()?.Script;
+
+            if (shop != null)
+            {
+                await Interact(new ShopDialogue(shop));
+                return;
+            }
 
             if (script == null) return;
 
