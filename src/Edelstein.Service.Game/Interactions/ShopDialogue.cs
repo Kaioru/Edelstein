@@ -44,7 +44,7 @@ namespace Edelstein.Service.Game.Interactions
             var templateID = packet.Decode<int>();
             var count = packet.Decode<short>();
             var shopItem = _template.Items.Values
-                .Where(i => i.Price > 0)
+                .Where(i => i.Price > 0 || i.TokenPrice > 0)
                 .OrderBy(i => i.ID)
                 .ToList()[pos];
 
@@ -142,7 +142,7 @@ namespace Edelstein.Service.Game.Interactions
             var inventory = user.Character.GetInventory(ItemInventoryType.Use);
             var item = inventory.Items.FirstOrDefault(i => i.Position == pos);
             var shopItem = _template.Items.Values
-                .Where(i => i.Price <= 0)
+                .Where(i => i.Price <= 0 && i.TokenPrice <= 0)
                 .OrderBy(i => i.ID)
                 .FirstOrDefault(i => i.TemplateID == item?.TemplateID);
 
@@ -195,22 +195,21 @@ namespace Edelstein.Service.Game.Interactions
                     .ToList();
 
                 p.Encode<short>((short) items.Count);
-                items
-                    .ForEach(i =>
-                    {
-                        p.Encode<int>(i.TemplateID);
-                        p.Encode<int>(i.Price);
-                        p.Encode<byte>(i.DiscountRate);
-                        p.Encode<int>(i.TokenTemplateID);
-                        p.Encode<int>(i.TokenPrice);
-                        p.Encode<int>(i.ItemPeriod);
-                        p.Encode<int>(i.LevelLimited);
+                items.ForEach(i =>
+                {
+                    p.Encode<int>(i.TemplateID);
+                    p.Encode<int>(i.Price);
+                    p.Encode<byte>(i.DiscountRate);
+                    p.Encode<int>(i.TokenTemplateID);
+                    p.Encode<int>(i.TokenPrice);
+                    p.Encode<int>(i.ItemPeriod);
+                    p.Encode<int>(i.LevelLimited);
 
-                        if (!ItemConstants.IsRechargeableItem(i.TemplateID)) p.Encode<short>(i.Quantity);
-                        else p.Encode<double>(i.UnitPrice);
+                    if (!ItemConstants.IsRechargeableItem(i.TemplateID)) p.Encode<short>(i.Quantity);
+                    else p.Encode<double>(i.UnitPrice);
 
-                        p.Encode<short>(i.MaxPerSlot);
-                    });
+                    p.Encode<short>(i.MaxPerSlot);
+                });
                 return p;
             }
         }
