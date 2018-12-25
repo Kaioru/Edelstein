@@ -25,7 +25,11 @@ namespace Edelstein.Service.Game.Fields
             {
                 if (!_fields.ContainsKey(id))
                 {
-                    var field = new Field(_templateManager.Get<FieldTemplate>(id));
+                    var template = _templateManager.Get<FieldTemplate>(id);
+
+                    if (template == null) return null;
+
+                    var field = new Field(template);
 
                     field.Template.Life.ForEach(l =>
                     {
