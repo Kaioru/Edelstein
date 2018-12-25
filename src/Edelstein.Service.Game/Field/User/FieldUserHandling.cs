@@ -39,7 +39,7 @@ namespace Edelstein.Service.Game.Field.User
                     return OnUserScriptMessageAnswer(packet);
                 case RecvPacketOperations.UserShopRequest:
                 case RecvPacketOperations.UserTrunkRequest:
-                    return Dialogue?.OnPacket(operation, packet);
+                    return Dialog?.OnPacket(operation, packet);
                 case RecvPacketOperations.UserGatherItemRequest:
                     return OnUserGatherItemRequest(packet);
                 case RecvPacketOperations.UserSortItemRequest:
@@ -237,7 +237,7 @@ namespace Edelstein.Service.Game.Field.User
 
             if (template.Trunk)
             {
-                await Interact(new TrunkDialogue(
+                await Interact(new TrunkDialog(
                     template.ID,
                     this,
                     Character.Data.Trunk,
@@ -252,7 +252,7 @@ namespace Edelstein.Service.Game.Field.User
 
             if (shop != null)
             {
-                await Interact(new ShopDialogue(this, shop));
+                await Interact(new ShopDialog(this, shop));
                 return;
             }
 

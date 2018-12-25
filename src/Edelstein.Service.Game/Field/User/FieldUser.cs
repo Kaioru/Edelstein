@@ -28,7 +28,7 @@ namespace Edelstein.Service.Game.Field.User
         public ForcedStat ForcedStat { get; }
 
         public IConversationContext ConversationContext { get; private set; }
-        public IDialogue Dialogue { get; private set; }
+        public IDialog Dialog { get; private set; }
 
         public FieldUser(WvsGameSocket socket, Character character)
         {
@@ -99,18 +99,18 @@ namespace Edelstein.Service.Game.Field.User
                 });
         }
 
-        public async Task Interact(IDialogue dialogue, bool close = false)
+        public async Task Interact(IDialog dialog, bool close = false)
         {
             if (close)
             {
-                Dialogue = null;
+                Dialog = null;
                 return;
             }
 
-            if (Dialogue != null) return;
+            if (Dialog != null) return;
 
-            Dialogue = dialogue;
-            await SendPacket(Dialogue.GetStartDialoguePacket());
+            Dialog = dialog;
+            await SendPacket(Dialog.GetStartDialoguePacket());
         }
 
         public IPacket GetSetFieldPacket()

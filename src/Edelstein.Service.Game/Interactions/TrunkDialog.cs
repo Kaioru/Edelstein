@@ -10,7 +10,7 @@ using Edelstein.Service.Game.Field.User;
 
 namespace Edelstein.Service.Game.Interactions
 {
-    public class TrunkDialogue : IDialogue
+    public class TrunkDialog : IDialog
     {
         private readonly int _npcTemplateID;
         private readonly FieldUser _user;
@@ -18,7 +18,7 @@ namespace Edelstein.Service.Game.Interactions
         private readonly int _getFee;
         private readonly int _putFee;
 
-        public TrunkDialogue(
+        public TrunkDialog(
             int npcTemplateID,
             FieldUser user,
             ItemTrunk trunk,

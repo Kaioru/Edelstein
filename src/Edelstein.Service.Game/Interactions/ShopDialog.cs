@@ -12,12 +12,12 @@ using Edelstein.Service.Game.Field.User;
 
 namespace Edelstein.Service.Game.Interactions
 {
-    public class ShopDialogue : IDialogue
+    public class ShopDialog : IDialog
     {
         private readonly FieldUser _user;
         private readonly NPCShopTemplate _template;
 
-        public ShopDialogue(FieldUser user, NPCShopTemplate template)
+        public ShopDialog(FieldUser user, NPCShopTemplate template)
         {
             _user = user;
             _template = template;
