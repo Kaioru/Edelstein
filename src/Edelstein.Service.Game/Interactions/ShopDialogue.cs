@@ -129,7 +129,7 @@ namespace Edelstein.Service.Game.Interactions
 
                     await user.ModifyStats(s => s.Money += price);
                 }
-                else result = ShopResult.CantBuyAnymore;
+                else result = ShopResult.SellUnkonwn;
 
                 p.Encode<byte>((byte) result);
                 await user.SendPacket(p);
@@ -177,6 +177,7 @@ namespace Edelstein.Service.Game.Interactions
                         }
                     }
                 }
+                else result = ShopResult.RechargeIncorrectRequest;
 
                 p.Encode<byte>((byte) result);
                 await user.SendPacket(p);
