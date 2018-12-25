@@ -8,7 +8,7 @@ using Edelstein.Network;
 using Edelstein.Provider.Templates;
 using Edelstein.Service.Game.Commands;
 using Edelstein.Service.Game.Conversations.Scripts;
-using Edelstein.Service.Game.Field;
+using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Sockets;
 using Foundatio.Caching;
 using Foundatio.Messaging;

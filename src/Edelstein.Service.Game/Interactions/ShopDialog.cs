@@ -8,7 +8,7 @@ using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Server.NPCShop;
-using Edelstein.Service.Game.Field.User;
+using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Interactions
 {

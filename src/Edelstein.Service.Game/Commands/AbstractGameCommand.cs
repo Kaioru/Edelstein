@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Core.Commands;
-using Edelstein.Service.Game.Field.User;
+using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Commands
 {

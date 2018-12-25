@@ -1,4 +1,4 @@
-using Edelstein.Service.Game.Field.Objects;
+using Edelstein.Service.Game.Fields.Objects;
 
 namespace Edelstein.Service.Game.Conversations
 {

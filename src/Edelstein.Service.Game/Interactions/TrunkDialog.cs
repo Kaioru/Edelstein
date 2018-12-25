@@ -6,7 +6,7 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
-using Edelstein.Service.Game.Field.User;
+using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Interactions
 {

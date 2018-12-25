@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CommandLine;
 using DotNet.Globbing;
 using Edelstein.Provider.Templates;
-using Edelstein.Service.Game.Field.User;
+using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Commands
 {
