@@ -30,6 +30,27 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
             Users.Clear();
         }
 
+        public override async Task Chat(FieldUser user, string message)
+        {
+            using (var p = new Packet(SendPacketOperations.MiniRoom))
+            {
+                p.Encode<byte>((byte) MiniRoomAction.Chat);
+                p.Encode<byte>((byte) MiniRoomAction.UserChat);
+                p.Encode<byte>(0x1);
+                p.Encode<string>(message);
+                await user.SendPacket(p);
+            }
+
+            using (var p = new Packet(SendPacketOperations.MiniRoom))
+            {
+                p.Encode<byte>((byte) MiniRoomAction.Chat);
+                p.Encode<byte>((byte) MiniRoomAction.UserChat);
+                p.Encode<byte>(0x0);
+                p.Encode<string>(message);
+                await BroadcastPacket(user, p);
+            }
+        }
+
         public override Task OnPacket(MiniRoomAction action, FieldUser user, IPacket packet)
         {
             switch (action)

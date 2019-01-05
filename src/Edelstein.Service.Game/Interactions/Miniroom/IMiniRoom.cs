@@ -6,8 +6,9 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
 {
     public interface IMiniRoom : IDialog
     {
-        Task Leave(FieldUser participant, MiniRoomLeaveType type = MiniRoomLeaveType.Kicked);
+        Task Leave(FieldUser user, MiniRoomLeaveType type = MiniRoomLeaveType.Kicked);
         Task Close(MiniRoomLeaveType type = MiniRoomLeaveType.DestoryByAdmin);
+        Task Chat(FieldUser user, string message);
 
         Task BroadcastPacket(IPacket packet);
         Task BroadcastPacket(FieldUser source, IPacket packet);

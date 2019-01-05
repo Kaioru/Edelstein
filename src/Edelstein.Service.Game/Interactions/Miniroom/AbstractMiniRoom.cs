@@ -132,6 +132,20 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
         public virtual Task Close(MiniRoomLeaveType type = MiniRoomLeaveType.DestoryByAdmin)
             => Task.WhenAll(Users.Values.ToList().Select(u => Leave(u, type)));
 
+        public virtual Task Chat(FieldUser user, string message)
+        {
+            var pair = Users.FirstOrDefault(kv => kv.Value == user);
+
+            using (var p = new Packet(SendPacketOperations.MiniRoom))
+            {
+                p.Encode<byte>((byte) MiniRoomAction.Chat);
+                p.Encode<byte>(0);
+                p.Encode<byte>(pair.Key);
+                p.Encode<string>(message);
+                return BroadcastPacket(p);
+            }
+        }
+
         public Task BroadcastPacket(IPacket packet)
             => BroadcastPacket(null, packet);
 
@@ -146,6 +160,12 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
         {
             switch (action)
             {
+                case MiniRoomAction.Chat:
+                {
+                    packet.Decode<int>();
+                    var message = packet.Decode<string>();
+                    return Chat(user, $"{user.Character.Name} : {message}");
+                }
                 case MiniRoomAction.Leave:
                     return Leave(user);
                 default:
