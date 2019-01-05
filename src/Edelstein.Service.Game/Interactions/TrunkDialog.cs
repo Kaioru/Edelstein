@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSharpx;
+using Edelstein.Core.Constants;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities.Inventory;
@@ -98,6 +99,7 @@ namespace Edelstein.Service.Game.Interactions
         {
             var pos = packet.Decode<short>();
             var templateID = packet.Decode<int>();
+            var number = packet.Decode<short>();
             var inventory = user.Character.GetInventory((ItemInventoryType) (templateID / 1000000));
             var item = inventory.Items.FirstOrDefault(i => i.Position == pos);
 
@@ -105,7 +107,14 @@ namespace Edelstein.Service.Game.Interactions
             {
                 var result = TrunkResult.PutSuccess;
 
-                if (item == null) result = TrunkResult.PutUnknown;
+                switch (item)
+                {
+                    case null:
+                    case ItemSlotBundle bundle when bundle.Number < number:
+                        result = TrunkResult.PutUnknown;
+                        break;
+                }
+
                 if (user.Character.Money < _putFee) result = TrunkResult.GetNoMoney;
                 if (_trunk.Items.Count >= _trunk.SlotMax) result = TrunkResult.PutNoSpace;
 
@@ -114,7 +123,16 @@ namespace Edelstein.Service.Game.Interactions
                 if (result == TrunkResult.PutSuccess)
                 {
                     await user.ModifyStats(s => s.Money -= _putFee);
-                    await user.ModifyInventory(i => i.Remove(item));
+                    await user.ModifyInventory(i =>
+                    {
+                        if (!ItemConstants.IsTreatSingly(item.TemplateID))
+                        {
+                            if (!(item is ItemSlotBundle bundle)) return;
+                            if (bundle.Number < number) return;
+
+                            item = i.Split(bundle, number);
+                        } else i.Remove(item);
+                    });
                     _trunk.Items.Add(item);
                     EncodeData(user, p);
                 }

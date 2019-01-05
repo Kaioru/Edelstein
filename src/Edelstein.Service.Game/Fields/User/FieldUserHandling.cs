@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Constants;
+using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Data.Entities.Inventory;
@@ -377,8 +379,7 @@ namespace Edelstein.Service.Game.Fields.User
             var inventoryType = (ItemInventoryType) packet.Decode<byte>();
             var fromSlot = packet.Decode<short>();
             var toSlot = packet.Decode<short>();
-
-            packet.Decode<short>();
+            var number = packet.Decode<short>();
 
             if (toSlot == 0)
             {
@@ -388,9 +389,17 @@ namespace Edelstein.Service.Game.Fields.User
                 {
                     var item = Character.GetInventory(inventoryType).Items
                         .Single(ii => ii.Position == fromSlot);
-                    var drop = new FieldDropItem(item) {Position = Position};
 
-                    i.Remove(item);
+                    if (!ItemConstants.IsTreatSingly(item.TemplateID))
+                    {
+                        if (!(item is ItemSlotBundle bundle)) return;
+                        if (bundle.Number < number) return;
+
+                        item = i.Split(bundle, number);
+                    }
+                    else i.Remove(item);
+
+                    var drop = new FieldDropItem(item) {Position = Position};
                     Field.Enter(drop, () => drop.GetEnterFieldPacket(0x1, this));
                 }, true);
                 return;

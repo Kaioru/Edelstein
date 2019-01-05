@@ -136,6 +136,22 @@ namespace Edelstein.Core.Inventories
             );
         }
 
+        public ItemSlotBundle Split(ItemSlotBundle bundle, short count = 1)
+        {
+            var result = new ItemSlotBundle
+            {
+                TemplateID = bundle.TemplateID,
+                DateExpire = bundle.DateExpire,
+                Number = count,
+                MaxNumber = bundle.MaxNumber,
+                Attribute = bundle.Attribute,
+                Title = bundle.Title
+            };
+
+            Remove(bundle, count);
+            return result;
+        }
+
         public void Remove(ItemInventoryType type, short slot, int count = 1)
         {
             var inventory = _character.GetInventory(type);
@@ -149,9 +165,6 @@ namespace Edelstein.Core.Inventories
         {
             var inventory = item.ItemInventory;
             var inventoryItems = inventory.Items;
-
-            item.ID = 0;
-            item.ItemInventory = null;
 
             if (item is ItemSlotBundle bundle &&
                 !ItemConstants.IsRechargeableItem(bundle.TemplateID))
@@ -169,6 +182,8 @@ namespace Edelstein.Core.Inventories
                 }
             }
 
+            item.ID = 0;
+            item.ItemInventory = null;
             inventoryItems.Remove(item);
             _operations.Enqueue(new RemoveInventoryOperation(
                 inventory.Type,

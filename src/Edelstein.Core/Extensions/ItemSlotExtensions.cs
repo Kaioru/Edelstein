@@ -11,9 +11,7 @@ namespace Edelstein.Core.Extensions
         {
             p.Encode<int>(i.TemplateID);
             p.Encode<bool>(false);
-
-            if (i.DateExpire == null) p.Encode<long>(0);
-            else p.Encode<DateTime>(i.DateExpire.Value);
+            p.Encode<DateTime>(i.DateExpire ?? ItemConstants.Permanent);
         }
 
         public static void Encode(this ItemSlotEquip i, IPacket p)
