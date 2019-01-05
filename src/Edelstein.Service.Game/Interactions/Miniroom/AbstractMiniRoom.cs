@@ -44,7 +44,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
 
                 using (var p = new Packet(SendPacketOperations.MiniRoom))
                 {
-                    p.Encode<byte>((byte) MiniRoomAction.EnterResult);
+                    p.Encode<byte>((byte) MiniRoomAction.MRP_EnterResult);
                     p.Encode<byte>((byte) Type);
                     p.Encode<byte>(MaxUsers);
                     p.Encode<byte>(id);
@@ -67,7 +67,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
                 {
                     var character = user.Character;
 
-                    p.Encode<byte>((byte) MiniRoomAction.Enter);
+                    p.Encode<byte>((byte) MiniRoomAction.MRP_Enter);
                     p.Encode<byte>(id);
                     character.EncodeLook(p);
                     p.Encode<string>(character.Name);
@@ -80,7 +80,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
 
             using (var p = new Packet(SendPacketOperations.MiniRoom))
             {
-                p.Encode<byte>((byte) MiniRoomAction.EnterResult);
+                p.Encode<byte>((byte) MiniRoomAction.MRP_EnterResult);
                 p.Encode<byte>(0x0);
                 p.Encode<byte>((byte) result);
                 await user.SendPacket(p);
@@ -95,7 +95,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
 
             using (var p = new Packet(SendPacketOperations.MiniRoom))
             {
-                p.Encode<byte>((byte) MiniRoomAction.Leave);
+                p.Encode<byte>((byte) MiniRoomAction.MRP_Leave);
                 p.Encode<byte>(pair.Key);
                 p.Encode<byte>((byte) type);
                 await BroadcastPacket(p);
@@ -113,8 +113,8 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
 
             using (var p = new Packet(SendPacketOperations.MiniRoom))
             {
-                p.Encode<byte>((byte) MiniRoomAction.Chat);
-                p.Encode<byte>((byte) MiniRoomAction.UserChat);
+                p.Encode<byte>((byte) MiniRoomAction.MRP_Chat);
+                p.Encode<byte>((byte) MiniRoomAction.MRP_UserChat);
                 p.Encode<byte>(pair.Key);
                 p.Encode<string>(message);
                 return BroadcastPacket(p);
@@ -135,13 +135,13 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
         {
             switch (action)
             {
-                case MiniRoomAction.Chat:
+                case MiniRoomAction.MRP_Chat:
                 {
                     packet.Decode<int>();
                     var message = packet.Decode<string>();
                     return Chat(user, $"{user.Character.Name} : {message}");
                 }
-                case MiniRoomAction.Leave:
+                case MiniRoomAction.MRP_Leave:
                     return Leave(user);
                 default:
                     return Task.CompletedTask;
