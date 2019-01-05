@@ -16,7 +16,7 @@ namespace Edelstein.Core.Constants
         {
             var type = templateID / 1000000;
 
-            if (type == 1 || type == 3 || type == 4)
+            if (type == 2 || type == 3 || type == 4)
             {
                 var subType = templateID / 10000;
                 if (subType != 207 && subType != 233)

@@ -395,7 +395,7 @@ namespace Edelstein.Service.Game.Fields.User
                         if (!(item is ItemSlotBundle bundle)) return;
                         if (bundle.Number < number) return;
 
-                        item = i.Split(bundle, number);
+                        item = i.Take(bundle, number);
                     }
                     else i.Remove(item);
 

@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Edelstein.Core.Constants;
+using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
@@ -64,9 +67,49 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
             }
         }
 
-        private Task OnPutItem(FieldUser user, IPacket packet)
+        private async Task OnPutItem(FieldUser user, IPacket packet)
         {
-            throw new System.NotImplementedException();
+            var pair = Users.FirstOrDefault(kv => kv.Value == user);
+            var inventoryType = (ItemInventoryType) packet.Decode<byte>();
+            var inventory = user.Character.GetInventory(inventoryType);
+            var fromSlot = packet.Decode<short>();
+            var number = packet.Decode<short>();
+            var toSlot = packet.Decode<byte>();
+            var item = inventory.Items.FirstOrDefault(i => i.Position == fromSlot);
+
+            if (item == null) return;
+            if (toSlot < 1 || toSlot > 9) return;
+            if (Item[pair.Key].ContainsKey(toSlot)) return;
+
+            IPacket GetPutItemPacket(byte position, byte slot, ItemSlot itemSlot)
+            {
+                using (var p = new Packet(SendPacketOperations.MiniRoom))
+                {
+                    p.Encode<byte>((byte) MiniRoomAction.TRP_PutItem);
+                    p.Encode<byte>(position);
+                    p.Encode<byte>(slot);
+                    if (itemSlot is ItemSlotEquip equip) equip.Encode(p);
+                    if (itemSlot is ItemSlotBundle bundle) bundle.Encode(p);
+                    if (itemSlot is ItemSlotPet pet) pet.Encode(p);
+                    return p;
+                }
+            }
+
+            await user.ModifyInventory(async i =>
+            {
+                if (!ItemConstants.IsTreatSingly(item.TemplateID))
+                {
+                    if (!(item is ItemSlotBundle bundle)) return;
+                    if (bundle.Number < number) return;
+
+                    item = i.Take(bundle, number);
+                }
+                else i.Remove(item);
+
+                Item[pair.Key][toSlot] = item;
+                await user.SendPacket(GetPutItemPacket(0x0, toSlot, item));
+                await BroadcastPacket(user, GetPutItemPacket(0x1, toSlot, item));
+            }, true);
         }
 
         private async Task OnPutMoney(FieldUser user, IPacket packet)

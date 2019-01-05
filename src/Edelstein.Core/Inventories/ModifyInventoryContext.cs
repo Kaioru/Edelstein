@@ -136,10 +136,11 @@ namespace Edelstein.Core.Inventories
             );
         }
 
-        public ItemSlotBundle Split(ItemSlotBundle bundle, short count = 1)
+        public ItemSlotBundle Take(ItemSlotBundle bundle, short count = 1)
         {
             var result = new ItemSlotBundle
             {
+                Position = bundle.Position,
                 TemplateID = bundle.TemplateID,
                 DateExpire = bundle.DateExpire,
                 Number = count,
