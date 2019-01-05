@@ -99,18 +99,19 @@ namespace Edelstein.Service.Game.Fields.User
                 });
         }
 
-        public async Task Interact(IDialog dialog, bool close = false)
+        public async Task<bool> Interact(IDialog dialog, bool close = false)
         {
             if (close)
             {
                 Dialog = null;
-                return;
+                return true;
             }
 
-            if (Dialog != null) return;
-
+            if (Dialog != null) return false;
+            if (!await dialog.Enter(this)) return false;
+            
             Dialog = dialog;
-            await SendPacket(Dialog.GetStartDialoguePacket());
+            return true;
         }
 
         public IPacket GetSetFieldPacket()

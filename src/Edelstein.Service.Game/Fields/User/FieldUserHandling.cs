@@ -39,7 +39,7 @@ namespace Edelstein.Service.Game.Fields.User
                     return OnUserScriptMessageAnswer(packet);
                 case RecvPacketOperations.UserShopRequest:
                 case RecvPacketOperations.UserTrunkRequest:
-                    return Dialog?.OnPacket(operation, packet);
+                    return Dialog?.OnPacket(operation, this, packet);
                 case RecvPacketOperations.UserGatherItemRequest:
                     return OnUserGatherItemRequest(packet);
                 case RecvPacketOperations.UserSortItemRequest:
@@ -50,6 +50,8 @@ namespace Edelstein.Service.Game.Fields.User
                     return OnUserDropMoneyRequest(packet);
                 case RecvPacketOperations.UserCharacterInfoRequest:
                     return OnUserCharacterInfoRequest(packet);
+                case RecvPacketOperations.MiniRoom:
+                    return OnMiniRoom(operation, packet);
                 case RecvPacketOperations.DropPickUpRequest:
                     return OnDropPickUpRequest(packet);
                 case RecvPacketOperations.NpcMove:
@@ -239,7 +241,6 @@ namespace Edelstein.Service.Game.Fields.User
             {
                 await Interact(new TrunkDialog(
                     template.ID,
-                    this,
                     Character.Data.Trunk,
                     template.TrunkGet,
                     template.TrunkPut
@@ -252,7 +253,7 @@ namespace Edelstein.Service.Game.Fields.User
 
             if (shop != null)
             {
-                await Interact(new ShopDialog(this, shop));
+                await Interact(new ShopDialog(shop));
                 return;
             }
 
@@ -452,6 +453,11 @@ namespace Edelstein.Service.Game.Fields.User
                 chairs.ForEach(i => p.Encode<int>(i));
                 await SendPacket(p);
             }
+        }
+
+        private Task OnMiniRoom(RecvPacketOperations operation, IPacket packet)
+        {
+            return Dialog?.OnPacket(operation, this, packet);
         }
 
         private Task OnDropPickUpRequest(IPacket packet)

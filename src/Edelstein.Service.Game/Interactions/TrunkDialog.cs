@@ -13,48 +13,58 @@ namespace Edelstein.Service.Game.Interactions
     public class TrunkDialog : IDialog
     {
         private readonly int _npcTemplateID;
-        private readonly FieldUser _user;
         private readonly ItemTrunk _trunk;
         private readonly int _getFee;
         private readonly int _putFee;
 
         public TrunkDialog(
             int npcTemplateID,
-            FieldUser user,
             ItemTrunk trunk,
             int getFee = 0,
             int putFee = 0
         )
         {
             _npcTemplateID = npcTemplateID;
-            _user = user;
             _trunk = trunk;
             _getFee = getFee;
             _putFee = putFee;
         }
 
-        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
+        public async Task<bool> Enter(FieldUser user)
+        {
+            using (var p = new Packet(SendPacketOperations.TrunkResult))
+            {
+                p.Encode<byte>((byte) TrunkResult.OpenTrunkDlg);
+                p.Encode<int>(_npcTemplateID);
+                EncodeData(user, p);
+
+                await user.SendPacket(p);
+                return true;
+            }
+        }
+
+        public Task OnPacket(RecvPacketOperations operation, FieldUser user, IPacket packet)
         {
             var type = (TrunkRequest) packet.Decode<byte>();
 
             switch (type)
             {
                 case TrunkRequest.GetItem:
-                    return OnTrunkGetItemRequest(packet);
+                    return OnTrunkGetItemRequest(user, packet);
                 case TrunkRequest.PutItem:
-                    return OnTrunkPutItemRequest(packet);
+                    return OnTrunkPutItemRequest(user, packet);
                 case TrunkRequest.SortItem:
-                    return OnTrunkSortItemRequest(packet);
+                    return OnTrunkSortItemRequest(user, packet);
                 case TrunkRequest.Money:
-                    return OnTrunkMoneyRequest(packet);
+                    return OnTrunkMoneyRequest(user, packet);
                 case TrunkRequest.CloseDialog:
-                    return _user.Interact(this, true);
+                    return user.Interact(this, true);
             }
 
             return Task.CompletedTask;
         }
 
-        private async Task OnTrunkGetItemRequest(IPacket packet)
+        private async Task OnTrunkGetItemRequest(FieldUser user, IPacket packet)
         {
             packet.Decode<byte>();
             var pos = packet.Decode<byte>();
@@ -65,8 +75,8 @@ namespace Edelstein.Service.Game.Interactions
                 var result = TrunkResult.GetSuccess;
 
                 if (item == null) result = TrunkResult.GetUnknown;
-                if (_user.Character.Money < _getFee) result = TrunkResult.GetNoMoney;
-                if (!_user.Character.HasSlotFor(item)) result = TrunkResult.GetHavingOnlyItem;
+                if (user.Character.Money < _getFee) result = TrunkResult.GetNoMoney;
+                if (!user.Character.HasSlotFor(item)) result = TrunkResult.GetHavingOnlyItem;
 
                 p.Encode<byte>((byte) result);
 
@@ -75,20 +85,20 @@ namespace Edelstein.Service.Game.Interactions
                     item.ID = 0;
                     item.ItemTrunk = null;
                     _trunk.Items.Remove(item);
-                    await _user.ModifyStats(s => s.Money -= _getFee);
-                    await _user.ModifyInventory(i => i.Add(item));
-                    EncodeData(p);
+                    await user.ModifyStats(s => s.Money -= _getFee);
+                    await user.ModifyInventory(i => i.Add(item));
+                    EncodeData(user, p);
                 }
 
-                await _user.SendPacket(p);
+                await user.SendPacket(p);
             }
         }
 
-        private async Task OnTrunkPutItemRequest(IPacket packet)
+        private async Task OnTrunkPutItemRequest(FieldUser user, IPacket packet)
         {
             var pos = packet.Decode<short>();
             var templateID = packet.Decode<int>();
-            var inventory = _user.Character.GetInventory((ItemInventoryType) (templateID / 1000000));
+            var inventory = user.Character.GetInventory((ItemInventoryType) (templateID / 1000000));
             var item = inventory.Items.FirstOrDefault(i => i.Position == pos);
 
             using (var p = new Packet(SendPacketOperations.TrunkResult))
@@ -96,36 +106,36 @@ namespace Edelstein.Service.Game.Interactions
                 var result = TrunkResult.PutSuccess;
 
                 if (item == null) result = TrunkResult.PutUnknown;
-                if (_user.Character.Money < _putFee) result = TrunkResult.GetNoMoney;
+                if (user.Character.Money < _putFee) result = TrunkResult.GetNoMoney;
                 if (_trunk.Items.Count >= _trunk.SlotMax) result = TrunkResult.PutNoSpace;
 
                 p.Encode<byte>((byte) result);
 
                 if (result == TrunkResult.PutSuccess)
                 {
-                    await _user.ModifyStats(s => s.Money -= _putFee);
-                    await _user.ModifyInventory(i => i.Remove(item));
+                    await user.ModifyStats(s => s.Money -= _putFee);
+                    await user.ModifyInventory(i => i.Remove(item));
                     _trunk.Items.Add(item);
-                    EncodeData(p);
+                    EncodeData(user, p);
                 }
 
-                await _user.SendPacket(p);
+                await user.SendPacket(p);
             }
         }
 
-        private async Task OnTrunkSortItemRequest(IPacket packet)
+        private async Task OnTrunkSortItemRequest(FieldUser user, IPacket packet)
         {
             using (var p = new Packet(SendPacketOperations.TrunkResult))
             {
                 p.Encode<byte>((byte) TrunkResult.SortItem);
-                EncodeData(p);
-                await _user.SendPacket(p);
+                EncodeData(user, p);
+                await user.SendPacket(p);
             }
         }
 
-        private async Task OnTrunkMoneyRequest(IPacket packet)
+        private async Task OnTrunkMoneyRequest(FieldUser user, IPacket packet)
         {
-            int amount = packet.Decode<int>();
+            var amount = packet.Decode<int>();
 
             using (var p = new Packet(SendPacketOperations.TrunkResult))
             {
@@ -136,33 +146,33 @@ namespace Edelstein.Service.Game.Interactions
                     amount = -amount;
                     if (amount > int.MaxValue - _trunk.Money)
                         result = TrunkResult.MoneyUnknown;
-                    else if (_user.Character.Money >= amount)
+                    else if (user.Character.Money >= amount)
                     {
-                        await _user.ModifyStats(s => s.Money -= amount);
+                        await user.ModifyStats(s => s.Money -= amount);
                         _trunk.Money += amount;
                     }
                     else result = TrunkResult.PutNoMoney;
                 }
                 else
                 {
-                    if (amount > int.MaxValue - _user.Character.Money)
+                    if (amount > int.MaxValue - user.Character.Money)
                         result = TrunkResult.MoneyUnknown;
                     if (_trunk.Money >= amount)
                     {
                         _trunk.Money -= amount;
-                        await _user.ModifyStats(s => s.Money += amount);
+                        await user.ModifyStats(s => s.Money += amount);
                     }
                     else result = TrunkResult.PutNoMoney;
                 }
 
                 p.Encode<byte>((byte) result);
-                if (result == TrunkResult.MoneySuccess) EncodeData(p);
+                if (result == TrunkResult.MoneySuccess) EncodeData(user, p);
 
-                await _user.SendPacket(p);
+                await user.SendPacket(p);
             }
         }
 
-        private void EncodeData(IPacket packet)
+        private void EncodeData(FieldUser user, IPacket packet)
         {
             long flag = -1;
 
@@ -186,17 +196,6 @@ namespace Edelstein.Service.Game.Interactions
             if ((flag & 0x10) != 0) EncodeItems(_trunk.Items.Where(i => i.TemplateID / 1000000 == 3).ToList());
             if ((flag & 0x20) != 0) EncodeItems(_trunk.Items.Where(i => i.TemplateID / 1000000 == 4).ToList());
             if ((flag & 0x40) != 0) EncodeItems(_trunk.Items.Where(i => i.TemplateID / 1000000 == 5).ToList());
-        }
-
-        public IPacket GetStartDialoguePacket()
-        {
-            using (var p = new Packet(SendPacketOperations.TrunkResult))
-            {
-                p.Encode<byte>((byte) TrunkResult.OpenTrunkDlg);
-                p.Encode<int>(_npcTemplateID);
-                EncodeData(p);
-                return p;
-            }
         }
     }
 }
