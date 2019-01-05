@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,14 +28,14 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
             var result = MiniRoomEnterResult.Success;
             var id = byte.MaxValue;
 
-            foreach (var i in Enumerable.Range(1, MaxUsers))
+            foreach (var i in Enumerable.Range(0, MaxUsers))
             {
                 if (Users.ContainsKey((byte) i)) continue;
                 id = (byte) i;
                 break;
             }
 
-            if (id > MaxUsers) result = MiniRoomEnterResult.Full;
+            if (id >= MaxUsers) result = MiniRoomEnterResult.Full;
             if (Users.ContainsKey(id)) result = MiniRoomEnterResult.Etc;
 
             if (result == MiniRoomEnterResult.Success)
@@ -46,41 +47,16 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
                     p.Encode<byte>((byte) MiniRoomAction.EnterResult);
                     p.Encode<byte>((byte) Type);
                     p.Encode<byte>(MaxUsers);
+                    p.Encode<byte>(id);
 
-                    if (this is TradingRoom)
+                    Users.ForEach(kv =>
                     {
-                        var others = Users.Values.Where(u => u != user);
-                        var character = user.Character;
-                        var other = others.FirstOrDefault()?.Character;
-
-                        p.Encode<byte>(0x1);
-
-                        if (other != null)
-                        {
-                            p.Encode<byte>(0x0);
-                            other.EncodeLook(p);
-                            p.Encode<string>(other.Name);
-                            p.Encode<short>(other.Job);
-                        }
-
-                        p.Encode<byte>(0x1);
+                        var character = kv.Value.Character;
+                        p.Encode<byte>(kv.Key);
                         character.EncodeLook(p);
                         p.Encode<string>(character.Name);
                         p.Encode<short>(character.Job);
-                    }
-                    else
-                    {
-                        p.Encode<byte>(id);
-
-                        Users.ForEach(kv =>
-                        {
-                            var character = kv.Value.Character;
-                            p.Encode<byte>((byte) (kv.Key - 1));
-                            character.EncodeLook(p);
-                            p.Encode<string>(character.Name);
-                            p.Encode<short>(character.Job);
-                        });
-                    }
+                    });
 
                     p.Encode<byte>(0xFF);
                     await user.SendPacket(p);
@@ -92,7 +68,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
                     var character = user.Character;
 
                     p.Encode<byte>((byte) MiniRoomAction.Enter);
-                    p.Encode<byte>((byte) (this is TradingRoom ? 0x0 : id));
+                    p.Encode<byte>(id);
                     character.EncodeLook(p);
                     p.Encode<string>(character.Name);
                     p.Encode<short>(character.Job);
@@ -117,7 +93,6 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
         {
             var pair = Users.FirstOrDefault(kv => kv.Value == user);
 
-            Users.Remove(pair);
             using (var p = new Packet(SendPacketOperations.MiniRoom))
             {
                 p.Encode<byte>((byte) MiniRoomAction.Leave);
@@ -125,8 +100,8 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
                 p.Encode<byte>((byte) type);
                 await BroadcastPacket(p);
             }
-
             await user.Interact(this, true);
+            Users.Remove(pair);
         }
 
         public virtual Task Close(MiniRoomLeaveType type = MiniRoomLeaveType.DestoryByAdmin)
@@ -139,7 +114,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
             using (var p = new Packet(SendPacketOperations.MiniRoom))
             {
                 p.Encode<byte>((byte) MiniRoomAction.Chat);
-                p.Encode<byte>(0);
+                p.Encode<byte>((byte) MiniRoomAction.UserChat);
                 p.Encode<byte>(pair.Key);
                 p.Encode<string>(message);
                 return BroadcastPacket(p);
@@ -174,14 +149,6 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
         }
 
         public Task OnPacket(RecvPacketOperations operation, FieldUser user, IPacket packet)
-        {
-            switch (operation)
-            {
-                case RecvPacketOperations.MiniRoom:
-                    return OnPacket((MiniRoomAction) packet.Decode<byte>(), user, packet);
-                default:
-                    return Task.CompletedTask;
-            }
-        }
+            => OnPacket((MiniRoomAction) packet.Decode<byte>(), user, packet);
     }
 }
