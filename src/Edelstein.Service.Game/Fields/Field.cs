@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Service.Game.Fields.User;
+using Edelstein.Service.Game.Interactions.Miniroom;
 using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Fields
@@ -67,7 +68,16 @@ namespace Edelstein.Service.Game.Fields
 
         public async Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket)
         {
-            if (obj is FieldUser user) await BroadcastPacket(user, user.GetLeaveFieldPacket());
+            if (obj is FieldUser user)
+            {
+                if (user.Dialog != null)
+                {
+                    if (user.Dialog is IMiniRoom room) await room.Leave(user);
+                    else await user.Interact(user.Dialog, true);
+                }
+
+                await BroadcastPacket(user, user.GetLeaveFieldPacket());
+            }
             else await BroadcastPacket(getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket());
 
             await GetPool(obj.Type).Leave(obj);
