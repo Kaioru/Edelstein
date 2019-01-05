@@ -263,6 +263,16 @@ namespace Edelstein.Core.Extensions
         }
 
         public static bool HasSlotFor(this Character c, ItemInventoryType type, ItemSlot item)
+            => AvailableSlotsFor(c, type) > 0;
+
+        public static bool HasSlotFor(this Character c, ICollection<ItemSlot> items)
+        {
+            return items
+                .GroupBy(i => (ItemInventoryType) (i.TemplateID / 1000000))
+                .All(g => AvailableSlotsFor(c, g.Key) >= g.Count());
+        }
+
+        public static int AvailableSlotsFor(this Character c, ItemInventoryType type)
         {
             var inventory = c.GetInventory(type);
 
@@ -274,7 +284,7 @@ namespace Edelstein.Core.Extensions
             var unusedSlots = Enumerable.Range(1, inventory.SlotMax)
                 .Except(usedSlots)
                 .ToList();
-            return unusedSlots.Count != 0;
+            return unusedSlots.Count;
         }
 
         public static bool HasItem(this Character c, int templateID)

@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Edelstein.Core.Constants;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
@@ -18,13 +16,16 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
         protected override MiniRoomType Type => MiniRoomType.TradingRoom;
         protected override byte MaxUsers => 2;
 
-        protected readonly IDictionary<byte, IDictionary<byte, ItemSlot>> Item;
-        protected readonly IDictionary<byte, int> Money;
+        private bool _locked => _locks.Count > 0;
+        private readonly ICollection<byte> _locks;
+        private readonly IDictionary<byte, IDictionary<byte, ItemSlot>> _item;
+        private readonly IDictionary<byte, int> _money;
 
         public TradingRoom()
         {
-            Item = new Dictionary<byte, IDictionary<byte, ItemSlot>>();
-            Money = new Dictionary<byte, int>();
+            _locks = new HashSet<byte>();
+            _item = new Dictionary<byte, IDictionary<byte, ItemSlot>>();
+            _money = new Dictionary<byte, int>();
         }
 
         public override async Task<bool> Enter(FieldUser user)
@@ -32,8 +33,8 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
             var result = await base.Enter(user);
             if (!result) return false;
             var pair = Users.FirstOrDefault(kv => kv.Value == user);
-            Item[pair.Key] = new Dictionary<byte, ItemSlot>();
-            Money[pair.Key] = 0;
+            _item[pair.Key] = new Dictionary<byte, ItemSlot>();
+            _money[pair.Key] = 0;
             return true;
         }
 
@@ -41,14 +42,14 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
         {
             var pair = Users.FirstOrDefault(kv => kv.Value == user);
 
-            var items = Item[pair.Key].Values;
-            var money = Money[pair.Key];
+            var items = _item[pair.Key].Values;
+            var money = _money[pair.Key];
 
             await user.ModifyInventory(i => items.ForEach(i.Add));
             await user.ModifyStats(s => s.Money += money);
 
-            Item.Remove(pair.Key);
-            Money.Remove(pair.Key);
+            _item.Remove(pair.Key);
+            _money.Remove(pair.Key);
             await base.Leave(user, type);
         }
 
@@ -60,6 +61,8 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
                     return OnPutItem(user, packet);
                 case MiniRoomAction.TRP_PutMoney:
                     return OnPutMoney(user, packet);
+                case MiniRoomAction.TRP_Trade:
+                    return OnTrade(user, packet);
                 case MiniRoomAction.MRP_Leave:
                     return Close(MiniRoomLeaveType.Closed);
                 default:
@@ -70,6 +73,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
         private async Task OnPutItem(FieldUser user, IPacket packet)
         {
             if (Users.Count < 2) return;
+            if (_locked) return;
 
             var pair = Users.FirstOrDefault(kv => kv.Value == user);
             var inventoryType = (ItemInventoryType) packet.Decode<byte>();
@@ -81,7 +85,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
 
             if (item == null) return;
             if (toSlot < 1 || toSlot > 9) return;
-            if (Item[pair.Key].ContainsKey(toSlot)) return;
+            if (_item[pair.Key].ContainsKey(toSlot)) return;
 
             IPacket GetPutItemPacket(byte position, byte slot, ItemSlot itemSlot)
             {
@@ -108,7 +112,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
                 }
                 else i.Remove(item);
 
-                Item[pair.Key][toSlot] = item;
+                _item[pair.Key][toSlot] = item;
                 await user.SendPacket(GetPutItemPacket(0x0, toSlot, item));
                 await BroadcastPacket(user, GetPutItemPacket(0x1, toSlot, item));
             }, true);
@@ -117,13 +121,14 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
         private async Task OnPutMoney(FieldUser user, IPacket packet)
         {
             if (Users.Count < 2) return;
+            if (_locked) return;
 
             var pair = Users.FirstOrDefault(kv => kv.Value == user);
             var amount = packet.Decode<int>();
 
             if (user.Character.Money < amount) return;
 
-            Money[pair.Key] += amount;
+            _money[pair.Key] += amount;
             await user.ModifyStats(s => s.Money -= amount, true);
 
             IPacket GetPutMoneyPacket(byte position, int money)
@@ -137,8 +142,46 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
                 }
             }
 
-            await user.SendPacket(GetPutMoneyPacket(0x0, Money[pair.Key]));
-            await BroadcastPacket(user, GetPutMoneyPacket(0x1, Money[pair.Key]));
+            await user.SendPacket(GetPutMoneyPacket(0x0, _money[pair.Key]));
+            await BroadcastPacket(user, GetPutMoneyPacket(0x1, _money[pair.Key]));
+        }
+
+        private async Task OnTrade(FieldUser user, IPacket packet)
+        {
+            if (Users.Count < 2) return;
+
+            var pair = Users.FirstOrDefault(kv => kv.Value == user);
+
+            if (_locks.Contains(pair.Key)) return;
+            _locks.Add(pair.Key);
+
+            using (var p = new Packet(SendPacketOperations.MiniRoom))
+            {
+                p.Encode<byte>((byte) MiniRoomAction.TRP_Trade);
+                await BroadcastPacket(user, p);
+            }
+
+            if (_locks.Count == MaxUsers)
+            {
+                var self = Users[0];
+                var target = Users[1];
+
+                if (self.Character.HasSlotFor(_item[1].Values) &&
+                    target.Character.HasSlotFor(_item[0].Values) &&
+                    int.MaxValue - self.Character.Money >= _money[0] &&
+                    int.MaxValue - target.Character.Money >= _money[1])
+                {
+                    var selfItem = _item[0];
+                    var selfMoney = _money[0];
+
+                    _item[0] = _item[1];
+                    _money[0] = _money[1];
+                    _item[1] = selfItem;
+                    _money[1] = selfMoney;
+                    await Close(MiniRoomLeaveType.TradeDone);
+                }
+                else await Close(MiniRoomLeaveType.TradeFail);
+            }
         }
     }
 }
