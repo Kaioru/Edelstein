@@ -69,6 +69,8 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
 
         private async Task OnPutItem(FieldUser user, IPacket packet)
         {
+            if (Users.Count < 2) return;
+
             var pair = Users.FirstOrDefault(kv => kv.Value == user);
             var inventoryType = (ItemInventoryType) packet.Decode<byte>();
             var inventory = user.Character.GetInventory(inventoryType);
@@ -114,6 +116,8 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
 
         private async Task OnPutMoney(FieldUser user, IPacket packet)
         {
+            if (Users.Count < 2) return;
+
             var pair = Users.FirstOrDefault(kv => kv.Value == user);
             var amount = packet.Decode<int>();
 
