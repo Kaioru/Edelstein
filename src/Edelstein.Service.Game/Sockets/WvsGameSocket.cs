@@ -54,12 +54,12 @@ namespace Edelstein.Service.Game.Sockets
                     .First()
                     .ID;
 
+                FieldUser.ConversationContext?.Dispose();
+                FieldUser.Field?.Leave(FieldUser);
+                
                 db.Update(character);
                 db.SaveChanges();
             }
-
-            FieldUser.ConversationContext?.Dispose();
-            FieldUser.Field?.Leave(FieldUser);
         }
 
         public override Task OnException(Exception exception)

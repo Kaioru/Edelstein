@@ -6,6 +6,7 @@ using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Service.Game.Fields.User;
 using Edelstein.Service.Game.Interactions.Miniroom;
+using Edelstein.Service.Game.Interactions.Miniroom.Trade;
 using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Fields
@@ -72,7 +73,8 @@ namespace Edelstein.Service.Game.Fields
             {
                 if (user.Dialog != null)
                 {
-                    if (user.Dialog is IMiniRoom room) await room.Leave(user);
+                    if (user.Dialog is TradingRoom trade) await trade.Close();
+                    else if (user.Dialog is IMiniRoom room) await room.Leave(user);
                     else await user.Interact(user.Dialog, true);
                 }
 

@@ -64,7 +64,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
                 case MiniRoomAction.TRP_Trade:
                     return OnTrade(user, packet);
                 case MiniRoomAction.MRP_Leave:
-                    return Close(MiniRoomLeaveType.Closed);
+                    return Close();
                 default:
                     return base.OnPacket(action, user, packet);
             }

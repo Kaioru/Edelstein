@@ -104,7 +104,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
             Users.Remove(pair);
         }
 
-        public virtual Task Close(MiniRoomLeaveType type = MiniRoomLeaveType.DestoryByAdmin)
+        public virtual Task Close(MiniRoomLeaveType type = MiniRoomLeaveType.Closed)
             => Task.WhenAll(Users.Values.ToList().Select(u => Leave(u, type)));
 
         public virtual Task Chat(FieldUser user, string message)
