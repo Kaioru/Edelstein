@@ -67,15 +67,23 @@ namespace Edelstein.Service.Shop.Sockets
                         p.Encode<byte>(d.DiscountRate);
                     });
 
-                    // m_aBest 1080 Buffer
-                    Enumerable.Repeat((byte) 0, 120).ForEach(b => p.Encode<byte>(b));
-                    WvsShop.TemplateManager.GetAll<BestTemplate>()
-                        .ForEach(b =>
+                    const int bestLimit = 90;
+                    var best = WvsShop.TemplateManager.GetAll<BestTemplate>().ToList();
+                    best.Take(bestLimit).ForEach(b =>
+                    {
+                        p.Encode<int>(b.Category);
+                        p.Encode<int>(b.Gender);
+                        p.Encode<int>(b.CommoditySN);
+                    });
+                    if (best.Count < bestLimit)
+                    {
+                        Enumerable.Repeat(0, bestLimit - best.Count).ForEach(i =>
                         {
-                            p.Encode<int>(b.Category);
-                            p.Encode<int>(b.Gender);
-                            p.Encode<int>(b.CommoditySN);
+                            p.Encode<int>(0);
+                            p.Encode<int>(0);
+                            p.Encode<int>(0);
                         });
+                    }
 
                     // DecodeStock
                     p.Encode<short>(0);
