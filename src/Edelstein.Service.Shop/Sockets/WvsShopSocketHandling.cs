@@ -4,6 +4,7 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Network.Packet;
+using Edelstein.Provider.Templates.Server.Best;
 using Edelstein.Service.Shop.Logging;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq;
@@ -58,7 +59,14 @@ namespace Edelstein.Service.Shop.Sockets
                     p.Encode<byte>(0);
 
                     // m_aBest 1080 Buffer
-                    Enumerable.Repeat((byte) 0, 1080).ForEach(b => p.Encode<byte>(b));
+                    Enumerable.Repeat((byte) 0, 120).ForEach(b => p.Encode<byte>(b));
+                    WvsShop.TemplateManager.GetAll<BestTemplate>()
+                        .ForEach(b =>
+                        {
+                            p.Encode<int>(b.Category);
+                            p.Encode<int>(b.Gender);
+                            p.Encode<int>(b.CommoditySN);
+                        });
 
                     // DecodeStock
                     p.Encode<short>(0);
