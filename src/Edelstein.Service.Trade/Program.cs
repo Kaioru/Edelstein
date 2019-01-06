@@ -1,22 +1,20 @@
-using Edelstein.Core.Services.Startup;
-using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
+using System.Threading.Tasks;
+using Edelstein.Core.Services;
+using Edelstein.Core.Services.Info;
 
 namespace Edelstein.Service.Trade
 {
     internal static class Program
     {
-        private static void Main(string[] args)
-            => ServiceBootstrap<WvsTrade>.Build()
-                .WithLogging(new LoggerConfiguration()
-                    .MinimumLevel.Verbose()
-                    .WriteTo.Console(theme: AnsiConsoleTheme.Code)
-                    .CreateLogger())
-                .WithConfig("WvsTrade", new WvsTradeOptions())
-                .WithDistributed()
-                .WithMySQLDatabase()
-                .WithNXProvider()
-                .Run()
-                .Wait();
+        private static Task Main(string[] args)
+            => new Startup()
+                .WithConfig()
+                .WithLogger()
+                .WithInferredModel()
+                .WithInferredDatabase()
+                .WithInferredProvider()
+                .WithServiceOption<TradeServiceInfo>()
+                .WithService<WvsTrade>()
+                .Start();
     }
 }

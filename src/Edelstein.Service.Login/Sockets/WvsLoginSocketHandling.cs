@@ -15,23 +15,6 @@ using Edelstein.Service.Login.Logging;
 using Edelstein.Service.Login.Types;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq.Extensions;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
-using Edelstein.Core.Extensions;
-using Edelstein.Core.Inventories;
-using Edelstein.Core.Services;
-using Edelstein.Core.Services.Info;
-using Edelstein.Data.Entities;
-using Edelstein.Data.Entities.Inventory;
-using Edelstein.Network.Packet;
-using Edelstein.Provider.Templates.Item;
-using Edelstein.Service.Login.Logging;
-using Edelstein.Service.Login.Types;
-using Microsoft.EntityFrameworkCore;
-using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Login.Sockets
 {

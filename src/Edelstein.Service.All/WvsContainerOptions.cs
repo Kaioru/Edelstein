@@ -3,7 +3,7 @@ using Edelstein.Core.Services.Info;
 
 namespace Edelstein.Service.All
 {
-    public class WvsContainerOptions
+    public class WvsContainerOptions : ServiceInfo
     {
         public ICollection<LoginServiceInfo> LoginServices { get; set; }
         public ICollection<GameServiceInfo> GameServices { get; set; }

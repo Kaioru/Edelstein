@@ -1,24 +1,21 @@
-﻿using Edelstein.Core.Services.Startup;
+﻿using System.Threading.Tasks;
+using Edelstein.Core.Services;
 using Edelstein.Service.Game;
-using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Edelstein.Service.All
 {
     internal static class Program
     {
-        private static void Main(string[] args)
-            => ServiceBootstrap<WvsContainer>.Build()
-                .WithLogging(new LoggerConfiguration()
-                    .MinimumLevel.Verbose()
-                    .WriteTo.Console(theme: AnsiConsoleTheme.Code)
-                    .CreateLogger())
-                .WithConfig("WvsContainer", new WvsContainerOptions())
-                .WithInMemory()
-                .WithMySQLDatabase()
-                .WithNXProvider()
-                .WithLuaScripts()
-                .Run()
-                .Wait();
+        private static Task Main(string[] args)
+            => new Startup()
+                .WithConfig()
+                .WithLogger()
+                .WithInferredModel()
+                .WithInferredDatabase()
+                .WithInferredProvider()
+                .WithInferredScripting()
+                .WithServiceOption<WvsContainerOptions>()
+                .WithService<WvsContainer>()
+                .Start();
     }
 }

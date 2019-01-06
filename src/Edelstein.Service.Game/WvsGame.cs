@@ -12,6 +12,8 @@ using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Sockets;
 using Foundatio.Caching;
 using Foundatio.Messaging;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Game
 {
@@ -25,13 +27,14 @@ namespace Edelstein.Service.Game
         public CommandRegistry CommandRegistry { get; }
 
         public WvsGame(
-            GameServiceInfo info,
+            IApplicationLifetime appLifetime,
             ICacheClient cache,
             IMessageBus messageBus,
+            IOptions<GameServiceInfo> info,
             IDataContextFactory dataContextFactory,
             ITemplateManager templateManager,
             IScriptConversationManager conversationManager
-        ) : base(info, cache, messageBus, dataContextFactory)
+        ) : base(appLifetime, cache, messageBus, info, dataContextFactory)
         {
             TemplateManager = templateManager;
             ConversationManager = conversationManager;
@@ -45,28 +48,17 @@ namespace Edelstein.Service.Game
             );
         }
 
-        public WvsGame(
-            WvsGameOptions options,
-            ICacheClient cache,
-            IMessageBus messageBus,
-            IDataContextFactory dataContextFactory,
-            ITemplateManager templateManager,
-            IScriptConversationManager conversationManager
-        ) : this(options.Service, cache, messageBus, dataContextFactory, templateManager, conversationManager)
-        {
-        }
-
-        public override async Task Start()
+        protected override async Task OnStarted()
         {
             Server = new Server(new WvsGameSocketFactory(this));
 
-            await base.Start();
+            await base.OnStarted();
             await Server.Start(Info.Host, Info.Port);
         }
 
-        public override async Task Stop()
+        protected override async Task OnStopping()
         {
-            await base.Stop();
+            await base.OnStopping();
             await Server.Stop();
         }
     }

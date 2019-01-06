@@ -7,6 +7,8 @@ using Edelstein.Provider.Templates;
 using Edelstein.Service.Shop.Sockets;
 using Foundatio.Caching;
 using Foundatio.Messaging;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Shop
 {
@@ -15,36 +17,29 @@ namespace Edelstein.Service.Shop
         private IServer Server { get; set; }
         public ITemplateManager TemplateManager { get; }
 
-        public WvsShop(
-            ShopServiceInfo info,
+         public WvsShop(
+            IApplicationLifetime appLifetime,
             ICacheClient cache,
             IMessageBus messageBus,
+            IOptions<ShopServiceInfo> info,
             IDataContextFactory dataContextFactory,
             ITemplateManager templateManager
-        ) : base(info, cache, messageBus, dataContextFactory)
-            => TemplateManager = templateManager;
-
-        public WvsShop(
-            WvsShopOptions options,
-            ICacheClient cache,
-            IMessageBus messageBus,
-            IDataContextFactory dataContextFactory,
-            ITemplateManager templateManager
-        ) : this(options.Service, cache, messageBus, dataContextFactory, templateManager)
+        ) : base(appLifetime, cache, messageBus, info, dataContextFactory)
         {
+            TemplateManager = templateManager;
         }
 
-        public override async Task Start()
+        protected override async Task OnStarted()
         {
             Server = new Server(new WvsShopSocketFactory(this));
 
-            await base.Start();
+            await base.OnStarted();
             await Server.Start(Info.Host, Info.Port);
         }
 
-        public override async Task Stop()
+        protected override async Task OnStopping()
         {
-            await base.Stop();
+            await base.OnStopping();
             await Server.Stop();
         }
     }

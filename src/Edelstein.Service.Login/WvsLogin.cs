@@ -8,6 +8,8 @@ using Edelstein.Service.Login.Sockets;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Foundatio.Messaging;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Login
 {
@@ -18,40 +20,30 @@ namespace Edelstein.Service.Login
         public ITemplateManager TemplateManager { get; }
 
         public WvsLogin(
-            LoginServiceInfo info,
+            IApplicationLifetime appLifetime,
             ICacheClient cache,
             IMessageBus messageBus,
-            ILockProvider lockProvider,
+            IOptions<LoginServiceInfo> info,
             IDataContextFactory dataContextFactory,
+            ILockProvider lockProvider,
             ITemplateManager templateManager
-        ) : base(info, cache, messageBus, dataContextFactory)
+        ) : base(appLifetime, cache, messageBus, info, dataContextFactory)
         {
             LockProvider = lockProvider;
             TemplateManager = templateManager;
         }
 
-        public WvsLogin(
-            WvsLoginOptions options,
-            ICacheClient cache,
-            IMessageBus messageBus,
-            ILockProvider lockProvider,
-            IDataContextFactory dataContextFactory,
-            ITemplateManager templateManager
-        ) : this(options.Service, cache, messageBus, lockProvider, dataContextFactory, templateManager)
-        {
-        }
-
-        public override async Task Start()
+        protected override async Task OnStarted()
         {
             Server = new Server(new WvsLoginSocketFactory(this));
 
-            await base.Start();
+            await base.OnStarted();
             await Server.Start(Info.Host, Info.Port);
         }
 
-        public override async Task Stop()
+        protected override async Task OnStopping()
         {
-            await base.Stop();
+            await base.OnStopping();
             await Server.Stop();
         }
     }

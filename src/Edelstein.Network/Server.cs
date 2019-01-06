@@ -51,9 +51,9 @@ namespace Edelstein.Network
 
         public async Task Stop()
         {
+            await Channel.CloseAsync();
             await BossGroup.ShutdownGracefullyAsync();
             await WorkerGroup.ShutdownGracefullyAsync();
-            await Channel.CloseAsync();
         }
     }
 }

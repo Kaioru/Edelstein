@@ -7,6 +7,8 @@ using Edelstein.Provider.Templates;
 using Edelstein.Service.Trade.Sockets;
 using Foundatio.Caching;
 using Foundatio.Messaging;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Trade
 {
@@ -16,35 +18,28 @@ namespace Edelstein.Service.Trade
         public ITemplateManager TemplateManager { get; }
 
         public WvsTrade(
-            TradeServiceInfo info,
+            IApplicationLifetime appLifetime,
             ICacheClient cache,
             IMessageBus messageBus,
+            IOptions<TradeServiceInfo> info,
             IDataContextFactory dataContextFactory,
             ITemplateManager templateManager
-        ) : base(info, cache, messageBus, dataContextFactory)
-            => TemplateManager = templateManager;
-
-        public WvsTrade(
-            WvsTradeOptions options,
-            ICacheClient cache,
-            IMessageBus messageBus,
-            IDataContextFactory dataContextFactory,
-            ITemplateManager templateManager
-        ) : this(options.Service, cache, messageBus, dataContextFactory, templateManager)
+        ) : base(appLifetime, cache, messageBus, info, dataContextFactory)
         {
+            TemplateManager = templateManager;
         }
 
-        public override async Task Start()
+        protected override async Task OnStarted()
         {
             Server = new Server(new WvsTradeSocketFactory(this));
 
-            await base.Start();
+            await base.OnStarted();
             await Server.Start(Info.Host, Info.Port);
         }
 
-        public override async Task Stop()
+        protected override async Task OnStopping()
         {
-            await base.Stop();
+            await base.OnStopping();
             await Server.Stop();
         }
     }

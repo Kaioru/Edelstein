@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using CSharpx;
 using Edelstein.Core.Services;
+using Edelstein.Core.Services.Info;
 using Edelstein.Data.Context;
 using Edelstein.Provider.Templates;
 using Edelstein.Service.Game;
@@ -12,57 +15,78 @@ using Edelstein.Service.Trade;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Foundatio.Messaging;
-using MoreLinq;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.All
 {
-    public class WvsContainer : IService
+    public class WvsContainer : AbstractHostedService<WvsContainerOptions>
     {
-        private readonly WvsContainerOptions _options;
-        private readonly ICacheClient _cache;
-        private readonly IMessageBus _messageBus;
-        private readonly ILockProvider _lockProvider;
-        private readonly IDataContextFactory _dataContextFactory;
-        private readonly ITemplateManager _templateManager;
-        private readonly IScriptConversationManager _conversationManager;
-        private readonly ICollection<IService> _services;
+        private readonly CancellationTokenSource _token;
+        private readonly ICollection<IHostedService> _services;
 
         public WvsContainer(
-            WvsContainerOptions options,
+            IApplicationLifetime appLifetime,
             ICacheClient cache,
             IMessageBus messageBus,
             ILockProvider lockProvider,
+            IOptions<WvsContainerOptions> info,
             IDataContextFactory dataContextFactory,
-            ITemplateManager templateManager, IScriptConversationManager conversationManager)
+            ITemplateManager templateManager,
+            IScriptConversationManager conversationManager
+        ) : base(appLifetime, cache, messageBus, info, dataContextFactory)
         {
-            _options = options;
-            _cache = cache;
-            _messageBus = messageBus;
-            _lockProvider = lockProvider;
-            _dataContextFactory = dataContextFactory;
-            _templateManager = templateManager;
-            _conversationManager = conversationManager;
-            _services = new List<IService>();
+            _token = new CancellationTokenSource();
+            _services = new List<IHostedService>();
+
+            Info.LoginServices
+                .Select(o => new WvsLogin(
+                    appLifetime,
+                    cache,
+                    messageBus,
+                    new OptionsWrapper<LoginServiceInfo>(o),
+                    dataContextFactory,
+                    lockProvider,
+                    templateManager
+                ))
+                .ForEach(_services.Add);
+            Info.GameServices
+                .Select(o => new WvsGame(
+                    appLifetime,
+                    cache,
+                    messageBus,
+                    new OptionsWrapper<GameServiceInfo>(o),
+                    dataContextFactory,
+                    templateManager,
+                    conversationManager
+                ))
+                .ForEach(_services.Add);
+            Info.ShopServices
+                .Select(o => new WvsShop(
+                    appLifetime,
+                    cache,
+                    messageBus,
+                    new OptionsWrapper<ShopServiceInfo>(o),
+                    dataContextFactory,
+                    templateManager
+                ))
+                .ForEach(_services.Add);
+            Info.TradeServices
+                .Select(o => new WvsTrade(
+                    appLifetime,
+                    cache,
+                    messageBus,
+                    new OptionsWrapper<TradeServiceInfo>(o),
+                    dataContextFactory,
+                    templateManager
+                ))
+                .ForEach(_services.Add);
         }
 
-        public Task Start()
-        {
-            _options.LoginServices
-                .Select(o => new WvsLogin(o, _cache, _messageBus, _lockProvider, _dataContextFactory, _templateManager))
-                .ForEach(_services.Add);
-            _options.GameServices
-                .Select(o => new WvsGame(o, _cache, _messageBus, _dataContextFactory, _templateManager, _conversationManager))
-                .ForEach(_services.Add);
-            _options.ShopServices
-                .Select(o => new WvsShop(o, _cache, _messageBus, _dataContextFactory, _templateManager))
-                .ForEach(_services.Add);
-            _options.TradeServices
-                .Select(o => new WvsTrade(o, _cache, _messageBus, _dataContextFactory, _templateManager))
-                .ForEach(_services.Add);
-            return Task.WhenAll(_services.Select(s => s.Start()));
-        }
+        protected override Task OnStarted()
+            => Task.WhenAll(_services.Select(s => s.StartAsync(_token.Token)));
 
-        public Task Stop()
-            => Task.WhenAll(_services.Select(s => s.Stop()));
+        protected override Task OnStopping()
+            => Task.WhenAll(_services.Select(s => s.StopAsync(_token.Token)));
     }
 }

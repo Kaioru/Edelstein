@@ -11,26 +11,28 @@ using Edelstein.Network.Packet;
 using Foundatio.Caching;
 using Foundatio.Messaging;
 using Humanizer;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using MoreLinq;
-using ICacheClient = Foundatio.Caching.ICacheClient;
 
 namespace Edelstein.Core.Services.Migrations
 {
-    public class AbstractMigrateableService<TInfo> : AbstractService<TInfo>, IMigrateable
-        where TInfo : ServiceInfo
+    public class AbstractMigrateableService<TInfo> : AbstractHostedService<TInfo>, IMigrateable
+        where TInfo : ServiceInfo, new()
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
         public AbstractMigrateableService(
-            TInfo info,
+            IApplicationLifetime appLifetime,
             ICacheClient cache,
             IMessageBus messageBus,
+            IOptions<TInfo> info,
             IDataContextFactory dataContextFactory
-        ) : base(info, cache, messageBus, dataContextFactory)
+        ) : base(appLifetime, cache, messageBus, info, dataContextFactory)
         {
         }
 
-        public override async Task Start()
+        protected override async Task OnStarted()
         {
             using (var db = DataContextFactory.Create())
             {
@@ -49,7 +51,7 @@ namespace Edelstein.Core.Services.Migrations
                 }
             }
 
-            await base.Start();
+            await base.OnStarted();
         }
 
         public async Task<bool> TryMigrateTo(

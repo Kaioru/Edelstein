@@ -1,48 +1,57 @@
-﻿using Autofac;
+﻿using System.Threading.Tasks;
 using Edelstein.Core.Services;
-using Edelstein.Core.Services.Startup;
+using Edelstein.Core.Services.Info;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Scripts;
 using Edelstein.Service.Game.Conversations.Scripts.Lua;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MoonSharp.Interpreter;
-using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Edelstein.Service.Game
 {
     public static class Program
     {
-        private static void Main(string[] args)
-            => ServiceBootstrap<WvsGame>.Build()
-                .WithLogging(new LoggerConfiguration()
-                    .MinimumLevel.Verbose()
-                    .WriteTo.Console(theme: AnsiConsoleTheme.Code)
-                    .CreateLogger())
-                .WithConfig("WvsGame", new WvsGameOptions())
-                .WithDistributed()
-                .WithMySQLDatabase()
-                .WithNXProvider()
-                .WithLuaScripts()
-                .Run()
-                .Wait();
+        private static Task Main(string[] args)
+            => new Startup()
+                .WithConfig()
+                .WithLogger()
+                .WithInferredModel()
+                .WithInferredDatabase()
+                .WithInferredProvider()
+                .WithInferredScripting()
+                .WithServiceOption<GameServiceInfo>()
+                .WithService<WvsGame>()
+                .Start();
 
-        public static ServiceBootstrap<T> WithLuaScripts<T>(this ServiceBootstrap<T> bootstrap) where T : IService
+        public static Startup WithInferredScripting(this Startup startup)
         {
-            bootstrap.Builder.Register(c =>
+            startup.Builder.ConfigureServices((context, services) =>
             {
-                var path = c.Resolve<IConfigurationRoot>()["ScriptDirectoryPath"];
+                switch (context.Configuration["scripting"].ToLower())
+                {
+                    case "lua":
+                    default:
+                        WithLuaScripting(context, services);
+                        break;
+                }
+            });
+            return startup;
+        }
 
-                UserData.RegisterType<Speaker>();
-                UserData.RegisterType<QuizSpeaker>();
-                UserData.RegisterType<SpeedQuizSpeaker>();
+        private static void WithLuaScripting(HostBuilderContext context, IServiceCollection services)
+        {
+            UserData.RegisterType<Speaker>();
+            UserData.RegisterType<QuizSpeaker>();
+            UserData.RegisterType<SpeedQuizSpeaker>();
 
-                UserData.RegisterType<FieldSpeaker>();
-                UserData.RegisterType<FieldUserSpeaker>();
-                UserData.RegisterType<FieldNPCSpeaker>();
-                return new LuaScriptConversationManager(path);
-            }).As<IScriptConversationManager>();
-            return bootstrap;
+            UserData.RegisterType<FieldSpeaker>();
+            UserData.RegisterType<FieldUserSpeaker>();
+            UserData.RegisterType<FieldNPCSpeaker>();
+
+            services.AddSingleton<IScriptConversationManager>(
+                new LuaScriptConversationManager(context.Configuration["scriptPath"])
+            );
         }
     }
 }

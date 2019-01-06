@@ -3,23 +3,30 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using Edelstein.Core.Logging;
 using Edelstein.Core.Services.Info;
 using Edelstein.Core.Services.Peers;
 using Edelstein.Data.Context;
 using Foundatio.Caching;
 using Foundatio.Messaging;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Timer = System.Timers.Timer;
 
 namespace Edelstein.Core.Services
 {
-    public abstract class AbstractService<TInfo> : IService
-        where TInfo : ServiceInfo
+    public abstract class AbstractHostedService<TInfo> : IHostedService
+        where TInfo : ServiceInfo, new()
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        public TInfo Info { get; }
+        private Timer _timer;
+        private readonly IApplicationLifetime _appLifetime;
+        private readonly ICacheClient _cache;
+        private readonly IMessageBus _messageBus;
+        private readonly IDictionary<string, PeerServiceInfo> _peers;
 
         public IEnumerable<ServiceInfo> Peers => _peers
             .Values
@@ -27,11 +34,7 @@ namespace Edelstein.Core.Services
             .Select(p => p.Info)
             .ToImmutableList();
 
-        private Timer _timer;
-        private readonly ICacheClient _cache;
-        private readonly IMessageBus _messageBus;
-        private readonly IDictionary<string, PeerServiceInfo> _peers;
-
+        public TInfo Info { get; }
         public IDataContextFactory DataContextFactory { get; }
 
         private const string MigrationCacheScope = "migration";
@@ -39,25 +42,41 @@ namespace Edelstein.Core.Services
         public ICacheClient MigrationCache { get; }
         public ICacheClient AccountStatusCache { get; }
 
-        protected AbstractService(
-            TInfo info,
+        public AbstractHostedService(
+            IApplicationLifetime appLifetime,
             ICacheClient cache,
             IMessageBus messageBus,
+            IOptions<TInfo> info,
             IDataContextFactory dataContextFactory
         )
         {
-            Info = info;
+            _appLifetime = appLifetime;
             _cache = cache;
             _messageBus = messageBus;
             _peers = new ConcurrentDictionary<string, PeerServiceInfo>();
 
+            Info = info.Value;
             DataContextFactory = dataContextFactory;
 
             MigrationCache = new ScopedCacheClient(_cache, MigrationCacheScope);
             AccountStatusCache = new ScopedCacheClient(_cache, AccountStatusCacheScope);
         }
 
-        public virtual async Task Start()
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            _appLifetime.ApplicationStarted.Register(async () => await OnStarted());
+            _appLifetime.ApplicationStopping.Register(async () => await OnStopping());
+            _appLifetime.ApplicationStopped.Register(async () => await OnStopped());
+            return Task.CompletedTask;
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            _appLifetime.StopApplication();
+            return Task.CompletedTask;
+        }
+
+        protected virtual async Task OnStarted()
         {
             await _messageBus.SubscribeAsync<PeerServiceStatusMessage>(msg =>
             {
@@ -108,12 +127,15 @@ namespace Edelstein.Core.Services
             await _messageBus.PublishAsync(createMessage());
         }
 
-        public virtual async Task Stop()
+        protected virtual async Task OnStopping()
         {
             _timer.Stop();
             await _messageBus.PublishAsync(
                 PeerServiceStatusMessage.Create(PeerServiceStatus.Offline, Info)
             );
         }
+
+        protected virtual Task OnStopped()
+            => Task.CompletedTask;
     }
 }

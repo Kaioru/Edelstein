@@ -1,7 +1,7 @@
 # --- Application specific ignores --- #
 **/*.aes
 **/*.json
-!**/*.example.json
+!**/appsettings.json
 
 # --- Platform specific ignores --- #
 
