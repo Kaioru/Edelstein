@@ -14,4 +14,10 @@
       <PackageReference Include="LibLog" Version="5.0.3" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>
