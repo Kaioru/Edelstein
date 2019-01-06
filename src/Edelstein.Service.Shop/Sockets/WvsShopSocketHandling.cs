@@ -5,6 +5,7 @@ using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Server.Best;
+using Edelstein.Provider.Templates.Server.CategoryDiscount;
 using Edelstein.Service.Shop.Logging;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq;
@@ -56,7 +57,15 @@ namespace Edelstein.Service.Shop.Sockets
                     // SetSaleInfo
                     p.Encode<int>(0);
                     p.Encode<short>(0);
-                    p.Encode<byte>(0);
+
+                    var categoryDiscounts = WvsShop.TemplateManager.GetAll<CategoryDiscountTemplate>().ToList();
+                    p.Encode<byte>((byte) categoryDiscounts.Count);
+                    categoryDiscounts.ForEach(d =>
+                    {
+                        p.Encode<byte>(d.Category);
+                        p.Encode<byte>(d.CategorySub);
+                        p.Encode<byte>(d.DiscountRate);
+                    });
 
                     // m_aBest 1080 Buffer
                     Enumerable.Repeat((byte) 0, 120).ForEach(b => p.Encode<byte>(b));
