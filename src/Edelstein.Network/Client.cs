@@ -36,7 +36,6 @@ namespace Edelstein.Network
                 .ConnectAsync(IPAddress.Parse(host), port);
             
             Logger.Info($"Established connection to {host}:{port}");
-            await Channel.CloseCompletion;
         }
 
         public async Task Stop()

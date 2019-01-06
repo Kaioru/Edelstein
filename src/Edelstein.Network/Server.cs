@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Transport.Bootstrapping;
@@ -12,7 +13,7 @@ namespace Edelstein.Network
     public class Server : IServer
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
-        
+
         private readonly ISocketFactory _socketFactory;
         private IChannel Channel { get; set; }
         private IEventLoopGroup BossGroup { get; set; }
@@ -44,13 +45,13 @@ namespace Edelstein.Network
                     );
                 }))
                 .BindAsync(IPAddress.Parse(host), port);
-            
+
             Logger.Info($"Bounded server on {host}:{port}");
-            await Channel.CloseCompletion;
         }
 
         public async Task Stop()
         {
+            await Task.WhenAll(Sockets.Select(s => s.Disconnect()));
             await Channel.CloseAsync();
             await BossGroup.ShutdownGracefullyAsync();
             await WorkerGroup.ShutdownGracefullyAsync();
