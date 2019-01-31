@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider.Parser;
@@ -15,11 +16,10 @@ namespace Edelstein.Provider.Templates.Server.NotSale
         {
             var property = Collection.Resolve("Server/NotSale.img");
 
-            var id = 0;
             property.Children
                 .ToDictionary(
-                    c => id++,
-                    c => NotSaleTemplate.Parse(id, c)
+                    c => c.Resolve<int>() ?? 0,
+                    c => NotSaleTemplate.Parse(c.Resolve<int>() ?? 0, c)
                 )
                 .ForEach(kv => Templates.Add(kv.Key, kv.Value));
             return Task.CompletedTask;
