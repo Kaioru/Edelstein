@@ -12,6 +12,8 @@ using Edelstein.Provider.Templates.Item.Set;
 using Edelstein.Provider.Templates.NPC;
 using Edelstein.Provider.Templates.Server.Best;
 using Edelstein.Provider.Templates.Server.CategoryDiscount;
+using Edelstein.Provider.Templates.Server.ModifiedCommodity;
+using Edelstein.Provider.Templates.Server.NotSale;
 using Edelstein.Provider.Templates.Server.NPCShop;
 using Edelstein.Provider.Templates.String;
 
@@ -36,8 +38,10 @@ namespace Edelstein.Provider.Templates
                 [typeof(ItemStringTemplate)] = new ItemStringTemplateCollection(collection),
                 [typeof(FieldStringTemplate)] = new FieldStringTemplateCollection(collection),
 
+                [typeof(NotSaleTemplate)] = new NotSaleTemplateCollection(collection),
                 [typeof(BestTemplate)] = new BestTemplateCollection(collection),
                 [typeof(CategoryDiscountTemplate)] = new CategoryDiscountTemplateCollection(collection),
+                [typeof(ModifiedCommodityTemplate)] = new ModifiedCommodityTemplateCollection(collection),
                 [typeof(NPCShopTemplate)] = new NPCShopTemplateCollection(collection)
             };
         }
