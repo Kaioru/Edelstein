@@ -26,15 +26,21 @@ namespace Edelstein.Service.Trade.Sockets
         public override async Task OnDisconnect()
         {
             if (Character == null) return;
+            if (!ReadOnlyMode) await OnUpdate();
 
+            var account = Character.Data.Account;
+            var state = await WvsTrade.AccountStatusCache.GetAsync<AccountState>(account.ID.ToString());
+
+            if (state.HasValue && state.Value != AccountState.MigratingIn)
+                await WvsTrade.AccountStatusCache.RemoveAsync(account.ID.ToString());
+        }
+
+        public override async Task OnUpdate()
+        {
+            if (Character == null) return;
+            
             using (var db = WvsTrade.DataContextFactory.Create())
             {
-                var account = Character.Data.Account;
-                var state = await WvsTrade.AccountStatusCache.GetAsync<AccountState>(account.ID.ToString());
-
-                if (state.HasValue && state.Value != AccountState.MigratingIn)
-                    await WvsTrade.AccountStatusCache.RemoveAsync(account.ID.ToString());
-
                 db.Update(Character);
                 db.SaveChanges();
             }

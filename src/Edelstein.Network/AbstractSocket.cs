@@ -15,6 +15,8 @@ namespace Edelstein.Network
         public uint SeqSend { get; set; }
         public uint SeqRecv { get; set; }
         public bool EncryptData => true;
+        
+        public bool ReadOnlyMode { get; set; }
 
         public object LockSend { get; }
         public object LockRecv { get; }
@@ -30,6 +32,7 @@ namespace Edelstein.Network
 
         public abstract Task OnPacket(IPacket packet);
         public abstract Task OnDisconnect();
+        public abstract Task OnUpdate();
         public abstract Task OnException(Exception exception);
 
         public Task Disconnect()

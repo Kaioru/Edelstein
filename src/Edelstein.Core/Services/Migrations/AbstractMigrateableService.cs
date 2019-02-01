@@ -63,6 +63,10 @@ namespace Edelstein.Core.Services.Migrations
 
             if (await MigrationCache.ExistsAsync(characterID))
                 return false;
+
+            socket.ReadOnlyMode = true;
+
+            await socket.OnUpdate();
             await AccountStatusCache.SetAsync(
                 accountID,
                 AccountState.MigratingIn,

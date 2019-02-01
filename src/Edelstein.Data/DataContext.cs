@@ -84,22 +84,28 @@ namespace Edelstein.Data
                             Entry(existingItem).State = EntityState.Deleted;
                     }
 
-                    var existingLockerItems = existing.Data.Locker.Items.ToList();
-                    var currentLockerItems = character.Data.Locker.Items.ToList();
-
-                    foreach (var existingTrunkItem in existingLockerItems)
+                    if (character.Data?.Locker?.Items != null)
                     {
-                        if (currentLockerItems.All(i => i.ID != existingTrunkItem.ID))
-                            Entry(existingTrunkItem).State = EntityState.Deleted;
+                        var existingLockerItems = existing.Data.Locker.Items.ToList();
+                        var currentLockerItems = character.Data.Locker.Items.ToList();
+
+                        foreach (var existingTrunkItem in existingLockerItems)
+                        {
+                            if (currentLockerItems.All(i => i.ID != existingTrunkItem.ID))
+                                Entry(existingTrunkItem).State = EntityState.Deleted;
+                        }
                     }
 
-                    var existingTrunkItems = existing.Data.Trunk.Items.ToList();
-                    var currentTrunkItems = character.Data.Trunk.Items.ToList();
-
-                    foreach (var existingTrunkItem in existingTrunkItems)
+                    if (character.Data?.Trunk?.Items != null)
                     {
-                        if (currentTrunkItems.All(i => i.ID != existingTrunkItem.ID))
-                            Entry(existingTrunkItem).State = EntityState.Deleted;
+                        var existingTrunkItems = existing.Data.Trunk.Items.ToList();
+                        var currentTrunkItems = character.Data.Trunk.Items.ToList();
+
+                        foreach (var existingTrunkItem in existingTrunkItems)
+                        {
+                            if (currentTrunkItems.All(i => i.ID != existingTrunkItem.ID))
+                                Entry(existingTrunkItem).State = EntityState.Deleted;
+                        }
                     }
                 }
             }

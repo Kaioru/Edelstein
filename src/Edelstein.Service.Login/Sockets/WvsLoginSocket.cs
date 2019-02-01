@@ -40,6 +40,8 @@ namespace Edelstein.Service.Login.Sockets
             }
         }
 
+        public override Task OnUpdate() => Task.CompletedTask;
+
         public override Task OnException(Exception exception)
         {
             Logger.Error(exception, "Caught exception in socket handling");

@@ -31,15 +31,25 @@ namespace Edelstein.Service.Game.Sockets
         public override async Task OnDisconnect()
         {
             if (FieldUser == null) return;
+            if (!ReadOnlyMode) await OnUpdate();
+
+            var account = FieldUser.Character.Data.Account;
+            var state = await WvsGame.AccountStatusCache.GetAsync<AccountState>(account.ID.ToString());
+
+            if (state.HasValue && state.Value != AccountState.MigratingIn)
+                await WvsGame.AccountStatusCache.RemoveAsync(account.ID.ToString());
+
+            FieldUser.ConversationContext?.Dispose();
+            FieldUser.Field?.Leave(FieldUser);
+        }
+
+        public override async Task OnUpdate()
+        {
+            if (FieldUser == null) return;
 
             using (var db = WvsGame.DataContextFactory.Create())
             {
                 var character = FieldUser.Character;
-                var account = character.Data.Account;
-                var state = await WvsGame.AccountStatusCache.GetAsync<AccountState>(account.ID.ToString());
-
-                if (state.HasValue && state.Value != AccountState.MigratingIn)
-                    await WvsGame.AccountStatusCache.RemoveAsync(account.ID.ToString());
 
                 character.FieldPortal = (byte) FieldUser.Field.Template.Portals
                     .Values
@@ -54,9 +64,6 @@ namespace Edelstein.Service.Game.Sockets
                     .First()
                     .ID;
 
-                FieldUser.ConversationContext?.Dispose();
-                FieldUser.Field?.Leave(FieldUser);
-                
                 db.Update(character);
                 db.SaveChanges();
             }
