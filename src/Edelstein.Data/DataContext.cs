@@ -32,6 +32,13 @@ namespace Edelstein.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AccountData>()
+                .HasOne(a => a.Locker);
+            modelBuilder.Entity<ItemLocker>()
+                .HasMany(i => i.Items)
+                .WithOne(i => i.ItemLocker)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AccountData>()
                 .HasOne(a => a.Trunk);
             modelBuilder.Entity<ItemTrunk>()
                 .HasMany(i => i.Items)
@@ -72,6 +79,15 @@ namespace Edelstein.Data
                     {
                         if (currentItems.All(i => i.ID != existingItem.ID))
                             Entry(existingItem).State = EntityState.Deleted;
+                    }
+
+                    var existingLockerItems = existing.Data.Locker.Items.ToList();
+                    var currentLockerItems = character.Data.Locker.Items.ToList();
+
+                    foreach (var existingTrunkItem in existingLockerItems)
+                    {
+                        if (currentLockerItems.All(i => i.ID != existingTrunkItem.ID))
+                            Entry(existingTrunkItem).State = EntityState.Deleted;
                     }
 
                     var existingTrunkItems = existing.Data.Trunk.Items.ToList();

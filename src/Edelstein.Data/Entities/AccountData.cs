@@ -16,6 +16,7 @@ namespace Edelstein.Data.Entities
         public byte WorldID { get; set; }
         public int SlotCount { get; set; }
 
+        public ItemLocker Locker { get; set; }
         public ItemTrunk Trunk { get; set; }
 
         public ICollection<Character> Characters { get; set; }

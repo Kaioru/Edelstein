@@ -206,6 +206,7 @@ namespace Edelstein.Service.Login.Sockets
                                 WorldID = worldID,
                                 SlotCount = 3,
                                 Characters = new List<Character>(),
+                                Locker = new ItemLocker(999),
                                 Trunk = new ItemTrunk(4)
                             };
 

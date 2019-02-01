@@ -27,6 +27,8 @@ namespace Edelstein.Service.Shop.Sockets
                     return OnMigrateIn(packet);
                 case RecvPacketOperations.UserTransferFieldRequest:
                     return OnTransferFieldRequest(packet);
+                case RecvPacketOperations.CashShopCashItemRequest:
+                    return OnCashShopCashItemRequest(packet);
                 default:
                     Logger.Warn($"Unhandled packet operation {operation}");
                     return Task.CompletedTask;
@@ -42,6 +44,11 @@ namespace Edelstein.Service.Shop.Sockets
                 var character = db.Characters
                     .Include(c => c.Data)
                     .ThenInclude(a => a.Account)
+                    .Include(c => c.Data)
+                    .ThenInclude(c => c.Locker)
+                    .ThenInclude(c => c.Items)
+                    .Include(c => c.Data)
+                    .ThenInclude(c => c.Trunk)
                     .Include(c => c.Inventories)
                     .ThenInclude(c => c.Items)
                     .Single(c => c.ID == characterID);
@@ -153,6 +160,14 @@ namespace Edelstein.Service.Shop.Sockets
                     p.Encode<int>(0); // m_nHighestCharacterLevelInThisAccount
                     await SendPacket(p);
                 }
+
+                using (var p = new Packet(SendPacketOperations.CashShopQueryCashResult))
+                {
+                    p.Encode<int>(character.Data.Account.NexonCash);
+                    p.Encode<int>(character.Data.Account.MaplePoint);
+                    p.Encode<int>(character.Data.Account.PrepaidNXCash);
+                    await SendPacket(p);
+                }
             }
         }
 
@@ -166,6 +181,11 @@ namespace Edelstein.Service.Shop.Sockets
             if (service != null &&
                 !await WvsShop.TryMigrateTo(this, Character, service))
                 await Disconnect();
+        }
+        
+        private Task OnCashShopCashItemRequest(IPacket packet)
+        {
+            throw new NotImplementedException();
         }
     }
 }
