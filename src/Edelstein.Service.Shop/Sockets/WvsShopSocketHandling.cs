@@ -231,11 +231,11 @@ namespace Edelstein.Service.Shop.Sockets
                 case CashItemRequest.MoveStoL:
                     return OnMoveStoL(packet);
                 default:
-                    Logger.Warn($"Unhandled operation {type}");
+                    Logger.Warn($"Unhandled cash item request operation {type}");
 
                     using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
                     {
-                        p.Encode<byte>((byte) CashItemResult.LoadLocker_Failed);
+                        p.Encode<byte>((byte) CashItemResult.SetWish_Failed);
                         p.Encode<byte>(0);
                         return SendPacket(p);
                     }
@@ -334,8 +334,7 @@ namespace Edelstein.Service.Shop.Sockets
             };
 
 
-            if (item is ItemSlotBundle b)
-                slot.Number = b.Number;
+            if (item is ItemSlotBundle b) slot.Number = b.Number;
             else slot.Number = 1;
 
             if (locker.Items.Count >= locker.SlotMax) return;
