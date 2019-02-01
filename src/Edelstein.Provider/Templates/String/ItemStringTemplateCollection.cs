@@ -38,7 +38,6 @@ namespace Edelstein.Provider.Templates.String
                 new[] {"Consume", "Ins", "Cash"}.ForEach(d =>
                 {
                     p.Resolve($"{d}.img").Children
-                        .SelectMany(c => c.Children)
                         .DistinctBy(c => c.Name)
                         .Where(c => c.Name.All(char.IsDigit))
                         .ToDictionary(

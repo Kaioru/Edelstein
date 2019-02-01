@@ -15,7 +15,7 @@ namespace Edelstein.Provider.Templates.String
             property.Resolve(p =>
             {
                 t.Name = p.ResolveOrDefault<string>("name") ?? "NO-NAME";
-                t.Desc = p.ResolveOrDefault<string>("desc");
+                //t.Desc = p.ResolveOrDefault<string>("desc");
             });
             return t;
         }
