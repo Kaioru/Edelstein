@@ -27,16 +27,23 @@ namespace Edelstein.Service.Shop.Sockets
         {
             if (Character == null) return;
 
-            using (var db = WvsShop.DataContextFactory.Create())
+            try
             {
-                var account = Character.Data.Account;
-                var state = await WvsShop.AccountStatusCache.GetAsync<AccountState>(account.ID.ToString());
+                using (var db = WvsShop.DataContextFactory.Create())
+                {
+                    var account = Character.Data.Account;
+                    var state = await WvsShop.AccountStatusCache.GetAsync<AccountState>(account.ID.ToString());
 
-                if (state.HasValue && state.Value != AccountState.MigratingIn)
-                    await WvsShop.AccountStatusCache.RemoveAsync(account.ID.ToString());
+                    if (state.HasValue && state.Value != AccountState.MigratingIn)
+                        await WvsShop.AccountStatusCache.RemoveAsync(account.ID.ToString());
 
-                db.Update(Character);
-                db.SaveChanges();
+                    db.Update(Character);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 

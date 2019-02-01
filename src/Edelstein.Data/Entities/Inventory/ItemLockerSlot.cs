@@ -4,19 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Edelstein.Data.Entities.Inventory
 {
-    public abstract class ItemSlot
+    public class ItemLockerSlot
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        public ItemTrunk ItemTrunk { get; set; }
-        public ItemInventory ItemInventory { get; set; }
+        public long SN { get; set; }
 
-        public short Position { get; set; }
-
-        public int TemplateID { get; set; }
-        public long? CashItemSN { get; set; }
+        public int ItemID { get; set; }
+        public int CommoditySN { get; set; }
+        public short Number { get; set; }
+        public string BuyCharacterName { get; set; }
         public DateTime? DateExpire { get; set; }
+        public int PaybackRate;
+        public int DiscountRate;
     }
 }

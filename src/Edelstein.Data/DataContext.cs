@@ -35,7 +35,7 @@ namespace Edelstein.Data
                 .HasOne(a => a.Locker);
             modelBuilder.Entity<ItemLocker>()
                 .HasMany(i => i.Items)
-                .WithOne(i => i.ItemLocker)
+                .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AccountData>()
@@ -63,6 +63,9 @@ namespace Edelstein.Data
             {
                 var existing = Characters
                     .AsNoTracking()
+                    .Include(c => c.Data)
+                    .ThenInclude(c => c.Locker)
+                    .ThenInclude(c => c.Items)
                     .Include(c => c.Data)
                     .ThenInclude(c => c.Trunk)
                     .ThenInclude(c => c.Items)

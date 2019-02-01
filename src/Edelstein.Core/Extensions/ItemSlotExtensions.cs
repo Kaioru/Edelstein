@@ -10,7 +10,8 @@ namespace Edelstein.Core.Extensions
         public static void Encode(this ItemSlot i, IPacket p)
         {
             p.Encode<int>(i.TemplateID);
-            p.Encode<bool>(false);
+            p.Encode<bool>(i.CashItemSN.HasValue);
+            if (i.CashItemSN.HasValue) p.Encode<long>(i.CashItemSN.Value);
             p.Encode<DateTime>(i.DateExpire ?? ItemConstants.Permanent);
         }
 
@@ -58,7 +59,7 @@ namespace Edelstein.Core.Extensions
             p.Encode<short>(i.Socket1);
             p.Encode<short>(i.Socket2);
 
-            p.Encode<long>(0);
+            if (!i.CashItemSN.HasValue) p.Encode<long>(0);
             p.Encode<long>(0);
             p.Encode<int>(0);
         }
