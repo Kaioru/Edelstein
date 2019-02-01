@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Edelstein.Provider.Parser;
 
@@ -31,31 +29,32 @@ namespace Edelstein.Provider.Templates.Server.ModifiedCommodity
 
         public static ModifiedCommodityTemplate Parse(int id, IDataProperty property)
         {
-            var t = new ModifiedCommodityTemplate
+            var t = new ModifiedCommodityTemplate {ID = id};
+
+            property.Resolve(p =>
             {
-                ID = id,
-                ItemID = property.Resolve<int>("itemID"),
-                Count = property.Resolve<short>("count"),
-                Priority = property.Resolve<byte>("priority"),
-                Price = property.Resolve<int>("price"),
-                Bonus = property.Resolve<byte>("bonus"),
-                Period = property.Resolve<short>("period"),
-                ReqPOP = property.Resolve<short>("reqPOP"),
-                ReqLEV = property.Resolve<short>("reqLEV"),
-                MaplePoint = property.Resolve<int>("maplePoint"),
-                Meso = property.Resolve<int>("meso"),
-                ForPremiumUser = property.Resolve<bool>("premium"),
-                Gender = property.Resolve<byte>("gender"),
-                OnSale = property.Resolve<bool>("onSale"),
-                Class = property.Resolve<byte>("class"),
-                Limit = property.Resolve<byte>("limit"),
-                PbCash = property.Resolve<short>("pbCash"),
-                PbPoint = property.Resolve<short>("pbPoint"),
-                PbGift = property.Resolve<short>("pbGift"),
-                PackageSN = property.Resolve("package")?.Children
+                t.ItemID = p.Resolve<int>("itemID");
+                t.Count = p.Resolve<short>("count");
+                t.Priority = p.Resolve<byte>("priority");
+                t.Price = p.Resolve<int>("price");
+                t.Bonus = p.Resolve<byte>("bonus");
+                t.Period = p.Resolve<short>("period");
+                t.ReqPOP = p.Resolve<short>("reqPOP");
+                t.ReqLEV = p.Resolve<short>("reqLEV");
+                t.MaplePoint = p.Resolve<int>("maplePoint");
+                t.Meso = p.Resolve<int>("meso");
+                t.ForPremiumUser = p.Resolve<bool>("premium");
+                t.Gender = p.Resolve<byte>("gender");
+                t.OnSale = p.Resolve<bool>("onSale");
+                t.Class = p.Resolve<byte>("class");
+                t.Limit = p.Resolve<byte>("limit");
+                t.PbCash = p.Resolve<short>("pbCash");
+                t.PbPoint = p.Resolve<short>("pbPoint");
+                t.PbGift = p.Resolve<short>("pbGift");
+                t.PackageSN = property.Resolve("package")?.Children
                                 .Select(c => c.Resolve<int>() ?? 0)
-                                .ToArray() ?? null
-            };
+                                .ToArray() ?? null;
+            });
 
             return t;
         }

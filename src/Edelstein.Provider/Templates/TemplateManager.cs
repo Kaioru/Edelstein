@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider.Logging;
 using Edelstein.Provider.Parser;
+using Edelstein.Provider.Templates.Etc;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Item.Option;
@@ -37,6 +38,8 @@ namespace Edelstein.Provider.Templates
 
                 [typeof(ItemStringTemplate)] = new ItemStringTemplateCollection(collection),
                 [typeof(FieldStringTemplate)] = new FieldStringTemplateCollection(collection),
+                
+                [typeof(CommodityTemplate)] = new CommodityTemplateCollection(collection),
 
                 [typeof(NotSaleTemplate)] = new NotSaleTemplateCollection(collection),
                 [typeof(BestTemplate)] = new BestTemplateCollection(collection),
