@@ -218,134 +218,136 @@ namespace Edelstein.Service.Shop.Sockets
 
         private Task OnCashShopQueryCashRequest(IPacket packet) => SendCashData();
 
-        private async Task OnCashShopCashItemRequest(IPacket packet)
+        private Task OnCashShopCashItemRequest(IPacket packet)
         {
             var type = (CashItemRequest) packet.Decode<byte>();
 
-            Console.WriteLine(type);
             switch (type)
             {
                 case CashItemRequest.Buy:
-                {
-                    packet.Decode<byte>();
-                    var cashType = packet.Decode<int>();
-                    var commoditySN = packet.Decode<int>();
-                    var commodity = WvsShop.CommodityManager.Get(commoditySN);
-                    var account = Character.Data.Account;
-                    var locker = Character.Data.Locker;
-
-                    if (commodity == null) return;
-
-                    var category = commoditySN / 10000000;
-                    var categorySub = commoditySN / 100000 % 100;
-                    var discountRate = WvsShop.TemplateManager.GetAll<CategoryDiscountTemplate>()
-                                           .FirstOrDefault(d => d.Category == category &&
-                                                                d.CategorySub == categorySub)
-                                           ?.DiscountRate ?? 0.0;
-                    var price = commodity.Price * (1 - discountRate / 100);
-
-                    if (account.GetCash(cashType) < price) return;
-                    if (locker.Items.Count >= locker.SlotMax) return;
-
-                    var slot = commodity.ToSlot();
-
-                    locker.Items.Add(slot);
-
-                    using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
-                    {
-                        p.Encode<byte>((byte) CashItemResult.Buy_Done);
-                        slot.Encode(p);
-                        await SendPacket(p);
-                    }
-
-                    account.IncCash(cashType, (int) -price);
-                    await SendCashData();
-                    break;
-                }
+                    return OnBuy(packet);
                 case CashItemRequest.MoveLtoS:
-                {
-                    var sn = packet.Decode<long>();
-                    var locker = Character.Data.Locker;
-                    var slot = locker.Items.FirstOrDefault(i => i.SN == sn);
-
-                    if (slot == null) return;
-
-                    var context = new ModifyInventoryContext(Character);
-                    var template = WvsShop.TemplateManager.Get<ItemTemplate>(slot.ItemID);
-                    var item = template.ToItemSlot();
-
-                    item.CashItemSN = slot.SN;
-                    item.DateExpire = slot.DateExpire;
-
-                    if (item is ItemSlotBundle b)
-                        b.Number = slot.Number;
-
-                    if (!Character.HasSlotFor(item)) return;
-
-                    locker.Items.Remove(slot);
-                    context.Add(item);
-
-                    using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
-                    {
-                        p.Encode<byte>((byte) CashItemResult.MoveLtoS_Done);
-                        p.Encode<short>(item.Position);
-
-                        if (item is ItemSlotEquip equip) equip.Encode(p);
-                        if (item is ItemSlotBundle bundle) bundle.Encode(p);
-                        if (item is ItemSlotPet pet) pet.Encode(p);
-                        await SendPacket(p);
-                    }
-
-                    break;
-                }
+                    return OnMoveLtoS(packet);
                 case CashItemRequest.MoveStoL:
-                {
-                    var id = packet.Decode<long>();
-                    var inventories = Character.Inventories;
-                    var item = inventories
-                        .SelectMany(i => i.Items)
-                        .FirstOrDefault(i => i.CashItemSN == id);
-
-                    if (item?.CashItemSN == null) return;
-
-                    var context = new ModifyInventoryContext(Character);
-                    var locker = Character.Data.Locker;
-                    var slot = new ItemLockerSlot
-                    {
-                        SN = item.CashItemSN.Value,
-                        ItemID = item.TemplateID,
-                        DateExpire = item.DateExpire
-                    };
-
-
-                    if (item is ItemSlotBundle b)
-                        slot.Number = b.Number;
-                    else slot.Number = 1;
-
-                    if (locker.Items.Count >= locker.SlotMax) return;
-
-                    context.Remove(item);
-                    locker.Items.Add(slot);
+                    return OnMoveStoL(packet);
+                default:
+                    Logger.Warn($"Unhandled operation {type}");
 
                     using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
                     {
-                        p.Encode<byte>((byte) CashItemResult.MoveStoL_Done);
-                        slot.Encode(p);
-                        await SendPacket(p);
-                    }
-
-                    break;
-                }
-                default:
-                    using (var p = new Packet(SendPacketOperations.CashShopCashItemResult)) 
-                    {
-                        
                         p.Encode<byte>((byte) CashItemResult.LoadLocker_Failed);
                         p.Encode<byte>(0);
-                        await SendPacket(p);
+                        return SendPacket(p);
                     }
-                    Logger.Warn($"Unhandled operation {type}");
-                    break;
+            }
+        }
+
+        private async Task OnBuy(IPacket packet)
+        {
+            packet.Decode<byte>();
+            var cashType = packet.Decode<int>();
+            var commoditySN = packet.Decode<int>();
+            var commodity = WvsShop.CommodityManager.Get(commoditySN);
+            var account = Character.Data.Account;
+            var locker = Character.Data.Locker;
+
+            if (commodity == null) return;
+
+            var category = commoditySN / 10000000;
+            var categorySub = commoditySN / 100000 % 100;
+            var discountRate = WvsShop.TemplateManager.GetAll<CategoryDiscountTemplate>()
+                                   .FirstOrDefault(d => d.Category == category &&
+                                                        d.CategorySub == categorySub)
+                                   ?.DiscountRate ?? 0.0;
+            var price = commodity.Price * (1 - discountRate / 100);
+
+            if (account.GetCash(cashType) < price) return;
+            if (locker.Items.Count >= locker.SlotMax) return;
+
+            var slot = commodity.ToSlot();
+
+            locker.Items.Add(slot);
+
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+            {
+                p.Encode<byte>((byte) CashItemResult.Buy_Done);
+                slot.Encode(p);
+                await SendPacket(p);
+            }
+
+            account.IncCash(cashType, (int) -price);
+            await SendCashData();
+        }
+
+        private async Task OnMoveLtoS(IPacket packet)
+        {
+            var sn = packet.Decode<long>();
+            var locker = Character.Data.Locker;
+            var slot = locker.Items.FirstOrDefault(i => i.SN == sn);
+
+            if (slot == null) return;
+
+            var context = new ModifyInventoryContext(Character);
+            var template = WvsShop.TemplateManager.Get<ItemTemplate>(slot.ItemID);
+            var item = template.ToItemSlot();
+
+            item.CashItemSN = slot.SN;
+            item.DateExpire = slot.DateExpire;
+
+            if (item is ItemSlotBundle b)
+                b.Number = slot.Number;
+
+            if (!Character.HasSlotFor(item)) return;
+
+            locker.Items.Remove(slot);
+            context.Add(item);
+
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+            {
+                p.Encode<byte>((byte) CashItemResult.MoveLtoS_Done);
+                p.Encode<short>(item.Position);
+
+                if (item is ItemSlotEquip equip) equip.Encode(p);
+                if (item is ItemSlotBundle bundle) bundle.Encode(p);
+                if (item is ItemSlotPet pet) pet.Encode(p);
+                await SendPacket(p);
+            }
+        }
+
+        private async Task OnMoveStoL(IPacket packet)
+        {
+            var id = packet.Decode<long>();
+            var inventories = Character.Inventories;
+            var item = inventories
+                .SelectMany(i => i.Items)
+                .FirstOrDefault(i => i.CashItemSN == id);
+
+            if (item?.CashItemSN == null) return;
+
+            var context = new ModifyInventoryContext(Character);
+            var locker = Character.Data.Locker;
+            var slot = new ItemLockerSlot
+            {
+                SN = item.CashItemSN.Value,
+                ItemID = item.TemplateID,
+                DateExpire = item.DateExpire
+            };
+
+
+            if (item is ItemSlotBundle b)
+                slot.Number = b.Number;
+            else slot.Number = 1;
+
+            if (locker.Items.Count >= locker.SlotMax) return;
+
+            context.Remove(item);
+            locker.Items.Add(slot);
+
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+            {
+                p.Encode<byte>((byte) CashItemResult.MoveStoL_Done);
+                slot.Encode(p);
+                await SendPacket(p);
             }
         }
     }
