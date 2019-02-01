@@ -4,6 +4,7 @@ using Edelstein.Core.Services.Migrations;
 using Edelstein.Data.Context;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
+using Edelstein.Service.Shop.Commodity;
 using Edelstein.Service.Shop.Sockets;
 using Foundatio.Caching;
 using Foundatio.Messaging;
@@ -17,7 +18,9 @@ namespace Edelstein.Service.Shop
         private IServer Server { get; set; }
         public ITemplateManager TemplateManager { get; }
 
-         public WvsShop(
+        public CommodityManager CommodityManager { get; }
+
+        public WvsShop(
             IApplicationLifetime appLifetime,
             ICacheClient cache,
             IMessageBus messageBus,
@@ -27,6 +30,7 @@ namespace Edelstein.Service.Shop
         ) : base(appLifetime, cache, messageBus, info, dataContextFactory)
         {
             TemplateManager = templateManager;
+            CommodityManager = new CommodityManager(TemplateManager);
         }
 
         protected override async Task OnStarted()
