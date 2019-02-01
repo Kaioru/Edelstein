@@ -31,6 +31,7 @@ namespace Edelstein.Service.Shop.Commodity
                     {
                         c = new Commodity
                         {
+                            SN = id,
                             ItemID = t.ItemID,
                             Count = t.Count,
                             Priority = t.Priority,

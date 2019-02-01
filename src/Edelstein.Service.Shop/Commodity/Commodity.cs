@@ -1,7 +1,11 @@
+using System;
+using Edelstein.Data.Entities.Inventory;
+
 namespace Edelstein.Service.Shop.Commodity
 {
     public class Commodity
     {
+        public int SN { get; set; }
         public int ItemID { get; set; }
         public short Count { get; set; }
         public byte Priority { get; set; }
@@ -21,5 +25,17 @@ namespace Edelstein.Service.Shop.Commodity
         public short PbPoint { get; set; }
         public short PbGift { get; set; }
         public int[] PackageSN { get; set; }
+
+        public ItemLockerSlot ToSlot()
+        {
+            var slot = new ItemLockerSlot
+            {
+                SN = DateTime.Now.Ticks,
+                ItemID = ItemID,
+                CommoditySN = SN,
+                Number = Count
+            };
+            return slot;
+        }
     }
 }

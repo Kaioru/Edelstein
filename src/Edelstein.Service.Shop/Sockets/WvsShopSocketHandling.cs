@@ -225,34 +225,43 @@ namespace Edelstein.Service.Shop.Sockets
             Console.WriteLine(type);
             switch (type)
             {
-                case CashItemRequest.WebShopOrderGetList:
-                    break;
-                case CashItemRequest.LoadLocker:
-                    break;
-                case CashItemRequest.LoadWish:
-                    break;
                 case CashItemRequest.Buy:
+                {
+                    packet.Decode<byte>();
+                    var cashType = packet.Decode<int>();
+                    var commoditySN = packet.Decode<int>();
+                    var commodity = WvsShop.CommodityManager.Get(commoditySN);
+                    var account = Character.Data.Account;
+                    var locker = Character.Data.Locker;
+
+                    if (commodity == null) return;
+
+                    var category = commoditySN / 10000000;
+                    var categorySub = commoditySN / 100000 % 100;
+                    var discountRate = WvsShop.TemplateManager.GetAll<CategoryDiscountTemplate>()
+                                           .FirstOrDefault(d => d.Category == category &&
+                                                                d.CategorySub == categorySub)
+                                           ?.DiscountRate ?? 0.0;
+                    var price = commodity.Price * (1 - discountRate / 100);
+
+                    if (account.GetCash(cashType) < price) return;
+                    if (locker.Items.Count >= locker.SlotMax) return;
+
+                    var slot = commodity.ToSlot();
+
+                    locker.Items.Add(slot);
+
+                    using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+                    {
+                        p.Encode<byte>((byte) CashItemResult.Buy_Done);
+                        slot.Encode(p);
+                        await SendPacket(p);
+                    }
+
+                    account.IncCash(cashType, (int) -price);
+                    await SendCashData();
                     break;
-                case CashItemRequest.Gift:
-                    break;
-                case CashItemRequest.SetWish:
-                    break;
-                case CashItemRequest.IncSlotCount:
-                    break;
-                case CashItemRequest.IncTrunkCount:
-                    break;
-                case CashItemRequest.IncCharSlotCount:
-                    break;
-                case CashItemRequest.IncBuyCharCount:
-                    break;
-                case CashItemRequest.EnableEquipSlotExt:
-                    break;
-                case CashItemRequest.CancelPurchase:
-                    break;
-                case CashItemRequest.ConfirmPurchase:
-                    break;
-                case CashItemRequest.Destroy:
-                    break;
+                }
                 case CashItemRequest.MoveLtoS:
                 {
                     var sn = packet.Decode<long>();
@@ -327,108 +336,16 @@ namespace Edelstein.Service.Shop.Sockets
 
                     break;
                 }
-                case CashItemRequest.Expire:
-                    break;
-                case CashItemRequest.Use:
-                    break;
-                case CashItemRequest.StatChange:
-                    break;
-                case CashItemRequest.SkillChange:
-                    break;
-                case CashItemRequest.SkillReset:
-                    break;
-                case CashItemRequest.DestroyPetItem:
-                    break;
-                case CashItemRequest.SetPetName:
-                    break;
-                case CashItemRequest.SetPetLife:
-                    break;
-                case CashItemRequest.SetPetSkill:
-                    break;
-                case CashItemRequest.SetItemName:
-                    break;
-                case CashItemRequest.SendMemo:
-                    break;
-                case CashItemRequest.GetMaplePoint:
-                    break;
-                case CashItemRequest.Rebate:
-                    break;
-                case CashItemRequest.UseCoupon:
-                    break;
-                case CashItemRequest.GiftCoupon:
-                    break;
-                case CashItemRequest.Couple:
-                    break;
-                case CashItemRequest.BuyPackage:
-                    break;
-                case CashItemRequest.GiftPackage:
-                    break;
-                case CashItemRequest.BuyNormal:
-                    break;
-                case CashItemRequest.ApplyWishListEvent:
-                    break;
-                case CashItemRequest.MovePetStat:
-                    break;
-                case CashItemRequest.FriendShip:
-                    break;
-                case CashItemRequest.ShopScan:
-                    break;
-                case CashItemRequest.LoadPetExceptionList:
-                    break;
-                case CashItemRequest.UpdatePetExceptionList:
-                    break;
-                case CashItemRequest.FreeCashItem:
-                    break;
-                case CashItemRequest.LoadFreeCashItem:
-                    break;
-                case CashItemRequest.Script:
-                    break;
-                case CashItemRequest.PurchaseRecord:
-                    break;
-                case CashItemRequest.TradeDone:
-                    break;
-                case CashItemRequest.BuyDone:
-                    break;
-                case CashItemRequest.TradeSave:
-                    break;
-                case CashItemRequest.TradeLog:
-                    break;
-                case CashItemRequest.EvolPet:
-                    break;
-                case CashItemRequest.BuyNameChange:
-                    break;
-                case CashItemRequest.CancelChangeName:
-                    break;
-                case CashItemRequest.BuyTransferWorld:
-                    break;
-                case CashItemRequest.CancelTransferWorld:
-                    break;
-                case CashItemRequest.CharacterSale:
-                    break;
-                case CashItemRequest.ItemUpgrade:
-                    break;
-                case CashItemRequest.ItemUpgradeFail:
-                    break;
-                case CashItemRequest.ItemUpgradeReq:
-                    break;
-                case CashItemRequest.ItemUpgradeDone:
-                    break;
-                case CashItemRequest.Vega:
-                    break;
-                case CashItemRequest.CashItemGachapon:
-                    break;
-                case CashItemRequest.CashGachaponOpen:
-                    break;
-                case CashItemRequest.CashGachaponCopy:
-                    break;
-                case CashItemRequest.ChangeMaplePoint:
-                    break;
-                case CashItemRequest.CheckFreeCashItemTable:
-                    break;
-                case CashItemRequest.SetFreeCashItemTable:
-                    break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    using (var p = new Packet(SendPacketOperations.CashShopCashItemResult)) 
+                    {
+                        
+                        p.Encode<byte>((byte) CashItemResult.LoadLocker_Failed);
+                        p.Encode<byte>(0);
+                        await SendPacket(p);
+                    }
+                    Logger.Warn($"Unhandled operation {type}");
+                    break;
             }
         }
     }

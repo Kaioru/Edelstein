@@ -33,25 +33,25 @@ namespace Edelstein.Provider.Templates.Etc
 
             property.Resolve(p =>
             {
-                t.ItemID = p.Resolve<int>("itemID") ?? 0;
-                t.Count = p.Resolve<short>("count") ?? 1;
-                t.Priority = p.Resolve<byte>("priority") ?? 0;
-                t.Price = p.Resolve<int>("price") ?? 0;
-                t.Bonus = p.Resolve<byte>("bonus") ?? 0;
-                t.Period = p.Resolve<short>("period") ?? 0;
-                t.ReqPOP = p.Resolve<short>("reqPOP") ?? 0;
-                t.ReqLEV = p.Resolve<short>("reqLEV") ?? 0;
-                t.MaplePoint = p.Resolve<int>("maplePoint") ?? 0;
-                t.Meso = p.Resolve<int>("meso") ?? 0;
-                t.ForPremiumUser = p.Resolve<bool>("premium") ?? false;
-                t.Gender = p.Resolve<sbyte>("gender") ?? 0;
-                t.OnSale = p.Resolve<bool>("onSale") ?? false;
-                t.Class = p.Resolve<byte>("class") ?? 0;
-                t.Limit = p.Resolve<byte>("limit") ?? 0;
-                t.PbCash = p.Resolve<short>("pbCash") ?? 0;
-                t.PbPoint = p.Resolve<short>("pbPoint") ?? 0;
-                t.PbGift = p.Resolve<short>("pbGift") ?? 0;
-                t.PackageSN = p.Resolve("package")?.Children
+                t.ItemID = p.Resolve<int>("ItemId") ?? 0;
+                t.Count = p.Resolve<short>("Count") ?? 1;
+                t.Priority = p.Resolve<byte>("Priority") ?? 0;
+                t.Price = p.Resolve<int>("Price") ?? 0;
+                t.Bonus = p.Resolve<byte>("Bonus") ?? 0;
+                t.Period = p.Resolve<short>("Period") ?? 0;
+                t.ReqPOP = p.Resolve<short>("ReqPOP") ?? 0;
+                t.ReqLEV = p.Resolve<short>("ReqLEV") ?? 0;
+                t.MaplePoint = p.Resolve<int>("MaplePoint") ?? 0;
+                t.Meso = p.Resolve<int>("Meso") ?? 0;
+                t.ForPremiumUser = p.Resolve<bool>("Premium") ?? false;
+                t.Gender = p.Resolve<sbyte>("Gender") ?? 0;
+                t.OnSale = p.Resolve<bool>("OnSale") ?? false;
+                t.Class = p.Resolve<byte>("Class") ?? 0;
+                t.Limit = p.Resolve<byte>("Limit") ?? 0;
+                t.PbCash = p.Resolve<short>("PbCash") ?? 0;
+                t.PbPoint = p.Resolve<short>("PbPoint") ?? 0;
+                t.PbGift = p.Resolve<short>("PbGift") ?? 0;
+                t.PackageSN = p.Resolve("Package")?.Children
                                   .Select(c => c.Resolve<int>() ?? 0)
                                   .ToArray() ?? null;
             });
