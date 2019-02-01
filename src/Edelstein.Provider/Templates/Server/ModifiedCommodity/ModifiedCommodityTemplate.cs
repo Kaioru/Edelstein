@@ -33,7 +33,7 @@ namespace Edelstein.Provider.Templates.Server.ModifiedCommodity
 
             property.Resolve(p =>
             {
-                t.ItemID = p.Resolve<int>("itemID");
+                t.ItemID = p.Resolve<int>("itemId");
                 t.Count = p.Resolve<short>("count");
                 t.Priority = p.Resolve<byte>("priority");
                 t.Price = p.Resolve<int>("price");
