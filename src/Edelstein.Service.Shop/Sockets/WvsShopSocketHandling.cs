@@ -231,7 +231,7 @@ namespace Edelstein.Service.Shop.Sockets
                 case CashItemRequest.MoveStoL:
                     return OnMoveStoL(packet);
                 default:
-                    Logger.Warn($"Unhandled cash item request operation {type}");
+                    Logger.Warn($"Unhandled cash item operation {type}");
 
                     using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
                     {

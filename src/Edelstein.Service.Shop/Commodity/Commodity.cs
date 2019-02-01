@@ -35,6 +35,9 @@ namespace Edelstein.Service.Shop.Commodity
                 CommoditySN = SN,
                 Number = Count
             };
+
+            if (Period > 0) slot.DateExpire = DateTime.Now.AddDays(Period);
+
             return slot;
         }
     }
