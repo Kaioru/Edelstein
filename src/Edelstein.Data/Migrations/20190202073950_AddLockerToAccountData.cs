@@ -7,6 +7,11 @@ namespace Edelstein.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<long>(
+                name: "CashItemSN",
+                table: "ItemSlot",
+                nullable: true);
+
             migrationBuilder.AddColumn<int>(
                 name: "ItemLockerID",
                 table: "ItemSlot",
@@ -77,6 +82,10 @@ namespace Edelstein.Data.Migrations
             migrationBuilder.DropIndex(
                 name: "IX_AccountData_LockerID",
                 table: "AccountData");
+
+            migrationBuilder.DropColumn(
+                name: "CashItemSN",
+                table: "ItemSlot");
 
             migrationBuilder.DropColumn(
                 name: "ItemLockerID",
