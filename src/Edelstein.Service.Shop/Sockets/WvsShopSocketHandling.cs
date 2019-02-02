@@ -6,6 +6,7 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Inventories;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
+using Edelstein.Data.Entities;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Item;
@@ -59,6 +60,7 @@ namespace Edelstein.Service.Shop.Sockets
                     .ThenInclude(c => c.Trunk)
                     .Include(c => c.Inventories)
                     .ThenInclude(c => c.Items)
+                    .Include(c => c.WishList)
                     .Single(c => c.ID == characterID);
 
                 if (!await WvsShop.TryMigrateFrom(character, WvsShop.Info))
@@ -170,6 +172,7 @@ namespace Edelstein.Service.Shop.Sockets
                 }
 
                 await SendLockerData();
+                await SendWishListData();
                 await SendCashData();
             }
         }
@@ -184,17 +187,6 @@ namespace Edelstein.Service.Shop.Sockets
             if (service != null &&
                 !await WvsShop.TryMigrateTo(this, Character, service))
                 await Disconnect();
-        }
-
-        public async Task SendCashData()
-        {
-            using (var p = new Packet(SendPacketOperations.CashShopQueryCashResult))
-            {
-                p.Encode<int>(Character.Data.Account.NexonCash);
-                p.Encode<int>(Character.Data.Account.MaplePoint);
-                p.Encode<int>(Character.Data.Account.PrepaidNXCash);
-                await SendPacket(p);
-            }
         }
 
         public async Task SendLockerData()
@@ -216,6 +208,40 @@ namespace Edelstein.Service.Shop.Sockets
             }
         }
 
+        public async Task SendWishListData()
+        {
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+            {
+                p.Encode<byte>((byte) CashItemResult.LoadWish_Done);
+
+                var wishList = Character.WishList;
+
+                wishList.ToList().ForEach(w =>
+                {
+                    var commodity = WvsShop.CommodityManager.Get(w.SN);
+
+                    if (!commodity.OnSale)
+                        wishList.Remove(w);
+                });
+
+                wishList.ForEach(w => p.Encode<int>(w.SN));
+                if (wishList.Count < 10)
+                    Enumerable.Repeat(0, 10 - wishList.Count).ForEach(i => p.Encode<int>(0));
+                await SendPacket(p);
+            }
+        }
+
+        public async Task SendCashData()
+        {
+            using (var p = new Packet(SendPacketOperations.CashShopQueryCashResult))
+            {
+                p.Encode<int>(Character.Data.Account.NexonCash);
+                p.Encode<int>(Character.Data.Account.MaplePoint);
+                p.Encode<int>(Character.Data.Account.PrepaidNXCash);
+                await SendPacket(p);
+            }
+        }
+
         private Task OnCashShopQueryCashRequest(IPacket packet) => SendCashData();
 
         private Task OnCashShopCashItemRequest(IPacket packet)
@@ -226,6 +252,8 @@ namespace Edelstein.Service.Shop.Sockets
             {
                 case CashItemRequest.Buy:
                     return OnBuy(packet);
+                case CashItemRequest.SetWish:
+                    return OnSetWish(packet);
                 case CashItemRequest.MoveLtoS:
                     return OnMoveLtoS(packet);
                 case CashItemRequest.MoveStoL:
@@ -283,23 +311,45 @@ namespace Edelstein.Service.Shop.Sockets
             await SendCashData();
         }
 
+        private async Task OnSetWish(IPacket packet)
+        {
+            var wishList = Character.WishList;
+
+            wishList.Clear();
+            for (var i = 0; i < 10; i++)
+            {
+                var sn = packet.Decode<int>();
+                if (sn <= 0) continue;
+                var commodity = WvsShop.CommodityManager.Get(sn);
+
+                if (commodity.OnSale)
+                    wishList.Add(new WishListEntry {SN = sn});
+            }
+
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+            {
+                p.Encode<byte>((byte) CashItemResult.SetWish_Done);
+                wishList.ForEach(w => p.Encode<int>(w.SN));
+                if (wishList.Count < 10)
+                    Enumerable.Repeat(0, 10 - wishList.Count).ForEach(i => p.Encode<int>(0));
+                await SendPacket(p);
+            }
+        }
+
         private async Task OnMoveLtoS(IPacket packet)
         {
             var sn = packet.Decode<long>();
             var locker = Character.Data.Locker;
-            var item = locker.Items.FirstOrDefault(i => i.CashItemSN == sn);
 
+            var item = locker.Items.FirstOrDefault(i => i.CashItemSN == sn);
             if (item == null) return;
 
             var context = new ModifyInventoryContext(Character);
-
             if (!Character.HasSlotFor(item)) return;
-
             item.ID = 0;
             item.ItemLocker = null;
             locker.Items.Remove(item);
             context.Add(item);
-
             using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
             {
                 p.Encode<byte>((byte) CashItemResult.MoveLtoS_Done);
@@ -313,20 +363,17 @@ namespace Edelstein.Service.Shop.Sockets
         {
             var id = packet.Decode<long>();
             var inventories = Character.Inventories;
+
             var item = inventories
                 .SelectMany(i => i.Items)
                 .FirstOrDefault(i => i.CashItemSN == id);
-
             if (item?.CashItemSN == null) return;
-
             var context = new ModifyInventoryContext(Character);
+
             var locker = Character.Data.Locker;
-
             if (locker.Items.Count >= locker.SlotMax) return;
-
             context.Remove(item);
             locker.Items.Add(item);
-
             using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
             {
                 p.Encode<byte>((byte) CashItemResult.MoveStoL_Done);
@@ -342,19 +389,19 @@ namespace Edelstein.Service.Shop.Sockets
             var commoditySN = packet.Decode<int>();
             var commodity = WvsShop.CommodityManager.Get(commoditySN);
             var account = Character.Data.Account;
-            var locker = Character.Data.Locker;
 
+            var locker = Character.Data.Locker;
             if (commodity == null) return;
             if (!commodity.OnSale) return;
-
             var category = commoditySN / 10000000;
             var categorySub = commoditySN / 100000 % 100;
+
             var discountRate = WvsShop.TemplateManager.GetAll<CategoryDiscountTemplate>()
                                    .FirstOrDefault(d => d.Category == category &&
                                                         d.CategorySub == categorySub)
                                    ?.DiscountRate ?? 0.0;
-            var price = commodity.Price * (1 - discountRate / 100);
 
+            var price = commodity.Price * (1 - discountRate / 100);
             if (account.GetCash(cashType) < price) return;
             if (locker.Items.Count >= locker.SlotMax) return;
 
@@ -365,7 +412,6 @@ namespace Edelstein.Service.Shop.Sockets
                 .ToList();
 
             slots.ForEach(s => locker.Items.Add(s));
-
             using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
             {
                 p.Encode<byte>((byte) CashItemResult.BuyPackage_Done);

@@ -63,25 +63,41 @@ namespace Edelstein.Data
             {
                 var existing = Characters
                     .AsNoTracking()
+                    .Include(c => c.Inventories)
+                    .ThenInclude(c => c.Items)
+                    .Include(c => c.WishList)
                     .Include(c => c.Data)
                     .ThenInclude(c => c.Locker)
                     .ThenInclude(c => c.Items)
                     .Include(c => c.Data)
                     .ThenInclude(c => c.Trunk)
                     .ThenInclude(c => c.Items)
-                    .Include(c => c.Inventories)
-                    .ThenInclude(c => c.Items)
                     .FirstOrDefault(c => c.ID == character.ID);
 
                 if (existing != null)
                 {
-                    var existingItems = existing.Inventories.SelectMany(i => i.Items).ToList();
-                    var currentItems = character.Inventories.SelectMany(i => i.Items).ToList();
-
-                    foreach (var existingItem in existingItems)
+                    if (character.Inventories != null)
                     {
-                        if (currentItems.All(i => i.ID != existingItem.ID))
-                            Entry(existingItem).State = EntityState.Deleted;
+                        var existingItems = existing.Inventories.SelectMany(i => i.Items).ToList();
+                        var currentItems = character.Inventories.SelectMany(i => i.Items).ToList();
+
+                        foreach (var existingItem in existingItems)
+                        {
+                            if (currentItems.All(i => i.ID != existingItem.ID))
+                                Entry(existingItem).State = EntityState.Deleted;
+                        }
+                    }
+
+                    if (character.WishList != null)
+                    {
+                        var existingWishList = existing.WishList.ToList();
+                        var currentWishList = character.WishList.ToList();
+
+                        foreach (var existingTrunkItem in existingWishList)
+                        {
+                            if (currentWishList.All(i => i.ID != existingTrunkItem.ID))
+                                Entry(existingTrunkItem).State = EntityState.Deleted;
+                        }
                     }
 
                     if (character.Data?.Locker?.Items != null)

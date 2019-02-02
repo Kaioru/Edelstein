@@ -14,6 +14,7 @@ using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Drop;
 using Edelstein.Service.Game.Interactions;
 using Edelstein.Service.Game.Logging;
+using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields.User
 {
@@ -448,7 +449,8 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<byte>(0);
                 p.Encode<byte>(0);
                 p.Encode<byte>(0); // TamingMobInfo
-                p.Encode<byte>(0); // WishItemInfo
+                p.Encode<byte>((byte) c.WishList.Count);
+                c.WishList.ForEach(w => p.Encode<int>(w.SN));
 
                 p.Encode<int>(0); // MedalAchievementInfo
                 p.Encode<short>(0);

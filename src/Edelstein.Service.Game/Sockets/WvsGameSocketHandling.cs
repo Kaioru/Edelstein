@@ -36,6 +36,7 @@ namespace Edelstein.Service.Game.Sockets
                     .ThenInclude(c => c.Items)
                     .Include(c => c.Inventories)
                     .ThenInclude(c => c.Items)
+                    .Include(c => c.WishList)
                     .Single(c => c.ID == characterID);
 
                 if (!await WvsGame.TryMigrateFrom(character, WvsGame.Info))
