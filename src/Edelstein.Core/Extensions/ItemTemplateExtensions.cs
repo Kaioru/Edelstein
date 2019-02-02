@@ -1,3 +1,4 @@
+using System;
 using Edelstein.Core.Constants;
 using Edelstein.Core.Utils;
 using Edelstein.Data.Entities.Inventory;
@@ -47,13 +48,18 @@ namespace Edelstein.Core.Extensions
                 MaxNumber = template.MaxPerSlot
             };
         }
-        
+
         private static ItemSlotPet ToItemSlot(this ItemPetTemplate template)
         {
-            return new ItemSlotPet
+            var i = new ItemSlotPet
             {
                 TemplateID = template.ID
             };
+
+            if (template.Life > 0)
+                i.DateDead = DateTime.Now.AddDays(template.Life);
+
+            return i;
         }
 
         public static ItemSlot ToItemSlot(
