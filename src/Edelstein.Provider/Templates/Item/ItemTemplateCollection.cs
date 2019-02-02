@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider.Parser;
+using Edelstein.Provider.Templates.Item.Cash;
 
 namespace Edelstein.Provider.Templates.Item
 {
@@ -40,6 +41,7 @@ namespace Edelstein.Provider.Templates.Item
                     switch (subType)
                     {
                         case 0:
+                            item = new ItemPetTemplate();
                             prop = Collection.Resolve($"Item/Pet/{id:D7}.img");
                             break;
                     }

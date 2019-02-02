@@ -33,6 +33,7 @@ namespace Edelstein.Network.Packet
 
         public IPacket EncodeFixedString(string value, int length)
         {
+            if (value == null) value = string.Empty;
             if (value.Length > length) value = value.Substring(0, length);
             _byteBuffer.WriteBytes(PacketMethods.StringEncoding.GetBytes(value.PadRight(length, '\0')));
             return this;

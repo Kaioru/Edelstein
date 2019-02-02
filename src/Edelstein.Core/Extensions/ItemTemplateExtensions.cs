@@ -2,6 +2,7 @@ using Edelstein.Core.Constants;
 using Edelstein.Core.Utils;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Provider.Templates.Item;
+using Edelstein.Provider.Templates.Item.Cash;
 
 namespace Edelstein.Core.Extensions
 {
@@ -46,6 +47,14 @@ namespace Edelstein.Core.Extensions
                 MaxNumber = template.MaxPerSlot
             };
         }
+        
+        private static ItemSlotPet ToItemSlot(this ItemPetTemplate template)
+        {
+            return new ItemSlotPet
+            {
+                TemplateID = template.ID
+            };
+        }
 
         public static ItemSlot ToItemSlot(
             this ItemTemplate template,
@@ -58,6 +67,8 @@ namespace Edelstein.Core.Extensions
                     return equipTemplate.ToItemSlot(type);
                 case ItemBundleTemplate bundleTemplate:
                     return bundleTemplate.ToItemSlot();
+                case ItemPetTemplate petTemplate:
+                    return petTemplate.ToItemSlot();
             }
 
             return null;
