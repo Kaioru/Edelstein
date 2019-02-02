@@ -49,11 +49,11 @@ namespace Edelstein.Core.Extensions
 
             if ((flag & 0x4) != 0)
             {
-                void EncodeEquips(IEnumerable<ItemSlot> items, short offset = 0)
+                void EncodeEquips(IEnumerable<ItemSlot> items)
                 {
                     items.ForEach(i =>
                     {
-                        p.Encode<short>((short) (Math.Abs(i.Position) + offset));
+                        p.Encode<short>((short) (Math.Abs(i.Position) % 100));
                         i.Encode(p);
                     });
                 }
@@ -66,13 +66,13 @@ namespace Edelstein.Core.Extensions
 
                 EncodeEquips(equippedItems);
                 p.Encode<short>(0);
-                EncodeEquips(equippedCashItems, 100);
+                EncodeEquips(equippedCashItems);
                 p.Encode<short>(0);
                 EncodeEquips(equipItems);
                 p.Encode<short>(0);
-                EncodeEquips(equippedDragonItems, 1000);
+                EncodeEquips(equippedDragonItems);
                 p.Encode<short>(0);
-                EncodeEquips(equippedMechanicItems, 1100);
+                EncodeEquips(equippedMechanicItems);
                 p.Encode<short>(0);
             }
 
@@ -203,7 +203,7 @@ namespace Edelstein.Core.Extensions
             p.Encode<int>(c.MaxMP);
 
             p.Encode<short>(c.AP);
-            if ((int) c.Job / 1000 != 3 && (int) c.Job / 100 != 22 && (int) c.Job != 2001)
+            if (c.Job / 1000 != 3 && c.Job / 100 != 22 && c.Job != 2001)
                 p.Encode<short>(c.SP);
             else p.Encode<byte>(0); // TODO: extendedSP
 
@@ -227,27 +227,32 @@ namespace Edelstein.Core.Extensions
             p.Encode<int>(c.Hair);
 
             var inventoryEquip = c.GetInventory(ItemInventoryType.Equip);
+            var equips = new Dictionary<byte, ItemSlot>();
 
-            var equippedItems = inventoryEquip.Items.Where(i => i.Position > -100 && i.Position < 0);
-            var equippedCashItems = inventoryEquip.Items.Where(i => i.Position > -1000 && i.Position < -100);
+            inventoryEquip.Items
+                .Where(i =>
+                    i.Position > -100 &&
+                    i.Position < 0)
+                .ForEach(i => equips[(byte) Math.Abs(i.Position)] = i);
+            inventoryEquip.Items
+                .Where(i =>
+                    i.Position > -1000 &&
+                    i.Position < -100 &&
+                    i.Position != -111)
+                .ForEach(i => equips[(byte) (Math.Abs(i.Position) - 100)] = i);
 
-            foreach (var equippedItem in equippedItems)
+            foreach (var equip in equips)
             {
-                p.Encode<byte>((byte) Math.Abs(equippedItem.Position));
-                p.Encode<int>(equippedItem.TemplateID);
+                p.Encode<byte>(equip.Key);
+                p.Encode<int>(equip.Value.TemplateID);
             }
 
             p.Encode<byte>(0xFF);
-
-            foreach (var equippedCashItem in equippedCashItems)
-            {
-                p.Encode<byte>((byte) (Math.Abs(equippedCashItem.Position) + 100));
-                p.Encode<int>(equippedCashItem.TemplateID);
-            }
-
             p.Encode<byte>(0xFF);
 
-            p.Encode<int>(0); // TODO: nWeaponStickerID
+            p.Encode<int>(inventoryEquip.Items
+                              .FirstOrDefault(i => i.Position == -111)?
+                              .TemplateID ?? 0);
 
             for (var i = 0; i < 3; i++)
                 p.Encode<int>(0);
