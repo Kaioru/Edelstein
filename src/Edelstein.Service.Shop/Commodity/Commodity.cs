@@ -1,5 +1,7 @@
 using System;
+using Edelstein.Core.Extensions;
 using Edelstein.Data.Entities.Inventory;
+using Edelstein.Provider.Templates.Item;
 
 namespace Edelstein.Service.Shop.Commodity
 {
@@ -26,19 +28,17 @@ namespace Edelstein.Service.Shop.Commodity
         public short PbGift { get; set; }
         public int[] PackageSN { get; set; }
 
-        public ItemLockerSlot ToSlot()
+        public ItemSlot ToItemSlot(ItemTemplate template)
         {
-            var slot = new ItemLockerSlot
-            {
-                SN = DateTime.Now.Ticks,
-                ItemID = ItemID,
-                CommoditySN = SN,
-                Number = Count
-            };
+            var item = template.ToItemSlot();
 
-            if (Period > 0) slot.DateExpire = DateTime.Now.AddDays(Period);
+            if (Period > 0)
+                if (item is ItemSlotPet pet)
+                    pet.DateDead = DateTime.Now.AddDays(Period);
+                else
+                    item.DateExpire = DateTime.Now.AddDays(Period);
 
-            return slot;
+            return item;
         }
     }
 }

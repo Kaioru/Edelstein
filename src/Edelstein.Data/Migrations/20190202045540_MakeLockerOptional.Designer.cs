@@ -3,14 +3,16 @@ using System;
 using Edelstein.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Edelstein.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20190202045540_MakeLockerOptional")]
+    partial class MakeLockerOptional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,6 +171,26 @@ namespace Edelstein.Data.Migrations
                     b.ToTable("ItemLocker");
                 });
 
+            modelBuilder.Entity("Edelstein.Data.Entities.Inventory.ItemLockerSlot", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("BuyCharacterName");
+
+                    b.Property<int>("CommoditySN");
+
+                    b.Property<int?>("ItemLockerID");
+
+                    b.Property<long>("SN");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ItemLockerID");
+
+                    b.ToTable("ItemLockerSlot");
+                });
+
             modelBuilder.Entity("Edelstein.Data.Entities.Inventory.ItemSlot", b =>
                 {
                     b.Property<int>("ID")
@@ -183,7 +205,7 @@ namespace Edelstein.Data.Migrations
 
                     b.Property<int?>("ItemInventoryID");
 
-                    b.Property<int?>("ItemLockerID");
+                    b.Property<int?>("ItemLockerSlotID");
 
                     b.Property<int?>("ItemTrunkID");
 
@@ -195,7 +217,8 @@ namespace Edelstein.Data.Migrations
 
                     b.HasIndex("ItemInventoryID");
 
-                    b.HasIndex("ItemLockerID");
+                    b.HasIndex("ItemLockerSlotID")
+                        .IsUnique();
 
                     b.HasIndex("ItemTrunkID");
 
@@ -364,6 +387,14 @@ namespace Edelstein.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Edelstein.Data.Entities.Inventory.ItemLockerSlot", b =>
+                {
+                    b.HasOne("Edelstein.Data.Entities.Inventory.ItemLocker")
+                        .WithMany("Items")
+                        .HasForeignKey("ItemLockerID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Edelstein.Data.Entities.Inventory.ItemSlot", b =>
                 {
                     b.HasOne("Edelstein.Data.Entities.Inventory.ItemInventory", "ItemInventory")
@@ -371,10 +402,9 @@ namespace Edelstein.Data.Migrations
                         .HasForeignKey("ItemInventoryID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Edelstein.Data.Entities.Inventory.ItemLocker", "ItemLocker")
-                        .WithMany("Items")
-                        .HasForeignKey("ItemLockerID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("Edelstein.Data.Entities.Inventory.ItemLockerSlot", "ItemLockerSlot")
+                        .WithOne("Item")
+                        .HasForeignKey("Edelstein.Data.Entities.Inventory.ItemSlot", "ItemLockerSlotID");
 
                     b.HasOne("Edelstein.Data.Entities.Inventory.ItemTrunk", "ItemTrunk")
                         .WithMany("Items")

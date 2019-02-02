@@ -206,7 +206,7 @@ namespace Edelstein.Service.Shop.Sockets
                 var locker = Character.Data.Locker;
 
                 p.Encode<short>((short) locker.Items.Count);
-                locker.Items.ForEach(i => i.Encode(p));
+                locker.Items.ForEach(i => i.EncodeLocker(p));
 
                 p.Encode<short>(Character.Data.Trunk.SlotMax);
                 p.Encode<short>((short) Character.Data.SlotCount);
@@ -267,14 +267,15 @@ namespace Edelstein.Service.Shop.Sockets
             if (account.GetCash(cashType) < price) return;
             if (locker.Items.Count >= locker.SlotMax) return;
 
-            var slot = commodity.ToSlot();
+            var template = WvsShop.TemplateManager.Get<ItemTemplate>(commodity.ItemID);
+            var slot = commodity.ToItemSlot(template);
 
             locker.Items.Add(slot);
 
             using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
             {
                 p.Encode<byte>((byte) CashItemResult.Buy_Done);
-                slot.Encode(p);
+                slot.EncodeLocker(p);
                 await SendPacket(p);
             }
 
@@ -286,23 +287,17 @@ namespace Edelstein.Service.Shop.Sockets
         {
             var sn = packet.Decode<long>();
             var locker = Character.Data.Locker;
-            var slot = locker.Items.FirstOrDefault(i => i.SN == sn);
+            var item = locker.Items.FirstOrDefault(i => i.CashItemSN == sn);
 
-            if (slot == null) return;
+            if (item == null) return;
 
             var context = new ModifyInventoryContext(Character);
-            var template = WvsShop.TemplateManager.Get<ItemTemplate>(slot.ItemID);
-            var item = template.ToItemSlot();
-
-            item.CashItemSN = slot.SN;
-            item.DateExpire = slot.DateExpire;
-
-            if (item is ItemSlotBundle b)
-                b.Number = slot.Number;
 
             if (!Character.HasSlotFor(item)) return;
 
-            locker.Items.Remove(slot);
+            item.ID = 0;
+            item.ItemLocker = null;
+            locker.Items.Remove(item);
             context.Add(item);
 
             using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
@@ -329,26 +324,16 @@ namespace Edelstein.Service.Shop.Sockets
 
             var context = new ModifyInventoryContext(Character);
             var locker = Character.Data.Locker;
-            var slot = new ItemLockerSlot
-            {
-                SN = item.CashItemSN.Value,
-                ItemID = item.TemplateID,
-                DateExpire = item.DateExpire
-            };
-
-
-            if (item is ItemSlotBundle b) slot.Number = b.Number;
-            else slot.Number = 1;
 
             if (locker.Items.Count >= locker.SlotMax) return;
 
             context.Remove(item);
-            locker.Items.Add(slot);
+            locker.Items.Add(item);
 
             using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
             {
                 p.Encode<byte>((byte) CashItemResult.MoveStoL_Done);
-                slot.Encode(p);
+                item.EncodeLocker(p);
                 await SendPacket(p);
             }
         }
@@ -378,20 +363,21 @@ namespace Edelstein.Service.Shop.Sockets
 
             var slots = commodity.PackageSN
                 .Select(p => WvsShop.CommodityManager.Get(p))
-                .Select(p => p.ToSlot())
+                .Select(p => p.ToItemSlot(WvsShop.TemplateManager
+                    .Get<ItemTemplate>(p.ItemID)))
                 .ToList();
 
             slots.ForEach(s => locker.Items.Add(s));
-            
+
             using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
             {
                 p.Encode<byte>((byte) CashItemResult.BuyPackage_Done);
                 p.Encode<byte>((byte) slots.Count);
-                slots.ForEach(s => s.Encode(p));
+                slots.ForEach(s => s.EncodeLocker(p));
                 p.Encode<short>(0); // MaplePoints stuff?
                 await SendPacket(p);
             }
-            
+
             account.IncCash(cashType, (int) -price);
             await SendCashData();
         }

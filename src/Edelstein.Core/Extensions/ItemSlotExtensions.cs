@@ -97,5 +97,24 @@ namespace Edelstein.Core.Extensions
             p.Encode<int>(i.RemainLife);
             p.Encode<short>(i.Attribute);
         }
+
+        public static void EncodeLocker(this ItemSlot i, IPacket p)
+        {
+            p.Encode<long>(i.CashItemSN ?? 0);
+            p.Encode<int>(0);
+            p.Encode<int>(0);
+            p.Encode<int>(i.TemplateID);
+            p.Encode<int>(0);
+            p.Encode<short>((short) (i is ItemSlotBundle bundle
+                ? bundle.Number
+                : 1));
+            p.EncodeFixedString(string.Empty, 13);
+            p.Encode<DateTime>((i is ItemSlotPet pet
+                                   ? pet.DateDead
+                                   : i.DateExpire
+                               ) ?? ItemConstants.Permanent);
+            p.Encode<int>(0);
+            p.Encode<int>(0);
+        }
     }
 }

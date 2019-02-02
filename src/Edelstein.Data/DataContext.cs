@@ -35,7 +35,7 @@ namespace Edelstein.Data
                 .HasOne(a => a.Locker);
             modelBuilder.Entity<ItemLocker>()
                 .HasMany(i => i.Items)
-                .WithOne()
+                .WithOne(i => i.ItemLocker)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AccountData>()

@@ -10,6 +10,7 @@ namespace Edelstein.Data.Entities.Inventory
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
+        public ItemLocker ItemLocker { get; set; }
         public ItemTrunk ItemTrunk { get; set; }
         public ItemInventory ItemInventory { get; set; }
 

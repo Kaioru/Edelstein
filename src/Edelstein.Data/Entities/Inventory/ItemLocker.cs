@@ -10,12 +10,12 @@ namespace Edelstein.Data.Entities.Inventory
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public short SlotMax { get; set; }
-        public ICollection<ItemLockerSlot> Items { get; set; }
+        public ICollection<ItemSlot> Items { get; set; }
 
         public ItemLocker(short slotMax)
         {
             SlotMax = slotMax;
-            Items = new List<ItemLockerSlot>();
+            Items = new List<ItemSlot>();
         }
     }
 }

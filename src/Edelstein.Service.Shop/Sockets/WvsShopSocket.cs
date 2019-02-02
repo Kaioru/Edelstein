@@ -38,11 +38,18 @@ namespace Edelstein.Service.Shop.Sockets
         public override async Task OnUpdate()
         {
             if (Character == null) return;
-            
-            using (var db = WvsShop.DataContextFactory.Create())
+
+            try
             {
-                db.Update(Character);
-                db.SaveChanges();
+                using (var db = WvsShop.DataContextFactory.Create())
+                {
+                    db.Update(Character);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
