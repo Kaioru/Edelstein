@@ -31,12 +31,15 @@ namespace Edelstein.Service.Shop.Commodity
         public ItemSlot ToItemSlot(ItemTemplate template)
         {
             var item = template.ToItemSlot();
+            var now = DateTime.Now;
+            
+            item.CashItemSN = now.Ticks;
 
             if (Period > 0)
                 if (item is ItemSlotPet pet)
-                    pet.DateDead = DateTime.Now.AddDays(Period);
+                    pet.DateDead = now.AddDays(Period);
                 else
-                    item.DateExpire = DateTime.Now.AddDays(Period);
+                    item.DateExpire = now.AddDays(Period);
 
             return item;
         }
