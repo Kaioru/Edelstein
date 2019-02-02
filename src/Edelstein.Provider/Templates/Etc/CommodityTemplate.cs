@@ -1,4 +1,3 @@
-using System.Linq;
 using Edelstein.Provider.Parser;
 
 namespace Edelstein.Provider.Templates.Etc
@@ -25,7 +24,6 @@ namespace Edelstein.Provider.Templates.Etc
         public short PbCash { get; set; }
         public short PbPoint { get; set; }
         public short PbGift { get; set; }
-        public int[] PackageSN { get; set; }
 
         public static CommodityTemplate Parse(int id, IDataProperty property)
         {
@@ -51,9 +49,6 @@ namespace Edelstein.Provider.Templates.Etc
                 t.PbCash = p.Resolve<short>("PbCash") ?? 0;
                 t.PbPoint = p.Resolve<short>("PbPoint") ?? 0;
                 t.PbGift = p.Resolve<short>("PbGift") ?? 0;
-                t.PackageSN = p.Resolve("Package")?.Children
-                                  .Select(c => c.Resolve<int>() ?? 0)
-                                  .ToArray() ?? null;
             });
 
             return t;

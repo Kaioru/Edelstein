@@ -40,6 +40,7 @@ namespace Edelstein.Provider.Templates
                 [typeof(FieldStringTemplate)] = new FieldStringTemplateCollection(collection),
                 
                 [typeof(CommodityTemplate)] = new CommodityTemplateCollection(collection),
+                [typeof(CashPackageTemplate)] = new CashPackageTemplateCollection(collection),
 
                 [typeof(NotSaleTemplate)] = new NotSaleTemplateCollection(collection),
                 [typeof(BestTemplate)] = new BestTemplateCollection(collection),

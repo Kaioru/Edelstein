@@ -230,6 +230,8 @@ namespace Edelstein.Service.Shop.Sockets
                     return OnMoveLtoS(packet);
                 case CashItemRequest.MoveStoL:
                     return OnMoveStoL(packet);
+                case CashItemRequest.BuyPackage:
+                    return OnBuyPackage(packet);
                 default:
                     Logger.Warn($"Unhandled cash item operation {type}");
 
@@ -252,6 +254,7 @@ namespace Edelstein.Service.Shop.Sockets
             var locker = Character.Data.Locker;
 
             if (commodity == null) return;
+            if (!commodity.OnSale) return;
 
             var category = commoditySN / 10000000;
             var categorySub = commoditySN / 100000 % 100;
@@ -348,6 +351,49 @@ namespace Edelstein.Service.Shop.Sockets
                 slot.Encode(p);
                 await SendPacket(p);
             }
+        }
+
+        private async Task OnBuyPackage(IPacket packet)
+        {
+            packet.Decode<byte>();
+            var cashType = packet.Decode<int>();
+            var commoditySN = packet.Decode<int>();
+            var commodity = WvsShop.CommodityManager.Get(commoditySN);
+            var account = Character.Data.Account;
+            var locker = Character.Data.Locker;
+
+            if (commodity == null) return;
+            if (!commodity.OnSale) return;
+
+            var category = commoditySN / 10000000;
+            var categorySub = commoditySN / 100000 % 100;
+            var discountRate = WvsShop.TemplateManager.GetAll<CategoryDiscountTemplate>()
+                                   .FirstOrDefault(d => d.Category == category &&
+                                                        d.CategorySub == categorySub)
+                                   ?.DiscountRate ?? 0.0;
+            var price = commodity.Price * (1 - discountRate / 100);
+
+            if (account.GetCash(cashType) < price) return;
+            if (locker.Items.Count >= locker.SlotMax) return;
+
+            var slots = commodity.PackageSN
+                .Select(p => WvsShop.CommodityManager.Get(p))
+                .Select(p => p.ToSlot())
+                .ToList();
+
+            slots.ForEach(s => locker.Items.Add(s));
+            
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+            {
+                p.Encode<byte>((byte) CashItemResult.BuyPackage_Done);
+                p.Encode<byte>((byte) slots.Count);
+                slots.ForEach(s => s.Encode(p));
+                p.Encode<short>(0); // MaplePoints stuff?
+                await SendPacket(p);
+            }
+            
+            account.IncCash(cashType, (int) -price);
+            await SendCashData();
         }
     }
 }

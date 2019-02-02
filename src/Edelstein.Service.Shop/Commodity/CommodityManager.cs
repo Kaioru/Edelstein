@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Edelstein.Provider.Templates;
 using Edelstein.Provider.Templates.Etc;
 using Edelstein.Provider.Templates.Server.ModifiedCommodity;
+using Edelstein.Provider.Templates.Server.NotSale;
 
 namespace Edelstein.Service.Shop.Commodity
 {
@@ -49,9 +50,13 @@ namespace Edelstein.Service.Shop.Commodity
                             Limit = t.Limit,
                             PbCash = t.PbCash,
                             PbPoint = t.PbPoint,
-                            PbGift = t.PbGift,
-                            PackageSN = t.PackageSN
+                            PbGift = t.PbGift
                         };
+
+                        var p = _templateManager.Get<CashPackageTemplate>(c.ItemID);
+
+                        if (p != null)
+                            c.PackageSN = p.PackageSN;
                     }
 
                     if (m != null)
@@ -78,6 +83,8 @@ namespace Edelstein.Service.Shop.Commodity
                         if (m.PbGift.HasValue) c.PbGift = m.PbGift.Value;
                         if (m.PackageSN != null) c.PackageSN = m.PackageSN;
                     }
+
+                    c.OnSale = _templateManager.Get<NotSaleTemplate>(id) == null;
 
                     if (c == null) return null;
                     _commodities[id] = c;
