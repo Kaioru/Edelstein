@@ -254,6 +254,8 @@ namespace Edelstein.Service.Shop.Sockets
                     return OnBuy(packet);
                 case CashItemRequest.SetWish:
                     return OnSetWish(packet);
+                case CashItemRequest.IncCharSlotCount:
+                    return OnIncCharSlotCount(packet);
                 case CashItemRequest.MoveLtoS:
                     return OnMoveLtoS(packet);
                 case CashItemRequest.MoveStoL:
@@ -334,6 +336,43 @@ namespace Edelstein.Service.Shop.Sockets
                     Enumerable.Repeat(0, 10 - wishList.Count).ForEach(i => p.Encode<int>(0));
                 await SendPacket(p);
             }
+        }
+
+        private async Task OnIncCharSlotCount(IPacket packet)
+        {
+            packet.Decode<byte>();
+            var cashType = packet.Decode<int>();
+            var commoditySN = packet.Decode<int>();
+            var commodity = WvsShop.CommodityManager.Get(commoditySN);
+            var account = Character.Data.Account;
+            var data = Character.Data;
+
+            if (commodity == null) return;
+            if (!commodity.OnSale) return;
+
+            var category = commoditySN / 10000000;
+            var categorySub = commoditySN / 100000 % 100;
+            var discountRate = WvsShop.TemplateManager.GetAll<CategoryDiscountTemplate>()
+                                   .FirstOrDefault(d => d.Category == category &&
+                                                        d.CategorySub == categorySub)
+                                   ?.DiscountRate ?? 0.0;
+            var price = commodity.Price * (1 - discountRate / 100);
+
+            if (account.GetCash(cashType) < price) return;
+            if (data.SlotCount >= 15) return;
+
+            data.SlotCount++;
+            
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+            {
+                p.Encode<byte>((byte) CashItemResult.IncBuyCharCount_Done);
+                p.Encode<short>((short) data.SlotCount);
+                await SendPacket(p);
+            }
+
+            account.IncCash(cashType, (int) -price);
+            await SendCashData();
+            await SendLockerData();
         }
 
         private async Task OnMoveLtoS(IPacket packet)
