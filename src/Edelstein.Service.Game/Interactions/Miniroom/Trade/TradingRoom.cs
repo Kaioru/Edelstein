@@ -94,9 +94,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom.Trade
                     p.Encode<byte>((byte) MiniRoomAction.TRP_PutItem);
                     p.Encode<byte>(position);
                     p.Encode<byte>(slot);
-                    if (itemSlot is ItemSlotEquip equip) equip.Encode(p);
-                    if (itemSlot is ItemSlotBundle bundle) bundle.Encode(p);
-                    if (itemSlot is ItemSlotPet pet) pet.Encode(p);
+                    itemSlot.Encode(p);
                     return p;
                 }
             }

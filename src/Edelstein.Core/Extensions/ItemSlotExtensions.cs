@@ -7,7 +7,7 @@ namespace Edelstein.Core.Extensions
 {
     public static class ItemSlotExtensions
     {
-        public static void Encode(this ItemSlot i, IPacket p)
+        public static void EncodeBase(this ItemSlot i, IPacket p)
         {
             p.Encode<int>(i.TemplateID);
             p.Encode<bool>(i.CashItemSN.HasValue);
@@ -15,11 +15,27 @@ namespace Edelstein.Core.Extensions
             p.Encode<DateTime>(i.DateExpire ?? ItemConstants.Permanent);
         }
 
-        public static void Encode(this ItemSlotEquip i, IPacket p)
+        public static void Encode(this ItemSlot i, IPacket p)
+        {
+            switch (i)
+            {
+                case ItemSlotEquip equip:
+                    equip.Encode(p);
+                    break;
+                case ItemSlotBundle bundle:
+                    bundle.Encode(p);
+                    break;
+                case ItemSlotPet pet:
+                    pet.Encode(p);
+                    break;
+            }
+        }
+
+        private static void Encode(this ItemSlotEquip i, IPacket p)
         {
             p.Encode<byte>(1);
 
-            (i as ItemSlot).Encode(p);
+            i.EncodeBase(p);
 
             p.Encode<byte>(i.RUC);
             p.Encode<byte>(i.CUC);
@@ -68,7 +84,7 @@ namespace Edelstein.Core.Extensions
         {
             p.Encode<byte>(2);
 
-            (i as ItemSlot).Encode(p);
+            i.EncodeBase(p);
 
             p.Encode<short>(i.Number);
             p.Encode<string>(i.Title);
@@ -82,7 +98,7 @@ namespace Edelstein.Core.Extensions
         {
             p.Encode<byte>(3);
 
-            (i as ItemSlot).Encode(p);
+            i.EncodeBase(p);
 
             p.EncodeFixedString(i.PetName, 13);
             p.Encode<byte>(i.Level);

@@ -42,6 +42,7 @@ namespace Edelstein.Core.Extensions
             return new ItemSlotBundle
             {
                 TemplateID = template.ID,
+                Number = 1,
                 MaxNumber = template.MaxPerSlot
             };
         }

@@ -54,7 +54,7 @@ namespace Edelstein.Core.Extensions
                     items.ForEach(i =>
                     {
                         p.Encode<short>((short) (Math.Abs(i.Position) + offset));
-                        (i as ItemSlotEquip).Encode(p);
+                        i.Encode(p);
                     });
                 }
 

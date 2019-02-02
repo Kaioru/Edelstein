@@ -304,10 +304,7 @@ namespace Edelstein.Service.Shop.Sockets
             {
                 p.Encode<byte>((byte) CashItemResult.MoveLtoS_Done);
                 p.Encode<short>(item.Position);
-
-                if (item is ItemSlotEquip equip) equip.Encode(p);
-                if (item is ItemSlotBundle bundle) bundle.Encode(p);
-                if (item is ItemSlotPet pet) pet.Encode(p);
+                item.Encode(p);
                 await SendPacket(p);
             }
         }

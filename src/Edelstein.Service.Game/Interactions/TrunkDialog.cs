@@ -131,7 +131,8 @@ namespace Edelstein.Service.Game.Interactions
                             if (bundle.Number < number) return;
 
                             item = i.Take(bundle, number);
-                        } else i.Remove(item);
+                        }
+                        else i.Remove(item);
                     });
                     _trunk.Items.Add(item);
                     EncodeData(user, p);
@@ -200,12 +201,7 @@ namespace Edelstein.Service.Game.Interactions
             void EncodeItems(ICollection<ItemSlot> items)
             {
                 packet.Encode<byte>((byte) items.Count);
-                items.ForEach(i =>
-                {
-                    if (i is ItemSlotEquip equip) equip.Encode(packet);
-                    if (i is ItemSlotBundle bundle) bundle.Encode(packet);
-                    if (i is ItemSlotPet pet) pet.Encode(packet);
-                });
+                items.ForEach(i => { i.Encode(packet); });
             }
 
             if ((flag & 0x2) != 0) packet.Encode<int>(_trunk.Money);

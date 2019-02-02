@@ -18,15 +18,7 @@ namespace Edelstein.Core.Inventories.Operations
 
         public override void EncodeData(IPacket packet)
         {
-            switch (_item)
-            {
-                case ItemSlotEquip equip:
-                    equip.Encode(packet);
-                    break;
-                case ItemSlotBundle bundle:
-                    bundle.Encode(packet);
-                    break;
-            }
+            _item.Encode(packet);
         }
     }
 }
