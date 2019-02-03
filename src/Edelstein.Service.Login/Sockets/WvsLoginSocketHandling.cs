@@ -73,16 +73,16 @@ namespace Edelstein.Service.Login.Sockets
                    Account.ID.ToString());
             }
             else {
-                byte gender = packet.Decode<byte>();
+                bool gender = packet.Decode<bool>();
                 using (var db = WvsLogin.DataContextFactory.Create())
                 {
-                    Account.Gender = gender;
+                    Account.Gender = gender ? 1 : 0;
                     db.Update(Account);
                     db.SaveChanges();
                 }
 
                 IPacket outPacket = new Packet(SendPacketOperations.SetAccountResult);
-                outPacket.Encode<byte>(gender);
+                outPacket.Encode<bool>(gender);
                 outPacket.Encode<bool>(true);
                 await SendPacket(outPacket);
             }
