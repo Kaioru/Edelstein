@@ -27,7 +27,7 @@ namespace Edelstein.Data.Entities
 
         public bool IsGenderSet()
         {
-            return Gender > 0;  
+            return Gender > -1;  
         }
 
         public int GetCash(int type)
