@@ -31,7 +31,7 @@ namespace Edelstein.Service.Login.Sockets
                 case RecvPacketOperations.SetGender:
                     return OnSetGender(packet);
                 case RecvPacketOperations.CheckPinCode:
-                    return OnSetCheckPin(packet);
+                    return OnCheckPin(packet);
                 case RecvPacketOperations.WorldInfoRequest:
                 case RecvPacketOperations.WorldRequest:
                     return OnWorldInfoRequest(packet);
@@ -57,7 +57,7 @@ namespace Edelstein.Service.Login.Sockets
             }
         }
 
-        private async Task OnSetCheckPin(IPacket packet)
+        private async Task OnCheckPin(IPacket packet)
         {
             IPacket outPacket = new Packet(SendPacketOperations.CheckPinCodeResult);
             outPacket.Encode<byte>(0);
@@ -66,22 +66,26 @@ namespace Edelstein.Service.Login.Sockets
 
         private async Task OnSetGender(IPacket packet)
         {
-            packet.Decode<byte>();
-            byte gender = packet.Decode<byte>();
-            if (gender > 1 || gender < 0) {
-                return;  
-            }
-            using (var db = WvsLogin.DataContextFactory.Create())
+            bool status = packet.Decode<bool>();
+            if (!status)
             {
-                Account.Gender = gender;
-                db.Update(Account);
-                db.SaveChanges();
+                await WvsLogin.AccountStatusCache.RemoveByPrefixAsync(
+                   Account.ID.ToString());
             }
+            else {
+                byte gender = packet.Decode<byte>();
+                using (var db = WvsLogin.DataContextFactory.Create())
+                {
+                    Account.Gender = gender;
+                    db.Update(Account);
+                    db.SaveChanges();
+                }
 
-            IPacket outPacket = new Packet(SendPacketOperations.SetAccountResult);
-            outPacket.Encode<byte>(gender);
-            outPacket.Encode<bool>(true);
-            await SendPacket(outPacket);
+                IPacket outPacket = new Packet(SendPacketOperations.SetAccountResult);
+                outPacket.Encode<byte>(gender);
+                outPacket.Encode<bool>(true);
+                await SendPacket(outPacket);
+            }
         }
 
         private async Task OnCheckPassword(IPacket packet)
