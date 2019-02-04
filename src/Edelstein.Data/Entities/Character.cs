@@ -50,7 +50,7 @@ namespace Edelstein.Data.Entities
         public short SubJob { get; set; }
 
         public ICollection<ItemInventory> Inventories { get; set; }
-        public ICollection<WishListEntry> WishList { get; set; }
+        public ICollection<WishList> WishList { get; set; }
 
         public ItemInventory GetInventory(ItemInventoryType type)
             => Inventories.Single(i => i.Type == type);

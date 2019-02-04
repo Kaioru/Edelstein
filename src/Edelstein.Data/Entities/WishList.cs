@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Edelstein.Data.Entities
 {
-    public class WishListEntry
+    public class WishList
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

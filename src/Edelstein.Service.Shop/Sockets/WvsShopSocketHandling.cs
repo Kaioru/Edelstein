@@ -325,7 +325,7 @@ namespace Edelstein.Service.Shop.Sockets
                 var commodity = WvsShop.CommodityManager.Get(sn);
 
                 if (commodity.OnSale)
-                    wishList.Add(new WishListEntry {SN = sn});
+                    wishList.Add(new WishList {SN = sn});
             }
 
             using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
