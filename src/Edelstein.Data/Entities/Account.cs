@@ -14,7 +14,8 @@ namespace Edelstein.Data.Entities
         [MaxLength(128)] public string Password { get; set; }
         [MaxLength(128)] public string SecondPassword { get; set; }
 
-        public int Gender { get; set; }
+        
+        public byte? Gender { get; set; }
         public int NexonCash { get; set; }
         public int MaplePoint { get; set; }
         public int PrepaidNXCash { get; set; }
@@ -24,11 +25,6 @@ namespace Edelstein.Data.Entities
         public string PreviousConnectedService { get; set; }
 
         public ICollection<AccountData> Data { get; set; }
-
-        public bool IsGenderSet()
-        {
-            return Gender > -1;  
-        }
 
         public int GetCash(int type)
         {
