@@ -81,8 +81,7 @@ namespace Edelstein.Core.Extensions
                 items.ForEach(i =>
                 {
                     p.Encode<byte>((byte) i.Position);
-                    if (i is ItemSlotBundle bundle) bundle.Encode(p);
-                    if (i is ItemSlotPet pet) pet.Encode(p);
+                    i.Encode(p);
                 });
             }
 
@@ -320,6 +319,7 @@ namespace Edelstein.Core.Extensions
             var inventory = c.GetInventory(type);
 
             return inventory.Items
+                .Where(i => i.TemplateID == templateID)
                 .Select(i =>
                 {
                     if (i is ItemSlotBundle bundle)
