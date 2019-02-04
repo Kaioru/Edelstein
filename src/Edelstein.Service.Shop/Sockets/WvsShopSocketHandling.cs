@@ -176,11 +176,11 @@ namespace Edelstein.Service.Shop.Sockets
                     .ToList();
 
                 gifts
-                    .Select(g => WvsShop.CommodityManager.Get(g.CommoditySN))
-                    .Select(c =>
+                    .Select(g =>
                     {
-                        var template = WvsShop.TemplateManager.Get<ItemTemplate>(c.ItemID);
-                        return c.ToItemSlot(template);
+                        var commodity = WvsShop.CommodityManager.Get(g.CommoditySN);
+                        var template = WvsShop.TemplateManager.Get<ItemTemplate>(commodity.ItemID);
+                        return commodity.ToItemSlot(template, g.SN);
                     })
                     .ForEach(i => character.Data.Locker.Items.Add(i));
                 db.GiftList.RemoveRange(gifts);
