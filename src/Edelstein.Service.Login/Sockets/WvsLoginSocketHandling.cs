@@ -28,6 +28,10 @@ namespace Edelstein.Service.Login.Sockets
             {
                 case RecvPacketOperations.CheckPassword:
                     return OnCheckPassword(packet);
+                case RecvPacketOperations.SetGender:
+                    return OnSetGender(packet);
+                case RecvPacketOperations.CheckPinCode:
+                    return OnCheckPin(packet);
                 case RecvPacketOperations.WorldInfoRequest:
                 case RecvPacketOperations.WorldRequest:
                     return OnWorldInfoRequest(packet);
@@ -50,6 +54,37 @@ namespace Edelstein.Service.Login.Sockets
                 default:
                     Logger.Warn($"Unhandled packet operation {operation}");
                     return Task.CompletedTask;
+            }
+        }
+
+        private async Task OnCheckPin(IPacket packet)
+        {
+            IPacket outPacket = new Packet(SendPacketOperations.CheckPinCodeResult);
+            outPacket.Encode<byte>(0);
+            await SendPacket(outPacket);
+        }
+
+        private async Task OnSetGender(IPacket packet)
+        {
+            bool status = packet.Decode<bool>();
+            if (!status)
+            {
+                await WvsLogin.AccountStatusCache.RemoveByPrefixAsync(
+                   Account.ID.ToString());
+            }
+            else {
+                bool gender = packet.Decode<bool>();
+                using (var db = WvsLogin.DataContextFactory.Create())
+                {
+                    Account.Gender = gender ? 1 : 0;
+                    db.Update(Account);
+                    db.SaveChanges();
+                }
+
+                IPacket outPacket = new Packet(SendPacketOperations.SetAccountResult);
+                outPacket.Encode<bool>(gender);
+                outPacket.Encode<bool>(true);
+                await SendPacket(outPacket);
             }
         }
 
@@ -94,7 +129,14 @@ namespace Edelstein.Service.Login.Sockets
                     );
 
                     p.Encode<int>(account.ID); // pBlockReason
-                    p.Encode<byte>(0); // pBlockReasonIter
+                    if (account.IsGenderSet())
+                    {
+                        p.Encode<bool>(account.IsGenderSet());
+                    }
+                    else {
+                        // Ask for gender.
+                        p.Encode<byte>(0xA);
+                    }
                     p.Encode<byte>(0); // nGradeCode
                     p.Encode<short>(0); // nSubGradeCode
                     p.Encode<byte>(0); // nCountryID
