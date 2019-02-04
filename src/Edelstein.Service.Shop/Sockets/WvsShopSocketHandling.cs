@@ -183,6 +183,8 @@ namespace Edelstein.Service.Shop.Sockets
                         return c.ToItemSlot(template);
                     })
                     .ForEach(i => character.Data.Locker.Items.Add(i));
+                db.GiftList.RemoveRange(gifts);
+                db.SaveChanges();
 
                 using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
                 {
@@ -199,9 +201,6 @@ namespace Edelstein.Service.Shop.Sockets
                     });
                     await SendPacket(p);
                 }
-
-                db.GiftList.RemoveRange(gifts);
-                db.SaveChanges();
 
                 await SendLockerData();
                 await SendWishListData();
