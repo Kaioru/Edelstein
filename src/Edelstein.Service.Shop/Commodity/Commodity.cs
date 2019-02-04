@@ -28,12 +28,12 @@ namespace Edelstein.Service.Shop.Commodity
         public short PbGift { get; set; }
         public int[] PackageSN { get; set; }
 
-        public ItemSlot ToItemSlot(ItemTemplate template)
+        public ItemSlot ToItemSlot(ItemTemplate template, long? sn = null)
         {
             var item = template.ToItemSlot();
             var now = DateTime.Now;
 
-            item.CashItemSN = now.Ticks;
+            item.CashItemSN = sn ?? now.Ticks;
 
             if (Period > 0) item.DateExpire = now.AddDays(Period);
 

@@ -10,8 +10,10 @@ namespace Edelstein.Data
     {
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Character> Characters { get; set; }
-
-        public DataContext(DbContextOptions<DataContext> options)
+        
+        public virtual DbSet<GiftList> GiftList { get; set; }
+        
+        public DataContext(DbContextOptions options)
             : base(options)
         {
         }

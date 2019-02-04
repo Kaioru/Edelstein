@@ -171,6 +171,38 @@ namespace Edelstein.Service.Shop.Sockets
                     await SendPacket(p);
                 }
 
+                var gifts = db.GiftList
+                    .Where(g => g.CharacterID == characterID)
+                    .ToList();
+
+                gifts
+                    .Select(g => WvsShop.CommodityManager.Get(g.CommoditySN))
+                    .Select(c =>
+                    {
+                        var template = WvsShop.TemplateManager.Get<ItemTemplate>(c.ItemID);
+                        return c.ToItemSlot(template);
+                    })
+                    .ForEach(i => character.Data.Locker.Items.Add(i));
+
+                using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+                {
+                    p.Encode<byte>((byte) CashItemResult.LoadGift_Done);
+                    p.Encode<short>((short) gifts.Count);
+                    gifts.ForEach(g =>
+                    {
+                        var commodity = WvsShop.CommodityManager.Get(g.CommoditySN);
+
+                        p.Encode<long>(g.SN);
+                        p.Encode<int>(commodity.ItemID);
+                        p.EncodeFixedString(g.BuyCharacterName, 13);
+                        p.EncodeFixedString(g.Text, 73);
+                    });
+                    await SendPacket(p);
+                }
+
+                db.GiftList.RemoveRange(gifts);
+                db.SaveChanges();
+
                 await SendLockerData();
                 await SendWishListData();
                 await SendCashData();
@@ -362,7 +394,7 @@ namespace Edelstein.Service.Shop.Sockets
             if (data.SlotCount >= 15) return;
 
             data.SlotCount++;
-            
+
             using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
             {
                 p.Encode<byte>((byte) CashItemResult.IncBuyCharCount_Done);
