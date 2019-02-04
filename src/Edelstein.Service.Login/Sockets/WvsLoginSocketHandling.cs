@@ -35,6 +35,10 @@ namespace Edelstein.Service.Login.Sockets
                     return OnSelectWorld(packet);
                 case RecvPacketOperations.CheckUserLimit:
                     return OnCheckUserLimit(packet);
+                case RecvPacketOperations.SetGender:
+                    return OnSetGender(packet);
+                case RecvPacketOperations.CheckPinCode:
+                    return OnCheckPinCode(packet);
                 case RecvPacketOperations.CheckDuplicatedID:
                     return OnCheckDuplicatedID(packet);
                 case RecvPacketOperations.CreateNewCharacter:
@@ -94,7 +98,7 @@ namespace Edelstein.Service.Login.Sockets
                     );
 
                     p.Encode<int>(account.ID); // pBlockReason
-                    p.Encode<byte>(0); // pBlockReasonIter
+                    p.Encode<byte>(account.Gender ?? (byte) 0xA);
                     p.Encode<byte>(0); // nGradeCode
                     p.Encode<short>(0); // nSubGradeCode
                     p.Encode<byte>(0); // nCountryID
@@ -253,6 +257,41 @@ namespace Edelstein.Service.Login.Sockets
                 p.Encode<byte>(0); // bOverUserLimit
                 p.Encode<byte>(0); // bPopulateLevel
 
+                await SendPacket(p);
+            }
+        }
+
+        private async Task OnSetGender(IPacket packet)
+        {
+            var status = packet.Decode<bool>();
+
+            if (!status || Account.Gender.HasValue)
+            {
+                await WvsLogin.AccountStatusCache.RemoveByPrefixAsync(Account.ID.ToString());
+                return;
+            }
+
+            using (var p = new Packet(SendPacketOperations.SetAccountResult))
+            {
+                var gender = packet.Decode<bool>();
+                using (var db = WvsLogin.DataContextFactory.Create())
+                {
+                    Account.Gender = (byte) (gender ? 1 : 0);
+                    db.Update(Account);
+                    db.SaveChanges();
+                }
+
+                p.Encode<bool>(gender);
+                p.Encode<bool>(true);
+                await SendPacket(p);
+            }
+        }
+
+        private async Task OnCheckPinCode(IPacket packet)
+        {
+            using (var p = new Packet(SendPacketOperations.CheckPinCodeResult))
+            {
+                p.Encode<byte>(0);
                 await SendPacket(p);
             }
         }
