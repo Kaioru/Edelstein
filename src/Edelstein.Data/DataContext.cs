@@ -11,6 +11,9 @@ namespace Edelstein.Data
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Character> Characters { get; set; }
         
+        public virtual DbSet<CoupleRecord> CoupleRecord { get; set; }
+        public virtual DbSet<FriendRecord> FriendRecord { get; set; }
+        
         public virtual DbSet<GiftList> GiftList { get; set; }
         public virtual DbSet<Memo> Memos { get; set; }
         

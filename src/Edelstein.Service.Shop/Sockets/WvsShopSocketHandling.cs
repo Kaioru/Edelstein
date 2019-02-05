@@ -513,7 +513,6 @@ namespace Edelstein.Service.Shop.Sockets
                     using (var db = WvsShop.DataContextFactory.Create())
                     {
                         var recipient = db.Characters
-                            .AsNoTracking()
                             .SingleOrDefault(c => c.Name == recipientName);
 
                         if (recipient == null) return;

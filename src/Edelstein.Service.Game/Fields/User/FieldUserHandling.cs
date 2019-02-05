@@ -484,7 +484,7 @@ namespace Edelstein.Service.Game.Fields.User
                 case MemoRequest.Send:
                     break;
                 case MemoRequest.Delete:
-                    var memos = Socket.CurrentMemos;
+                    var memos = Character.Memos;
 
                     await ModifyStats(s => s.POP += (short) memos.Count(m => m.Flag.HasFlag(MemoType.IncPOP)));
 

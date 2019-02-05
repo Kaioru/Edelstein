@@ -20,8 +20,6 @@ namespace Edelstein.Service.Game.Sockets
 
         public bool IsInstantiated { get; set; }
         public FieldUser FieldUser { get; set; }
-        
-        public ICollection<Memo> CurrentMemos { get; set; }
 
         public WvsGameSocket(
             IChannel channel,

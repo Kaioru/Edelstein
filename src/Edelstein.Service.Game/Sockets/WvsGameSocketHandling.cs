@@ -42,6 +42,16 @@ namespace Edelstein.Service.Game.Sockets
                     .Include(c => c.WishList)
                     .Single(c => c.ID == characterID);
 
+                character.CoupleRecords = db.CoupleRecord
+                    .Where(c => c.CharacterID == character.ID)
+                    .ToList();
+                character.FriendRecords = db.FriendRecord
+                    .Where(c => c.CharacterID == character.ID)
+                    .ToList();
+                character.Memos = db.Memos
+                    .Where(m => m.CharacterID == character.ID)
+                    .ToList();
+
                 if (!await WvsGame.TryMigrateFrom(character, WvsGame.Info))
                     await Disconnect();
 
@@ -51,17 +61,14 @@ namespace Edelstein.Service.Game.Sockets
                 FieldUser = fieldUser;
                 await field.Enter(fieldUser);
 
-                CurrentMemos = db.Memos
-                    .Where(m => m.CharacterID == character.ID)
-                    .ToList();
-
-                if (CurrentMemos.Count > 0)
+                var memos = character.Memos;
+                if (memos.Count > 0)
                 {
                     using (var p = new Packet(SendPacketOperations.MemoResult))
                     {
                         p.Encode<byte>((byte) MemoResult.Load);
-                        p.Encode<byte>((byte) CurrentMemos.Count);
-                        CurrentMemos.ForEach(m =>
+                        p.Encode<byte>((byte) memos.Count);
+                        memos.ForEach(m =>
                         {
                             p.Encode<int>(m.ID);
                             p.Encode<string>(m.Sender);

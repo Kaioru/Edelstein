@@ -51,6 +51,15 @@ namespace Edelstein.Data.Entities
 
         public ICollection<ItemInventory> Inventories { get; set; }
         public ICollection<WishList> WishList { get; set; }
+        
+        [NotMapped]
+        public ICollection<CoupleRecord> CoupleRecords { get; set; }
+        [NotMapped]
+        public ICollection<FriendRecord> FriendRecords { get; set; }
+        [NotMapped]
+        public ICollection<Memo> Memos { get; set; }
+        [NotMapped]
+        public ICollection<GiftList> GiftList { get; set; }
 
         public ItemInventory GetInventory(ItemInventoryType type)
             => Inventories.Single(i => i.Type == type);
