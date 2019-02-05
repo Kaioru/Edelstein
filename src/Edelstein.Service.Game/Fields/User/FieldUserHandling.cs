@@ -5,6 +5,7 @@ using Edelstein.Core.Constants;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
+using Edelstein.Core.Types;
 using Edelstein.Data.Entities;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
@@ -15,7 +16,6 @@ using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Drop;
 using Edelstein.Service.Game.Interactions;
 using Edelstein.Service.Game.Logging;
-using Edelstein.Service.Game.Types;
 using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields.User

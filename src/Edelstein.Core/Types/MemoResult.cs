@@ -1,4 +1,4 @@
-namespace Edelstein.Service.Game.Types
+namespace Edelstein.Core.Types
 {
     public enum MemoResult : byte
     {

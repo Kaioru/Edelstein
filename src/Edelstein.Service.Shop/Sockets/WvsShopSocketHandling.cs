@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
-using Edelstein.Core.Constants;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Inventories;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
+using Edelstein.Core.Types;
 using Edelstein.Data.Entities;
-using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Server.Best;
@@ -37,6 +37,8 @@ namespace Edelstein.Service.Shop.Sockets
                     return OnCashShopQueryCashRequest(packet);
                 case RecvPacketOperations.CashShopCashItemRequest:
                     return OnCashShopCashItemRequest(packet);
+                case RecvPacketOperations.MemoRequest:
+                    return OnMemoRequest(packet);
                 default:
                     Logger.Warn($"Unhandled packet operation {operation}");
                     return Task.CompletedTask;
@@ -175,6 +177,7 @@ namespace Edelstein.Service.Shop.Sockets
                     .Where(g => g.CharacterID == characterID)
                     .ToList();
 
+                AvailableNotes = gifts.Count;
                 gifts
                     .Select(g =>
                     {
@@ -493,6 +496,48 @@ namespace Edelstein.Service.Shop.Sockets
 
             account.IncCash(cashType, (int) -price);
             await SendCashData();
+        }
+
+        private async Task OnMemoRequest(IPacket packet)
+        {
+            var type = (MemoRequest) packet.Decode<byte>();
+
+            switch (type)
+            {
+                case MemoRequest.Send:
+                    var recipientName = packet.Decode<string>();
+                    var text = packet.Decode<string>();
+
+                    if (AvailableNotes <= 0) return;
+
+                    using (var db = WvsShop.DataContextFactory.Create())
+                    {
+                        var recipient = db.Characters
+                            .AsNoTracking()
+                            .SingleOrDefault(c => c.Name == recipientName);
+
+                        if (recipient == null) return;
+
+                        db.Add(new Memo
+                        {
+                            CharacterID = recipient.ID,
+                            Sender = Character.Name,
+                            Content = text,
+                            DateSent = DateTime.Now,
+                            Flag = MemoType.IncPOP
+                        });
+                        db.SaveChanges();
+                    }
+
+                    AvailableNotes--;
+                    break;
+                case MemoRequest.Delete:
+                    break;
+                case MemoRequest.Load:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

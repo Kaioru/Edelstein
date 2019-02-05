@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
+using Edelstein.Core.Types;
 using Edelstein.Network.Packet;
 using Edelstein.Service.Game.Fields.User;
-using Edelstein.Service.Game.Types;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq;
 

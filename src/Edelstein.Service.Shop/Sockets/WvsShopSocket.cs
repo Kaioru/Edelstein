@@ -14,6 +14,8 @@ namespace Edelstein.Service.Shop.Sockets
 
         public WvsShop WvsShop { get; set; }
         public Character Character { get; set; }
+        
+        public int AvailableNotes { get; set; }
 
         public WvsShopSocket(
             IChannel channel,
