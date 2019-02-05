@@ -1,10 +1,12 @@
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Commands;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Data.Entities;
+using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Fields.User.Messages;
@@ -109,7 +111,7 @@ namespace Edelstein.Service.Game.Fields.User
 
             if (Dialog != null) return false;
             if (!await dialog.Enter(this)) return false;
-            
+
             Dialog = dialog;
             return true;
         }
@@ -150,6 +152,42 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<long>(0);
                 return p;
             }
+        }
+
+        public void EncodeRecord(IPacket p)
+        {
+            var equipped = Character
+                .GetInventory(ItemInventoryType.Equip).Items
+                .Where(i => i.Position < 0)
+                .Where(i => i.CashItemSN.HasValue)
+                .ToDictionary(
+                    i => i.CashItemSN,
+                    i => i.TemplateID
+                );
+            var couple = Character.CoupleRecords
+                .FirstOrDefault(r => equipped.ContainsKey(r.SN));
+            var friend = Character.FriendRecords
+                .FirstOrDefault(r => equipped.ContainsKey(r.SN));
+
+            if (couple != null)
+            {
+                p.Encode<bool>(true);
+                p.Encode<long>(couple.SN);
+                p.Encode<long>(couple.PairSN);
+                p.Encode<int>(equipped[couple.SN]);
+            }
+            else p.Encode<bool>(false);
+
+            if (friend != null)
+            {
+                p.Encode<bool>(true);
+                p.Encode<long>(friend.SN);
+                p.Encode<long>(friend.PairSN);
+                p.Encode<int>(equipped[friend.SN]);
+            }
+            else p.Encode<bool>(false);
+
+            p.Encode<bool>(false);
         }
 
         public override IPacket GetEnterFieldPacket()
@@ -198,9 +236,7 @@ namespace Edelstein.Service.Game.Fields.User
 
                 p.Encode<bool>(false);
 
-                p.Encode<byte>(0);
-                p.Encode<byte>(0);
-                p.Encode<byte>(0);
+                EncodeRecord(p);
 
                 p.Encode<byte>(0);
 

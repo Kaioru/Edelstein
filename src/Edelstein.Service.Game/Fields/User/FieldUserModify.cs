@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Inventories;
 using Edelstein.Core.Services;
+using Edelstein.Data.Entities;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
 using Edelstein.Service.Game.Fields.User.Stats.Modify;
@@ -27,9 +28,8 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<int>(ID);
                 p.Encode<byte>(0x1); // Flag
                 Character.EncodeLook(p);
-                p.Encode<bool>(false); // bCouple
-                p.Encode<bool>(false); // bFriendship
-                p.Encode<bool>(false); // Marriage
+
+                EncodeRecord(p);
                 p.Encode<int>(BasicStat.CompletedSetItemID);
 
                 Field.BroadcastPacket(this, p);
@@ -99,8 +99,10 @@ namespace Edelstein.Service.Game.Fields.User
                 await SendPacket(p);
             }
 
-            var newEquipped = Character.GetInventory(ItemInventoryType.Equip).Items
+            var newEquippedItems = Character.GetInventory(ItemInventoryType.Equip).Items
                 .Where(i => i.Position < 0)
+                .ToList();
+            var newEquipped = newEquippedItems
                 .Select(i => i.TemplateID)
                 .ToList();
 

@@ -136,8 +136,20 @@ namespace Edelstein.Core.Extensions
 
             if ((flag & 0x800) != 0)
             {
-                p.Encode<short>(0); // Couple Record
-                p.Encode<short>(0); // Friend Record
+                if (c.CoupleRecords != null)
+                {
+                    p.Encode<short>((short) c.CoupleRecords.Count);
+                    c.CoupleRecords.ForEach(r => r.Encode(p));
+                }
+                else p.Encode<short>(0);
+
+                if (c.FriendRecords != null)
+                {
+                    p.Encode<short>((short) c.FriendRecords.Count);
+                    c.FriendRecords.ForEach(r => r.Encode(p));
+                }
+                else p.Encode<short>(0);
+
                 p.Encode<short>(0); // Marriage Record
             }
 
