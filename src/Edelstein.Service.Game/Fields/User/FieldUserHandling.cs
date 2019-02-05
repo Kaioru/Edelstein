@@ -5,6 +5,7 @@ using Edelstein.Core.Constants;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
+using Edelstein.Data.Entities;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Field;
@@ -14,6 +15,7 @@ using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Drop;
 using Edelstein.Service.Game.Interactions;
 using Edelstein.Service.Game.Logging;
+using Edelstein.Service.Game.Types;
 using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields.User
@@ -55,6 +57,8 @@ namespace Edelstein.Service.Game.Fields.User
                     return OnUserCharacterInfoRequest(packet);
                 case RecvPacketOperations.MiniRoom:
                     return OnMiniRoom(operation, packet);
+                case RecvPacketOperations.MemoRequest:
+                    return OnMemoRequest(packet);
                 case RecvPacketOperations.DropPickUpRequest:
                     return OnDropPickUpRequest(packet);
                 case RecvPacketOperations.NpcMove:
@@ -469,6 +473,34 @@ namespace Edelstein.Service.Game.Fields.User
         private Task OnMiniRoom(RecvPacketOperations operation, IPacket packet)
         {
             return Dialog?.OnPacket(operation, this, packet);
+        }
+
+        private async Task OnMemoRequest(IPacket packet)
+        {
+            var type = (MemoRequest) packet.Decode<byte>();
+
+            switch (type)
+            {
+                case MemoRequest.Send:
+                    break;
+                case MemoRequest.Delete:
+                    var memos = Socket.CurrentMemos;
+
+                    await ModifyStats(s => s.POP += (short) memos.Count(m => m.Flag.HasFlag(MemoType.IncPOP)));
+
+                    using (var db = Socket.WvsGame.DataContextFactory.Create())
+                    {
+                        db.RemoveRange(memos);
+                        db.SaveChanges();
+                    }
+
+                    memos.Clear();
+                    break;
+                case MemoRequest.Load:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private Task OnDropPickUpRequest(IPacket packet)

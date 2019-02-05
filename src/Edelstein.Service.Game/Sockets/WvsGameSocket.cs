@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
@@ -19,6 +20,8 @@ namespace Edelstein.Service.Game.Sockets
 
         public bool IsInstantiated { get; set; }
         public FieldUser FieldUser { get; set; }
+        
+        public ICollection<Memo> CurrentMemos { get; set; }
 
         public WvsGameSocket(
             IChannel channel,

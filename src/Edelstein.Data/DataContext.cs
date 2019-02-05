@@ -12,6 +12,7 @@ namespace Edelstein.Data
         public virtual DbSet<Character> Characters { get; set; }
         
         public virtual DbSet<GiftList> GiftList { get; set; }
+        public virtual DbSet<Memo> Memos { get; set; }
         
         public DataContext(DbContextOptions options)
             : base(options)

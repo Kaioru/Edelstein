@@ -1,9 +1,12 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
 using Edelstein.Network.Packet;
 using Edelstein.Service.Game.Fields.User;
+using Edelstein.Service.Game.Types;
 using Microsoft.EntityFrameworkCore;
+using MoreLinq;
 
 namespace Edelstein.Service.Game.Sockets
 {
@@ -47,6 +50,28 @@ namespace Edelstein.Service.Game.Sockets
 
                 FieldUser = fieldUser;
                 await field.Enter(fieldUser);
+
+                CurrentMemos = db.Memos
+                    .Where(m => m.CharacterID == character.ID)
+                    .ToList();
+
+                if (CurrentMemos.Count > 0)
+                {
+                    using (var p = new Packet(SendPacketOperations.MemoResult))
+                    {
+                        p.Encode<byte>((byte) MemoResult.Load);
+                        p.Encode<byte>((byte) CurrentMemos.Count);
+                        CurrentMemos.ForEach(m =>
+                        {
+                            p.Encode<int>(m.ID);
+                            p.Encode<string>(m.Sender);
+                            p.Encode<string>(m.Content);
+                            p.Encode<DateTime>(m.DateSent);
+                            p.Encode<byte>((byte) m.Flag);
+                        });
+                        await SendPacket(p);
+                    }
+                }
             }
         }
     }
