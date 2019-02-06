@@ -13,6 +13,7 @@ namespace Edelstein.Service.Game.Conversations
         {
         }
 
+        public byte Gender => Obj.Character.Gender;
 
         public byte Skin
         {
