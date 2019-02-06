@@ -22,6 +22,10 @@ WvsContainer is the quick and easy way to spin up Edelstein
 3. Edit the WvsContainer.json appropriately
 4. ```dotnet run```
 
+## 📦 Extra Stuff
+* [Server.NX](https://github.com/kaioru/server.nx) - the source for the Server.nx file.
+* [Server.Scripts](https://github.com/kaioru/server.scripts) - various scripts for use with Edelstein.
+
 ## ⭐️ Acknowledgements
 * [Rebirth](https://github.com/RajanGrewal/Rebirth) - lot's of referencing from here.
 * [Destiny](https://github.com/Fraysa/Destiny) - even more referencing from here.
