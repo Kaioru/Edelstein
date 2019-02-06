@@ -11,7 +11,7 @@ namespace Edelstein.Data.Entities
         
         public int CharacterID { get; set; }
 
-        public int SN { get; set; }
+        public long SN { get; set; }
         public int CommoditySN { get; set; }
         public string BuyCharacterName { get; set; }
         public string Text { get; set; }

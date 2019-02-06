@@ -286,6 +286,8 @@ namespace Edelstein.Service.Shop.Sockets
             {
                 case CashItemRequest.Buy:
                     return OnBuy(packet);
+                case CashItemRequest.Gift:
+                    return OnGift(packet);
                 case CashItemRequest.SetWish:
                     return OnSetWish(packet);
                 case CashItemRequest.IncCharSlotCount:
@@ -344,6 +346,93 @@ namespace Edelstein.Service.Shop.Sockets
             }
 
             account.IncCash(cashType, (int) -price);
+            await SendCashData();
+        }
+
+        private async Task OnGift(IPacket packet)
+        {
+            var spw = packet.Decode<string>();
+            var commoditySN = packet.Decode<int>();
+            var buyOneADay = packet.Decode<bool>();
+            var recipient = packet.Decode<string>();
+            var text = packet.Decode<string>();
+            var commodity = WvsShop.CommodityManager.Get(commoditySN);
+            var account = Character.Data.Account;
+
+            if (commodity == null) return;
+            if (!commodity.OnSale) return;
+
+            var category = commoditySN / 10000000;
+            var categorySub = commoditySN / 100000 % 100;
+            var discountRate = WvsShop.TemplateManager.GetAll<CategoryDiscountTemplate>()
+                                   .FirstOrDefault(d => d.Category == category &&
+                                                        d.CategorySub == categorySub)
+                                   ?.DiscountRate ?? 0.0;
+            var price = commodity.Price * (1 - discountRate / 100);
+
+            if (account.GetCash(0x4) < price) return;
+            // TODO: SPW Checks
+            using (var db = WvsShop.DataContextFactory.Create())
+            {
+                var target = db.Characters
+                    .Include(c => c.Data)
+                    .ThenInclude(d => d.Account)
+                    .FirstOrDefault(c => c.Name.Equals(recipient, StringComparison.OrdinalIgnoreCase));
+
+                if (target == null)
+                {
+                    using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+                    {
+                        p.Encode<byte>((byte) CashItemResult.Gift_Failed);
+                        p.Encode<byte>((byte) CashItemFailReason.GiftNoReceiveCharacter);
+                        await SendPacket(p);
+                    }
+
+                    return;
+                }
+
+                if (Character.Data.Account.ID == target.Data.Account.ID)
+                {
+                    using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+                    {
+                        p.Encode<byte>((byte) CashItemResult.Gift_Failed);
+                        p.Encode<byte>((byte) CashItemFailReason.GiftSameAccount);
+                        await SendPacket(p);
+                    }
+
+                    return;
+                }
+
+                db.Add(new GiftList
+                {
+                    CharacterID = target.ID,
+                    SN = DateTime.Now.Ticks,
+                    CommoditySN = commoditySN,
+                    BuyCharacterName = Character.Name,
+                    Text = text
+                });
+                db.Add(new Memo
+                {
+                    CharacterID = target.ID,
+                    Sender = Character.Name,
+                    Content = $"{Character.Name} has sent you a gift! Go check out the Cash Shop.",
+                    DateSent = DateTime.Now,
+                    Flag = MemoType.NotifyReceiptGift
+                });
+                db.SaveChanges();
+            }
+
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+            {
+                p.Encode<byte>((byte) CashItemResult.Gift_Done);
+                p.Encode<string>(recipient);
+                p.Encode<int>(commodity.ItemID);
+                p.Encode<int>(commodity.Count);
+                p.Encode<int>((int) price);
+                await SendPacket(p);
+            }
+
+            account.IncCash(0x4, (int) -price);
             await SendCashData();
         }
 
