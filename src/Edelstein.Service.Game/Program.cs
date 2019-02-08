@@ -45,12 +45,13 @@ namespace Edelstein.Service.Game
             UserData.RegisterType<Speaker>();
             UserData.RegisterType<QuizSpeaker>();
             UserData.RegisterType<SpeedQuizSpeaker>();
-            
-            UserData.RegisterType<ContinentSpeaker>();
-
+           
             UserData.RegisterType<FieldSpeaker>();
             UserData.RegisterType<FieldUserSpeaker>();
             UserData.RegisterType<FieldNPCSpeaker>();
+            
+            UserData.RegisterType<InventorySpeaker>();
+            UserData.RegisterType<ContinentSpeaker>();
 
             services.AddSingleton<IScriptConversationManager>(
                 new LuaScriptConversationManager(context.Configuration["scriptPath"])

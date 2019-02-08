@@ -12,6 +12,9 @@ namespace Edelstein.Service.Game.Conversations
         {
         }
 
+        public ISpeaker AsInventory()
+            => new InventorySpeaker(Context, Obj, TemplateID, Param);
+        
         public byte Gender => Obj.Character.Gender;
 
         public byte Skin
