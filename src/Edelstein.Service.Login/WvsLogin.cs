@@ -33,6 +33,12 @@ namespace Edelstein.Service.Login
             TemplateManager = templateManager;
         }
 
+        public override Task OnUpdate()
+        {
+            // TODO
+            return Task.CompletedTask;
+        }
+
         protected override async Task OnStarted()
         {
             Server = new Server(new WvsLoginSocketFactory(this));

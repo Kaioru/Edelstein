@@ -17,7 +17,7 @@ using MoreLinq;
 
 namespace Edelstein.Core.Services.Migrations
 {
-    public class AbstractMigrateableService<TInfo> : AbstractHostedService<TInfo>, IMigrateable
+    public abstract class AbstractMigrateableService<TInfo> : AbstractService<TInfo>, IMigrateable
         where TInfo : ServiceInfo, new()
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();

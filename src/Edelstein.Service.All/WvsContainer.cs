@@ -20,10 +20,10 @@ using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.All
 {
-    public class WvsContainer : AbstractHostedService<WvsContainerOptions>
+    public class WvsContainer : AbstractService<WvsContainerOptions>
     {
         private readonly CancellationTokenSource _token;
-        private readonly ICollection<IHostedService> _services;
+        private readonly ICollection<IService> _services;
 
         public WvsContainer(
             IApplicationLifetime appLifetime,
@@ -37,7 +37,7 @@ namespace Edelstein.Service.All
         ) : base(appLifetime, cache, messageBus, info, dataContextFactory)
         {
             _token = new CancellationTokenSource();
-            _services = new List<IHostedService>();
+            _services = new List<IService>();
 
             Info.LoginServices
                 .Select(o => new WvsLogin(
@@ -82,6 +82,9 @@ namespace Edelstein.Service.All
                 ))
                 .ForEach(_services.Add);
         }
+
+        public override Task OnUpdate()
+            => Task.WhenAll(_services.Select(s => s.OnUpdate()));
 
         protected override Task OnStarted()
             => Task.WhenAll(_services.Select(s => s.StartAsync(_token.Token)));

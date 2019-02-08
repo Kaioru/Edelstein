@@ -33,6 +33,12 @@ namespace Edelstein.Service.Shop
             CommodityManager = new CommodityManager(TemplateManager);
         }
 
+        public override Task OnUpdate()
+        {
+            // TODO
+            return Task.CompletedTask;
+        }
+
         protected override async Task OnStarted()
         {
             Server = new Server(new WvsShopSocketFactory(this));

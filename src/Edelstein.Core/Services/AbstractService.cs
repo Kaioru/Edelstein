@@ -17,12 +17,13 @@ using Timer = System.Timers.Timer;
 
 namespace Edelstein.Core.Services
 {
-    public abstract class AbstractHostedService<TInfo> : IHostedService
+    public abstract class AbstractService<TInfo> : IService
         where TInfo : ServiceInfo, new()
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
         private Timer _timer;
+        private Timer _peerTimer;
         private readonly IApplicationLifetime _appLifetime;
         private readonly ICacheClient _cache;
         private readonly IMessageBus _messageBus;
@@ -42,7 +43,7 @@ namespace Edelstein.Core.Services
         public ICacheClient MigrationCache { get; }
         public ICacheClient AccountStatusCache { get; }
 
-        public AbstractHostedService(
+        public AbstractService(
             IApplicationLifetime appLifetime,
             ICacheClient cache,
             IMessageBus messageBus,
@@ -75,6 +76,8 @@ namespace Edelstein.Core.Services
             _appLifetime.StopApplication();
             return Task.CompletedTask;
         }
+
+        public abstract Task OnUpdate();
 
         protected virtual async Task OnStarted()
         {
@@ -118,18 +121,26 @@ namespace Edelstein.Core.Services
 
             _timer = new Timer
             {
+                Interval = 1000,
+                AutoReset = true
+            };
+            _timer.Elapsed += async (sender, args) => await OnUpdate();
+            _timer.Start();
+
+            _peerTimer = new Timer
+            {
                 Interval = 15000,
                 AutoReset = true
             };
-            _timer.Elapsed += async (sender, args) => await _messageBus.PublishAsync(createMessage());
-            _timer.Start();
+            _peerTimer.Elapsed += async (sender, args) => await _messageBus.PublishAsync(createMessage());
+            _peerTimer.Start();
 
             await _messageBus.PublishAsync(createMessage());
         }
 
         protected virtual async Task OnStopping()
         {
-            _timer.Stop();
+            _peerTimer.Stop();
             await _messageBus.PublishAsync(
                 PeerServiceStatusMessage.Create(PeerServiceStatus.Offline, Info)
             );
