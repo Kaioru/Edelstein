@@ -21,5 +21,10 @@ namespace Edelstein.Service.Game.Conversations
         public int EndShipMoveField => _continent.Template.EndShipMoveFieldID;
 
         public ContinentState State => _continent.State;
+
+        public int Term => _continent.Template.Term;
+        public int Delay => _continent.Template.Delay;
+        public int Wait => _continent.Template.Wait;
+        public int Required => _continent.Template.Required;
     }
 }
