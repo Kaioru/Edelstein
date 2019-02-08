@@ -57,6 +57,7 @@ namespace Edelstein.Service.Game
         {
             return Task.WhenAll(new List<Task>
             {
+                FieldManager.OnUpdate(now),
                 ContinentManager.OnUpdate(now)
             });
         }

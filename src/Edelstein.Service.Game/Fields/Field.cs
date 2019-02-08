@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Services;
 using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Service.Game.Fields.User;
@@ -137,5 +138,12 @@ namespace Edelstein.Service.Game.Fields
                     .Where(u => u != source)
                     .Select(u => u.SendPacket(packet))
             );
+
+        public async Task OnUpdate(DateTime now)
+        {
+            await Task.WhenAll(GetObjects()
+                .OfType<IUpdateable>()
+                .Select(i => i.OnUpdate(now)));
+        }
     }
 }

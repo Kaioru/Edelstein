@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Edelstein.Core.Services;
 using Edelstein.Provider.Templates;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.NPC;
@@ -8,7 +11,7 @@ using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields
 {
-    public class FieldManager
+    public class FieldManager : IUpdateable
     {
         private readonly ITemplateManager _templateManager;
         private readonly IDictionary<int, Field> _fields;
@@ -57,5 +60,8 @@ namespace Edelstein.Service.Game.Fields
                 return _fields[id];
             }
         }
+
+        public Task OnUpdate(DateTime now)
+            => Task.WhenAll(_fields.Values.Select(f => f.OnUpdate(now)));
     }
 }
