@@ -1,4 +1,3 @@
-using System.Linq;
 using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Conversations
@@ -142,14 +141,7 @@ namespace Edelstein.Service.Game.Conversations
 
             if (field == null) return false;
 
-            if (!string.IsNullOrEmpty(portal))
-                Obj.Character.FieldPortal = (byte) (
-                    field.Template.Portals.Values
-                        .FirstOrDefault(p => p.Name.Equals(portal))?.ID ?? 0
-                );
-            else Obj.Character.FieldPortal = 0;
-
-            field.Enter(Obj);
+            field.Enter(Obj, portal);
             return true;
         }
     }

@@ -34,11 +34,8 @@ namespace Edelstein.Service.Game.Fields
         }
 
         public Task Enter(FieldUser user, string portal)
-        {
-            var target = Template.Portals.Values.FirstOrDefault(p => p.Name == portal) ??
-                         Template.Portals.Values.First(p => p.Type == FieldPortalType.Spawn);
-            return Enter(user, (byte) target.ID);
-        }
+            => Enter(user, (byte) (Template.Portals.Values
+                                       .FirstOrDefault(p => p.Name.Equals(portal))?.ID ?? 0));
 
         public async Task Enter(IFieldObj obj, Func<IPacket> getEnterPacket)
         {
