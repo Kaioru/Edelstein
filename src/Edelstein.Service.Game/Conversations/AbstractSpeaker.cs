@@ -33,7 +33,10 @@ namespace Edelstein.Service.Game.Conversations
 
         public ISpeaker AsContinent(int id)
         {
-            var continent = Context.Socket.WvsGame.ContinentManager.Get(id);
+            var continent = Context.Socket.WvsGame.ContinentManager.Continents.FirstOrDefault(c =>
+                c.Template.StartShipMoveFieldID == id ||
+                c.Template.WaitFieldID == id ||
+                c.Template.MoveFieldID == id);
 
             return continent == null
                 ? null

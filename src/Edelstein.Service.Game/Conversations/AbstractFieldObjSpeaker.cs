@@ -12,17 +12,6 @@ namespace Edelstein.Service.Game.Conversations
             => Obj = obj;
 
         public ISpeaker AsField() => new FieldSpeaker(Context, Obj.Field);
-
-        public ISpeaker AsContinent()
-        {
-            var continent = Context.Socket.WvsGame.ContinentManager.Continents.FirstOrDefault(c =>
-                c.Template.StartShipMoveFieldID == Obj.Field.ID ||
-                c.Template.WaitFieldID == Obj.Field.ID ||
-                c.Template.MoveFieldID == Obj.Field.ID);
-
-            return continent == null
-                ? null
-                : new ContinentSpeaker(Context, continent);
-        }
+        public ISpeaker AsContinent() => AsContinent(Obj.Field.ID);
     }
 }
