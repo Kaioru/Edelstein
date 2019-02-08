@@ -1,4 +1,5 @@
 using Edelstein.Network.Packet;
+using Edelstein.Service.Game.Conversations.Quiz;
 
 namespace Edelstein.Service.Game.Conversations.Messages
 {

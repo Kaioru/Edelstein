@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Edelstein.Service.Game.Conversations
+namespace Edelstein.Service.Game.Conversations.Quiz
 {
     public class QuizSpeaker : Speaker
     {

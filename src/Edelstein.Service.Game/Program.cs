@@ -2,6 +2,7 @@
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Conversations.Quiz;
 using Edelstein.Service.Game.Conversations.Scripts;
 using Edelstein.Service.Game.Conversations.Scripts.Lua;
 using Microsoft.Extensions.DependencyInjection;

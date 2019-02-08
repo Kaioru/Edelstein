@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Edelstein.Service.Game.Conversations.Messages;
+using Edelstein.Service.Game.Conversations.Quiz;
 using MoreLinq;
 
 namespace Edelstein.Service.Game.Conversations

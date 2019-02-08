@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Edelstein.Service.Game.Conversations.Quiz;
 
 namespace Edelstein.Service.Game.Conversations
 {
