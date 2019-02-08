@@ -2,16 +2,18 @@ using Edelstein.Service.Game.Fields.Continent;
 
 namespace Edelstein.Service.Game.Conversations
 {
-    public class ContinentSpeaker : Speaker
+    public class ContinentSpeaker : AbstractSpeaker
     {
-        private Continent _continent;
+        public override byte TypeID => 0;
+        public override int TemplateID => 9010000;
+        public override ScriptMessageParam Param => 0;
+
+        private readonly Continent _continent;
 
         public ContinentSpeaker(
             IConversationContext context,
-            Continent continent,
-            int templateID = 9010000,
-            ScriptMessageParam param = (ScriptMessageParam) 0
-        ) : base(context, templateID, param)
+            Continent continent
+        ) : base(context)
             => _continent = continent;
 
         public int StartShipMoveField => _continent.Template.StartShipMoveFieldID;

@@ -22,13 +22,22 @@ namespace Edelstein.Service.Game.Conversations
         public ISpeaker AsQuiz() => new QuizSpeaker(Context, TemplateID, Param);
         public ISpeaker AsSpeedQuiz() => new SpeedQuizSpeaker(Context, TemplateID, Param);
 
+        public ISpeaker AsField(int id)
+        {
+            var field = Context.Socket.WvsGame.FieldManager.Get(id);
+
+            return field == null
+                ? null
+                : new FieldSpeaker(Context, field);
+        }
+
         public ISpeaker AsContinent(int id)
         {
             var continent = Context.Socket.WvsGame.ContinentManager.Get(id);
 
             return continent == null
                 ? null
-                : new ContinentSpeaker(Context, continent, TemplateID, Param);
+                : new ContinentSpeaker(Context, continent);
         }
 
         public byte Say(string[] text, int current = 0)

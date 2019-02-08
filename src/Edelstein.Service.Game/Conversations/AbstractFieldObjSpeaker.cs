@@ -22,7 +22,7 @@ namespace Edelstein.Service.Game.Conversations
 
             return continent == null
                 ? null
-                : new ContinentSpeaker(Context, continent, TemplateID, Param);
+                : new ContinentSpeaker(Context, continent);
         }
     }
 }
