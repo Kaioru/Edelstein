@@ -27,6 +27,9 @@ namespace Edelstein.Service.Game.Fields.Continent
                 .ToList();
         }
 
+        public Continent Get(int id)
+            => Continents.FirstOrDefault(c => c.Template.ID == id);
+
         public async Task OnUpdate(DateTime now)
         {
             if ((now - LastUpdate).Seconds < 30) return;

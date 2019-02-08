@@ -20,6 +20,15 @@ namespace Edelstein.Service.Game.Conversations
         public ISpeaker AsQuiz() => new QuizSpeaker(Context, TemplateID, Param);
         public ISpeaker AsSpeedQuiz() => new SpeedQuizSpeaker(Context, TemplateID, Param);
 
+        public ISpeaker AsContinent(int id)
+        {
+            var continent = Context.Socket.WvsGame.ContinentManager.Get(id);
+
+            return continent == null
+                ? null
+                : new ContinentSpeaker(Context, continent, TemplateID, Param);
+        }
+
         public byte Say(string[] text, int current = 0)
         {
             byte result = 0;

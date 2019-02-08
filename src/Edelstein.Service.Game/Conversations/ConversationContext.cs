@@ -4,25 +4,26 @@ using System.Threading.Tasks;
 using Edelstein.Core.Services;
 using Edelstein.Network;
 using Edelstein.Network.Packet;
+using Edelstein.Service.Game.Sockets;
 using Foundatio.AsyncEx;
 
 namespace Edelstein.Service.Game.Conversations
 {
     public class ConversationContext : IConversationContext
     {
-        public ISocket Socket { get; }
+        public WvsGameSocket Socket { get; }
         public CancellationTokenSource TokenSource { get; }
         public IScriptMessage PreviousScriptMessage { get; private set; }
         public AsyncProducerConsumerQueue<object> Responses { get; }
 
-        public ConversationContext(ISocket socket, CancellationTokenSource tokenSource)
+        public ConversationContext(WvsGameSocket socket, CancellationTokenSource tokenSource)
         {
             Socket = socket;
             TokenSource = tokenSource;
             Responses = new AsyncProducerConsumerQueue<object>();
         }
 
-        public ConversationContext(ISocket socket)
+        public ConversationContext(WvsGameSocket socket)
             : this(socket, new CancellationTokenSource())
         {
         }
