@@ -17,6 +17,7 @@ namespace Edelstein.Service.Game.Conversations
         {
             var continent = Context.Socket.WvsGame.ContinentManager.Continents.FirstOrDefault(c =>
                 c.Template.StartShipMoveFieldID == Obj.Field.ID ||
+                c.Template.WaitFieldID == Obj.Field.ID ||
                 c.Template.MoveFieldID == Obj.Field.ID);
 
             return continent == null
