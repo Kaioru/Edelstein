@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
 using Edelstein.Network.Packet;
-using Edelstein.Provider.Templates;
 using Edelstein.Provider.Templates.Server.Continent;
 using Edelstein.Service.Game.Fields.User;
 using Edelstein.Service.Game.Logging;
@@ -14,25 +13,24 @@ namespace Edelstein.Service.Game.Fields.Continent
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        private readonly ContinentTemplate _template;
+        public ContinentTemplate Template { get; }
         private readonly FieldManager _fieldManager;
 
-        private ContinentState State { get; set; }
-
+        public ContinentState State { get; set; }
         private DateTime NextBoarding { get; set; }
 
         public Continent(ContinentTemplate template, FieldManager fieldManager)
         {
-            _template = template;
+            Template = template;
             _fieldManager = fieldManager;
 
             var now = DateTime.Now;
 
             NextBoarding = now
-                .AddMinutes(now.Minute % _template.Term == 0
+                .AddMinutes(now.Minute % Template.Term == 0
                     ? 0
-                    : _template.Term - now.Minute % _template.Term)
-                .AddMinutes(_template.Delay)
+                    : Template.Term - now.Minute % Template.Term)
+                .AddMinutes(Template.Delay)
                 .AddSeconds(-now.Second);
         }
 
@@ -66,16 +64,16 @@ namespace Edelstein.Service.Game.Fields.Continent
                     break;
                 case ContinentState.Wait:
                     if ((now - NextBoarding
-                             .AddMinutes(_template.Wait)).Seconds > 0)
+                             .AddMinutes(Template.Wait)).Seconds > 0)
                         newState = ContinentState.Move;
                     break;
                 case ContinentState.Move:
                     if ((now - NextBoarding
-                             .AddMinutes(_template.Wait)
-                             .AddMinutes(_template.Required)).Seconds > 0)
+                             .AddMinutes(Template.Wait)
+                             .AddMinutes(Template.Required)).Seconds > 0)
                     {
                         newState = ContinentState.Dormant;
-                        NextBoarding = NextBoarding.AddMinutes(_template.Term);
+                        NextBoarding = NextBoarding.AddMinutes(Template.Term);
                     }
 
                     break;
@@ -84,19 +82,33 @@ namespace Edelstein.Service.Game.Fields.Continent
             if (newState == currentState) return;
 
             State = newState;
-            Logger.Debug($"{_template.Info} continent state has been updated to {State}");
+            Logger.Debug($"{Template.Info} continent state has been updated to {State}");
 
             switch (State)
             {
                 case ContinentState.Dormant:
-                    await MoveField(_template.MoveFieldID, _template.EndFieldID);
-                    if (_template.CabinFieldID.HasValue)
-                        await MoveField(_template.CabinFieldID.Value, _template.EndFieldID);
+                    using (var p = new Packet(SendPacketOperations.CONTIMOVE))
+                    {
+                        p.Encode<byte>((byte) ContinentState.TargetEndShipMoveField);
+                        p.Encode<byte>((byte) ContinentState.End);
+                        await BroadcastPacket(Template.EndShipMoveFieldID, p);
+                    }
+                    
+                    await MoveField(Template.MoveFieldID, Template.EndFieldID);
+                    if (Template.CabinFieldID.HasValue)
+                        await MoveField(Template.CabinFieldID.Value, Template.EndFieldID);
                     break;
                 case ContinentState.Wait:
                     break;
                 case ContinentState.Move:
-                    await MoveField(_template.WaitFieldID, _template.MoveFieldID);
+                    using (var p = new Packet(SendPacketOperations.CONTIMOVE))
+                    {
+                        p.Encode<byte>((byte) ContinentState.TargetStartShipMoveField);
+                        p.Encode<byte>((byte) ContinentState.Start);
+                        await BroadcastPacket(Template.StartShipMoveFieldID, p);
+                    }
+
+                    await MoveField(Template.WaitFieldID, Template.MoveFieldID);
                     break;
             }
         }

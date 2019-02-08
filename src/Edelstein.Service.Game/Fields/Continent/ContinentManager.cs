@@ -12,7 +12,7 @@ namespace Edelstein.Service.Game.Fields.Continent
     {
         private readonly ITemplateManager _templateManager;
         private readonly FieldManager _fieldManager;
-        private readonly ICollection<Continent> _continents;
+        public ICollection<Continent> Continents { get; }
 
         private DateTime LastUpdate { get; set; }
 
@@ -21,7 +21,7 @@ namespace Edelstein.Service.Game.Fields.Continent
             _templateManager = templateManager;
             _fieldManager = fieldManager;
 
-            _continents = _templateManager
+            Continents = _templateManager
                 .GetAll<ContinentTemplate>()
                 .Select(c => new Continent(c, _fieldManager))
                 .ToList();
@@ -32,7 +32,7 @@ namespace Edelstein.Service.Game.Fields.Continent
             if ((now - LastUpdate).Seconds < 30) return;
 
             LastUpdate = now;
-            await Task.WhenAll(_continents.Select(c => c.OnUpdate(now)));
+            await Task.WhenAll(Continents.Select(c => c.OnUpdate(now)));
         }
     }
 }

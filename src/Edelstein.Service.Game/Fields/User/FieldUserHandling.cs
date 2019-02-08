@@ -61,6 +61,8 @@ namespace Edelstein.Service.Game.Fields.User
                     return OnMemoRequest(packet);
                 case RecvPacketOperations.DropPickUpRequest:
                     return OnDropPickUpRequest(packet);
+                case RecvPacketOperations.CONTISTATE:
+                    return OnContiState(packet);
                 case RecvPacketOperations.NpcMove:
                     return Field
                         .GetObject<FieldNPC>(packet.Decode<int>())?
@@ -514,6 +516,22 @@ namespace Edelstein.Service.Game.Fields.User
             var drop = Field.GetObject<AbstractFieldDrop>(objectID);
 
             return drop?.PickUp(this);
+        }
+
+        private async Task OnContiState(IPacket packet)
+        {
+            var continent = Socket.WvsGame.ContinentManager.Continents
+                .FirstOrDefault(c => c.Template.StartShipMoveFieldID == Field.ID ||
+                                     c.Template.MoveFieldID == Field.ID);
+
+            if (continent == null) return;
+
+            using (var p = new Packet(SendPacketOperations.CONTISTATE))
+            {
+                p.Encode<byte>((byte) continent.State);
+                p.Encode<bool>(false); // EventDoing
+                await SendPacket(p);
+            }
         }
     }
 }
