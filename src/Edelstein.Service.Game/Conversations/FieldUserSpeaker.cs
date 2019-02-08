@@ -1,4 +1,5 @@
 using Edelstein.Service.Game.Fields.User;
+using Edelstein.Service.Game.Fields.User.Messages.Types;
 
 namespace Edelstein.Service.Game.Conversations
 {
@@ -14,7 +15,7 @@ namespace Edelstein.Service.Game.Conversations
 
         public ISpeaker AsInventory()
             => new InventorySpeaker(Context, Obj, TemplateID, Param);
-        
+
         public byte Gender => Obj.Character.Gender;
 
         public byte Skin
@@ -122,7 +123,11 @@ namespace Edelstein.Service.Game.Conversations
         public int Money
         {
             get => Obj.Character.Money;
-            set => Obj.ModifyStats(s => s.Money = value).Wait();
+            set
+            {
+                Obj.Message(new IncMoneyMessage(value - Money));
+                Obj.ModifyStats(s => s.Money = value).Wait();
+            }
         }
 
         public int TempEXP
