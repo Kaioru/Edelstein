@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Field;
+using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Fields
 {
@@ -9,6 +10,9 @@ namespace Edelstein.Service.Game.Fields
     {
         int ID { get; }
         FieldTemplate Template { get; }
+
+        Task Enter(FieldUser user, byte portal);
+        Task Enter(FieldUser user, string portal);
 
         Task Enter(IFieldObj obj, Func<IPacket> getEnterPacket);
         Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket);

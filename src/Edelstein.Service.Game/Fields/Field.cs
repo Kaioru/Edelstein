@@ -15,6 +15,7 @@ namespace Edelstein.Service.Game.Fields
     {
         public int ID => Template.ID;
         public FieldTemplate Template { get; }
+
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
 
         public Field(FieldTemplate template)
@@ -25,6 +26,19 @@ namespace Edelstein.Service.Game.Fields
 
         public Task Enter(IFieldObj obj) => Enter(obj, null);
         public Task Leave(IFieldObj obj) => Leave(obj, null);
+
+        public Task Enter(FieldUser user, byte portal)
+        {
+            user.Character.FieldPortal = portal;
+            return Enter(user);
+        }
+
+        public Task Enter(FieldUser user, string portal)
+        {
+            var target = Template.Portals.Values.FirstOrDefault(p => p.Name == portal) ??
+                         Template.Portals.Values.First(p => p.Type == FieldPortalType.Spawn);
+            return Enter(user, (byte) target.ID);
+        }
 
         public async Task Enter(IFieldObj obj, Func<IPacket> getEnterPacket)
         {

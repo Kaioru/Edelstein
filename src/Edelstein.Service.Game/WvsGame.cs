@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Core.Commands;
@@ -9,6 +11,7 @@ using Edelstein.Provider.Templates;
 using Edelstein.Service.Game.Commands;
 using Edelstein.Service.Game.Conversations.Scripts;
 using Edelstein.Service.Game.Fields;
+using Edelstein.Service.Game.Fields.Continent;
 using Edelstein.Service.Game.Sockets;
 using Foundatio.Caching;
 using Foundatio.Messaging;
@@ -24,6 +27,7 @@ namespace Edelstein.Service.Game
         public IScriptConversationManager ConversationManager { get; }
 
         public FieldManager FieldManager { get; }
+        public ContinentManager ContinentManager { get; }
         public CommandRegistry CommandRegistry { get; }
 
         public WvsGame(
@@ -39,6 +43,7 @@ namespace Edelstein.Service.Game
             TemplateManager = templateManager;
             ConversationManager = conversationManager;
             FieldManager = new FieldManager(TemplateManager);
+            ContinentManager = new ContinentManager(TemplateManager, FieldManager);
             CommandRegistry = new GameCommandRegistry(
                 new Parser(settings =>
                 {
@@ -48,10 +53,12 @@ namespace Edelstein.Service.Game
             );
         }
 
-        public override Task OnUpdate()
+        public override Task OnUpdate(DateTime now)
         {
-            // TODO
-            return Task.CompletedTask;
+            return Task.WhenAll(new List<Task>
+            {
+                ContinentManager.OnUpdate(now)
+            });
         }
 
         protected override async Task OnStarted()

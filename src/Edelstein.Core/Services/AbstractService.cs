@@ -77,7 +77,7 @@ namespace Edelstein.Core.Services
             return Task.CompletedTask;
         }
 
-        public abstract Task OnUpdate();
+        public abstract Task OnUpdate(DateTime now);
 
         protected virtual async Task OnStarted()
         {
@@ -124,7 +124,7 @@ namespace Edelstein.Core.Services
                 Interval = 1000,
                 AutoReset = true
             };
-            _timer.Elapsed += async (sender, args) => await OnUpdate();
+            _timer.Elapsed += async (sender, args) => await OnUpdate(DateTime.Now);
             _timer.Start();
 
             _peerTimer = new Timer

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Services.Info;
 using Edelstein.Core.Services.Migrations;
@@ -33,7 +34,7 @@ namespace Edelstein.Service.Login
             TemplateManager = templateManager;
         }
 
-        public override Task OnUpdate()
+        public override Task OnUpdate(DateTime now)
         {
             // TODO
             return Task.CompletedTask;

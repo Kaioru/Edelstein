@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -83,8 +84,8 @@ namespace Edelstein.Service.All
                 .ForEach(_services.Add);
         }
 
-        public override Task OnUpdate()
-            => Task.WhenAll(_services.Select(s => s.OnUpdate()));
+        public override Task OnUpdate(DateTime now)
+            => Task.WhenAll(_services.Select(s => s.OnUpdate(now)));
 
         protected override Task OnStarted()
             => Task.WhenAll(_services.Select(s => s.StartAsync(_token.Token)));
