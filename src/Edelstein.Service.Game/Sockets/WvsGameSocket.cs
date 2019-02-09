@@ -40,7 +40,6 @@ namespace Edelstein.Service.Game.Sockets
             if (state.HasValue && state.Value != AccountState.MigratingIn)
                 await WvsGame.AccountStatusCache.RemoveAsync(account.ID.ToString());
 
-            FieldUser.ConversationContext?.Dispose();
             FieldUser.Field?.Leave(FieldUser);
         }
 
