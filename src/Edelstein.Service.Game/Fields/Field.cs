@@ -16,12 +16,14 @@ namespace Edelstein.Service.Game.Fields
     {
         public int ID => Template.ID;
         public FieldTemplate Template { get; }
+        public IFieldSet ParentFieldSet { get; }
 
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
 
-        public Field(FieldTemplate template)
+        public Field(FieldTemplate template, IFieldSet parentFieldSet = null)
         {
             Template = template;
+            ParentFieldSet = parentFieldSet;
             _pools = new Dictionary<FieldObjType, IFieldPool>();
         }
 
@@ -73,6 +75,9 @@ namespace Edelstein.Service.Game.Fields
                 GetObjects()
                     .Where(o => o != user)
                     .ForEach(o => user.SendPacket(o.GetEnterFieldPacket()));
+
+                if (ParentFieldSet != null)
+                    await user.Message($"Currently in the {ParentFieldSet.SetTemplate.Name} field set.");
             }
             else await BroadcastPacket(getEnterPacket?.Invoke() ?? obj.GetEnterFieldPacket());
 

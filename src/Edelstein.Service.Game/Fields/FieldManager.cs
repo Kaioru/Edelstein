@@ -22,7 +22,7 @@ namespace Edelstein.Service.Game.Fields
             _fields = new Dictionary<int, Field>();
         }
 
-        public IField Get(int id)
+        public IField Get(int id, IFieldSet parentFieldSet = null)
         {
             lock (this)
             {
@@ -32,7 +32,7 @@ namespace Edelstein.Service.Game.Fields
 
                     if (template == null) return null;
 
-                    var field = new Field(template);
+                    var field = new Field(template, parentFieldSet);
 
                     field.Template.Life.ForEach(l =>
                     {

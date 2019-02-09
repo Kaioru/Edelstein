@@ -12,6 +12,8 @@ namespace Edelstein.Service.Game.Fields
         int ID { get; }
         FieldTemplate Template { get; }
 
+        IFieldSet ParentFieldSet { get; }
+
         Task Enter(FieldUser user, byte portal);
         Task Enter(FieldUser user, string portal);
 

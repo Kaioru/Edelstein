@@ -27,6 +27,7 @@ namespace Edelstein.Service.Game
         public IScriptConversationManager ConversationManager { get; }
 
         public FieldManager FieldManager { get; }
+        public FieldSetManager FieldSetManager { get; }
         public ContinentManager ContinentManager { get; }
         public CommandRegistry CommandRegistry { get; }
 
@@ -43,6 +44,7 @@ namespace Edelstein.Service.Game
             TemplateManager = templateManager;
             ConversationManager = conversationManager;
             FieldManager = new FieldManager(TemplateManager);
+            FieldSetManager = new FieldSetManager(TemplateManager, FieldManager);
             ContinentManager = new ContinentManager(TemplateManager, FieldManager);
             CommandRegistry = new GameCommandRegistry(
                 new Parser(settings =>
