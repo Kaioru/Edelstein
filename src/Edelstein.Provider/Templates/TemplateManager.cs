@@ -14,6 +14,7 @@ using Edelstein.Provider.Templates.NPC;
 using Edelstein.Provider.Templates.Server.Best;
 using Edelstein.Provider.Templates.Server.CategoryDiscount;
 using Edelstein.Provider.Templates.Server.Continent;
+using Edelstein.Provider.Templates.Server.FieldSet;
 using Edelstein.Provider.Templates.Server.ModifiedCommodity;
 using Edelstein.Provider.Templates.Server.NotSale;
 using Edelstein.Provider.Templates.Server.NPCShop;
@@ -41,6 +42,7 @@ namespace Edelstein.Provider.Templates
                 [typeof(FieldStringTemplate)] = new FieldStringTemplateCollection(collection),
 
                 [typeof(ContinentTemplate)] = new ContinentTemplateCollection(collection),
+                [typeof(FieldSetTemplate)] = new FieldSetTemplateCollection(collection),
 
                 [typeof(CommodityTemplate)] = new CommodityTemplateCollection(collection),
                 [typeof(CashPackageTemplate)] = new CashPackageTemplateCollection(collection),
