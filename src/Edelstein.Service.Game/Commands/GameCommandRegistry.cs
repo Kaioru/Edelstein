@@ -9,6 +9,7 @@ namespace Edelstein.Service.Game.Commands
         public GameCommandRegistry(Parser parser) : base(parser)
         {
             Commands.Add(new TestCommand(parser));
+            Commands.Add(new ContiMoveCommand(parser));
 
             Commands.Add(new FieldCommand(parser));
             Commands.Add(new ItemCommand(parser));
