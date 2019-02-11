@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Inventories;
 using Edelstein.Core.Services;
-using Edelstein.Data.Entities;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
 using Edelstein.Service.Game.Fields.User.Stats;

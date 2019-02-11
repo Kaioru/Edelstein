@@ -2,7 +2,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Services;
-using Edelstein.Network;
 using Edelstein.Network.Packet;
 using Edelstein.Service.Game.Sockets;
 using Foundatio.AsyncEx;

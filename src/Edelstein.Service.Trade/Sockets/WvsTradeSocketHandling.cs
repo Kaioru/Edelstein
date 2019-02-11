@@ -6,7 +6,6 @@ using Edelstein.Core.Services.Info;
 using Edelstein.Network.Packet;
 using Edelstein.Service.Trade.Logging;
 using Microsoft.EntityFrameworkCore;
-using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Trade.Sockets
 {

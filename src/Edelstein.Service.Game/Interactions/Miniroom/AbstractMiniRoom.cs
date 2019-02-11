@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,7 +5,6 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Services;
 using Edelstein.Network.Packet;
 using Edelstein.Service.Game.Fields.User;
-using Edelstein.Service.Game.Interactions.Miniroom.Trade;
 using MoreLinq;
 
 namespace Edelstein.Service.Game.Interactions.Miniroom

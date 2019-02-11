@@ -5,7 +5,6 @@ using Edelstein.Core.Services;
 using Edelstein.Core.Types;
 using Edelstein.Network.Packet;
 using Edelstein.Service.Game.Fields.User;
-using Edelstein.Service.Game.Fields.User.Stats;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq;
 
