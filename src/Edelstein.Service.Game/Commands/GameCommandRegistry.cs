@@ -10,6 +10,7 @@ namespace Edelstein.Service.Game.Commands
         {
             Commands.Add(new TestCommand(parser));
             Commands.Add(new ContiMoveCommand(parser));
+            Commands.Add(new BuffCommand(parser));
 
             Commands.Add(new FieldCommand(parser));
             Commands.Add(new ItemCommand(parser));
