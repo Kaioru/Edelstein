@@ -56,15 +56,11 @@ namespace Edelstein.Service.Game.Fields
                 user.ID = user.Character.ID;
                 user.Character.FieldID = ID;
                 user.Position = portal.Position;
-
-                if (portal.Type != FieldPortalType.Spawn)
-                {
-                    var foothold = Template.Footholds.Values
+                user.Foothold = (short) (portal.Type != FieldPortalType.Spawn
+                    ? Template.Footholds.Values
                         .Where(f => f.X1 <= portal.Position.X && f.X2 >= portal.Position.X)
-                        .First(f => f.X1 < f.X2);
-
-                    user.Foothold = (short) foothold.ID;
-                }
+                        .First(f => f.X1 < f.X2).ID
+                    : 0);
 
                 await user.SendPacket(user.GetSetFieldPacket());
                 await BroadcastPacket(user, getEnterPacket?.Invoke() ?? user.GetEnterFieldPacket());
