@@ -7,6 +7,7 @@ using Edelstein.Core.Services;
 using Edelstein.Data.Entities;
 using Edelstein.Data.Entities.Inventory;
 using Edelstein.Network.Packet;
+using Edelstein.Service.Game.Fields.User.Stats;
 using Edelstein.Service.Game.Fields.User.Stats.Modify;
 
 namespace Edelstein.Service.Game.Fields.User
@@ -80,6 +81,54 @@ namespace Edelstein.Service.Game.Fields.User
             ValidateStat();
 
             return SendPacket(new Packet(SendPacketOperations.ForcedStatReset));
+        }
+
+        public Task ModifyTemporaryStat(Action<ModifyTemporaryStatContext> action = null)
+        {
+            var context = new ModifyTemporaryStatContext(this);
+
+            action?.Invoke(context);
+
+            if (context.ResetOperations.Count > 0)
+            {
+                using (var p = new Packet(SendPacketOperations.TemporaryStatReset))
+                {
+                    TemporaryStat.EncodeMask(p, context.ResetOperations);
+                    p.Encode<byte>(0); // IsMovementAffectingStat
+                    SendPacket(p);
+                }
+
+                using (var p = new Packet(SendPacketOperations.UserTemporaryStatReset))
+                {
+                    p.Encode<int>(ID);
+                    TemporaryStat.EncodeMask(p, context.ResetOperations);
+                    Field.BroadcastPacket(this, p);
+                }
+            }
+
+            if (context.SetOperations.Count > 0)
+            {
+                using (var p = new Packet(SendPacketOperations.TemporaryStatSet))
+                {
+                    TemporaryStat.EncodeForLocal(p, context.SetOperations);
+                    p.Encode<short>(0); // tDelay
+                    p.Encode<byte>(0); // IsMovementAffectingStat
+                    SendPacket(p);
+                }
+
+                using (var p = new Packet(SendPacketOperations.UserTemporaryStatSet))
+                {
+                    p.Encode<int>(ID);
+                    TemporaryStat.EncodeForRemote(p, context.SetOperations);
+                    p.Encode<short>(0); // tDelay
+                    Field.BroadcastPacket(this, p);
+                }
+            }
+
+            if (context.ResetOperations.Count > 0 ||
+                context.SetOperations.Count > 0)
+                ValidateStat();
+            return Task.CompletedTask;
         }
 
         public async Task ModifyInventory(Action<ModifyInventoryContext> action = null, bool exclRequest = false)

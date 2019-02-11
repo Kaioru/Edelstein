@@ -28,6 +28,7 @@ namespace Edelstein.Service.Game.Fields.User
 
         public BasicStat BasicStat { get; }
         public ForcedStat ForcedStat { get; }
+        public TemporaryStat TemporaryStat { get; }
 
         public IConversationContext ConversationContext { get; private set; }
         public IDialog Dialog { get; private set; }
@@ -39,6 +40,7 @@ namespace Edelstein.Service.Game.Fields.User
 
             BasicStat = new BasicStat(this);
             ForcedStat = new ForcedStat();
+            TemporaryStat = new TemporaryStat();
             ValidateStat();
         }
 
