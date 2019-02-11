@@ -18,7 +18,8 @@ namespace Edelstein.Service.Game.Conversations
 
         public AbstractSpeaker(IConversationContext context)
             => Context = context;
-
+        
+        public ISpeaker AsSpeaker(int templateID, ScriptMessageParam param = 0) => new Speaker(Context, templateID, param);
         public ISpeaker AsQuiz() => new QuizSpeaker(Context, TemplateID, Param);
         public ISpeaker AsSpeedQuiz() => new SpeedQuizSpeaker(Context, TemplateID, Param);
 

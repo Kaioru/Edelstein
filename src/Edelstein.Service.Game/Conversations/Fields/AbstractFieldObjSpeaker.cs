@@ -1,7 +1,6 @@
-using Edelstein.Service.Game.Conversations.Fields;
 using Edelstein.Service.Game.Fields;
 
-namespace Edelstein.Service.Game.Conversations
+namespace Edelstein.Service.Game.Conversations.Fields
 {
     public abstract class AbstractFieldObjSpeaker<T> : AbstractSpeaker
         where T : IFieldObj

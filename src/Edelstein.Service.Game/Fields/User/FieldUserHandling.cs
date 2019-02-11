@@ -55,6 +55,8 @@ namespace Edelstein.Service.Game.Fields.User
                     return OnUserDropMoneyRequest(packet);
                 case RecvPacketOperations.UserCharacterInfoRequest:
                     return OnUserCharacterInfoRequest(packet);
+                case RecvPacketOperations.UserPortalScriptRequest:
+                    return OnUserPortalScriptRequest(packet);
                 case RecvPacketOperations.MiniRoom:
                     return OnMiniRoom(operation, packet);
                 case RecvPacketOperations.MemoRequest:
@@ -472,6 +474,27 @@ namespace Edelstein.Service.Game.Fields.User
                 chairs.ForEach(i => p.Encode<int>(i));
                 await SendPacket(p);
             }
+        }
+
+        private async Task OnUserPortalScriptRequest(IPacket packet)
+        {
+            packet.Decode<byte>();
+
+            var portalName = packet.Decode<string>();
+            var portal = Field.Template.Portals.Values.FirstOrDefault(p => p.Name.Equals(portalName));
+
+            if (portal == null) return;
+            if (string.IsNullOrEmpty(portal.Script)) return;
+
+            var context = new ConversationContext(Socket);
+            var conversation = Socket.WvsGame.ConversationManager.Get(
+                portal.Script,
+                context,
+                new FieldPortalSpeaker(context, portal, Field),
+                new FieldUserSpeaker(context, this)
+            );
+
+            await Converse(conversation);
         }
 
         private Task OnMiniRoom(RecvPacketOperations operation, IPacket packet)

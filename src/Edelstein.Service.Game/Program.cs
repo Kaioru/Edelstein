@@ -46,11 +46,12 @@ namespace Edelstein.Service.Game
             UserData.RegisterType<Speaker>();
             UserData.RegisterType<QuizSpeaker>();
             UserData.RegisterType<SpeedQuizSpeaker>();
-           
+
             UserData.RegisterType<FieldSpeaker>();
+            UserData.RegisterType<FieldPortalSpeaker>();
             UserData.RegisterType<FieldUserSpeaker>();
             UserData.RegisterType<FieldNPCSpeaker>();
-            
+
             UserData.RegisterType<FieldUserInventorySpeaker>();
             UserData.RegisterType<ContinentSpeaker>();
 
