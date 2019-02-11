@@ -152,5 +152,7 @@ namespace Edelstein.Service.Game.Conversations.Fields
             field.Enter(Obj, portal);
             return true;
         }
+
+        public void Message(string message) => Obj.Message(message);
     }
 }
