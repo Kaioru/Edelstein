@@ -59,6 +59,8 @@ namespace Edelstein.Service.Game.Fields.User
                     return OnMiniRoom(operation, packet);
                 case RecvPacketOperations.MemoRequest:
                     return OnMemoRequest(packet);
+                case RecvPacketOperations.UserSkillCancelRequest:
+                    return OnUserSkillCancelRequest(packet);
                 case RecvPacketOperations.DropPickUpRequest:
                     return OnDropPickUpRequest(packet);
                 case RecvPacketOperations.CONTISTATE:
@@ -503,6 +505,15 @@ namespace Edelstein.Service.Game.Fields.User
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private async Task OnUserSkillCancelRequest(IPacket packet)
+        {
+            var templateID = packet.Decode<int>();
+
+            // TODO: template checking
+
+            await ModifyTemporaryStat(ts => ts.Reset(templateID));
         }
 
         private Task OnDropPickUpRequest(IPacket packet)

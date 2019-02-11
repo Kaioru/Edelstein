@@ -18,7 +18,7 @@ using Edelstein.Service.Game.Sockets;
 
 namespace Edelstein.Service.Game.Fields.User
 {
-    public partial class FieldUser : AbstractFieldLife, ICommandSender
+    public partial class FieldUser : AbstractFieldLife, IUpdateable, ICommandSender
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
         public override FieldObjType Type => FieldObjType.User;
@@ -258,5 +258,16 @@ namespace Edelstein.Service.Game.Fields.User
         }
 
         public Task SendPacket(IPacket packet) => Socket.SendPacket(packet);
+
+        public async Task OnUpdate(DateTime now)
+        {
+            var expiredStats = TemporaryStat.Entries.Values
+                .Where(s => s.DateExpire.HasValue)
+                .Where(i => (now - i.DateExpire.Value).Seconds >= 0)
+                .ToList();
+
+            if (expiredStats.Any())
+                await ModifyTemporaryStat(s => expiredStats.ForEach(e => s.Reset(e.Type)));
+        }
     }
 }

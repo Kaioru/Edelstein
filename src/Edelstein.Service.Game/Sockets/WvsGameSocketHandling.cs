@@ -80,17 +80,6 @@ namespace Edelstein.Service.Game.Sockets
                         await SendPacket(p);
                     }
                 }
-                
-                await FieldUser.ModifyTemporaryStat(s =>
-                {
-                    var date = DateTime.Now;
-                    s.Set(TemporaryStatType.BlessingArmor, 30001000, 10, date.AddSeconds(30));
-                    s.Set(TemporaryStatType.PDD, 30001000, 10, date.AddSeconds(30));
-                    s.Set(TemporaryStatType.MAD, 30001000, 10, date.AddSeconds(30));
-                    s.Set(TemporaryStatType.MDD, 30001000, 10, date.AddSeconds(30));
-                    s.Set(TemporaryStatType.Speed, 30001000, 100, date.AddSeconds(30));
-                    s.Set(TemporaryStatType.Jump, 30001000, 100, date.AddSeconds(30));
-                });
             }
         }
     }
