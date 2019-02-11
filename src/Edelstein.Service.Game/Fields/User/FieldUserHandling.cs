@@ -11,6 +11,7 @@ using Edelstein.Network.Packet;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Server.NPCShop;
 using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Conversations.Fields;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Drop;
 using Edelstein.Service.Game.Interactions;

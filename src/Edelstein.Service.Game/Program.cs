@@ -2,6 +2,7 @@
 using Edelstein.Core.Services;
 using Edelstein.Core.Services.Info;
 using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Conversations.Fields;
 using Edelstein.Service.Game.Conversations.Quiz;
 using Edelstein.Service.Game.Conversations.Scripts;
 using Edelstein.Service.Game.Conversations.Scripts.Lua;
@@ -50,7 +51,7 @@ namespace Edelstein.Service.Game
             UserData.RegisterType<FieldUserSpeaker>();
             UserData.RegisterType<FieldNPCSpeaker>();
             
-            UserData.RegisterType<InventorySpeaker>();
+            UserData.RegisterType<FieldUserInventorySpeaker>();
             UserData.RegisterType<ContinentSpeaker>();
 
             services.AddSingleton<IScriptConversationManager>(

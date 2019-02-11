@@ -6,13 +6,13 @@ using Edelstein.Data.Entities.Inventory;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Service.Game.Fields.User;
 
-namespace Edelstein.Service.Game.Conversations
+namespace Edelstein.Service.Game.Conversations.Fields
 {
-    public class InventorySpeaker : Speaker
+    public class FieldUserInventorySpeaker : Speaker
     {
         private FieldUser _fieldUser;
 
-        public InventorySpeaker(
+        public FieldUserInventorySpeaker(
             IConversationContext context,
             FieldUser fieldUser,
             int templateID = 9010000,

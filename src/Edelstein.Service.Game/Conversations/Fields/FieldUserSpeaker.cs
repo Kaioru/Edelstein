@@ -1,7 +1,7 @@
 using Edelstein.Service.Game.Fields.User;
 using Edelstein.Service.Game.Fields.User.Messages.Types;
 
-namespace Edelstein.Service.Game.Conversations
+namespace Edelstein.Service.Game.Conversations.Fields
 {
     public class FieldUserSpeaker : AbstractFieldObjSpeaker<FieldUser>
     {
@@ -14,7 +14,7 @@ namespace Edelstein.Service.Game.Conversations
         }
 
         public ISpeaker AsInventory()
-            => new InventorySpeaker(Context, Obj, TemplateID, Param);
+            => new FieldUserInventorySpeaker(Context, Obj, TemplateID, Param);
 
         public byte Gender => Obj.Character.Gender;
 
