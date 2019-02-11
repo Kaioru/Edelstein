@@ -208,10 +208,7 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<short>(0);
                 p.Encode<byte>(0);
 
-                p.Encode<long>(0);
-                p.Encode<long>(0);
-                p.Encode<byte>(0);
-                p.Encode<byte>(0);
+                TemporaryStat.EncodeForRemote(p, TemporaryStat.Entries.Values);
 
                 p.Encode<short>(Character.Job);
                 Character.EncodeLook(p);

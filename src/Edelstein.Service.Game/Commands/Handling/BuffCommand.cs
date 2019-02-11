@@ -28,18 +28,18 @@ namespace Edelstein.Service.Game.Commands.Handling
                         t => (int) t,
                         t => t.ToString()
                     )
-            ));
+            ), 0);
             var options = await user.Prompt<int>((self, target) => self.AskNumber(
                 "What option?",
                 1,
                 1,
                 short.MaxValue
-            ));
+            ), 0);
             var duration = await user.Prompt<int>((self, target) => self.AskNumber(
                 "How long? (in seconds)",
                 0,
                 0
-            ));
+            ), 0);
 
             await user.ModifyTemporaryStat(s =>
                 s.Set(
