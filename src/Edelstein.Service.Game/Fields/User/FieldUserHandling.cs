@@ -26,6 +26,8 @@ namespace Edelstein.Service.Game.Fields.User
         {
             switch (operation)
             {
+                case RecvPacketOperations.UserTransferFieldRequest:
+                    return OnUserTransferFieldRequest(packet);
                 case RecvPacketOperations.UserTransferChannelRequest:
                     return OnUserTransferChannelRequest(packet);
                 case RecvPacketOperations.UserMigrateToCashShopRequest:
@@ -75,6 +77,21 @@ namespace Edelstein.Service.Game.Fields.User
                     Logger.Warn($"Unhandled packet operation {operation}");
                     return Task.CompletedTask;
             }
+        }
+
+        private async Task OnUserTransferFieldRequest(IPacket packet)
+        {
+            packet.Decode<byte>();
+            packet.Decode<int>();
+
+            var portalName = packet.Decode<string>();
+            var portal = Field.Template.Portals.Values.Single(p => p.Name.Equals(portalName));
+            var targetField = Socket.WvsGame.FieldManager.Get(portal.ToMap);
+            var targetPortal = targetField.Template.Portals.Values.Single(p => p.Name.Equals(portal.ToName));
+
+            // TODO bEnable in portal
+            
+            await targetField.Enter(this, (byte) targetPortal.ID);
         }
 
         private async Task OnUserTransferChannelRequest(IPacket packet)
