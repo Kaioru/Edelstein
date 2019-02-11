@@ -29,8 +29,8 @@ namespace Edelstein.Service.Game.Commands.Handling
                         t => t.ToString()
                     )
             ));
-            var level = await user.Prompt<int>((self, target) => self.AskNumber(
-                "What level?",
+            var options = await user.Prompt<int>((self, target) => self.AskNumber(
+                "What option?",
                 1,
                 1,
                 short.MaxValue
@@ -45,7 +45,7 @@ namespace Edelstein.Service.Game.Commands.Handling
                 s.Set(
                     (TemporaryStatType) type,
                     30001000,
-                    (short) level,
+                    (short) options,
                     duration > 0
                         ? DateTime.Now.AddSeconds(duration)
                         : (DateTime?) null)
