@@ -14,5 +14,7 @@ namespace Edelstein.Service.Game.Conversations
         AsyncProducerConsumerQueue<object> Responses { get; }
 
         Task<T> Send<T>(IScriptMessage scriptMessage);
+
+        void Cancel();
     }
 }

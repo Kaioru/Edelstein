@@ -91,7 +91,7 @@ namespace Edelstein.Service.Game.Fields
                     else await user.Interact(user.Dialog, true);
                 }
 
-                user.ConversationContext?.Dispose();
+                user.ConversationContext?.Cancel();
 
                 await BroadcastPacket(user, user.GetLeaveFieldPacket());
             }
