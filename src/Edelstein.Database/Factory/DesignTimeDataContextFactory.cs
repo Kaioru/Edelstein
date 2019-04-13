@@ -13,8 +13,8 @@ namespace Edelstein.Database
             var builder = new ConfigurationBuilder();
 
             builder.SetBasePath(Directory.GetCurrentDirectory());
-            builder.AddJsonFile("appsettings.json", true);
-            builder.AddJsonFile("appsettings.dev.json", true);
+            builder.AddJsonFile("database.example.json", true);
+            builder.AddJsonFile("database.json", true);
             builder.AddCommandLine(args);
 
             var config = builder.Build();
