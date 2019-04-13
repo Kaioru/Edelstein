@@ -1,6 +1,5 @@
 using System;
 using DotNetty.Transport.Channels;
-using Edelstein.Network.Crypto;
 using Edelstein.Network.Logging;
 using Edelstein.Network.Packets;
 
