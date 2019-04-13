@@ -18,7 +18,7 @@ namespace Edelstein.Core.Bootstrap
 {
     public class Startup
     {
-        private StartupOption _option;
+        private readonly StartupOption _option;
 
         public Startup()
         {
