@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D46EBD9A-1AE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Duey.NX", "ext\Duey\Duey.NX\Duey.NX.csproj", "{5670CD92-46F3-45A5-B35D-C997A6B35638}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Network", "src\Edelstein.Network\Edelstein.Network.csproj", "{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5670CD92-46F3-45A5-B35D-C997A6B35638} = {9F787668-B90B-483F-B345-53C994F5CC30}
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05} = {D46EBD9A-1AE5-4506-9E4F-1BD3D78247B4}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5670CD92-46F3-45A5-B35D-C997A6B35638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -37,5 +40,17 @@ Global
 		{5670CD92-46F3-45A5-B35D-C997A6B35638}.Release|x64.Build.0 = Release|Any CPU
 		{5670CD92-46F3-45A5-B35D-C997A6B35638}.Release|x86.ActiveCfg = Release|Any CPU
 		{5670CD92-46F3-45A5-B35D-C997A6B35638}.Release|x86.Build.0 = Release|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Debug|x64.Build.0 = Debug|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Debug|x86.Build.0 = Debug|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Release|x64.ActiveCfg = Release|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Release|x64.Build.0 = Release|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Release|x86.ActiveCfg = Release|Any CPU
+		{006BBBB5-8B9C-4B7B-A1EC-C8F66C03EE05}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
