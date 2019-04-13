@@ -6,21 +6,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Edelstein.Network\Edelstein.Network.csproj"/>
+        <ProjectReference Include="..\Edelstein.Database\Edelstein.Database.csproj" />
+        <ProjectReference Include="..\Edelstein.Network\Edelstein.Network.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Foundatio" Version="7.1.1845"/>
-        <PackageReference Include="Foundatio.Redis" Version="7.1.1608"/>
-        <PackageReference Include="LibLog" Version="5.0.6"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0"/>
-        <PackageReference Include="Serilog" Version="2.8.0"/>
-        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1"/>
+        <PackageReference Include="Foundatio" Version="7.1.1845" />
+        <PackageReference Include="Foundatio.Redis" Version="7.1.1608" />
+        <PackageReference Include="LibLog" Version="5.0.6" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
+        <PackageReference Include="Serilog" Version="2.8.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     </ItemGroup>
 
 </Project>

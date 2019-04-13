@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap.Types;
+using Edelstein.Database.Factory;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Foundatio.Messaging;
@@ -95,6 +96,7 @@ namespace Edelstein.Core.Bootstrap
                     switch (_option.DistributedType)
                     {
                         default:
+                        case null:
                         case DistributedType.InMemory:
                             builder.AddSingleton<ICacheClient, InMemoryCacheClient>();
                             builder.AddSingleton<IMessageBus, InMemoryMessageBus>();
@@ -115,6 +117,22 @@ namespace Edelstein.Core.Bootstrap
                             builder.AddSingleton<ICacheClient, RedisHybridCacheClient>();
                             builder.AddSingleton<IMessageBus, RedisMessageBus>();
                             builder.AddSingleton<ILockProvider, CacheLockProvider>();
+                            break;
+                    }
+
+                    switch (_option.DatabaseType)
+                    {
+                        default:
+                        case null:
+                        case DatabaseType.InMemory:
+                            builder.AddSingleton<IDataContextFactory>(f =>
+                                new InMemoryDataContextFactory(_option.DatabaseConnectionString)
+                            );
+                            break;
+                        case DatabaseType.MySQL:
+                            builder.AddSingleton<IDataContextFactory>(f =>
+                                new MySQLDataContextFactory(_option.DatabaseConnectionString)
+                            );
                             break;
                     }
                 })
