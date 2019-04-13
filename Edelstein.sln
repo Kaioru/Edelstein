@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Core.Tests", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Database", "src\Edelstein.Database\Edelstein.Database.csproj", "{7CA98BDE-4294-4799-88AD-75122C4AC624}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Provider", "src\Edelstein.Provider\Edelstein.Provider.csproj", "{22F46B74-FF8D-4005-B064-91C2205C1FB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,7 @@ Global
 		{F2689F96-D35F-423A-825A-E7216FC910D1} = {734A5715-135D-46A4-B8B2-FBB297F579FE}
 		{4D38E7ED-117A-4242-9380-D697B51D1CCF} = {734A5715-135D-46A4-B8B2-FBB297F579FE}
 		{7CA98BDE-4294-4799-88AD-75122C4AC624} = {D46EBD9A-1AE5-4506-9E4F-1BD3D78247B4}
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8} = {D46EBD9A-1AE5-4506-9E4F-1BD3D78247B4}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5670CD92-46F3-45A5-B35D-C997A6B35638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -129,5 +132,17 @@ Global
 		{7CA98BDE-4294-4799-88AD-75122C4AC624}.Release|x64.Build.0 = Release|Any CPU
 		{7CA98BDE-4294-4799-88AD-75122C4AC624}.Release|x86.ActiveCfg = Release|Any CPU
 		{7CA98BDE-4294-4799-88AD-75122C4AC624}.Release|x86.Build.0 = Release|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Debug|x64.Build.0 = Debug|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Debug|x86.Build.0 = Debug|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Release|x64.ActiveCfg = Release|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Release|x64.Build.0 = Release|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Release|x86.ActiveCfg = Release|Any CPU
+		{22F46B74-FF8D-4005-B064-91C2205C1FB8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

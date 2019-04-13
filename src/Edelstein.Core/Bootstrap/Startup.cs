@@ -1,8 +1,9 @@
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap.Types;
 using Edelstein.Database.Factory;
+using Edelstein.Provider;
+using Edelstein.Provider.NX;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Foundatio.Messaging;
@@ -132,6 +133,17 @@ namespace Edelstein.Core.Bootstrap
                         case DatabaseType.MySQL:
                             builder.AddSingleton<IDataContextFactory>(f =>
                                 new MySQLDataContextFactory(_option.DatabaseConnectionString)
+                            );
+                            break;
+                    }
+
+                    switch (_option.ProviderType)
+                    {
+                        default:
+                        case null:
+                        case ProviderType.NX:
+                            builder.AddSingleton<IDataDirectoryCollection>(
+                                new NXDataDirectoryCollection(_option.ProviderFolderPath)
                             );
                             break;
                     }

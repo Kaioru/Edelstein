@@ -7,6 +7,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Edelstein.Database\Edelstein.Database.csproj" />
         <ProjectReference Include="..\Edelstein.Network\Edelstein.Network.csproj" />
+        <ProjectReference Include="..\Edelstein.Provider\Edelstein.Provider.csproj" />
     </ItemGroup>
 
     <ItemGroup>
