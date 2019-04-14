@@ -1,10 +1,10 @@
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Core.Distributed.Utils.Messaging;
 using Edelstein.Network;
 using Edelstein.Service.Login.Sockets;
 using Foundatio.Caching;
-using Foundatio.Messaging;
 using Marten;
 using Microsoft.Extensions.Options;
 
@@ -17,9 +17,9 @@ namespace Edelstein.Service.Login
         public WvsLogin(
             IOptions<LoginServiceInfo> info,
             ICacheClient cacheClient,
-            IMessageBus messageBus,
+            IMessageBusFactory messageBusFactory,
             IDocumentStore store
-        ) : base(info.Value, cacheClient, messageBus)
+        ) : base(info.Value, cacheClient, messageBusFactory)
         {
             DocumentStore = store;
         }

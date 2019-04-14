@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Core.Distributed.Utils.Messaging;
 using Edelstein.Network;
 using Edelstein.Network.Transport;
 using Foundatio.Caching;
-using Foundatio.Messaging;
 
 namespace Edelstein.Core.Distributed
 {
@@ -16,8 +16,8 @@ namespace Edelstein.Core.Distributed
         public AbstractPeerServerService(
             TInfo info,
             ICacheClient cacheClient,
-            IMessageBus messageBus
-        ) : base(info, cacheClient, messageBus)
+            IMessageBusFactory messageBusFactory
+        ) : base(info, cacheClient, messageBusFactory)
         {
             _server = new Server(this);
         }

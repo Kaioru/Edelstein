@@ -1,6 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap.Types;
+using Edelstein.Core.Distributed.Utils.Messaging;
 using Edelstein.Provider;
 using Edelstein.Provider.NX;
 using Foundatio.Caching;
@@ -100,8 +101,7 @@ namespace Edelstein.Core.Bootstrap
                         case null:
                         case DistributedType.InMemory:
                             builder.AddSingleton<ICacheClient, InMemoryCacheClient>();
-                            builder.AddSingleton<IMessageBus, InMemoryMessageBus>();
-                            builder.AddSingleton<ILockProvider, CacheLockProvider>();
+                            builder.AddSingleton<IMessageBusFactory, InMemoryMessageBusFactory>();
                             break;
                         case DistributedType.Redis:
                             builder.AddSingleton<ConnectionMultiplexer>(f =>
@@ -111,15 +111,16 @@ namespace Edelstein.Core.Bootstrap
                             {
                                 ConnectionMultiplexer = f.GetService<ConnectionMultiplexer>()
                             });
-                            builder.AddSingleton<RedisMessageBusOptions>(f => new RedisMessageBusOptions
-                            {
-                                Subscriber = f.GetService<ConnectionMultiplexer>().GetSubscriber()
-                            });
+
+                            builder.AddSingleton<IMessageBusFactory, RedisMessageBusFactory>();
                             builder.AddSingleton<ICacheClient, RedisHybridCacheClient>();
-                            builder.AddSingleton<IMessageBus, RedisMessageBus>();
-                            builder.AddSingleton<ILockProvider, CacheLockProvider>();
                             break;
                     }
+
+                    builder.AddSingleton<IMessageBus>(f =>
+                        f.GetService<IMessageBusFactory>().Build("messages")
+                    );
+                    builder.AddSingleton<ILockProvider, CacheLockProvider>();
 
                     switch (_option.DatabaseType)
                     {

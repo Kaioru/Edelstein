@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed.Peers;
+using Edelstein.Core.Distributed.Utils.Messaging;
 using Edelstein.Core.Logging;
 using Foundatio.Caching;
 using Foundatio.Messaging;
@@ -21,9 +22,11 @@ namespace Edelstein.Core.Distributed
         public readonly TInfo Info;
 
         private readonly ICacheClient _cacheClient;
-        private readonly IMessageBus _messageBus;
+        private readonly IMessageBusFactory _messageBusFactory;
+
+        private readonly IMessageBus _peerMessageBus;
         private readonly IDictionary<string, PeerServiceInfoEntry> _peers;
-        
+
         public IEnumerable<PeerServiceInfo> Peers => _peers
             .Values
             .Where(p => p.Expiry > DateTime.Now)
@@ -32,11 +35,12 @@ namespace Edelstein.Core.Distributed
 
         private Timer _peerTimer;
 
-        public PeerService(TInfo info, ICacheClient cacheClient, IMessageBus messageBus)
+        public PeerService(TInfo info, ICacheClient cacheClient, IMessageBusFactory messageBusFactory)
         {
             Info = info;
             _cacheClient = cacheClient;
-            _messageBus = messageBus;
+            _messageBusFactory = messageBusFactory;
+            _peerMessageBus = messageBusFactory.Build("messages:peers");
             _peers = new ConcurrentDictionary<string, PeerServiceInfoEntry>();
         }
 
@@ -45,7 +49,7 @@ namespace Edelstein.Core.Distributed
 
         public virtual async Task OnStart()
         {
-            await _messageBus.SubscribeAsync<PeerServiceStatusMessage>(msg =>
+            await _peerMessageBus.SubscribeAsync<PeerServiceStatusMessage>(msg =>
             {
                 switch (msg.Status)
                 {
@@ -82,7 +86,7 @@ namespace Edelstein.Core.Distributed
                 Interval = 15000,
                 AutoReset = true
             };
-            _peerTimer.Elapsed += async (sender, args) => await _messageBus.PublishAsync(
+            _peerTimer.Elapsed += async (sender, args) => await _peerMessageBus.PublishAsync(
                 new PeerServiceStatusMessage
                 {
                     Info = Info,
@@ -91,7 +95,7 @@ namespace Edelstein.Core.Distributed
             );
             _peerTimer.Start();
 
-            await _messageBus.PublishAsync(new PeerServiceStatusMessage
+            await _peerMessageBus.PublishAsync(new PeerServiceStatusMessage
             {
                 Info = Info,
                 Status = PeerServiceStatus.Online
@@ -101,7 +105,7 @@ namespace Edelstein.Core.Distributed
         public virtual async Task OnStop()
         {
             _peerTimer.Stop();
-            await _messageBus.PublishAsync(new PeerServiceStatusMessage
+            await _peerMessageBus.PublishAsync(new PeerServiceStatusMessage
             {
                 Info = Info,
                 Status = PeerServiceStatus.Offline
