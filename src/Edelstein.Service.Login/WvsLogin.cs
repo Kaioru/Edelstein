@@ -1,5 +1,6 @@
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed;
+using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Network;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Login
 {
-    public class WvsLogin : AbstractAbstractPeerServerService<LoginServiceInfo>
+    public class WvsLogin : AbstractMigrateableService<LoginServiceInfo>
     {
         public IDocumentStore DocumentStore { get; }
 

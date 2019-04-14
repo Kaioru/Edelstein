@@ -1,12 +1,15 @@
 using System;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
+using Edelstein.Core.Distributed;
+using Edelstein.Core.Distributed.Migrations;
+using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Network;
 using Edelstein.Network.Packets;
 
 namespace Edelstein.Service.Login.Sockets
 {
-    public class LoginSocket : AbstractSocket
+    public class LoginSocket : AbstractMigrateableSocket<LoginServiceInfo>
     {
         public WvsLogin WvsLogin { get; }
 
@@ -14,10 +17,10 @@ namespace Edelstein.Service.Login.Sockets
             IChannel channel,
             uint seqSend,
             uint seqRecv,
-            WvsLogin wvsLogin
-        ) : base(channel, seqSend, seqRecv)
+            WvsLogin service
+        ) : base(channel, seqSend, seqRecv, service)
         {
-            WvsLogin = wvsLogin;
+            WvsLogin = service;
         }
 
         public override Task OnPacket(IPacket packet)
