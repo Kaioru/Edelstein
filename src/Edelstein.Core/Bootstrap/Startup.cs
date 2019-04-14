@@ -1,12 +1,12 @@
 using System.IO;
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap.Types;
-using Edelstein.Database.Factory;
 using Edelstein.Provider;
 using Edelstein.Provider.NX;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Foundatio.Messaging;
+using Marten;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -125,14 +125,9 @@ namespace Edelstein.Core.Bootstrap
                     {
                         default:
                         case null:
-                        case DatabaseType.InMemory:
-                            builder.AddSingleton<IDataContextFactory>(f =>
-                                new InMemoryDataContextFactory(_option.DatabaseConnectionString)
-                            );
-                            break;
-                        case DatabaseType.MySQL:
-                            builder.AddSingleton<IDataContextFactory>(f =>
-                                new MySQLDataContextFactory(_option.DatabaseConnectionString)
+                        case DatabaseType.PostgreSQL:
+                            builder.AddSingleton<IDocumentStore>(f =>
+                                DocumentStore.For(_option.DatabaseConnectionString)
                             );
                             break;
                     }

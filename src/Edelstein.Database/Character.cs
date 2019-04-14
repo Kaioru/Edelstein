@@ -1,17 +1,14 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Marten.Schema;
 
-namespace Edelstein.Database.Entities
+namespace Edelstein.Database
 {
     public class Character
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+        [ForeignKey(typeof(AccountData))] public int AccountDataID { get; set; }
 
-        public AccountData Data { get; set; }
-
-        [MaxLength(13)] public string Name { get; set; }
+        [UniqueIndex(IndexType = UniqueIndexType.Computed)]
+        public string Name { get; set; }
 
         public byte Gender { get; set; }
         public byte Skin { get; set; }
