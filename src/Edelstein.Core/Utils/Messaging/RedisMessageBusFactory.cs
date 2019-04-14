@@ -12,7 +12,7 @@ namespace Edelstein.Core.Utils.Messaging
             _connection = connection;
         }
 
-        public override IMessageBus Create(string topic)
+        protected override IMessageBus Create(string topic)
         {
             return new RedisMessageBus(new RedisMessageBusOptions
             {

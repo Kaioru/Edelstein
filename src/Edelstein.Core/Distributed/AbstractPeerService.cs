@@ -23,8 +23,7 @@ namespace Edelstein.Core.Distributed
 
         private readonly ICacheClient _cacheClient;
         private readonly IMessageBusFactory _messageBusFactory;
-
-        private readonly IMessageBus _messageBus;
+        public IMessageBus MessageBus { get; }
 
         private readonly IMessageBus _peerMessageBus;
         private readonly IDictionary<string, PeerServiceInfoEntry> _peers;
@@ -43,7 +42,7 @@ namespace Edelstein.Core.Distributed
             _cacheClient = cacheClient;
             _messageBusFactory = messageBusFactory;
 
-            _messageBus = messageBusFactory.Build($"{Scopes.PeerMessaging}:{info.Name}");
+            MessageBus = messageBusFactory.Build($"{Scopes.PeerMessaging}:{info.Name}");
 
             _peerMessageBus = messageBusFactory.Build(Scopes.PeerDiscovery);
             _peers = new ConcurrentDictionary<string, PeerServiceInfoEntry>();
@@ -54,7 +53,6 @@ namespace Edelstein.Core.Distributed
 
         public virtual async Task OnStart()
         {
-            await _messageBus.SubscribeAsync<object>(OnMessage);
             await _peerMessageBus.SubscribeAsync<PeerServiceStatusMessage>(msg =>
             {
                 switch (msg.Status)
@@ -118,6 +116,12 @@ namespace Edelstein.Core.Distributed
             });
         }
 
-        public abstract Task OnMessage(object msg);
+        public Task BroadcastMessage<T>(T message) where T : class
+            => Task.WhenAll(Peers.Select(p => SendMessage(p, message)));
+
+        public Task SendMessage<T>(PeerServiceInfo info, T message) where T : class
+            => _messageBusFactory
+                .Build($"{Scopes.PeerMessaging}:{info.Name}")
+                .PublishAsync<T>(message);
     }
 }

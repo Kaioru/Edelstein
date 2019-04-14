@@ -5,7 +5,7 @@ namespace Edelstein.Core.Utils.Messaging
 {
     public abstract class AbstractMessageBusFactory : IMessageBusFactory
     {
-        private IDictionary<string, IMessageBus> _busses;
+        private readonly IDictionary<string, IMessageBus> _busses;
 
         protected AbstractMessageBusFactory()
         {
@@ -19,6 +19,6 @@ namespace Edelstein.Core.Utils.Messaging
             return _busses[topic];
         }
 
-        public abstract IMessageBus Create(string topic);
+        protected abstract IMessageBus Create(string topic);
     }
 }
