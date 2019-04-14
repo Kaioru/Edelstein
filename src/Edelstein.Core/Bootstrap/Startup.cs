@@ -1,7 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap.Types;
-using Edelstein.Core.Distributed.Utils.Messaging;
+using Edelstein.Core.Utils.Messaging;
 using Edelstein.Provider;
 using Edelstein.Provider.NX;
 using Foundatio.Caching;

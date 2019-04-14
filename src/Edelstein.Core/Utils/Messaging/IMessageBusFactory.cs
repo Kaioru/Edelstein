@@ -1,6 +1,6 @@
 using Foundatio.Messaging;
 
-namespace Edelstein.Core.Distributed.Utils.Messaging
+namespace Edelstein.Core.Utils.Messaging
 {
     public interface IMessageBusFactory
     {

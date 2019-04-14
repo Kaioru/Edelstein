@@ -1,7 +1,7 @@
 using Foundatio.Messaging;
 using StackExchange.Redis;
 
-namespace Edelstein.Core.Distributed.Utils.Messaging
+namespace Edelstein.Core.Utils.Messaging
 {
     public class RedisMessageBusFactory : AbstractMessageBusFactory
     {

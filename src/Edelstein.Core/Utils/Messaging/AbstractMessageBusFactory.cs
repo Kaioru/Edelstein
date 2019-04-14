@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Foundatio.Messaging;
 
-namespace Edelstein.Core.Distributed.Utils.Messaging
+namespace Edelstein.Core.Utils.Messaging
 {
     public abstract class AbstractMessageBusFactory : IMessageBusFactory
     {

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed.Peers.Info;
-using Edelstein.Core.Distributed.Utils.Messaging;
+using Edelstein.Core.Utils.Messaging;
 using Edelstein.Network;
 using Edelstein.Network.Transport;
 using Foundatio.Caching;
