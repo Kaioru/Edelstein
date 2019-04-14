@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Distributed.Peers.Info;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Login
 {
-    public class WvsLogin : AbstractPeerServerService<LoginServiceInfo>
+    public class WvsLogin : AbstractAbstractPeerServerService<LoginServiceInfo>
     {
         public IDocumentStore DocumentStore { get; }
 
@@ -26,5 +27,10 @@ namespace Edelstein.Service.Login
 
         public override ISocket Build(IChannel channel, uint seqSend, uint seqRecv)
             => new LoginSocket(channel, seqSend, seqRecv, this);
+
+        public override Task OnMessage(object msg)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

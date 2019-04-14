@@ -8,12 +8,12 @@ using Foundatio.Caching;
 
 namespace Edelstein.Core.Distributed
 {
-    public abstract class AbstractPeerServerService<TInfo> : PeerService<TInfo>, ISocketFactory
+    public abstract class AbstractAbstractPeerServerService<TInfo> : AbstractPeerService<TInfo>, ISocketFactory
         where TInfo : ServerServiceInfo
     {
         private readonly Server _server;
 
-        public AbstractPeerServerService(
+        public AbstractAbstractPeerServerService(
             TInfo info,
             ICacheClient cacheClient,
             IMessageBusFactory messageBusFactory

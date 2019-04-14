@@ -7,5 +7,6 @@ namespace Edelstein.Core.Distributed
     {
         Task OnStart();
         Task OnStop();
+        Task OnMessage(object msg);
     }
 }

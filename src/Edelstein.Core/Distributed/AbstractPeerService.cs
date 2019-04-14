@@ -14,7 +14,7 @@ using Timer = System.Timers.Timer;
 
 namespace Edelstein.Core.Distributed
 {
-    public class PeerService<TInfo> : IPeerService
+    public abstract class AbstractPeerService<TInfo> : IPeerService
         where TInfo : PeerServiceInfo
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
@@ -23,6 +23,8 @@ namespace Edelstein.Core.Distributed
 
         private readonly ICacheClient _cacheClient;
         private readonly IMessageBusFactory _messageBusFactory;
+
+        private readonly IMessageBus _messageBus;
 
         private readonly IMessageBus _peerMessageBus;
         private readonly IDictionary<string, PeerServiceInfoEntry> _peers;
@@ -35,11 +37,14 @@ namespace Edelstein.Core.Distributed
 
         private Timer _peerTimer;
 
-        public PeerService(TInfo info, ICacheClient cacheClient, IMessageBusFactory messageBusFactory)
+        public AbstractPeerService(TInfo info, ICacheClient cacheClient, IMessageBusFactory messageBusFactory)
         {
             Info = info;
             _cacheClient = cacheClient;
             _messageBusFactory = messageBusFactory;
+
+            _messageBus = messageBusFactory.Build($"{Scopes.PeerMessaging}:{info.Name}");
+
             _peerMessageBus = messageBusFactory.Build(Scopes.PeerDiscovery);
             _peers = new ConcurrentDictionary<string, PeerServiceInfoEntry>();
         }
@@ -49,6 +54,7 @@ namespace Edelstein.Core.Distributed
 
         public virtual async Task OnStart()
         {
+            await _messageBus.SubscribeAsync<object>(OnMessage);
             await _peerMessageBus.SubscribeAsync<PeerServiceStatusMessage>(msg =>
             {
                 switch (msg.Status)
@@ -111,5 +117,7 @@ namespace Edelstein.Core.Distributed
                 Status = PeerServiceStatus.Offline
             });
         }
+
+        public abstract Task OnMessage(object msg);
     }
 }
