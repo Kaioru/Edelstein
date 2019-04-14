@@ -15,9 +15,6 @@ namespace Edelstein.Core.Distributed.Migrations
     {
         private readonly AbstractMigrateableService<TInfo> _service;
 
-        public Account? Account { get; set; }
-        public Character? Character { get; set; }
-
         public AbstractMigrateableSocket(
             IChannel channel,
             uint seqSend,
@@ -28,47 +25,47 @@ namespace Edelstein.Core.Distributed.Migrations
             _service = service;
         }
 
-        public async Task TryMigrateTo(ServerServiceInfo to)
+        public async Task TryMigrateTo(Account account, Character character, ServerServiceInfo to)
         {
-            if (Account == null || Character == null)
+            if (account == null || character == null)
                 throw new MigrationException("account or character is null");
-            if (await _service.MigrationStateCache.ExistsAsync(Character.ID.ToString()))
+            if (await _service.MigrationStateCache.ExistsAsync(character.ID.ToString()))
                 throw new MigrationException("Already migrating");
 
             await _service.AccountStateCache.SetAsync(
-                Account.ID.ToString(),
+                account.ID.ToString(),
                 MigrationState.Migrating,
                 TimeSpan.FromSeconds(15)
             );
             await _service.MigrationStateCache.SetAsync(
-                Character.ID.ToString(),
+                character.ID.ToString(),
                 to.Name,
                 TimeSpan.FromSeconds(15)
             );
             await SendPacket(GetMigrationPacket(to));
         }
 
-        public async Task TryMigrateFrom(ServerServiceInfo current)
+        public async Task TryMigrateFrom(Account account, Character character, ServerServiceInfo current)
         {
-            if (Account == null || Character == null)
+            if (account == null || character == null)
                 throw new MigrationException("account or character is null");
-            if (!await _service.MigrationStateCache.ExistsAsync(Character.ID.ToString()))
+            if (!await _service.MigrationStateCache.ExistsAsync(character.ID.ToString()))
                 throw new MigrationException("Not migrating");
 
-            var target = (await _service.MigrationStateCache.GetAsync<string>(Character.ID.ToString())).Value;
+            var target = (await _service.MigrationStateCache.GetAsync<string>(character.ID.ToString())).Value;
 
             if (current.Name != target)
                 throw new MigrationException("Migration target is not the current service");
 
             await _service.AccountStateCache.SetAsync(
-                Account.ID.ToString(),
+                account.ID.ToString(),
                 MigrationState.LoggedIn
             );
             await _service.CharacterStateCache.SetAsync(
-                Character.ID.ToString(),
+                character.ID.ToString(),
                 current.Name
             );
-            await _service.MigrationStateCache.RemoveAsync(Character.ID.ToString());
+            await _service.MigrationStateCache.RemoveAsync(character.ID.ToString());
         }
 
         protected virtual IPacket GetMigrationPacket(ServerServiceInfo to)

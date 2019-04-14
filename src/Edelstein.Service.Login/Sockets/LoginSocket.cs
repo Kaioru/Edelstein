@@ -4,6 +4,7 @@ using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Database;
 using Edelstein.Network;
 using Edelstein.Network.Packets;
 
