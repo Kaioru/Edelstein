@@ -40,7 +40,7 @@ namespace Edelstein.Core.Distributed
             Info = info;
             _cacheClient = cacheClient;
             _messageBusFactory = messageBusFactory;
-            _peerMessageBus = messageBusFactory.Build("messages:peers");
+            _peerMessageBus = messageBusFactory.Build(Scopes.PeerDiscovery);
             _peers = new ConcurrentDictionary<string, PeerServiceInfoEntry>();
         }
 
