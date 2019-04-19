@@ -2,7 +2,7 @@ using System;
 
 namespace Edelstein.Database.Inventories.Items
 {
-    public class ItemSlotPet
+    public class ItemSlotPet : ItemSlot
     {
         public string PetName { get; set; }
         public byte Level { get; set; }

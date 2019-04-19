@@ -1,6 +1,6 @@
 namespace Edelstein.Database.Inventories.Items
 {
-    public class ItemSlotEquip
+    public class ItemSlotEquip : ItemSlot
     {
         public byte RUC { get; set; }
         public byte CUC { get; set; }
