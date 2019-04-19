@@ -11,7 +11,7 @@ namespace Edelstein.Core.Distributed
     public abstract class AbstractPeerServerService<TInfo> : AbstractPeerService<TInfo>, ISocketFactory
         where TInfo : ServerServiceInfo
     {
-        private readonly Server _server;
+        protected readonly Server Server;
 
         public AbstractPeerServerService(
             TInfo info,
@@ -19,19 +19,19 @@ namespace Edelstein.Core.Distributed
             IMessageBusFactory messageBusFactory
         ) : base(info, cacheClient, messageBusFactory)
         {
-            _server = new Server(this);
+            Server = new Server(this);
         }
 
         public override async Task OnStart()
         {
-            await _server.Start(Info.Host, Info.Port);
+            await Server.Start(Info.Host, Info.Port);
             await base.OnStart();
         }
 
         public override async Task OnStop()
         {
             await base.OnStop();
-            await _server.Stop();
+            await Server.Stop();
         }
 
         public abstract ISocket Build(IChannel channel, uint seqSend, uint seqRecv);

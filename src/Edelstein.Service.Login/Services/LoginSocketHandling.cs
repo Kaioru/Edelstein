@@ -45,10 +45,7 @@ namespace Edelstein.Service.Login.Services
                     if (result == LoginResultCode.Success)
                     {
                         Account = account;
-                        await Service.AccountStateCache.SetAsync(
-                            account.ID.ToString(),
-                            MigrationState.LoggedIn
-                        );
+                        await TryProcessHeartbeat(Account, Character, true);
 
                         p.Encode<int>(account.ID); // pBlockReason
                         p.Encode<byte>(account.Gender ?? (byte) 0xA);
@@ -139,7 +136,7 @@ namespace Edelstein.Service.Login.Services
                 await SendPacket(p);
             }
         }
-        
+
         private async Task OnCheckUserLimit(IPacket packet)
         {
             using (var p = new Packet(SendPacketOperations.CheckUserLimitResult))

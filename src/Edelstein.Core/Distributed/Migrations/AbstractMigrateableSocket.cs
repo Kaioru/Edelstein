@@ -14,6 +14,7 @@ namespace Edelstein.Core.Distributed.Migrations
         where TInfo : ServerServiceInfo
     {
         private readonly AbstractMigrateableService<TInfo> _service;
+        private DateTime LastHeartbeatDate { get; set; }
 
         public AbstractMigrateableSocket(
             IChannel channel,
@@ -23,6 +24,7 @@ namespace Edelstein.Core.Distributed.Migrations
         ) : base(channel, seqSend, seqRecv)
         {
             _service = service;
+            LastHeartbeatDate = DateTime.Now;
         }
 
         public async Task TryMigrateTo(Account account, Character character, ServerServiceInfo to)
@@ -45,27 +47,54 @@ namespace Edelstein.Core.Distributed.Migrations
             await SendPacket(GetMigrationPacket(to));
         }
 
-        public async Task TryMigrateFrom(Account account, Character character, ServerServiceInfo current)
+        public async Task TryMigrateFrom(Account account, Character character)
         {
             if (account == null || character == null)
-                throw new MigrationException("account or character is null");
+                throw new MigrationException("Account or Character is null");
             if (!await _service.MigrationStateCache.ExistsAsync(character.ID.ToString()))
                 throw new MigrationException("Not migrating");
 
             var target = (await _service.MigrationStateCache.GetAsync<string>(character.ID.ToString())).Value;
 
-            if (current.Name != target)
+            if (_service.Info.Name != target)
                 throw new MigrationException("Migration target is not the current service");
+
+            await _service.MigrationStateCache.RemoveAsync(character.ID.ToString());
+            await TryProcessHeartbeat(account, character);
+        }
+
+        public async Task TrySendHeartbeat()
+        {
+            if ((DateTime.Now - LastHeartbeatDate).Seconds >= 30)
+            {
+                using var p = new Packet(SendPacketOperations.AliveReq);
+                LastHeartbeatDate = DateTime.Now;
+                await SendPacket(p);
+            }
+        }
+
+        public async Task TryProcessHeartbeat(Account account, Character character, bool initial = false)
+        {
+            if (account == null) return;
+
+            if (!await _service.AccountStateCache.ExistsAsync(account.ID.ToString()) && !initial)
+            {
+                await Close();
+                return;
+            }
 
             await _service.AccountStateCache.SetAsync(
                 account.ID.ToString(),
-                MigrationState.LoggedIn
+                MigrationState.LoggedIn,
+                TimeSpan.FromMinutes(1)
             );
+
+            if (character == null) return;
             await _service.CharacterStateCache.SetAsync(
                 character.ID.ToString(),
-                current.Name
+                _service.Info.Name,
+                TimeSpan.FromMinutes(1)
             );
-            await _service.MigrationStateCache.RemoveAsync(character.ID.ToString());
         }
 
         protected virtual IPacket GetMigrationPacket(ServerServiceInfo to)

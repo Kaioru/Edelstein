@@ -35,6 +35,7 @@ namespace Edelstein.Core.Distributed
             .ToImmutableList();
 
         private Timer _peerTimer;
+        private Timer _tickTimer;
 
         public AbstractPeerService(TInfo info, ICacheClient cacheClient, IMessageBusFactory messageBusFactory)
         {
@@ -104,6 +105,14 @@ namespace Edelstein.Core.Distributed
                 Info = Info,
                 Status = PeerServiceStatus.Online
             });
+
+            _tickTimer = new Timer
+            {
+                Interval = 1000,
+                AutoReset = true
+            };
+            _tickTimer.Elapsed += async (sender, args) => await OnTick(DateTime.Now);
+            _tickTimer.Start();
         }
 
         public virtual async Task OnStop()
@@ -115,6 +124,8 @@ namespace Edelstein.Core.Distributed
                 Status = PeerServiceStatus.Offline
             });
         }
+
+        public abstract Task OnTick(DateTime now);
 
         public Task BroadcastMessage<T>(T message) where T : class
             => Task.WhenAll(Peers.Select(p => SendMessage(p, message)));

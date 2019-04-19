@@ -41,6 +41,7 @@ namespace Edelstein.Service.Login.Services
                 RecvPacketOperations.SetGender => OnSetGender(packet),
                 RecvPacketOperations.CheckPinCode => OnCheckPinCode(packet),
                 RecvPacketOperations.WorldRequest => OnWorldInfoRequest(packet),
+                RecvPacketOperations.AliveAck => TryProcessHeartbeat(Account, Character),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
                 };
         }
