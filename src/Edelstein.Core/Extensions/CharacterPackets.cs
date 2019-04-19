@@ -1,3 +1,4 @@
+using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Types;
 using Edelstein.Database;
 using Edelstein.Database.Inventories;
@@ -164,7 +165,7 @@ namespace Edelstein.Core.Extensions
             p.Encode<int>(c.MaxMP);
 
             p.Encode<short>(c.AP);
-            if (c.Job / 1000 != 3 && c.Job / 100 != 22 && c.Job != 2001)
+            if (SkillConstants.IsExtendSPJob(c.Job))
                 p.Encode<short>(c.SP);
             else p.Encode<byte>(0); // TODO: extendedSP
 
