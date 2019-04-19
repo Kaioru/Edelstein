@@ -52,8 +52,8 @@ namespace Edelstein.Database
             Inventories = new Dictionary<ItemInventoryType, ItemInventory>
             {
                 [ItemInventoryType.Equip] = new ItemInventory(24),
-                [ItemInventoryType.Use] = new ItemInventory(24),
-                [ItemInventoryType.Setup] = new ItemInventory(24),
+                [ItemInventoryType.Consume] = new ItemInventory(24),
+                [ItemInventoryType.Install] = new ItemInventory(24),
                 [ItemInventoryType.Etc] = new ItemInventory(24),
                 [ItemInventoryType.Cash] = new ItemInventory(24)
             };

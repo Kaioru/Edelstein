@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Core.Extensions;
 using Edelstein.Database;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Login.Types;
@@ -191,7 +192,21 @@ namespace Edelstein.Service.Login.Services
                             store.SaveChanges();
                         }
 
-                        p.Encode<byte>(0); // TODO: characters
+                        var characters = store
+                            .Query<Character>()
+                            .Where(c => c.AccountDataID == data.ID)
+                            .ToList();
+
+                        p.Encode<byte>((byte) characters.Count);
+                        characters.ForEach(c =>
+                        {
+                            c.EncodeStats(p);
+                            c.EncodeLook(p);
+
+                            p.Encode<bool>(false);
+                            p.Encode<bool>(false);
+                        });
+
                         p.Encode<bool>(
                             !string.IsNullOrEmpty(Account.SecondPassword)
                         ); // bLoginOpt TODO: proper bLoginOpt stuff
