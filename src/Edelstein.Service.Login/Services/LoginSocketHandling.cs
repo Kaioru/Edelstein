@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
@@ -26,7 +27,9 @@ namespace Edelstein.Service.Login.Services
                 using (var p = new Packet(SendPacketOperations.CheckPasswordResult))
                 using (var store = Service.DocumentStore.OpenSession())
                 {
-                    var account = store.Query<Account>().FirstOrDefault(a => a.Username == username);
+                    var account = store
+                        .Query<Account>()
+                        .FirstOrDefault(a => a.Username == username);
                     var result = LoginResultCode.Success;
 
                     if (account == null) result = LoginResultCode.NotRegistered;
@@ -134,6 +137,78 @@ namespace Edelstein.Service.Login.Services
             {
                 p.Encode<int>(Account.LatestConnectedWorld);
                 await SendPacket(p);
+            }
+        }
+
+        private async Task OnSelectWorld(IPacket packet)
+        {
+            packet.Decode<byte>();
+
+            var worldID = packet.Decode<byte>();
+            var channelID = packet.Decode<byte>();
+
+            try
+            {
+                using (var p = new Packet(SendPacketOperations.SelectWorldResult))
+                using (var store = Service.DocumentStore.OpenSession())
+                {
+                    var service = Service.Peers
+                        .OfType<GameServiceInfo>()
+                        .FirstOrDefault(g => g.ID == channelID &&
+                                             g.WorldID == worldID);
+                    var result = LoginResultCode.Success;
+
+                    if (service == null) result = LoginResultCode.NotConnectableWorld;
+
+                    p.Encode<byte>((byte) result);
+
+                    if (result == LoginResultCode.Success)
+                    {
+                        var data = store
+                            .Query<AccountData>()
+                            .Where(d => d.AccountID == Account.ID)
+                            .FirstOrDefault(d => d.WorldID == worldID);
+
+                        if (data == null)
+                        {
+                            data = new AccountData
+                            {
+                                AccountID = Account.ID,
+                                WorldID = worldID,
+                                SlotCount = 3
+                            };
+
+                            store.Store(data);
+                            store.SaveChanges();
+                        }
+
+                        AccountData = data;
+
+                        if (Account.LatestConnectedWorld != worldID)
+                        {
+                            Account.LatestConnectedWorld = worldID;
+                            store.Update(Account);
+                            store.SaveChanges();
+                        }
+
+                        p.Encode<byte>(0); // TODO: characters
+                        p.Encode<bool>(
+                            !string.IsNullOrEmpty(Account.SecondPassword)
+                        ); // bLoginOpt TODO: proper bLoginOpt stuff
+                        p.Encode<int>(data.SlotCount); // nSlotCount
+                        p.Encode<int>(0); // nBuyCharCount
+                    }
+
+                    await SendPacket(p);
+                }
+            }
+            catch
+            {
+                using (var p = new Packet(SendPacketOperations.SelectWorldResult))
+                {
+                    p.Encode<byte>((byte) LoginResultCode.Unknown);
+                    await SendPacket(p);
+                }
             }
         }
 

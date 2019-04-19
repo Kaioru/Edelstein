@@ -37,6 +37,7 @@ namespace Edelstein.Service.Login.Services
             return operation switch {
                 RecvPacketOperations.CheckPassword => OnCheckPassword(packet),
                 RecvPacketOperations.WorldInfoRequest => OnWorldInfoRequest(packet),
+                RecvPacketOperations.SelectWorld => OnSelectWorld(packet),
                 RecvPacketOperations.CheckUserLimit => OnCheckUserLimit(packet),
                 RecvPacketOperations.SetGender => OnSetGender(packet),
                 RecvPacketOperations.CheckPinCode => OnCheckPinCode(packet),
