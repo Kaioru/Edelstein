@@ -9,4 +9,10 @@
         <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="BCrypt.Net" Version="0.1.0" />
+      <PackageReference Include="LibLog" Version="5.0.6" />
+      <PackageReference Include="morelinq" Version="3.1.1" />
+    </ItemGroup>
+
 </Project>

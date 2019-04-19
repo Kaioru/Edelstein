@@ -1,18 +1,25 @@
 using System;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
-using Edelstein.Core.Distributed;
+using Edelstein.Core;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Database;
-using Edelstein.Network;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Login.Logging;
+using Foundatio.Caching;
 
 namespace Edelstein.Service.Login.Sockets
 {
-    public class LoginSocket : AbstractMigrateableSocket<LoginServiceInfo>
+    public partial class LoginSocket : AbstractMigrateableSocket<LoginServiceInfo>
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         public WvsLogin WvsLogin { get; }
+
+        public Account Account { get; set; }
+        public AccountData AccountData { get; set; }
+        public Character Character { get; set; }
 
         public LoginSocket(
             IChannel channel,
@@ -26,17 +33,31 @@ namespace Edelstein.Service.Login.Sockets
 
         public override Task OnPacket(IPacket packet)
         {
-            throw new NotImplementedException();
+            var operation = (RecvPacketOperations) packet.Decode<short>();
+            return operation switch {
+                RecvPacketOperations.CheckPassword => OnCheckPassword(packet),
+                RecvPacketOperations.WorldInfoRequest => OnWorldInfoRequest(packet),
+                RecvPacketOperations.SetGender => OnSetGender(packet),
+                RecvPacketOperations.CheckPinCode => OnCheckPinCode(packet),
+                RecvPacketOperations.WorldRequest => OnWorldInfoRequest(packet),
+                _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
+                };
         }
 
         public override Task OnException(Exception exception)
         {
-            throw new NotImplementedException();
+            Logger.Error(exception, "Socket caught exception");
+            return Task.CompletedTask;
         }
 
-        public override Task OnDisconnect()
+        public override async Task OnDisconnect()
         {
-            throw new NotImplementedException();
+            if (Account == null) return;
+            var state = (await WvsLogin.AccountStateCache.GetAsync<MigrationState>(Account.ID.ToString())).Value;
+            if (state != MigrationState.Migrating)
+            {
+                await WvsLogin.AccountStateCache.RemoveAsync(Account.ID.ToString());
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DotNetty.Buffers;
 
 namespace Edelstein.Network.Packets
@@ -21,7 +22,7 @@ namespace Edelstein.Network.Packets
             : this(Unpooled.Buffer(initialCapacity))
         {
         }
-        
+
         public IPacket Encode<T>(T value)
         {
             var type = typeof(T);
@@ -46,6 +47,11 @@ namespace Edelstein.Network.Packets
             if (PacketMethods.DecodeMethods.ContainsKey(type))
                 return (T) PacketMethods.DecodeMethods[type](_buffer);
             throw new NotSupportedException();
+        }
+
+        public IEnumerable<byte> DecodeFixedLength(int length)
+        {
+            return _buffer.ReadBytes(length).Array;
         }
 
         public void Dispose() => _buffer.DiscardReadBytes();

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Edelstein.Network.Packets
 {
@@ -10,5 +11,6 @@ namespace Edelstein.Network.Packets
         IPacket Encode<T>(T value);
         IPacket EncodeFixedString(string value, int length);
         T Decode<T>();
+        IEnumerable<byte> DecodeFixedLength(int length);
     }
 }
