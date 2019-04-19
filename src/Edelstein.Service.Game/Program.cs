@@ -1,14 +1,15 @@
+﻿using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
 using Edelstein.Core.Distributed.Peers.Info;
-using Edelstein.Service.Login.Services;
+using Edelstein.Service.Game.Services;
 
-namespace Edelstein.Service.Login
+namespace Edelstein.Service.Game
 {
     internal static class Program
     {
         private static Task Main(string[] args)
             => new Startup()
-                .Start<LoginService, LoginServiceInfo>(args);
+                .Start<GameService, GameServiceInfo>(args);
     }
 }

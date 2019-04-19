@@ -1,23 +1,21 @@
 using DotNetty.Transport.Channels;
-using Edelstein.Core.Distributed;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Network;
-using Edelstein.Service.Login.Sockets;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Marten;
 using Microsoft.Extensions.Options;
 
-namespace Edelstein.Service.Login
+namespace Edelstein.Service.Login.Services
 {
-    public class WvsLogin : AbstractMigrateableService<LoginServiceInfo>
+    public class LoginService : AbstractMigrateableService<LoginServiceInfo>
     {
         public IDocumentStore DocumentStore { get; }
         public ILockProvider LockProvider { get; }
 
-        public WvsLogin(
+        public LoginService(
             IOptions<LoginServiceInfo> info,
             ICacheClient cacheClient,
             IMessageBusFactory messageBusFactory,

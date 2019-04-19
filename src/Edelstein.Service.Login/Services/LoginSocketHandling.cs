@@ -10,7 +10,7 @@ using Edelstein.Network.Packets;
 using Edelstein.Service.Login.Types;
 using MoreLinq.Extensions;
 
-namespace Edelstein.Service.Login.Sockets
+namespace Edelstein.Service.Login.Services
 {
     public partial class LoginSocket
     {
@@ -21,10 +21,10 @@ namespace Edelstein.Service.Login.Sockets
 
             try
             {
-                await WvsLogin.LockProvider.AcquireAsync("loginLock");
+                await Service.LockProvider.AcquireAsync("loginLock");
 
                 using (var p = new Packet(SendPacketOperations.CheckPasswordResult))
-                using (var store = WvsLogin.DocumentStore.OpenSession())
+                using (var store = Service.DocumentStore.OpenSession())
                 {
                     var account = store.Query<Account>().FirstOrDefault(a => a.Username == username);
                     var result = LoginResultCode.Success;
@@ -32,7 +32,7 @@ namespace Edelstein.Service.Login.Sockets
                     if (account == null) result = LoginResultCode.NotRegistered;
                     else
                     {
-                        if (await WvsLogin.AccountStateCache.ExistsAsync(account.ID.ToString()))
+                        if (await Service.AccountStateCache.ExistsAsync(account.ID.ToString()))
                             result = LoginResultCode.AlreadyConnected;
                         if (!BCrypt.Net.BCrypt.Verify(password, account.Password))
                             result = LoginResultCode.IncorrectPassword;
@@ -45,7 +45,7 @@ namespace Edelstein.Service.Login.Sockets
                     if (result == LoginResultCode.Success)
                     {
                         Account = account;
-                        await WvsLogin.AccountStateCache.SetAsync(
+                        await Service.AccountStateCache.SetAsync(
                             account.ID.ToString(),
                             MigrationState.LoggedIn
                         );
@@ -83,13 +83,13 @@ namespace Edelstein.Service.Login.Sockets
             }
             finally
             {
-                await WvsLogin.LockProvider.ReleaseAsync("loginLock");
+                await Service.LockProvider.ReleaseAsync("loginLock");
             }
         }
 
         private async Task OnWorldInfoRequest(IPacket packet)
         {
-            await Task.WhenAll(WvsLogin.Info.Worlds.Select(w =>
+            await Task.WhenAll(Service.Info.Worlds.Select(w =>
             {
                 using (var p = new Packet(SendPacketOperations.WorldInformation))
                 {
@@ -101,7 +101,7 @@ namespace Edelstein.Service.Login.Sockets
                     p.Encode<short>(w.EventDrop);
                     p.Encode<bool>(w.BlockCharCreation);
 
-                    var services = WvsLogin.Peers
+                    var services = Service.Peers
                         .OfType<GameServiceInfo>()
                         .Where(g => g.WorldID == w.ID)
                         .OrderBy(g => g.ID)
@@ -117,8 +117,8 @@ namespace Edelstein.Service.Login.Sockets
                         p.Encode<bool>(g.AdultChannel);
                     });
 
-                    p.Encode<short>((short) WvsLogin.Info.Balloons.Count);
-                    WvsLogin.Info.Balloons.ForEach(b =>
+                    p.Encode<short>((short) Service.Info.Balloons.Count);
+                    Service.Info.Balloons.ForEach(b =>
                     {
                         p.Encode<Point>(b.Position);
                         p.Encode<string>(b.Message);
@@ -139,6 +139,17 @@ namespace Edelstein.Service.Login.Sockets
                 await SendPacket(p);
             }
         }
+        
+        private async Task OnCheckUserLimit(IPacket packet)
+        {
+            using (var p = new Packet(SendPacketOperations.CheckUserLimitResult))
+            {
+                p.Encode<byte>(0); // bOverUserLimit
+                p.Encode<byte>(0); // bPopulateLevel
+
+                await SendPacket(p);
+            }
+        }
 
         private async Task OnSetGender(IPacket packet)
         {
@@ -147,7 +158,7 @@ namespace Edelstein.Service.Login.Sockets
             try
             {
                 using (var p = new Packet(SendPacketOperations.SetAccountResult))
-                using (var store = WvsLogin.DocumentStore.OpenSession())
+                using (var store = Service.DocumentStore.OpenSession())
                 {
                     Account.Gender = (byte) (gender ? 1 : 0);
                     store.Update(Account);
