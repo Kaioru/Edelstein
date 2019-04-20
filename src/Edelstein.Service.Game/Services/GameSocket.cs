@@ -1,10 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
+using Edelstein.Core;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Database;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Logging;
+using Foundatio.Caching;
 
 namespace Edelstein.Service.Game.Services
 {
@@ -13,6 +16,10 @@ namespace Edelstein.Service.Game.Services
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
         public GameService Service { get; }
+
+        public Account Account { get; set; }
+        public AccountData AccountData { get; set; }
+        public Character Character { get; set; }
 
         public GameSocket(
             IChannel channel,
@@ -26,17 +33,40 @@ namespace Edelstein.Service.Game.Services
 
         public override Task OnPacket(IPacket packet)
         {
-            throw new NotImplementedException();
+            var operation = (RecvPacketOperations) packet.Decode<short>();
+            return operation switch {
+                _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
+                };
         }
 
         public override Task OnException(Exception exception)
         {
-            throw new NotImplementedException();
+            Logger.Error(exception, "Socket caught exception");
+            return Task.CompletedTask;
         }
 
-        public override Task OnDisconnect()
+        public override Task OnUpdate()
         {
-            throw new NotImplementedException();
+            using (var store = Service.DocumentStore.OpenSession())
+            {
+                store.Update(Account);
+                store.Update(AccountData);
+                store.Update(Character);
+                store.SaveChanges();
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public override async Task OnDisconnect()
+        {
+            if (Account == null) return;
+            var state = (await Service.AccountStateCache.GetAsync<MigrationState>(Account.ID.ToString())).Value;
+            if (state != MigrationState.Migrating)
+            {
+                await OnUpdate();
+                await Service.AccountStateCache.RemoveAsync(Account.ID.ToString());
+            }
         }
     }
 }

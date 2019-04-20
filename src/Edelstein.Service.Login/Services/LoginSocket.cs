@@ -63,6 +63,11 @@ namespace Edelstein.Service.Login.Services
             return Task.CompletedTask;
         }
 
+        public override Task OnUpdate()
+        {
+            return Task.CompletedTask;
+        }
+
         public override async Task OnDisconnect()
         {
             if (Account == null) return;
