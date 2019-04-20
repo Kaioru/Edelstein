@@ -4,6 +4,7 @@ using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
+using Edelstein.Service.Game.Fields;
 using Foundatio.Caching;
 using Marten;
 using Microsoft.Extensions.Options;
@@ -14,6 +15,8 @@ namespace Edelstein.Service.Game.Services
     {
         public IDocumentStore DocumentStore { get; }
         public ITemplateManager TemplateManager { get; }
+        
+        public FieldManager FieldManager { get; }
 
         public GameService(
             IOptions<GameServiceInfo> info,
@@ -25,6 +28,7 @@ namespace Edelstein.Service.Game.Services
         {
             DocumentStore = documentStore;
             TemplateManager = templateManager;
+            FieldManager = new FieldManager(templateManager);
         }
 
         public override ISocket Build(IChannel channel, uint seqSend, uint seqRecv)
