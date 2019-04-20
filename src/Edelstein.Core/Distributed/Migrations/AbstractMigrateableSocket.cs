@@ -14,7 +14,8 @@ namespace Edelstein.Core.Distributed.Migrations
         where TInfo : ServerServiceInfo
     {
         private readonly AbstractMigrateableService<TInfo> _service;
-        private DateTime LastHeartbeatDate { get; set; }
+        private DateTime LastSentHeartbeatDate { get; set; }
+        private DateTime LastRecvHeartbeatDate { get; set; }
 
         public AbstractMigrateableSocket(
             IChannel channel,
@@ -24,7 +25,8 @@ namespace Edelstein.Core.Distributed.Migrations
         ) : base(channel, seqSend, seqRecv)
         {
             _service = service;
-            LastHeartbeatDate = DateTime.Now;
+            LastSentHeartbeatDate = DateTime.Now;
+            LastRecvHeartbeatDate = DateTime.Now;
         }
 
         public async Task TryMigrateTo(Account account, Character character, ServerServiceInfo to)
@@ -65,10 +67,16 @@ namespace Edelstein.Core.Distributed.Migrations
 
         public async Task TrySendHeartbeat()
         {
-            if ((DateTime.Now - LastHeartbeatDate).Seconds >= 30)
+            if ((DateTime.Now - LastRecvHeartbeatDate).Seconds >= 60)
+            {
+                await Close();
+                return;
+            }
+
+            if ((DateTime.Now - LastSentHeartbeatDate).Seconds >= 30)
             {
                 using var p = new Packet(SendPacketOperations.AliveReq);
-                LastHeartbeatDate = DateTime.Now;
+                LastSentHeartbeatDate = DateTime.Now;
                 await SendPacket(p);
             }
         }
@@ -76,12 +84,13 @@ namespace Edelstein.Core.Distributed.Migrations
         public async Task TryProcessHeartbeat(Account account, Character character, bool initial = false)
         {
             if (account == null) return;
-
             if (!await _service.AccountStateCache.ExistsAsync(account.ID.ToString()) && !initial)
             {
                 await Close();
                 return;
             }
+
+            LastRecvHeartbeatDate = DateTime.Now;
 
             await _service.AccountStateCache.SetAsync(
                 account.ID.ToString(),
