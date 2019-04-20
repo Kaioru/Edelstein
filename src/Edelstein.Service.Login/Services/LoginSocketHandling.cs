@@ -395,7 +395,7 @@ namespace Edelstein.Service.Login.Services
                         store.Store(character);
                         store.SaveChanges();
 
-                        Logger.Debug($"Created new {race} character with sub job of {subJob}, {name}");
+                        Logger.Debug($"Created new {race} character, {name}");
 
                         character.EncodeStats(p);
                         character.EncodeLook(p);
