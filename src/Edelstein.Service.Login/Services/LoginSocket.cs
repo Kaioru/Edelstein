@@ -47,6 +47,7 @@ namespace Edelstein.Service.Login.Services
                 RecvPacketOperations.WorldRequest => OnWorldInfoRequest(packet),
                 RecvPacketOperations.CheckDuplicatedID => OnCheckDuplicatedID(packet),
                 RecvPacketOperations.CreateNewCharacter => OnCreateNewCharacter(packet),
+                RecvPacketOperations.DeleteCharacter => OnDeleteCharacter(packet),
                 RecvPacketOperations.AliveAck => TryProcessHeartbeat(Account, Character),
                 RecvPacketOperations.EnableSPWRequest => OnEnableSPWRequest(packet, false),
                 RecvPacketOperations.CheckSPWRequest => OnCheckSPWRequest(packet, false),

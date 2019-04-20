@@ -359,7 +359,7 @@ namespace Edelstein.Service.Login.Services
                     var templates = Service.TemplateManager;
                     var makeCharInfo = templates
                         .GetAll<MakeCharInfoTemplate>()
-                        .FirstOrDefault(
+                        .First(
                             i => i.Type == (race switch {
                                      Race.Normal => MakeCharInfoType.Normal,
                                      Race.Cygnus => MakeCharInfoType.Premium,
@@ -370,15 +370,14 @@ namespace Edelstein.Service.Login.Services
                                  ) &&
                                  i.Gender == gender);
 
-                    if (makeCharInfo == null) result = LoginResultCode.Unknown;
-                    else if (makeCharInfo.Face.All(i => i != face) ||
-                             makeCharInfo.Hair.All(i => i != hair) ||
-                             makeCharInfo.HairColor.All(i => i != hairColor) ||
-                             makeCharInfo.Skin.All(i => i != skin) ||
-                             makeCharInfo.Coat.All(i => i != coat) ||
-                             makeCharInfo.Pants.All(i => i != pants) ||
-                             makeCharInfo.Shoes.All(i => i != shoes) ||
-                             makeCharInfo.Weapon.All(i => i != weapon)
+                    if (makeCharInfo.Face.All(i => i != face) ||
+                        makeCharInfo.Hair.All(i => i != hair) ||
+                        makeCharInfo.HairColor.All(i => i != hairColor) ||
+                        makeCharInfo.Skin.All(i => i != skin) ||
+                        makeCharInfo.Coat.All(i => i != coat) ||
+                        makeCharInfo.Pants.All(i => i != pants) ||
+                        makeCharInfo.Shoes.All(i => i != shoes) ||
+                        makeCharInfo.Weapon.All(i => i != weapon)
                     ) result = LoginResultCode.Unknown;
 
                     p.Encode<byte>((byte) result);
@@ -426,6 +425,47 @@ namespace Edelstein.Service.Login.Services
             }
         }
 
+        private async Task OnDeleteCharacter(IPacket packet)
+        {
+            var spw = packet.Decode<string>();
+            var characterID = packet.Decode<int>();
+
+            try
+            {
+                using (var p = new Packet(SendPacketOperations.DeleteCharacterResult))
+                using (var store = Service.DocumentStore.OpenSession())
+                {
+                    var character = store.Query<Character>()
+                        .Where(c => c.AccountDataID == AccountData.ID)
+                        .First(c => c.ID == characterID);
+                    var result = LoginResultCode.Success;
+
+                    if (!BCrypt.Net.BCrypt.Verify(spw, Account.SecondPassword))
+                        result = LoginResultCode.IncorrectSPW;
+
+                    p.Encode<int>(characterID);
+                    p.Encode<byte>((byte) result);
+
+                    if (result == LoginResultCode.Success)
+                    {
+                        store.Delete(character);
+                        store.SaveChanges();
+                    }
+
+                    await SendPacket(p);
+                }
+            }
+            catch
+            {
+                using (var p = new Packet(SendPacketOperations.DeleteCharacterResult))
+                {
+                    p.Encode<int>(characterID);
+                    p.Encode<byte>((byte) LoginResultCode.Unknown);
+                    await SendPacket(p);
+                }
+            }
+        }
+
         private async Task OnEnableSPWRequest(IPacket packet, bool vac)
         {
             packet.Decode<bool>(); // ?
@@ -442,7 +482,7 @@ namespace Edelstein.Service.Login.Services
                 using (var store = Service.DocumentStore.OpenSession())
                 {
                     var character = store.Query<Character>()
-                        .FirstOrDefault(c => c.ID == characterID);
+                        .First(c => c.ID == characterID);
                     var result = LoginResultCode.Success;
 
                     if (vac)
@@ -506,7 +546,7 @@ namespace Edelstein.Service.Login.Services
                 using (var store = Service.DocumentStore.OpenSession())
                 {
                     var character = store.Query<Character>()
-                        .FirstOrDefault(c => c.ID == characterID);
+                        .First(c => c.ID == characterID);
                     var result = LoginResultCode.Success;
 
                     if (vac)
