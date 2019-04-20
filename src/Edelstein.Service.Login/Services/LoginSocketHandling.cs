@@ -183,7 +183,7 @@ namespace Edelstein.Service.Login.Services
                             };
 
                             store.Store(data);
-                            store.SaveChanges();
+                            await store.SaveChangesAsync();
                         }
 
                         AccountData = data;
@@ -193,7 +193,7 @@ namespace Edelstein.Service.Login.Services
                         {
                             Account.LatestConnectedWorld = worldID;
                             store.Update(Account);
-                            store.SaveChanges();
+                            await store.SaveChangesAsync();
                         }
 
                         var characters = store
@@ -253,7 +253,7 @@ namespace Edelstein.Service.Login.Services
                 {
                     Account.Gender = (byte) (gender ? 1 : 0);
                     store.Update(Account);
-                    store.SaveChanges();
+                    await store.SaveChangesAsync();
 
                     p.Encode<bool>(gender);
                     p.Encode<bool>(true);
@@ -393,7 +393,7 @@ namespace Edelstein.Service.Login.Services
                             context.Set(-6, templates.Get<ItemTemplate>(pants));
 
                         store.Store(character);
-                        store.SaveChanges();
+                        await store.SaveChangesAsync();
 
                         Logger.Debug($"Created new {race} character, {name}");
 
@@ -449,7 +449,7 @@ namespace Edelstein.Service.Login.Services
                     if (result == LoginResultCode.Success)
                     {
                         store.Delete(character);
-                        store.SaveChanges();
+                        await store.SaveChangesAsync();
                     }
 
                     await SendPacket(p);
@@ -518,7 +518,7 @@ namespace Edelstein.Service.Login.Services
 
                     Account.SecondPassword = BCrypt.Net.BCrypt.HashPassword(spw);
                     store.Update(Account);
-                    store.SaveChanges();
+                    await store.SaveChangesAsync();
 
                     await TryMigrateTo(Account, Character, SelectedService);
                 }

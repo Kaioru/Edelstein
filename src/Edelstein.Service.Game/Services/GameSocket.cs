@@ -49,17 +49,15 @@ namespace Edelstein.Service.Game.Services
             return Task.CompletedTask;
         }
 
-        public override Task OnUpdate()
+        public override async Task OnUpdate()
         {
             using (var store = Service.DocumentStore.OpenSession())
             {
                 store.Update(Account);
                 store.Update(AccountData);
                 store.Update(Character);
-                store.SaveChanges();
+                await store.SaveChangesAsync();
             }
-
-            return Task.CompletedTask;
         }
 
         public override async Task OnDisconnect()
