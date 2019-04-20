@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Types;
 using Edelstein.Database;
 using Edelstein.Database.Inventories;
+using Edelstein.Database.Inventories.Items;
 using Edelstein.Network.Packets;
+using MoreLinq;
 
 namespace Edelstein.Core.Extensions
 {
@@ -166,8 +171,9 @@ namespace Edelstein.Core.Extensions
 
             p.Encode<short>(c.AP);
             if (SkillConstants.IsExtendSPJob(c.Job))
+                p.Encode<byte>(0); // TODO: extendedSP
+            else
                 p.Encode<short>(c.SP);
-            else p.Encode<byte>(0); // TODO: extendedSP
 
             p.Encode<int>(c.EXP);
             p.Encode<short>(c.POP);
@@ -188,10 +194,39 @@ namespace Edelstein.Core.Extensions
             p.Encode<bool>(false);
             p.Encode<int>(c.Hair);
 
-            p.Encode<byte>(0xFF);
+            var inventory = c.Inventories[ItemInventoryType.Equip];
+            var equipped = inventory.Items
+                .Where(kv => kv.Key < 0)
+                .ToDictionary();
+            var stickers = equipped
+                .Select(kv => equipped.ContainsKey((short) (kv.Key - 100))
+                    ? new KeyValuePair<short, ItemSlot>(kv.Key, equipped[(short) (kv.Key - 100)])
+                    : kv)
+                .ToDictionary();
+            var unseen = equipped
+                .Except(stickers)
+                .ToDictionary(
+                    kv => kv.Key <= -100 ? kv.Key - 100 : kv.Key,
+                    kv => kv.Value
+                );
+
+            stickers.ForEach(kv =>
+            {
+                p.Encode<byte>((byte) Math.Abs(kv.Key));
+                p.Encode<int>(kv.Value.TemplateID);
+            });
             p.Encode<byte>(0xFF);
 
-            p.Encode<int>(0);
+            unseen.ForEach(kv =>
+            {
+                p.Encode<byte>((byte) Math.Abs(kv.Key));
+                p.Encode<int>(kv.Value.TemplateID);
+            });
+            p.Encode<byte>(0xFF);
+
+            p.Encode<int>(inventory.Items.ContainsKey(-111)
+                ? inventory.Items[-111].TemplateID
+                : 0);
 
             for (var i = 0; i < 3; i++)
                 p.Encode<int>(0);

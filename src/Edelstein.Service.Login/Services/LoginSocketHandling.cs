@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Drawing;
 using System.IO;
@@ -7,10 +8,15 @@ using Edelstein.Core;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Extensions;
+using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Database;
+using Edelstein.Database.Inventories;
+using Edelstein.Database.Inventories.Items;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Login.Logging;
 using Edelstein.Service.Login.Types;
 using MoreLinq.Extensions;
+using Serilog;
 
 namespace Edelstein.Service.Login.Services
 {
@@ -273,6 +279,119 @@ namespace Edelstein.Service.Login.Services
             {
                 p.Encode<byte>(0);
                 await SendPacket(p);
+            }
+        }
+
+        private async Task OnCheckDuplicatedID(IPacket packet)
+        {
+            var name = packet.Decode<string>();
+
+            try
+            {
+                await Service.LockProvider.AcquireAsync("creationLock");
+
+                using (var p = new Packet(SendPacketOperations.CheckDuplicatedIDResult))
+                using (var store = Service.DocumentStore.OpenSession())
+                {
+                    var duplicatedID = store
+                        .Query<Character>()
+                        .Any(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+
+                    p.Encode<string>(name);
+                    p.Encode<bool>(duplicatedID);
+                    await SendPacket(p);
+                }
+            }
+            catch
+            {
+                using (var p = new Packet(SendPacketOperations.CheckDuplicatedIDResult))
+                {
+                    p.Encode<string>(name);
+                    p.Encode<byte>(0x2);
+                    await SendPacket(p);
+                }
+            }
+            finally
+            {
+                await Service.LockProvider.ReleaseAsync("creationLock");
+            }
+        }
+
+        private async Task OnCreateNewCharacter(IPacket packet)
+        {
+            var name = packet.Decode<string>();
+            var race = (Race) packet.Decode<int>();
+            var subJob = packet.Decode<short>();
+            var face = packet.Decode<int>();
+            var hair = packet.Decode<int>() + packet.Decode<int>();
+            var skin = packet.Decode<int>();
+            var top = packet.Decode<int>();
+            var bottom = packet.Decode<int>();
+            var shoes = packet.Decode<int>();
+            var weapon = packet.Decode<int>();
+            var gender = packet.Decode<byte>();
+
+            try
+            {
+                await Service.LockProvider.AcquireAsync("creationLock");
+
+                using (var p = new Packet(SendPacketOperations.CreateNewCharacterResult))
+                using (var store = Service.DocumentStore.OpenSession())
+                {
+                    var character = new Character
+                    {
+                        AccountDataID = AccountData.ID,
+                        Name = name,
+                        Job = 0,
+                        Face = face,
+                        Hair = hair,
+                        Skin = (byte) skin,
+                        Gender = gender,
+                        FieldID = 310000000,
+                        FieldPortal = 0,
+                        Level = 1,
+                        HP = 50,
+                        MaxHP = 50,
+                        MP = 50,
+                        MaxMP = 50,
+                        SubJob = subJob
+                    };
+                    var result = LoginResultCode.Success;
+
+                    p.Encode<byte>((byte) result);
+
+                    if (result == LoginResultCode.Success)
+                    {
+                        store.Store(character);
+                        store.SaveChanges();
+
+                        Logger.Debug($"Created new {race} character, {name}");
+
+                        character.EncodeStats(p);
+                        character.EncodeLook(p);
+                        p.Encode<bool>(false);
+                        p.Encode<bool>(false);
+                    }
+                    else
+                    {
+                        p.Encode<int>(0);
+                    }
+
+                    await SendPacket(p);
+                }
+            }
+            catch
+            {
+                using (var p = new Packet(SendPacketOperations.CreateNewCharacterResult))
+                {
+                    p.Encode<byte>((byte) LoginResultCode.DBFail);
+                    p.Encode<int>(0);
+                    await SendPacket(p);
+                }
+            }
+            finally
+            {
+                await Service.LockProvider.ReleaseAsync("creationLock");
             }
         }
     }
