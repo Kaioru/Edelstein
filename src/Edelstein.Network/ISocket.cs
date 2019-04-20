@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Edelstein.Network.Packet;
+using Edelstein.Network.Packets;
 
 namespace Edelstein.Network
 {
@@ -9,18 +9,13 @@ namespace Edelstein.Network
         uint SeqSend { get; set; }
         uint SeqRecv { get; set; }
         bool EncryptData { get; }
-        
-        bool ReadOnlyMode { get; set; }
-
-        object LockSend { get; }
-        object LockRecv { get; }
 
         Task OnPacket(IPacket packet);
-        Task OnDisconnect();
-        Task OnUpdate();
         Task OnException(Exception exception);
+        Task OnUpdate();
+        Task OnDisconnect();
 
-        Task Disconnect();
         Task SendPacket(IPacket packet);
+        Task Close();
     }
 }

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Fields
 {
@@ -13,12 +12,12 @@ namespace Edelstein.Service.Game.Fields
 
         public FieldObjPool()
             => _objects = new List<IFieldObj>();
-
+        
         public Task Enter(IFieldObj obj)
         {
             lock (this)
             {
-                if (obj is FieldUser user) obj.ID = user.Character.ID;
+                if (obj is IFieldUser user) obj.ID = user.Character.ID;
                 else obj.ID = _runningObjectID++;
 
                 _objects.Add(obj);
@@ -46,5 +45,6 @@ namespace Edelstein.Service.Game.Fields
 
         public IEnumerable<T> GetObjects<T>() where T : IFieldObj
             => _objects.OfType<T>().ToImmutableList();
+
     }
 }

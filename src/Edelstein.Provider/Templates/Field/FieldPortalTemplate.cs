@@ -1,15 +1,14 @@
 using System;
 using System.Drawing;
-using Edelstein.Provider.Parser;
 
 namespace Edelstein.Provider.Templates.Field
 {
     public class FieldPortalTemplate : ITemplate
     {
         public int ID { get; set; }
-        public string Name { get; set; }
         public FieldPortalType Type { get; set; }
 
+        public string Name { get; set; }
         public string Script { get; set; }
 
         public int ToMap { get; set; }
@@ -17,24 +16,18 @@ namespace Edelstein.Provider.Templates.Field
 
         public Point Position { get; set; }
 
-        public static FieldPortalTemplate Parse(IDataProperty property)
+        public FieldPortalTemplate(IDataProperty property)
         {
-            var t = new FieldPortalTemplate();
-
-            property.Resolve(p =>
-            {
-                t.ID = Convert.ToInt32(p.Name);
-                t.Name = p.ResolveOrDefault<string>("pn");
-                t.Type = (FieldPortalType) (p.Resolve<int>("pt") ?? 0);
-                t.Script = p.ResolveOrDefault<string>("script");
-                t.ToMap = p.Resolve<int>("tm") ?? int.MinValue;
-                t.ToName = p.ResolveOrDefault<string>("tn");
-                t.Position = new Point(
-                    p.Resolve<int>("x") ?? int.MinValue,
-                    p.Resolve<int>("y") ?? int.MinValue
-                );
-            });
-            return t;
+            ID = Convert.ToInt32(property.Name);
+            Name = property.ResolveOrDefault<string>("pn");
+            Type = (FieldPortalType) (property.Resolve<int>("pt") ?? 0);
+            Script = property.ResolveOrDefault<string>("script");
+            ToMap = property.Resolve<int>("tm") ?? int.MinValue;
+            ToName = property.ResolveOrDefault<string>("tn");
+            Position = new Point(
+                property.Resolve<int>("x") ?? int.MinValue,
+                property.Resolve<int>("y") ?? int.MinValue
+            );
         }
     }
 }

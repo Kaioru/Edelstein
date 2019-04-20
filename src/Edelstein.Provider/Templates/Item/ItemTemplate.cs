@@ -1,5 +1,3 @@
-using Edelstein.Provider.Parser;
-
 namespace Edelstein.Provider.Templates.Item
 {
     public class ItemTemplate : ITemplate
@@ -24,7 +22,7 @@ namespace Edelstein.Provider.Templates.Item
 
         public bool Cash { get; set; }
 
-        public virtual void Parse(int id, IDataProperty info)
+        public ItemTemplate(int id, IDataProperty info)
         {
             ID = id;
 

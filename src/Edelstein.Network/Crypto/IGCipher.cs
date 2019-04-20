@@ -2,7 +2,7 @@ namespace Edelstein.Network.Crypto
 {
     public class IGCipher
     {
-        private static readonly byte[] bShuffle =
+        private static readonly byte[] Shuffle =
         {
             0xEC, 0x3F, 0x77, 0xA4, 0x45, 0xD0, 0x71, 0xBF, 0xB7, 0x98, 0x20, 0xFC, 0x4B, 0xE9, 0xB3, 0xE1,
             0x5C, 0x22, 0xF7, 0x0C, 0x44, 0x1B, 0x81, 0xBD, 0x63, 0x8D, 0xD4, 0xC3, 0xF2, 0x10, 0x19, 0xE0,
@@ -35,7 +35,7 @@ namespace Edelstein.Network.Crypto
             {
                 var ptrPSrc = &pSrc;
 
-                fixed (byte* pShuffle = bShuffle)
+                fixed (byte* pShuffle = Shuffle)
                 {
                     *((byte*) ptrDwKey + 0) +=
                         (byte) (*(pShuffle + *((byte*) ptrDwKey + 1)) - *((byte*) ptrPSrc + i));

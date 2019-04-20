@@ -1,25 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Edelstein.Data\Edelstein.Data.csproj" />
-      <ProjectReference Include="..\Edelstein.Network\Edelstein.Network.csproj" />
-      <ProjectReference Include="..\Edelstein.Provider\Edelstein.Provider.csproj" />
+        <ProjectReference Include="..\Edelstein.Database\Edelstein.Database.csproj" />
+        <ProjectReference Include="..\Edelstein.Network\Edelstein.Network.csproj" />
+        <ProjectReference Include="..\Edelstein.Provider\Edelstein.Provider.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CommandLineParser" Version="2.3.0" />
-      <PackageReference Include="Foundatio" Version="7.1.1845" />
-      <PackageReference Include="Foundatio.Redis" Version="7.1.1608" />
-      <PackageReference Include="Humanizer" Version="2.5.16" />
-      <PackageReference Include="LibLog" Version="5.0.3" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
-      <PackageReference Include="morelinq" Version="3.0.0" />
+        <PackageReference Include="Foundatio" Version="7.1.1845" />
+        <PackageReference Include="Foundatio.Redis" Version="7.1.1608" />
+        <PackageReference Include="LibLog" Version="5.0.6" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
+        <PackageReference Include="morelinq" Version="3.1.1" />
+        <PackageReference Include="Serilog" Version="2.8.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     </ItemGroup>
 
 </Project>

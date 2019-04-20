@@ -6,7 +6,6 @@ namespace Edelstein.Network.Crypto
 {
     public class AESCipher
     {
-        public const short Version = 95;
         private static readonly byte[] UserKey = {0x13, 0x08, 0x06, 0xb4, 0x1b, 0x0f, 0x33, 0x52};
 
         private static readonly SymmetricAlgorithm Cipher = new AesManaged
@@ -47,11 +46,9 @@ namespace Edelstein.Network.Crypto
 
                     if (sub % srcExp.Length == 0)
                     {
-                        using (var encryptor = Cipher.CreateEncryptor())
-                        {
-                            var result = encryptor.TransformFinalBlock(srcExp, 0, srcExp.Length);
-                            Array.Copy(result, srcExp, srcExp.Length);
-                        }
+                        using var crypt = Cipher.CreateEncryptor();
+                        var result = crypt.TransformFinalBlock(srcExp, 0, srcExp.Length);
+                        Array.Copy(result, srcExp, srcExp.Length);
                     }
 
                     input[i] ^= srcExp[sub % srcExp.Length];

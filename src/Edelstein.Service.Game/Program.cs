@@ -1,63 +1,16 @@
 ﻿using System.Threading.Tasks;
-using Edelstein.Core.Services;
-using Edelstein.Core.Services.Info;
-using Edelstein.Service.Game.Conversations;
-using Edelstein.Service.Game.Conversations.Fields;
-using Edelstein.Service.Game.Conversations.Quiz;
-using Edelstein.Service.Game.Conversations.Scripts;
-using Edelstein.Service.Game.Conversations.Scripts.Lua;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using MoonSharp.Interpreter;
+using Edelstein.Core.Bootstrap;
+using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Provider.Templates;
+using Edelstein.Service.Game.Services;
 
 namespace Edelstein.Service.Game
 {
-    public static class Program
+    internal static class Program
     {
         private static Task Main(string[] args)
             => new Startup()
-                .WithConfig()
-                .WithLogger()
-                .WithInferredModel()
-                .WithInferredDatabase()
-                .WithInferredProvider()
-                .WithInferredScripting()
-                .WithServiceOption<GameServiceInfo>()
-                .WithService<WvsGame>()
-                .Start();
-
-        public static Startup WithInferredScripting(this Startup startup)
-        {
-            startup.Builder.ConfigureServices((context, services) =>
-            {
-                switch (context.Configuration["scripting"].ToLower())
-                {
-                    case "lua":
-                    default:
-                        WithLuaScripting(context, services);
-                        break;
-                }
-            });
-            return startup;
-        }
-
-        private static void WithLuaScripting(HostBuilderContext context, IServiceCollection services)
-        {
-            UserData.RegisterType<Speaker>();
-            UserData.RegisterType<QuizSpeaker>();
-            UserData.RegisterType<SpeedQuizSpeaker>();
-
-            UserData.RegisterType<FieldSpeaker>();
-            UserData.RegisterType<FieldPortalSpeaker>();
-            UserData.RegisterType<FieldUserSpeaker>();
-            UserData.RegisterType<FieldNPCSpeaker>();
-
-            UserData.RegisterType<FieldUserInventorySpeaker>();
-            UserData.RegisterType<ContinentSpeaker>();
-
-            services.AddSingleton<IScriptConversationManager>(
-                new LuaScriptConversationManager(context.Configuration["scriptPath"])
-            );
-        }
+                .WithTemplates(TemplateCollectionType.Game)
+                .Start<GameService, GameServiceInfo>(args);
     }
 }

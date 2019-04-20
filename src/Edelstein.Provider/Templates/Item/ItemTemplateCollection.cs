@@ -1,59 +1,69 @@
+using System;
 using System.Linq;
-using System.Threading.Tasks;
-using Edelstein.Provider.Parser;
 using Edelstein.Provider.Templates.Item.Cash;
 
 namespace Edelstein.Provider.Templates.Item
 {
     public class ItemTemplateCollection : AbstractLazyTemplateCollection
     {
+        public override TemplateCollectionType Type => TemplateCollectionType.Item;
+
         public ItemTemplateCollection(IDataDirectoryCollection collection) : base(collection)
         {
         }
 
-        public override Task<ITemplate> Load(int id)
+        public override ITemplate Load(int id)
         {
-            IDataProperty prop = null;
-            ItemTemplate item = null;
-            var type = id / 1000000;
+            var type = (ItemTemplateType) (id / 1000000);
             var subType = id % 1000000 / 10000;
             var header = id / 10000;
-    
-            // TODO implement item types
+
             switch (type)
             {
-                case 1:
-                    item = new ItemEquipTemplate();
-                    prop = Collection.Resolve("Character").Children
-                        .SelectMany(c => c.Children)
-                        .FirstOrDefault(c => c.Name == $"{id:D8}.img");
-                    break;
-                case 2:
-                    prop = Collection.Resolve($"Item/Consume/{header:D4}.img/{id:D8}");
-                    break;
-                case 3:
-                    prop = Collection.Resolve($"Item/Install/{header:D4}.img/{id:D8}");
-                    break;
-                case 4:
-                    prop = Collection.Resolve($"Item/Etc/{header:D4}.img/{id:D8}");
-                    break;
-                case 5:
-                    switch (subType)
+                case ItemTemplateType.Equip:
+                    return new ItemEquipTemplate(
+                        id,
+                        Collection.Resolve("Character").Children
+                            .SelectMany(c => c.Children)
+                            .FirstOrDefault(c => c.Name == $"{id:D8}.img")
+                            ?.Resolve("info")
+                            ?.ResolveAll()
+                    );
+                case ItemTemplateType.Consume:
+                {
+                    var property = Collection.Resolve($"Item/Consume/{header:D4}.img/{id:D8}");
+                    return new ItemBundleTemplate(id, property.Resolve("info").ResolveAll());
+                }
+
+                case ItemTemplateType.Install:
+                {
+                    var property = Collection.Resolve($"Item/Install/{header:D4}.img/{id:D8}");
+                    return new ItemBundleTemplate(id, property.Resolve("info").ResolveAll());
+                }
+
+                case ItemTemplateType.Etc:
+                {
+                    var property = Collection.Resolve($"Item/Etc/{header:D4}.img/{id:D8}");
+                    return new ItemBundleTemplate(id, property.Resolve("info").ResolveAll());
+                }
+
+                case ItemTemplateType.Cash:
+                {
+                    if (subType == 0)
                     {
-                        case 0:
-                            item = new ItemPetTemplate();
-                            prop = Collection.Resolve($"Item/Pet/{id:D7}.img");
-                            break;
+                        return new ItemPetTemplate(
+                            id,
+                            Collection.Resolve($"Item/Pet/{id:D7}.img/info").ResolveAll()
+                        );
                     }
 
-                    prop = prop ?? Collection.Resolve($"Item/Cash/{header:D4}.img/{id:D8}");
-                    break;
+                    var property = Collection.Resolve($"Item/Consume/{header:D4}.img/{id:D8}");
+                    return new ItemBundleTemplate(id, property.Resolve("info").ResolveAll());
+                }
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-
-            if (item == null) item = new ItemBundleTemplate();
-
-            item.Parse(id, prop);
-            return Task.FromResult<ITemplate>(item);
         }
     }
 }

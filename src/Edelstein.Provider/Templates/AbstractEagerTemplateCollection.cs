@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Edelstein.Provider.Parser;
+using System.Linq;
+using MoreLinq;
 
 namespace Edelstein.Provider.Templates
 {
     public abstract class AbstractEagerTemplateCollection : ITemplateCollection
     {
-        protected IDataDirectoryCollection Collection { get; }
-        protected IDictionary<int, ITemplate> Templates { get; }
-        public IEnumerable<ITemplate> Cache => Templates.Values;
+        public abstract TemplateCollectionType Type { get; }
+        public IDataDirectoryCollection Collection { get; }
+        public IDictionary<int, ITemplate> Templates { get; }
 
         public AbstractEagerTemplateCollection(IDataDirectoryCollection collection)
         {
@@ -17,14 +17,22 @@ namespace Edelstein.Provider.Templates
         }
 
         public ITemplate Get(int id)
-            => !Templates.ContainsKey(id) ? null : Templates[id];
+        {
+            return Templates[id];
+        }
 
         public IEnumerable<ITemplate> GetAll()
-            => Templates.Values;
+        {
+            return Templates.Values;
+        }
 
-        public Task<ITemplate> GetAsync(int id)
-            => Task.Run(() => Get(id));
+        public void LoadAll()
+        {
+            Load()
+                .Select(v => new KeyValuePair<int, ITemplate>(v.ID, v))
+                .ForEach(kv => Templates.Add(kv));
+        }
 
-        public abstract Task LoadAll();
+        protected abstract IEnumerable<ITemplate> Load();
     }
 }

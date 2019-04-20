@@ -1,27 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
-        <LangVersion>7.1</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DotNet.Glob" Version="2.1.1" />
-        <PackageReference Include="LibLog" Version="5.0.3" />
-        <PackageReference Include="MoonSharp" Version="2.0.0" />
-        <PackageReference Include="Serilog" Version="2.7.1" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+        <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="appsettings.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
+        <PackageReference Include="LibLog" Version="5.0.6" />
+        <PackageReference Include="morelinq" Version="3.1.1" />
     </ItemGroup>
 
 </Project>

@@ -1,12 +1,13 @@
 using System.Drawing;
-using Edelstein.Network.Packet;
+using Edelstein.Network.Packets;
 
 namespace Edelstein.Service.Game.Fields
 {
     public interface IFieldObj
     {
-        FieldObjType Type { get; }
         int ID { get; set; }
+        FieldObjType Type { get; }
+        
         IField Field { get; set; }
 
         Point Position { get; set; }

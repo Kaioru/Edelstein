@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
-using Edelstein.Core.Services;
-using Edelstein.Core.Services.Info;
+using System.Threading.Tasks;
+using Edelstein.Core.Bootstrap;
+using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Provider.Templates;
+using Edelstein.Service.Login.Services;
 
 namespace Edelstein.Service.Login
 {
@@ -8,13 +10,7 @@ namespace Edelstein.Service.Login
     {
         private static Task Main(string[] args)
             => new Startup()
-                .WithConfig()
-                .WithLogger()
-                .WithInferredModel()
-                .WithInferredDatabase()
-                .WithInferredProvider()
-                .WithServiceOption<LoginServiceInfo>()
-                .WithService<WvsLogin>()
-                .Start();
+                .WithTemplates(TemplateCollectionType.Login)
+                .Start<LoginService, LoginServiceInfo>(args);
     }
 }

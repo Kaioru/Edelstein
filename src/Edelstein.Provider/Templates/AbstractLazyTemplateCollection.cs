@@ -1,39 +1,31 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Edelstein.Provider.Parser;
 
 namespace Edelstein.Provider.Templates
 {
     public abstract class AbstractLazyTemplateCollection : ITemplateCollection
     {
-        protected IDataDirectoryCollection Collection { get; }
-        protected IDictionary<int, ITemplate> Templates { get; }
-        public IEnumerable<ITemplate> Cache => Templates.Values;
+        public abstract TemplateCollectionType Type { get; }
+        public IDataDirectoryCollection Collection { get; }
+        private readonly IDictionary<int, ITemplate> _templates;
 
-        protected AbstractLazyTemplateCollection(IDataDirectoryCollection collection)
+        public AbstractLazyTemplateCollection(IDataDirectoryCollection collection)
         {
             Collection = collection;
-            Templates = new Dictionary<int, ITemplate>();
+            _templates = new Dictionary<int, ITemplate>();
         }
 
         public ITemplate Get(int id)
         {
-            if (Templates.ContainsKey(id)) return Templates[id];
-
-            var res = Load(id).Result;
-
-            if (res == null) return null;
-            Templates[id] = res;
-
-            return Templates[id];
+            if (!_templates.ContainsKey(id))
+                _templates[id] = Load(id);
+            return _templates[id];
         }
 
         public IEnumerable<ITemplate> GetAll()
-            => Templates.Values;
+        {
+            return _templates.Values;
+        }
 
-        public Task<ITemplate> GetAsync(int id)
-            => Task.Run(() => Get(id));
-
-        public abstract Task<ITemplate> Load(int id);
+        public abstract ITemplate Load(int id);
     }
 }

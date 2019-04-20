@@ -1,33 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
-        <LangVersion>7.1</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
-      <ProjectReference Include="..\Edelstein.Network\Edelstein.Network.csproj" />
+        <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="BCrypt.Net-Core" Version="1.5.0" />
-      <PackageReference Include="LibLog" Version="5.0.3" />
-      <PackageReference Include="Serilog" Version="2.7.1" />
-      <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="appsettings.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="MoreLinq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d">
-        <HintPath>..\..\..\..\.nuget\packages\morelinq\3.0.0\lib\netstandard2.0\MoreLinq.dll</HintPath>
-      </Reference>
+      <PackageReference Include="BCrypt.Net" Version="0.1.0" />
+      <PackageReference Include="LibLog" Version="5.0.6" />
+      <PackageReference Include="morelinq" Version="3.1.1" />
     </ItemGroup>
 
 </Project>

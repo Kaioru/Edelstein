@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Edelstein.Core.Services;
-using Edelstein.Service.Game;
+using Edelstein.Core.Bootstrap;
 
 namespace Edelstein.Service.All
 {
@@ -8,14 +7,6 @@ namespace Edelstein.Service.All
     {
         private static Task Main(string[] args)
             => new Startup()
-                .WithConfig()
-                .WithLogger()
-                .WithInferredModel()
-                .WithInferredDatabase()
-                .WithInferredProvider()
-                .WithInferredScripting()
-                .WithServiceOption<WvsContainerOptions>()
-                .WithService<WvsContainer>()
-                .Start();
+                .Start<ContainerService, ContainerServiceInfo>(args);
     }
 }

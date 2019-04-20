@@ -1,19 +1,12 @@
-using Edelstein.Provider.Parser;
-
 namespace Edelstein.Provider.Templates.Item.Cash
 {
     public class ItemPetTemplate : ItemTemplate
     {
         public int Life { get; set; }
 
-        public override void Parse(int id, IDataProperty p)
+        public ItemPetTemplate(int id, IDataProperty info) : base(id, info)
         {
-            p.Resolve("info").Resolve(info =>
-            {
-                base.Parse(id, info);
-
-                Life = info.Resolve<short>("life") ?? -1;
-            });
+            Life = info.Resolve<short>("life") ?? -1;
         }
     }
 }
