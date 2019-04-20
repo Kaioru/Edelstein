@@ -21,7 +21,7 @@ namespace Edelstein.Service.Game.Fields.User
             {
                 p.Encode<int>(ID);
                 path.Encode(p);
-                await Field.BroadcastPacket(p);
+                await Field.BroadcastPacket(this, p);
             }
         }
     }
