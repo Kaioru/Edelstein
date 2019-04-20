@@ -26,24 +26,25 @@ namespace Edelstein.Provider.Templates.Item
                         Collection.Resolve("Character").Children
                             .SelectMany(c => c.Children)
                             .FirstOrDefault(c => c.Name == $"{id:D8}.img")
+                            ?.Resolve("info")
                             ?.ResolveAll()
                     );
                 case ItemTemplateType.Consume:
                 {
-                    var property = Collection.Resolve($"Item/Consume/{header:D4}.img/{id:D8}").ResolveAll();
-                    return new ItemBundleTemplate(id, property);
+                    var property = Collection.Resolve($"Item/Consume/{header:D4}.img/{id:D8}");
+                    return new ItemBundleTemplate(id, property.Resolve("info").ResolveAll());
                 }
 
                 case ItemTemplateType.Install:
                 {
-                    var property = Collection.Resolve($"Item/Install/{header:D4}.img/{id:D8}").ResolveAll();
-                    return new ItemBundleTemplate(id, property);
+                    var property = Collection.Resolve($"Item/Install/{header:D4}.img/{id:D8}");
+                    return new ItemBundleTemplate(id, property.Resolve("info").ResolveAll());
                 }
 
                 case ItemTemplateType.Etc:
                 {
-                    var property = Collection.Resolve($"Item/Etc/{header:D4}.img/{id:D8}").ResolveAll();
-                    return new ItemBundleTemplate(id, property);
+                    var property = Collection.Resolve($"Item/Etc/{header:D4}.img/{id:D8}");
+                    return new ItemBundleTemplate(id, property.Resolve("info").ResolveAll());
                 }
 
                 case ItemTemplateType.Cash:
@@ -52,12 +53,12 @@ namespace Edelstein.Provider.Templates.Item
                     {
                         return new ItemPetTemplate(
                             id,
-                            Collection.Resolve($"Item/Pet/{id:D7}.img").ResolveAll()
+                            Collection.Resolve($"Item/Pet/{id:D7}.img/info").ResolveAll()
                         );
                     }
 
-                    var property = Collection.Resolve($"Item/Consume/{header:D4}.img/{id:D8}").ResolveAll();
-                    return new ItemBundleTemplate(id, property);
+                    var property = Collection.Resolve($"Item/Consume/{header:D4}.img/{id:D8}");
+                    return new ItemBundleTemplate(id, property.Resolve("info").ResolveAll());
                 }
 
                 default:
