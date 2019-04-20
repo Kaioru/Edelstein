@@ -19,8 +19,6 @@ namespace Edelstein.Service.Game.Services
         }
 
         public override ISocket Build(IChannel channel, uint seqSend, uint seqRecv)
-        {
-            throw new System.NotImplementedException();
-        }
+            => new GameSocket(channel, seqSend, seqRecv, this);
     }
 }

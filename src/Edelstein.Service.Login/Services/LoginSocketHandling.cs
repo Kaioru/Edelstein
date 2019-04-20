@@ -187,6 +187,7 @@ namespace Edelstein.Service.Login.Services
                         }
 
                         AccountData = data;
+                        SelectedService = service;
 
                         if (Account.LatestConnectedWorld != worldID)
                         {
@@ -422,6 +423,132 @@ namespace Edelstein.Service.Login.Services
             finally
             {
                 await Service.LockProvider.ReleaseAsync("creationLock");
+            }
+        }
+
+        private async Task OnEnableSPWRequest(IPacket packet, bool vac)
+        {
+            packet.Decode<bool>(); // ?
+            var characterID = packet.Decode<int>();
+
+            if (vac) packet.Decode<int>(); // Unknown
+
+            packet.Decode<string>(); // sMacAddress
+            packet.Decode<string>(); // sMacAddressWithHDDSerial
+            var spw = packet.Decode<string>();
+
+            try
+            {
+                using (var store = Service.DocumentStore.OpenSession())
+                {
+                    var character = store.Query<Character>()
+                        .FirstOrDefault(c => c.ID == characterID);
+                    var result = LoginResultCode.Success;
+
+                    if (vac)
+                    {
+                        AccountData = store.Query<AccountData>()
+                            .First(a => a.ID == Character.ID);
+                        SelectedService = Service.Peers
+                            .OfType<GameServiceInfo>()
+                            .First(g => g.WorldID == AccountData.WorldID);
+
+                        if (AccountData.AccountID != Account.ID)
+                            result = LoginResultCode.Unknown;
+                    }
+
+                    Character = character;
+
+                    if (!string.IsNullOrEmpty(Account.SecondPassword))
+                        result = LoginResultCode.Unknown;
+                    if (BCrypt.Net.BCrypt.Verify(spw, Account.Password))
+                        result = LoginResultCode.SamePasswordAndSPW;
+
+                    if (result != LoginResultCode.Success)
+                    {
+                        using (var p = new Packet(SendPacketOperations.EnableSPWResult))
+                        {
+                            p.Encode<bool>(false);
+                            p.Encode<byte>((byte) result);
+                            await SendPacket(p);
+                        }
+
+                        return;
+                    }
+
+                    Account.SecondPassword = BCrypt.Net.BCrypt.HashPassword(spw);
+                    store.Update(Account);
+                    store.SaveChanges();
+
+                    await TryMigrateTo(Account, Character, SelectedService);
+                }
+            }
+            catch
+            {
+                using (var p = new Packet(SendPacketOperations.EnableSPWResult))
+                {
+                    p.Encode<bool>(false);
+                    p.Encode<byte>((byte) LoginResultCode.Unknown);
+                    await SendPacket(p);
+                }
+            }
+        }
+
+        private async Task OnCheckSPWRequest(IPacket packet, bool vac)
+        {
+            var spw = packet.Decode<string>();
+            var characterID = packet.Decode<int>();
+            packet.Decode<string>(); // sMacAddress
+            packet.Decode<string>(); // sMacAddressWithHDDSerial
+
+            try
+            {
+                using (var store = Service.DocumentStore.OpenSession())
+                {
+                    var character = store.Query<Character>()
+                        .FirstOrDefault(c => c.ID == characterID);
+                    var result = LoginResultCode.Success;
+
+                    if (vac)
+                    {
+                        AccountData = store.Query<AccountData>()
+                            .First(a => a.ID == Character.ID);
+                        SelectedService = Service.Peers
+                            .OfType<GameServiceInfo>()
+                            .First(g => g.WorldID == AccountData.WorldID);
+
+                        if (AccountData.AccountID != Account.ID)
+                            result = LoginResultCode.Unknown;
+                    }
+
+                    Character = character;
+
+                    if (string.IsNullOrEmpty(Account.SecondPassword))
+                        result = LoginResultCode.Unknown;
+                    else if (!BCrypt.Net.BCrypt.Verify(spw, Account.SecondPassword))
+                        result = LoginResultCode.IncorrectSPW;
+
+                    if (result != LoginResultCode.Success)
+                    {
+                        using (var p = new Packet(SendPacketOperations.CheckSPWResult))
+                        {
+                            p.Encode<byte>((byte) result);
+                            await SendPacket(p);
+                        }
+
+                        return;
+                    }
+
+                    await TryMigrateTo(Account, Character, SelectedService);
+                }
+            }
+            catch
+            {
+                using (var p = new Packet(SendPacketOperations.CheckSPWResult))
+                {
+                    p.Encode<byte>((byte) LoginResultCode.Unknown);
+                    await SendPacket(p);
+                }
             }
         }
     }

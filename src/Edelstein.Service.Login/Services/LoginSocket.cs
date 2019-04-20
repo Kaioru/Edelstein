@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using Edelstein.Core;
@@ -8,6 +9,7 @@ using Edelstein.Database;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Login.Logging;
 using Foundatio.Caching;
+using MoreLinq;
 
 namespace Edelstein.Service.Login.Services
 {
@@ -20,6 +22,7 @@ namespace Edelstein.Service.Login.Services
         public Account Account { get; set; }
         public AccountData AccountData { get; set; }
         public Character Character { get; set; }
+        public ServerServiceInfo SelectedService { get; set; }
 
         public LoginSocket(
             IChannel channel,
@@ -45,6 +48,10 @@ namespace Edelstein.Service.Login.Services
                 RecvPacketOperations.CheckDuplicatedID => OnCheckDuplicatedID(packet),
                 RecvPacketOperations.CreateNewCharacter => OnCreateNewCharacter(packet),
                 RecvPacketOperations.AliveAck => TryProcessHeartbeat(Account, Character),
+                RecvPacketOperations.EnableSPWRequest => OnEnableSPWRequest(packet, false),
+                RecvPacketOperations.CheckSPWRequest => OnCheckSPWRequest(packet, false),
+                RecvPacketOperations.EnableSPWRequestByACV => OnEnableSPWRequest(packet, true),
+                RecvPacketOperations.CheckSPWRequestByACV => OnCheckSPWRequest(packet, true),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
                 };
         }
@@ -62,6 +69,28 @@ namespace Edelstein.Service.Login.Services
             if (state != MigrationState.Migrating)
             {
                 await Service.AccountStateCache.RemoveAsync(Account.ID.ToString());
+            }
+        }
+
+        protected override IPacket GetMigrationPacket(ServerServiceInfo to)
+        {
+            using (var p = new Packet(SendPacketOperations.SelectCharacterResult))
+            {
+                p.Encode<byte>(0);
+                p.Encode<byte>(0);
+
+                var endpoint = new IPEndPoint(IPAddress.Parse(to.Host), to.Port);
+                var address = endpoint.Address.MapToIPv4().GetAddressBytes();
+                var port = endpoint.Port;
+
+                address.ForEach(b => p.Encode<byte>(b));
+                p.Encode<short>((short) port);
+
+                p.Encode<int>(Character.ID);
+                p.Encode<byte>(0);
+                p.Encode<int>(0);
+
+                return p;
             }
         }
     }
