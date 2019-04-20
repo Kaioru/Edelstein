@@ -6,12 +6,13 @@ using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Database;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.User;
 using Edelstein.Service.Game.Logging;
 using Foundatio.Caching;
 
 namespace Edelstein.Service.Game.Services
 {
-    public class GameSocket : AbstractMigrateableSocket<GameServiceInfo>
+    public partial class GameSocket : AbstractMigrateableSocket<GameServiceInfo>
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
@@ -20,6 +21,7 @@ namespace Edelstein.Service.Game.Services
         public Account Account { get; set; }
         public AccountData AccountData { get; set; }
         public Character Character { get; set; }
+        public FieldUser FieldUser { get; set; }
 
         public GameSocket(
             IChannel channel,
@@ -35,6 +37,7 @@ namespace Edelstein.Service.Game.Services
         {
             var operation = (RecvPacketOperations) packet.Decode<short>();
             return operation switch {
+                RecvPacketOperations.MigrateIn => OnMigrateIn(packet),
                 RecvPacketOperations.AliveAck => TryProcessHeartbeat(Account, Character),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
                 };
