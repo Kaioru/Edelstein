@@ -41,7 +41,7 @@ namespace Edelstein.Service.Game.Services
             return operation switch {
                 RecvPacketOperations.MigrateIn => OnMigrateIn(packet),
                 RecvPacketOperations.AliveAck => TryProcessHeartbeat(Account, Character),
-                _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
+                _ => FieldUser?.OnPacket(operation, packet)
                 };
         }
 

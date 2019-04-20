@@ -4,12 +4,14 @@ using Edelstein.Core;
 using Edelstein.Core.Extensions;
 using Edelstein.Database;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;
 
 namespace Edelstein.Service.Game.Fields.User
 {
-    public class FieldUser : AbstractFieldLife, IFieldUser
+    public partial class FieldUser : AbstractFieldLife, IFieldUser
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
         public override FieldObjType Type => FieldObjType.User;
 
         public GameService Service => Socket.Service;
@@ -42,7 +44,7 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<long>(0);
                 p.Encode<byte>(0); // nDefenseAtt
                 p.Encode<byte>(0); // nDefenseState
-                
+
                 p.Encode<short>(Character.Job);
                 Character.EncodeLook(p);
 
@@ -134,5 +136,13 @@ namespace Edelstein.Service.Game.Fields.User
 
         public Task SendPacket(IPacket packet)
             => Socket.SendPacket(packet);
+
+        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
+        {
+            return operation switch {
+                RecvPacketOperations.UserMove => OnUserMove(packet),
+                _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
+                };
+        }
     }
 }
