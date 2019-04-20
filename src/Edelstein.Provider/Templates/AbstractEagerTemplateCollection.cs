@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using MoreLinq;
 
 namespace Edelstein.Provider.Templates
 {
@@ -6,24 +8,31 @@ namespace Edelstein.Provider.Templates
     {
         public abstract TemplateCollectionType Type { get; }
         public IDataDirectoryCollection Collection { get; }
-        private readonly IDictionary<int, ITemplate> _templates;
+        public IDictionary<int, ITemplate> Templates { get; }
 
         public AbstractEagerTemplateCollection(IDataDirectoryCollection collection)
         {
             Collection = collection;
-            _templates = new Dictionary<int, ITemplate>();
+            Templates = new Dictionary<int, ITemplate>();
         }
 
         public ITemplate Get(int id)
         {
-            return _templates[id];
+            return Templates[id];
         }
 
         public IEnumerable<ITemplate> GetAll()
         {
-            return _templates.Values;
+            return Templates.Values;
         }
 
-        public abstract void Load();
+        public void LoadAll()
+        {
+            Load()
+                .Select(v => new KeyValuePair<int, ITemplate>(v.ID, v))
+                .ForEach(kv => Templates.Add(kv));
+        }
+
+        protected abstract IEnumerable<ITemplate> Load();
     }
 }

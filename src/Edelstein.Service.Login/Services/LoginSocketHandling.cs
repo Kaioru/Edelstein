@@ -9,6 +9,7 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Database;
 using Edelstein.Network.Packets;
+using Edelstein.Provider.Templates.Etc.MakeCharInfo;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Service.Login.Logging;
 using Edelstein.Service.Login.Types;
@@ -319,10 +320,11 @@ namespace Edelstein.Service.Login.Services
             var race = (Race) packet.Decode<int>();
             var subJob = packet.Decode<short>();
             var face = packet.Decode<int>();
-            var hair = packet.Decode<int>() + packet.Decode<int>();
+            var hair = packet.Decode<int>();
+            var hairColor = packet.Decode<int>();
             var skin = packet.Decode<int>();
-            var top = packet.Decode<int>();
-            var bottom = packet.Decode<int>();
+            var coat = packet.Decode<int>();
+            var pants = packet.Decode<int>();
             var shoes = packet.Decode<int>();
             var weapon = packet.Decode<int>();
             var gender = packet.Decode<byte>();
@@ -340,7 +342,7 @@ namespace Edelstein.Service.Login.Services
                         Name = name,
                         Job = 0,
                         Face = face,
-                        Hair = hair,
+                        Hair = hair + hairColor,
                         Skin = (byte) skin,
                         Gender = gender,
                         FieldID = 310000000,
@@ -353,23 +355,47 @@ namespace Edelstein.Service.Login.Services
                         SubJob = subJob
                     };
                     var result = LoginResultCode.Success;
-                    var context = new ModifyInventoriesContext(character.Inventories);
                     var templates = Service.TemplateManager;
+                    var makeCharInfo = templates
+                        .GetAll<MakeCharInfoTemplate>()
+                        .FirstOrDefault(
+                            i => i.Type == (race switch {
+                                     Race.Normal => MakeCharInfoType.Normal,
+                                     Race.Cygnus => MakeCharInfoType.Premium,
+                                     Race.Aran => MakeCharInfoType.Orient,
+                                     Race.Evan => MakeCharInfoType.Evan,
+                                     Race.Resistance => MakeCharInfoType.Resistance
+                                     }
+                                 ) &&
+                                 i.Gender == gender);
 
-                    context.Set(-5, templates.Get<ItemTemplate>(top));
-                    context.Set(-7, templates.Get<ItemTemplate>(shoes));
-                    context.Set(-11, templates.Get<ItemTemplate>(weapon));
-                    if (bottom > 0)
-                        context.Set(-6, templates.Get<ItemTemplate>(bottom));
+                    if (makeCharInfo == null) result = LoginResultCode.Unknown;
+                    else if (makeCharInfo.Face.All(i => i != face) ||
+                             makeCharInfo.Hair.All(i => i != hair) ||
+                             makeCharInfo.HairColor.All(i => i != hairColor) ||
+                             makeCharInfo.Skin.All(i => i != skin) ||
+                             makeCharInfo.Coat.All(i => i != coat) ||
+                             makeCharInfo.Pants.All(i => i != pants) ||
+                             makeCharInfo.Shoes.All(i => i != shoes) ||
+                             makeCharInfo.Weapon.All(i => i != weapon)
+                    ) result = LoginResultCode.Unknown;
 
                     p.Encode<byte>((byte) result);
 
                     if (result == LoginResultCode.Success)
                     {
+                        var context = new ModifyInventoriesContext(character.Inventories);
+
+                        context.Set(-5, templates.Get<ItemTemplate>(coat));
+                        context.Set(-7, templates.Get<ItemTemplate>(shoes));
+                        context.Set(-11, templates.Get<ItemTemplate>(weapon));
+                        if (pants > 0)
+                            context.Set(-6, templates.Get<ItemTemplate>(pants));
+
                         store.Store(character);
                         store.SaveChanges();
 
-                        Logger.Debug($"Created new {race} character, {name}");
+                        Logger.Debug($"Created new {race} character with sub job of {subJob}, {name}");
 
                         character.EncodeStats(p);
                         character.EncodeLook(p);

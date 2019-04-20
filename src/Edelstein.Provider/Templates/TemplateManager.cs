@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider.Logging;
+using Edelstein.Provider.Templates.Etc.MakeCharInfo;
 using Edelstein.Provider.Templates.Item;
 
 namespace Edelstein.Provider.Templates
@@ -18,7 +19,8 @@ namespace Edelstein.Provider.Templates
         {
             _dictionary = new Dictionary<Type, ITemplateCollection>
                 {
-                    [typeof(ItemTemplate)] = new ItemTemplateCollection(collection)
+                    [typeof(ItemTemplate)] = new ItemTemplateCollection(collection),
+                    [typeof(MakeCharInfoTemplate)] = new MakeCharInfoTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
@@ -43,7 +45,7 @@ namespace Edelstein.Provider.Templates
                 {
                     var watch = Stopwatch.StartNew();
 
-                    c.Load();
+                    c.LoadAll();
                     Logger.Info(
                         $"Loaded {c.GetType().Name} with {c.GetAll().Count()} templates in {watch.ElapsedMilliseconds}ms"
                     );
