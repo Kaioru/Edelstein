@@ -24,17 +24,14 @@ namespace Edelstein.Provider.Templates.Etc.MakeCharInfo
             Type = type;
             Gender = gender;
 
-            property.ResolveAll(p =>
-            {
-                Face = p.Resolve("0").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
-                Hair = p.Resolve("1").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
-                HairColor = p.Resolve("2").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
-                Skin = p.Resolve("3").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
-                Coat = p.Resolve("4").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
-                Pants = p.Resolve("5").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
-                Shoes = p.Resolve("6").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
-                Weapon = p.Resolve("7").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
-            });
+            Face = property.Resolve("0").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
+            Hair = property.Resolve("1").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
+            HairColor = property.Resolve("2").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
+            Skin = property.Resolve("3").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
+            Coat = property.Resolve("4").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
+            Pants = property.Resolve("5").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
+            Shoes = property.Resolve("6").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
+            Weapon = property.Resolve("7").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
         }
     }
 }

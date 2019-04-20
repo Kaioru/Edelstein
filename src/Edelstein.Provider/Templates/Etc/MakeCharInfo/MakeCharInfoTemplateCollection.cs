@@ -19,56 +19,56 @@ namespace Edelstein.Provider.Templates.Etc.MakeCharInfo
                 new MakeCharInfoTemplate(
                     MakeCharInfoType.Normal,
                     0,
-                    property.Resolve("Info/CharMale")
+                    property.Resolve("Info/CharMale").ResolveAll()
                 ),
                 new MakeCharInfoTemplate(
                     MakeCharInfoType.Normal,
                     1,
-                    property.Resolve("Info/CharFemale")
+                    property.Resolve("Info/CharFemale").ResolveAll()
                 ),
 
                 new MakeCharInfoTemplate(
                     MakeCharInfoType.Premium,
                     0,
-                    property.Resolve("PremiumCharMale")
+                    property.Resolve("PremiumCharMale").ResolveAll()
                 ),
                 new MakeCharInfoTemplate(
                     MakeCharInfoType.Premium,
                     1,
-                    property.Resolve("PremiumCharFemale")
+                    property.Resolve("PremiumCharFemale").ResolveAll()
                 ),
 
                 new MakeCharInfoTemplate(
                     MakeCharInfoType.Orient,
                     0,
-                    property.Resolve("OrientCharMale")
+                    property.Resolve("OrientCharMale").ResolveAll()
                 ),
                 new MakeCharInfoTemplate(
                     MakeCharInfoType.Orient,
                     1,
-                    property.Resolve("OrientCharFemale")
+                    property.Resolve("OrientCharFemale").ResolveAll()
                 ),
 
                 new MakeCharInfoTemplate(
                     MakeCharInfoType.Evan,
                     0,
-                    property.Resolve("EvanCharMale")
+                    property.Resolve("EvanCharMale").ResolveAll()
                 ),
                 new MakeCharInfoTemplate(
                     MakeCharInfoType.Evan,
                     1,
-                    property.Resolve("EvanCharFemale")
+                    property.Resolve("EvanCharFemale").ResolveAll()
                 ),
 
                 new MakeCharInfoTemplate(
                     MakeCharInfoType.Resistance,
                     0,
-                    property.Resolve("ResistanceCharMale")
+                    property.Resolve("ResistanceCharMale").ResolveAll()
                 ),
                 new MakeCharInfoTemplate(
                     MakeCharInfoType.Resistance,
                     1,
-                    property.Resolve("ResistanceCharFemale")
+                    property.Resolve("ResistanceCharFemale").ResolveAll()
                 ),
             };
         }

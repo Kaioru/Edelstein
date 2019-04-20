@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider.Logging;
 using Edelstein.Provider.Templates.Etc.MakeCharInfo;
+using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Item;
 
 namespace Edelstein.Provider.Templates
@@ -20,6 +21,7 @@ namespace Edelstein.Provider.Templates
             _dictionary = new Dictionary<Type, ITemplateCollection>
                 {
                     [typeof(ItemTemplate)] = new ItemTemplateCollection(collection),
+                    [typeof(FieldTemplate)] = new FieldTemplateCollection(collection),
                     [typeof(MakeCharInfoTemplate)] = new MakeCharInfoTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))

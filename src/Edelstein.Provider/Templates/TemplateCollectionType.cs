@@ -8,9 +8,10 @@ namespace Edelstein.Provider.Templates
         All = int.MaxValue,
         
         Item = 0x1,
-        MakeCharInfo = 0x2,
+        Field = 0x2,
+        MakeCharInfo = 0x4,
         
         Login = Item | MakeCharInfo,
-        Game = Item
+        Game = Item | Field
     }
 }
