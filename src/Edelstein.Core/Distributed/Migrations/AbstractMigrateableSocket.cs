@@ -84,14 +84,14 @@ namespace Edelstein.Core.Distributed.Migrations
 
         public async Task TryProcessHeartbeat(Account account, Character character, bool initial = false)
         {
+            LastRecvHeartbeatDate = DateTime.Now;
+            
             if (account == null) return;
             if (!await _service.AccountStateCache.ExistsAsync(account.ID.ToString()) && !initial)
             {
                 await Close();
                 return;
             }
-
-            LastRecvHeartbeatDate = DateTime.Now;
 
             await _service.AccountStateCache.SetAsync(
                 account.ID.ToString(),
