@@ -352,7 +352,7 @@ namespace Edelstein.Service.Login.Services
                         MaxHP = 50,
                         MP = 50,
                         MaxMP = 50,
-                        SubJob = subJob
+                        SubJob = race == Race.Normal ? subJob : 0
                     };
                     var result = LoginResultCode.Success;
                     var templates = Service.TemplateManager;
