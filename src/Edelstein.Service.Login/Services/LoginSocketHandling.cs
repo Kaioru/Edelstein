@@ -144,6 +144,12 @@ namespace Edelstein.Service.Login.Services
             }
         }
 
+        private async Task OnLogoutWorld(IPacket packet)
+        {
+            AccountData = null;
+            SelectedService = null;
+        }
+
         private async Task OnSelectWorld(IPacket packet)
         {
             packet.Decode<byte>();

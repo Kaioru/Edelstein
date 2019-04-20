@@ -45,6 +45,7 @@ namespace Edelstein.Service.Login.Services
                 RecvPacketOperations.SetGender => OnSetGender(packet),
                 RecvPacketOperations.CheckPinCode => OnCheckPinCode(packet),
                 RecvPacketOperations.WorldRequest => OnWorldInfoRequest(packet),
+                RecvPacketOperations.LogoutWorld => OnLogoutWorld(packet),
                 RecvPacketOperations.CheckDuplicatedID => OnCheckDuplicatedID(packet),
                 RecvPacketOperations.CreateNewCharacter => OnCreateNewCharacter(packet),
                 RecvPacketOperations.DeleteCharacter => OnDeleteCharacter(packet),
