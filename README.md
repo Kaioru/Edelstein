@@ -10,8 +10,8 @@ A MapleStory Global v.95 server emulator written in C#.
 ### Build with your favourite tool/ide
 1. On Visual Studio and Rider it should be pretty straightforward
 2. Use ```dotnet build``` if not using an IDE
-### Running WvsContainer
-WvsContainer is the quick and easy way to spin up Edelstein
+### Running the Container service
+The Container service is the quick and easy way to spin up Edelstein
 1. ```cd src/Edelstein.Service.All```
 2. ```cp appsettings appsettings.Production.json```
 3. Edit the appsettings.Production.json appropriately
