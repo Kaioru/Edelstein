@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Provider", "src\E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Service.Game", "src\Edelstein.Service.Game\Edelstein.Service.Game.csproj", "{8C6CBCF1-7EE2-46AD-8A49-386B05657D5B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Service.All", "src\Edelstein.Service.All\Edelstein.Service.All.csproj", "{859F8B95-D9B7-49D6-9572-BA392C15DE04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,7 @@ Global
 		{7CA98BDE-4294-4799-88AD-75122C4AC624} = {D46EBD9A-1AE5-4506-9E4F-1BD3D78247B4}
 		{22F46B74-FF8D-4005-B064-91C2205C1FB8} = {D46EBD9A-1AE5-4506-9E4F-1BD3D78247B4}
 		{8C6CBCF1-7EE2-46AD-8A49-386B05657D5B} = {D46EBD9A-1AE5-4506-9E4F-1BD3D78247B4}
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04} = {D46EBD9A-1AE5-4506-9E4F-1BD3D78247B4}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5670CD92-46F3-45A5-B35D-C997A6B35638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -159,5 +162,17 @@ Global
 		{8C6CBCF1-7EE2-46AD-8A49-386B05657D5B}.Release|x64.Build.0 = Release|Any CPU
 		{8C6CBCF1-7EE2-46AD-8A49-386B05657D5B}.Release|x86.ActiveCfg = Release|Any CPU
 		{8C6CBCF1-7EE2-46AD-8A49-386B05657D5B}.Release|x86.Build.0 = Release|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Debug|x64.Build.0 = Debug|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Debug|x86.Build.0 = Debug|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Release|x64.ActiveCfg = Release|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Release|x64.Build.0 = Release|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Release|x86.ActiveCfg = Release|Any CPU
+		{859F8B95-D9B7-49D6-9572-BA392C15DE04}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
