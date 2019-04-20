@@ -251,7 +251,7 @@ namespace Edelstein.Service.Login.Services
                 using (var p = new Packet(SendPacketOperations.SetAccountResult))
                 using (var store = Service.DocumentStore.OpenSession())
                 {
-                    Account.Gender = (byte) (gender ? 1 : 0);
+                    Account.Gender = (byte) (gender ? 0 : 1);
                     store.Update(Account);
                     await store.SaveChangesAsync();
 
