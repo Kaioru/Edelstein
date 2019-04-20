@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using Edelstein.Core;
@@ -6,6 +7,7 @@ using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Database;
 using Edelstein.Network.Packets;
+using Edelstein.Provider.Templates.Field;
 using Edelstein.Service.Game.Fields.User;
 using Edelstein.Service.Game.Logging;
 using Foundatio.Caching;
@@ -53,6 +55,19 @@ namespace Edelstein.Service.Game.Services
         {
             using (var store = Service.DocumentStore.OpenSession())
             {
+                Character.FieldPortal = (byte) FieldUser.Field.Template.Portals
+                    .Values
+                    .Where(p => p.Type == FieldPortalType.Spawn)
+                    .OrderBy(p =>
+                    {
+                        var xd = p.Position.X - FieldUser.Position.X;
+                        var yd = p.Position.Y - FieldUser.Position.Y;
+
+                        return xd * xd + yd * yd;
+                    })
+                    .First()
+                    .ID;
+
                 store.Update(Account);
                 store.Update(AccountData);
                 store.Update(Character);
