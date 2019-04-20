@@ -31,7 +31,7 @@ namespace Edelstein.Service.Game.Services
                     Account = account;
                     AccountData = data;
                     Character = character;
-                    
+
                     var field = Service.FieldManager.Get(character.FieldID);
                     var fieldUser = new FieldUser(this);
 

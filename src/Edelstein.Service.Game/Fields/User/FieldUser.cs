@@ -129,7 +129,7 @@ namespace Edelstein.Service.Game.Fields.User
 
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public Task SendPacket(IPacket packet)

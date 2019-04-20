@@ -62,8 +62,11 @@ namespace Edelstein.Service.Game.Services
 
         public override async Task OnDisconnect()
         {
+            if (FieldUser != null) await FieldUser.Field.Leave(FieldUser);
             if (Account == null) return;
+
             var state = (await Service.AccountStateCache.GetAsync<MigrationState>(Account.ID.ToString())).Value;
+
             if (state != MigrationState.Migrating)
             {
                 await OnUpdate();
