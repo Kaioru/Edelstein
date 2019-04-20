@@ -21,7 +21,7 @@ namespace Edelstein.Core.Bootstrap
     public class Startup
     {
         private readonly StartupOption _option;
-        private TemplateCollectionType _templateCollectionType = 0;
+        private TemplateCollectionType _templateCollectionType = TemplateCollectionType.All;
 
         public Startup()
         {
