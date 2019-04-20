@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Edelstein.Database.Inventories;
 using Edelstein.Database.Inventories.Items;
+using Edelstein.Provider.Templates.Item;
 
 namespace Edelstein.Core.Gameplay.Inventories
 {
@@ -15,6 +16,16 @@ namespace Edelstein.Core.Gameplay.Inventories
                 kv => kv.Key,
                 kv => new ModifyInventoryContext(kv.Key, kv.Value)
             );
+        }
+
+        public void Set(short slot, ItemTemplate template)
+        {
+            Set((ItemInventoryType) (template.ID / 1000000), slot, template);
+        }
+
+        public void Set(ItemInventoryType type, short slot, ItemTemplate template)
+        {
+            _inventories[type].Set(slot, template);
         }
 
         public void Set(short slot, ItemSlot item)

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Extensions;
+using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Database;
 using Edelstein.Network.Packets;
+using Edelstein.Provider.Templates.Item;
 using Edelstein.Service.Login.Logging;
 using Edelstein.Service.Login.Types;
 using MoreLinq.Extensions;
@@ -351,6 +353,14 @@ namespace Edelstein.Service.Login.Services
                         SubJob = subJob
                     };
                     var result = LoginResultCode.Success;
+                    var context = new ModifyInventoriesContext(character.Inventories);
+                    var templates = Service.TemplateManager;
+
+                    context.Set(-5, templates.Get<ItemTemplate>(top));
+                    context.Set(-7, templates.Get<ItemTemplate>(shoes));
+                    context.Set(-11, templates.Get<ItemTemplate>(weapon));
+                    if (bottom > 0)
+                        context.Set(-6, templates.Get<ItemTemplate>(bottom));
 
                     p.Encode<byte>((byte) result);
 

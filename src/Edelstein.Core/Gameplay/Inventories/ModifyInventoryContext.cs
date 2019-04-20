@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using Edelstein.Core.Extensions.Templates;
 using Edelstein.Core.Gameplay.Inventories.Operations;
 using Edelstein.Database.Inventories;
 using Edelstein.Database.Inventories.Items;
+using Edelstein.Provider.Templates.Item;
 
 namespace Edelstein.Core.Gameplay.Inventories
 {
@@ -16,6 +18,11 @@ namespace Edelstein.Core.Gameplay.Inventories
             _type = type;
             _inventory = inventory;
             _operations = new Queue<AbstractModifyInventoryOperation>();
+        }
+
+        public void Set(short slot, ItemTemplate template)
+        {
+            Set(slot, template.ToItemSlot());
         }
 
         public void Set(short slot, ItemSlot item)
