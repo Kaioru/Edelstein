@@ -67,7 +67,7 @@ namespace Edelstein.Core.Distributed.Migrations
 
         public async Task TrySendHeartbeat()
         {
-            if ((DateTime.Now - LastRecvHeartbeatDate).Seconds >= 60)
+            if ((DateTime.Now - LastRecvHeartbeatDate).Minutes >= 1)
             {
                 await Close();
                 return;
