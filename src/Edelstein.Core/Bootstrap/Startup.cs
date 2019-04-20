@@ -4,6 +4,7 @@ using Edelstein.Core.Bootstrap.Types;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Provider;
 using Edelstein.Provider.NX;
+using Edelstein.Provider.Templates;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Foundatio.Messaging;
@@ -20,6 +21,7 @@ namespace Edelstein.Core.Bootstrap
     public class Startup
     {
         private readonly StartupOption _option;
+        private TemplateCollectionType _templateCollectionType = 0;
 
         public Startup()
         {
@@ -51,6 +53,12 @@ namespace Edelstein.Core.Bootstrap
         {
             _option.ScriptType = type;
             _option.ScriptFolderPath = path;
+            return this;
+        }
+
+        public Startup WithTemplates(TemplateCollectionType type)
+        {
+            _templateCollectionType = type;
             return this;
         }
 
@@ -143,6 +151,17 @@ namespace Edelstein.Core.Bootstrap
                             );
                             break;
                     }
+
+                    builder.AddSingleton<ITemplateManager>(f =>
+                    {
+                        var manager = new TemplateManager(
+                            f.GetService<IDataDirectoryCollection>(),
+                            _templateCollectionType
+                        );
+
+                        manager.Load().Wait();
+                        return manager;
+                    });
                 })
                 .Build();
         }

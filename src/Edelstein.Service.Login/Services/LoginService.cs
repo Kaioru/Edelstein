@@ -3,6 +3,7 @@ using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Network;
+using Edelstein.Provider.Templates;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Marten;
@@ -14,17 +15,20 @@ namespace Edelstein.Service.Login.Services
     {
         public IDocumentStore DocumentStore { get; }
         public ILockProvider LockProvider { get; }
+        public ITemplateManager TemplateManager { get; }
 
         public LoginService(
             IOptions<LoginServiceInfo> info,
             ICacheClient cacheClient,
             IMessageBusFactory messageBusFactory,
             IDocumentStore store,
-            ILockProvider lockProvider
+            ILockProvider lockProvider,
+            ITemplateManager templateManager
         ) : base(info.Value, cacheClient, messageBusFactory)
         {
             DocumentStore = store;
             LockProvider = lockProvider;
+            TemplateManager = templateManager;
         }
 
         public override ISocket Build(IChannel channel, uint seqSend, uint seqRecv)

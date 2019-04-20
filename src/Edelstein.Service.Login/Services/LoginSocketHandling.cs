@@ -1,22 +1,16 @@
 using System;
 using System.Collections.Immutable;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
-using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Extensions;
-using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Database;
-using Edelstein.Database.Inventories;
-using Edelstein.Database.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Login.Logging;
 using Edelstein.Service.Login.Types;
 using MoreLinq.Extensions;
-using Serilog;
 
 namespace Edelstein.Service.Login.Services
 {
