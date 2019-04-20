@@ -35,6 +35,7 @@ namespace Edelstein.Service.Game.Services
         {
             var operation = (RecvPacketOperations) packet.Decode<short>();
             return operation switch {
+                RecvPacketOperations.AliveAck => TryProcessHeartbeat(Account, Character),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
                 };
         }
