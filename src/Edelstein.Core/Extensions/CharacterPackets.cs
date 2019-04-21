@@ -50,32 +50,46 @@ namespace Edelstein.Core.Extensions
 
             if (flags.HasFlag(DbChar.ItemSlotEquip))
             {
-                p.Encode<short>(0);
-                p.Encode<short>(0);
-                p.Encode<short>(0);
-                p.Encode<short>(0);
-                p.Encode<short>(0);
+                var inventory = c.Inventories[ItemInventoryType.Equip].Items;
+                var equip = inventory.Where(kv => kv.Key >= 0);
+                var equipped = inventory.Where(kv => kv.Key >= -100 && kv.Key < 0);
+                var equipped2 = inventory.Where(kv => kv.Key >= -1000 && kv.Key < -100);
+                var dragonEquipped = inventory.Where(kv => kv.Key >= -1100 && kv.Key < -1000);
+                var mechanicEquipped = inventory.Where(kv => kv.Key >= -1200 && kv.Key < -1100);
+
+                new List<IEnumerable<KeyValuePair<short, ItemSlot>>>
+                {
+                    equipped, equipped2, equip, dragonEquipped, mechanicEquipped
+                }.ForEach(e =>
+                {
+                    e.ForEach(kv =>
+                    {
+                        p.Encode<short>((short) (Math.Abs(kv.Key) % 100));
+                        kv.Value.Encode(p);
+                    });
+                    p.Encode<short>(0);
+                });
             }
 
-            if (flags.HasFlag(DbChar.ItemSlotConsume))
-            {
-                p.Encode<byte>(0);
-            }
+            new List<(DbChar, ItemInventoryType)>
+                {
+                    (DbChar.ItemSlotConsume, ItemInventoryType.Consume),
+                    (DbChar.ItemSlotInstall, ItemInventoryType.Install),
+                    (DbChar.ItemSlotEtc, ItemInventoryType.Etc),
+                    (DbChar.ItemSlotCash, ItemInventoryType.Cash)
+                }
+                .Where(t => flags.HasFlag(t.Item1))
+                .ForEach(t =>
+                {
+                    var inventory = c.Inventories[t.Item2].Items;
 
-            if (flags.HasFlag(DbChar.ItemSlotInstall))
-            {
-                p.Encode<byte>(0);
-            }
-
-            if (flags.HasFlag(DbChar.ItemSlotEtc))
-            {
-                p.Encode<byte>(0);
-            }
-
-            if (flags.HasFlag(DbChar.ItemSlotCash))
-            {
-                p.Encode<byte>(0);
-            }
+                    inventory.ForEach(kv =>
+                    {
+                        p.Encode<byte>((byte) kv.Key);
+                        kv.Value.Encode(p);
+                    });
+                    p.Encode<byte>(0);
+                });
 
             if (flags.HasFlag(DbChar.SkillRecord))
             {
