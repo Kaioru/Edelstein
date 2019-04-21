@@ -1,6 +1,9 @@
 using System.IO;
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap.Types;
+using Edelstein.Core.Scripts;
+using Edelstein.Core.Scripts.Lua;
+using Edelstein.Core.Scripts.Python;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Provider;
 using Edelstein.Provider.NX;
@@ -99,7 +102,7 @@ namespace Edelstein.Core.Bootstrap
                     builder.Configure<TOption>(options =>
                         config.GetSection("service").Bind(options)
                     );
-                    
+
                     config.Bind(_option);
 
                     switch (_option.DistributedType)
@@ -161,6 +164,22 @@ namespace Edelstein.Core.Bootstrap
                         manager.Load().Wait();
                         return manager;
                     });
+
+                    switch (_option.ScriptType)
+                    {
+                        default:
+                        case null:
+                        case ScriptType.Lua:
+                            builder.AddSingleton<IScriptManager>(
+                                new LuaScriptManager(_option.ScriptFolderPath)
+                            );
+                            break;
+                        case ScriptType.Python:
+                            builder.AddSingleton<IScriptManager>(
+                                new PythonScriptManager(_option.ScriptFolderPath)
+                            );
+                            break;
+                    }
                 })
                 .Build();
         }

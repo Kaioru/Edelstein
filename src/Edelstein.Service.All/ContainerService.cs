@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Baseline;
 using Edelstein.Core.Distributed;
+using Edelstein.Core.Scripts;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Provider.Templates;
 using Edelstein.Service.Game.Services;
@@ -48,7 +49,8 @@ namespace Edelstein.Service.All
                     _serviceProvider.GetService<ICacheClient>(),
                     _serviceProvider.GetService<IMessageBusFactory>(),
                     _serviceProvider.GetService<IDocumentStore>(),
-                    _serviceProvider.GetService<ITemplateManager>()
+                    _serviceProvider.GetService<ITemplateManager>(),
+                    _serviceProvider.GetService<IScriptManager>()
                 )));
 
             await Task.WhenAll(_services.Select(s => s.StartAsync(cancellationToken)));
