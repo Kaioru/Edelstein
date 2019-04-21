@@ -87,8 +87,7 @@ namespace Edelstein.Core.Bootstrap
                 .ConfigureLogging((context, builder) =>
                 {
                     Log.Logger = new LoggerConfiguration()
-                        .MinimumLevel.Verbose()
-                        .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+                        .ReadFrom.Configuration(context.Configuration)
                         .CreateLogger();
                 })
                 .ConfigureServices((context, builder) =>
@@ -100,7 +99,7 @@ namespace Edelstein.Core.Bootstrap
                     builder.Configure<TOption>(options =>
                         config.GetSection("service").Bind(options)
                     );
-
+                    
                     config.Bind(_option);
 
                     switch (_option.DistributedType)
