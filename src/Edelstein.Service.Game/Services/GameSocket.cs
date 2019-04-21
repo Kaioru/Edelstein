@@ -57,7 +57,7 @@ namespace Edelstein.Service.Game.Services
             {
                 Character.FieldPortal = (byte) FieldUser.Field.Template.Portals
                     .Values
-                    .Where(p => p.Type == FieldPortalType.Spawn)
+                    .Where(p => p.Type == FieldPortalType.StartPoint)
                     .OrderBy(p =>
                     {
                         var xd = p.Position.X - FieldUser.Position.X;

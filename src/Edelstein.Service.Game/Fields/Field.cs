@@ -14,11 +14,18 @@ namespace Edelstein.Service.Game.Fields
         public FieldTemplate Template { get; }
 
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
+        private readonly IDictionary<string, IFieldPortal> _portals;
 
         public Field(FieldTemplate template)
         {
             Template = template;
             _pools = new Dictionary<FieldObjType, IFieldPool>();
+            _portals = template.Portals
+                .Where(kv => kv.Value.ToMap != 999999999)
+                .ToDictionary(
+                    kv => kv.Value.Name,
+                    kv => (IFieldPortal) new FieldPortal(this, kv.Value)
+                );
         }
 
         public Task Enter(IFieldObj obj) => Enter(obj, null);
@@ -55,14 +62,24 @@ namespace Edelstein.Service.Game.Fields
             return _pools[type];
         }
 
-        public Task Enter(IFieldObj obj, byte portal, Func<IPacket> getEnterPacket = null)
+        public IFieldPortal GetPortal(byte portal)
+            => _portals[Template.Portals[portal].Name];
+
+        public IFieldPortal GetPortal(string portal)
+            => _portals[portal];
+
+        public Task Enter(IFieldUser user, byte portal, Func<IPacket> getEnterPacket = null)
         {
-            throw new NotImplementedException();
+            user.Character.FieldPortal = portal;
+            return Enter(user, getEnterPacket);
         }
 
-        public Task Enter(IFieldObj obj, string portal, Func<IPacket> getEnterPacket = null)
+        public Task Enter(IFieldUser user, string portal, Func<IPacket> getEnterPacket = null)
         {
-            throw new NotImplementedException();
+            user.Character.FieldPortal = (byte) (Template.Portals.Values
+                                                     .FirstOrDefault(p => p.Name.Equals(portal))?
+                                                     .ID ?? 0);
+            return Enter(user, getEnterPacket);
         }
 
         public async Task Enter(IFieldObj obj, Func<IPacket> getEnterPacket = null)
@@ -76,12 +93,12 @@ namespace Edelstein.Service.Game.Fields
             if (obj is IFieldUser user)
             {
                 var portal = Template.Portals.Values.FirstOrDefault(p => p.ID == user.Character.FieldPortal) ??
-                             Template.Portals.Values.First(p => p.Type == FieldPortalType.Spawn);
+                             Template.Portals.Values.First(p => p.Type == FieldPortalType.StartPoint);
 
                 user.ID = user.Character.ID;
                 user.Character.FieldID = ID;
                 user.Position = portal.Position;
-                user.Foothold = (short) (portal.Type != FieldPortalType.Spawn
+                user.Foothold = (short) (portal.Type != FieldPortalType.StartPoint
                     ? Template.Footholds.Values
                         .Where(f => f.X1 <= portal.Position.X && f.X2 >= portal.Position.X)
                         .First(f => f.X1 < f.X2).ID

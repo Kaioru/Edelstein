@@ -6,6 +6,17 @@ namespace Edelstein.Service.Game.Fields.User
 {
     public partial class FieldUser
     {
+        private async Task OnUserTransferFieldRequest(IPacket packet)
+        {
+            packet.Decode<byte>();
+            packet.Decode<int>();
+
+            var name = packet.Decode<string>();
+            var portal = Field.GetPortal(name);
+
+            await portal.Enter(this);
+        }
+
         private async Task OnUserMove(IPacket packet)
         {
             packet.Decode<long>();
@@ -24,7 +35,7 @@ namespace Edelstein.Service.Game.Fields.User
                 await Field.BroadcastPacket(this, p);
             }
         }
-        
+
         private async Task OnUserChat(IPacket packet)
         {
             packet.Decode<int>();
@@ -47,7 +58,7 @@ namespace Edelstein.Service.Game.Fields.User
             var emotion = packet.Decode<int>();
             var duration = packet.Decode<int>();
             var byItemOption = packet.Decode<bool>();
-            
+
             // TODO: item option checks
 
             using (var p = new Packet(SendPacketOperations.UserEmotion))

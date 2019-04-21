@@ -10,11 +10,13 @@ namespace Edelstein.Service.Game.Fields
         int ID { get; }
 
         FieldTemplate Template { get; }
-        
-        IFieldPool GetPool(FieldObjType type);
 
-        Task Enter(IFieldObj obj, byte portal, Func<IPacket> getEnterPacket = null);
-        Task Enter(IFieldObj obj, string portal, Func<IPacket> getEnterPacket = null);
+        IFieldPool GetPool(FieldObjType type);
+        IFieldPortal GetPortal(byte portal);
+        IFieldPortal GetPortal(string portal);
+
+        Task Enter(IFieldUser user, byte portal, Func<IPacket> getEnterPacket = null);
+        Task Enter(IFieldUser user, string portal, Func<IPacket> getEnterPacket = null);
 
         Task Enter(IFieldObj obj, Func<IPacket> getEnterPacket = null);
         Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket = null);
