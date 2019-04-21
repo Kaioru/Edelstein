@@ -7,8 +7,8 @@ namespace Edelstein.Provider
     {
         IDataProperty Parent { get; }
 
-        void ResolveAll(Action<IDataProperty> context);
         IDataProperty ResolveAll();
+        void ResolveAll(Action<IDataProperty> context);
 
         T? Resolve<T>(string path = null) where T : struct;
         T ResolveOrDefault<T>(string path = null) where T : class;

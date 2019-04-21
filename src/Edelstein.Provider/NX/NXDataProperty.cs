@@ -24,11 +24,11 @@ namespace Edelstein.Provider.NX
             return node == null ? null : new NXDataProperty(node);
         }
 
+        public IDataProperty ResolveAll()
+            => new NXDataProperty(_node.ResolveAll());
+
         public void ResolveAll(Action<IDataProperty> context)
             => context.Invoke(ResolveAll());
-
-        public IDataProperty ResolveAll()
-            => new NXDataProperty(new NXResolutionNode(_node));
 
 
         public T? Resolve<T>(string path = null) where T : struct
