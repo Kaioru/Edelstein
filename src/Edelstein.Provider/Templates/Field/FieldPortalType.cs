@@ -8,7 +8,7 @@ namespace Edelstein.Provider.Templates.Field
         Collision = 0x3,
         Changable = 0x4,
         ChangableInvisible = 0x5,
-        TownportalPoint = 0x6,
+        TownPortalPoint = 0x6,
         Script = 0x7,
         ScriptInvisible = 0x8,
         CollisionScript = 0x9,
