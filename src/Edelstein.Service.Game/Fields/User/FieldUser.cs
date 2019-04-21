@@ -160,7 +160,7 @@ namespace Edelstein.Service.Game.Fields.User
 
         public void Dispose()
         {
-            // TODO
+            ConversationContext?.Dispose();
         }
 
         public Task SendPacket(IPacket packet)
