@@ -58,17 +58,18 @@ namespace Edelstein.Core.Extensions
                 var mechanicEquipped = inventory.Where(kv => kv.Key >= -1200 && kv.Key < -1100);
 
                 new List<IEnumerable<KeyValuePair<short, ItemSlot>>>
-                {
-                    equipped, equipped2, equip, dragonEquipped, mechanicEquipped
-                }.ForEach(e =>
-                {
-                    e.ForEach(kv =>
                     {
-                        p.Encode<short>((short) (Math.Abs(kv.Key) % 100));
-                        kv.Value.Encode(p);
+                        equipped, equipped2, equip, dragonEquipped, mechanicEquipped
+                    }
+                    .ForEach(e =>
+                    {
+                        e.ForEach(kv =>
+                        {
+                            p.Encode<short>((short) (Math.Abs(kv.Key) % 100));
+                            kv.Value.Encode(p);
+                        });
+                        p.Encode<short>(0);
                     });
-                    p.Encode<short>(0);
-                });
             }
 
             new List<(DbChar, ItemInventoryType)>
