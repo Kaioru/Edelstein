@@ -130,9 +130,8 @@ namespace Edelstein.Service.Game.Fields
             var controlled = GetObjects().OfType<AbstractFieldControlledLife>().ToList();
 
             controlled
-                .Where(
-                    c => c.Controller == null ||
-                         !controllers.Contains(c.Controller))
+                .Where(c => c.Controller == null ||
+                            !controllers.Contains(c.Controller))
                 .ForEach(c => c.Controller = controllers.FirstOrDefault());
         }
     }
