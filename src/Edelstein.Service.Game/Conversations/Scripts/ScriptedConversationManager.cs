@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 using Edelstein.Core.Scripts;
 
@@ -18,15 +19,22 @@ namespace Edelstein.Service.Game.Conversations.Scripts
             ISpeaker self,
             ISpeaker target)
         {
-            var script = await _manager.Build(name);
-            var conversation = new ScriptedConversation(
-                script,
-                context,
-                self,
-                target
-            );
+            try
+            {
+                var script = await _manager.Build(name);
+                var conversation = new ScriptedConversation(
+                    script,
+                    context,
+                    self,
+                    target
+                );
 
-            return conversation;
+                return conversation;
+            }
+            catch (FileNotFoundException)
+            {
+                return new FallbackConversation(context, self, target, name);
+            }
         }
     }
 }

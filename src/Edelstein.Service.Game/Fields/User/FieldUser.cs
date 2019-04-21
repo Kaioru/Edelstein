@@ -182,6 +182,7 @@ namespace Edelstein.Service.Game.Fields.User
                 RecvPacketOperations.UserMove => OnUserMove(packet),
                 RecvPacketOperations.UserChat => OnUserChat(packet),
                 RecvPacketOperations.UserEmotion => OnUserEmotion(packet),
+                RecvPacketOperations.UserSelectNpc => OnUserSelectNPC(packet),
                 RecvPacketOperations.UserScriptMessageAnswer => OnUserScriptMessageAnswer(packet),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
                 };

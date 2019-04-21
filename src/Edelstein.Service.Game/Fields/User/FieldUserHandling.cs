@@ -1,7 +1,11 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Conversations.Speakers;
+using Edelstein.Service.Game.Fields.Objects;
+using Edelstein.Service.Game.Logging;
 
 namespace Edelstein.Service.Game.Fields.User
 {
@@ -70,6 +74,28 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<bool>(byItemOption);
                 await Field.BroadcastPacket(this, p);
             }
+        }
+
+        private async Task OnUserSelectNPC(IPacket packet)
+        {
+            var npc = Field.GetObject<FieldNPC>(packet.Decode<int>());
+
+            if (npc == null) return;
+
+            var template = npc.Template;
+            var script = template.Scripts.FirstOrDefault()?.Script;
+
+            if (script == null) return;
+
+            var context = new ConversationContext(Socket);
+            var conversation = await Service.ConversationManager.Build(
+                script,
+                context,
+                new FieldNPCSpeaker(context),
+                new FieldUserSpeaker(context)
+            );
+
+            await Converse(conversation);
         }
 
         private async Task OnUserScriptMessageAnswer(IPacket packet)
