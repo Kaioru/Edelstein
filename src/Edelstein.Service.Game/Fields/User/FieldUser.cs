@@ -37,7 +37,7 @@ namespace Edelstein.Service.Game.Fields.User
 
             return Task
                 .Run(conversation.Start, ConversationContext.TokenSource.Token)
-                .ContinueWith(t =>
+                .ContinueWith(async t =>
                 {
                     if (t.IsFaulted)
                     {
@@ -49,7 +49,7 @@ namespace Edelstein.Service.Game.Fields.User
 
                     ConversationContext?.Dispose();
                     ConversationContext = null;
-                    // TODO: exclRequest
+                    await ModifyStats(exclRequest: true);
                 });
         }
 
