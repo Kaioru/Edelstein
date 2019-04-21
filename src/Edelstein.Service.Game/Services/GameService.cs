@@ -1,16 +1,21 @@
+using System.Reflection;
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Scripts;
+using Edelstein.Core.Scripts.Lua;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Scripts;
+using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields;
 using Foundatio.Caching;
 using Marten;
 using Microsoft.Extensions.Options;
+using MoonSharp.Interpreter;
+using MoreLinq;
 
 namespace Edelstein.Service.Game.Services
 {
@@ -20,7 +25,7 @@ namespace Edelstein.Service.Game.Services
         public ITemplateManager TemplateManager { get; }
         public IScriptManager ScriptManager { get; }
 
-        public IConversationManager ConversationManager;
+        public IConversationManager ConversationManager { get; }
         public FieldManager FieldManager { get; }
 
         public GameService(
@@ -35,6 +40,9 @@ namespace Edelstein.Service.Game.Services
             DocumentStore = documentStore;
             TemplateManager = templateManager;
             ScriptManager = scriptManager;
+
+            if (scriptManager is LuaScriptManager)
+                Speakers.Types.ForEach(t => UserData.RegisterType(t));
 
             ConversationManager = new ScriptedConversationManager(scriptManager);
             FieldManager = new FieldManager(templateManager);

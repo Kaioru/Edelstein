@@ -1,5 +1,8 @@
+using MoonSharp.Interpreter;
+
 namespace Edelstein.Service.Game.Conversations.Speakers
 {
+    [MoonSharpUserData]
     public class FieldUserSpeaker : AbstractSpeaker
     {
         public override int TemplateID => 9010000;
