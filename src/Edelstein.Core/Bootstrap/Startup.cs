@@ -16,7 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
 using StackExchange.Redis;
 
 namespace Edelstein.Core.Bootstrap

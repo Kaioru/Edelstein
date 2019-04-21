@@ -1,10 +1,11 @@
+using System;
 using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
 using Edelstein.Database;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;
@@ -21,9 +22,35 @@ namespace Edelstein.Service.Game.Fields.User
         public Character Character => Socket.Character;
         public bool IsInstantiated { get; set; }
 
+        public IConversationContext ConversationContext { get; private set; }
+
         public FieldUser(GameSocket socket)
         {
             Socket = socket;
+        }
+
+        public Task Converse(IConversation conversation)
+        {
+            if (ConversationContext != null)
+                throw new InvalidOperationException("Already having a conversation");
+            ConversationContext = conversation.Context;
+
+            return Task
+                .Run(conversation.Start, ConversationContext.TokenSource.Token)
+                .ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        var exception = t.Exception?.Flatten().InnerException;
+
+                        if (!(exception is TaskCanceledException))
+                            Logger.Error(exception, "Caught exception when executing conversation");
+                    }
+
+                    ConversationContext?.Dispose();
+                    ConversationContext = null;
+                    // TODO: exclRequest
+                });
         }
 
         public override IPacket GetEnterFieldPacket()
@@ -146,7 +173,7 @@ namespace Edelstein.Service.Game.Fields.User
                 case RecvPacketOperations.NpcMove:
                 case RecvPacketOperations.NpcSpecialAction:
                     return Field
-                        .GetControlledObject<FieldNPC>(this , packet.Decode<int>())?
+                        .GetControlledObject<FieldNPC>(this, packet.Decode<int>())?
                         .OnPacket(operation, packet);
             }
 
@@ -155,6 +182,7 @@ namespace Edelstein.Service.Game.Fields.User
                 RecvPacketOperations.UserMove => OnUserMove(packet),
                 RecvPacketOperations.UserChat => OnUserChat(packet),
                 RecvPacketOperations.UserEmotion => OnUserEmotion(packet),
+                RecvPacketOperations.UserScriptMessageAnswer => OnUserScriptMessageAnswer(packet),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
                 };
         }

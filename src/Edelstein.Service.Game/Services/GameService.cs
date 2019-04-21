@@ -1,5 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
@@ -7,6 +5,8 @@ using Edelstein.Core.Scripts;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
+using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Conversations.Scripts;
 using Edelstein.Service.Game.Fields;
 using Foundatio.Caching;
 using Marten;
@@ -19,7 +19,8 @@ namespace Edelstein.Service.Game.Services
         public IDocumentStore DocumentStore { get; }
         public ITemplateManager TemplateManager { get; }
         public IScriptManager ScriptManager { get; }
-        
+
+        public IConversationManager ConversationManager;
         public FieldManager FieldManager { get; }
 
         public GameService(
@@ -34,19 +35,9 @@ namespace Edelstein.Service.Game.Services
             DocumentStore = documentStore;
             TemplateManager = templateManager;
             ScriptManager = scriptManager;
-            
+
+            ConversationManager = new ScriptedConversationManager(scriptManager);
             FieldManager = new FieldManager(templateManager);
-        }
-
-        public override async Task OnStart()
-        {
-            await base.OnStart();
-
-
-
-            var token = new CancellationTokenSource();
-            var script = await ScriptManager.Build("poo");
-            await script.Start(token.Token);
         }
 
         public override ISocket Build(IChannel channel, uint seqSend, uint seqRecv)

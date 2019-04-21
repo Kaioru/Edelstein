@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Conversations;
 
 namespace Edelstein.Service.Game.Fields.User
 {
@@ -68,6 +69,57 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<int>(duration);
                 p.Encode<bool>(byItemOption);
                 await Field.BroadcastPacket(this, p);
+            }
+        }
+
+        private async Task OnUserScriptMessageAnswer(IPacket packet)
+        {
+            if (ConversationContext == null) return;
+
+            var type = (ConversationMessageType) packet.Decode<byte>();
+
+            if (type != ConversationContext.LastRequestType) return;
+            if (type == ConversationMessageType.AskQuiz ||
+                type == ConversationMessageType.AskSpeedQuiz)
+            {
+                await ConversationContext.Respond(packet.Decode<string>());
+                return;
+            }
+
+            var answer = packet.Decode<byte>();
+
+            if (
+                type != ConversationMessageType.Say &&
+                type != ConversationMessageType.AskYesNo &&
+                type != ConversationMessageType.AskAccept &&
+                answer == byte.MinValue ||
+                (type == ConversationMessageType.Say ||
+                 type == ConversationMessageType.AskYesNo ||
+                 type == ConversationMessageType.AskAccept) && answer == byte.MaxValue
+            )
+            {
+                ConversationContext.TokenSource.Cancel();
+                return;
+            }
+
+            switch (type)
+            {
+                case ConversationMessageType.AskText:
+                case ConversationMessageType.AskBoxText:
+                    await ConversationContext.Respond(packet.Decode<string>());
+                    break;
+                case ConversationMessageType.AskNumber:
+                case ConversationMessageType.AskMenu:
+                case ConversationMessageType.AskSlideMenu:
+                    await ConversationContext.Respond(packet.Decode<int>());
+                    break;
+                case ConversationMessageType.AskAvatar:
+                case ConversationMessageType.AskMemberShopAvatar:
+                    await ConversationContext.Respond(packet.Decode<byte>());
+                    break;
+                default:
+                    await ConversationContext.Respond(answer);
+                    break;
             }
         }
     }

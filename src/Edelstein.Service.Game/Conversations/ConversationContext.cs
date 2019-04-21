@@ -12,15 +12,15 @@ namespace Edelstein.Service.Game.Conversations
     {
         public ISocket Socket { get; }
         public ConversationMessageType LastRequestType { get; private set; }
+        public CancellationTokenSource TokenSource { get; }
 
         private readonly AsyncProducerConsumerQueue<object> _responses;
-        private readonly CancellationTokenSource _tokenSource;
 
         public ConversationContext(ISocket socket)
         {
             Socket = socket;
+            TokenSource = new CancellationTokenSource();
             _responses = new AsyncProducerConsumerQueue<object>();
-            _tokenSource = new CancellationTokenSource();
         }
 
         public async Task<T> Request<T>(IConversationMessage<T> message)
@@ -33,7 +33,7 @@ namespace Edelstein.Service.Game.Conversations
                 await Socket.SendPacket(p);
             }
 
-            var response = (T) await _responses.DequeueAsync(_tokenSource.Token);
+            var response = (T) await _responses.DequeueAsync(TokenSource.Token);
 
             if (!message.Validate(response))
                 throw new InvalidDataException("Invalid response value");
@@ -48,8 +48,8 @@ namespace Edelstein.Service.Game.Conversations
 
         public void Dispose()
         {
-            _tokenSource?.Cancel();
-            _tokenSource?.Dispose();
+            TokenSource?.Cancel();
+            TokenSource?.Dispose();
             _responses?.CompleteAdding();
         }
     }
