@@ -1,6 +1,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap.Types;
+using Edelstein.Core.Logging;
 using Edelstein.Core.Scripts;
 using Edelstein.Core.Scripts.Lua;
 using Edelstein.Core.Scripts.Python;
@@ -22,6 +23,8 @@ namespace Edelstein.Core.Bootstrap
 {
     public class Startup
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         private readonly StartupOption _option;
         private TemplateCollectionType _templateCollectionType = TemplateCollectionType.All;
 
@@ -187,7 +190,14 @@ namespace Edelstein.Core.Bootstrap
             where TService : class, IHostedService
             where TOption : class
         {
-            return Build<TService, TOption>(args).StartAsync();
+            var service = Build<TService, TOption>(args);
+
+            Logger.Info("Starting services with " +
+                        $"{_option.DistributedType} distribution, " +
+                        $"{_option.DatabaseType} database, " +
+                        $"{_option.ProviderType} data and " +
+                        $"{_option.ScriptType} scripting");
+            return service.StartAsync();
         }
     }
 }
