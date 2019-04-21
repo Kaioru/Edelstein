@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Edelstein.Core.Scripts;
 
-namespace Edelstein.Service.Game.Conversations.Scripts
+namespace Edelstein.Service.Game.Conversations.Scripted
 {
     public class ScriptedConversation : IConversation
     {

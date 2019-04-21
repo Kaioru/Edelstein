@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Edelstein.Service.Game.Conversations.Scripts
+namespace Edelstein.Service.Game.Conversations.Scripted
 {
     public class FallbackConversation : IConversation
     {
