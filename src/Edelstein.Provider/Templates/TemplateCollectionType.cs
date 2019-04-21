@@ -9,9 +9,10 @@ namespace Edelstein.Provider.Templates
         
         Item = 0x1,
         Field = 0x2,
-        MakeCharInfo = 0x4,
+        NPC = 0x4,
+        MakeCharInfo = 0x8,
         
         Login = Item | MakeCharInfo,
-        Game = Item | Field
+        Game = Item | Field | NPC
     }
 }

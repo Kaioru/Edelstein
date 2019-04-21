@@ -34,7 +34,19 @@ namespace Edelstein.Service.Game.Fields
             => _pools.Values.SelectMany(p => p.GetObjects());
 
         public IEnumerable<T> GetObjects<T>() where T : IFieldObj
-            => GetObjects().OfType<T>();
+            => _pools.Values.SelectMany(p => p.GetObjects<T>());
+
+        public IFieldObj GetControlledObject(IFieldUser controller, int id)
+            => GetControlledObjects(controller).FirstOrDefault(o => o.ID == id);
+
+        public T GetControlledObject<T>(IFieldUser controller, int id) where T : IFieldControlledObj
+            => GetControlledObjects<T>(controller).FirstOrDefault(o => o.ID == id);
+
+        public IEnumerable<IFieldObj> GetControlledObjects(IFieldUser controller)
+            => _pools.Values.SelectMany(p => p.GetControlledObjects(controller));
+
+        public IEnumerable<T> GetControlledObjects<T>(IFieldUser controller) where T : IFieldControlledObj
+            => _pools.Values.SelectMany(p => p.GetControlledObjects<T>(controller));
 
         public IFieldPool GetPool(FieldObjType type)
         {
@@ -121,7 +133,7 @@ namespace Edelstein.Service.Game.Fields
                 .Where(
                     c => c.Controller == null ||
                          !controllers.Contains(c.Controller))
-                .ForEach(c => c.SetController(controllers.FirstOrDefault()));
+                .ForEach(c => c.Controller = controllers.FirstOrDefault());
         }
     }
 }

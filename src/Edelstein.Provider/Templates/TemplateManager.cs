@@ -7,6 +7,7 @@ using Edelstein.Provider.Logging;
 using Edelstein.Provider.Templates.Etc.MakeCharInfo;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Item;
+using Edelstein.Provider.Templates.NPC;
 
 namespace Edelstein.Provider.Templates
 {
@@ -22,6 +23,7 @@ namespace Edelstein.Provider.Templates
                 {
                     [typeof(ItemTemplate)] = new ItemTemplateCollection(collection),
                     [typeof(FieldTemplate)] = new FieldTemplateCollection(collection),
+                    [typeof(NPCTemplate)] = new NPCTemplateCollection(collection),
                     [typeof(MakeCharInfoTemplate)] = new MakeCharInfoTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))

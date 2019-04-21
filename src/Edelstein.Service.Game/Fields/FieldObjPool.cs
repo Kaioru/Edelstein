@@ -12,7 +12,7 @@ namespace Edelstein.Service.Game.Fields
 
         public FieldObjPool()
             => _objects = new List<IFieldObj>();
-        
+
         public Task Enter(IFieldObj obj)
         {
             lock (this)
@@ -46,5 +46,16 @@ namespace Edelstein.Service.Game.Fields
         public IEnumerable<T> GetObjects<T>() where T : IFieldObj
             => _objects.OfType<T>().ToImmutableList();
 
+        public IFieldObj GetControlledObject(IFieldUser controller, int id)
+            => GetControlledObjects(controller).First(o => o.ID == id);
+
+        public T GetControlledObject<T>(IFieldUser controller, int id) where T : IFieldControlledObj
+            => GetControlledObjects<T>(controller).First(o => o.ID == id);
+
+        public IEnumerable<IFieldObj> GetControlledObjects(IFieldUser controller)
+            => GetControlledObjects<IFieldControlledObj>(controller);
+
+        public IEnumerable<T> GetControlledObjects<T>(IFieldUser controller) where T : IFieldControlledObj
+            => _objects.OfType<T>().Where(o => o.Controller == controller).ToImmutableList();
     }
 }

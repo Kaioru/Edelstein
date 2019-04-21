@@ -1,9 +1,11 @@
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
 using Edelstein.Database;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;
 
@@ -139,6 +141,15 @@ namespace Edelstein.Service.Game.Fields.User
 
         public Task OnPacket(RecvPacketOperations operation, IPacket packet)
         {
+            switch (operation)
+            {
+                case RecvPacketOperations.NpcMove:
+                case RecvPacketOperations.NpcSpecialAction:
+                    return Field
+                        .GetControlledObject<FieldNPC>(this , packet.Decode<int>())?
+                        .OnPacket(operation, packet);
+            }
+
             return operation switch {
                 RecvPacketOperations.UserMove => OnUserMove(packet),
                 RecvPacketOperations.UserChat => OnUserChat(packet),

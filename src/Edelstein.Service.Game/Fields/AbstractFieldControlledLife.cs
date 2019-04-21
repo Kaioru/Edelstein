@@ -4,16 +4,19 @@ namespace Edelstein.Service.Game.Fields
 {
     public abstract class AbstractFieldControlledLife : AbstractFieldLife, IFieldControlledObj
     {
-        public IFieldUser Controller { get; private set; }
+        private IFieldUser _controller;
 
-        public void SetController(IFieldUser user)
+        public IFieldUser Controller
         {
-            if (Controller?.Field == Field)
-                Controller?.SendPacket(GetChangeControllerPacket(false));
-            Controller = user;
-
-            if (user == null) return;
-            Controller.SendPacket(GetChangeControllerPacket(true));
+            get => _controller;
+            set
+            {
+                if (_controller?.Field == Field)
+                    _controller?.SendPacket(GetChangeControllerPacket(false));
+                _controller = value;
+                if (value == null) return;
+                _controller.SendPacket(GetChangeControllerPacket(true));
+            }
         }
 
         protected abstract IPacket GetChangeControllerPacket(bool setAsController);
