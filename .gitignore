@@ -4,6 +4,8 @@
 !**/*.example.json
 !**/appsettings.json
 
+.env
+
 # --- Platform specific ignores --- #
 
 # Created by https://www.gitignore.io/api/macos,windows
