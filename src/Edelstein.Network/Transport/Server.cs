@@ -46,7 +46,7 @@ namespace Edelstein.Network.Transport
                         new PacketEncoder()
                     );
                 }))
-                .BindAsync(IPAddress.Parse(host), port);
+                .BindAsync(port);
 
             Logger.Info($"Bounded server on {host}:{port}");
         }

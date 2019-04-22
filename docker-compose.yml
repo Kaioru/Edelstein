@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  container:
+    image: kaioru/edelstein/container:latest
+    ports:
+      - "8484:8484"
+      - "7575-7576:7575-7576"
+    environment:
+      - "APP_DatabaseConnectionString=host=db;database=postgres;"
+    build:
+      context: .
+      dockerfile: Dockerfile.container
+  db:
+    image: postgres
