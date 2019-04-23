@@ -14,7 +14,7 @@ services:
       - "APP_Service:GameServices:0:Host=${HOST:-127.0.0.1}"
       - "APP_Service:GameServices:1:Host=${HOST:-127.0.0.1}"
       - "APP_DatabaseConnectionString=host=db;database=postgres;"
-    links:
+    depends_on:
       - db
   db:
     image: postgres
