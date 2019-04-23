@@ -1,9 +1,11 @@
 FROM alpine:3.9 as data
 WORKDIR /app
 RUN apk --update add unzip
-ADD https://github.com/Kaioru/Server.Scripts/releases/download/1.0.0-pre1/Data.zip scripts.zip
+ARG script_url=https://github.com/Kaioru/Server.Scripts/releases/download/1.0.0-pre1/Data.zip
+ARG data_url=https://github.com/Kaioru/Server.NX/releases/download/1.0.0-pre1/Data.zip
+ADD ${script_url} scripts.zip
+ADD ${data_url} data.zip
 RUN unzip scripts.zip -d scripts/
-ADD https://github.com/Kaioru/Server.NX/releases/download/1.0.0-pre1/Data.zip data.zip
 RUN unzip data.zip -d data/
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 as build

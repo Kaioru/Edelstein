@@ -3,6 +3,9 @@ version: "3"
 services:
   container:
     image: kaioru/edelstein/container:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.container
     ports:
       - "8484:8484"
       - "7575-7576:7575-7576"
@@ -11,8 +14,7 @@ services:
       - "APP_Service:GameServices:0:Host=${HOST:-127.0.0.1}"
       - "APP_Service:GameServices:1:Host=${HOST:-127.0.0.1}"
       - "APP_DatabaseConnectionString=host=db;database=postgres;"
-    build:
-      context: .
-      dockerfile: Dockerfile.container
+    links:
+      - db
   db:
     image: postgres
