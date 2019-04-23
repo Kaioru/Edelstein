@@ -17,7 +17,7 @@ yup. it's that easy.
 ### Configuring .env
 By default, the predefined Container service runs on 127.0.0.1. 
 
-To change this, create a .env file and add ```APP_Host={ip}``` to change the host the service runs on.
+To change this, create a .env file and add ```HOST={ip}``` to change the host the service runs on.
 
 ## 🔨 Building from scratch
 
