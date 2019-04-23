@@ -2,7 +2,7 @@ version: "3"
 
 services:
   container:
-    image: kaioru/edelstein/container:latest
+    image: kaioru/edelstein-container
     build:
       context: .
       dockerfile: Dockerfile.container
