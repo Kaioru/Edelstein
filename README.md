@@ -11,6 +11,7 @@ A MapleStory Global v.95 server emulator written in C#.
 
 ### Running with Docker Compose
 1. ```docker-compose up```
+
 yup. it's that easy.
 
 ### Configuring .env
