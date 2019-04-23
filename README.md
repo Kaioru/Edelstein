@@ -3,13 +3,27 @@ A MapleStory Global v.95 server emulator written in C#.
 
 **this project is a work-in-progress**
 
-## 🔨 Building and Running
-### Clone the repo
+## 👨‍💻 Cloning the repo
 1. ```git clone https://github.com/Kaioru/Edelstein && cd Edelstein```
 2. ```git submodule update --init --recursive```
+
+## 🐳 Building from Docker
+
+### Running with Docker Compose
+1. ```docker-compose up```
+yup. it's that easy.
+
+### Configuring .env
+By default, the predefined Container service runs on 127.0.0.1. 
+
+To change this, create a .env file and add ```APP_Host={ip}``` to change the host the service runs on.
+
+## 🔨 Building from scratch
+
 ### Build with your favourite tool/ide
 1. On Visual Studio and Rider it should be pretty straightforward
 2. Use ```dotnet build``` if not using an IDE
+
 ### Running the Container service
 The Container service is the quick and easy way to spin up Edelstein
 1. ```cd src/Edelstein.Service.All```
