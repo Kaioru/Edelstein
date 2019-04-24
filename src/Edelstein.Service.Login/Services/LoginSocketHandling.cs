@@ -266,18 +266,18 @@ namespace Edelstein.Service.Login.Services
 
         private async Task OnSetGender(IPacket packet)
         {
-            var gender = packet.Decode<bool>();
+            var gender = (byte) (packet.Decode<bool>() ? 0 : 1);
 
             try
             {
                 using (var p = new Packet(SendPacketOperations.SetAccountResult))
                 using (var store = Service.DocumentStore.OpenSession())
                 {
-                    Account.Gender = (byte) (gender ? 0 : 1);
+                    Account.Gender = gender;
                     store.Update(Account);
                     await store.SaveChangesAsync();
 
-                    p.Encode<bool>(gender);
+                    p.Encode<byte>(gender);
                     p.Encode<bool>(true);
                     await SendPacket(p);
                 }
