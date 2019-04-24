@@ -5,7 +5,7 @@ namespace Edelstein.Core.Distributed.Peers.Info
 {
     public class LoginServiceInfo : ServerServiceInfo
     {
-        public bool AutoRegister { get; set; } = true;
+        public bool AutoRegister { get; set; }
         
         public ICollection<WorldInfo> Worlds { get; set; }
         public ICollection<LoginBalloonInfo> Balloons { get; set; }
