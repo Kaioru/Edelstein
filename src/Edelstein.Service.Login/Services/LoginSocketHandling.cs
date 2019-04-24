@@ -36,7 +36,23 @@ namespace Edelstein.Service.Login.Services
                         .FirstOrDefault(a => a.Username == username);
                     var result = LoginResultCode.Success;
 
-                    if (account == null) result = LoginResultCode.NotRegistered;
+                    if (account == null)
+                    {
+                        if (Service.Info.AutoRegister)
+                        {
+                            account = new Account
+                            {
+                                Username = username,
+                                Password = BCrypt.Net.BCrypt.HashPassword(password)
+                            };
+
+                            store.Store(account);
+                            await store.SaveChangesAsync();
+
+                            Logger.Debug($"Created new account, {username}");
+                        }
+                        else result = LoginResultCode.NotRegistered;
+                    }
                     else
                     {
                         if (await Service.AccountStateCache.ExistsAsync(account.ID.ToString()))
