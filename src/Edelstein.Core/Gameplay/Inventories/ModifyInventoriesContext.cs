@@ -8,8 +8,9 @@ using MoreLinq;
 
 namespace Edelstein.Core.Gameplay.Inventories
 {
-    public class ModifyInventoriesContext
+    public class ModifyInventoriesContext : IModifyInventoriesContext
     {
+        public IModifyInventoryContext this[ItemInventoryType key] => _inventories[key];
         private readonly IDictionary<ItemInventoryType, ModifyInventoryContext> _inventories;
 
         public ModifyInventoriesContext(IDictionary<ItemInventoryType, ItemInventory> inventories)
@@ -21,68 +22,33 @@ namespace Edelstein.Core.Gameplay.Inventories
         }
 
         public void Add(ItemSlot item)
-        {
-            _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Add(item);
-        }
+            => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Remove(item);
 
-        public void Add(ItemInventoryType type, ItemSlot item)
-        {
-            _inventories[type].Add(item);
-        }
-
-        public void Set(short slot, ItemTemplate template)
-        {
-            Set((ItemInventoryType) (template.ID / 1000000), slot, template);
-        }
-
-        public void Set(ItemInventoryType type, short slot, ItemTemplate template)
-        {
-            _inventories[type].Set(slot, template);
-        }
-
-        public void Set(short slot, ItemSlot item)
-        {
-            Set((ItemInventoryType) (item.TemplateID / 1000000), slot, item);
-        }
-
-        public void Set(ItemInventoryType type, short slot, ItemSlot item)
-        {
-            _inventories[type].Set(slot, item);
-        }
-
-        public void Remove(ItemInventoryType type, short slot)
-        {
-            _inventories[type].Remove(slot);
-        }
-
-        public void Remove(ItemInventoryType type, short slot, int count)
-        {
-            _inventories[type].Remove(slot, count);
-        }
-
-        public void Remove(int templateId, int count)
-        {
-            _inventories[(ItemInventoryType) (templateId / 1000000)].Remove(templateId, count);
-        }
-
-        public void Remove(ItemInventoryType type, int templateId, int count)
-        {
-            _inventories[type].Remove(templateId, count);
-        }
+        public void Add(ItemTemplate template, short quantity = 1)
+            => _inventories[(ItemInventoryType) (template.ID / 1000000)].Add(template, quantity);
         
-        public ItemSlotBundle Take(ItemInventoryType type, short slot, short count = 1)
-        {
-            return _inventories[type].Take(slot, count);
-        }
+        public void Set(short slot, ItemSlot item)
+            => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Set(slot, item);
 
-        public void Move(ItemInventoryType type, short from, short to)
-        {
-            _inventories[type].Move(from, to);
-        }
+        public void Set(short slot, ItemTemplate item, short quantity = 1)
+            => _inventories[(ItemInventoryType) (item.ID / 1000000)].Set(slot, item, quantity);
+
+        public void Remove(ItemSlot item)
+            => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Remove(item);
+
+        public void Remove(int template, short count)
+            => _inventories[(ItemInventoryType) (template / 1000000)].Remove(template, count);
+
+        public ItemSlotBundle Take(ItemSlotBundle bundle, short count = 1)
+            => _inventories[(ItemInventoryType) (bundle.TemplateID / 1000000)].Take(bundle, count);
+
+        public ItemSlotBundle Take(int template, short count = 1)
+            => _inventories[(ItemInventoryType) (template / 1000000)].Take(template, count);
+
+        public void Update(ItemSlot item)
+            => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Update(item);
 
         public void Encode(IPacket packet)
-        {
-            _inventories.Values.ForEach(i => i.Encode(packet));
-        }
+            => _inventories.Values.ForEach(i => i.Encode(packet));
     }
 }

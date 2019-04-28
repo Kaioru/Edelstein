@@ -196,9 +196,9 @@ namespace Edelstein.Service.Game.Fields.User
                         if (!(item is ItemSlotBundle bundle)) return;
                         if (bundle.Number < number) return;
 
-                        item = i.Take(type, from, number);
+                        item = i[type].Take(from, number);
                     }
-                    else i.Remove(type, from);
+                    else i[type].Remove(from);
 
                     var drop = new ItemFieldDrop(item) {Position = Position};
                     Field.Enter(drop, () => drop.GetEnterFieldPacket(0x1, this));
@@ -207,7 +207,7 @@ namespace Edelstein.Service.Game.Fields.User
             }
 
             // TODO: equippable checks
-            await ModifyInventory(i => i.Move(type, from, to), true);
+            await ModifyInventory(i => i[type].Move(from, to), true);
         }
 
         private Task OnDropPickUpRequest(IPacket packet)

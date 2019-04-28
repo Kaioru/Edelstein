@@ -54,7 +54,7 @@ namespace Edelstein.Service.Game.Fields.User
             }
         }
 
-        public async Task ModifyInventory(Action<ModifyInventoriesContext> action = null, bool exclRequest = false)
+        public async Task ModifyInventory(Action<IModifyInventoriesContext> action = null, bool exclRequest = false)
         {
             var context = new ModifyInventoriesContext(Character.Inventories);
             var equipped = Character.Inventories[ItemInventoryType.Equip].Items.Keys
