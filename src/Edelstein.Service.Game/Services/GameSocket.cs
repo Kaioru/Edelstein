@@ -43,6 +43,7 @@ namespace Edelstein.Service.Game.Services
                 RecvPacketOperations.MigrateIn => OnMigrateIn(packet),
                 RecvPacketOperations.AliveAck => TryProcessHeartbeat(Account, Character),
                 RecvPacketOperations.FuncKeyMappedModified => OnFuncKeyMappedModified(packet),
+                RecvPacketOperations.QuickslotKeyMappedModified => OnQuickSlotKeyMappedModified(packet),
                 _ => FieldUser?.OnPacket(operation, packet)
                 };
         }

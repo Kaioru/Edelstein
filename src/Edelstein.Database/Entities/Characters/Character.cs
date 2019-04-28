@@ -46,6 +46,7 @@ namespace Edelstein.Database.Entities.Characters
         public short SubJob { get; set; }
 
         public FunctionKey[] FunctionKeys { get; set; }
+        public int[] QuickSlotKeys { get; set; }
 
         public IDictionary<ItemInventoryType, ItemInventory> Inventories { get; set; }
 
@@ -94,6 +95,17 @@ namespace Edelstein.Database.Entities.Characters
             FunctionKeys[63] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion4);
             FunctionKeys[64] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion5);
             FunctionKeys[65] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion6);
+            
+            QuickSlotKeys = new int[8];
+
+            QuickSlotKeys[0] = 42;
+            QuickSlotKeys[1] = 82;
+            QuickSlotKeys[2] = 71;
+            QuickSlotKeys[3] = 73;
+            QuickSlotKeys[4] = 29;
+            QuickSlotKeys[5] = 83;
+            QuickSlotKeys[6] = 79;
+            QuickSlotKeys[7] = 81;
 
             Inventories = new Dictionary<ItemInventoryType, ItemInventory>
             {

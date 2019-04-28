@@ -54,6 +54,16 @@ namespace Edelstein.Service.Game.Services
 
                         await SendPacket(p);
                     }
+
+                    using (var p = new Packet(SendPacketOperations.QuickslotMappedInit))
+                    {
+                        p.Encode<bool>(true);
+
+                        for (var i = 0; i < 8; i++)
+                            p.Encode<int>(character.QuickSlotKeys[i]);
+
+                        await SendPacket(p);
+                    }
                 }
             }
             catch
@@ -78,6 +88,14 @@ namespace Edelstein.Service.Game.Services
                     Type = packet.Decode<byte>(),
                     Action = packet.Decode<int>()
                 };
+            }
+        }
+
+        private async Task OnQuickSlotKeyMappedModified(IPacket packet)
+        {
+            for (var i = 0; i < 8; i++)
+            {
+                Character.QuickSlotKeys[i] = packet.Decode<int>();
             }
         }
     }
