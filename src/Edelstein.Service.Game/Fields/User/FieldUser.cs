@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
-using Edelstein.Database;
+using Edelstein.Database.Entities;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Fields.Objects;

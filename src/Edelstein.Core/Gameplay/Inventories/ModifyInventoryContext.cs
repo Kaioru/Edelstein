@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Edelstein.Core.Extensions.Templates;
 using Edelstein.Core.Gameplay.Inventories.Operations;
-using Edelstein.Database.Inventories;
-using Edelstein.Database.Inventories.Items;
+using Edelstein.Database.Entities.Inventories;
+using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Provider.Templates.Item;
 
 namespace Edelstein.Core.Gameplay.Inventories

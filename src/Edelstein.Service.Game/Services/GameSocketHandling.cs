@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Database;
+using Edelstein.Database.Entities;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.User;
 
@@ -14,7 +14,7 @@ namespace Edelstein.Service.Game.Services
 
             try
             {
-                using (var store = Service.DocumentStore.OpenSession())
+                using (var store = Service.DataStore.OpenSession())
                 {
                     var character = store
                         .Query<Character>()

@@ -7,7 +7,7 @@ using Edelstein.Core;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Gameplay.Inventories;
-using Edelstein.Database;
+using Edelstein.Database.Entities;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Etc.MakeCharInfo;
 using Edelstein.Provider.Templates.Item;
@@ -29,7 +29,7 @@ namespace Edelstein.Service.Login.Services
                 await Service.LockProvider.AcquireAsync("loginLock");
 
                 using (var p = new Packet(SendPacketOperations.CheckPasswordResult))
-                using (var store = Service.DocumentStore.OpenSession())
+                using (var store = Service.DataStore.OpenSession())
                 {
                     var account = store
                         .Query<Account>()
@@ -46,9 +46,7 @@ namespace Edelstein.Service.Login.Services
                                 Password = BCrypt.Net.BCrypt.HashPassword(password)
                             };
 
-                            store.Store(account);
-                            await store.SaveChangesAsync();
-
+                            await store.InsertAsync(account);
                             Logger.Debug($"Created new account, {username}");
                         }
                         else result = LoginResultCode.NotRegistered;
@@ -176,7 +174,7 @@ namespace Edelstein.Service.Login.Services
             try
             {
                 using (var p = new Packet(SendPacketOperations.SelectWorldResult))
-                using (var store = Service.DocumentStore.OpenSession())
+                using (var store = Service.DataStore.OpenSession())
                 {
                     var service = Service.Peers
                         .OfType<GameServiceInfo>()
@@ -204,8 +202,7 @@ namespace Edelstein.Service.Login.Services
                                 SlotCount = 3
                             };
 
-                            store.Store(data);
-                            await store.SaveChangesAsync();
+                            await store.InsertAsync(data);
                         }
 
                         AccountData = data;
@@ -214,8 +211,7 @@ namespace Edelstein.Service.Login.Services
                         if (Account.LatestConnectedWorld != worldID)
                         {
                             Account.LatestConnectedWorld = worldID;
-                            store.Update(Account);
-                            await store.SaveChangesAsync();
+                            await store.UpdateAsync(Account);
                         }
 
                         var characters = store
@@ -271,11 +267,10 @@ namespace Edelstein.Service.Login.Services
             try
             {
                 using (var p = new Packet(SendPacketOperations.SetAccountResult))
-                using (var store = Service.DocumentStore.OpenSession())
+                using (var store = Service.DataStore.OpenSession())
                 {
                     Account.Gender = gender;
-                    store.Update(Account);
-                    await store.SaveChangesAsync();
+                    await store.UpdateAsync(Account);
 
                     p.Encode<byte>(gender);
                     p.Encode<bool>(true);
@@ -311,7 +306,7 @@ namespace Edelstein.Service.Login.Services
                 await Service.LockProvider.AcquireAsync("creationLock");
 
                 using (var p = new Packet(SendPacketOperations.CheckDuplicatedIDResult))
-                using (var store = Service.DocumentStore.OpenSession())
+                using (var store = Service.DataStore.OpenSession())
                 {
                     var duplicatedID = store
                         .Query<Character>()
@@ -357,7 +352,7 @@ namespace Edelstein.Service.Login.Services
                 await Service.LockProvider.AcquireAsync("creationLock");
 
                 using (var p = new Packet(SendPacketOperations.CreateNewCharacterResult))
-                using (var store = Service.DocumentStore.OpenSession())
+                using (var store = Service.DataStore.OpenSession())
                 {
                     var character = new Character
                     {
@@ -414,8 +409,7 @@ namespace Edelstein.Service.Login.Services
                         if (pants > 0)
                             context.Set(-6, templates.Get<ItemTemplate>(pants));
 
-                        store.Store(character);
-                        await store.SaveChangesAsync();
+                        await store.InsertAsync(character);
 
                         Logger.Debug($"Created new {race} character, {name}");
 
@@ -455,7 +449,7 @@ namespace Edelstein.Service.Login.Services
             try
             {
                 using (var p = new Packet(SendPacketOperations.DeleteCharacterResult))
-                using (var store = Service.DocumentStore.OpenSession())
+                using (var store = Service.DataStore.OpenSession())
                 {
                     var character = store.Query<Character>()
                         .Where(c => c.AccountDataID == AccountData.ID)
@@ -470,8 +464,7 @@ namespace Edelstein.Service.Login.Services
 
                     if (result == LoginResultCode.Success)
                     {
-                        store.Delete(character);
-                        await store.SaveChangesAsync();
+                        await store.DeleteAsync(character);
                     }
 
                     await SendPacket(p);
@@ -501,7 +494,7 @@ namespace Edelstein.Service.Login.Services
 
             try
             {
-                using (var store = Service.DocumentStore.OpenSession())
+                using (var store = Service.DataStore.OpenSession())
                 {
                     var character = store.Query<Character>()
                         .First(c => c.ID == characterID);
@@ -539,9 +532,7 @@ namespace Edelstein.Service.Login.Services
                     }
 
                     Account.SecondPassword = BCrypt.Net.BCrypt.HashPassword(spw);
-                    store.Update(Account);
-                    await store.SaveChangesAsync();
-
+                    await store.UpdateAsync(Account);
                     await TryMigrateTo(Account, Character, SelectedService);
                 }
             }
@@ -565,7 +556,7 @@ namespace Edelstein.Service.Login.Services
 
             try
             {
-                using (var store = Service.DocumentStore.OpenSession())
+                using (var store = Service.DataStore.OpenSession())
                 {
                     var character = store.Query<Character>()
                         .First(c => c.ID == characterID);

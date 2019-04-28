@@ -1,6 +1,6 @@
 using Marten.Schema;
 
-namespace Edelstein.Database
+namespace Edelstein.Database.Entities
 {
     public class Account
     {

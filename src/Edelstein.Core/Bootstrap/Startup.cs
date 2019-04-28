@@ -6,6 +6,8 @@ using Edelstein.Core.Scripts;
 using Edelstein.Core.Scripts.Lua;
 using Edelstein.Core.Scripts.Python;
 using Edelstein.Core.Utils.Messaging;
+using Edelstein.Database;
+using Edelstein.Database.Postgres;
 using Edelstein.Provider;
 using Edelstein.Provider.NX;
 using Edelstein.Provider.Templates;
@@ -139,8 +141,8 @@ namespace Edelstein.Core.Bootstrap
                         default:
                         case null:
                         case DatabaseType.PostgreSQL:
-                            builder.AddSingleton<IDocumentStore>(f =>
-                                DocumentStore.For(_option.DatabaseConnectionString)
+                            builder.AddSingleton<IDataStore>(f =>
+                                new MartenDataStore(DocumentStore.For(_option.DatabaseConnectionString))
                             );
                             break;
                     }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Types;
-using Edelstein.Database;
-using Edelstein.Database.Inventories;
-using Edelstein.Database.Inventories.Items;
+using Edelstein.Database.Entities;
+using Edelstein.Database.Entities.Inventories;
+using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using MoreLinq;
 

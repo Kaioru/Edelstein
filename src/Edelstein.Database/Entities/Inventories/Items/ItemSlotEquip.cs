@@ -1,4 +1,4 @@
-namespace Edelstein.Database.Inventories.Items
+namespace Edelstein.Database.Entities.Inventories.Items
 {
     public class ItemSlotEquip : ItemSlot
     {

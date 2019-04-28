@@ -1,7 +1,7 @@
-using Edelstein.Database.Inventories;
+using Edelstein.Database.Entities.Inventories;
 using Marten.Schema;
 
-namespace Edelstein.Database
+namespace Edelstein.Database.Entities
 {
     public class AccountData
     {

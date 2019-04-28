@@ -5,7 +5,7 @@ using DotNetty.Transport.Channels;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
-using Edelstein.Database;
+using Edelstein.Database.Entities;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Login.Logging;
 using Foundatio.Caching;

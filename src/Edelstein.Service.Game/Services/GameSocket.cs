@@ -5,7 +5,7 @@ using DotNetty.Transport.Channels;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
-using Edelstein.Database;
+using Edelstein.Database.Entities;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Service.Game.Fields.User;
@@ -53,7 +53,7 @@ namespace Edelstein.Service.Game.Services
 
         public override async Task OnUpdate()
         {
-            using (var store = Service.DocumentStore.OpenSession())
+            using (var store = Service.DataStore.OpenSession())
             {
                 Character.FieldPortal = (byte) FieldUser.Field.Template.Portals
                     .Values
@@ -68,10 +68,9 @@ namespace Edelstein.Service.Game.Services
                     .First()
                     .ID;
 
-                store.Update(Account);
-                store.Update(AccountData);
-                store.Update(Character);
-                await store.SaveChangesAsync();
+                await store.UpdateAsync(Account);
+                await store.UpdateAsync(AccountData);
+                await store.UpdateAsync(Character);
             }
         }
 

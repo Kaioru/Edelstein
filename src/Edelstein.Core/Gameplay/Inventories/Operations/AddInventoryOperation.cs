@@ -1,6 +1,6 @@
 using Edelstein.Core.Extensions;
-using Edelstein.Database.Inventories;
-using Edelstein.Database.Inventories.Items;
+using Edelstein.Database.Entities.Inventories;
+using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 
 namespace Edelstein.Core.Gameplay.Inventories.Operations

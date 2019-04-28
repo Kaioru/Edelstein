@@ -1,10 +1,10 @@
-using System.Reflection;
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Scripts;
 using Edelstein.Core.Scripts.Lua;
 using Edelstein.Core.Utils.Messaging;
+using Edelstein.Database;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
 using Edelstein.Service.Game.Conversations;
@@ -12,7 +12,6 @@ using Edelstein.Service.Game.Conversations.Scripted;
 using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields;
 using Foundatio.Caching;
-using Marten;
 using Microsoft.Extensions.Options;
 using MoonSharp.Interpreter;
 using MoreLinq;
@@ -21,7 +20,7 @@ namespace Edelstein.Service.Game.Services
 {
     public class GameService : AbstractMigrateableService<GameServiceInfo>
     {
-        public IDocumentStore DocumentStore { get; }
+        public IDataStore DataStore { get; }
         public ITemplateManager TemplateManager { get; }
         public IScriptManager ScriptManager { get; }
 
@@ -32,12 +31,12 @@ namespace Edelstein.Service.Game.Services
             IOptions<GameServiceInfo> info,
             ICacheClient cacheClient,
             IMessageBusFactory messageBusFactory,
-            IDocumentStore documentStore,
+            IDataStore dataStore,
             ITemplateManager templateManager,
             IScriptManager scriptManager
         ) : base(info.Value, cacheClient, messageBusFactory)
         {
-            DocumentStore = documentStore;
+            DataStore = dataStore;
             TemplateManager = templateManager;
             ScriptManager = scriptManager;
 

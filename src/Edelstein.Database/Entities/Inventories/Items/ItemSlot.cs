@@ -1,6 +1,6 @@
 using System;
 
-namespace Edelstein.Database.Inventories.Items
+namespace Edelstein.Database.Entities.Inventories.Items
 {
     public abstract class ItemSlot
     {

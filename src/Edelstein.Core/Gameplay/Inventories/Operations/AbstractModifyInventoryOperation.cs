@@ -1,4 +1,4 @@
-using Edelstein.Database.Inventories;
+using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
 
 namespace Edelstein.Core.Gameplay.Inventories.Operations

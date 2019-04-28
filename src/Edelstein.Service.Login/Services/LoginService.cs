@@ -2,18 +2,18 @@ using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Utils.Messaging;
+using Edelstein.Database;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
 using Foundatio.Caching;
 using Foundatio.Lock;
-using Marten;
 using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Login.Services
 {
     public class LoginService : AbstractMigrateableService<LoginServiceInfo>
     {
-        public IDocumentStore DocumentStore { get; }
+        public IDataStore DataStore { get; }
         public ILockProvider LockProvider { get; }
         public ITemplateManager TemplateManager { get; }
 
@@ -21,12 +21,12 @@ namespace Edelstein.Service.Login.Services
             IOptions<LoginServiceInfo> info,
             ICacheClient cacheClient,
             IMessageBusFactory messageBusFactory,
-            IDocumentStore store,
+            IDataStore store,
             ILockProvider lockProvider,
             ITemplateManager templateManager
         ) : base(info.Value, cacheClient, messageBusFactory)
         {
-            DocumentStore = store;
+            DataStore = store;
             LockProvider = lockProvider;
             TemplateManager = templateManager;
         }

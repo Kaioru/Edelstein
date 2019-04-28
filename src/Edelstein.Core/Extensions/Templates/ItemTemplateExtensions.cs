@@ -1,7 +1,7 @@
 using System;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Utils;
-using Edelstein.Database.Inventories.Items;
+using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Item.Cash;
 

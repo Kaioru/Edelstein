@@ -6,7 +6,6 @@ using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields.Objects;
-using Edelstein.Service.Game.Logging;
 
 namespace Edelstein.Service.Game.Fields.User
 {

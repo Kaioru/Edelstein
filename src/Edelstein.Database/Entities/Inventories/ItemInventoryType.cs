@@ -1,4 +1,4 @@
-namespace Edelstein.Database.Inventories
+namespace Edelstein.Database.Entities.Inventories
 {
     public enum ItemInventoryType
     {

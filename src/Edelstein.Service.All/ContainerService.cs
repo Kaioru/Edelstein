@@ -7,12 +7,12 @@ using Baseline;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Scripts;
 using Edelstein.Core.Utils.Messaging;
+using Edelstein.Database;
 using Edelstein.Provider.Templates;
 using Edelstein.Service.Game.Services;
 using Edelstein.Service.Login.Services;
 using Foundatio.Caching;
 using Foundatio.Lock;
-using Marten;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -39,7 +39,7 @@ namespace Edelstein.Service.All
                     Options.Create(i),
                     _serviceProvider.GetService<ICacheClient>(),
                     _serviceProvider.GetService<IMessageBusFactory>(),
-                    _serviceProvider.GetService<IDocumentStore>(),
+                    _serviceProvider.GetService<IDataStore>(),
                     _serviceProvider.GetService<ILockProvider>(),
                     _serviceProvider.GetService<ITemplateManager>()
                 )));
@@ -48,7 +48,7 @@ namespace Edelstein.Service.All
                     Options.Create(i),
                     _serviceProvider.GetService<ICacheClient>(),
                     _serviceProvider.GetService<IMessageBusFactory>(),
-                    _serviceProvider.GetService<IDocumentStore>(),
+                    _serviceProvider.GetService<IDataStore>(),
                     _serviceProvider.GetService<ITemplateManager>(),
                     _serviceProvider.GetService<IScriptManager>()
                 )));
