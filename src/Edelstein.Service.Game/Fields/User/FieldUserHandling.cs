@@ -25,14 +25,15 @@ namespace Edelstein.Service.Game.Fields.User
         private async Task OnUserTransferChannelRequest(IPacket packet)
         {
             var channel = packet.Decode<byte>();
-            var service = Socket.Service.Peers
-                .OfType<GameServiceInfo>()
-                .Where(g => g.WorldID == Socket.Service.Info.WorldID)
-                .OrderBy(g => g.ID)
-                .ToList()[channel];
 
             try
             {
+                var service = Socket.Service.Peers
+                    .OfType<GameServiceInfo>()
+                    .Where(g => g.WorldID == Socket.Service.Info.WorldID)
+                    .OrderBy(g => g.ID)
+                    .ToList()[channel];
+
                 await Socket.TryMigrateTo(Socket.Account, Socket.Character, service);
             }
             catch
