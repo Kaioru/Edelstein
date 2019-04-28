@@ -179,6 +179,7 @@ namespace Edelstein.Service.Game.Fields.User
 
             return operation switch {
                 RecvPacketOperations.UserTransferFieldRequest => OnUserTransferFieldRequest(packet),
+                RecvPacketOperations.UserTransferChannelRequest => OnUserTransferChannelRequest(packet),
                 RecvPacketOperations.UserMove => OnUserMove(packet),
                 RecvPacketOperations.UserChat => OnUserChat(packet),
                 RecvPacketOperations.UserEmotion => OnUserEmotion(packet),

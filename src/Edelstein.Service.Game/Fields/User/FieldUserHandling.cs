@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
+using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
@@ -20,6 +21,29 @@ namespace Edelstein.Service.Game.Fields.User
             var portal = Field.GetPortal(name);
 
             await portal.Enter(this);
+        }
+
+        private async Task OnUserTransferChannelRequest(IPacket packet)
+        {
+            var channel = packet.Decode<byte>();
+            var service = Socket.Service.Peers
+                .OfType<GameServiceInfo>()
+                .Where(g => g.WorldID == Socket.Service.Info.WorldID)
+                .OrderBy(g => g.ID)
+                .ToList()[channel];
+
+            try
+            {
+                await Socket.TryMigrateTo(Socket.Account, Socket.Character, service);
+            }
+            catch
+            {
+                using (var p = new Packet(SendPacketOperations.TransferChannelReqIgnored))
+                {
+                    p.Encode<byte>(0x1);
+                    await SendPacket(p);
+                }
+            }
         }
 
         private async Task OnUserMove(IPacket packet)
