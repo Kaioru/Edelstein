@@ -186,6 +186,7 @@ namespace Edelstein.Service.Game.Fields.User
                 RecvPacketOperations.UserSelectNpc => OnUserSelectNPC(packet),
                 RecvPacketOperations.UserScriptMessageAnswer => OnUserScriptMessageAnswer(packet),
                 RecvPacketOperations.UserChangeSlotPositionRequest => OnUserChangeSlotPositionRequest(packet),
+                RecvPacketOperations.DropPickUpRequest => OnDropPickUpRequest(packet),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
                 };
         }

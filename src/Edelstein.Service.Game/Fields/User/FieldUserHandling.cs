@@ -2,11 +2,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Database.Entities.Inventories;
+using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields.Objects;
+using Edelstein.Service.Game.Fields.Objects.Drops;
 
 namespace Edelstein.Service.Game.Fields.User
 {
@@ -184,13 +187,40 @@ namespace Edelstein.Service.Game.Fields.User
 
             if (to == 0)
             {
-                // TODO: drops
-                await ModifyStats(exclRequest: true);
+                await ModifyInventory(i =>
+                {
+                    var item = Character.Inventories[type].Items[from];
+
+                    if (!ItemConstants.IsTreatSingly(item.TemplateID))
+                    {
+                        if (!(item is ItemSlotBundle bundle)) return;
+                        if (bundle.Number < number) return;
+
+                        item = i.Take(type, from, number);
+                    }
+                    else i.Remove(type, from);
+
+                    var drop = new ItemFieldDrop(item) {Position = Position};
+                    Field.Enter(drop, () => drop.GetEnterFieldPacket(0x1, this));
+                }, true);
                 return;
             }
-            
+
             // TODO: equippable checks
             await ModifyInventory(i => i.Move(type, from, to), true);
+        }
+
+        private Task OnDropPickUpRequest(IPacket packet)
+        {
+            packet.Decode<byte>();
+            packet.Decode<int>();
+            packet.Decode<short>();
+            packet.Decode<short>();
+            var objectID = packet.Decode<int>();
+            packet.Decode<int>();
+            var drop = Field.GetObject<AbstractFieldDrop>(objectID);
+
+            return drop?.PickUp(this);
         }
     }
 }
