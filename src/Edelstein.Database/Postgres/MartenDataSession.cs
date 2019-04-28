@@ -13,9 +13,6 @@ namespace Edelstein.Database.Postgres
         public IDataQuery<T> Query<T>()
             => new MartenDataQuery<T>(_session.Query<T>());
 
-        public T Load<T>(int id)
-            => _session.Load<T>(id);
-
         public void Insert<T>(T entity)
         {
             _session.Insert<T>(entity);
@@ -33,9 +30,6 @@ namespace Edelstein.Database.Postgres
             _session.Delete<T>(entity);
             _session.SaveChanges();
         }
-
-        public Task<T> LoadAsync<T>(int id)
-            => _session.LoadAsync<T>(id);
 
         public Task InsertAsync<T>(T entity)
         {
