@@ -13,9 +13,10 @@ namespace Edelstein.Core.Gameplay.Inventories
         void Add(ItemTemplate template, short quantity = 1);
 
         void Set(short slot, ItemSlot item);
-        void Set(short slot, ItemTemplate item, short quantity = 1);
+        void Set(short slot, ItemTemplate template, short quantity = 1);
         
         void Remove(ItemSlot slot);
+        void Remove(ItemSlot item, short count);
         void Remove(int template, short count);
 
         ItemSlotBundle Take(ItemSlotBundle bundle, short count = 1);

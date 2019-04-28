@@ -22,7 +22,7 @@ namespace Edelstein.Core.Gameplay.Inventories
         }
 
         public void Add(ItemSlot item)
-            => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Remove(item);
+            => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Add(item);
 
         public void Add(ItemTemplate template, short quantity = 1)
             => _inventories[(ItemInventoryType) (template.ID / 1000000)].Add(template, quantity);
@@ -30,11 +30,14 @@ namespace Edelstein.Core.Gameplay.Inventories
         public void Set(short slot, ItemSlot item)
             => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Set(slot, item);
 
-        public void Set(short slot, ItemTemplate item, short quantity = 1)
-            => _inventories[(ItemInventoryType) (item.ID / 1000000)].Set(slot, item, quantity);
+        public void Set(short slot, ItemTemplate template, short quantity = 1)
+            => _inventories[(ItemInventoryType) (template.ID / 1000000)].Set(slot, template, quantity);
 
         public void Remove(ItemSlot item)
             => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Remove(item);
+
+        public void Remove(ItemSlot item, short count)
+            => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Remove(item, count);
 
         public void Remove(int template, short count)
             => _inventories[(ItemInventoryType) (template / 1000000)].Remove(template, count);
