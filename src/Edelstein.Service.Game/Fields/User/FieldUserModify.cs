@@ -1,9 +1,13 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
+using Edelstein.Core.Gameplay.Inventories;
+using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.User.Stats.Modify;
+using Microsoft.Scripting.Utils;
 
 namespace Edelstein.Service.Game.Fields.User
 {
@@ -47,6 +51,34 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<bool>(false);
                 p.Encode<bool>(false);
                 await SendPacket(p);
+            }
+        }
+
+        public async Task ModifyInventory(Action<ModifyInventoriesContext> action = null, bool exclRequest = false)
+        {
+            var context = new ModifyInventoriesContext(Character.Inventories);
+            var equipped = Character.Inventories[ItemInventoryType.Equip].Items.Keys
+                .Where(k => k < 0)
+                .ToList();
+
+            action?.Invoke(context);
+            using (var p = new Packet(SendPacketOperations.InventoryOperation))
+            {
+                p.Encode<bool>(exclRequest);
+                context.Encode(p);
+                p.Encode<bool>(false);
+                await SendPacket(p);
+            }
+
+            var newEquipped = Character.Inventories[ItemInventoryType.Equip].Items.Keys
+                .Where(k => k < 0)
+                .ToList();
+
+            if (equipped.Except(newEquipped).Any() ||
+                newEquipped.Except(equipped).Any())
+            {
+                // TODO: validate stats
+                AvatarModified();
             }
         }
     }

@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
@@ -171,6 +172,25 @@ namespace Edelstein.Service.Game.Fields.User
                     await ConversationContext.Respond(answer);
                     break;
             }
+        }
+
+        private async Task OnUserChangeSlotPositionRequest(IPacket packet)
+        {
+            packet.Decode<int>();
+            var type = (ItemInventoryType) packet.Decode<byte>();
+            var from = packet.Decode<short>();
+            var to = packet.Decode<short>();
+            var number = packet.Decode<short>();
+
+            if (to == 0)
+            {
+                // TODO: drops
+                await ModifyStats(exclRequest: true);
+                return;
+            }
+            
+            // TODO: equippable checks
+            await ModifyInventory(i => i.Move(type, from, to), true);
         }
     }
 }

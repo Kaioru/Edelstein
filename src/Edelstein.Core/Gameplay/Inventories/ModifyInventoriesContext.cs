@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Database.Entities.Inventories.Items;
+using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Item;
+using MoreLinq;
 
 namespace Edelstein.Core.Gameplay.Inventories
 {
@@ -41,6 +43,16 @@ namespace Edelstein.Core.Gameplay.Inventories
         public void Remove(ItemInventoryType type, short slot)
         {
             _inventories[type].Remove(slot);
+        }
+
+        public void Move(ItemInventoryType type, short from, short to)
+        {
+            _inventories[type].Move(from, to);
+        }
+
+        public void Encode(IPacket packet)
+        {
+            _inventories.Values.ForEach(i => i.Encode(packet));
         }
     }
 }
