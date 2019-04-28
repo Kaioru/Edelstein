@@ -1,4 +1,5 @@
 using Edelstein.Database.Entities;
+using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 
 namespace Edelstein.Service.Game.Fields.User.Stats.Modify

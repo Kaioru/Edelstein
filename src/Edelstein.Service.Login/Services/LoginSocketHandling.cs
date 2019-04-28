@@ -8,6 +8,7 @@ using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Database.Entities;
+using Edelstein.Database.Entities.Characters;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Etc.MakeCharInfo;

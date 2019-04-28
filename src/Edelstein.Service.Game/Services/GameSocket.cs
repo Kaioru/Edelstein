@@ -6,6 +6,7 @@ using Edelstein.Core;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Database.Entities;
+using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Service.Game.Fields.User;
@@ -41,6 +42,7 @@ namespace Edelstein.Service.Game.Services
             return operation switch {
                 RecvPacketOperations.MigrateIn => OnMigrateIn(packet),
                 RecvPacketOperations.AliveAck => TryProcessHeartbeat(Account, Character),
+                RecvPacketOperations.FuncKeyMappedModified => OnFuncKeyMappedModified(packet),
                 _ => FieldUser?.OnPacket(operation, packet)
                 };
         }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Database.Entities;
+using Edelstein.Database.Entities.Characters;
 using Edelstein.Network;
 using Edelstein.Network.Packets;
 using Foundatio.Caching;

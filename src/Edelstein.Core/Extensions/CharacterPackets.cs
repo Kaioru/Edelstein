@@ -4,6 +4,7 @@ using System.Linq;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Types;
 using Edelstein.Database.Entities;
+using Edelstein.Database.Entities.Characters;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
