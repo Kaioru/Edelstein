@@ -9,6 +9,7 @@ services:
     ports:
       - "8484:8484"
       - "7575-7576:7575-7576"
+      - "9000:9000"
     environment:
       - "APP_Service:LoginServices:0:AutoRegister=${AUTO_REGISTER:-true}"
       - "APP_Service:LoginServices:0:Host=${HOST:-127.0.0.1}"
