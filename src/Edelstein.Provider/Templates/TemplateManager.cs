@@ -31,7 +31,8 @@ namespace Edelstein.Provider.Templates
                     [typeof(CashPackageTemplate)] = new CashPackageTemplateCollection(collection),
                     [typeof(ModifiedCommodityTemplate)] = new ModifiedCommodityTemplateCollection(collection),
                     [typeof(BestTemplate)] = new BestTemplateCollection(collection),
-                    [typeof(NotSaleTemplate)] = new NotSaleTemplateCollection(collection)
+                    [typeof(NotSaleTemplate)] = new NotSaleTemplateCollection(collection),
+                    [typeof(CategoryDiscountTemplate)] = new CategoryDiscountTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
