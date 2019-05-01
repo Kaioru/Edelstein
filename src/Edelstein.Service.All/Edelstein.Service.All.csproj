@@ -6,13 +6,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj"/>
-        <ProjectReference Include="..\Edelstein.Service.Game\Edelstein.Service.Game.csproj"/>
-        <ProjectReference Include="..\Edelstein.Service.Login\Edelstein.Service.Login.csproj"/>
+        <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
+        <ProjectReference Include="..\Edelstein.Service.Game\Edelstein.Service.Game.csproj" />
+        <ProjectReference Include="..\Edelstein.Service.Login\Edelstein.Service.Login.csproj" />
+        <ProjectReference Include="..\Edelstein.Service.Shop\Edelstein.Service.Shop.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="appsettings.json"/>
+        <None Remove="appsettings.json" />
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>

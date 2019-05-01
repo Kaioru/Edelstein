@@ -11,6 +11,7 @@ using Edelstein.Database;
 using Edelstein.Provider.Templates;
 using Edelstein.Service.Game.Services;
 using Edelstein.Service.Login.Services;
+using Edelstein.Service.Shop.Services;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +52,12 @@ namespace Edelstein.Service.All
                     _serviceProvider.GetService<IDataStore>(),
                     _serviceProvider.GetService<ITemplateManager>(),
                     _serviceProvider.GetService<IScriptManager>()
+                )));
+            _services.AddRange(_info.ShopServices
+                .Select(i => new ShopService(
+                    Options.Create(i),
+                    _serviceProvider.GetService<ICacheClient>(),
+                    _serviceProvider.GetService<IMessageBusFactory>()
                 )));
 
             await Task.WhenAll(_services.Select(s => s.StartAsync(cancellationToken)));
