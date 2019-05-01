@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider.Logging;
+using Edelstein.Provider.Templates.Etc;
 using Edelstein.Provider.Templates.Etc.MakeCharInfo;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.NPC;
+using Edelstein.Provider.Templates.Server;
 
 namespace Edelstein.Provider.Templates
 {
@@ -24,7 +26,12 @@ namespace Edelstein.Provider.Templates
                     [typeof(ItemTemplate)] = new ItemTemplateCollection(collection),
                     [typeof(FieldTemplate)] = new FieldTemplateCollection(collection),
                     [typeof(NPCTemplate)] = new NPCTemplateCollection(collection),
-                    [typeof(MakeCharInfoTemplate)] = new MakeCharInfoTemplateCollection(collection)
+                    [typeof(MakeCharInfoTemplate)] = new MakeCharInfoTemplateCollection(collection),
+                    [typeof(CommodityTemplate)] = new CommodityTemplateCollection(collection),
+                    [typeof(CashPackageTemplate)] = new CashPackageTemplateCollection(collection),
+                    [typeof(ModifiedCommodityTemplate)] = new ModifiedCommodityTemplateCollection(collection),
+                    [typeof(BestTemplate)] = new BestTemplateCollection(collection),
+                    [typeof(NotSaleTemplate)] = new NotSaleTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
