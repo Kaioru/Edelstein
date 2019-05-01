@@ -8,8 +8,8 @@ namespace Edelstein.Service.Game.Conversations
     public abstract class AbstractSpeaker : ISpeaker
     {
         public IConversationContext Context { get; }
-        public abstract int TemplateID { get; }
-        public abstract SpeakerParamType ParamType { get; }
+        public virtual int TemplateID { get; } = 9010000;
+        public virtual SpeakerParamType ParamType { get; } = 0;
 
         protected AbstractSpeaker(IConversationContext context)
         {
@@ -29,7 +29,7 @@ namespace Edelstein.Service.Game.Conversations
             => AskAcceptAsync(text).Result;
 
         public string AskText(string text = "", string def = "", short lenMin = 0, short lenMax = short.MaxValue)
-            => AskTextAsync(text, def, lenMax, lenMax).Result;
+            => AskTextAsync(text, def, lenMin, lenMax).Result;
 
         public string AskBoxText(string text = "", string def = "", short cols = 24, short rows = 4)
             => AskBoxTextAsync(text, def, cols, rows).Result;

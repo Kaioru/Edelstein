@@ -1,0 +1,23 @@
+using System.Linq;
+using Edelstein.Service.Game.Fields;
+using Edelstein.Service.Game.Fields.Objects;
+using Edelstein.Service.Game.Fields.User;
+
+namespace Edelstein.Service.Game.Conversations.Speakers
+{
+    public class FieldSpeaker : AbstractSpeaker
+    {
+        private readonly IField _field;
+
+        public FieldSpeaker(IConversationContext context, IField field) : base(context)
+            => _field = field;
+
+        public FieldUserSpeaker GetUser(int id)
+            => new FieldUserSpeaker(Context, _field.GetObject<FieldUser>(id));
+
+        public FieldNPCSpeaker GetNPC(int template)
+            => new FieldNPCSpeaker(Context, _field
+                .GetObjects<FieldNPC>()
+                .First(npc => npc.Template.ID == template));
+    }
+}

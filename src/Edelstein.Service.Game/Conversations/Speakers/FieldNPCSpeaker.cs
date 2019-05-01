@@ -1,14 +1,12 @@
-using MoonSharp.Interpreter;
+using Edelstein.Service.Game.Fields.Objects;
 
 namespace Edelstein.Service.Game.Conversations.Speakers
 {
-    [MoonSharpUserData]
-    public class FieldNPCSpeaker : AbstractSpeaker
+    public class FieldNPCSpeaker : AbstractFieldObjSpeaker<FieldNPC>
     {
-        public override int TemplateID => 9010000;
-        public override SpeakerParamType ParamType => SpeakerParamType.NPCReplacedByUser;
+        public override int TemplateID => Obj.Template.ID;
 
-        public FieldNPCSpeaker(IConversationContext context) : base(context)
+        public FieldNPCSpeaker(IConversationContext context, FieldNPC obj) : base(context, obj)
         {
         }
     }

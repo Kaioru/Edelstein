@@ -119,8 +119,8 @@ namespace Edelstein.Service.Game.Fields.User
             var conversation = await Service.ConversationManager.Build(
                 script,
                 context,
-                new FieldNPCSpeaker(context),
-                new FieldUserSpeaker(context)
+                new FieldNPCSpeaker(context, npc),
+                new FieldUserSpeaker(context, this)
             );
 
             await Converse(conversation);
