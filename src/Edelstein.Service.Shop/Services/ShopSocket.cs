@@ -36,7 +36,9 @@ namespace Edelstein.Service.Shop.Services
         {
             var operation = (RecvPacketOperations) packet.Decode<short>();
             return operation switch {
+                RecvPacketOperations.MigrateIn => OnMigrateIn(packet),
                 RecvPacketOperations.AliveAck => TryProcessHeartbeat(Account, Character),
+                RecvPacketOperations.UserTransferFieldRequest => OnUserTransferFieldRequest(packet),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
                 };
         }
