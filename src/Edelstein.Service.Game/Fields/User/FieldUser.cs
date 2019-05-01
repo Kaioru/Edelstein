@@ -33,7 +33,7 @@ namespace Edelstein.Service.Game.Fields.User
             Socket = socket;
 
             BasicStat = new BasicStat(this);
-            ForcedStat = new ForcedStat();
+            ForcedStat = new ForcedStat(this);
             ValidateStat();
         }
 

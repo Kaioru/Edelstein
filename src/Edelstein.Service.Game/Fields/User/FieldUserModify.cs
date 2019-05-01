@@ -61,6 +61,21 @@ namespace Edelstein.Service.Game.Fields.User
             }
         }
 
+        public async Task ModifyForcedStats(Action<ModifyForcedStatContext> action = null)
+        {
+            var context = new ModifyForcedStatContext(ForcedStat);
+
+            action?.Invoke(context);
+            await ValidateStat();
+
+            if (!IsInstantiated) return;
+            using (var p = new Packet(SendPacketOperations.ForcedStatSet))
+            {
+                context.Encode(p);
+                await SendPacket(p);
+            }
+        }
+
         public async Task ModifyInventory(Action<IModifyInventoriesContext> action = null, bool exclRequest = false)
         {
             var context = new ModifyInventoriesContext(Character.Inventories);

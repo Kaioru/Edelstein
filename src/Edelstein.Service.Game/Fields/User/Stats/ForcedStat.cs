@@ -1,7 +1,12 @@
+using Edelstein.Core;
+using Edelstein.Network.Packets;
+
 namespace Edelstein.Service.Game.Fields.User.Stats
 {
     public class ForcedStat
     {
+        private readonly FieldUser _user;
+
         public short STR { get; set; }
         public short DEX { get; set; }
         public short INT { get; set; }
@@ -15,6 +20,11 @@ namespace Edelstein.Service.Game.Fields.User.Stats
         public byte Speed { get; set; }
         public byte Jump { get; set; }
         public byte SpeedMax { get; set; }
+
+        public ForcedStat(FieldUser user)
+        {
+            _user = user;
+        }
 
         public void Reset()
         {
@@ -31,6 +41,8 @@ namespace Edelstein.Service.Game.Fields.User.Stats
             Speed = 0;
             Jump = 0;
             SpeedMax = 0;
+
+            _user.SendPacket(new Packet(SendPacketOperations.ForcedStatReset));
         }
     }
 }
