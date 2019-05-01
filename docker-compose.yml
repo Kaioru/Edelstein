@@ -14,6 +14,7 @@ services:
       - "APP_Service:LoginServices:0:Host=${HOST:-127.0.0.1}"
       - "APP_Service:GameServices:0:Host=${HOST:-127.0.0.1}"
       - "APP_Service:GameServices:1:Host=${HOST:-127.0.0.1}"
+      - "APP_Service:ShopServices:0:Host=${HOST:-127.0.0.1}"
       - "APP_DatabaseType=PostgreSQL"
       - "APP_DatabaseConnectionString=host=db;username=postgres;database=postgres;"
     links:
