@@ -223,5 +223,26 @@ namespace Edelstein.Service.Game.Fields.User
 
             return drop?.PickUp(this);
         }
+
+        private async Task OnUserPortalScriptRequest(IPacket packet)
+        {
+            packet.Decode<byte>();
+
+            var name = packet.Decode<string>();
+            var portal = Field.Template.Portals.Values.FirstOrDefault(p => p.Name.Equals(name));
+
+            if (portal == null) return;
+            if (string.IsNullOrEmpty(portal.Script)) return;
+
+            var context = new ConversationContext(Socket);
+            var conversation = await Socket.Service.ConversationManager.Build(
+                portal.Script,
+                context,
+                new FieldSpeaker(context, Field),
+                new FieldUserSpeaker(context, this)
+            );
+
+            await Converse(conversation);
+        }
     }
 }

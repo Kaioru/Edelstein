@@ -15,7 +15,7 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
         public FieldUserSpeaker GetUser(int id)
             => new FieldUserSpeaker(Context, _field.GetObject<FieldUser>(id));
 
-        public FieldNPCSpeaker GetNPC(int template)
+        public FieldNPCSpeaker GetNpc(int template)
             => new FieldNPCSpeaker(Context, _field
                 .GetObjects<FieldNPC>()
                 .First(npc => npc.Template.ID == template));
