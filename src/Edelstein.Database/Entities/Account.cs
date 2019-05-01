@@ -18,7 +18,6 @@ namespace Edelstein.Database.Entities
         public int PrepaidNXCash { get; set; }
 
         public byte LatestConnectedWorld { get; set; }
-        public string LatestConnectedService { get; set; }
         public string PreviousConnectedService { get; set; }
     }
 }

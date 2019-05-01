@@ -13,6 +13,7 @@ namespace Edelstein.Provider.Templates
         MakeCharInfo = 0x8,
         
         Login = Item | MakeCharInfo,
-        Game = Item | Field | NPC
+        Game = Item | Field | NPC,
+        Shop = Item
     }
 }

@@ -37,6 +37,8 @@ namespace Edelstein.Core.Distributed.Migrations
             if (await _service.MigrationStateCache.ExistsAsync(character.ID.ToString()))
                 throw new MigrationException("Already migrating");
 
+            account.PreviousConnectedService = _service.Info.Name;
+            
             await OnUpdate();
             await _service.AccountStateCache.SetAsync(
                 account.ID.ToString(),
