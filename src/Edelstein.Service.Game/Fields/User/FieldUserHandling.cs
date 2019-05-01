@@ -51,6 +51,29 @@ namespace Edelstein.Service.Game.Fields.User
             }
         }
 
+        private async Task OnUserMigrateToCashShopRequest(IPacket packet)
+        {
+            try
+            {
+                var service = Socket.Service.Peers
+                    .OfType<ShopServiceInfo>()
+                    .Where(g => g.Worlds.Contains(Socket.Service.Info.WorldID))
+                    .OrderBy(g => g.ID)
+                    .First();
+
+                // TODO: multi selection
+                await Socket.TryMigrateTo(Socket.Account, Socket.Character, service);
+            }
+            catch
+            {
+                using (var p = new Packet(SendPacketOperations.TransferChannelReqIgnored))
+                {
+                    p.Encode<byte>(0x2);
+                    await SendPacket(p);
+                }
+            }
+        }
+
         private async Task OnUserMove(IPacket packet)
         {
             packet.Decode<long>();
