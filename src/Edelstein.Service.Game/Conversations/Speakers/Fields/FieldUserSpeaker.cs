@@ -1,6 +1,6 @@
 using Edelstein.Service.Game.Fields.User;
 
-namespace Edelstein.Service.Game.Conversations.Speakers
+namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 {
     public class FieldUserSpeaker : AbstractFieldObjSpeaker<FieldUser>
     {

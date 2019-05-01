@@ -3,7 +3,7 @@ using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.User;
 
-namespace Edelstein.Service.Game.Conversations.Speakers
+namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 {
     public class FieldSpeaker : AbstractSpeaker
     {
@@ -19,5 +19,8 @@ namespace Edelstein.Service.Game.Conversations.Speakers
             => new FieldNPCSpeaker(Context, _field
                 .GetObjects<FieldNPC>()
                 .First(npc => npc.Template.ID == template));
+        
+        public FieldPortalSpeaker GetPortal(string portal)
+            => new FieldPortalSpeaker(Context, _field.GetPortal(portal));
     }
 }
