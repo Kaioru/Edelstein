@@ -6,7 +6,7 @@ using Edelstein.Core.Extensions;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
-using Edelstein.Provider.Templates.Server;
+using Edelstein.Provider.Templates.Shop;
 using MoreLinq;
 
 namespace Edelstein.Service.Shop.Services

@@ -1,6 +1,6 @@
 using System;
 
-namespace Edelstein.Provider.Templates.Server
+namespace Edelstein.Provider.Templates.Shop
 {
     public class CategoryDiscountTemplate : ITemplate
     {

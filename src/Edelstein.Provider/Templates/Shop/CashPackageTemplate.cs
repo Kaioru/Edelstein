@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Edelstein.Provider.Templates.Etc
+namespace Edelstein.Provider.Templates.Shop
 {
     public class CashPackageTemplate : ITemplate
     {

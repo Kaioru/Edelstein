@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Edelstein.Provider.Templates.Etc
+namespace Edelstein.Provider.Templates.Shop
 {
     public class CashPackageTemplateCollection : AbstractEagerTemplateCollection
     {
-        public override TemplateCollectionType Type { get; }
+        public override TemplateCollectionType Type => TemplateCollectionType.CashPackage;
 
         public CashPackageTemplateCollection(IDataDirectoryCollection collection) : base(collection)
         {
