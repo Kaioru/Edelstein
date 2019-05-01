@@ -7,13 +7,20 @@ using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.User.Stats.Modify;
-using Microsoft.Scripting.Utils;
 
 namespace Edelstein.Service.Game.Fields.User
 {
     public partial class FieldUser
     {
-        public void AvatarModified()
+        public async Task ValidateStat()
+        {
+            BasicStat.Calculate();
+
+            if (Character.HP > BasicStat.MaxHP) await ModifyStats(s => s.HP = BasicStat.MaxHP);
+            if (Character.MP > BasicStat.MaxMP) await ModifyStats(s => s.MP = BasicStat.MaxMP);
+        }
+
+        public async Task AvatarModified()
         {
             using (var p = new Packet(SendPacketOperations.UserAvatarModified))
             {
@@ -26,7 +33,7 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<bool>(false);
                 p.Encode<int>(0); // Completed Set ID
 
-                Field.BroadcastPacket(this, p);
+                await Field.BroadcastPacket(this, p);
             }
         }
 
@@ -35,14 +42,14 @@ namespace Edelstein.Service.Game.Fields.User
             var context = new ModifyStatContext(Character);
 
             action?.Invoke(context);
-            // TODO: validate stats
+            await ValidateStat();
 
             if (!IsInstantiated) return;
 
             if (context.Flag.HasFlag(ModifyStatType.Skin) ||
                 context.Flag.HasFlag(ModifyStatType.Face) ||
                 context.Flag.HasFlag(ModifyStatType.Hair))
-                AvatarModified();
+                await AvatarModified();
 
             using (var p = new Packet(SendPacketOperations.StatChanged))
             {
@@ -77,8 +84,8 @@ namespace Edelstein.Service.Game.Fields.User
             if (equipped.Except(newEquipped).Any() ||
                 newEquipped.Except(equipped).Any())
             {
-                // TODO: validate stats
-                AvatarModified();
+                await ValidateStat();
+                await AvatarModified();
             }
         }
     }

@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Services;

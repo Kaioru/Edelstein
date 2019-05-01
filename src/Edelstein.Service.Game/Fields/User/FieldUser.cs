@@ -3,11 +3,11 @@ using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
-using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Fields.Objects;
+using Edelstein.Service.Game.Fields.User.Stats;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;
 
@@ -23,11 +23,18 @@ namespace Edelstein.Service.Game.Fields.User
         public Character Character => Socket.Character;
         public bool IsInstantiated { get; set; }
 
+        public BasicStat BasicStat { get; }
+        public ForcedStat ForcedStat { get; }
+
         public IConversationContext ConversationContext { get; private set; }
 
         public FieldUser(GameSocket socket)
         {
             Socket = socket;
+
+            BasicStat = new BasicStat(this);
+            ForcedStat = new ForcedStat();
+            ValidateStat();
         }
 
         public Task Converse(IConversation conversation)
@@ -162,6 +169,7 @@ namespace Edelstein.Service.Game.Fields.User
         public void Dispose()
         {
             ConversationContext?.Dispose();
+            ForcedStat.Reset();
         }
 
         public Task SendPacket(IPacket packet)
