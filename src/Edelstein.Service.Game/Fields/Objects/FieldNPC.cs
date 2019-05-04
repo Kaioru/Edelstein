@@ -14,9 +14,10 @@ namespace Edelstein.Service.Game.Fields.Objects
         public int RX0 { get; set; }
         public int RX1 { get; set; }
 
-        public FieldNPC(NPCTemplate template)
+        public FieldNPC(NPCTemplate template, bool left)
         {
             Template = template;
+            MoveAction = (byte) (left ? 1 : 0);
         }
 
         public override IPacket GetEnterFieldPacket()

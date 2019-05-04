@@ -1,7 +1,9 @@
 using System.Drawing;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
+using Edelstein.Provider.Templates.Field.Life;
 using Edelstein.Provider.Templates.Field.Life.Mob;
+using Edelstein.Service.Game.Fields.Movement;
 
 namespace Edelstein.Service.Game.Fields.Objects.Mobs
 {
@@ -11,9 +13,18 @@ namespace Edelstein.Service.Game.Fields.Objects.Mobs
         public MobTemplate Template { get; }
         public short HomeFoothold { get; set; }
 
-        public FieldMob(MobTemplate template)
+        public FieldMob(MobTemplate template, bool left = true)
         {
             Template = template;
+            MoveAction = (byte) (
+                (left ? 1 : 0) & 1 |
+                2 * (int) (Template.MoveAbility switch {
+                    MoveAbilityType.Fly => MoveActionType.Fly,
+                    MoveAbilityType.Stop => MoveActionType.Stand,
+                    _ => MoveActionType.Move,
+                    }
+                )
+            );
         }
 
         private void EncodeData(IPacket packet, MobAppearType summonType, int? summonOption = null)

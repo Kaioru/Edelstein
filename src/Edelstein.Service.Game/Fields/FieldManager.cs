@@ -37,10 +37,9 @@ namespace Edelstein.Service.Game.Fields
                         switch (l.Type)
                         {
                             case FieldLifeType.NPC:
-                                field.Enter(new FieldNPC(_templateManager.Get<NPCTemplate>(l.ID))
+                                field.Enter(new FieldNPC(_templateManager.Get<NPCTemplate>(l.ID), !l.F)
                                 {
                                     Position = l.Position,
-                                    MoveAction = l.F,
                                     Foothold = (short) l.FH,
                                     RX0 = l.RX0,
                                     RX1 = l.RX1
