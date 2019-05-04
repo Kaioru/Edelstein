@@ -208,9 +208,9 @@ namespace Edelstein.Service.Game.Fields.User.Stats
             var forced = _user.ForcedStat;
 
             if (forced.STR > 0) STR = forced.STR;
-            if (forced.DEX > 0) STR = forced.DEX;
-            if (forced.INT > 0) STR = forced.INT;
-            if (forced.LUK > 0) STR = forced.LUK;
+            if (forced.DEX > 0) DEX = forced.DEX;
+            if (forced.INT > 0) INT = forced.INT;
+            if (forced.LUK > 0) LUK = forced.LUK;
 
             if (forced.PAD > 0) PAD = forced.PAD;
             if (forced.PDD > 0) PDD = forced.PDD;
