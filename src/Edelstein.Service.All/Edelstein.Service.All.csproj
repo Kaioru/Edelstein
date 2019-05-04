@@ -10,6 +10,7 @@
         <ProjectReference Include="..\Edelstein.Service.Game\Edelstein.Service.Game.csproj" />
         <ProjectReference Include="..\Edelstein.Service.Login\Edelstein.Service.Login.csproj" />
         <ProjectReference Include="..\Edelstein.Service.Shop\Edelstein.Service.Shop.csproj" />
+        <ProjectReference Include="..\Edelstein.Service.Trade\Edelstein.Service.Trade.csproj" />
     </ItemGroup>
 
     <ItemGroup>

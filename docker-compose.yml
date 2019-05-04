@@ -10,12 +10,14 @@ services:
       - "8484:8484"
       - "7575-7576:7575-7576"
       - "9000:9000"
+      - "9100:9100"
     environment:
       - "APP_Service:LoginServices:0:AutoRegister=${AUTO_REGISTER:-true}"
       - "APP_Service:LoginServices:0:Host=${HOST:-127.0.0.1}"
       - "APP_Service:GameServices:0:Host=${HOST:-127.0.0.1}"
       - "APP_Service:GameServices:1:Host=${HOST:-127.0.0.1}"
       - "APP_Service:ShopServices:0:Host=${HOST:-127.0.0.1}"
+      - "APP_Service:TradeServices:0:Host=${HOST:-127.0.0.1}"
       - "APP_DatabaseType=PostgreSQL"
       - "APP_DatabaseConnectionString=host=db;username=postgres;database=postgres;"
     links:

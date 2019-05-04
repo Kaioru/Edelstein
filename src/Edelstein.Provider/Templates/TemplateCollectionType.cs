@@ -6,6 +6,7 @@ namespace Edelstein.Provider.Templates
     public enum TemplateCollectionType
     {
         All = int.MaxValue,
+        None = 0x0,
 
         Item = 0x1,
         Field = 0x2,
