@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
@@ -23,6 +25,7 @@ namespace Edelstein.Service.Game.Fields.User
         public GameSocket Socket { get; }
         public Character Character => Socket.Character;
         public bool IsInstantiated { get; set; }
+        public ICollection<IFieldControlledObj> Controlled { get; }
 
         public BasicStat BasicStat { get; }
         public ForcedStat ForcedStat { get; }
@@ -32,6 +35,7 @@ namespace Edelstein.Service.Game.Fields.User
         public FieldUser(GameSocket socket)
         {
             Socket = socket;
+            Controlled = new List<IFieldControlledObj>();
 
             BasicStat = new BasicStat(this);
             ForcedStat = new ForcedStat(this);

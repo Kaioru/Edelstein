@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
@@ -12,6 +13,8 @@ namespace Edelstein.Service.Game.Fields
         GameSocket Socket { get; }
         Character Character { get; }
         bool IsInstantiated { get; set; }
+
+        ICollection<IFieldControlledObj> Controlled { get; }
 
         Task SendPacket(IPacket packet);
         IPacket GetSetFieldPacket();

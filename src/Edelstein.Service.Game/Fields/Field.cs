@@ -50,10 +50,10 @@ namespace Edelstein.Service.Game.Fields
             => GetControlledObjects<T>(controller).FirstOrDefault(o => o.ID == id);
 
         public IEnumerable<IFieldObj> GetControlledObjects(IFieldUser controller)
-            => _pools.Values.SelectMany(p => p.GetControlledObjects(controller));
+            => controller.Controlled.ToList();
 
         public IEnumerable<T> GetControlledObjects<T>(IFieldUser controller) where T : IFieldControlledObj
-            => _pools.Values.SelectMany(p => p.GetControlledObjects<T>(controller));
+            => controller.Controlled.OfType<T>().ToList();
 
         public IFieldPool GetPool(FieldObjType type)
         {
@@ -143,8 +143,11 @@ namespace Edelstein.Service.Game.Fields
 
         public void UpdateControlledObjects()
         {
-            var controllers = GetObjects().OfType<IFieldUser>().Shuffle().ToList();
-            var controlled = GetObjects().OfType<AbstractFieldControlledLife>().ToList();
+            var controllers = GetObjects()
+                .OfType<IFieldUser>()
+                .OrderBy(u => u.Controlled.Count)
+                .ToList();
+            var controlled = GetObjects().OfType<IFieldControlledObj>().ToList();
 
             controlled
                 .Where(c => c.Controller == null ||
