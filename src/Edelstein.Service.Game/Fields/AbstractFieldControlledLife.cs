@@ -13,14 +13,14 @@ namespace Edelstein.Service.Game.Fields
             {
                 if (_controller?.Field == Field)
                 {
-                    _controller?.SendPacket(GetChangeControllerPacket(false));
                     _controller?.Controlled.Remove(this);
+                    _controller?.SendPacket(GetChangeControllerPacket(false));
                 }
 
                 _controller = value;
                 if (value == null) return;
-                _controller.SendPacket(GetChangeControllerPacket(true));
                 _controller.Controlled.Add(this);
+                _controller.SendPacket(GetChangeControllerPacket(true));
             }
         }
 
