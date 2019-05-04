@@ -7,7 +7,7 @@ namespace Edelstein.Provider.Templates.Field.Life
         public int ID { get; set; }
         public FieldLifeType Type { get; set; }
 
-        public bool F { get; set; }
+        public bool Left { get; set; }
         public Point Position { get; set; }
         public int RX0 { get; set; }
         public int RX1 { get; set; }
@@ -19,7 +19,7 @@ namespace Edelstein.Provider.Templates.Field.Life
             Type = property.ResolveOrDefault<string>("type").ToLower() == "n"
                 ? FieldLifeType.NPC
                 : FieldLifeType.Monster;
-            F = property.Resolve<bool>("f") ?? false;
+            Left = !(property.Resolve<bool>("f") ?? false);
             Position = new Point(
                 property.Resolve<int>("x") ?? int.MinValue,
                 property.Resolve<int>("y") ?? int.MinValue

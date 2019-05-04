@@ -14,7 +14,7 @@ namespace Edelstein.Service.Game.Fields.Objects
         public int RX0 { get; set; }
         public int RX1 { get; set; }
 
-        public FieldNPC(NPCTemplate template, bool left)
+        public FieldNPC(NPCTemplate template, bool left = true)
         {
             Template = template;
             MoveAction = (byte) (left ? 1 : 0);
