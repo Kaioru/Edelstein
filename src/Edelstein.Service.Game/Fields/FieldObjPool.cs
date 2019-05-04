@@ -8,10 +8,10 @@ namespace Edelstein.Service.Game.Fields
     public class FieldObjPool : IFieldPool
     {
         private int _runningObjectID = 1;
-        private readonly IList<IFieldObj> _objects;
+        private readonly IDictionary<int, IFieldObj> _objects;
 
         public FieldObjPool()
-            => _objects = new List<IFieldObj>();
+            => _objects = new Dictionary<int, IFieldObj>();
 
         public Task Enter(IFieldObj obj)
         {
@@ -20,7 +20,7 @@ namespace Edelstein.Service.Game.Fields
                 if (obj is IFieldUser user) obj.ID = user.Character.ID;
                 else obj.ID = _runningObjectID++;
 
-                _objects.Add(obj);
+                _objects[obj.ID] = obj;
                 return Task.CompletedTask;
             }
         }
@@ -29,7 +29,7 @@ namespace Edelstein.Service.Game.Fields
         {
             lock (this)
             {
-                _objects.Remove(obj);
+                _objects.Remove(obj.ID);
                 return Task.CompletedTask;
             }
         }
@@ -41,10 +41,10 @@ namespace Edelstein.Service.Game.Fields
             => (T) _objects[id];
 
         public IEnumerable<IFieldObj> GetObjects()
-            => _objects.ToImmutableList();
+            => _objects.Values.ToImmutableList();
 
         public IEnumerable<T> GetObjects<T>() where T : IFieldObj
-            => _objects.OfType<T>().ToImmutableList();
+            => _objects.Values.OfType<T>().ToImmutableList();
 
         public IFieldObj GetControlledObject(IFieldUser controller, int id)
             => GetControlledObjects(controller).First(o => o.ID == id);
@@ -56,6 +56,6 @@ namespace Edelstein.Service.Game.Fields
             => GetControlledObjects<IFieldControlledObj>(controller);
 
         public IEnumerable<T> GetControlledObjects<T>(IFieldUser controller) where T : IFieldControlledObj
-            => _objects.OfType<T>().Where(o => o.Controller == controller).ToImmutableList();
+            => GetObjects<T>().Where(o => o.Controller == controller).ToImmutableList();
     }
 }
