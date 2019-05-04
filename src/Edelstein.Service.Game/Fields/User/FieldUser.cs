@@ -7,6 +7,7 @@ using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Fields.Objects;
+using Edelstein.Service.Game.Fields.Objects.Mobs;
 using Edelstein.Service.Game.Fields.User.Stats;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;
@@ -179,6 +180,21 @@ namespace Edelstein.Service.Game.Fields.User
         {
             switch (operation)
             {
+                case RecvPacketOperations.MobMove:
+                case RecvPacketOperations.MobApplyCtrl:
+                case RecvPacketOperations.MobDropPickUpRequest:
+                case RecvPacketOperations.MobHitByObstacle:
+                case RecvPacketOperations.MobHitByMob:
+                case RecvPacketOperations.MobSelfDestruct:
+                case RecvPacketOperations.MobAttackMob:
+                case RecvPacketOperations.MobSkillDelayEnd:
+                case RecvPacketOperations.MobTimeBombEnd:
+                case RecvPacketOperations.MobEscortCollision:
+                case RecvPacketOperations.MobRequestEscortInfo:
+                case RecvPacketOperations.MobEscortStopEndRequest:
+                    return Field
+                        .GetControlledObject<FieldMob>(this, packet.Decode<int>())?
+                        .OnPacket(operation, packet);
                 case RecvPacketOperations.NpcMove:
                 case RecvPacketOperations.NpcSpecialAction:
                     return Field

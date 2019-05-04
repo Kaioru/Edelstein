@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Life;
@@ -8,7 +9,7 @@ using Edelstein.Service.Game.Fields.Movement;
 
 namespace Edelstein.Service.Game.Fields.Objects.Mobs
 {
-    public class FieldMob : AbstractFieldControlledLife
+    public partial class FieldMob : AbstractFieldControlledLife
     {
         public override FieldObjType Type => FieldObjType.Mob;
         public MobTemplate Template { get; }
@@ -19,7 +20,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mobs
             Template = template;
             MoveAction = (byte) (
                 Convert.ToByte(left) & 1 |
-                2 * (int) (Template.MoveAbility switch {
+                2 * (byte) (Template.MoveAbility switch {
                     MoveAbilityType.Fly => MoveActionType.Fly,
                     MoveAbilityType.Stop => MoveActionType.Stand,
                     _ => MoveActionType.Move,
@@ -86,6 +87,13 @@ namespace Edelstein.Service.Game.Fields.Objects.Mobs
                     EncodeData(p, MobAppearType.Regen);
                 return p;
             }
+        }
+        
+        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
+        {
+            return operation switch {
+                RecvPacketOperations.MobMove => OnMobMove(packet),
+                };
         }
     }
 }
