@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
@@ -17,7 +18,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mobs
         {
             Template = template;
             MoveAction = (byte) (
-                (left ? 1 : 0) & 1 |
+                Convert.ToByte(left) & 1 |
                 2 * (int) (Template.MoveAbility switch {
                     MoveAbilityType.Fly => MoveActionType.Fly,
                     MoveAbilityType.Stop => MoveActionType.Stand,

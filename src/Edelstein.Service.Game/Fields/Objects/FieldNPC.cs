@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core;
@@ -17,7 +18,7 @@ namespace Edelstein.Service.Game.Fields.Objects
         public FieldNPC(NPCTemplate template, bool left = true)
         {
             Template = template;
-            MoveAction = (byte) (left ? 1 : 0);
+            MoveAction = Convert.ToByte(left);
         }
 
         public override IPacket GetEnterFieldPacket()
