@@ -31,6 +31,7 @@ namespace Edelstein.Network.Packets
             new Dictionary<Type, Action<IByteBuffer, object>>
             {
                 {typeof(byte), (buffer, value) => buffer.WriteByte((byte) value)},
+                {typeof(sbyte), (buffer, value) => buffer.WriteByte((sbyte) value)},
                 {typeof(bool), (buffer, value) => buffer.WriteByte((bool) value ? 1 : 0)},
                 {typeof(short), (buffer, value) => buffer.WriteShortLE((short) value)},
                 {typeof(int), (buffer, value) => buffer.WriteIntLE((int) value)},

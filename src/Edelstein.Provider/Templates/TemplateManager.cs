@@ -9,6 +9,7 @@ using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Item.Option;
 using Edelstein.Provider.Templates.Item.Set;
+using Edelstein.Provider.Templates.Mob;
 using Edelstein.Provider.Templates.NPC;
 using Edelstein.Provider.Templates.Shop;
 
@@ -35,7 +36,8 @@ namespace Edelstein.Provider.Templates
                     [typeof(NotSaleTemplate)] = new NotSaleTemplateCollection(collection),
                     [typeof(CategoryDiscountTemplate)] = new CategoryDiscountTemplateCollection(collection),
                     [typeof(SetItemInfoTemplate)] = new SetItemInfoTemplateCollection(collection),
-                    [typeof(ItemOptionTemplate)] = new ItemOptionTemplateCollection(collection)
+                    [typeof(ItemOptionTemplate)] = new ItemOptionTemplateCollection(collection),
+                    [typeof(MobTemplate)] = new MobTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
