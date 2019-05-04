@@ -269,6 +269,47 @@ namespace Edelstein.Service.Game.Fields.User
             return drop?.PickUp(this);
         }
 
+        private async Task OnUserCharacterInfoRequest(IPacket packet)
+        {
+            packet.Decode<int>();
+            var user = Field.GetObject<FieldUser>(packet.Decode<int>());
+
+            if (user == null) return;
+
+            using (var p = new Packet(SendPacketOperations.CharacterInfo))
+            {
+                var c = user.Character;
+
+                p.Encode<int>(user.ID);
+                p.Encode<byte>(c.Level);
+                p.Encode<short>(c.Job);
+                p.Encode<short>(c.POP); // TODO: use basic stat POP
+
+                p.Encode<byte>(0);
+
+                p.Encode<string>(""); // sCommunity
+                p.Encode<string>(""); // sAlliance
+
+                p.Encode<byte>(0);
+                p.Encode<byte>(0);
+                p.Encode<byte>(0); // TamingMobInfo
+                p.Encode<byte>(0); // Wishlist
+
+                p.Encode<int>(0); // MedalAchievementInfo
+                p.Encode<short>(0);
+
+                var chairs = c.Inventories.Values
+                    .SelectMany(i => i.Items)
+                    .Select(kv => kv.Value)
+                    .Select(i => i.TemplateID)
+                    .Where(i => i / 10000 == 301)
+                    .ToList();
+                p.Encode<int>(chairs.Count);
+                chairs.ForEach(i => p.Encode<int>(i));
+                await SendPacket(p);
+            }
+        }
+
         private async Task OnUserPortalScriptRequest(IPacket packet)
         {
             packet.Decode<byte>();
