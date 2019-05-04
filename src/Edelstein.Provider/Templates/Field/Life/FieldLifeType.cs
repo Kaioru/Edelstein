@@ -1,4 +1,4 @@
-namespace Edelstein.Provider.Templates.Field
+namespace Edelstein.Provider.Templates.Field.Life
 {
     public enum FieldLifeType
     {

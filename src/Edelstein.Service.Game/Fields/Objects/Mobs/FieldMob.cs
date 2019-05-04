@@ -1,7 +1,7 @@
 using System.Drawing;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
-using Edelstein.Provider.Templates.Mob;
+using Edelstein.Provider.Templates.Field.Life.Mob;
 
 namespace Edelstein.Service.Game.Fields.Objects.Mobs
 {

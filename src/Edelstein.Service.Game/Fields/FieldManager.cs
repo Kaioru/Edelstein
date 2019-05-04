@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using Edelstein.Provider.Templates;
 using Edelstein.Provider.Templates.Field;
-using Edelstein.Provider.Templates.NPC;
+using Edelstein.Provider.Templates.Field.Life;
+using Edelstein.Provider.Templates.Field.Life.NPC;
 using Edelstein.Service.Game.Fields.Objects;
 using MoreLinq;
 

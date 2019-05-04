@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Edelstein.Provider.Templates.NPC
+namespace Edelstein.Provider.Templates.Field.Life.NPC
 {
     public class NPCTemplate : ITemplate
     {

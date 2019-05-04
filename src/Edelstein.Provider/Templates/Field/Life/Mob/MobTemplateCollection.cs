@@ -1,4 +1,4 @@
-namespace Edelstein.Provider.Templates.Mob
+namespace Edelstein.Provider.Templates.Field.Life.Mob
 {
     public class MobTemplateCollection : AbstractLazyTemplateCollection
     {

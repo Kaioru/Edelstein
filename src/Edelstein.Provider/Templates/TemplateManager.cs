@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using Edelstein.Provider.Logging;
 using Edelstein.Provider.Templates.Etc.MakeCharInfo;
 using Edelstein.Provider.Templates.Field;
+using Edelstein.Provider.Templates.Field.Life.Mob;
+using Edelstein.Provider.Templates.Field.Life.NPC;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Item.Option;
 using Edelstein.Provider.Templates.Item.Set;
-using Edelstein.Provider.Templates.Mob;
-using Edelstein.Provider.Templates.NPC;
 using Edelstein.Provider.Templates.Shop;
 
 namespace Edelstein.Provider.Templates

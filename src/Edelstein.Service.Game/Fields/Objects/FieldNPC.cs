@@ -2,7 +2,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
-using Edelstein.Provider.Templates.NPC;
+using Edelstein.Provider.Templates.Field.Life.NPC;
 
 namespace Edelstein.Service.Game.Fields.Objects
 {

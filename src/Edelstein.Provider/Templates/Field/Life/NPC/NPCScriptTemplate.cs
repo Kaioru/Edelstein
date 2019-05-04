@@ -1,6 +1,6 @@
 using System;
 
-namespace Edelstein.Provider.Templates.NPC
+namespace Edelstein.Provider.Templates.Field.Life.NPC
 {
     public class NPCScriptTemplate : ITemplate
     {
