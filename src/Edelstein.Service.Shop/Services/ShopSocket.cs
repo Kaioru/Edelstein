@@ -12,6 +12,7 @@ using Edelstein.Service.Shop.Extensions;
 using Edelstein.Service.Shop.Logging;
 using Edelstein.Service.Shop.Types;
 using Foundatio.Caching;
+using Marten.Util;
 using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Shop.Services
@@ -86,6 +87,16 @@ namespace Edelstein.Service.Shop.Services
                 p.Encode<short>((short) store
                     .Query<Character>()
                     .Count(c => c.AccountDataID == AccountData.ID));
+                await SendPacket(p);
+            }
+        }
+
+        public async Task SendWishListData()
+        {
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+            {
+                p.Encode<byte>((byte) CashItemResult.LoadWish_Done);
+                Character.WishList.ForEach(w => p.Encode<int>(w));
                 await SendPacket(p);
             }
         }

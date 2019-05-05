@@ -50,6 +50,8 @@ namespace Edelstein.Database.Entities.Characters
 
         public IDictionary<ItemInventoryType, ItemInventory> Inventories { get; set; }
 
+        public int[] WishList { get; set; }
+
         public Character()
         {
             FunctionKeys = new FunctionKey[90];
@@ -95,7 +97,7 @@ namespace Edelstein.Database.Entities.Characters
             FunctionKeys[63] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion4);
             FunctionKeys[64] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion5);
             FunctionKeys[65] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion6);
-            
+
             QuickSlotKeys = new int[8];
 
             QuickSlotKeys[0] = 42;
@@ -115,6 +117,8 @@ namespace Edelstein.Database.Entities.Characters
                 [ItemInventoryType.Etc] = new ItemInventory(24),
                 [ItemInventoryType.Cash] = new ItemInventory(24)
             };
+
+            WishList = new int[10];
         }
     }
 }
