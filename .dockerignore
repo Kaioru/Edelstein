@@ -9,8 +9,6 @@ Dockerfile
 !**/appsettings.json
 
 .env
-scripts.zip
-data.zip
 
 # --- Platform specific ignores --- #
 
