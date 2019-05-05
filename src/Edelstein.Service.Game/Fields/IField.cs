@@ -1,11 +1,12 @@
 using System;
 using System.Threading.Tasks;
+using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
 
 namespace Edelstein.Service.Game.Fields
 {
-    public interface IField : IFieldPool
+    public interface IField : IFieldPool, ITickable
     {
         int ID { get; }
 

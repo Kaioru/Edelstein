@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Edelstein.Core.Utils;
 using Edelstein.Provider.Templates;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Field.Life;
@@ -9,15 +12,15 @@ using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields
 {
-    public class FieldManager
+    public class FieldManager : ITickable
     {
         private readonly ITemplateManager _templateManager;
-        private readonly IDictionary<int, Field> _fields;
+        private readonly IDictionary<int, IField> _fields;
 
         public FieldManager(ITemplateManager templateManager)
         {
             _templateManager = templateManager;
-            _fields = new Dictionary<int, Field>();
+            _fields = new Dictionary<int, IField>();
         }
 
         public IField Get(int id)
@@ -58,5 +61,8 @@ namespace Edelstein.Service.Game.Fields
                 return _fields[id];
             }
         }
+
+        public Task OnTick(DateTime now)
+            => Task.WhenAll(_fields.Values.Select(f => f.OnTick(now)));
     }
 }

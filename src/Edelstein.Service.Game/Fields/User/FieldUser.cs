@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
+using Edelstein.Core.Utils;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
@@ -16,7 +17,7 @@ using Edelstein.Service.Game.Services;
 
 namespace Edelstein.Service.Game.Fields.User
 {
-    public partial class FieldUser : AbstractFieldLife, IFieldUser
+    public partial class FieldUser : AbstractFieldLife, IFieldUser, ITickable
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
         public override FieldObjType Type => FieldObjType.User;
@@ -222,6 +223,12 @@ namespace Edelstein.Service.Game.Fields.User
                 RecvPacketOperations.UserPortalScriptRequest => OnUserPortalScriptRequest(packet),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
                 };
+        }
+
+        public Task OnTick(DateTime now)
+        {
+            // TODO
+            return Task.CompletedTask;
         }
     }
 }

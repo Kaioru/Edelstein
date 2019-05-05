@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed.Peers;
 using Edelstein.Core.Logging;
+using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Foundatio.Caching;
 using Foundatio.Messaging;
@@ -14,7 +15,7 @@ using Timer = System.Timers.Timer;
 
 namespace Edelstein.Core.Distributed
 {
-    public abstract class AbstractPeerService<TInfo> : IPeerService
+    public abstract class AbstractPeerService<TInfo> : IPeerService, ITickable
         where TInfo : PeerServiceInfo
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();

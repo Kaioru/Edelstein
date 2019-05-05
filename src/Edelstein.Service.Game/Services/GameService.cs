@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
@@ -45,6 +47,12 @@ namespace Edelstein.Service.Game.Services
 
             ConversationManager = new ScriptedConversationManager(scriptManager);
             FieldManager = new FieldManager(templateManager);
+        }
+
+        public override async Task OnTick(DateTime now)
+        {
+            await base.OnTick(now);
+            await FieldManager.OnTick(now);
         }
 
         public override ISocket Build(IChannel channel, uint seqSend, uint seqRecv)

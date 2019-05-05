@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
 using MoreLinq.Extensions;
@@ -153,6 +154,14 @@ namespace Edelstein.Service.Game.Fields
                 .Where(c => c.Controller == null ||
                             !controllers.Contains(c.Controller))
                 .ForEach(c => c.Controller = controllers.FirstOrDefault());
+        }
+
+        public async Task OnTick(DateTime now)
+        {
+            await Task.WhenAll(GetObjects()
+                .OfType<ITickable>()
+                .Select(o => o.OnTick(now))
+            );
         }
     }
 }
