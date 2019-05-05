@@ -138,9 +138,11 @@ namespace Edelstein.Service.Game.Fields.Continents
                     break;
                 case ContinentState.MobGen:
                     NextEvent = null;
+                    EventDoing = true;
                     Logger.Debug($"{Template.Info} started the {nextState} event");
                     break;
                 case ContinentState.MobDestroy:
+                    EventDoing = false;
                     Logger.Debug($"{Template.Info} started the {nextState} event");
                     break;
                 case ContinentState.End:
