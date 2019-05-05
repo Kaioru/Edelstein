@@ -64,7 +64,7 @@ namespace Edelstein.Service.Game.Fields.Continents
             {
                 NextEvent = NextBoarding
                     .AddMinutes(Template.Wait)
-                    .AddMinutes(random.Next(Template.Required))
+                    .AddMinutes(random.Next(Template.Required - 5))
                     .AddMinutes(2);
             }
         }
