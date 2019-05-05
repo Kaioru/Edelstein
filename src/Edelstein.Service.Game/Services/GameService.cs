@@ -13,6 +13,7 @@ using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Scripted;
 using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields;
+using Edelstein.Service.Game.Fields.Continents;
 using Foundatio.Caching;
 using Microsoft.Extensions.Options;
 using MoonSharp.Interpreter;
@@ -28,6 +29,7 @@ namespace Edelstein.Service.Game.Services
 
         public IConversationManager ConversationManager { get; }
         public FieldManager FieldManager { get; }
+        public ContinentManager ContinentManager { get; }
 
         public GameService(
             IOptions<GameServiceInfo> info,
@@ -47,12 +49,14 @@ namespace Edelstein.Service.Game.Services
 
             ConversationManager = new ScriptedConversationManager(scriptManager);
             FieldManager = new FieldManager(templateManager);
+            ContinentManager = new ContinentManager(templateManager, FieldManager);
         }
 
         public override async Task OnTick(DateTime now)
         {
             await base.OnTick(now);
             await FieldManager.OnTick(now);
+            await ContinentManager.OnTick(now);
         }
 
         public override ISocket Build(IChannel channel, uint seqSend, uint seqRecv)

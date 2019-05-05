@@ -16,6 +16,9 @@ namespace Edelstein.Provider.Templates.Field.Continent
         public int Term { get; set; }
         public int Delay { get; set; }
 
+        public bool Event { get; set; }
+        public ContinentGenMobTemplate? GenMob { get; set; }
+
         public int Wait { get; set; }
         public int EventEnd { get; set; }
         public int Required { get; set; }
@@ -42,11 +45,17 @@ namespace Edelstein.Provider.Templates.Field.Continent
                 Delay = s.Resolve<int>("tDelay") ?? 0;
             });
 
-            property.Resolve("time").ResolveAll(d =>
+            property.Resolve("genMob")?.ResolveAll(g =>
+                GenMob = new ContinentGenMobTemplate(0, g)
+            );
+
+            Event = GenMob != null;
+
+            property.Resolve("time").ResolveAll(t =>
             {
-                Wait = d.Resolve<int>("tWait") ?? 1;
-                EventEnd = d.Resolve<int>("tEventEnd") ?? 0;
-                Required = d.Resolve<int>("tRequired") ?? 0;
+                Wait = t.Resolve<int>("tWait") ?? 1;
+                EventEnd = t.Resolve<int>("tEventEnd") ?? 0;
+                Required = t.Resolve<int>("tRequired") ?? 0;
             });
         }
     }
