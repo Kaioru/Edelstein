@@ -5,6 +5,7 @@ using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
+using Edelstein.Service.Shop.Commodities;
 using Foundatio.Caching;
 using Microsoft.Extensions.Options;
 
@@ -14,7 +15,8 @@ namespace Edelstein.Service.Shop.Services
     {
         public IDataStore DataStore { get; }
         public ITemplateManager TemplateManager { get; }
-        
+        public CommodityManager CommodityManager { get; }
+
         public ShopService(
             IOptions<ShopServiceInfo> info,
             ICacheClient cacheClient,
@@ -25,6 +27,7 @@ namespace Edelstein.Service.Shop.Services
         {
             DataStore = dataStore;
             TemplateManager = templateManager;
+            CommodityManager = new CommodityManager(TemplateManager);
         }
 
         public override ISocket Build(IChannel channel, uint seqSend, uint seqRecv)
