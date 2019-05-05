@@ -263,7 +263,7 @@ namespace Edelstein.Service.Shop.Services
             if (locker.Items.Count >= locker.SlotMax) return;
 
             var context = new ModifyInventoriesContext(Character.Inventories);
-            var slot = new ItemLockerSlot(item, false);
+            var slot = new ItemLockerSlot(item);
 
             context.Remove(item);
             locker.Items.Add(slot);
