@@ -1,4 +1,5 @@
 using Edelstein.Database.Entities.Inventories;
+using Edelstein.Database.Entities.Inventories.Cash;
 using Marten.Schema;
 
 namespace Edelstein.Database.Entities
@@ -18,12 +19,12 @@ namespace Edelstein.Database.Entities
 
         public int SlotCount { get; set; }
 
-        public ItemInventory Locker { get; set; }
+        public ItemLocker Locker { get; set; }
         public ItemTrunk Trunk { get; set; }
 
         public AccountData()
         {
-            Locker = new ItemInventory(999);
+            Locker = new ItemLocker();
             Trunk = new ItemTrunk(4);
         }
     }

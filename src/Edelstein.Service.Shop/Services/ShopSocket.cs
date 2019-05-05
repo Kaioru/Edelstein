@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using Edelstein.Core;
@@ -7,8 +8,11 @@ using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Shop.Extensions;
 using Edelstein.Service.Shop.Logging;
+using Edelstein.Service.Shop.Types;
 using Foundatio.Caching;
+using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Shop.Services
 {
@@ -61,6 +65,28 @@ namespace Edelstein.Service.Shop.Services
             if (state != MigrationState.Migrating)
             {
                 await Service.AccountStateCache.RemoveAsync(Account.ID.ToString());
+            }
+        }
+
+        public async Task SendLockerData()
+        {
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+            using (var store = Service.DataStore.OpenSession())
+            {
+                p.Encode<byte>((byte) CashItemResult.LoadLocker_Done);
+
+                var locker = AccountData.Locker;
+
+                p.Encode<short>((short) locker.Items.Count);
+                locker.Items.ForEach(i => i.Encode(p));
+
+                p.Encode<short>(AccountData.Trunk.SlotMax);
+                p.Encode<short>((short) AccountData.SlotCount);
+                p.Encode<short>(0);
+                p.Encode<short>((short) store
+                    .Query<Character>()
+                    .Count(c => c.AccountDataID == AccountData.ID));
+                await SendPacket(p);
             }
         }
     }

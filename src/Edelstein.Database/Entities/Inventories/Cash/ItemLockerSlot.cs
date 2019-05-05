@@ -1,0 +1,22 @@
+using System;
+using Edelstein.Database.Entities.Inventories.Items;
+
+namespace Edelstein.Database.Entities.Inventories.Cash
+{
+    public class ItemLockerSlot
+    {
+        public ItemSlot Item { get; set; }
+
+        public int AccountID { get; set; }
+        public int CharacterID { get; set; }
+        public int CommodityID { get; set; }
+        public string BuyCharacterName { get; set; }
+        public int PaybackRate { get; set; }
+        public int DiscountRate { get; set; }
+
+        public ItemLockerSlot(ItemSlot item)
+        {
+            Item = item;
+        }
+    }
+}

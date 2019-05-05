@@ -140,6 +140,8 @@ namespace Edelstein.Service.Shop.Services
                         p.Encode<int>(0); // m_nHighestCharacterLevelInThisAccount
                         await SendPacket(p);
                     }
+
+                    await SendLockerData();
                 }
             }
             catch
