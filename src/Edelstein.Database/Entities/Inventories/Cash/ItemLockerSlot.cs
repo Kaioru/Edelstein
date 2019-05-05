@@ -17,6 +17,7 @@ namespace Edelstein.Database.Entities.Inventories.Cash
         public ItemLockerSlot(ItemSlot item)
         {
             Item = item;
+            Item.CashItemSN = DateTime.Now.Ticks;
         }
     }
 }

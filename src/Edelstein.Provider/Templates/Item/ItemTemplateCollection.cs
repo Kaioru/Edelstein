@@ -57,7 +57,7 @@ namespace Edelstein.Provider.Templates.Item
                         );
                     }
 
-                    var property = Collection.Resolve($"Item/Consume/{header:D4}.img/{id:D8}");
+                    var property = Collection.Resolve($"Item/Cash/{header:D4}.img/{id:D8}");
                     return new ItemBundleTemplate(id, property.Resolve("info").ResolveAll());
                 }
 

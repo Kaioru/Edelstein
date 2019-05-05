@@ -8,6 +8,8 @@ using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
+using Edelstein.Provider.Templates.Shop;
+using Edelstein.Service.Shop.Commodities;
 using Edelstein.Service.Shop.Extensions;
 using Edelstein.Service.Shop.Logging;
 using Edelstein.Service.Shop.Types;
@@ -44,6 +46,8 @@ namespace Edelstein.Service.Shop.Services
                 RecvPacketOperations.MigrateIn => OnMigrateIn(packet),
                 RecvPacketOperations.AliveAck => TryProcessHeartbeat(Account, Character),
                 RecvPacketOperations.UserTransferFieldRequest => OnUserTransferFieldRequest(packet),
+                RecvPacketOperations.CashShopQueryCashRequest => OnCashShopQueryCashRequest(packet),
+                RecvPacketOperations.CashShopCashItemRequest => OnCashShopCashItemRequest(packet),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
                 };
         }
@@ -115,6 +119,17 @@ namespace Edelstein.Service.Shop.Services
                 p.Encode<int>(Account.PrepaidNXCash);
                 await SendPacket(p);
             }
+        }
+
+        public int GetDiscountedPrice(Commodity c)
+        {
+            var category = c.SN / 10000000;
+            var categorySub = c.SN / 100000 % 100;
+            var discountRate = Service.TemplateManager.GetAll<CategoryDiscountTemplate>()
+                                   .FirstOrDefault(d => d.Category == category &&
+                                                        d.CategorySub == categorySub)
+                                   ?.DiscountRate ?? 0.0;
+            return (int) (c.Price * (1 - discountRate / 100));
         }
     }
 }

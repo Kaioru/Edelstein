@@ -24,7 +24,7 @@ namespace Edelstein.Database.Entities
 
         public AccountData()
         {
-            Locker = new ItemLocker();
+            Locker = new ItemLocker(999);
             Trunk = new ItemTrunk(4);
         }
     }

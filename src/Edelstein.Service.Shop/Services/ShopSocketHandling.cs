@@ -1,12 +1,19 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Extensions;
+using Edelstein.Core.Extensions.Templates;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
+using Edelstein.Database.Entities.Inventories.Cash;
 using Edelstein.Network.Packets;
+using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Shop;
+using Edelstein.Service.Shop.Extensions;
+using Edelstein.Service.Shop.Logging;
+using Edelstein.Service.Shop.Types;
 using MoreLinq;
 
 namespace Edelstein.Service.Shop.Services
@@ -166,6 +173,57 @@ namespace Edelstein.Service.Shop.Services
             catch
             {
                 await Close();
+            }
+        }
+
+        private Task OnCashShopQueryCashRequest(IPacket packet) => SendCashData();
+
+        private Task OnCashShopCashItemRequest(IPacket packet)
+        {
+            var type = (CashItemRequest) packet.Decode<byte>();
+
+            return type switch {
+                CashItemRequest.Buy => OnBuy(packet),
+                _ => Task.Run(() => Logger.Warn($"Unhandled cash item operation {type}"))
+                };
+        }
+
+        private async Task OnBuy(IPacket packet)
+        {
+            try
+            {
+                packet.Decode<byte>();
+                var cashType = packet.Decode<int>();
+                var commoditySN = packet.Decode<int>();
+                var commodity = Service.CommodityManager.Get(commoditySN);
+                var locker = AccountData.Locker;
+
+                if (commodity == null) return;
+                if (!commodity.OnSale) return;
+
+                var price = GetDiscountedPrice(commodity);
+
+                if (Account.GetCash(cashType) < price) return;
+                if (locker.Items.Count >= locker.SlotMax) return;
+
+                var template = Service.TemplateManager.Get<ItemTemplate>(commodity.ItemID);
+                var slot = new ItemLockerSlot(template.ToItemSlot());
+
+                locker.Items.Add(slot);
+
+                using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+                {
+                    p.Encode<byte>((byte) CashItemResult.Buy_Done);
+                    slot.Encode(p);
+                    await SendPacket(p);
+                }
+
+                Account.IncCash(cashType, -price);
+                await SendCashData();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
     }
