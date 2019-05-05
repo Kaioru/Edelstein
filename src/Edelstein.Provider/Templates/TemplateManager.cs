@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Edelstein.Provider.Logging;
 using Edelstein.Provider.Templates.Etc.MakeCharInfo;
 using Edelstein.Provider.Templates.Field;
+using Edelstein.Provider.Templates.Field.Continent;
 using Edelstein.Provider.Templates.Field.Life.Mob;
 using Edelstein.Provider.Templates.Field.Life.NPC;
 using Edelstein.Provider.Templates.Item;
@@ -37,7 +38,8 @@ namespace Edelstein.Provider.Templates
                     [typeof(CategoryDiscountTemplate)] = new CategoryDiscountTemplateCollection(collection),
                     [typeof(SetItemInfoTemplate)] = new SetItemInfoTemplateCollection(collection),
                     [typeof(ItemOptionTemplate)] = new ItemOptionTemplateCollection(collection),
-                    [typeof(MobTemplate)] = new MobTemplateCollection(collection)
+                    [typeof(MobTemplate)] = new MobTemplateCollection(collection),
+                    [typeof(ContinentTemplate)] = new ContinentTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);

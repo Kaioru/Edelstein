@@ -21,9 +21,10 @@ namespace Edelstein.Provider.Templates
         SetItemInfo = 0x400,
         ItemOption = 0x800,
         Mob = 0x1000,
+        Continent = 0x2000,
 
         Login = Item | MakeCharInfo,
-        Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob,
+        Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob | Continent,
         Shop = Item | Commodity | CashPackage | ModifiedCommodity | Best | CategoryDiscount | NotSale
     }
 }
