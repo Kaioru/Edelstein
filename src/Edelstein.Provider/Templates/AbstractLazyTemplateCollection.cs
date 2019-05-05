@@ -18,7 +18,7 @@ namespace Edelstein.Provider.Templates
         {
             if (!_templates.ContainsKey(id))
                 _templates[id] = Load(id);
-            return _templates[id];
+            return !_templates.ContainsKey(id) ? null : _templates[id];
         }
 
         public IEnumerable<ITemplate> GetAll()
