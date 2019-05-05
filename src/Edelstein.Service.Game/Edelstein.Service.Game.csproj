@@ -21,8 +21,4 @@
         </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Conversations\Speakers\Fields\Inventories" />
-    </ItemGroup>
-
 </Project>

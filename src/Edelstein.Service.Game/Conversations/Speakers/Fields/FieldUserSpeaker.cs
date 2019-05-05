@@ -1,3 +1,4 @@
+using Edelstein.Service.Game.Conversations.Speakers.Fields.Inventories;
 using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields
@@ -9,6 +10,9 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
         public FieldUserSpeaker(IConversationContext context, FieldUser obj) : base(context, obj)
         {
         }
+
+        public FieldUserInventorySpeaker GetInventory()
+            => new FieldUserInventorySpeaker(Context, Obj);
 
         public byte Gender => Obj.Character.Gender;
 
@@ -142,7 +146,7 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
             field.Enter(Obj, portal);
             return true;
         }
-        
+
         public void Converse(string script, ISpeaker self, ISpeaker target)
             => Obj.Service.ConversationManager.Build(
                 script,
