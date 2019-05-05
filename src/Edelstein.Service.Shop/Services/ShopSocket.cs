@@ -54,9 +54,14 @@ namespace Edelstein.Service.Shop.Services
             return Task.CompletedTask;
         }
 
-        public override Task OnUpdate()
+        public override async Task OnUpdate()
         {
-            return Task.CompletedTask;
+            using (var store = Service.DataStore.OpenSession())
+            {
+                await store.UpdateAsync(Account);
+                await store.UpdateAsync(AccountData);
+                await store.UpdateAsync(Character);
+            }
         }
 
         public override async Task OnDisconnect()
