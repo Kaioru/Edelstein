@@ -5,6 +5,7 @@ using Edelstein.Core;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Extensions.Templates;
+using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Database.Entities.Inventories.Cash;
@@ -184,46 +185,94 @@ namespace Edelstein.Service.Shop.Services
 
             return type switch {
                 CashItemRequest.Buy => OnBuy(packet),
+                CashItemRequest.MoveLtoS => OnMoveLtoS(packet),
+                CashItemRequest.MoveStoL => OnMoveStoL(packet),
                 _ => Task.Run(() => Logger.Warn($"Unhandled cash item operation {type}"))
                 };
         }
 
         private async Task OnBuy(IPacket packet)
         {
-            try
+            packet.Decode<byte>();
+            var cashType = packet.Decode<int>();
+            var commoditySN = packet.Decode<int>();
+            var commodity = Service.CommodityManager.Get(commoditySN);
+            var locker = AccountData.Locker;
+
+            if (commodity == null) return;
+            if (!commodity.OnSale) return;
+
+            var price = GetDiscountedPrice(commodity);
+
+            if (Account.GetCash(cashType) < price) return;
+            if (locker.Items.Count >= locker.SlotMax) return;
+
+            var template = Service.TemplateManager.Get<ItemTemplate>(commodity.ItemID);
+            var slot = new ItemLockerSlot(template.ToItemSlot());
+
+            locker.Items.Add(slot);
+
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
             {
-                packet.Decode<byte>();
-                var cashType = packet.Decode<int>();
-                var commoditySN = packet.Decode<int>();
-                var commodity = Service.CommodityManager.Get(commoditySN);
-                var locker = AccountData.Locker;
-
-                if (commodity == null) return;
-                if (!commodity.OnSale) return;
-
-                var price = GetDiscountedPrice(commodity);
-
-                if (Account.GetCash(cashType) < price) return;
-                if (locker.Items.Count >= locker.SlotMax) return;
-
-                var template = Service.TemplateManager.Get<ItemTemplate>(commodity.ItemID);
-                var slot = new ItemLockerSlot(template.ToItemSlot());
-
-                locker.Items.Add(slot);
-
-                using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
-                {
-                    p.Encode<byte>((byte) CashItemResult.Buy_Done);
-                    slot.Encode(p);
-                    await SendPacket(p);
-                }
-
-                Account.IncCash(cashType, -price);
-                await SendCashData();
+                p.Encode<byte>((byte) CashItemResult.Buy_Done);
+                slot.Encode(p);
+                await SendPacket(p);
             }
-            catch (Exception e)
+
+            Account.IncCash(cashType, -price);
+            await SendCashData();
+        }
+
+        private async Task OnMoveLtoS(IPacket packet)
+        {
+            var sn = packet.Decode<long>();
+            var locker = AccountData.Locker;
+            var slot = locker.Items.FirstOrDefault(i => i.Item.CashItemSN == sn);
+
+            if (slot == null) return;
+            if (!Character.HasSlotFor(slot.Item)) return;
+
+            var context = new ModifyInventoriesContext(Character.Inventories);
+
+            locker.Items.Remove(slot);
+            context.Add(slot.Item);
+
+            var position = Character.Inventories.Values
+                .SelectMany(i => i.Items)
+                .First(i => i.Value == slot.Item).Key;
+
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
             {
-                Console.WriteLine(e);
+                p.Encode<byte>((byte) CashItemResult.MoveLtoS_Done);
+                p.Encode<short>(position);
+                slot.Item.Encode(p);
+                await SendPacket(p);
+            }
+        }
+
+        private async Task OnMoveStoL(IPacket packet)
+        {
+            var id = packet.Decode<long>();
+            var locker = AccountData.Locker;
+            var inventories = Character.Inventories;
+            var item = inventories.Values
+                .SelectMany(i => i.Items.Values)
+                .FirstOrDefault(i => i.CashItemSN == id);
+
+            if (item == null) return;
+            if (locker.Items.Count >= locker.SlotMax) return;
+
+            var context = new ModifyInventoriesContext(Character.Inventories);
+            var slot = new ItemLockerSlot(item, false);
+
+            context.Remove(item);
+            locker.Items.Add(slot);
+
+            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
+            {
+                p.Encode<byte>((byte) CashItemResult.MoveStoL_Done);
+                slot.Encode(p);
+                await SendPacket(p);
             }
         }
     }

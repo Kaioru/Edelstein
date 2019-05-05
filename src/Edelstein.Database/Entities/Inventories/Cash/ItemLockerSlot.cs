@@ -14,10 +14,12 @@ namespace Edelstein.Database.Entities.Inventories.Cash
         public int PaybackRate { get; set; }
         public int DiscountRate { get; set; }
 
-        public ItemLockerSlot(ItemSlot item)
+        public ItemLockerSlot(ItemSlot item, bool create = true)
         {
             Item = item;
-            Item.CashItemSN = DateTime.Now.Ticks;
+
+            if (create)
+                Item.CashItemSN = DateTime.Now.Ticks;
         }
     }
 }
