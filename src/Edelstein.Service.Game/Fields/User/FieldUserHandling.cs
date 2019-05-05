@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
@@ -216,6 +217,10 @@ namespace Edelstein.Service.Game.Fields.User
                 case ConversationMessageType.AskAvatar:
                 case ConversationMessageType.AskMemberShopAvatar:
                     await ConversationContext.Respond(packet.Decode<byte>());
+                    break;
+                case ConversationMessageType.AskYesNo:
+                case ConversationMessageType.AskAccept:
+                    await ConversationContext.Respond(Convert.ToBoolean(answer));
                     break;
                 default:
                     await ConversationContext.Respond(answer);
