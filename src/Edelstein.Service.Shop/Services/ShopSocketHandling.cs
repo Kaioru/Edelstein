@@ -143,6 +143,7 @@ namespace Edelstein.Service.Shop.Services
 
                     await SendLockerData();
                     await SendWishListData();
+                    await SendCashData();
                 }
             }
             catch

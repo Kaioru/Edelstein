@@ -100,5 +100,16 @@ namespace Edelstein.Service.Shop.Services
                 await SendPacket(p);
             }
         }
+        
+        public async Task SendCashData()
+        {
+            using (var p = new Packet(SendPacketOperations.CashShopQueryCashResult))
+            {
+                p.Encode<int>(Account.NexonCash);
+                p.Encode<int>(Account.MaplePoint);
+                p.Encode<int>(Account.PrepaidNXCash);
+                await SendPacket(p);
+            }
+        }
     }
 }
