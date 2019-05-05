@@ -21,4 +21,8 @@
         </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Fields\Continents" />
+    </ItemGroup>
+
 </Project>

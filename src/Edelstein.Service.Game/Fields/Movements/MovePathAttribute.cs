@@ -1,4 +1,4 @@
-namespace Edelstein.Service.Game.Fields.Movement
+namespace Edelstein.Service.Game.Fields.Movements
 {
     public enum MovePathAttribute
     {

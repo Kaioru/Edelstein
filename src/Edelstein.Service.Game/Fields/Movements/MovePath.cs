@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Edelstein.Network.Packets;
-using Edelstein.Service.Game.Fields.Movement.Fragments;
+using Edelstein.Service.Game.Fields.Movements.Fragments;
 using MoreLinq.Extensions;
 
-namespace Edelstein.Service.Game.Fields.Movement
+namespace Edelstein.Service.Game.Fields.Movements
 {
     public class MovePath : IMoveFragment
     {

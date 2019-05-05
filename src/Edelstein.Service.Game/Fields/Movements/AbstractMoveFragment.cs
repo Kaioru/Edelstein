@@ -1,6 +1,6 @@
 using Edelstein.Network.Packets;
 
-namespace Edelstein.Service.Game.Fields.Movement
+namespace Edelstein.Service.Game.Fields.Movements
 {
     public abstract class AbstractMoveFragment : IMoveFragment
     {

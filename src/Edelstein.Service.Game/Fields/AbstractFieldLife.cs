@@ -1,5 +1,5 @@
 using Edelstein.Network.Packets;
-using Edelstein.Service.Game.Fields.Movement;
+using Edelstein.Service.Game.Fields.Movements;
 
 namespace Edelstein.Service.Game.Fields
 {

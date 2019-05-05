@@ -5,7 +5,7 @@ using Edelstein.Core;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Life;
 using Edelstein.Provider.Templates.Field.Life.Mob;
-using Edelstein.Service.Game.Fields.Movement;
+using Edelstein.Service.Game.Fields.Movements;
 
 namespace Edelstein.Service.Game.Fields.Objects.Mobs
 {
