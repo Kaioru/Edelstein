@@ -2,19 +2,36 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Service.Game.Conversations.Messages;
+using Edelstein.Service.Game.Conversations.Speakers.Fields;
+using Edelstein.Service.Game.Conversations.Speakers.Fields.Continents;
 
-namespace Edelstein.Service.Game.Conversations
+namespace Edelstein.Service.Game.Conversations.Speakers
 {
-    public abstract class AbstractSpeaker : ISpeaker
+    public class Speaker : ISpeaker
     {
         public IConversationContext Context { get; }
         public virtual int TemplateID { get; } = 9010000;
         public virtual SpeakerParamType ParamType { get; } = 0;
 
-        protected AbstractSpeaker(IConversationContext context)
+        protected Speaker(IConversationContext context)
         {
             Context = context;
         }
+
+        public Speaker(int templateID, SpeakerParamType param = 0)
+        {
+            TemplateID = templateID;
+            ParamType = param;
+        }
+
+        public FieldSpeaker GetField(int id)
+            => new FieldSpeaker(Context, Context.Socket.Service.FieldManager.Get(id));
+
+        public ContinentSpeaker GetContinent(int id)
+            => GetField(id).GetContinent();
+
+        public ISpeaker AsSpeaker(int templateID, SpeakerParamType param = 0)
+            => new Speaker(templateID, param);
 
         public byte Say(string[] text, int current = 0)
             => SayAsync(text, current).Result;

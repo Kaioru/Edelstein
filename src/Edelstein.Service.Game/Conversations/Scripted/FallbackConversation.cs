@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Edelstein.Service.Game.Conversations.Speakers;
 
 namespace Edelstein.Service.Game.Conversations.Scripted
 {

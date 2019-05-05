@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Edelstein.Core.Scripts;
+using Edelstein.Service.Game.Conversations.Speakers;
 
 namespace Edelstein.Service.Game.Conversations.Scripted
 {

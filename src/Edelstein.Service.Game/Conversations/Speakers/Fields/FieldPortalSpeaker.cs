@@ -2,7 +2,7 @@ using Edelstein.Service.Game.Fields;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 {
-    public class FieldPortalSpeaker : AbstractSpeaker
+    public class FieldPortalSpeaker : Speaker
     {
         private readonly IFieldPortal _portal;
 

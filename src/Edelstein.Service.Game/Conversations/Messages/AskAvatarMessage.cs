@@ -1,4 +1,5 @@
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Conversations.Speakers;
 using MoreLinq;
 
 namespace Edelstein.Service.Game.Conversations.Messages

@@ -1,4 +1,5 @@
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Conversations.Speakers;
 
 namespace Edelstein.Service.Game.Conversations.Messages
 {

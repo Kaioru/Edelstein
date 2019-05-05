@@ -1,3 +1,5 @@
+using Edelstein.Service.Game.Conversations.Speakers;
+
 namespace Edelstein.Service.Game.Conversations.Messages
 {
     public class AskMemberShopAvatarMessage : AskAvatarMessage

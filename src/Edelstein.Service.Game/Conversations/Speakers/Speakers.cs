@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Edelstein.Service.Game.Conversations.Speakers.Fields;
+using Edelstein.Service.Game.Conversations.Speakers.Fields.Continents;
 
 namespace Edelstein.Service.Game.Conversations.Speakers
 {
@@ -8,7 +9,9 @@ namespace Edelstein.Service.Game.Conversations.Speakers
     {
         public static readonly ICollection<Type> Types = new List<Type>
         {
+            typeof(Speaker),
             typeof(FieldSpeaker),
+            typeof(ContinentSpeaker),
             typeof(FieldPortalSpeaker),
             typeof(FieldUserSpeaker),
             typeof(FieldNPCSpeaker)

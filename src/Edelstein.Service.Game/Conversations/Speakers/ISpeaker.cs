@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Edelstein.Service.Game.Conversations
+namespace Edelstein.Service.Game.Conversations.Speakers
 {
     public interface ISpeaker
     {
@@ -9,6 +9,8 @@ namespace Edelstein.Service.Game.Conversations
         
         int TemplateID { get; }
         SpeakerParamType ParamType { get; }
+
+        ISpeaker AsSpeaker(int templateID, SpeakerParamType param = 0);
         
         byte Say(string[] text, int current = 0);
         byte Say(string text = "", bool prev = false, bool next = true);
