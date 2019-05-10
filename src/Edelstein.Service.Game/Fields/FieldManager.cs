@@ -8,6 +8,7 @@ using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Field.Life;
 using Edelstein.Provider.Templates.Field.Life.Mob;
 using Edelstein.Provider.Templates.Field.Life.NPC;
+using Edelstein.Provider.Templates.Field.Reactor;
 using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.NPCs;
@@ -39,7 +40,7 @@ namespace Edelstein.Service.Game.Fields
                     var generators = new List<IFieldGenerator>();
                     var field = new Field(template, generators);
 
-                    field.Template.Life.ForEach(l =>
+                    template.Life.ForEach(l =>
                     {
                         switch (l.Type)
                         {
@@ -61,6 +62,14 @@ namespace Edelstein.Service.Game.Fields
                             default:
                                 throw new ArgumentOutOfRangeException();
                         }
+                    });
+
+                    template.Reactors.ForEach(r =>
+                    {
+                        generators.Add(new ReactorFieldGenerator(
+                            r,
+                            _templateManager.Get<ReactorTemplate>(r.ID)
+                        ));
                     });
 
                     _fields[id] = field;

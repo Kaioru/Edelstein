@@ -201,12 +201,16 @@ namespace Edelstein.Service.Game.Fields
                     : Template.MobCapacityMin;
                 var mobGenCount = mobCapacity - mobCount;
 
-                //Console.WriteLine($"Genning {mobGenCount}/{mobGenerators.Count} {mobCount} mobs");
                 if (mobGenCount > 0)
                     await Task.WhenAll(mobGenerators
                         .Shuffle()
                         .Take(mobGenCount)
                         .Select(g => g.Generate(this)));
+
+                await Task.WhenAll(generators
+                    .Except(mobGenerators)
+                    .Shuffle()
+                    .Select(g => g.Generate(this)));
 
                 LastGenObjTime = DateTime.Now;
             }

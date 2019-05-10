@@ -22,9 +22,10 @@ namespace Edelstein.Provider.Templates
         ItemOption = 0x800,
         Mob = 0x1000,
         Continent = 0x2000,
+        Reactor = 0x4000,
 
         Login = Item | MakeCharInfo,
-        Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob | Continent,
+        Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob | Continent | Reactor,
         Shop = Item | Commodity | CashPackage | ModifiedCommodity | Best | CategoryDiscount | NotSale
     }
 }

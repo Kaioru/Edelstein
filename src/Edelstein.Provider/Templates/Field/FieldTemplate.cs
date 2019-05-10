@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Edelstein.Provider.Templates.Field.Life;
+using Edelstein.Provider.Templates.Field.Reactor;
 using MoreLinq.Extensions;
 
 namespace Edelstein.Provider.Templates.Field
