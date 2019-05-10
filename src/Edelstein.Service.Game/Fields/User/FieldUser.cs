@@ -10,6 +10,7 @@ using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Mobs;
+using Edelstein.Service.Game.Fields.Objects.NPCs;
 using Edelstein.Service.Game.Fields.User.Stats;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;

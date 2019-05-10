@@ -10,6 +10,7 @@ using Edelstein.Provider.Templates.Field.Life.Mob;
 using Edelstein.Provider.Templates.Field.Life.NPC;
 using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Objects;
+using Edelstein.Service.Game.Fields.Objects.NPCs;
 using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields

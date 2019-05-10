@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
 
-namespace Edelstein.Service.Game.Fields.Objects
+namespace Edelstein.Service.Game.Fields.Objects.NPCs
 {
     public partial class FieldNPC
     {

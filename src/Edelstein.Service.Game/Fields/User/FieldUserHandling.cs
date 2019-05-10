@@ -11,6 +11,7 @@ using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers.Fields;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Drops;
+using Edelstein.Service.Game.Fields.Objects.NPCs;
 
 namespace Edelstein.Service.Game.Fields.User
 {

@@ -5,7 +5,7 @@ using Edelstein.Core;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Life.NPC;
 
-namespace Edelstein.Service.Game.Fields.Objects
+namespace Edelstein.Service.Game.Fields.Objects.NPCs
 {
     public partial class FieldNPC : AbstractFieldControlledLife
     {
