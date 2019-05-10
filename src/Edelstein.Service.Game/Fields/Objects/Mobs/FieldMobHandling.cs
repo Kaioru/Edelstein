@@ -33,18 +33,6 @@ namespace Edelstein.Service.Game.Fields.Objects.Mobs
             packet.Decode<int>(); // HackedCodeCrc
             packet.Decode<int>(); // idk
 
-            using (var p = new Packet(SendPacketOperations.MobCtrlAck))
-            {
-                p.Encode<int>(ID);
-                p.Encode<short>(mobCtrlSN);
-                p.Encode<bool>(mobMoveStartResult);
-                p.Encode<short>(0); // nMP
-                p.Encode<byte>(0); // SkillCommand
-                p.Encode<byte>(0); // SLV
-
-                await Controller.SendPacket(p);
-            }
-
             using (var p = new Packet(SendPacketOperations.MobMove))
             {
                 p.Encode<int>(ID);
@@ -60,6 +48,18 @@ namespace Edelstein.Service.Game.Fields.Objects.Mobs
                 Move(packet).Encode(p);
 
                 await Field.BroadcastPacket(Controller, p);
+            }
+
+            using (var p = new Packet(SendPacketOperations.MobCtrlAck))
+            {
+                p.Encode<int>(ID);
+                p.Encode<short>(mobCtrlSN);
+                p.Encode<bool>(mobMoveStartResult);
+                p.Encode<short>(0); // nMP
+                p.Encode<byte>(0); // SkillCommand
+                p.Encode<byte>(0); // SLV
+
+                await Controller.SendPacket(p);
             }
         }
     }
