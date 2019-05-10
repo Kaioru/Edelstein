@@ -25,7 +25,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Reactors
             {
                 p.Encode<int>(ID);
                 p.Encode<int>(Template.ID);
-                p.Encode<byte>(1); // State
+                p.Encode<byte>(0); // State
                 p.Encode<Point>(Position);
                 p.Encode<bool>(Flip);
                 p.Encode<string>(""); // Name?
@@ -38,7 +38,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Reactors
             using (var p = new Packet(SendPacketOperations.ReactorLeaveField))
             {
                 p.Encode<int>(ID);
-                p.Encode<byte>(1); // State
+                p.Encode<byte>(0); // State
                 p.Encode<Point>(Position);
                 return p;
             }
