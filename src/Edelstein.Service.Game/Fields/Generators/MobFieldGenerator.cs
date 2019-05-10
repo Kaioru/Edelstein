@@ -50,7 +50,7 @@ namespace Edelstein.Service.Game.Fields.Generators
             };
 
             Generated = mob;
-            await field.Enter(mob);
+            await field.Enter(mob, () => mob.GetEnterFieldPacket(MobAppearType.Regen));
         }
     }
 }

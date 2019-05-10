@@ -66,7 +66,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mobs
 
 
         public override IPacket GetEnterFieldPacket()
-            => GetEnterFieldPacket(MobAppearType.Regen);
+            => GetEnterFieldPacket(MobAppearType.Normal);
 
         public override IPacket GetLeaveFieldPacket()
         {
@@ -90,7 +90,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mobs
                 return p;
             }
         }
-        
+
         public Task OnPacket(RecvPacketOperations operation, IPacket packet)
         {
             return operation switch {
