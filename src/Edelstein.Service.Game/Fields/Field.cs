@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
+using Edelstein.Service.Game.Fields.Generators;
+using Edelstein.Service.Game.Fields.Objects.Mobs;
 using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Fields
@@ -14,12 +16,16 @@ namespace Edelstein.Service.Game.Fields
         public int ID => Template.ID;
         public FieldTemplate Template { get; }
 
+        private DateTime LastGenObjTime { get; set; }
+
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
         private readonly IDictionary<string, IFieldPortal> _portals;
+        private readonly ICollection<IFieldGenerator> _generators;
 
-        public Field(FieldTemplate template)
+        public Field(FieldTemplate template, ICollection<IFieldGenerator> generators)
         {
             Template = template;
+
             _pools = new Dictionary<FieldObjType, IFieldPool>();
             _portals = template.Portals
                 .Where(kv => kv.Value.ToMap != 999999999)
@@ -27,6 +33,7 @@ namespace Edelstein.Service.Game.Fields
                     kv => kv.Value.Name,
                     kv => (IFieldPortal) new FieldPortal(this, kv.Value)
                 );
+            _generators = generators;
         }
 
         public Task Enter(IFieldObj obj) => Enter(obj, null);
@@ -58,9 +65,12 @@ namespace Edelstein.Service.Game.Fields
 
         public IFieldPool GetPool(FieldObjType type)
         {
-            if (!_pools.ContainsKey(type))
-                _pools[type] = new FieldObjPool();
-            return _pools[type];
+            lock (this)
+            {
+                if (!_pools.ContainsKey(type))
+                    _pools[type] = new FieldObjPool();
+                return _pools[type];
+            }
         }
 
         public IFieldPortal GetPortal(byte portal)
@@ -128,6 +138,9 @@ namespace Edelstein.Service.Game.Fields
             }
             else await BroadcastPacket(getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket());
 
+            if (obj is IFieldGeneratedObj g)
+                await g.Generator.Reset();
+
             await GetPool(obj.Type).Leave(obj);
             UpdateControlledObjects();
         }
@@ -144,24 +157,59 @@ namespace Edelstein.Service.Game.Fields
 
         public void UpdateControlledObjects()
         {
-            var controllers = GetObjects()
-                .OfType<IFieldUser>()
-                .OrderBy(u => u.Controlled.Count)
-                .ToList();
-            var controlled = GetObjects().OfType<IFieldControlledObj>().ToList();
+            lock (this)
+            {
+                var controllers = GetObjects()
+                    .OfType<IFieldUser>()
+                    .OrderBy(u => u.Controlled.Count)
+                    .ToList();
+                var controlled = GetObjects().OfType<IFieldControlledObj>().ToList();
 
-            controlled
-                .Where(c => c.Controller == null ||
-                            !controllers.Contains(c.Controller))
-                .ForEach(c => c.Controller = controllers.FirstOrDefault());
+                controlled
+                    .Where(c => c.Controller == null ||
+                                !controllers.Contains(c.Controller))
+                    .ForEach(c => c.Controller = controllers.FirstOrDefault());
+            }
         }
 
         public async Task OnTick(DateTime now)
         {
+            if (!GetObjects<IFieldUser>().Any()) return;
+
             await Task.WhenAll(GetObjects()
                 .OfType<ITickable>()
                 .Select(o => o.OnTick(now))
             );
+
+            if ((now - LastGenObjTime).Seconds >= 7)
+            {
+                var generators = _generators
+                    .Where(g => g.Generated == null)
+                    .Where(g => (now - g.RegenAfter).Seconds > 0)
+                    .ToList();
+                var mobGenerators = generators
+                    .OfType<MobFieldGenerator>()
+                    .ToList();
+                var mobCount = GetObjects<FieldMob>().Count();
+                var mobCapacity = mobCount > Template.MobCapacityMin / 2
+                    ? mobCount < Template.MobCapacityMin * 2
+                        ? Template.MobCapacityMin +
+                          (Template.MobCapacityMax - Template.MobCapacityMin) *
+                          (2 * mobCount - Template.MobCapacityMin) /
+                          (3 * Template.MobCapacityMin)
+                        : Template.MobCapacityMax
+                    : Template.MobCapacityMin;
+                var mobGenCount = mobCapacity - mobCount;
+
+                //Console.WriteLine($"Genning {mobGenCount}/{mobGenerators.Count} {mobCount} mobs");
+                if (mobGenCount > 0)
+                    await Task.WhenAll(mobGenerators
+                        .Shuffle()
+                        .Take(mobGenCount)
+                        .Select(g => g.Generate(this)));
+
+                LastGenObjTime = DateTime.Now;
+            }
         }
     }
 }

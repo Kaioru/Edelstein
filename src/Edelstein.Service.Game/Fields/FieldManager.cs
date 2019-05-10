@@ -6,7 +6,9 @@ using Edelstein.Core.Utils;
 using Edelstein.Provider.Templates;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Field.Life;
+using Edelstein.Provider.Templates.Field.Life.Mob;
 using Edelstein.Provider.Templates.Field.Life.NPC;
+using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Objects;
 using MoreLinq;
 
@@ -33,7 +35,8 @@ namespace Edelstein.Service.Game.Fields
 
                     if (template == null) return null;
 
-                    var field = new Field(template);
+                    var generators = new List<IFieldGenerator>();
+                    var field = new Field(template, generators);
 
                     field.Template.Life.ForEach(l =>
                     {
@@ -49,6 +52,10 @@ namespace Edelstein.Service.Game.Fields
                                 });
                                 break;
                             case FieldLifeType.Monster:
+                                generators.Add(new MobFieldGenerator(
+                                    l,
+                                    _templateManager.Get<MobTemplate>(l.ID)
+                                ));
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();

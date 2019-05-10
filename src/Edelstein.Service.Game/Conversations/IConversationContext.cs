@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Edelstein.Network;
 using Edelstein.Service.Game.Services;
 
 namespace Edelstein.Service.Game.Conversations

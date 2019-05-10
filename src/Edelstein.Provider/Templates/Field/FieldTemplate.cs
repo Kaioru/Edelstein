@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -13,12 +14,15 @@ namespace Edelstein.Provider.Templates.Field
         public FieldOpt Limit { get; set; }
 
         public Rectangle Bounds { get; set; }
-        public Size Size { get; set; }
 
         public IDictionary<int, FieldFootholdTemplate> Footholds { get; }
         public IDictionary<int, FieldPortalTemplate> Portals { get; }
         public ICollection<FieldLifeTemplate> Life { get; }
         public ICollection<FieldReactorTemplate> Reactors { get; }
+
+        public double MobRate { get; set; }
+        public int MobCapacityMin { get; set; }
+        public int MobCapacityMax { get; set; }
 
         public FieldTemplate(int id, IDataProperty property)
         {
@@ -64,7 +68,16 @@ namespace Edelstein.Provider.Templates.Field
                     i.Resolve<int>("VRBottom") ?? rightBottom.Y
                 );
 
+                MobRate = i.Resolve<double>("mobRate") ?? 1.0;
                 Bounds = Rectangle.FromLTRB(leftTop.X, leftTop.Y, rightBottom.X, rightBottom.Y);
+
+                var mobCapacity = Bounds.Size.Height * Bounds.Size.Width * MobRate * 0.0000078125;
+
+                mobCapacity = Math.Min(mobCapacity, 40);
+                mobCapacity = Math.Max(mobCapacity, 1);
+
+                MobCapacityMin = (int) mobCapacity;
+                MobCapacityMax = (int) mobCapacity * 2;
             });
         }
     }

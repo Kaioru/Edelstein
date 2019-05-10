@@ -14,7 +14,6 @@ using Edelstein.Service.Shop.Extensions;
 using Edelstein.Service.Shop.Logging;
 using Edelstein.Service.Shop.Types;
 using Foundatio.Caching;
-using Marten.Util;
 using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Shop.Services

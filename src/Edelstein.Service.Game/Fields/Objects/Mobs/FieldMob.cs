@@ -5,15 +5,17 @@ using Edelstein.Core;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Life;
 using Edelstein.Provider.Templates.Field.Life.Mob;
+using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Movements;
 
 namespace Edelstein.Service.Game.Fields.Objects.Mobs
 {
-    public partial class FieldMob : AbstractFieldControlledLife
+    public partial class FieldMob : AbstractFieldControlledLife, IFieldGeneratedObj
     {
         public override FieldObjType Type => FieldObjType.Mob;
         public MobTemplate Template { get; }
         public short HomeFoothold { get; set; }
+        public IFieldGenerator Generator { get; set; }
 
         public FieldMob(MobTemplate template, bool left = true)
         {
@@ -64,7 +66,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mobs
 
 
         public override IPacket GetEnterFieldPacket()
-            => GetEnterFieldPacket(MobAppearType.Normal);
+            => GetEnterFieldPacket(MobAppearType.Regen);
 
         public override IPacket GetLeaveFieldPacket()
         {
