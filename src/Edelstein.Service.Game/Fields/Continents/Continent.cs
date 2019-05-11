@@ -13,18 +13,29 @@ namespace Edelstein.Service.Game.Fields.Continents
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        private readonly FieldManager _fieldManager;
-
         public ContinentTemplate Template { get; }
         public ContinentState State { get; set; } = ContinentState.Dormant;
         public DateTime NextBoarding { get; set; }
         public DateTime? NextEvent { get; set; }
         public bool EventDoing { get; set; }
 
+        private IField StartShipMoveField { get; }
+        public IField WaitField { get; }
+        public IField MoveField { get; }
+        public IField? CabinField { get; }
+        public IField EndField { get; }
+        public IField EndShipMoveField { get; }
+
         public Continent(FieldManager fieldManager, ContinentTemplate template)
         {
-            _fieldManager = fieldManager;
             Template = template;
+            StartShipMoveField = fieldManager.Get(template.StartShipMoveFieldID);
+            WaitField = fieldManager.Get(template.WaitFieldID);
+            MoveField = fieldManager.Get(template.MoveFieldID);
+            if (template.CabinFieldID.HasValue)
+                CabinField = fieldManager.Get(template.CabinFieldID.Value);
+            EndField = fieldManager.Get(template.EndFieldID);
+            EndShipMoveField = fieldManager.Get(template.EndShipMoveFieldID);
 
             var now = DateTime.Now;
 
@@ -37,21 +48,12 @@ namespace Edelstein.Service.Game.Fields.Continents
             ResetEvent();
         }
 
-        private Task MoveField(int from, int to)
+        private Task Move(IField from, IField to)
         {
-            var fromField = _fieldManager.Get(from);
-            var toField = _fieldManager.Get(to);
-
-            return Task.WhenAll(fromField
+            return Task.WhenAll(from
                 .GetObjects<IFieldUser>()
                 .ToList()
-                .Select(u => toField.Enter(u, 0)));
-        }
-
-        private Task BroadcastPacket(int to, IPacket p)
-        {
-            var toField = _fieldManager.Get(to);
-            return toField.BroadcastPacket(p);
+                .Select(u => to.Enter(u, 0)));
         }
 
         private void ResetEvent()
@@ -131,10 +133,10 @@ namespace Edelstein.Service.Game.Fields.Continents
                     {
                         p.Encode<byte>((byte) ContinentState.TargetStartShipMoveField);
                         p.Encode<byte>((byte) ContinentState.Start);
-                        await BroadcastPacket(Template.StartShipMoveFieldID, p);
+                        await StartShipMoveField.BroadcastPacket(p);
                     }
 
-                    await MoveField(Template.WaitFieldID, Template.MoveFieldID);
+                    await Move(WaitField, MoveField);
                     break;
                 case ContinentState.MobGen:
                     NextEvent = null;
@@ -150,12 +152,12 @@ namespace Edelstein.Service.Game.Fields.Continents
                     {
                         p.Encode<byte>((byte) ContinentState.TargetEndShipMoveField);
                         p.Encode<byte>((byte) ContinentState.End);
-                        await BroadcastPacket(Template.EndShipMoveFieldID, p);
+                        await EndShipMoveField.BroadcastPacket(p);
                     }
 
-                    await MoveField(Template.MoveFieldID, Template.EndFieldID);
-                    if (Template.CabinFieldID.HasValue)
-                        await MoveField(Template.CabinFieldID.Value, Template.EndFieldID);
+                    await Move(MoveField, EndField);
+                    if (CabinField != null)
+                        await Move(CabinField, EndField);
 
                     NextBoarding = NextBoarding.AddMinutes(Template.Term);
                     ResetEvent();
