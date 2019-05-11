@@ -16,14 +16,20 @@ namespace Edelstein.Provider.Templates
 
         public ITemplate Get(int id)
         {
-            if (!_templates.ContainsKey(id))
-                _templates[id] = Load(id);
-            return !_templates.ContainsKey(id) ? null : _templates[id];
+            lock (this)
+            {
+                if (!_templates.ContainsKey(id))
+                    _templates[id] = Load(id);
+                return !_templates.ContainsKey(id) ? null : _templates[id];
+            }
         }
 
         public IEnumerable<ITemplate> GetAll()
         {
-            return _templates.Values;
+            lock (this)
+            {
+                return _templates.Values;
+            }
         }
 
         public abstract ITemplate Load(int id);
