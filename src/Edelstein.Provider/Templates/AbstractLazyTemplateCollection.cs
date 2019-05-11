@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace Edelstein.Provider.Templates
@@ -11,25 +12,26 @@ namespace Edelstein.Provider.Templates
         public AbstractLazyTemplateCollection(IDataDirectoryCollection collection)
         {
             Collection = collection;
-            _templates = new Dictionary<int, ITemplate>();
+            _templates = new ConcurrentDictionary<int, ITemplate>();
         }
 
         public ITemplate Get(int id)
         {
-            lock (this)
+            try
             {
                 if (!_templates.ContainsKey(id))
                     _templates[id] = Load(id);
                 return !_templates.ContainsKey(id) ? null : _templates[id];
             }
+            catch
+            {
+                return null;
+            }
         }
 
         public IEnumerable<ITemplate> GetAll()
         {
-            lock (this)
-            {
-                return _templates.Values;
-            }
+            return _templates.Values;
         }
 
         public abstract ITemplate Load(int id);
