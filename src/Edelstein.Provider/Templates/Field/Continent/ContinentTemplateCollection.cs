@@ -6,7 +6,7 @@ namespace Edelstein.Provider.Templates.Field.Continent
 {
     public class ContinentTemplateCollection : AbstractEagerTemplateCollection
     {
-        public override TemplateCollectionType Type { get; }
+        public override TemplateCollectionType Type => TemplateCollectionType.Continent;
 
         public ContinentTemplateCollection(IDataDirectoryCollection collection) : base(collection)
         {

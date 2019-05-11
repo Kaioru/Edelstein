@@ -68,7 +68,7 @@ namespace Edelstein.Provider.Templates
 
                     c.LoadAll();
                     Logger.Info(
-                        $"Loaded {c.GetType().Name} with {c.GetAll().Count()} templates in {watch.ElapsedMilliseconds}ms"
+                        $"Loaded {c.GetAll().Count()} {c.Type} templates in {watch.ElapsedMilliseconds}ms"
                     );
                 })));
             Logger.Info("Finished loading templates..");
