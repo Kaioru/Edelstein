@@ -19,7 +19,7 @@ namespace Edelstein.Service.Game.Fields.Continents
         public DateTime? NextEvent { get; set; }
         public bool EventDoing { get; set; }
 
-        private IField StartShipMoveField { get; }
+        public IField StartShipMoveField { get; }
         public IField WaitField { get; }
         public IField MoveField { get; }
         public IField? CabinField { get; }
