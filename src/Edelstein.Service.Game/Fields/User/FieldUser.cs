@@ -207,6 +207,15 @@ namespace Edelstein.Service.Game.Fields.User
                         .OnPacket(operation, packet);
             }
 
+            switch (operation)
+            {
+                case RecvPacketOperations.UserMeleeAttack:
+                case RecvPacketOperations.UserShootAttack:
+                case RecvPacketOperations.UserMagicAttack:
+                case RecvPacketOperations.UserBodyAttack:
+                    return OnUserAttack(operation, packet);
+            }
+
             return operation switch {
                 RecvPacketOperations.UserTransferFieldRequest => OnUserTransferFieldRequest(packet),
                 RecvPacketOperations.UserTransferChannelRequest => OnUserTransferChannelRequest(packet),

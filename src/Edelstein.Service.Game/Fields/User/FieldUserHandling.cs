@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
@@ -12,6 +13,7 @@ using Edelstein.Service.Game.Conversations.Speakers.Fields;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Drops;
 using Edelstein.Service.Game.Fields.Objects.NPCs;
+using Edelstein.Service.Game.Logging;
 
 namespace Edelstein.Service.Game.Fields.User
 {
@@ -114,6 +116,75 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<int>(ID);
                 path.Encode(p);
                 await Field.BroadcastPacket(this, p);
+            }
+        }
+
+        private async Task OnUserAttack(RecvPacketOperations operation, IPacket packet)
+        {
+            var fieldKey = packet.Decode<byte>();
+
+            packet.Decode<int>(); // pDrInfo
+            packet.Decode<int>(); // pDrInfo
+
+            var v6 = packet.Decode<byte>();
+            var damagePerMob = v6 & 0xF;
+            var mobCount = v6 >> 4;
+
+            packet.Decode<int>(); // pDrInfo
+            packet.Decode<int>(); // pDrInfo
+
+            var skillID = packet.Decode<int>();
+
+            packet.Decode<byte>();
+            packet.Decode<int>();
+            packet.Decode<int>();
+            packet.Decode<int>();
+            packet.Decode<int>();
+
+            if (SkillConstants.IsKeydownSkill(skillID))
+            {
+                var keydown = packet.Decode<int>();
+            }
+
+            var option = packet.Decode<byte>();
+
+            var v17 = packet.Decode<short>();
+            var left = (v17 >> 15) & 1;
+            var action = v17 & 0x7FFF;
+
+            packet.Decode<int>();
+
+            var attackActionType = packet.Decode<byte>();
+            var attackSpeed = packet.Decode<byte>();
+            var attackTime = packet.Decode<int>();
+
+            packet.Decode<int>();
+
+            for (var i = 0; i < mobCount; i++)
+            {
+                var mobID = packet.Decode<int>();
+                var hitAction = packet.Decode<byte>();
+                var v37 = packet.Decode<byte>();
+                var foreAction = v37 & 0x7F;
+                var left2 = (v37 >> 7) & 1; // left
+                var frameIdx = packet.Decode<byte>();
+                var v38 = packet.Decode<byte>();
+                var calcDamageStatIndex = v38 & 0x7F;
+                var doomed = (v38 >> 7) & 1;
+                var hit = packet.Decode<Point>();
+                var posPrev = packet.Decode<Point>();
+
+                // if 40413B + 3
+                // else
+                var delay = packet.Decode<short>();
+
+                for (var ii = 0; ii < damagePerMob; ii++)
+                {
+                    var damage = packet.Decode<int>();
+                    Logger.Debug($"Dealt {damage} damage");
+                }
+
+                packet.Decode<int>();
             }
         }
 
