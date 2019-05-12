@@ -19,6 +19,11 @@ namespace Edelstein.Core.Gameplay.Constants
             return 1;
         }
 
+        public static bool IsEvanJob(int job)
+        {
+            return job / 100 == 22 || job == 2001;
+        }
+
         public static bool IsKeydownSkill(int skill)
         {
             switch ((Skill) skill)
@@ -75,7 +80,7 @@ namespace Edelstein.Core.Gameplay.Constants
             if (IsIgnoreMasterLevelForCommon(skill)) return false;
             var job = skill / 10000;
 
-            if (job / 100 == 22 || job == 2001)
+            if (IsEvanJob(job))
             {
                 switch ((Skill) skill)
                 {
