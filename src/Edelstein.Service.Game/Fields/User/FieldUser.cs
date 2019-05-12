@@ -30,6 +30,7 @@ namespace Edelstein.Service.Game.Fields.User
 
         public BasicStat BasicStat { get; }
         public ForcedStat ForcedStat { get; }
+        public IDictionary<TemporaryStatType, TemporaryStat> TemporaryStats { get; }
 
         public IConversationContext ConversationContext { get; private set; }
 
@@ -40,6 +41,7 @@ namespace Edelstein.Service.Game.Fields.User
 
             BasicStat = new BasicStat(this);
             ForcedStat = new ForcedStat(this);
+            TemporaryStats = new Dictionary<TemporaryStatType, TemporaryStat>();
             ValidateStat();
         }
 
@@ -83,10 +85,7 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<short>(0);
                 p.Encode<byte>(0);
 
-                p.Encode<long>(0);
-                p.Encode<long>(0);
-                p.Encode<byte>(0); // nDefenseAtt
-                p.Encode<byte>(0); // nDefenseState
+                TemporaryStats.EncodeRemote(p);
 
                 p.Encode<short>(Character.Job);
                 Character.EncodeLook(p);

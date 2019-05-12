@@ -6,6 +6,7 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.User.Stats;
 using Edelstein.Service.Game.Fields.User.Stats.Modify;
 
 namespace Edelstein.Service.Game.Fields.User
@@ -73,6 +74,50 @@ namespace Edelstein.Service.Game.Fields.User
             {
                 context.Encode(p);
                 await SendPacket(p);
+            }
+        }
+
+        public async Task ModifyTemporaryStats(Action<ModifyTemporaryStatContext> action = null)
+        {
+            var context = new ModifyTemporaryStatContext(this);
+
+            action?.Invoke(context);
+            await ValidateStat();
+
+            if (context.ResetOperations.Count > 0)
+            {
+                using (var p = new Packet(SendPacketOperations.TemporaryStatReset))
+                {
+                    context.ResetOperations.EncodeMask(p);
+                    p.Encode<byte>(0); // IsMovementAffectingStat
+                    await SendPacket(p);
+                }
+
+                using (var p = new Packet(SendPacketOperations.UserTemporaryStatReset))
+                {
+                    p.Encode<int>(ID);
+                    context.ResetOperations.EncodeMask(p);
+                    await Field.BroadcastPacket(this, p);
+                }
+            }
+
+            if (context.SetOperations.Count > 0)
+            {
+                using (var p = new Packet(SendPacketOperations.TemporaryStatSet))
+                {
+                    context.SetOperations.EncodeLocal(p);
+                    p.Encode<short>(0); // tDelay
+                    p.Encode<byte>(0); // IsMovementAffectingStat
+                    await SendPacket(p);
+                }
+
+                using (var p = new Packet(SendPacketOperations.UserTemporaryStatSet))
+                {
+                    p.Encode<int>(ID);
+                    context.SetOperations.EncodeRemote(p);
+                    p.Encode<short>(0); // tDelay
+                    await Field.BroadcastPacket(this, p);
+                }
             }
         }
 
