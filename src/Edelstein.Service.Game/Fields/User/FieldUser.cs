@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
@@ -233,10 +234,14 @@ namespace Edelstein.Service.Game.Fields.User
                 };
         }
 
-        public Task OnTick(DateTime now)
+        public async Task OnTick(DateTime now)
         {
-            // TODO
-            return Task.CompletedTask;
+            var expiredStats = TemporaryStats.Values
+                .Where(i => i.DateExpire != null && (now - i.DateExpire.Value).Seconds >= 0)
+                .ToList();
+
+            if (expiredStats.Any())
+                await ModifyTemporaryStats(s => expiredStats.ForEach(e => s.Reset(e.Type)));
         }
     }
 }
