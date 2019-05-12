@@ -13,7 +13,10 @@ using Edelstein.Service.Game.Conversations.Speakers.Fields;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Drops;
 using Edelstein.Service.Game.Fields.Objects.NPCs;
+using Edelstein.Service.Game.Fields.User.Attacking;
 using Edelstein.Service.Game.Logging;
+using MoreLinq.Extensions;
+using Serilog;
 
 namespace Edelstein.Service.Game.Fields.User
 {
@@ -121,70 +124,49 @@ namespace Edelstein.Service.Game.Fields.User
 
         private async Task OnUserAttack(RecvPacketOperations operation, IPacket packet)
         {
-            var fieldKey = packet.Decode<byte>();
+            var type = (AttackType) (operation - RecvPacketOperations.UserMeleeAttack);
+            var info = new AttackInfo(type, this, packet);
 
-            packet.Decode<int>(); // pDrInfo
-            packet.Decode<int>(); // pDrInfo
+            await info.Apply();
 
-            var v6 = packet.Decode<byte>();
-            var damagePerMob = v6 & 0xF;
-            var mobCount = v6 >> 4;
+            // keydown packets
 
-            packet.Decode<int>(); // pDrInfo
-            packet.Decode<int>(); // pDrInfo
-
-            var skillID = packet.Decode<int>();
-
-            packet.Decode<byte>();
-            packet.Decode<int>();
-            packet.Decode<int>();
-            packet.Decode<int>();
-            packet.Decode<int>();
-
-            if (SkillConstants.IsKeydownSkill(skillID))
+            using (var p = new Packet(SendPacketOperations.UserMeleeAttack + (int) type))
             {
-                var keydown = packet.Decode<int>();
-            }
+                p.Encode<int>(ID);
+                p.Encode<byte>((byte) (info.DamagePerMob | 16 * info.MobCount));
+                p.Encode<byte>(Character.Level);
 
-            var option = packet.Decode<byte>();
+                p.Encode<byte>(0); // SLV
 
-            var v17 = packet.Decode<short>();
-            var left = (v17 >> 15) & 1;
-            var action = v17 & 0x7FFF;
+                p.Encode<byte>(0x20); // bSerialAttack
+                p.Encode<short>((short) (info.Action & 0x7FFF | (Convert.ToInt16(info.Left) << 15)));
 
-            packet.Decode<int>();
-
-            var attackActionType = packet.Decode<byte>();
-            var attackSpeed = packet.Decode<byte>();
-            var attackTime = packet.Decode<int>();
-
-            packet.Decode<int>();
-
-            for (var i = 0; i < mobCount; i++)
-            {
-                var mobID = packet.Decode<int>();
-                var hitAction = packet.Decode<byte>();
-                var v37 = packet.Decode<byte>();
-                var foreAction = v37 & 0x7F;
-                var left2 = (v37 >> 7) & 1; // left
-                var frameIdx = packet.Decode<byte>();
-                var v38 = packet.Decode<byte>();
-                var calcDamageStatIndex = v38 & 0x7F;
-                var doomed = (v38 >> 7) & 1;
-                var hit = packet.Decode<Point>();
-                var posPrev = packet.Decode<Point>();
-
-                // if 40413B + 3
-                // else
-                var delay = packet.Decode<short>();
-
-                for (var ii = 0; ii < damagePerMob; ii++)
+                if (info.Action <= 0x110)
                 {
-                    var damage = packet.Decode<int>();
-                    Logger.Debug($"Dealt {damage} damage");
+                    p.Encode<byte>(0); // nMastery
+                    p.Encode<byte>(0); // v82
+                    p.Encode<int>(2070000); // bMovingShoot
+
+                    info.DamageInfo.ForEach(i =>
+                    {
+                        p.Encode<int>(i.MobID);
+
+                        if (i.MobID <= 0) return;
+
+                        p.Encode<byte>(i.HitAction);
+
+                        // check 4211006
+
+                        i.Damage.ForEach(d =>
+                        {
+                            p.Encode<bool>(false);
+                            p.Encode<int>(d);
+                        });
+                    });
                 }
 
-                packet.Decode<int>();
+                await Field.BroadcastPacket(this, p);
             }
         }
 
