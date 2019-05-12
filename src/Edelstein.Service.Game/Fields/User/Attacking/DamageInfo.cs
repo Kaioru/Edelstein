@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.Objects.Mobs;
 
 namespace Edelstein.Service.Game.Fields.User.Attacking
 {
@@ -57,7 +58,10 @@ namespace Edelstein.Service.Game.Fields.User.Attacking
 
         public async Task Apply()
         {
+            var mob = _user.Field.GetObject<FieldMob>(MobID);
             var totalDamage = Damage.Sum();
+
+            mob?.Damage(_user, totalDamage);
         }
     }
 }

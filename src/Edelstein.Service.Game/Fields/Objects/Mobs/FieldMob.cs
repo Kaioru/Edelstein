@@ -7,6 +7,7 @@ using Edelstein.Provider.Templates.Field.Life;
 using Edelstein.Provider.Templates.Field.Life.Mob;
 using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Movements;
+using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Fields.Objects.Mobs
 {
@@ -16,6 +17,9 @@ namespace Edelstein.Service.Game.Fields.Objects.Mobs
         public MobTemplate Template { get; }
         public short HomeFoothold { get; set; }
         public IFieldGenerator Generator { get; set; }
+
+        public int HP { get; set; }
+        public int MP { get; set; }
 
         public FieldMob(MobTemplate template, bool left = true)
         {
@@ -29,6 +33,33 @@ namespace Edelstein.Service.Game.Fields.Objects.Mobs
                     }
                 )
             );
+
+            HP = template.MaxHP;
+            MP = template.MaxHP;
+        }
+
+        public void Damage(IFieldObj source, int damage)
+        {
+            lock (this)
+            {
+                HP -= damage;
+
+                if (source is FieldUser user)
+                {
+                    var indicator = HP / (float) Template.MaxHP * 100f;
+
+                    indicator = Math.Min(100, indicator);
+                    indicator = Math.Max(0, indicator);
+                    using (var p = new Packet(SendPacketOperations.MobHPIndicator))
+                    {
+                        p.Encode<int>(ID);
+                        p.Encode<byte>((byte) indicator);
+                        user.SendPacket(p);
+                    }
+                }
+
+                if (HP <= 0) Field.Leave(this);
+            }
         }
 
         private void EncodeData(IPacket packet, MobAppearType summonType, int? summonOption = null)
