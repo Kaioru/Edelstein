@@ -32,7 +32,7 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<bool>(false);
                 p.Encode<bool>(false);
                 p.Encode<bool>(false);
-                p.Encode<int>(0); // Completed Set ID
+                p.Encode<int>(BasicStat.CompletedSetItemID); // Completed Set ID
 
                 await Field.BroadcastPacket(this, p);
             }

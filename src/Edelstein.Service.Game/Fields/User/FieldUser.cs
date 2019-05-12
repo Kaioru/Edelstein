@@ -95,7 +95,7 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<int>(0);
                 p.Encode<int>(0);
                 p.Encode<int>(0);
-                p.Encode<int>(0);
+                p.Encode<int>(BasicStat.CompletedSetItemID);
                 p.Encode<int>(0);
 
                 p.Encode<Point>(Position);
