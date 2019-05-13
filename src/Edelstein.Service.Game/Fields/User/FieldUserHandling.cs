@@ -65,13 +65,24 @@ namespace Edelstein.Service.Game.Fields.User
         {
             try
             {
-                var service = Socket.Service.Peers
+                var services = Socket.Service.Peers
                     .OfType<ShopServiceInfo>()
                     .Where(g => g.Worlds.Contains(Socket.Service.Info.WorldID))
                     .OrderBy(g => g.ID)
-                    .First();
+                    .ToList();
+                var service = services.First();
 
-                // TODO: multi selection
+                if (services.Count > 1)
+                {
+                    var id = await Prompt<int>(target => target.AskMenu(
+                        "Which service should I connect to?", services.ToDictionary(
+                            s => Convert.ToInt32(s.ID),
+                            s => s.Name
+                        ))
+                    );
+                    service = services[id];
+                }
+
                 await Socket.TryMigrateTo(Socket.Account, Socket.Character, service);
             }
             catch
@@ -88,13 +99,24 @@ namespace Edelstein.Service.Game.Fields.User
         {
             try
             {
-                var service = Socket.Service.Peers
+                var services = Socket.Service.Peers
                     .OfType<TradeServiceInfo>()
                     .Where(g => g.Worlds.Contains(Socket.Service.Info.WorldID))
                     .OrderBy(g => g.ID)
-                    .First();
+                    .ToList();
+                var service = services.First();
 
-                // TODO: multi selection
+                if (services.Count > 1)
+                {
+                    var id = await Prompt<int>(target => target.AskMenu(
+                        "Which service should I connect to?", services.ToDictionary(
+                            s => Convert.ToInt32(s.ID),
+                            s => s.Name
+                        ))
+                    );
+                    service = services[id];
+                }
+
                 await Socket.TryMigrateTo(Socket.Account, Socket.Character, service);
             }
             catch
@@ -367,7 +389,7 @@ namespace Edelstein.Service.Game.Fields.User
 
             if (stat.HasFlag(ModifyStatType.MP))
                 mp = packet.Decode<short>();
-            
+
             // TODO: portable chair
             // TODO: rope endurance?
             // TODO: checks
