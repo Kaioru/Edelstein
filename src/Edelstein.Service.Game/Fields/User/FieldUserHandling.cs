@@ -80,7 +80,7 @@ namespace Edelstein.Service.Game.Fields.User
                             s => s.Name
                         ))
                     );
-                    service = services[id];
+                    service = services.First(s => s.ID == id);
                 }
 
                 await Socket.TryMigrateTo(Socket.Account, Socket.Character, service);
@@ -114,7 +114,7 @@ namespace Edelstein.Service.Game.Fields.User
                             s => s.Name
                         ))
                     );
-                    service = services[id];
+                    service = services.First(s => s.ID == id);
                 }
 
                 await Socket.TryMigrateTo(Socket.Account, Socket.Character, service);
