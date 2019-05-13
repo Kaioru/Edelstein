@@ -111,7 +111,7 @@ namespace Edelstein.Service.Game.Commands.Handling
         [Value(1, MetaName = "value", HelpText = "The stat value.", Required = true)]
         public int Value { get; set; }
 
-        [Option('e', "extendsp", HelpText = "The ExtendSP job level.")]
-        public int? ExtendSP { get; set; }
+        [Option('e', "extendSP", HelpText = "The ExtendSP job level.")]
+        public byte? ExtendSP { get; set; }
     }
 }

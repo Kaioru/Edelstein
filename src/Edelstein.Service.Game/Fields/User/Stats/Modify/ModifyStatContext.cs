@@ -163,13 +163,13 @@ namespace Edelstein.Service.Game.Fields.User.Stats.Modify
             }
         }
 
-        public short GetExtendSP(int jobLevel)
-            => _character.ExtendSP[jobLevel];
+        public byte GetExtendSP(byte jobLevel)
+            => _character.GetExtendSP(jobLevel);
 
-        public void SetExtendSP(int jobLevel, byte sp)
+        public void SetExtendSP(byte jobLevel, byte sp)
         {
             Flag |= ModifyStatType.SP;
-            _character.ExtendSP[jobLevel] = sp;
+            _character.SetExtendSP(jobLevel, sp);
         }
 
         public int EXP

@@ -106,10 +106,10 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
             set => Obj.ModifyStats(s => s.SP = value).Wait();
         }
 
-        public short GetExtendSP(int jobLevel)
-            => Obj.Character.ExtendSP[jobLevel];
+        public byte GetExtendSP(byte jobLevel)
+            => Obj.Character.GetExtendSP(jobLevel);
 
-        public void SetExtendSP(int jobLevel, byte sp)
+        public void SetExtendSP(byte jobLevel, byte sp)
             => Obj.ModifyStats(s => s.SetExtendSP(jobLevel, sp)).Wait();
 
         public int EXP

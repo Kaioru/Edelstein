@@ -249,12 +249,12 @@ namespace Edelstein.Core.Extensions
 
         public static void EncodeExtendSP(this Character c, IPacket p)
         {
-            p.Encode<byte>((byte) c.ExtendSP.Length);
-            for (var i = 0; i < c.ExtendSP.Length; i++)
-            {
-                p.Encode<byte>((byte) i);
-                p.Encode<byte>(c.ExtendSP[i]);
-            }
+            p.Encode<byte>((byte) c.ExtendSP.Count);
+            c.ExtendSP.ForEach(kv => {
+                p.Encode<byte>((byte) kv.Key);
+                p.Encode<byte>(kv.Value);
+                
+            });
         }
     }
 }

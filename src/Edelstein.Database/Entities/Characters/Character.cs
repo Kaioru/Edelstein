@@ -31,7 +31,7 @@ namespace Edelstein.Database.Entities.Characters
 
         public short AP { get; set; }
         public short SP { get; set; }
-        public byte[] ExtendSP { get; set; }
+        public IDictionary<byte, byte> ExtendSP { get; set; }
 
         public int EXP { get; set; }
         public short POP { get; set; }
@@ -55,7 +55,7 @@ namespace Edelstein.Database.Entities.Characters
 
         public Character()
         {
-            ExtendSP = new byte[10];
+            ExtendSP = new Dictionary<byte, byte>();
             FunctionKeys = new FunctionKey[90];
 
             FunctionKeys[2] = new FunctionKey(KeyType.Menu, KeyMenu.ChatAll);
@@ -122,5 +122,13 @@ namespace Edelstein.Database.Entities.Characters
 
             WishList = new int[10];
         }
+
+        public byte GetExtendSP(byte jobLevel)
+            => ExtendSP.ContainsKey(jobLevel)
+                ? ExtendSP[jobLevel]
+                : (byte) 0;
+
+        public void SetExtendSP(byte jobLevel, byte sp)
+            => ExtendSP[jobLevel] = sp;
     }
 }
