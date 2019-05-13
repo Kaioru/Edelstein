@@ -64,8 +64,6 @@ namespace Edelstein.Service.Game.Services
 
                         await SendPacket(p);
                     }
-
-                    fieldUser.ModifyStats(s => s.Job = 3512);
                 }
             }
             catch

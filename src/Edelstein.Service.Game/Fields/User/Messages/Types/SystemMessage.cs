@@ -12,7 +12,7 @@ namespace Edelstein.Service.Game.Fields.User.Messages.Types
             _text = text;
         }
 
-        public override void Encode(IPacket packet)
+        protected override void EncodeData(IPacket packet)
         {
             packet.Encode<string>(_text);
         }
