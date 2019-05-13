@@ -7,14 +7,19 @@ ADD ${script_url} scripts.zip
 ADD ${data_url} data.zip
 RUN unzip scripts.zip -d scripts/
 RUN unzip data.zip -d data/
+RUN rm scripts.zip
+RUN rm data.zip
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 as build
 WORKDIR /code
 COPY . .
-RUN dotnet publish -c Release -o /app src/Edelstein.Service.Trade
+ARG type="All"
+RUN dotnet publish -c Release -o /app src/Edelstein.Service.${type}
 
 FROM mcr.microsoft.com/dotnet/core/runtime:3.0 as runtime
 WORKDIR /app
 COPY --from=data /app .
 COPY --from=build /app .
-ENTRYPOINT ["dotnet", "Edelstein.Service.Trade.dll"]
+ARG type="All"
+ENV type $type
+ENTRYPOINT dotnet Edelstein.Service.$type.dll
