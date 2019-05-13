@@ -12,8 +12,12 @@ namespace Edelstein.Service.Game.Conversations
         public ISpeaker Self { get; }
         public ISpeaker Target { get; }
 
-        public ActionConversation(IConversationContext context, ISpeaker self, ISpeaker target,
-            Action<ISpeaker, ISpeaker> action)
+        public ActionConversation(
+            IConversationContext context,
+            ISpeaker self,
+            ISpeaker target,
+            Action<ISpeaker, ISpeaker> action
+        )
         {
             Context = context;
             Self = self;

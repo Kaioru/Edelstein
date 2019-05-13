@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
@@ -11,13 +10,11 @@ using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Commands;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers.Fields;
-using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Drops;
 using Edelstein.Service.Game.Fields.Objects.NPCs;
 using Edelstein.Service.Game.Fields.User.Attacking;
 using Edelstein.Service.Game.Logging;
 using MoreLinq.Extensions;
-using Serilog;
 
 namespace Edelstein.Service.Game.Fields.User
 {

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Service.Game.Commands.Handling;

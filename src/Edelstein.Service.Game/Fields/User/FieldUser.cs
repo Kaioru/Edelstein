@@ -10,7 +10,6 @@ using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
-using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Mobs;
 using Edelstein.Service.Game.Fields.Objects.NPCs;
 using Edelstein.Service.Game.Fields.User.Messages;
@@ -63,7 +62,7 @@ namespace Edelstein.Service.Game.Fields.User
             }
         }
 
-        public async Task<T> Prompt<T>(Func<ISpeaker, ISpeaker, T> func)
+        public async Task<T> Prompt<T>(Func<ISpeaker, ISpeaker, T> func, SpeakerParamType param = 0)
         {
             var error = true;
             var result = default(T);
@@ -72,19 +71,19 @@ namespace Edelstein.Service.Game.Fields.User
             {
                 result = func.Invoke(self, target);
                 error = false;
-            });
+            }, param);
 
             if (error) throw new TaskCanceledException();
             return result;
         }
 
-        public Task Prompt(Action<ISpeaker, ISpeaker> action)
+        public Task Prompt(Action<ISpeaker, ISpeaker> action, SpeakerParamType param = 0)
         {
             var context = new ConversationContext(Socket);
             var conversation = new ActionConversation(
                 context,
-                new Speaker(context),
-                new Speaker(context),
+                new Speaker(context, param: param),
+                new Speaker(context, param: param | SpeakerParamType.NPCReplacedByUser),
                 action
             );
             return Converse(conversation);

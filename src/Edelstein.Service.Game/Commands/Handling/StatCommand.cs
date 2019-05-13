@@ -24,7 +24,7 @@ namespace Edelstein.Service.Game.Commands.Handling
                 case ModifyStatType.Face:
                 case ModifyStatType.Hair:
                     await sender.Prompt((self, target) =>
-                        self.AskAvatar("Is this style okay?", new[] {option.Value})
+                        target.AskAvatar("Is this style okay?", new[] {option.Value})
                     );
                     break;
             }

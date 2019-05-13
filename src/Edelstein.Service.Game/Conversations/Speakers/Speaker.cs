@@ -13,13 +13,13 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         public virtual int TemplateID { get; } = 9010000;
         public virtual SpeakerParamType ParamType { get; } = 0;
 
-        public Speaker(IConversationContext context)
+        public Speaker(
+            IConversationContext context,
+            int templateID = 9010000,
+            SpeakerParamType param = 0
+        )
         {
             Context = context;
-        }
-
-        public Speaker(int templateID, SpeakerParamType param = 0)
-        {
             TemplateID = templateID;
             ParamType = param;
         }
@@ -31,7 +31,7 @@ namespace Edelstein.Service.Game.Conversations.Speakers
             => GetField(id).GetContinent();
 
         public ISpeaker AsSpeaker(int templateID, SpeakerParamType param = 0)
-            => new Speaker(templateID, param);
+            => new Speaker(Context, templateID, param);
 
         public byte Say(string[] text, int current = 0)
             => SayAsync(text, current).Result;
