@@ -302,6 +302,7 @@ namespace Edelstein.Service.Game.Fields.User
                 RecvPacketOperations.UserScriptMessageAnswer => OnUserScriptMessageAnswer(packet),
                 RecvPacketOperations.UserChangeSlotPositionRequest => OnUserChangeSlotPositionRequest(packet),
                 RecvPacketOperations.DropPickUpRequest => OnDropPickUpRequest(packet),
+                RecvPacketOperations.UserChangeStatRequest => OnUserChangeStatRequest(packet),
                 RecvPacketOperations.UserSkillUpRequest => OnUserSkillUpRequest(packet),
                 RecvPacketOperations.UserSkillUseRequest => OnUserSkillUseRequest(packet),
                 RecvPacketOperations.UserSkillCancelRequest => OnUserSkillCancelRequest(packet),

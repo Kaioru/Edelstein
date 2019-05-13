@@ -18,6 +18,7 @@ using Edelstein.Service.Game.Fields.Objects.NPCs;
 using Edelstein.Service.Game.Fields.User.Attacking;
 using Edelstein.Service.Game.Fields.User.Effects.Types;
 using Edelstein.Service.Game.Fields.User.Stats;
+using Edelstein.Service.Game.Fields.User.Stats.Modify;
 using Edelstein.Service.Game.Logging;
 using MoreLinq.Extensions;
 
@@ -354,6 +355,31 @@ namespace Edelstein.Service.Game.Fields.User
             return drop?.PickUp(this);
         }
 
+        private async Task OnUserChangeStatRequest(IPacket packet)
+        {
+            packet.Decode<int>();
+            var stat = (ModifyStatType) packet.Decode<int>();
+            var hp = 0;
+            var mp = 0;
+
+            if (stat.HasFlag(ModifyStatType.HP))
+                hp = packet.Decode<short>();
+
+            if (stat.HasFlag(ModifyStatType.MP))
+                mp = packet.Decode<short>();
+            
+            // TODO: portable chair
+            // TODO: rope endurance?
+            // TODO: checks
+
+            if (hp > 0 || mp > 0)
+                await ModifyStats(s =>
+                {
+                    s.HP += hp;
+                    s.MP += mp;
+                });
+        }
+
         private async Task OnUserSkillUpRequest(IPacket packet)
         {
             packet.Decode<int>();
@@ -581,7 +607,7 @@ namespace Edelstein.Service.Game.Fields.User
         {
             var templateID = packet.Decode<int>();
             var template = Service.TemplateManager.Get<SkillTemplate>(templateID);
-            
+
             if (template == null) return;
 
             await ModifyTemporaryStats(ts => ts.Reset(templateID));
