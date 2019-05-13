@@ -25,8 +25,12 @@ namespace Edelstein.Provider.Templates
         Reactor = 0x4000,
         Skill = 0x8000,
 
+        FieldString = 0x10000,
+        ItemString = 0x20000,
+        String = FieldString | ItemString,
+
         Login = Item | MakeCharInfo,
-        Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob | Continent | Reactor | Skill,
+        Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob | Continent | Reactor | Skill | String,
         Shop = Item | Commodity | CashPackage | ModifiedCommodity | Best | CategoryDiscount | NotSale
     }
 }
