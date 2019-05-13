@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Edelstein.Database.Entities.Characters.Records;
 using Edelstein.Database.Entities.Inventories;
 using Marten.Schema;
 
@@ -50,6 +51,7 @@ namespace Edelstein.Database.Entities.Characters
         public int[] QuickSlotKeys { get; set; }
 
         public IDictionary<ItemInventoryType, ItemInventory> Inventories { get; set; }
+        public IDictionary<int, SkillRecord> SkillRecord { get; set; }
 
         public int[] WishList { get; set; }
 
@@ -119,6 +121,7 @@ namespace Edelstein.Database.Entities.Characters
                 [ItemInventoryType.Etc] = new ItemInventory(24),
                 [ItemInventoryType.Cash] = new ItemInventory(24)
             };
+            SkillRecord = new Dictionary<int, SkillRecord>();
 
             WishList = new int[10];
         }
@@ -130,5 +133,10 @@ namespace Edelstein.Database.Entities.Characters
 
         public void SetExtendSP(byte jobLevel, byte sp)
             => ExtendSP[jobLevel] = sp;
+
+        public int GetSkillLevel(int skill)
+            => SkillRecord.ContainsKey(skill)
+                ? SkillRecord[skill].Level
+                : 0;
     }
 }

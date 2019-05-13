@@ -94,7 +94,16 @@ namespace Edelstein.Core.Extensions
 
             if (flags.HasFlag(DbChar.SkillRecord))
             {
-                p.Encode<short>(0);
+                p.Encode<short>((short) c.SkillRecord.Count);
+                c.SkillRecord.ForEach(kv =>
+                {
+                    p.Encode<int>(kv.Key);
+                    p.Encode<int>(kv.Value.Level);
+                    p.Encode<DateTime>(kv.Value.DateExpire ?? ItemConstants.Permanent);
+
+                    if (SkillConstants.IsSkillNeedMasterLevel(kv.Key))
+                        p.Encode<int>(kv.Value.MasterLevel);
+                });
             }
 
             if (flags.HasFlag(DbChar.SkillCooltime))
@@ -250,10 +259,10 @@ namespace Edelstein.Core.Extensions
         public static void EncodeExtendSP(this Character c, IPacket p)
         {
             p.Encode<byte>((byte) c.ExtendSP.Count);
-            c.ExtendSP.ForEach(kv => {
-                p.Encode<byte>((byte) kv.Key);
+            c.ExtendSP.ForEach(kv =>
+            {
+                p.Encode<byte>(kv.Key);
                 p.Encode<byte>(kv.Value);
-                
             });
         }
     }
