@@ -13,7 +13,7 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         public virtual int TemplateID { get; } = 9010000;
         public virtual SpeakerParamType ParamType { get; } = 0;
 
-        protected Speaker(IConversationContext context)
+        public Speaker(IConversationContext context)
         {
             Context = context;
         }

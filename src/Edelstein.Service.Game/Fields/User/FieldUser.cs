@@ -9,6 +9,7 @@ using Edelstein.Core.Utils;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Mobs;
 using Edelstein.Service.Game.Fields.Objects.NPCs;
@@ -60,6 +61,33 @@ namespace Edelstein.Service.Game.Fields.User
                 message.Encode(p);
                 return SendPacket(p);
             }
+        }
+
+        public async Task<T> Prompt<T>(Func<ISpeaker, ISpeaker, T> func)
+        {
+            var error = true;
+            var result = default(T);
+
+            await Prompt((self, target) =>
+            {
+                result = func.Invoke(self, target);
+                error = false;
+            });
+
+            if (error) throw new TaskCanceledException();
+            return result;
+        }
+
+        public Task Prompt(Action<ISpeaker, ISpeaker> action)
+        {
+            var context = new ConversationContext(Socket);
+            var conversation = new ActionConversation(
+                context,
+                new Speaker(context),
+                new Speaker(context),
+                action
+            );
+            return Converse(conversation);
         }
 
         public Task Converse(IConversation conversation)

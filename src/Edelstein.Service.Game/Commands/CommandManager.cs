@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using CommandLine;
+using Edelstein.Service.Game.Commands.Handling;
 using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Commands
@@ -15,6 +16,7 @@ namespace Edelstein.Service.Game.Commands
 
         public CommandManager(Parser parser) : base(parser)
         {
+            Commands.Add(new StatCommand(parser));
         }
 
         protected override Task Execute(FieldUser sender, object option)
