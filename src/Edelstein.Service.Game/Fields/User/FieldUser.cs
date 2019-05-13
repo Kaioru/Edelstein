@@ -12,6 +12,7 @@ using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields.Objects.Mobs;
 using Edelstein.Service.Game.Fields.Objects.NPCs;
+using Edelstein.Service.Game.Fields.User.Effects;
 using Edelstein.Service.Game.Fields.User.Messages;
 using Edelstein.Service.Game.Fields.User.Messages.Types;
 using Edelstein.Service.Game.Fields.User.Stats;
@@ -59,6 +60,33 @@ namespace Edelstein.Service.Game.Fields.User
             {
                 message.Encode(p);
                 return SendPacket(p);
+            }
+        }
+
+        public Task Effect(EffectType type, bool local = true, bool remote = false)
+        {
+            return Effect(new Effect(type), local, remote);
+        }
+
+        public async Task Effect(IEffect effect, bool local = true, bool remote = false)
+        {
+            if (local)
+            {
+                using (var p = new Packet(SendPacketOperations.UserEffectLocal))
+                {
+                    effect.Encode(p);
+                    await SendPacket(p);
+                }
+            }
+
+            if (remote)
+            {
+                using (var p = new Packet(SendPacketOperations.UserEffectRemote))
+                {
+                    p.Encode<int>(ID);
+                    effect.Encode(p);
+                    await Field.BroadcastPacket(this, p);
+                }
             }
         }
 
