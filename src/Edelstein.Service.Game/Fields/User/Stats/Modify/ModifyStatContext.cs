@@ -1,3 +1,5 @@
+using Edelstein.Core.Extensions;
+using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 
@@ -161,6 +163,15 @@ namespace Edelstein.Service.Game.Fields.User.Stats.Modify
             }
         }
 
+        public short GetExtendSP(int jobLevel)
+            => _character.ExtendSP[jobLevel];
+
+        public void SetExtendSP(int jobLevel, byte sp)
+        {
+            Flag |= ModifyStatType.SP;
+            _character.ExtendSP[jobLevel] = sp;
+        }
+
         public int EXP
         {
             get => _character.EXP;
@@ -233,9 +244,9 @@ namespace Edelstein.Service.Game.Fields.User.Stats.Modify
             if ((Flag & ModifyStatType.AP) != 0) packet.Encode<short>(AP);
             if ((Flag & ModifyStatType.SP) != 0)
             {
-                if (Job / 1000 != 3 && Job / 100 != 22 && Job != 2001)
+                if (!SkillConstants.IsExtendSPJob(Job))
                     packet.Encode<short>(SP);
-                else packet.Encode<byte>(0);
+                else _character.EncodeExtendSP(packet);
             }
 
             if ((Flag & ModifyStatType.EXP) != 0) packet.Encode<int>(EXP);

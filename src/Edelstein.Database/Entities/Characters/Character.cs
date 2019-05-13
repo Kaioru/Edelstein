@@ -31,6 +31,7 @@ namespace Edelstein.Database.Entities.Characters
 
         public short AP { get; set; }
         public short SP { get; set; }
+        public byte[] ExtendSP { get; set; }
 
         public int EXP { get; set; }
         public short POP { get; set; }
@@ -54,6 +55,7 @@ namespace Edelstein.Database.Entities.Characters
 
         public Character()
         {
+            ExtendSP = new byte[10];
             FunctionKeys = new FunctionKey[90];
 
             FunctionKeys[2] = new FunctionKey(KeyType.Menu, KeyMenu.ChatAll);

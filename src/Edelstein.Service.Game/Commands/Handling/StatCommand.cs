@@ -80,7 +80,10 @@ namespace Edelstein.Service.Game.Commands.Handling
                         s.AP = (short) option.Value;
                         break;
                     case ModifyStatType.SP:
-                        s.SP = (short) option.Value;
+                        if (option.ExtendSP.HasValue)
+                            s.SetExtendSP(option.ExtendSP.Value, (byte) option.Value);
+                        else
+                            s.SP = (short) option.Value;
                         break;
                     case ModifyStatType.EXP:
                         s.EXP = option.Value;
@@ -102,10 +105,13 @@ namespace Edelstein.Service.Game.Commands.Handling
 
     public class StatCommandOption
     {
-        [Value(0, MetaName = "type", HelpText = "The stat type.")]
+        [Value(0, MetaName = "type", HelpText = "The stat type.", Required = true)]
         public ModifyStatType Type { get; set; }
 
-        [Value(1, MetaName = "value", HelpText = "The stat value.")]
+        [Value(1, MetaName = "value", HelpText = "The stat value.", Required = true)]
         public int Value { get; set; }
+
+        [Option('e', "extendsp", HelpText = "The ExtendSP job level.")]
+        public int? ExtendSP { get; set; }
     }
 }

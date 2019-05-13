@@ -186,7 +186,7 @@ namespace Edelstein.Core.Extensions
 
             p.Encode<short>(c.AP);
             if (SkillConstants.IsExtendSPJob(c.Job))
-                p.Encode<byte>(0); // TODO: extendedSP
+                c.EncodeExtendSP(p);
             else
                 p.Encode<short>(c.SP);
 
@@ -245,6 +245,16 @@ namespace Edelstein.Core.Extensions
 
             for (var i = 0; i < 3; i++)
                 p.Encode<int>(0);
+        }
+
+        public static void EncodeExtendSP(this Character c, IPacket p)
+        {
+            p.Encode<byte>((byte) c.ExtendSP.Length);
+            for (var i = 0; i < c.ExtendSP.Length; i++)
+            {
+                p.Encode<byte>((byte) i);
+                p.Encode<byte>(c.ExtendSP[i]);
+            }
         }
     }
 }
