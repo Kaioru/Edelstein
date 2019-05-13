@@ -5,6 +5,7 @@ namespace Edelstein.Provider.Templates.Skill
     public class SkillLevelTemplate : ITemplate
     {
         public int ID { get; }
+        public int SkillID { get; }
 
         public short HP { get; set; }
         public short MP { get; set; }
@@ -51,9 +52,10 @@ namespace Edelstein.Provider.Templates.Skill
         public short EPDD { get; set; }
         public short EMDD { get; set; }
 
-        public SkillLevelTemplate(int id, IDataProperty property)
+        public SkillLevelTemplate(int id, int skillID, IDataProperty property)
         {
             ID = id;
+            SkillID = skillID;
 
             var x = new Argument("x", id);
 

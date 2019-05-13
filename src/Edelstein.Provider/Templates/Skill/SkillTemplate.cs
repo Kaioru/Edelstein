@@ -25,14 +25,14 @@ namespace Edelstein.Provider.Templates.Skill
                 var maxLevel = entry.Resolve<int>("maxLevel");
 
                 for (var i = 1; i <= maxLevel; i++)
-                    levelData.Add(i, new SkillLevelTemplate(i, entry.ResolveAll()));
+                    levelData.Add(i, new SkillLevelTemplate(i, id, entry.ResolveAll()));
             }
             else
             {
                 entry = property.Resolve("level");
                 levelData = entry.Children.ToDictionary(
                     c => Convert.ToInt32(c.Name),
-                    c => new SkillLevelTemplate(Convert.ToInt32(c.Name), c)
+                    c => new SkillLevelTemplate(Convert.ToInt32(c.Name), id, c)
                 );
             }
 
