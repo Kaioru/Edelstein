@@ -45,7 +45,7 @@ namespace Edelstein.Core.Gameplay.Skills
 
             var record = _character.SkillRecord[skill];
 
-            if (level <= 0) _character.SkillRecord.Remove(skill);
+            if (level <= 0 && masterLevel <= 0) _character.SkillRecord.Remove(skill);
 
             record.Level = level ?? record.Level;
             record.MasterLevel = masterLevel;
