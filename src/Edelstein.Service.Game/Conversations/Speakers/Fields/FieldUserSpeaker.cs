@@ -153,6 +153,9 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
             return true;
         }
 
+        public void Message(string text)
+            => Obj.Message(text);
+
         public void Converse(string script, ISpeaker self, ISpeaker target)
             => Obj.Service.ConversationManager.Build(
                 script,
