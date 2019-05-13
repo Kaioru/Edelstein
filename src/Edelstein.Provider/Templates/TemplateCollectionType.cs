@@ -23,9 +23,10 @@ namespace Edelstein.Provider.Templates
         Mob = 0x1000,
         Continent = 0x2000,
         Reactor = 0x4000,
+        Skill = 0x8000,
 
         Login = Item | MakeCharInfo,
-        Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob | Continent | Reactor,
+        Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob | Continent | Reactor | Skill,
         Shop = Item | Commodity | CashPackage | ModifiedCommodity | Best | CategoryDiscount | NotSale
     }
 }

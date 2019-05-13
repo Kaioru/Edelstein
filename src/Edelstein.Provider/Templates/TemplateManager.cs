@@ -14,6 +14,7 @@ using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Item.Option;
 using Edelstein.Provider.Templates.Item.Set;
 using Edelstein.Provider.Templates.Shop;
+using Edelstein.Provider.Templates.Skill;
 
 namespace Edelstein.Provider.Templates
 {
@@ -41,7 +42,8 @@ namespace Edelstein.Provider.Templates
                     [typeof(ItemOptionTemplate)] = new ItemOptionTemplateCollection(collection),
                     [typeof(MobTemplate)] = new MobTemplateCollection(collection),
                     [typeof(ContinentTemplate)] = new ContinentTemplateCollection(collection),
-                    [typeof(ReactorTemplate)] = new ReactorTemplateCollection(collection)
+                    [typeof(ReactorTemplate)] = new ReactorTemplateCollection(collection),
+                    [typeof(SkillTemplate)] = new SkillTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
