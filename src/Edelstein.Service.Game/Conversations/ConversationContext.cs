@@ -46,10 +46,13 @@ namespace Edelstein.Service.Game.Conversations
         {
             await _responses.EnqueueAsync(response);
         }
+        
+        public void Cancel() {
+            TokenSource?.Cancel();
+        }
 
         public void Dispose()
         {
-            TokenSource?.Cancel();
             TokenSource?.Dispose();
             _responses?.CompleteAdding();
         }
