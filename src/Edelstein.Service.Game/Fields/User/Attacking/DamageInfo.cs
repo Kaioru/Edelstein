@@ -61,7 +61,11 @@ namespace Edelstein.Service.Game.Fields.User.Attacking
             var mob = _user.Field.GetObject<FieldMob>(MobID);
             var totalDamage = Damage.Sum();
 
-            mob?.Damage(_user, totalDamage);
+            if (mob != null)
+            {
+                mob.Controller = _user;
+                mob.Damage(_user, totalDamage);
+            }
         }
     }
 }

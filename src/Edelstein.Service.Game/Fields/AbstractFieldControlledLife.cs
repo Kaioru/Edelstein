@@ -11,6 +11,7 @@ namespace Edelstein.Service.Game.Fields
             get => _controller;
             set
             {
+                if (_controller == value) return;
                 if (_controller?.Field == Field)
                 {
                     _controller?.Controlled.Remove(this);

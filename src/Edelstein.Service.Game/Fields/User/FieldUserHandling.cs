@@ -127,8 +127,6 @@ namespace Edelstein.Service.Game.Fields.User
             var type = (AttackType) (operation - RecvPacketOperations.UserMeleeAttack);
             var info = new AttackInfo(type, this, packet);
 
-            await info.Apply();
-
             // keydown packets
 
             using (var p = new Packet(SendPacketOperations.UserMeleeAttack + (int) type))
@@ -137,7 +135,12 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<byte>((byte) (info.DamagePerMob | 16 * info.MobCount));
                 p.Encode<byte>(Character.Level);
 
-                p.Encode<byte>(0); // SLV
+                if (info.SkillID > 0)
+                {
+                    p.Encode<byte>((byte) Character.GetSkillLevel(info.SkillID));
+                    p.Encode<int>(info.SkillID);
+                }
+                else p.Encode<byte>(0);
 
                 p.Encode<byte>(0x20); // bSerialAttack
                 p.Encode<short>((short) (info.Action & 0x7FFF | (Convert.ToInt16(info.Left) << 15)));
@@ -168,6 +171,8 @@ namespace Edelstein.Service.Game.Fields.User
 
                 await Field.BroadcastPacket(this, p);
             }
+            
+            await info.Apply();
         }
 
         private async Task OnUserChat(IPacket packet)
