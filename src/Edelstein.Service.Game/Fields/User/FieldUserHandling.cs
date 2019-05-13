@@ -576,6 +576,17 @@ namespace Edelstein.Service.Game.Fields.User
             await ModifyStats(exclRequest: true);
         }
 
+
+        private async Task OnUserSkillCancelRequest(IPacket packet)
+        {
+            var templateID = packet.Decode<int>();
+            var template = Service.TemplateManager.Get<SkillTemplate>(templateID);
+            
+            if (template == null) return;
+
+            await ModifyTemporaryStats(ts => ts.Reset(templateID));
+        }
+
         private async Task OnUserCharacterInfoRequest(IPacket packet)
         {
             packet.Decode<int>();
