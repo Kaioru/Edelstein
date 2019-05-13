@@ -138,5 +138,10 @@ namespace Edelstein.Database.Entities.Characters
             => SkillRecord.ContainsKey(skill)
                 ? SkillRecord[skill].Level
                 : 0;
+
+        public int GetSkillMasterLevel(int skill)
+            => SkillRecord.ContainsKey(skill)
+                ? SkillRecord[skill].MasterLevel
+                : 0;
     }
 }

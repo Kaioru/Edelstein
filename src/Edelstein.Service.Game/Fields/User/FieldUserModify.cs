@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Gameplay.Inventories;
+using Edelstein.Core.Gameplay.Skills;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.User.Stats;
@@ -146,6 +147,22 @@ namespace Edelstein.Service.Game.Fields.User
             {
                 await ValidateStat();
                 await AvatarModified();
+            }
+        }
+        
+        public async Task ModifySkills(Action<ModifySkillContext> action = null, bool exclRequest = false)
+        {
+            var context = new ModifySkillContext(Character);
+
+            action?.Invoke(context);
+            await ValidateStat();
+            
+            using (var p = new Packet(SendPacketOperations.ChangeSkillRecordResult))
+            {
+                p.Encode<bool>(exclRequest);
+                context.Encode(p);
+                p.Encode<bool>(true);
+                await SendPacket(p);
             }
         }
     }

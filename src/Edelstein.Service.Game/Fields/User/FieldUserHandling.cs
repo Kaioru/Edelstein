@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Gameplay.Constants;
+using Edelstein.Core.Types;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
+using Edelstein.Provider.Templates.Skill;
 using Edelstein.Service.Game.Commands;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers.Fields;
@@ -342,6 +344,33 @@ namespace Edelstein.Service.Game.Fields.User
             var drop = Field.GetObject<AbstractFieldDrop>(objectID);
 
             return drop?.PickUp(this);
+        }
+
+        private async Task OnUserSkillUpRequest(IPacket packet)
+        {
+            packet.Decode<int>();
+            var templateID = packet.Decode<int>();
+            var template = Service.TemplateManager.Get<SkillTemplate>(templateID);
+            var job = template.ID / 10000;
+            var jobLevel = (byte) SkillConstants.GetJobLevel(job);
+
+            if (template == null) return;
+            if (SkillConstants.IsExtendSPJob(job) && Character.GetExtendSP(jobLevel) <= 0) return;
+            if (!SkillConstants.IsExtendSPJob(job) && Character.SP <= 0) return;
+
+            var maxLevel = template.MaxLevel;
+            if (SkillConstants.IsSkillNeedMasterLevel(templateID))
+                maxLevel = (short) Character.GetSkillMasterLevel(templateID);
+
+            if (Character.GetSkillLevel(templateID) >= maxLevel) return;
+
+            await ModifyStats(s =>
+            {
+                if (SkillConstants.IsExtendSPJob(job))
+                    s.SetExtendSP(jobLevel, (byte) (s.GetExtendSP(jobLevel) - 1));
+                else s.SP--;
+            });
+            await ModifySkills(s => s.Add(templateID), true);
         }
 
         private async Task OnUserCharacterInfoRequest(IPacket packet)
