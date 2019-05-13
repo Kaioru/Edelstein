@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Edelstein.Core.Gameplay.Inventories.Operations;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
@@ -12,6 +13,9 @@ namespace Edelstein.Core.Gameplay.Inventories
     {
         public IModifyInventoryContext this[ItemInventoryType key] => _inventories[key];
         private readonly IDictionary<ItemInventoryType, ModifyInventoryContext> _inventories;
+
+        public IEnumerable<AbstractModifyInventoryOperation> Operations =>
+            _inventories.Values.SelectMany(i => i.Operations);
 
         public ModifyInventoriesContext(IDictionary<ItemInventoryType, ItemInventory> inventories)
         {

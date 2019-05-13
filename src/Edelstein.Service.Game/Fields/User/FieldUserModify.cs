@@ -125,9 +125,6 @@ namespace Edelstein.Service.Game.Fields.User
         public async Task ModifyInventory(Action<IModifyInventoriesContext> action = null, bool exclRequest = false)
         {
             var context = new ModifyInventoriesContext(Character.Inventories);
-            var equipped = Character.Inventories[ItemInventoryType.Equip].Items.Keys
-                .Where(k => k < 0)
-                .ToList();
 
             action?.Invoke(context);
             using (var p = new Packet(SendPacketOperations.InventoryOperation))
@@ -138,25 +135,20 @@ namespace Edelstein.Service.Game.Fields.User
                 await SendPacket(p);
             }
 
-            var newEquipped = Character.Inventories[ItemInventoryType.Equip].Items.Keys
-                .Where(k => k < 0)
-                .ToList();
-
-            if (equipped.Except(newEquipped).Any() ||
-                newEquipped.Except(equipped).Any())
+            if (context.Operations.Any(o => o.Slot < 0))
             {
                 await ValidateStat();
                 await AvatarModified();
             }
         }
-        
+
         public async Task ModifySkills(Action<ModifySkillContext> action = null, bool exclRequest = false)
         {
             var context = new ModifySkillContext(Character);
 
             action?.Invoke(context);
             await ValidateStat();
-            
+
             using (var p = new Packet(SendPacketOperations.ChangeSkillRecordResult))
             {
                 p.Encode<bool>(exclRequest);

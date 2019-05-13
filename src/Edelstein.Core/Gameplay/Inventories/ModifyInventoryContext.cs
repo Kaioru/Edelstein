@@ -16,13 +16,15 @@ namespace Edelstein.Core.Gameplay.Inventories
     {
         private readonly ItemInventoryType _type;
         private readonly ItemInventory _inventory;
-        private readonly Queue<AbstractModifyInventoryOperation> _operations;
+        
+        public Queue<AbstractModifyInventoryOperation> Operations { get; }
 
         public ModifyInventoryContext(ItemInventoryType type, ItemInventory inventory)
         {
             _type = type;
             _inventory = inventory;
-            _operations = new Queue<AbstractModifyInventoryOperation>();
+            
+            Operations = new Queue<AbstractModifyInventoryOperation>();
         }
 
         public void Add(ItemSlot item)
@@ -83,7 +85,7 @@ namespace Edelstein.Core.Gameplay.Inventories
         public void Set(short slot, ItemSlot item)
         {
             _inventory.Items[slot] = item;
-            _operations.Enqueue(new AddInventoryOperation(_type, slot, item));
+            Operations.Enqueue(new AddInventoryOperation(_type, slot, item));
         }
 
         public void Set(short slot, ItemTemplate template, short quantity = 1)
@@ -98,7 +100,7 @@ namespace Edelstein.Core.Gameplay.Inventories
         public void Remove(short slot)
         {
             _inventory.Items.Remove(slot);
-            _operations.Enqueue(new RemoveInventoryOperation(_type, slot));
+            Operations.Enqueue(new RemoveInventoryOperation(_type, slot));
         }
 
         public void Remove(short slot, short count)
@@ -220,7 +222,7 @@ namespace Edelstein.Core.Gameplay.Inventories
             if (_inventory.Items.ContainsKey(to))
                 _inventory.Items[from] = _inventory.Items[to];
             _inventory.Items[to] = item;
-            _operations.Enqueue(new MoveInventoryOperation(_type, from, to));
+            Operations.Enqueue(new MoveInventoryOperation(_type, from, to));
         }
 
         public ItemSlotBundle Take(short slot, short count = 1)
@@ -267,8 +269,8 @@ namespace Edelstein.Core.Gameplay.Inventories
 
         public void Encode(IPacket packet)
         {
-            packet.Encode<byte>((byte) _operations.Count);
-            _operations.ForEach(o => o.Encode(packet));
+            packet.Encode<byte>((byte) Operations.Count);
+            Operations.ForEach(o => o.Encode(packet));
         }
 
         private void UpdateQuantity(ItemSlot slot)
@@ -278,7 +280,7 @@ namespace Edelstein.Core.Gameplay.Inventories
 
         private void UpdateQuantity(short slot)
         {
-            _operations.Enqueue(new UpdateQuantityInventoryOperation(
+            Operations.Enqueue(new UpdateQuantityInventoryOperation(
                 _type,
                 slot,
                 ((ItemSlotBundle) _inventory.Items[slot]).Number

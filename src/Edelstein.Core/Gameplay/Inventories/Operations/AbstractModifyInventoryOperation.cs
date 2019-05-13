@@ -6,22 +6,22 @@ namespace Edelstein.Core.Gameplay.Inventories.Operations
     public abstract class AbstractModifyInventoryOperation
     {
         protected abstract ModifyInventoryOperationType Type { get; }
-        private readonly ItemInventoryType _inventory;
-        private readonly short _slot;
+        public ItemInventoryType Inventory { get; }
+        public short Slot { get; }
 
         public AbstractModifyInventoryOperation(
             ItemInventoryType inventory,
             short slot)
         {
-            _inventory = inventory;
-            _slot = slot;
+            Inventory = inventory;
+            Slot = slot;
         }
 
         public void Encode(IPacket packet)
         {
             packet.Encode<byte>((byte) Type);
-            packet.Encode<byte>((byte) _inventory);
-            packet.Encode<short>(_slot);
+            packet.Encode<byte>((byte) Inventory);
+            packet.Encode<short>(Slot);
 
             EncodeData(packet);
         }
