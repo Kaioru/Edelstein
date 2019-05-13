@@ -16,6 +16,9 @@ namespace Edelstein.Service.Game.Commands
         public CommandManager(Parser parser) : base(parser)
         {
             Commands.Add(new StatCommand(parser));
+            Commands.Add(new ItemCommand(parser));
+            Commands.Add(new FieldCommand(parser));
+            Commands.Add(new ContinentCommand(parser));
         }
 
         protected override Task Execute(FieldUser sender, object option)

@@ -1,4 +1,4 @@
-namespace Edelstein.Provider.Templates.String
+namespace Edelstein.Provider.Templates
 {
     public interface IStringTemplate : ITemplate
     {

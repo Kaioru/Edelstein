@@ -90,6 +90,9 @@ namespace Edelstein.Service.Game.Fields.User
             }
         }
 
+        public Task<T> Prompt<T>(Func<ISpeaker, T> func, SpeakerParamType param = 0)
+            => Prompt((self, target) => func.Invoke(target), param);
+
         public async Task<T> Prompt<T>(Func<ISpeaker, ISpeaker, T> func, SpeakerParamType param = 0)
         {
             var error = true;
