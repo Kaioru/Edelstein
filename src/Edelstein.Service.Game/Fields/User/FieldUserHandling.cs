@@ -15,6 +15,7 @@ using Edelstein.Service.Game.Conversations.Speakers.Fields;
 using Edelstein.Service.Game.Fields.Objects.Drops;
 using Edelstein.Service.Game.Fields.Objects.NPCs;
 using Edelstein.Service.Game.Fields.User.Attacking;
+using Edelstein.Service.Game.Fields.User.Effects.Types;
 using Edelstein.Service.Game.Logging;
 using MoreLinq.Extensions;
 
@@ -171,7 +172,7 @@ namespace Edelstein.Service.Game.Fields.User
 
                 await Field.BroadcastPacket(this, p);
             }
-            
+
             await info.Apply();
         }
 
@@ -376,6 +377,23 @@ namespace Edelstein.Service.Game.Fields.User
                 else s.SP--;
             });
             await ModifySkills(s => s.Add(templateID), true);
+        }
+
+        private async Task OnUserSkillUseRequest(IPacket packet)
+        {
+            packet.Decode<int>();
+            var templateID = packet.Decode<int>();
+            var template = Service.TemplateManager.Get<SkillTemplate>(templateID);
+            var skillLevel = Character.GetSkillLevel(templateID);
+
+            if (template == null) return;
+            if (skillLevel <= 0) return;
+
+            // TODO: stats
+            // TODO: party/map buffs
+
+            await Effect(new SkillUseEffect(templateID, (byte) skillLevel), remote: true);
+            await ModifyStats(exclRequest: true);
         }
 
         private async Task OnUserCharacterInfoRequest(IPacket packet)
