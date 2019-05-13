@@ -8,6 +8,7 @@ using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Commands;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers.Fields;
 using Edelstein.Service.Game.Fields.Objects;
@@ -176,6 +177,24 @@ namespace Edelstein.Service.Game.Fields.User
 
             var message = packet.Decode<string>();
             var onlyBalloon = packet.Decode<bool>();
+
+            if (message.StartsWith(CommandManager.Prefix))
+            {
+                try
+                {
+                    await Service.CommandManager.Process(
+                        this,
+                        message.Substring(1)
+                    );
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, "Caught exception when executing command");
+                    await Message("An error has occured while executing that command.");
+                }
+
+                return;
+            }
 
             using (var p = new Packet(SendPacketOperations.UserChat))
             {

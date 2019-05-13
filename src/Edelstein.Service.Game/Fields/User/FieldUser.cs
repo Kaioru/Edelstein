@@ -12,6 +12,8 @@ using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Mobs;
 using Edelstein.Service.Game.Fields.Objects.NPCs;
+using Edelstein.Service.Game.Fields.User.Messages;
+using Edelstein.Service.Game.Fields.User.Messages.Types;
 using Edelstein.Service.Game.Fields.User.Stats;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;
@@ -44,6 +46,20 @@ namespace Edelstein.Service.Game.Fields.User
             ForcedStat = new ForcedStat(this);
             TemporaryStats = new Dictionary<TemporaryStatType, TemporaryStat>();
             ValidateStat();
+        }
+
+        public Task Message(string text)
+        {
+            return Message(new SystemMessage(text));
+        }
+
+        public Task Message(IMessage message)
+        {
+            using (var p = new Packet(SendPacketOperations.Message))
+            {
+                message.Encode(p);
+                return SendPacket(p);
+            }
         }
 
         public Task Converse(IConversation conversation)

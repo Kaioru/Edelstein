@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using CommandLine;
 using DotNetty.Transport.Channels;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
@@ -9,6 +10,7 @@ using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;
+using Edelstein.Service.Game.Commands;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Scripted;
 using Edelstein.Service.Game.Conversations.Speakers;
@@ -27,6 +29,7 @@ namespace Edelstein.Service.Game.Services
         public ITemplateManager TemplateManager { get; }
         public IScriptManager ScriptManager { get; }
 
+        public CommandManager CommandManager { get; }
         public IConversationManager ConversationManager { get; }
         public FieldManager FieldManager { get; }
         public ContinentManager ContinentManager { get; }
@@ -43,6 +46,12 @@ namespace Edelstein.Service.Game.Services
             DataStore = dataStore;
             TemplateManager = templateManager;
             ScriptManager = scriptManager;
+
+            CommandManager = new CommandManager(new Parser(settings =>
+            {
+                settings.CaseSensitive = false;
+                settings.CaseInsensitiveEnumValues = true;
+            }));
 
             if (scriptManager is LuaScriptManager)
                 Speakers.Types.ForEach(t => UserData.RegisterType(t));

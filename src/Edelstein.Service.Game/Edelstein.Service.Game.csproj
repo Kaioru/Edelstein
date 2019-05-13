@@ -10,6 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.5.0" />
         <PackageReference Include="LibLog" Version="5.0.6" />
         <PackageReference Include="morelinq" Version="3.1.1" />
     </ItemGroup>
@@ -19,6 +20,10 @@
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Commands\Handling" />
     </ItemGroup>
 
 </Project>
