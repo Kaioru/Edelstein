@@ -50,22 +50,6 @@ namespace Edelstein.Service.Game.Fields.User
 
             if (!IsInstantiated) return;
 
-            if (context.Flag.HasFlag(ModifyStatType.Skin) ||
-                context.Flag.HasFlag(ModifyStatType.Face) ||
-                context.Flag.HasFlag(ModifyStatType.Hair))
-                await AvatarModified();
-
-            if (context.Flag.HasFlag(ModifyStatType.Job) &&
-                SkillConstants.HasEvanDragon(Character.Job) &&
-                !Owned.Any(o => o is FieldDragon)
-            )
-            {
-                var dragon = new FieldDragon(this);
-
-                Owned.Add(dragon);
-                await Field.Enter(dragon);
-            }
-
             using (var p = new Packet(SendPacketOperations.StatChanged))
             {
                 p.Encode<bool>(exclRequest);
@@ -73,6 +57,24 @@ namespace Edelstein.Service.Game.Fields.User
                 p.Encode<bool>(false);
                 p.Encode<bool>(false);
                 await SendPacket(p);
+            }
+
+            if (context.Flag.HasFlag(ModifyStatType.Skin) ||
+                context.Flag.HasFlag(ModifyStatType.Face) ||
+                context.Flag.HasFlag(ModifyStatType.Hair))
+                await AvatarModified();
+
+            if (context.Flag.HasFlag(ModifyStatType.Job) &&
+                SkillConstants.HasEvanDragon(Character.Job))
+            {
+                if (!Owned.OfType<FieldDragon>().Any())
+                {
+                    var dragon = new FieldDragon(this);
+
+                    Owned.Add(dragon);
+                    await Field.Enter(dragon);
+                }
+                else await Field.Enter(Owned.OfType<FieldDragon>().First());
             }
         }
 
