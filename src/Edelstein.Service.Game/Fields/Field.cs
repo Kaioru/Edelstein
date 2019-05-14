@@ -136,6 +136,7 @@ namespace Edelstein.Service.Game.Fields
             {
                 user.Dispose();
                 await BroadcastPacket(user, user.GetLeaveFieldPacket());
+                await Task.WhenAll(user.Owned.Select(Leave));
             }
             else await BroadcastPacket(getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket());
 
