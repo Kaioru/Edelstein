@@ -123,6 +123,7 @@ namespace Edelstein.Service.Game.Fields
                 GetObjects()
                     .Where(o => o != user)
                     .ForEach(o => user.SendPacket(o.GetEnterFieldPacket()));
+                await Task.WhenAll(user.Owned.Select(Enter));
             }
             else await BroadcastPacket(getEnterPacket?.Invoke() ?? obj.GetEnterFieldPacket());
 

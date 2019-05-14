@@ -3,10 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
+using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Core.Gameplay.Skills;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.Objects.Dragons;
 using Edelstein.Service.Game.Fields.User.Stats;
 using Edelstein.Service.Game.Fields.User.Stats.Modify;
 
@@ -52,6 +54,17 @@ namespace Edelstein.Service.Game.Fields.User
                 context.Flag.HasFlag(ModifyStatType.Face) ||
                 context.Flag.HasFlag(ModifyStatType.Hair))
                 await AvatarModified();
+
+            if (context.Flag.HasFlag(ModifyStatType.Job) &&
+                SkillConstants.HasEvanDragon(Character.Job) &&
+                !Owned.Any(o => o is FieldDragon)
+            )
+            {
+                var dragon = new FieldDragon(this);
+
+                Owned.Add(dragon);
+                await Field.Enter(dragon);
+            }
 
             using (var p = new Packet(SendPacketOperations.StatChanged))
             {

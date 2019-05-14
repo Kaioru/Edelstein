@@ -24,6 +24,11 @@ namespace Edelstein.Core.Gameplay.Constants
             return job / 100 == 22 || job == 2001;
         }
 
+        public static bool HasEvanDragon(int job)
+        {
+            return job / 100 == 22;
+        }
+
         public static bool IsKeydownSkill(int skill)
         {
             switch ((Skill) skill)

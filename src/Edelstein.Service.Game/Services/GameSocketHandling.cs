@@ -1,9 +1,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
+using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.Objects.Dragons;
 using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Services
@@ -37,7 +39,11 @@ namespace Edelstein.Service.Game.Services
                     var field = Service.FieldManager.Get(character.FieldID);
                     var fieldUser = new FieldUser(this);
 
+                    if (SkillConstants.HasEvanDragon(fieldUser.Character.Job))
+                        fieldUser.Owned.Add(new FieldDragon(fieldUser));
+
                     FieldUser = fieldUser;
+
                     await field.Enter(fieldUser);
 
                     using (var p = new Packet(SendPacketOperations.FuncKeyMappedInit))
