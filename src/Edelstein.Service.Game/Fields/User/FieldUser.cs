@@ -10,6 +10,7 @@ using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
+using Edelstein.Service.Game.Fields.Objects.Dragons;
 using Edelstein.Service.Game.Fields.Objects.Mobs;
 using Edelstein.Service.Game.Fields.Objects.NPCs;
 using Edelstein.Service.Game.Fields.User.Effects;
@@ -263,6 +264,11 @@ namespace Edelstein.Service.Game.Fields.User
         {
             switch (operation)
             {
+                case RecvPacketOperations.DragonMove:
+                    return Owned
+                        .OfType<FieldDragon>()
+                        .First()
+                        .OnPacket(operation, packet);
                 case RecvPacketOperations.MobMove:
                 case RecvPacketOperations.MobApplyCtrl:
                 case RecvPacketOperations.MobDropPickUpRequest:
