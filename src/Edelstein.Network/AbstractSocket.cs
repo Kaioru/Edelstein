@@ -28,7 +28,12 @@ namespace Edelstein.Network
         public abstract Task OnUpdate();
         public abstract Task OnDisconnect();
 
-        public Task SendPacket(IPacket packet) => _channel.WriteAndFlushAsync(packet);
+        public async Task SendPacket(IPacket packet)
+        {
+            if (_channel.Open)
+                await _channel.WriteAndFlushAsync(packet);
+        }
+
         public Task Close() => _channel.DisconnectAsync();
     }
 }
