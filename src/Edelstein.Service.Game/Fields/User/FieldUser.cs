@@ -316,6 +316,7 @@ namespace Edelstein.Service.Game.Fields.User
                 RecvPacketOperations.UserSkillUpRequest => OnUserSkillUpRequest(packet),
                 RecvPacketOperations.UserSkillUseRequest => OnUserSkillUseRequest(packet),
                 RecvPacketOperations.UserSkillCancelRequest => OnUserSkillCancelRequest(packet),
+                RecvPacketOperations.UserSkillPrepareRequest => OnUserSkillPrepareRequest(packet),
                 RecvPacketOperations.UserCharacterInfoRequest => OnUserCharacterInfoRequest(packet),
                 RecvPacketOperations.UserPortalScriptRequest => OnUserPortalScriptRequest(packet),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))

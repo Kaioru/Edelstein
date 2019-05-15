@@ -168,6 +168,8 @@ namespace Edelstein.Service.Game.Fields.User
                 }
                 else p.Encode<byte>(0);
 
+                // 3211006 check
+
                 p.Encode<byte>(0x20); // bSerialAttack
                 p.Encode<short>((short) (info.Action & 0x7FFF | (Convert.ToInt16(info.Left) << 15)));
 
@@ -193,6 +195,17 @@ namespace Edelstein.Service.Game.Fields.User
                             p.Encode<int>(d);
                         });
                     });
+                }
+
+                switch ((Skill) info.SkillID)
+                {
+                    case Skill.Archmage1Bigbang:
+                    case Skill.Archmage2Bigbang:
+                    case Skill.BishopBigbang:
+                    case Skill.EvanIceBreath:
+                    case Skill.EvanBreath:
+                        p.Encode<int>(info.KeyDown);
+                        break;
                 }
 
                 await Field.BroadcastPacket(this, p);
@@ -629,10 +642,34 @@ namespace Edelstein.Service.Game.Fields.User
         {
             var templateID = packet.Decode<int>();
             var template = Service.TemplateManager.Get<SkillTemplate>(templateID);
+            var skillLevel = Character.GetSkillLevel(templateID);
 
             if (template == null) return;
+            if (skillLevel <= 0) return;
 
             await ModifyTemporaryStats(ts => ts.Reset(templateID));
+        }
+
+        private async Task OnUserSkillPrepareRequest(IPacket packet)
+        {
+            var templateID = packet.Decode<int>();
+            var template = Service.TemplateManager.Get<SkillTemplate>(templateID);
+            var skillLevel = Character.GetSkillLevel(templateID);
+
+            if (template == null) return;
+            if (skillLevel <= 0) return;
+            if (!SkillConstants.IsKeydownSkill(templateID)) return;
+
+            using (var p = new Packet(SendPacketOperations.UserSkillPrepare))
+            {
+                p.Encode<int>(ID);
+                p.Encode<int>(templateID);
+                p.Encode<byte>(packet.Decode<byte>());
+                p.Encode<short>(packet.Decode<short>());
+                p.Encode<byte>(packet.Decode<byte>());
+
+                await Field.BroadcastPacket(this, p);
+            }
         }
 
         private async Task OnUserCharacterInfoRequest(IPacket packet)
