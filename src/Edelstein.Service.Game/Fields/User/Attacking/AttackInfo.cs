@@ -47,10 +47,21 @@ namespace Edelstein.Service.Game.Fields.User.Attacking
             packet.Decode<int>(); // pDrInfo
 
             SkillID = packet.Decode<int>();
+            packet.Decode<byte>(); // combatOrders
 
-            packet.Decode<byte>();
-            packet.Decode<int>();
-            packet.Decode<int>();
+            if (_type == AttackType.Magic)
+            {
+                packet.Decode<int>();
+                packet.Decode<int>();
+                packet.Decode<int>();
+                packet.Decode<int>();
+                packet.Decode<int>();
+                packet.Decode<int>();
+            }
+            
+            packet.Decode<int>(); // rand
+            packet.Decode<int>(); // crc?
+            
             packet.Decode<int>();
             packet.Decode<int>();
 
