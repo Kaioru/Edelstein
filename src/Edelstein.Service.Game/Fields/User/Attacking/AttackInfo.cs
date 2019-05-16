@@ -70,6 +70,9 @@ namespace Edelstein.Service.Game.Fields.User.Attacking
 
             Option = packet.Decode<byte>();
 
+            if (_type == AttackType.Shoot)
+                packet.Decode<byte>();  // m_bNextShootExJablin
+
             var v17 = packet.Decode<short>();
             Left = Convert.ToBoolean((v17 >> 15) & 1);
             Action = v17 & 0x7FFF;
@@ -80,7 +83,16 @@ namespace Edelstein.Service.Game.Fields.User.Attacking
             AttackSpeed = packet.Decode<byte>();
             AttackTime = packet.Decode<int>();
 
-            packet.Decode<int>();
+            packet.Decode<int>(); // phase
+
+            if (_type == AttackType.Shoot)
+            {
+                packet.Decode<short>();
+                packet.Decode<short>();
+                packet.Decode<byte>();
+                // if ( v459 && !is_shoot_skill_not_consuming_bullet(nSkillID) )
+                // packet.Decode<int>();
+            }
 
             DamageInfo = new DamageInfo[MobCount];
             for (var i = 0; i < MobCount; i++)

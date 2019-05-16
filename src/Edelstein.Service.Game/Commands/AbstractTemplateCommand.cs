@@ -45,7 +45,7 @@ namespace Edelstein.Service.Game.Commands
                         $"Here are the results for '{option.Search}'",
                         results.ToDictionary(
                             r => r.ID,
-                            r => r.Name
+                            r => $"{r.Name} ({r.ID})"
                         )
                     ));
                 }

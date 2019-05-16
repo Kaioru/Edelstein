@@ -30,7 +30,7 @@ namespace Edelstein.Core.Gameplay.Inventories
 
         public void Add(ItemTemplate template, short quantity = 1)
             => _inventories[(ItemInventoryType) (template.ID / 1000000)].Add(template, quantity);
-        
+
         public void Set(short slot, ItemSlot item)
             => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Set(slot, item);
 
@@ -56,6 +56,11 @@ namespace Edelstein.Core.Gameplay.Inventories
             => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Update(item);
 
         public void Encode(IPacket packet)
-            => _inventories.Values.ForEach(i => i.Encode(packet));
+        {
+            var operations = _inventories.Values.SelectMany(v => v.Operations).ToList();
+
+            packet.Encode<byte>((byte) operations.Count);
+            operations.ForEach(o => o.Encode(packet));
+        }
     }
 }
