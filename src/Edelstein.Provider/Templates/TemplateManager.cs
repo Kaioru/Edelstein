@@ -46,7 +46,8 @@ namespace Edelstein.Provider.Templates
                     [typeof(ReactorTemplate)] = new ReactorTemplateCollection(collection),
                     [typeof(SkillTemplate)] = new SkillTemplateCollection(collection),
                     [typeof(FieldStringTemplate)] = new FieldStringTemplateCollection(collection),
-                    [typeof(ItemStringTemplate)] = new ItemStringTemplateCollection(collection)
+                    [typeof(ItemStringTemplate)] = new ItemStringTemplateCollection(collection),
+                    [typeof(SkillStringTemplate)] = new SkillStringTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);

@@ -27,7 +27,8 @@ namespace Edelstein.Provider.Templates
 
         FieldString = 0x10000,
         ItemString = 0x20000,
-        String = FieldString | ItemString,
+        SkillString = 0x40000,
+        String = FieldString | ItemString | SkillString,
 
         Login = Item | MakeCharInfo,
         Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob | Continent | Reactor | Skill | String,

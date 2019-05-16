@@ -1,10 +1,12 @@
 using System.Threading.Tasks;
 using CommandLine;
+using Edelstein.Provider.Templates.Skill;
+using Edelstein.Provider.Templates.String;
 using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Commands.Handling
 {
-    public class SkillCommand : AbstractCommand<SkillCommandOption>
+    public class SkillCommand : AbstractTemplateCommand<SkillTemplate, SkillStringTemplate, SkillCommandOption>
     {
         public override string Name => "Skill";
         public override string Description => "Sets the specified skill to specific values";
@@ -13,22 +15,19 @@ namespace Edelstein.Service.Game.Commands.Handling
         {
         }
 
-        protected override async Task Execute(FieldUser sender, SkillCommandOption option)
+        protected override async Task ExecuteAfter(FieldUser sender, SkillTemplate template, SkillCommandOption option)
         {
             await sender.ModifySkills(s =>
                 s.Set(
-                    option.Skill,
-                    option.Level ?? sender.Character.GetSkillLevel(option.Skill),
-                    option.MasterLevel ?? sender.Character.GetSkillMasterLevel(option.Skill)
+                    template.ID,
+                    option.Level ?? sender.Character.GetSkillLevel(template.ID),
+                    option.MasterLevel ?? sender.Character.GetSkillMasterLevel(template.ID)
                 ));
         }
     }
 
-    public class SkillCommandOption
+    public class SkillCommandOption : TemplateCommandOption
     {
-        [Value(0, MetaName = "skill", HelpText = "The skill ID.", Required = true)]
-        public int Skill { get; set; }
-
         [Option('l', "level", HelpText = "The skill level.")]
         public byte? Level { get; set; }
 
