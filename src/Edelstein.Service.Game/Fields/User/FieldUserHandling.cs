@@ -197,6 +197,12 @@ namespace Edelstein.Service.Game.Fields.User
                     });
                 }
 
+                if (type == AttackType.Shoot)
+                {
+                    p.Encode<short>(0); // bSerialAttack?
+                    p.Encode<short>(0); // v91
+                }
+
                 switch ((Skill) info.SkillID)
                 {
                     case Skill.Archmage1Bigbang:
