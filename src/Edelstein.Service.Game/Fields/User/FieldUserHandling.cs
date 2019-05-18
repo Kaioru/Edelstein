@@ -650,8 +650,17 @@ namespace Edelstein.Service.Game.Fields.User
             var template = Service.TemplateManager.Get<SkillTemplate>(templateID);
 
             if (template == null) return;
+            if (SkillConstants.IsKeydownSkill(templateID))
+            {
+                using (var p = new Packet(SendPacketOperations.UserSkillCancel))
+                {
+                    p.Encode<int>(ID);
+                    p.Encode<int>(templateID);
 
-            await ModifyTemporaryStats(ts => ts.Reset(templateID));
+                    await Field.BroadcastPacket(this, p);
+                }
+            }
+            else await ModifyTemporaryStats(ts => ts.Reset(templateID));
         }
 
         private async Task OnUserSkillPrepareRequest(IPacket packet)
