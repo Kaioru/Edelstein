@@ -71,6 +71,8 @@ namespace Edelstein.Service.Game.Fields.User.Stats
             Speed = 100;
             Jump = 100;
 
+            CompletedSetItemID = 0;
+
             RateOption.STRr = 0;
             RateOption.DEXr = 0;
             RateOption.INTr = 0;
