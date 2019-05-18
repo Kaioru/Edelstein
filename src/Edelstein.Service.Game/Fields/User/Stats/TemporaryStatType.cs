@@ -128,12 +128,9 @@ namespace Edelstein.Service.Game.Fields.User.Stats
         Dash_Speed = 0x7B,
         Dash_Jump = 0x7C,
         RideVehicle = 0x7D,
-
-        SwallowBuff = SwallowAttackDamage |
-                      SwallowDefence |
-                      SwallowCritical |
-                      SwallowMaxMP |
-                      SwallowEvasion,
+        PartyBooster = 0x7E,
+        GuidedBullet = 0x7F,
+        Undead = 0x80,
         SummonBomb = 0x81
     }
 }

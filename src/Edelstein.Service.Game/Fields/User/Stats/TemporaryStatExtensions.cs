@@ -36,13 +36,19 @@ namespace Edelstein.Service.Game.Fields.User.Stats
             packet.Encode<byte>(0); // nDefenseAtt
             packet.Encode<byte>(0); // nDefenseState
 
-            if (stats.ContainsKey(TemporaryStatType.SwallowBuff))
+            if (stats.ContainsKey(TemporaryStatType.SwallowAttackDamage) &&
+                stats.ContainsKey(TemporaryStatType.SwallowDefence) &&
+                stats.ContainsKey(TemporaryStatType.SwallowCritical) &&
+                stats.ContainsKey(TemporaryStatType.SwallowMaxMP) &&
+                stats.ContainsKey(TemporaryStatType.SwallowEvasion))
                 packet.Encode<byte>(0);
             if (stats.ContainsKey(TemporaryStatType.Dice))
                 for (var i = 0; i < 22; i++)
                     packet.Encode<int>(0);
             if (stats.ContainsKey(TemporaryStatType.BlessingArmor))
                 packet.Encode<int>(0);
+
+            EncodeTwoState(stats, packet);
         }
 
         public static void EncodeRemote(this IDictionary<TemporaryStatType, TemporaryStat> stats, IPacket packet)
@@ -58,7 +64,38 @@ namespace Edelstein.Service.Game.Fields.User.Stats
             packet.Encode<byte>(0); // nDefenseAtt
             packet.Encode<byte>(0); // nDefenseState
 
-            // TODO: TwoState
+            EncodeTwoState(stats, packet);
+        }
+
+        public static void EncodeTwoState(this IDictionary<TemporaryStatType, TemporaryStat> stats, IPacket packet)
+        {
+            var now = DateTime.Now;
+
+            TemporaryStatOrder.EncodingTwoStateOrderRemote.ForEach(type =>
+            {
+                if (!stats.ContainsKey(type)) return;
+                var stat = stats[type];
+
+                packet.Encode<int>(stat.Option);
+                packet.Encode<int>(stat.TemplateID);
+
+                if (stat.DateExpire.HasValue)
+                {
+                    // TODO: proper last updated
+                    packet.Encode<bool>(now > stat.DateExpire.Value);
+                    packet.Encode<int>((int) (now - stat.DateExpire.Value).TotalSeconds);
+                }
+                else
+                {
+                    packet.Encode<bool>(true);
+                    packet.Encode<int>(int.MaxValue);
+                }
+                
+                // TODO: Dynamic term encode ExpireTerm short
+
+                // TODO: PartyBooster
+                // TODO: GuidedBullet
+            });
         }
     }
 }

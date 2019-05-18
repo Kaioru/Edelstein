@@ -179,5 +179,16 @@ namespace Edelstein.Service.Game.Fields.User.Stats
                 {TemporaryStatType.BlueAura, (ts, p) => p.Encode<int>(ts.TemplateID)},
                 {TemporaryStatType.YellowAura, (ts, p) => p.Encode<int>(ts.TemplateID)}
             };
+
+        internal static readonly TemporaryStatType[] EncodingTwoStateOrderRemote =
+        {
+            TemporaryStatType.EnergyCharged,
+            TemporaryStatType.Dash_Speed,
+            TemporaryStatType.Dash_Jump,
+            TemporaryStatType.RideVehicle,
+            TemporaryStatType.PartyBooster,
+            TemporaryStatType.GuidedBullet,
+            TemporaryStatType.Undead
+        };
     }
 }
