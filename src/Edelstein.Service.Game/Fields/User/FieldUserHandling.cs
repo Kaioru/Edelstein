@@ -648,10 +648,8 @@ namespace Edelstein.Service.Game.Fields.User
         {
             var templateID = packet.Decode<int>();
             var template = Service.TemplateManager.Get<SkillTemplate>(templateID);
-            var skillLevel = Character.GetSkillLevel(templateID);
 
             if (template == null) return;
-            if (skillLevel <= 0) return;
 
             await ModifyTemporaryStats(ts => ts.Reset(templateID));
         }
