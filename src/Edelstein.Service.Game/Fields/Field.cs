@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils;
@@ -47,10 +48,10 @@ namespace Edelstein.Service.Game.Fields
             => GetObjects().OfType<T>().FirstOrDefault(o => o.ID == id);
 
         public IEnumerable<IFieldObj> GetObjects()
-            => _pools.Values.SelectMany(p => p.GetObjects());
+            => _pools.Values.SelectMany(p => p.GetObjects()).ToImmutableList();
 
         public IEnumerable<T> GetObjects<T>() where T : IFieldObj
-            => _pools.Values.SelectMany(p => p.GetObjects<T>());
+            => _pools.Values.SelectMany(p => p.GetObjects<T>()).ToImmutableList();
 
         public IFieldObj GetControlledObject(IFieldUser controller, int id)
             => GetControlledObjects(controller).FirstOrDefault(o => o.ID == id);
@@ -59,10 +60,10 @@ namespace Edelstein.Service.Game.Fields
             => GetControlledObjects<T>(controller).FirstOrDefault(o => o.ID == id);
 
         public IEnumerable<IFieldObj> GetControlledObjects(IFieldUser controller)
-            => controller.Controlled.ToList();
+            => controller.Controlled.ToImmutableList();
 
         public IEnumerable<T> GetControlledObjects<T>(IFieldUser controller) where T : IFieldControlledObj
-            => controller.Controlled.OfType<T>().ToList();
+            => controller.Controlled.OfType<T>().ToImmutableList();
 
         public IFieldPool GetPool(FieldObjType type)
         {
