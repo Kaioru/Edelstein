@@ -26,7 +26,7 @@ namespace Edelstein.Service.Game.Fields.Continents
 
         public async Task OnTick(DateTime now)
         {
-            if ((now - LastUpdate).Seconds < 30) return;
+            if ((now - LastUpdate).TotalSeconds < 30) return;
 
             LastUpdate = now;
             await Task.WhenAll(Continents.Select(c => c.OnTick(now)));

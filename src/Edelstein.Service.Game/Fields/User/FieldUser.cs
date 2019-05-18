@@ -336,7 +336,7 @@ namespace Edelstein.Service.Game.Fields.User
         public async Task OnTick(DateTime now)
         {
             var expiredStats = TemporaryStats.Values
-                .Where(i => i.DateExpire != null && (now - i.DateExpire.Value).Seconds >= 0)
+                .Where(i => i.DateExpire != null && now > i.DateExpire.Value)
                 .ToList();
 
             if (expiredStats.Any())

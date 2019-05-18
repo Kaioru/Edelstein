@@ -183,11 +183,11 @@ namespace Edelstein.Service.Game.Fields
                 .Select(o => o.OnTick(now))
             );
 
-            if ((now - LastGenObjTime).Seconds >= 7)
+            if ((now - LastGenObjTime).TotalSeconds >= 7)
             {
                 var generators = _generators
                     .Where(g => g.Generated == null)
-                    .Where(g => (now - g.RegenAfter).Seconds > 0)
+                    .Where(g => now > g.RegenAfter)
                     .ToList();
                 var mobGenerators = generators
                     .OfType<MobFieldGenerator>()

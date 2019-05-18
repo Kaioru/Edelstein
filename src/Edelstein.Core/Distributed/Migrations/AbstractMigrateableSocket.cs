@@ -71,13 +71,13 @@ namespace Edelstein.Core.Distributed.Migrations
 
         public async Task TrySendHeartbeat()
         {
-            if ((DateTime.Now - LastRecvHeartbeatDate).Minutes >= 1)
+            if ((DateTime.Now - LastRecvHeartbeatDate).TotalMinutes >= 1)
             {
                 await Close();
                 return;
             }
 
-            if ((DateTime.Now - LastSentHeartbeatDate).Seconds >= 30)
+            if ((DateTime.Now - LastSentHeartbeatDate).TotalSeconds >= 30)
             {
                 using var p = new Packet(SendPacketOperations.AliveReq);
                 LastSentHeartbeatDate = DateTime.Now;

@@ -79,7 +79,7 @@ namespace Edelstein.Service.Game.Fields.Continents
             switch (State)
             {
                 case ContinentState.Dormant:
-                    if ((now - NextBoarding).Seconds > 0)
+                    if (now > NextBoarding)
                     {
                         eventState = ContinentState.Wait;
                         nextState = ContinentState.Wait;
@@ -87,8 +87,7 @@ namespace Edelstein.Service.Game.Fields.Continents
 
                     break;
                 case ContinentState.Wait:
-                    if ((now - NextBoarding
-                             .AddMinutes(Template.Wait)).Seconds > 0)
+                    if (now > NextBoarding.AddMinutes(Template.Wait))
                     {
                         eventState = ContinentState.Start;
                         nextState = ContinentState.Move;
@@ -98,20 +97,18 @@ namespace Edelstein.Service.Game.Fields.Continents
                 case ContinentState.Move:
                     if (NextEvent.HasValue)
                     {
-                        if (!EventDoing &&
-                            (now - NextEvent.Value).Seconds > 0)
+                        if (!EventDoing && now > NextEvent.Value)
                             eventState = ContinentState.MobGen;
 
-                        if (EventDoing &&
-                            (now - NextBoarding
-                                 .AddMinutes(Template.Wait)
-                                 .AddMinutes(Template.EventEnd)).Seconds > 0)
+                        if (EventDoing && now > NextBoarding
+                                .AddMinutes(Template.Wait)
+                                .AddMinutes(Template.EventEnd))
                             eventState = ContinentState.MobDestroy;
                     }
 
-                    if ((now - NextBoarding
-                             .AddMinutes(Template.Wait)
-                             .AddMinutes(Template.Required)).Seconds > 0)
+                    if (now > NextBoarding
+                            .AddMinutes(Template.Wait)
+                            .AddMinutes(Template.Required))
                     {
                         eventState = ContinentState.End;
                         nextState = ContinentState.Dormant;
