@@ -39,9 +39,6 @@ namespace Edelstein.Service.Game.Services
                     var field = Service.FieldManager.Get(character.FieldID);
                     var fieldUser = new FieldUser(this);
 
-                    if (SkillConstants.HasEvanDragon(fieldUser.Character.Job))
-                        fieldUser.Owned.Add(new FieldDragon(fieldUser));
-
                     FieldUser = fieldUser;
 
                     await field.Enter(fieldUser);
@@ -69,6 +66,14 @@ namespace Edelstein.Service.Game.Services
                             p.Encode<int>(character.QuickSlotKeys[i]);
 
                         await SendPacket(p);
+                    }
+                    
+                    if (SkillConstants.HasEvanDragon(fieldUser.Character.Job))
+                    {
+                        var dragon = new FieldDragon(fieldUser);
+                        
+                        fieldUser.Owned.Add(dragon);
+                        await fieldUser.Field.Enter(dragon);
                     }
                 }
             }

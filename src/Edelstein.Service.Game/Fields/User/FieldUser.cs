@@ -13,6 +13,7 @@ using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields.Objects.Dragons;
 using Edelstein.Service.Game.Fields.Objects.Mobs;
 using Edelstein.Service.Game.Fields.Objects.NPCs;
+using Edelstein.Service.Game.Fields.Objects.Summons;
 using Edelstein.Service.Game.Fields.User.Effects;
 using Edelstein.Service.Game.Fields.User.Messages;
 using Edelstein.Service.Game.Fields.User.Messages.Types;
@@ -264,6 +265,15 @@ namespace Edelstein.Service.Game.Fields.User
         {
             switch (operation)
             {
+                case RecvPacketOperations.SummonedMove:
+                case RecvPacketOperations.SummonedAttack:
+                case RecvPacketOperations.SummonedHit:
+                case RecvPacketOperations.SummonedSkill:
+                    var id = packet.Decode<int>();
+                    return Owned
+                        .OfType<FieldSummoned>()
+                        .First(s => s.ID == id)
+                        .OnPacket(operation, packet);
                 case RecvPacketOperations.DragonMove:
                     return Owned
                         .OfType<FieldDragon>()
