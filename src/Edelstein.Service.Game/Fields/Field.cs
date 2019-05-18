@@ -216,7 +216,7 @@ namespace Edelstein.Service.Game.Fields
                     .Shuffle()
                     .Select(g => g.Generate(this)));
 
-                LastGenObjTime = DateTime.Now;
+                LastGenObjTime = now;
             }
         }
     }
