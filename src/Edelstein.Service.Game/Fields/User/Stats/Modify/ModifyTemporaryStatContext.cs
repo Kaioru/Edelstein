@@ -17,7 +17,7 @@ namespace Edelstein.Service.Game.Fields.User.Stats.Modify
             SetOperations = new Dictionary<TemporaryStatType, TemporaryStat>();
         }
 
-        public void Set(TemporaryStatType type, int templateID, short option, DateTime? dateExpire = null)
+        public void Set(TemporaryStatType type, int templateID, int option, DateTime? dateExpire = null)
         {
             var ts = new TemporaryStat
             {

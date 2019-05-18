@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
@@ -8,7 +9,7 @@ using Edelstein.Service.Game.Fields.User.Stats;
 
 namespace Edelstein.Service.Game.Commands.Handling
 {
-    public class BuffCommand : AbstractCommand<object>
+    public class BuffCommand : AbstractCommand<BuffCommandOption>
     {
         public override string Name => "Buff";
         public override string Description => "Creates a buff with the specific values";
@@ -19,18 +20,42 @@ namespace Edelstein.Service.Game.Commands.Handling
             Aliases.Add("TS");
         }
 
-        protected override async Task Execute(FieldUser sender, object option)
+        protected override async Task Execute(FieldUser sender, BuffCommandOption option)
         {
-            var type = await sender.Prompt<int>(target => target.AskMenu(
-                "Which temporary stat type?",
-                Enum.GetValues(typeof(TemporaryStatType))
-                    .Cast<TemporaryStatType>()
-                    .ToDictionary(
-                        t => (int) t,
-                        t => t.ToString()
-                    )
-            ));
-            var options = await sender.Prompt<short>(target => (short) target.AskNumber(
+            var type = (TemporaryStatType) (option.List
+                ? await sender.Prompt<int>(target => target.AskMenu(
+                    "These are your current temporary stats",
+                    sender.TemporaryStats
+                        .ToDictionary(
+                            kv => (int) kv.Key,
+                            kv => $"{kv.Key}: {kv.Value.Option}"
+                        )
+                ))
+                : await sender.Prompt<int>(target => target.AskMenu(
+                    "Which temporary stat type?",
+                    Enum.GetValues(typeof(TemporaryStatType))
+                        .Cast<TemporaryStatType>()
+                        .ToDictionary(
+                            t => (int) t,
+                            t => t.ToString()
+                        )
+                )));
+
+            if (option.List &&
+                await sender.Prompt<int>(target => target.AskMenu(
+                    $"What would you like to do with {type}?",
+                    new Dictionary<int, string>
+                    {
+                        [0] = "Modify the stat option",
+                        [1] = "#rRemove the stat"
+                    }
+                )) > 0)
+            {
+                await sender.ModifyTemporaryStats(s => s.Reset(type));
+                return;
+            }
+
+            var options = await sender.Prompt<int>(target => target.AskNumber(
                 "What option?",
                 1,
                 1
@@ -42,10 +67,16 @@ namespace Edelstein.Service.Game.Commands.Handling
 
             await sender.ModifyTemporaryStats(s =>
                 s.Set(
-                    (TemporaryStatType) type,
+                    type,
                     templateID,
                     options
                 ));
         }
+    }
+
+    public class BuffCommandOption
+    {
+        [Option("list", HelpText = "List the current buffs.")]
+        public bool List { get; set; }
     }
 }
