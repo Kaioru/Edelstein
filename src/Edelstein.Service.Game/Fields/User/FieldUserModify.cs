@@ -5,6 +5,7 @@ using Edelstein.Core;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Gameplay.Inventories;
+using Edelstein.Core.Gameplay.Inventories.Operations;
 using Edelstein.Core.Gameplay.Skills;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
@@ -162,7 +163,8 @@ namespace Edelstein.Service.Game.Fields.User
                 await SendPacket(p);
             }
 
-            if (context.Operations.Any(o => o.Slot < 0))
+            if (context.Operations.Any(o => o.Slot < 0) ||
+                context.Operations.OfType<MoveInventoryOperation>().Any(o => o.ToSlot < 0))
             {
                 await ValidateStat();
                 await AvatarModified();
