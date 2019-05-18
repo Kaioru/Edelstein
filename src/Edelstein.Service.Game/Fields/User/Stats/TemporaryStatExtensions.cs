@@ -26,7 +26,7 @@ namespace Edelstein.Service.Game.Fields.User.Stats
             {
                 if (!stats.ContainsKey(t)) return;
 
-                packet.Encode<short>(stats[t].Option);
+                packet.Encode<short>((short) stats[t].Option);
                 packet.Encode<int>(stats[t].TemplateID);
                 packet.Encode<int>(stats[t].DateExpire.HasValue
                     ? (int) (stats[t].DateExpire.Value - DateTime.Now).TotalMilliseconds

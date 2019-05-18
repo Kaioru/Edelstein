@@ -33,8 +33,7 @@ namespace Edelstein.Service.Game.Commands.Handling
             var options = await sender.Prompt<short>(target => (short) target.AskNumber(
                 "What option?",
                 1,
-                1,
-                short.MaxValue
+                1
             ));
             var templateID = await sender.Prompt<int>(target => target.AskNumber(
                 "What template ID?",

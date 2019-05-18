@@ -148,13 +148,13 @@ namespace Edelstein.Service.Game.Fields.User.Stats
                 {
                     TemporaryStatType.Poison, (ts, p) =>
                     {
-                        p.Encode<short>(ts.Option);
+                        p.Encode<short>((short) ts.Option);
                         p.Encode<int>(ts.TemplateID);
                     }
                 },
                 {TemporaryStatType.ShadowPartner, (ts, p) => p.Encode<int>(ts.TemplateID)},
-                {TemporaryStatType.Morph, (ts, p) => p.Encode<short>(ts.Option)},
-                {TemporaryStatType.Ghost, (ts, p) => p.Encode<short>(ts.Option)},
+                {TemporaryStatType.Morph, (ts, p) => p.Encode<short>((short) ts.Option)},
+                {TemporaryStatType.Ghost, (ts, p) => p.Encode<short>((short) ts.Option)},
                 {TemporaryStatType.Attract, (ts, p) => p.Encode<int>(ts.TemplateID)},
                 {TemporaryStatType.SpiritJavelin, (ts, p) => p.Encode<int>(ts.TemplateID)},
                 {TemporaryStatType.BanMap, (ts, p) => p.Encode<int>(ts.TemplateID)},
