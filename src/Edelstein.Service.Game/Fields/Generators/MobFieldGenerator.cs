@@ -23,13 +23,16 @@ namespace Edelstein.Service.Game.Fields.Generators
         {
             var mob = new FieldMob(_mobTemplate, _lifeTemplate.Left)
             {
-                Generator = this,
                 Position = _lifeTemplate.Position,
                 Foothold = (short) _lifeTemplate.FH,
                 HomeFoothold = (short) _lifeTemplate.FH
             };
 
-            Generated = mob;
+            if (RegenInterval.TotalSeconds > 0)
+            {
+                mob.Generator = this;
+                Generated = mob;
+            }
             await field.Enter(mob, () => mob.GetEnterFieldPacket(MobAppearType.Regen));
         }
     }

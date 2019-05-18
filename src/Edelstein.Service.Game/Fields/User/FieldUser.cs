@@ -280,7 +280,7 @@ namespace Edelstein.Service.Game.Fields.User
                         .First()
                         .OnPacket(operation, packet);
                 case RecvPacketOperations.MobMove:
-                case RecvPacketOperations.MobApplyCtrl:
+                /*case RecvPacketOperations.MobApplyCtrl:
                 case RecvPacketOperations.MobDropPickUpRequest:
                 case RecvPacketOperations.MobHitByObstacle:
                 case RecvPacketOperations.MobHitByMob:
@@ -290,7 +290,7 @@ namespace Edelstein.Service.Game.Fields.User
                 case RecvPacketOperations.MobTimeBombEnd:
                 case RecvPacketOperations.MobEscortCollision:
                 case RecvPacketOperations.MobRequestEscortInfo:
-                case RecvPacketOperations.MobEscortStopEndRequest:
+                case RecvPacketOperations.MobEscortStopEndRequest:*/
                     return Field
                         .GetControlledObject<FieldMob>(this, packet.Decode<int>())?
                         .OnPacket(operation, packet);

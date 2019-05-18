@@ -13,16 +13,16 @@ namespace Edelstein.Service.Game.Fields.Generators
         {
             var interval = TimeSpan.Zero;
 
-            if (RegenInterval.Seconds > 0)
+            if (RegenInterval.TotalSeconds > 0)
             {
                 var random = new Random();
-                var buffer = 7 * RegenInterval.Seconds / 10;
+                var buffer = 7 * RegenInterval.TotalSeconds / 10;
 
                 interval = TimeSpan.FromSeconds(
-                    13 * RegenInterval.Seconds / 10 + random.Next(buffer)
+                    13 * RegenInterval.TotalSeconds / 10 + random.Next((int) buffer)
                 );
             }
-
+            
             Generated = null;
             RegenAfter = DateTime.Now.Add(interval);
             return Task.CompletedTask;

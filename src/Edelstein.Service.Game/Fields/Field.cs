@@ -7,6 +7,7 @@ using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Objects.Mobs;
+using Edelstein.Service.Game.Fields.User;
 using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Fields
@@ -140,7 +141,7 @@ namespace Edelstein.Service.Game.Fields
             }
             else await BroadcastPacket(getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket());
 
-            if (obj is IFieldGeneratedObj g)
+            if (obj is IFieldGeneratedObj g && g.Generator != null)
                 await g.Generator.Reset();
 
             await GetPool(obj.Type).Leave(obj);
@@ -186,18 +187,19 @@ namespace Edelstein.Service.Game.Fields
             if ((now - LastGenObjTime).TotalSeconds >= 7)
             {
                 var generators = _generators
-                    .Where(g => g.Generated == null)
-                    .Where(g => now > g.RegenAfter)
+                    .Where(g => !(g.RegenInterval.TotalSeconds > 0) ||
+                                g.Generated == null && now > g.RegenAfter)
                     .ToList();
                 var mobGenerators = generators
                     .OfType<MobFieldGenerator>()
                     .ToList();
+                var userCount = GetObjects<FieldUser>().Count();
                 var mobCount = GetObjects<FieldMob>().Count();
                 var mobCapacity = mobCount > Template.MobCapacityMin / 2
-                    ? mobCount < Template.MobCapacityMin * 2
+                    ? userCount < Template.MobCapacityMin * 2
                         ? Template.MobCapacityMin +
                           (Template.MobCapacityMax - Template.MobCapacityMin) *
-                          (2 * mobCount - Template.MobCapacityMin) /
+                          (2 * userCount - Template.MobCapacityMin) /
                           (3 * Template.MobCapacityMin)
                         : Template.MobCapacityMax
                     : Template.MobCapacityMin;
