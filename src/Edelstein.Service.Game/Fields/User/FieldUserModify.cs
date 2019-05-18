@@ -64,17 +64,29 @@ namespace Edelstein.Service.Game.Fields.User
                 context.Flag.HasFlag(ModifyStatType.Hair))
                 await AvatarModified();
 
-            if (context.Flag.HasFlag(ModifyStatType.Job) &&
-                SkillConstants.HasEvanDragon(Character.Job))
+            if (context.Flag.HasFlag(ModifyStatType.Job))
             {
-                if (!Owned.OfType<FieldDragon>().Any())
+                if (SkillConstants.HasEvanDragon(Character.Job))
                 {
-                    var dragon = new FieldDragon(this);
+                    if (!Owned.OfType<FieldDragon>().Any())
+                    {
+                        var dragon = new FieldDragon(this);
 
-                    Owned.Add(dragon);
-                    await Field.Enter(dragon);
+                        Owned.Add(dragon);
+                        await Field.Enter(dragon);
+                    }
+                    else await Field.Enter(Owned.OfType<FieldDragon>().First());
                 }
-                else await Field.Enter(Owned.OfType<FieldDragon>().First());
+                else
+                {
+                    var dragon = Owned.OfType<FieldDragon>().FirstOrDefault();
+
+                    if (dragon != null)
+                    {
+                        Owned.Remove(dragon);
+                        await Field.Leave(dragon);
+                    }
+                }
             }
         }
 
