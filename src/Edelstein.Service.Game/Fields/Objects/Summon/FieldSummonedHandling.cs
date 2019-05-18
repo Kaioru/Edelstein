@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
 
-namespace Edelstein.Service.Game.Fields.Objects.Summons
+namespace Edelstein.Service.Game.Fields.Objects.Summon
 {
     public partial class FieldSummoned
     {

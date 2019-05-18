@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Network.Packets;
-using Edelstein.Service.Game.Fields.Objects.Mobs;
+using Edelstein.Service.Game.Fields.Objects.Mob;
 
 namespace Edelstein.Service.Game.Fields.User.Attacking
 {

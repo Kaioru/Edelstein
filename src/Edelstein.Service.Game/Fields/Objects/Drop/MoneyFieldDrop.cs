@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Edelstein.Service.Game.Fields.User;
 
-namespace Edelstein.Service.Game.Fields.Objects.Drops
+namespace Edelstein.Service.Game.Fields.Objects.Drop
 {
     public class MoneyFieldDrop : AbstractFieldDrop
     {

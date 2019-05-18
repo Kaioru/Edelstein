@@ -4,7 +4,7 @@ using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Reactor;
 using Edelstein.Service.Game.Fields.Generators;
 
-namespace Edelstein.Service.Game.Fields.Objects.Reactors
+namespace Edelstein.Service.Game.Fields.Objects.Reactor
 {
     public class FieldReactor : AbstractFieldObj, IFieldGeneratedObj
     {

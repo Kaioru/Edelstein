@@ -1,14 +1,13 @@
 using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core;
-using Edelstein.Core.Extensions;
 using Edelstein.Core.Types;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Life;
 using Edelstein.Service.Game.Fields.Movements;
 using Edelstein.Service.Game.Fields.User.Attacking;
 
-namespace Edelstein.Service.Game.Fields.Objects.Summons
+namespace Edelstein.Service.Game.Fields.Objects.Summon
 {
     public partial class FieldSummoned : AbstractFieldLife, IFieldOwnedObj
     {

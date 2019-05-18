@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Service.Game.Fields.User;
 
-namespace Edelstein.Service.Game.Fields.Objects.Drops
+namespace Edelstein.Service.Game.Fields.Objects.Drop
 {
     public class ItemFieldDrop : AbstractFieldDrop
     {

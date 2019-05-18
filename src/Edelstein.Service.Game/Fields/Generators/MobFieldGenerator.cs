@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Edelstein.Provider.Templates.Field.Life;
 using Edelstein.Provider.Templates.Field.Life.Mob;
-using Edelstein.Service.Game.Fields.Objects.Mobs;
+using Edelstein.Service.Game.Fields.Objects.Mob;
 
 namespace Edelstein.Service.Game.Fields.Generators
 {

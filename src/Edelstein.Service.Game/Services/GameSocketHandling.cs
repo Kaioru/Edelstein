@@ -5,7 +5,7 @@ using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
-using Edelstein.Service.Game.Fields.Objects.Dragons;
+using Edelstein.Service.Game.Fields.Objects.Dragon;
 using Edelstein.Service.Game.Fields.User;
 
 namespace Edelstein.Service.Game.Services

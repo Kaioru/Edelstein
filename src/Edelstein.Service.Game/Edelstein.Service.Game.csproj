@@ -23,4 +23,8 @@
         </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Fields\Objects\AffectedArea" />
+    </ItemGroup>
+
 </Project>

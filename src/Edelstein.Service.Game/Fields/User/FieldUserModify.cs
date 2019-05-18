@@ -9,7 +9,7 @@ using Edelstein.Core.Gameplay.Inventories.Operations;
 using Edelstein.Core.Gameplay.Skills;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
-using Edelstein.Service.Game.Fields.Objects.Dragons;
+using Edelstein.Service.Game.Fields.Objects.Dragon;
 using Edelstein.Service.Game.Fields.User.Stats;
 using Edelstein.Service.Game.Fields.User.Stats.Modify;
 

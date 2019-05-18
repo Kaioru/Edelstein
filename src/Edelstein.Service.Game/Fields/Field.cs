@@ -7,7 +7,7 @@ using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Service.Game.Fields.Generators;
-using Edelstein.Service.Game.Fields.Objects.Mobs;
+using Edelstein.Service.Game.Fields.Objects.Mob;
 using Edelstein.Service.Game.Fields.User;
 using MoreLinq.Extensions;
 

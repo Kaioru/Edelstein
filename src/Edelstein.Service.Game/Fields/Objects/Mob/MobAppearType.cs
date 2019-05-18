@@ -1,4 +1,4 @@
-namespace Edelstein.Service.Game.Fields.Objects.Mobs
+namespace Edelstein.Service.Game.Fields.Objects.Mob
 {
     public enum MobAppearType : sbyte
     {

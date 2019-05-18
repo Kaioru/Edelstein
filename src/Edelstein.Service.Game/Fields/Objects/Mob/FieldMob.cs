@@ -9,7 +9,7 @@ using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Movements;
 using Edelstein.Service.Game.Fields.User;
 
-namespace Edelstein.Service.Game.Fields.Objects.Mobs
+namespace Edelstein.Service.Game.Fields.Objects.Mob
 {
     public partial class FieldMob : AbstractFieldControlledLife, IFieldGeneratedObj
     {

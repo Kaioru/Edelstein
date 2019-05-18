@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
 
-namespace Edelstein.Service.Game.Fields.Objects.Dragons
+namespace Edelstein.Service.Game.Fields.Objects.Dragon
 {
     public partial class FieldDragon
     {

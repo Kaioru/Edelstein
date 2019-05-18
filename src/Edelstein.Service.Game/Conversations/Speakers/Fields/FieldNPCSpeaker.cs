@@ -1,4 +1,4 @@
-using Edelstein.Service.Game.Fields.Objects.NPCs;
+using Edelstein.Service.Game.Fields.Objects.NPC;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 {

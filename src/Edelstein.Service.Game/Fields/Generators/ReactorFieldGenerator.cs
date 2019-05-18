@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Edelstein.Provider.Templates.Field.Reactor;
-using Edelstein.Service.Game.Fields.Objects.Reactors;
+using Edelstein.Service.Game.Fields.Objects.Reactor;
 
 namespace Edelstein.Service.Game.Fields.Generators
 {

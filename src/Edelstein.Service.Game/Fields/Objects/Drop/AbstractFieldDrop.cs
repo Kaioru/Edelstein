@@ -4,7 +4,7 @@ using Edelstein.Core;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.User;
 
-namespace Edelstein.Service.Game.Fields.Objects.Drops
+namespace Edelstein.Service.Game.Fields.Objects.Drop
 {
     public abstract class AbstractFieldDrop : AbstractFieldObj
     {
