@@ -18,7 +18,7 @@ namespace Edelstein.Provider.Templates.Item.Set
 
             SetCompleteCount = property.Resolve<int>("completeCount") ?? 0;
 
-            TemplateID = property.Resolve("itemID")?.Children
+            TemplateID = property.Resolve("ItemID")?.Children
                 .Select(c => c.Resolve<int>() ?? 0)
                 .ToList();
             Effect = property.Resolve("Effect")?.Children
