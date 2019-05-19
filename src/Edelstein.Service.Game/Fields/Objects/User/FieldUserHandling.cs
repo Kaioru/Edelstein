@@ -17,6 +17,8 @@ using Edelstein.Service.Game.Fields.Objects.Drop;
 using Edelstein.Service.Game.Fields.Objects.NPC;
 using Edelstein.Service.Game.Fields.Objects.User.Attacking;
 using Edelstein.Service.Game.Fields.Objects.User.Effects.Types;
+using Edelstein.Service.Game.Fields.Objects.User.Messages.Types.Quests;
+using Edelstein.Service.Game.Fields.Objects.User.Quests;
 using Edelstein.Service.Game.Fields.Objects.User.Stats;
 using Edelstein.Service.Game.Fields.Objects.User.Stats.Modify;
 using Edelstein.Service.Game.Logging;
@@ -745,6 +747,28 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             );
 
             await Converse(conversation);
+        }
+
+        private async Task OnUserQuestRequest(IPacket packet)
+        {
+            var action = (QuestAction) packet.Decode<byte>();
+            var templateID = packet.Decode<short>();
+
+            switch (action)
+            {
+                case QuestAction.Accept:
+                    var npcTemplateID = packet.Decode<int>();
+                    break;
+                case QuestAction.Complete:
+                    break;
+                case QuestAction.Resign:
+                    break;
+                case QuestAction.Fail:
+                    break;
+            }
+
+            await Message($"{action} : {templateID}");
+            await ModifyStats(exclRequest: true);
         }
     }
 }

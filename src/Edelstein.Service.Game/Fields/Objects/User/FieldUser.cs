@@ -329,6 +329,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 RecvPacketOperations.UserSkillPrepareRequest => OnUserSkillPrepareRequest(packet),
                 RecvPacketOperations.UserCharacterInfoRequest => OnUserCharacterInfoRequest(packet),
                 RecvPacketOperations.UserPortalScriptRequest => OnUserPortalScriptRequest(packet),
+                RecvPacketOperations.UserQuestRequest => OnUserQuestRequest(packet),
                 _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
                 };
         }
