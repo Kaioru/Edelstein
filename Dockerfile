@@ -10,13 +10,13 @@ RUN unzip data.zip -d data/
 RUN rm scripts.zip
 RUN rm data.zip
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 as build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-alpine as build
 WORKDIR /code
 COPY . .
 ARG type="All"
 RUN dotnet publish -c Release -o /app src/Edelstein.Service.${type}
 
-FROM mcr.microsoft.com/dotnet/core/runtime:3.0 as runtime
+FROM mcr.microsoft.com/dotnet/core/runtime:3.0-alpine as runtime
 WORKDIR /app
 COPY --from=data /app .
 COPY --from=build /app .
