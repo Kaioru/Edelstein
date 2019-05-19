@@ -24,6 +24,7 @@ namespace Edelstein.Provider.Templates
         Continent = 0x2000,
         Reactor = 0x4000,
         Skill = 0x8000,
+        Quest = 0x100000,
 
         FieldString = 0x10000,
         ItemString = 0x20000,
@@ -32,7 +33,7 @@ namespace Edelstein.Provider.Templates
         String = FieldString | ItemString | SkillString | QuestString,
 
         Login = Item | MakeCharInfo,
-        Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob | Continent | Reactor | Skill | String,
+        Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob | Continent | Reactor | Skill | Quest | String,
         Shop = Item | Commodity | CashPackage | ModifiedCommodity | Best | CategoryDiscount | NotSale
     }
 }
