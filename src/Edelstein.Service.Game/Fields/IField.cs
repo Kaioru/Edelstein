@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
+using Edelstein.Service.Game.Fields.Objects;
 
 namespace Edelstein.Service.Game.Fields
 {

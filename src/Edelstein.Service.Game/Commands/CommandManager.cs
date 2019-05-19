@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Service.Game.Commands.Handling;
-using Edelstein.Service.Game.Fields.User;
+using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Commands
 {

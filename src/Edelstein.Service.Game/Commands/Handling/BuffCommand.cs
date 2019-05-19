@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Core.Types;
-using Edelstein.Service.Game.Fields.User;
-using Edelstein.Service.Game.Fields.User.Stats;
+using Edelstein.Service.Game.Fields.Objects.User;
+using Edelstein.Service.Game.Fields.Objects.User.Stats;
 
 namespace Edelstein.Service.Game.Commands.Handling
 {

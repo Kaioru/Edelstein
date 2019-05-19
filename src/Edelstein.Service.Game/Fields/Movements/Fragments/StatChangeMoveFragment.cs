@@ -1,4 +1,5 @@
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.Objects;
 
 namespace Edelstein.Service.Game.Fields.Movements.Fragments
 {

@@ -9,7 +9,7 @@ using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
-using Edelstein.Service.Game.Fields.User;
+using Edelstein.Service.Game.Fields.Objects.User;
 using Edelstein.Service.Game.Logging;
 using Foundatio.Caching;
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Edelstein.Service.Game.Fields.Objects;
 
 namespace Edelstein.Service.Game.Fields
 {

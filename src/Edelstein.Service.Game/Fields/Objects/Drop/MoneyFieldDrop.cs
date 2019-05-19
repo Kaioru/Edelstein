@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Edelstein.Service.Game.Fields.User;
+using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Fields.Objects.Drop
 {

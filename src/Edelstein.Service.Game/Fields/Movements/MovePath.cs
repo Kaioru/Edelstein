@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Movements.Fragments;
+using Edelstein.Service.Game.Fields.Objects;
 using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Fields.Movements

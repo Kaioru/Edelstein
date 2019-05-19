@@ -2,7 +2,7 @@ using System.Linq;
 using Edelstein.Service.Game.Conversations.Speakers.Fields.Continents;
 using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Fields.Objects.NPC;
-using Edelstein.Service.Game.Fields.User;
+using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 {

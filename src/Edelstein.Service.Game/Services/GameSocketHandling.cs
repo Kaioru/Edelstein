@@ -6,7 +6,7 @@ using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.Dragon;
-using Edelstein.Service.Game.Fields.User;
+using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Services
 {

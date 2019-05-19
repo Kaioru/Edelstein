@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Service.Game.Fields.Objects;
 
 namespace Edelstein.Service.Game.Fields
 {

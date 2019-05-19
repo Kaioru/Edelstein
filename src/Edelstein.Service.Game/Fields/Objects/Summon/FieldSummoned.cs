@@ -5,7 +5,7 @@ using Edelstein.Core.Types;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Life;
 using Edelstein.Service.Game.Fields.Movements;
-using Edelstein.Service.Game.Fields.User.Attacking;
+using Edelstein.Service.Game.Fields.Objects.User.Attacking;
 
 namespace Edelstein.Service.Game.Fields.Objects.Summon
 {

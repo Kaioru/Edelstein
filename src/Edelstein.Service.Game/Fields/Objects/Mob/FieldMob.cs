@@ -7,7 +7,7 @@ using Edelstein.Provider.Templates.Field.Life;
 using Edelstein.Provider.Templates.Field.Life.Mob;
 using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Movements;
-using Edelstein.Service.Game.Fields.User;
+using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Fields.Objects.Mob
 {

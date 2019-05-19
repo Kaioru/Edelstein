@@ -4,7 +4,7 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Provider.Templates.Item;
-using Edelstein.Service.Game.Fields.User;
+using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields.Inventories
 {

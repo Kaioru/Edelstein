@@ -5,6 +5,7 @@ using Edelstein.Core;
 using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Continent;
+using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Logging;
 
 namespace Edelstein.Service.Game.Fields.Continents
