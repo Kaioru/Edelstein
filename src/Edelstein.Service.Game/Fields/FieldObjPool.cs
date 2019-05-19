@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Edelstein.Service.Game.Fields
         private readonly IDictionary<int, IFieldObj> _objects;
 
         public FieldObjPool()
-            => _objects = new Dictionary<int, IFieldObj>();
+            => _objects = new ConcurrentDictionary<int, IFieldObj>();
 
         public Task Enter(IFieldObj obj)
         {
