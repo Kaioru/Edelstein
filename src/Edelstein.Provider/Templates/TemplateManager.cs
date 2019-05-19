@@ -47,7 +47,8 @@ namespace Edelstein.Provider.Templates
                     [typeof(SkillTemplate)] = new SkillTemplateCollection(collection),
                     [typeof(FieldStringTemplate)] = new FieldStringTemplateCollection(collection),
                     [typeof(ItemStringTemplate)] = new ItemStringTemplateCollection(collection),
-                    [typeof(SkillStringTemplate)] = new SkillStringTemplateCollection(collection)
+                    [typeof(SkillStringTemplate)] = new SkillStringTemplateCollection(collection),
+                    [typeof(QuestStringTemplate)] = new QuestStringTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
