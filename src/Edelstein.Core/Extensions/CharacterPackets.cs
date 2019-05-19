@@ -113,12 +113,22 @@ namespace Edelstein.Core.Extensions
 
             if (flags.HasFlag(DbChar.QuestRecord))
             {
-                p.Encode<short>(0);
+                p.Encode<short>((short) c.QuestRecord.Count);
+                c.QuestRecord.ForEach(q =>
+                {
+                    p.Encode<short>(q.Key);
+                    p.Encode<string>(q.Value);
+                });
             }
 
             if (flags.HasFlag(DbChar.QuestComplete))
             {
-                p.Encode<short>(0);
+                p.Encode<short>((short) c.QuestComplete.Count);
+                c.QuestComplete.ForEach(q =>
+                {
+                    p.Encode<short>(q.Key);
+                    p.Encode<DateTime>(q.Value);
+                });
             }
 
             if (flags.HasFlag(DbChar.MinigameRecord))
@@ -146,7 +156,12 @@ namespace Edelstein.Core.Extensions
 
             if (flags.HasFlag(DbChar.QuestRecordEx))
             {
-                p.Encode<short>(0);
+                p.Encode<short>((short) c.QuestRecordEx.Count);
+                c.QuestRecordEx.ForEach(q =>
+                {
+                    p.Encode<short>(q.Key);
+                    p.Encode<string>(q.Value);
+                });
             }
 
             if (flags.HasFlag(DbChar.WildHunterInfo))

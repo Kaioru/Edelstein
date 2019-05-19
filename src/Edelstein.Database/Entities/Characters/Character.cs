@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Edelstein.Database.Entities.Characters.Records;
 using Edelstein.Database.Entities.Inventories;
@@ -47,13 +48,16 @@ namespace Edelstein.Database.Entities.Characters
 
         public short SubJob { get; set; }
 
-        public FunctionKey[] FunctionKeys { get; set; }
-        public int[] QuickSlotKeys { get; set; }
+        public FunctionKey[] FunctionKeys { get; }
+        public int[] QuickSlotKeys { get; }
 
-        public IDictionary<ItemInventoryType, ItemInventory> Inventories { get; set; }
-        public IDictionary<int, SkillRecord> SkillRecord { get; set; }
+        public IDictionary<ItemInventoryType, ItemInventory> Inventories { get; }
+        public IDictionary<int, SkillRecord> SkillRecord { get; }
+        public IDictionary<short, string> QuestRecord { get; }
+        public IDictionary<short, string> QuestRecordEx { get; }
+        public IDictionary<short, DateTime> QuestComplete { get; }
 
-        public int[] WishList { get; set; }
+        public int[] WishList { get; }
 
         public Character()
         {
@@ -122,6 +126,9 @@ namespace Edelstein.Database.Entities.Characters
                 [ItemInventoryType.Cash] = new ItemInventory(24)
             };
             SkillRecord = new Dictionary<int, SkillRecord>();
+            QuestRecord = new Dictionary<short, string>();
+            QuestRecordEx = new Dictionary<short, string>();
+            QuestComplete = new Dictionary<short, DateTime>();
 
             WishList = new int[10];
         }

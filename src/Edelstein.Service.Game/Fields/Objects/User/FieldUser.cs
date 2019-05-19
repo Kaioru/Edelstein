@@ -247,7 +247,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                     p.Encode<bool>(false);
                 }
 
-                p.Encode<DateTime>(DateTime.UtcNow);
+                p.Encode<DateTime>(DateTime.Now);
                 return p;
             }
         }
