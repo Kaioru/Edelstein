@@ -25,7 +25,7 @@ namespace Edelstein.Provider.Templates.Item.Option
             LevelData = property.Resolve("level").Children
                 .ToDictionary(
                     l => Convert.ToInt32(l.Name),
-                    l => new ItemOptionLevelTemplate(Convert.ToInt32(l.Name), l)
+                    l => new ItemOptionLevelTemplate(Convert.ToInt32(l.Name), l.ResolveAll())
                 );
         }
     }
