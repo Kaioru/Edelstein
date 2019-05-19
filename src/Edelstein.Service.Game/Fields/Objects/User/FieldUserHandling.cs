@@ -758,10 +758,14 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             {
                 case QuestAction.Accept:
                     var npcTemplateID = packet.Decode<int>();
+
+                    await ModifyQuests(q => q.Accept(templateID));
                     break;
                 case QuestAction.Complete:
+                    await ModifyQuests(q => q.Complete(templateID));
                     break;
                 case QuestAction.Resign:
+                    await ModifyQuests(q => q.Resign(templateID));
                     break;
                 case QuestAction.Fail:
                     break;

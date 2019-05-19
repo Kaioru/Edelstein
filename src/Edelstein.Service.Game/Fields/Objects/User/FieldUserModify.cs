@@ -9,6 +9,7 @@ using Edelstein.Core.Gameplay.Inventories.Operations;
 using Edelstein.Core.Gameplay.Skills;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.Dragon;
+using Edelstein.Service.Game.Fields.Objects.User.Quests;
 using Edelstein.Service.Game.Fields.Objects.User.Stats;
 using Edelstein.Service.Game.Fields.Objects.User.Stats.Modify;
 
@@ -184,6 +185,14 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 p.Encode<bool>(true);
                 await SendPacket(p);
             }
+        }
+
+        public async Task ModifyQuests(Action<ModifyQuestContext> action = null)
+        {
+            var context = new ModifyQuestContext(Character);
+
+            action?.Invoke(context);
+            await Task.WhenAll(context.Messages.Select(Message));
         }
     }
 }
