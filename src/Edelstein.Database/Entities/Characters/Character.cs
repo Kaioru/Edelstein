@@ -48,14 +48,14 @@ namespace Edelstein.Database.Entities.Characters
 
         public short SubJob { get; set; }
 
-        public FunctionKey[] FunctionKeys { get; }
-        public int[] QuickSlotKeys { get; }
+        public FunctionKey[] FunctionKeys { get; set; }
+        public int[] QuickSlotKeys { get; set; }
 
-        public IDictionary<ItemInventoryType, ItemInventory> Inventories { get; }
-        public IDictionary<int, SkillRecord> SkillRecord { get; }
-        public IDictionary<short, string> QuestRecord { get; }
-        public IDictionary<short, string> QuestRecordEx { get; }
-        public IDictionary<short, DateTime> QuestComplete { get; }
+        public IDictionary<ItemInventoryType, ItemInventory> Inventories { get; set; }
+        public IDictionary<int, SkillRecord> SkillRecord { get; set; }
+        public IDictionary<short, string> QuestRecord { get; set; }
+        public IDictionary<short, string> QuestRecordEx { get; set; }
+        public IDictionary<short, DateTime> QuestComplete { get; set; }
 
         public int[] WishList { get; }
 
