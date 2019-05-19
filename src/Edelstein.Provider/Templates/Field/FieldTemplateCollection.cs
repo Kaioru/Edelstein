@@ -1,3 +1,5 @@
+using System;
+
 namespace Edelstein.Provider.Templates.Field
 {
     public class FieldTemplateCollection : AbstractLazyTemplateCollection
@@ -10,9 +12,7 @@ namespace Edelstein.Provider.Templates.Field
 
         public override ITemplate Load(int id)
         {
-            var property = Collection.Resolve($"Map/Map/Map{id.ToString("D8")[0]}/{id:D8}.img");
-
-            property ??= Collection.Resolve($"Map/Map/Map{id.ToString("D9")[0]}/{id:D9}.img");
+            var property = Collection.Resolve($"Map/Map/Map{id.ToString("D9")[0]}/{id:D9}.img");
 
             var info = property.Resolve("info");
             var link = info.Resolve<int>("link");
