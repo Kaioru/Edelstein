@@ -247,7 +247,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                     p.Encode<bool>(false);
                 }
 
-                p.Encode<long>(0);
+                p.Encode<DateTime>(DateTime.UtcNow);
                 return p;
             }
         }
@@ -280,17 +280,17 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                         .First()
                         .OnPacket(operation, packet);
                 case RecvPacketOperations.MobMove:
-                /*case RecvPacketOperations.MobApplyCtrl:
-                case RecvPacketOperations.MobDropPickUpRequest:
-                case RecvPacketOperations.MobHitByObstacle:
-                case RecvPacketOperations.MobHitByMob:
-                case RecvPacketOperations.MobSelfDestruct:
-                case RecvPacketOperations.MobAttackMob:
-                case RecvPacketOperations.MobSkillDelayEnd:
-                case RecvPacketOperations.MobTimeBombEnd:
-                case RecvPacketOperations.MobEscortCollision:
-                case RecvPacketOperations.MobRequestEscortInfo:
-                case RecvPacketOperations.MobEscortStopEndRequest:*/
+                    /*case RecvPacketOperations.MobApplyCtrl:
+                    case RecvPacketOperations.MobDropPickUpRequest:
+                    case RecvPacketOperations.MobHitByObstacle:
+                    case RecvPacketOperations.MobHitByMob:
+                    case RecvPacketOperations.MobSelfDestruct:
+                    case RecvPacketOperations.MobAttackMob:
+                    case RecvPacketOperations.MobSkillDelayEnd:
+                    case RecvPacketOperations.MobTimeBombEnd:
+                    case RecvPacketOperations.MobEscortCollision:
+                    case RecvPacketOperations.MobRequestEscortInfo:
+                    case RecvPacketOperations.MobEscortStopEndRequest:*/
                     return Field
                         .GetControlledObject<FieldMob>(this, packet.Decode<int>())?
                         .OnPacket(operation, packet);
