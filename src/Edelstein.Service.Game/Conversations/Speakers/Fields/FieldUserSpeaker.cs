@@ -1,4 +1,5 @@
 using Edelstein.Service.Game.Conversations.Speakers.Fields.Inventories;
+using Edelstein.Service.Game.Conversations.Speakers.Fields.Quests;
 using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields
@@ -13,6 +14,9 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 
         public FieldUserInventorySpeaker GetInventory()
             => new FieldUserInventorySpeaker(Context, Obj);
+
+        public QuestSpeaker GetQuest(short questTemplateID, int npcTemplateID = 9010000)
+            => new QuestSpeaker(Context, Obj, questTemplateID, npcTemplateID);
 
         public byte Gender => Obj.Character.Gender;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Edelstein.Service.Game.Conversations.Speakers.Fields;
 using Edelstein.Service.Game.Conversations.Speakers.Fields.Continents;
 using Edelstein.Service.Game.Conversations.Speakers.Fields.Inventories;
+using Edelstein.Service.Game.Conversations.Speakers.Fields.Quests;
 
 namespace Edelstein.Service.Game.Conversations.Speakers
 {
@@ -16,7 +17,8 @@ namespace Edelstein.Service.Game.Conversations.Speakers
             typeof(FieldPortalSpeaker),
             typeof(FieldUserSpeaker),
             typeof(FieldUserInventorySpeaker),
-            typeof(FieldNPCSpeaker)
+            typeof(FieldNPCSpeaker),
+            typeof(QuestSpeaker)
         };
     }
 }

@@ -9,10 +9,12 @@ using Edelstein.Core.Types;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
+using Edelstein.Provider.Templates.Quest;
 using Edelstein.Provider.Templates.Skill;
 using Edelstein.Service.Game.Commands;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers.Fields;
+using Edelstein.Service.Game.Conversations.Speakers.Fields.Quests;
 using Edelstein.Service.Game.Fields.Objects.Drop;
 using Edelstein.Service.Game.Fields.Objects.NPC;
 using Edelstein.Service.Game.Fields.Objects.User.Attacking;
@@ -751,25 +753,61 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         private async Task OnUserQuestRequest(IPacket packet)
         {
-            var action = (QuestAction) packet.Decode<byte>();
+            var action = (QuestRequest) packet.Decode<byte>();
             var templateID = packet.Decode<short>();
+            var template = Service.TemplateManager.Get<QuestTemplate>(templateID);
+
+            if (template == null) return;
+
+            var check = action switch {
+                QuestRequest.AcceptQuest => template.Check(QuestState.No, this),
+                QuestRequest.OpeningScript => template.Check(QuestState.No, this),
+                QuestRequest.CompleteQuest => template.Check(QuestState.Perform, this),
+                QuestRequest.CompleteScript => template.Check(QuestState.Perform, this),
+                _ => true
+                };
 
             switch (action)
             {
-                case QuestAction.Accept:
+                case QuestRequest.LostItem:
+                    break;
+                case QuestRequest.AcceptQuest:
+                {
                     var npcTemplateID = packet.Decode<int>();
 
                     await ModifyQuests(q => q.Accept(templateID));
                     break;
-                case QuestAction.Complete:
+                }
+
+                case QuestRequest.CompleteQuest:
                     await ModifyQuests(q => q.Complete(templateID));
                     break;
-                case QuestAction.Resign:
+                case QuestRequest.ResignQuest:
                     await ModifyQuests(q => q.Resign(templateID));
                     break;
-                case QuestAction.Fail:
+                case QuestRequest.OpeningScript:
+                case QuestRequest.CompleteScript:
+                {
+                    var npcTemplateID = packet.Decode<int>();
+                    var script = "test"; // TODO
+                    var context = new ConversationContext(Socket);
+                    var conversation = await Socket.Service.ConversationManager.Build(
+                        script,
+                        context,
+                        new FieldSpeaker(context, Field),
+                        new QuestSpeaker(context, this, templateID, npcTemplateID)
+                    );
+
+                    await Converse(conversation);
                     break;
+                }
             }
+
+            await (action switch {
+                QuestRequest.AcceptQuest => template.Act(QuestState.No, this),
+                QuestRequest.OpeningScript => template.Act(QuestState.No, this),
+                _ => Task.CompletedTask
+                });
 
             await Message($"{action} : {templateID}");
             await ModifyStats(exclRequest: true);
