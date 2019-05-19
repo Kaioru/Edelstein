@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Life;
@@ -11,7 +10,7 @@ using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Fields.Objects.Mob
 {
-    public partial class FieldMob : AbstractFieldControlledLife, IFieldGeneratedObj
+    public class FieldMob : AbstractFieldControlledLife, IFieldGeneratedObj
     {
         public override FieldObjType Type => FieldObjType.Mob;
         public MobTemplate Template { get; }
@@ -120,13 +119,6 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
                     EncodeData(p, MobAppearType.Regen);
                 return p;
             }
-        }
-
-        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
-        {
-            return operation switch {
-                RecvPacketOperations.MobMove => OnMobMove(packet),
-                };
         }
     }
 }

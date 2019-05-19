@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Provider.Templates.Item;

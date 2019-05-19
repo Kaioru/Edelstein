@@ -1,12 +1,13 @@
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.Objects.Mob;
 
-namespace Edelstein.Service.Game.Fields.Objects.Mob
+namespace Edelstein.Service.Game.Services.Handlers.Mob
 {
-    public partial class FieldMob
+    public class MobMoveHandler : AbstractFieldMobHandler
     {
-        private async Task OnMobMove(IPacket packet)
+        public override async Task Handle(RecvPacketOperations operation, IPacket packet, FieldMob mob)
         {
             var mobCtrlSN = packet.Decode<short>();
             var v7 = packet
@@ -35,19 +36,19 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
 
             using (var p = new Packet(SendPacketOperations.MobCtrlAck))
             {
-                p.Encode<int>(ID);
+                p.Encode<int>(mob.ID);
                 p.Encode<short>(mobCtrlSN);
                 p.Encode<bool>(mobMoveStartResult);
                 p.Encode<short>(0); // nMP
                 p.Encode<byte>(0); // SkillCommand
                 p.Encode<byte>(0); // SLV
 
-                await Controller.SendPacket(p);
+                await mob.Controller.SendPacket(p);
             }
 
             using (var p = new Packet(SendPacketOperations.MobMove))
             {
-                p.Encode<int>(ID);
+                p.Encode<int>(mob.ID);
                 p.Encode<bool>(mobMoveStartResult);
                 p.Encode<byte>(curSplit);
                 p.Encode<byte>(0); // not sure
@@ -57,9 +58,9 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
                 p.Encode<int>(0); // MultiTargetForBall
                 p.Encode<int>(0); // RandTimeForAreaAttack
 
-                Move(packet).Encode(p);
+                mob.Move(packet).Encode(p);
 
-                await Field.BroadcastPacket(Controller, p);
+                await mob.Field.BroadcastPacket(mob.Controller, p);
             }
         }
     }

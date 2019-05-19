@@ -8,17 +8,17 @@ using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.Dragon;
 using Edelstein.Service.Game.Fields.Objects.User;
 
-namespace Edelstein.Service.Game.Services
+namespace Edelstein.Service.Game.Services.Handlers
 {
-    public partial class GameSocket
+    public class MigrateInHandler : IGameHandler
     {
-        private async Task OnMigrateIn(IPacket packet)
+        public async Task Handle(RecvPacketOperations operation, IPacket packet, GameSocket socket)
         {
             var characterID = packet.Decode<int>();
 
             try
             {
-                using (var store = Service.DataStore.OpenSession())
+                using (var store = socket.Service.DataStore.OpenSession())
                 {
                     var character = store
                         .Query<Character>()
@@ -30,16 +30,16 @@ namespace Edelstein.Service.Game.Services
                         .Query<Account>()
                         .First(a => a.ID == data.AccountID);
 
-                    await TryMigrateFrom(account, character);
+                    await socket.TryMigrateFrom(account, character);
 
-                    Account = account;
-                    AccountData = data;
-                    Character = character;
+                    socket.Account = account;
+                    socket.AccountData = data;
+                    socket.Character = character;
 
-                    var field = Service.FieldManager.Get(character.FieldID);
-                    var fieldUser = new FieldUser(this);
+                    var field = socket.Service.FieldManager.Get(character.FieldID);
+                    var fieldUser = new FieldUser(socket);
 
-                    FieldUser = fieldUser;
+                    socket.FieldUser = fieldUser;
 
                     await field.Enter(fieldUser);
 
@@ -55,7 +55,7 @@ namespace Edelstein.Service.Game.Services
                             p.Encode<int>(key?.Action ?? 0);
                         }
 
-                        await SendPacket(p);
+                        await socket.SendPacket(p);
                     }
 
                     using (var p = new Packet(SendPacketOperations.QuickslotMappedInit))
@@ -65,13 +65,13 @@ namespace Edelstein.Service.Game.Services
                         for (var i = 0; i < 8; i++)
                             p.Encode<int>(character.QuickSlotKeys[i]);
 
-                        await SendPacket(p);
+                        await socket.SendPacket(p);
                     }
-                    
+
                     if (SkillConstants.HasEvanDragon(fieldUser.Character.Job))
                     {
                         var dragon = new FieldDragon(fieldUser);
-                        
+
                         fieldUser.Owned.Add(dragon);
                         await fieldUser.Field.Enter(dragon);
                     }
@@ -79,34 +79,7 @@ namespace Edelstein.Service.Game.Services
             }
             catch
             {
-                await Close();
-            }
-        }
-
-        private async Task OnFuncKeyMappedModified(IPacket packet)
-        {
-            var v3 = packet.Decode<int>();
-
-            if (v3 > 0) return;
-            var count = packet.Decode<int>();
-
-            for (var i = 0; i < count; i++)
-            {
-                var key = packet.Decode<int>();
-
-                Character.FunctionKeys[key] = new FunctionKey
-                {
-                    Type = packet.Decode<byte>(),
-                    Action = packet.Decode<int>()
-                };
-            }
-        }
-
-        private async Task OnQuickSlotKeyMappedModified(IPacket packet)
-        {
-            for (var i = 0; i < 8; i++)
-            {
-                Character.QuickSlotKeys[i] = packet.Decode<int>();
+                await socket.Close();
             }
         }
     }

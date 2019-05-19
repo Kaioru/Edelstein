@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Types;
 using Edelstein.Network.Packets;
@@ -7,9 +6,9 @@ using Edelstein.Provider.Templates.Field.Life;
 using Edelstein.Service.Game.Fields.Movements;
 using Edelstein.Service.Game.Fields.Objects.User.Attacking;
 
-namespace Edelstein.Service.Game.Fields.Objects.Summon
+namespace Edelstein.Service.Game.Fields.Objects.Summoned
 {
-    public partial class FieldSummoned : AbstractFieldLife, IFieldOwnedObj
+    public class FieldSummoned : AbstractFieldLife, IFieldOwnedObj
     {
         public override FieldObjType Type => FieldObjType.Summoned;
         public IFieldUser Owner { get; }
@@ -89,12 +88,5 @@ namespace Edelstein.Service.Game.Fields.Objects.Summon
 
         public override IPacket GetLeaveFieldPacket()
             => GetLeaveFieldPacket(0x1);
-        
-        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
-        {
-            return operation switch {
-                RecvPacketOperations.SummonedMove => OnSummonedMove(packet),
-                };
-        }
     }
 }

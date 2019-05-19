@@ -1,13 +1,12 @@
 using System;
 using System.Drawing;
-using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Life.NPC;
 
 namespace Edelstein.Service.Game.Fields.Objects.NPC
 {
-    public partial class FieldNPC : AbstractFieldControlledLife
+    public class FieldNPC : AbstractFieldControlledLife
     {
         public override FieldObjType Type => FieldObjType.NPC;
         public NPCTemplate Template { get; }
@@ -57,13 +56,6 @@ namespace Edelstein.Service.Game.Fields.Objects.NPC
                 p.Encode<int>(ID);
                 return p;
             }
-        }
-
-        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
-        {
-            return operation switch {
-                RecvPacketOperations.NpcMove => OnNPCMove(packet),
-                };
         }
     }
 }

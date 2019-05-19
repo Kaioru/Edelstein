@@ -1,10 +1,9 @@
-using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
 
 namespace Edelstein.Service.Game.Fields.Objects.Dragon
 {
-    public partial class FieldDragon : AbstractFieldLife, IFieldOwnedObj
+    public class FieldDragon : AbstractFieldLife, IFieldOwnedObj
     {
         public override FieldObjType Type => FieldObjType.Etc;
         public IFieldUser Owner { get; }
@@ -37,13 +36,6 @@ namespace Edelstein.Service.Game.Fields.Objects.Dragon
                 p.Encode<int>(Owner.ID);
                 return p;
             }
-        }
-
-        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
-        {
-            return operation switch {
-                RecvPacketOperations.DragonMove => OnDragonMove(packet),
-                };
         }
     }
 }

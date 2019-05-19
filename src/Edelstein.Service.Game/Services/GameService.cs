@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommandLine;
 using DotNetty.Transport.Channels;
+using Edelstein.Core;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Scripts;
@@ -16,6 +18,13 @@ using Edelstein.Service.Game.Conversations.Scripted;
 using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Fields.Continents;
+using Edelstein.Service.Game.Services.Handlers;
+using Edelstein.Service.Game.Services.Handlers.Dragon;
+using Edelstein.Service.Game.Services.Handlers.Drop;
+using Edelstein.Service.Game.Services.Handlers.Mob;
+using Edelstein.Service.Game.Services.Handlers.NPC;
+using Edelstein.Service.Game.Services.Handlers.Summoned;
+using Edelstein.Service.Game.Services.Handlers.User;
 using Foundatio.Caching;
 using Microsoft.Extensions.Options;
 using MoonSharp.Interpreter;
@@ -33,6 +42,8 @@ namespace Edelstein.Service.Game.Services
         public IConversationManager ConversationManager { get; }
         public FieldManager FieldManager { get; }
         public ContinentManager ContinentManager { get; }
+
+        public IDictionary<RecvPacketOperations, IGameHandler> Handlers { get; }
 
         public GameService(
             IOptions<GameServiceInfo> info,
@@ -59,6 +70,49 @@ namespace Edelstein.Service.Game.Services
             ConversationManager = new ScriptedConversationManager(scriptManager);
             FieldManager = new FieldManager(templateManager);
             ContinentManager = new ContinentManager(templateManager, FieldManager);
+
+            Handlers = new Dictionary<RecvPacketOperations, IGameHandler>
+            {
+                [RecvPacketOperations.MigrateIn] = new MigrateInHandler(),
+                [RecvPacketOperations.AliveAck] = new AliveAckHandler(),
+                [RecvPacketOperations.FuncKeyMappedModified] = new FuncKeyMappedModifiedHandler(),
+                [RecvPacketOperations.QuickslotKeyMappedModified] = new QuickSlotKeyMappedModifiedHandler(),
+
+                [RecvPacketOperations.UserTransferFieldRequest] = new UserTransferFieldRequestHandler(),
+                [RecvPacketOperations.UserTransferChannelRequest] = new UserTransferChannelRequestHandler(),
+                [RecvPacketOperations.UserMigrateToCashShopRequest] = new UserMigrateToCashShopRequestHandler(),
+                [RecvPacketOperations.UserMigrateToITCRequest] = new UserMigrateToITCRequestHandler(),
+                [RecvPacketOperations.UserMove] = new UserMoveHandler(),
+                [RecvPacketOperations.UserChat] = new UserChatHandler(),
+                [RecvPacketOperations.UserEmotion] = new UserEmotionHandler(),
+                [RecvPacketOperations.UserSelectNpc] = new UserSelectNPCHandler(),
+                [RecvPacketOperations.UserScriptMessageAnswer] = new UserScriptMessageAnswerHandler(),
+                [RecvPacketOperations.UserChangeSlotPositionRequest] = new UserChangeSlotPositionRequestHandler(),
+                [RecvPacketOperations.UserChangeStatRequest] = new UserChangeStatRequestHandler(),
+                [RecvPacketOperations.UserSkillUpRequest] = new UserSkillUpRequestHandler(),
+                [RecvPacketOperations.UserSkillUseRequest] = new UserSkillUseRequestHandler(),
+                [RecvPacketOperations.UserSkillCancelRequest] = new UserSkillCancelRequestHandler(),
+                [RecvPacketOperations.UserSkillPrepareRequest] = new UserSkillPrepareRequestHandler(),
+                [RecvPacketOperations.UserCharacterInfoRequest] = new UserCharacterInfoRequestHandler(),
+                [RecvPacketOperations.UserPortalScriptRequest] = new UserPortalScriptRequestHandler(),
+                [RecvPacketOperations.UserQuestRequest] = new UserQuestRequestHandler(),
+
+                [RecvPacketOperations.SummonedMove] = new SummonedMoveHandler(),
+
+                [RecvPacketOperations.DragonMove] = new DragonMoveHandler(),
+
+                [RecvPacketOperations.MobMove] = new MobMoveHandler(),
+
+                [RecvPacketOperations.NpcMove] = new NPCMoveHandler(),
+
+                [RecvPacketOperations.DropPickUpRequest] = new DropPickupRequestHandler()
+            };
+
+            var userAttackHandler = new UserAttackHandler();
+            Handlers[RecvPacketOperations.UserMeleeAttack] = userAttackHandler;
+            Handlers[RecvPacketOperations.UserShootAttack] = userAttackHandler;
+            Handlers[RecvPacketOperations.UserMagicAttack] = userAttackHandler;
+            Handlers[RecvPacketOperations.UserBodyAttack] = userAttackHandler;
         }
 
         public override async Task OnTick(DateTime now)

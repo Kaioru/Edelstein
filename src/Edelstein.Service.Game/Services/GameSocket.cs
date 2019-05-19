@@ -15,7 +15,7 @@ using Foundatio.Caching;
 
 namespace Edelstein.Service.Game.Services
 {
-    public partial class GameSocket : AbstractMigrateableSocket<GameServiceInfo>
+    public class GameSocket : AbstractMigrateableSocket<GameServiceInfo>
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
@@ -39,13 +39,10 @@ namespace Edelstein.Service.Game.Services
         public override Task OnPacket(IPacket packet)
         {
             var operation = (RecvPacketOperations) packet.Decode<short>();
-            return operation switch {
-                RecvPacketOperations.MigrateIn => OnMigrateIn(packet),
-                RecvPacketOperations.AliveAck => TryProcessHeartbeat(Account, Character),
-                RecvPacketOperations.FuncKeyMappedModified => OnFuncKeyMappedModified(packet),
-                RecvPacketOperations.QuickslotKeyMappedModified => OnQuickSlotKeyMappedModified(packet),
-                _ => FieldUser?.OnPacket(operation, packet)
-                };
+
+            return Service.Handlers.ContainsKey(operation)
+                ? Service.Handlers[operation].Handle(operation, packet, this)
+                : Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"));
         }
 
         public override Task OnException(Exception exception)

@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Utils;
+using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
-using Edelstein.Service.Game.Fields.Objects.Dragon;
-using Edelstein.Service.Game.Fields.Objects.Mob;
-using Edelstein.Service.Game.Fields.Objects.NPC;
-using Edelstein.Service.Game.Fields.Objects.Summon;
 using Edelstein.Service.Game.Fields.Objects.User.Effects;
 using Edelstein.Service.Game.Fields.Objects.User.Messages;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
@@ -30,6 +27,8 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public GameService Service => Socket.Service;
         public GameSocket Socket { get; }
+        public Account Account => Socket.Account;
+        public AccountData AccountData => Socket.AccountData;
         public Character Character => Socket.Character;
         public bool IsInstantiated { get; set; }
 
@@ -260,79 +259,6 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public Task SendPacket(IPacket packet)
             => Socket.SendPacket(packet);
-
-        public Task OnPacket(RecvPacketOperations operation, IPacket packet)
-        {
-            switch (operation)
-            {
-                case RecvPacketOperations.SummonedMove:
-                case RecvPacketOperations.SummonedAttack:
-                case RecvPacketOperations.SummonedHit:
-                case RecvPacketOperations.SummonedSkill:
-                    var id = packet.Decode<int>();
-                    return Owned
-                        .OfType<FieldSummoned>()
-                        .First(s => s.ID == id)
-                        .OnPacket(operation, packet);
-                case RecvPacketOperations.DragonMove:
-                    return Owned
-                        .OfType<FieldDragon>()
-                        .First()
-                        .OnPacket(operation, packet);
-                case RecvPacketOperations.MobMove:
-                    /*case RecvPacketOperations.MobApplyCtrl:
-                    case RecvPacketOperations.MobDropPickUpRequest:
-                    case RecvPacketOperations.MobHitByObstacle:
-                    case RecvPacketOperations.MobHitByMob:
-                    case RecvPacketOperations.MobSelfDestruct:
-                    case RecvPacketOperations.MobAttackMob:
-                    case RecvPacketOperations.MobSkillDelayEnd:
-                    case RecvPacketOperations.MobTimeBombEnd:
-                    case RecvPacketOperations.MobEscortCollision:
-                    case RecvPacketOperations.MobRequestEscortInfo:
-                    case RecvPacketOperations.MobEscortStopEndRequest:*/
-                    return Field
-                        .GetControlledObject<FieldMob>(this, packet.Decode<int>())?
-                        .OnPacket(operation, packet);
-                case RecvPacketOperations.NpcMove:
-                case RecvPacketOperations.NpcSpecialAction:
-                    return Field
-                        .GetControlledObject<FieldNPC>(this, packet.Decode<int>())?
-                        .OnPacket(operation, packet);
-            }
-
-            switch (operation)
-            {
-                case RecvPacketOperations.UserMeleeAttack:
-                case RecvPacketOperations.UserShootAttack:
-                case RecvPacketOperations.UserMagicAttack:
-                case RecvPacketOperations.UserBodyAttack:
-                    return OnUserAttack(operation, packet);
-            }
-
-            return operation switch {
-                RecvPacketOperations.UserTransferFieldRequest => OnUserTransferFieldRequest(packet),
-                RecvPacketOperations.UserTransferChannelRequest => OnUserTransferChannelRequest(packet),
-                RecvPacketOperations.UserMigrateToCashShopRequest => OnUserMigrateToCashShopRequest(packet),
-                RecvPacketOperations.UserMigrateToITCRequest => OnUserMigrateToITCRequest(packet),
-                RecvPacketOperations.UserMove => OnUserMove(packet),
-                RecvPacketOperations.UserChat => OnUserChat(packet),
-                RecvPacketOperations.UserEmotion => OnUserEmotion(packet),
-                RecvPacketOperations.UserSelectNpc => OnUserSelectNPC(packet),
-                RecvPacketOperations.UserScriptMessageAnswer => OnUserScriptMessageAnswer(packet),
-                RecvPacketOperations.UserChangeSlotPositionRequest => OnUserChangeSlotPositionRequest(packet),
-                RecvPacketOperations.DropPickUpRequest => OnDropPickUpRequest(packet),
-                RecvPacketOperations.UserChangeStatRequest => OnUserChangeStatRequest(packet),
-                RecvPacketOperations.UserSkillUpRequest => OnUserSkillUpRequest(packet),
-                RecvPacketOperations.UserSkillUseRequest => OnUserSkillUseRequest(packet),
-                RecvPacketOperations.UserSkillCancelRequest => OnUserSkillCancelRequest(packet),
-                RecvPacketOperations.UserSkillPrepareRequest => OnUserSkillPrepareRequest(packet),
-                RecvPacketOperations.UserCharacterInfoRequest => OnUserCharacterInfoRequest(packet),
-                RecvPacketOperations.UserPortalScriptRequest => OnUserPortalScriptRequest(packet),
-                RecvPacketOperations.UserQuestRequest => OnUserQuestRequest(packet),
-                _ => Task.Run(() => Logger.Warn($"Unhandled packet operation {operation}"))
-                };
-        }
 
         public async Task OnTick(DateTime now)
         {
