@@ -21,7 +21,7 @@ namespace Edelstein.Service.Game.Conversations.Scripted
 
         public async Task Start()
         {
-            await Context.Socket.FieldUser.Message($"The {_script} script does not exist.");
+            await Context.Socket.FieldUser.Message($"The '{_script}' script does not exist.");
         }
     }
 }
