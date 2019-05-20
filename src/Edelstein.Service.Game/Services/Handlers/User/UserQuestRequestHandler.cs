@@ -20,6 +20,8 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             var template = user.Service.TemplateManager.Get<QuestTemplate>(templateID);
 
             if (template == null) return;
+            
+            // TODO: check quest state
 
             var result = action switch {
                 QuestRequest.AcceptQuest => await template.Check(QuestState.None, user),
@@ -95,8 +97,6 @@ namespace Edelstein.Service.Game.Services.Handlers.User
                 QuestRequest.ResignQuest => user.ModifyQuests(q => q.Resign(templateID)),
                 _ => Task.CompletedTask
                 });
-
-            await user.Message($"{action} : {templateID}");
         }
     }
 }
