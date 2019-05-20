@@ -22,7 +22,7 @@ namespace Edelstein.Provider.Templates.Quest
                 c => (QuestState) Convert.ToInt32(c.Name),
                 c => new QuestActTemplate(Convert.ToInt32(c.Name), c.ResolveAll())
             );
-            Check = act.Children.ToDictionary(
+            Check = check.Children.ToDictionary(
                 c => (QuestState) Convert.ToInt32(c.Name),
                 c => new QuestCheckTemplate(Convert.ToInt32(c.Name), c.ResolveAll())
             );

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
@@ -21,8 +22,8 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             if (template == null) return;
 
             var check = action switch {
-                QuestRequest.AcceptQuest => template.Check(QuestState.No, user),
-                QuestRequest.OpeningScript => template.Check(QuestState.No, user),
+                QuestRequest.AcceptQuest => template.Check(QuestState.None, user),
+                QuestRequest.OpeningScript => template.Check(QuestState.None, user),
                 QuestRequest.CompleteQuest => template.Check(QuestState.Perform, user),
                 QuestRequest.CompleteScript => template.Check(QuestState.Perform, user),
                 _ => true
@@ -50,7 +51,12 @@ namespace Edelstein.Service.Game.Services.Handlers.User
                 case QuestRequest.CompleteScript:
                 {
                     var npcTemplateID = packet.Decode<int>();
-                    var script = "test"; // TODO
+                    var script = action == QuestRequest.OpeningScript
+                        ? template.Check[QuestState.None].StartScript
+                        : template.Check[QuestState.Perform].EndScript;
+
+                    if (script == null) return;
+
                     var context = new ConversationContext(user.Socket);
                     var conversation = await user.Service.ConversationManager.Build(
                         script,
@@ -65,8 +71,8 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             }
 
             await (action switch {
-                QuestRequest.AcceptQuest => template.Act(QuestState.No, user),
-                QuestRequest.OpeningScript => template.Act(QuestState.No, user),
+                QuestRequest.AcceptQuest => template.Act(QuestState.None, user),
+                QuestRequest.OpeningScript => template.Act(QuestState.None, user),
                 _ => Task.CompletedTask
                 });
 
