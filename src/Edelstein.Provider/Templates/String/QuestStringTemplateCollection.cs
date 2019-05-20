@@ -17,7 +17,7 @@ namespace Edelstein.Provider.Templates.String
             var property = Collection.Resolve("Quest/QuestInfo.img");
 
             return property.Children
-                .Select(c => new SkillStringTemplate(Convert.ToInt32(c.Name), c.ResolveAll()));
+                .Select(c => new QuestStringTemplate(Convert.ToInt32(c.Name), c.ResolveAll()));
         }
     }
 }
