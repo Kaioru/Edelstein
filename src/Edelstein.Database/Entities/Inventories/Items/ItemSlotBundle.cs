@@ -11,7 +11,7 @@ namespace Edelstein.Database.Entities.Inventories.Items
         public override bool Equals(object obj)
         {
             return obj is ItemSlotBundle b &&
-                   Number == b.Number &&
+                   TemplateID == b.TemplateID &&
                    MaxNumber == b.MaxNumber &&
                    Attribute == b.Attribute &&
                    Title == b.Title &&
