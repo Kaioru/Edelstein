@@ -21,21 +21,31 @@ namespace Edelstein.Service.Game.Services.Handlers.User
 
             if (template == null) return;
 
-            // TODO: check quest state
+            var state = user.Character.QuestComplete.ContainsKey(templateID)
+                ? QuestState.Complete
+                : user.Character.QuestRecord.ContainsKey(templateID)
+                    ? QuestState.Perform
+                    : QuestState.None;
 
-            var result = action switch {
-                QuestRequest.AcceptQuest => await template.Check(QuestState.None, user),
-                QuestRequest.OpeningScript => await template.Check(QuestState.None, user),
-                QuestRequest.CompleteQuest => await template.Check(QuestState.Perform, user),
-                QuestRequest.CompleteScript => await template.Check(QuestState.Perform, user),
-                _ => QuestResult.ActSuccess
-                };
+            if (state == QuestState.Perform &&
+                action == QuestRequest.ResignQuest
+            )
+            {
+                await user.ModifyQuests(q => q.Resign(templateID));
+                return;
+            }
+
+            // TODO: repeatable quests
+            if (state != QuestState.Perform &&
+                action == QuestRequest.CompleteQuest ||
+                state != QuestState.None &&
+                action == QuestRequest.AcceptQuest
+            ) return;
+
+            var result = await template.Check(state, user);
+
             if (result == QuestResult.ActSuccess)
-                result = action switch {
-                    QuestRequest.AcceptQuest => await template.Act(QuestState.None, user),
-                    QuestRequest.CompleteQuest => await template.Act(QuestState.Perform, user),
-                    _ => QuestResult.ActSuccess
-                    };
+                result = await template.Act(state, user);
 
             if (result != QuestResult.ActSuccess)
             {
@@ -51,7 +61,6 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             await (action switch {
                 QuestRequest.AcceptQuest => user.ModifyQuests(q => q.Accept(templateID)),
                 QuestRequest.CompleteQuest => user.ModifyQuests(q => q.Complete(templateID)),
-                QuestRequest.ResignQuest => user.ModifyQuests(q => q.Resign(templateID)),
                 _ => Task.CompletedTask
                 });
 
