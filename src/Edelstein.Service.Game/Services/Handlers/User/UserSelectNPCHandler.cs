@@ -2,10 +2,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
+using Edelstein.Provider.Templates.Etc.NPCShop;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers.Fields;
 using Edelstein.Service.Game.Fields.Objects.NPC;
 using Edelstein.Service.Game.Fields.Objects.User;
+using Edelstein.Service.Game.Interactions;
 
 namespace Edelstein.Service.Game.Services.Handlers.User
 {
@@ -18,6 +20,14 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             if (npc == null) return;
 
             var template = npc.Template;
+            var shop = user.Service.TemplateManager.Get<NPCShopTemplate>(template.ID);
+
+            if (shop != null)
+            {
+                await user.Interact(new ShopDialog(user, shop));
+                return;
+            }
+
             var script = template.Scripts.FirstOrDefault()?.Script;
 
             if (script == null) return;

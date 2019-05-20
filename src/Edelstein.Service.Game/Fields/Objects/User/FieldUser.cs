@@ -15,6 +15,7 @@ using Edelstein.Service.Game.Fields.Objects.User.Effects;
 using Edelstein.Service.Game.Fields.Objects.User.Messages;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
 using Edelstein.Service.Game.Fields.Objects.User.Stats;
+using Edelstein.Service.Game.Interactions;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;
 
@@ -41,6 +42,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public int? PortableChairID { get; set; }
 
         public IConversationContext ConversationContext { get; private set; }
+        public IDialog Dialog { get; private set; }
 
         public FieldUser(GameSocket socket)
         {
@@ -94,6 +96,20 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                     await Field.BroadcastPacket(this, p);
                 }
             }
+        }
+
+        public async Task Interact(IDialog dialog, bool close = false)
+        {
+            if (Dialog != null) return;
+            if (close)
+            {
+                Dialog = null;
+                await dialog.Leave();
+                return;
+            }
+
+            Dialog = dialog;
+            await dialog.Enter();
         }
 
         public Task<T> Prompt<T>(Func<ISpeaker, T> func, SpeakerParamType param = 0)
