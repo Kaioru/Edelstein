@@ -157,9 +157,9 @@ namespace Edelstein.Service.Game.Fields
 
         public async Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket = null)
         {
-            if (obj is IFieldUser user)
+            if (obj is FieldUser user)
             {
-                user.Dispose();
+                await user.Dispose();
                 await BroadcastPacket(user, user.GetLeaveFieldPacket());
                 await Task.WhenAll(user.Owned.Select(Leave));
             }

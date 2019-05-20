@@ -98,18 +98,19 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             }
         }
 
-        public async Task Interact(IDialog dialog, bool close = false)
+        public async Task Interact(IDialog dialog = null, bool close = false)
         {
-            if (Dialog != null) return;
             if (close)
             {
+                Dialog?.Leave();
                 Dialog = null;
-                await dialog.Leave();
                 return;
             }
 
+            if (Dialog != null) return;
+
             Dialog = dialog;
-            await dialog.Enter();
+            Dialog?.Enter();
         }
 
         public Task<T> Prompt<T>(Func<ISpeaker, T> func, SpeakerParamType param = 0)
@@ -268,10 +269,11 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             }
         }
 
-        public void Dispose()
+        public async Task Dispose()
         {
             ConversationContext?.Dispose();
             ForcedStat.Reset();
+            await Interact(close: true);
         }
 
         public Task SendPacket(IPacket packet)

@@ -9,7 +9,7 @@ namespace Edelstein.Service.Game.Interactions
         SellSuccess = 0x4,
         SellNoStock = 0x5,
         SellIncorrectRequest = 0x6,
-        SellUnkonwn = 0x7,
+        SellUnknown = 0x7,
         RechargeSuccess = 0x8,
         RechargeNoStock = 0x9,
         RechargeNoMoney = 0xA,
