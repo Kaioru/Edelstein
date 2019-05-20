@@ -3,7 +3,7 @@ using System;
 namespace Edelstein.Provider.Templates
 {
     [Flags]
-    public enum TemplateCollectionType
+    public enum TemplateCollectionType : long
     {
         All = int.MaxValue,
         None = 0x0,
@@ -32,8 +32,29 @@ namespace Edelstein.Provider.Templates
         QuestString = 0x80000,
         String = FieldString | ItemString | SkillString | QuestString,
 
-        Login = Item | MakeCharInfo,
-        Game = Item | Field | NPC | SetItemInfo | ItemOption | Mob | Continent | Reactor | Skill | Quest | String,
-        Shop = Item | Commodity | CashPackage | ModifiedCommodity | Best | CategoryDiscount | NotSale
+        NPCShop = 0x200000,
+
+        Login = Item | 
+                MakeCharInfo,
+
+        Game = Item |
+               Field |
+               NPC |
+               SetItemInfo |
+               ItemOption |
+               Mob |
+               Continent |
+               Reactor |
+               Skill |
+               Quest |
+               String |
+               NPCShop,
+        Shop = Item | 
+               Commodity | 
+               CashPackage | 
+               ModifiedCommodity | 
+               Best | 
+               CategoryDiscount | 
+               NotSale
     }
 }

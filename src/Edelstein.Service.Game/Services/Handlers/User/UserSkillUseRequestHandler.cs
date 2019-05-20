@@ -205,7 +205,7 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             }
             // TODO: party/map buffs
 
-            await user.Effect(new SkillUseEffect(templateID, (byte) skillLevel), remote: true);
+            await user.Effect(new SkillUseEffect(templateID, (byte) skillLevel), local: false, remote: true);
             await user.ModifyStats(exclRequest: true);
         }
     }

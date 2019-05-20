@@ -7,7 +7,7 @@ using Edelstein.Service.Game.Services;
 
 namespace Edelstein.Service.Game.Fields.Objects
 {
-    public interface IFieldUser : IFieldLife, IDisposable
+    public interface IFieldUser : IFieldLife
     {
         GameService Service { get; }
         GameSocket Socket { get; }

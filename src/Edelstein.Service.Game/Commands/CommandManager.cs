@@ -21,6 +21,7 @@ namespace Edelstein.Service.Game.Commands
             Commands.Add(new ItemCommand(parser));
             Commands.Add(new SkillCommand(parser));
             Commands.Add(new FieldCommand(parser));
+            Commands.Add(new QuestCommand(parser));
             Commands.Add(new ContinentCommand(parser));
         }
 

@@ -5,16 +5,16 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
 {
     public static class QuestExtensions
     {
-        public static bool Check(this QuestTemplate template, QuestState state, FieldUser user)
+        public static async Task<QuestResult> Check(this QuestTemplate template, QuestState state, FieldUser user)
         {
             var check = template.Check[state];
-            return true;
+            return QuestResult.ActSuccess;
         }
 
-        public static Task Act(this QuestTemplate template, QuestState state, FieldUser user)
+        public static async Task<QuestResult> Act(this QuestTemplate template, QuestState state, FieldUser user)
         {
             var act = template.Act[state];
-            return Task.CompletedTask;
+            return QuestResult.ActSuccess;
         }
     }
 }

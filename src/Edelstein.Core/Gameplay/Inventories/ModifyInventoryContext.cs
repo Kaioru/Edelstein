@@ -16,14 +16,14 @@ namespace Edelstein.Core.Gameplay.Inventories
     {
         private readonly ItemInventoryType _type;
         private readonly ItemInventory _inventory;
-        
+
         public Queue<AbstractModifyInventoryOperation> Operations { get; }
 
         public ModifyInventoryContext(ItemInventoryType type, ItemInventory inventory)
         {
             _type = type;
             _inventory = inventory;
-            
+
             Operations = new Queue<AbstractModifyInventoryOperation>();
         }
 
@@ -36,7 +36,7 @@ namespace Edelstein.Core.Gameplay.Inventories
                     if (bundle.Number < 1) bundle.Number = 1;
                     if (bundle.MaxNumber < 1) bundle.MaxNumber = 1;
 
-                    var mergeable = _inventory.Items
+                    var mergeable = _inventory.Items.Values
                         .OfType<ItemSlotBundle>()
                         .FirstOrDefault(b => b.Equals(bundle));
 

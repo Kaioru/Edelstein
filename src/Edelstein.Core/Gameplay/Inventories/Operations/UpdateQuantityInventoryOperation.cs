@@ -5,7 +5,7 @@ namespace Edelstein.Core.Gameplay.Inventories.Operations
 {
     public class UpdateQuantityInventoryOperation : AbstractModifyInventoryOperation
     {
-        protected override ModifyInventoryOperationType Type { get; }
+        protected override ModifyInventoryOperationType Type => ModifyInventoryOperationType.UpdateQuantity;
         private readonly short _quantity;
 
         public UpdateQuantityInventoryOperation(

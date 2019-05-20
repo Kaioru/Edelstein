@@ -14,9 +14,4 @@
       <PackageReference Include="morelinq" Version="3.1.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Templates\Quest\Act" />
-      <Folder Include="Templates\Quest\Check" />
-    </ItemGroup>
-
 </Project>

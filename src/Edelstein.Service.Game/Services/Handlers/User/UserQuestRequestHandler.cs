@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
@@ -20,37 +21,79 @@ namespace Edelstein.Service.Game.Services.Handlers.User
 
             if (template == null) return;
 
-            var check = action switch {
-                QuestRequest.AcceptQuest => template.Check(QuestState.No, user),
-                QuestRequest.OpeningScript => template.Check(QuestState.No, user),
-                QuestRequest.CompleteQuest => template.Check(QuestState.Perform, user),
-                QuestRequest.CompleteScript => template.Check(QuestState.Perform, user),
-                _ => true
-                };
+            var state = user.Character.QuestComplete.ContainsKey(templateID)
+                ? QuestState.Complete
+                : user.Character.QuestRecord.ContainsKey(templateID)
+                    ? QuestState.Perform
+                    : QuestState.None;
+
+            if (state == QuestState.Perform &&
+                action == QuestRequest.ResignQuest
+            )
+            {
+                await user.ModifyQuests(q => q.Resign(templateID));
+                return;
+            }
+
+            // TODO: repeatable quests
+            if (state != QuestState.Perform &&
+                action == QuestRequest.CompleteQuest ||
+                state != QuestState.None &&
+                action == QuestRequest.AcceptQuest
+            ) return;
+
+            var result = await template.Check(state, user);
+
+            if (result == QuestResult.ActSuccess)
+                result = await template.Act(state, user);
+
+            if (result != QuestResult.ActSuccess)
+            {
+                using (var p = new Packet(SendPacketOperations.UserQuestResult))
+                {
+                    p.Encode<byte>((byte) result);
+                    await user.SendPacket(p);
+                }
+
+                return;
+            }
+
+            await (action switch {
+                QuestRequest.AcceptQuest => user.ModifyQuests(q => q.Accept(templateID)),
+                QuestRequest.CompleteQuest => user.ModifyQuests(q => q.Complete(templateID)),
+                _ => Task.CompletedTask
+                });
 
             switch (action)
             {
-                case QuestRequest.LostItem:
-                    break;
                 case QuestRequest.AcceptQuest:
+                case QuestRequest.CompleteQuest:
                 {
                     var npcTemplateID = packet.Decode<int>();
 
-                    await user.ModifyQuests(q => q.Accept(templateID));
+                    using (var p = new Packet(SendPacketOperations.UserQuestResult))
+                    {
+                        p.Encode<byte>((byte) QuestResult.ActSuccess);
+                        p.Encode<short>(templateID);
+                        p.Encode<int>(npcTemplateID);
+                        p.Encode<int>(0); // nextQuest
+
+                        await user.SendPacket(p);
+                    }
+
                     break;
                 }
 
-                case QuestRequest.CompleteQuest:
-                    await user.ModifyQuests(q => q.Complete(templateID));
-                    break;
-                case QuestRequest.ResignQuest:
-                    await user.ModifyQuests(q => q.Resign(templateID));
-                    break;
                 case QuestRequest.OpeningScript:
                 case QuestRequest.CompleteScript:
                 {
                     var npcTemplateID = packet.Decode<int>();
-                    var script = "test"; // TODO
+                    var script = action == QuestRequest.OpeningScript
+                        ? template.Check[QuestState.None].StartScript
+                        : template.Check[QuestState.Perform].EndScript;
+
+                    if (script == null) return;
+
                     var context = new ConversationContext(user.Socket);
                     var conversation = await user.Service.ConversationManager.Build(
                         script,
@@ -63,15 +106,6 @@ namespace Edelstein.Service.Game.Services.Handlers.User
                     break;
                 }
             }
-
-            await (action switch {
-                QuestRequest.AcceptQuest => template.Act(QuestState.No, user),
-                QuestRequest.OpeningScript => template.Act(QuestState.No, user),
-                _ => Task.CompletedTask
-                });
-
-            await user.Message($"{action} : {templateID}");
-            await user.ModifyStats(exclRequest: true);
         }
     }
 }

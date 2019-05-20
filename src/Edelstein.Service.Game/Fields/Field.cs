@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field;
+using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Conversations.Speakers.Fields;
 using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Mob;
@@ -99,12 +101,13 @@ namespace Edelstein.Service.Game.Fields
         public async Task Enter(IFieldObj obj, Func<IPacket> getEnterPacket = null)
         {
             var pool = GetPool(obj.Type);
+            var first = obj is FieldUser && !pool.GetObjects().Any();
 
             obj.Field?.Leave(obj);
             obj.Field = this;
             await pool.Enter(obj);
 
-            if (obj is IFieldUser user)
+            if (obj is FieldUser user)
             {
                 var portal = Template.Portals.Values.FirstOrDefault(p => p.ID == user.Character.FieldPortal) ??
                              Template.Portals.Values.First(p => p.Type == FieldPortalType.StartPoint);
@@ -127,6 +130,25 @@ namespace Edelstein.Service.Game.Fields
                     .Where(o => o != user)
                     .ForEach(o => user.SendPacket(o.GetEnterFieldPacket()));
                 await Task.WhenAll(user.Owned.Select(Enter));
+
+                var script = first
+                    ? Template.ScriptFirstUserEnter ?? Template.ScriptUserEnter
+                    : Template.ScriptUserEnter;
+
+                if (script != null)
+                {
+#pragma warning disable 4014
+                    var context = new ConversationContext(user.Socket);
+                    var conversation = await user.Service.ConversationManager.Build(
+                        script,
+                        context,
+                        new FieldSpeaker(context, user.Field),
+                        new FieldUserSpeaker(context, user)
+                    );
+
+                    user.Converse(conversation);
+#pragma warning restore 4014
+                }
             }
             else await BroadcastPacket(getEnterPacket?.Invoke() ?? obj.GetEnterFieldPacket());
 
@@ -135,9 +157,9 @@ namespace Edelstein.Service.Game.Fields
 
         public async Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket = null)
         {
-            if (obj is IFieldUser user)
+            if (obj is FieldUser user)
             {
-                user.Dispose();
+                await user.Dispose();
                 await BroadcastPacket(user, user.GetLeaveFieldPacket());
                 await Task.WhenAll(user.Owned.Select(Leave));
             }

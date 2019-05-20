@@ -13,8 +13,13 @@ namespace Edelstein.Provider.Templates.Field
         public int ID { get; set; }
 
         public FieldOpt Limit { get; set; }
-
         public Rectangle Bounds { get; set; }
+
+        public int? FieldReturn { get; set; }
+        public int? ForcedReturn { get; set; }
+
+        public string? ScriptFirstUserEnter { get; set; }
+        public string? ScriptUserEnter { get; set; }
 
         public IDictionary<int, FieldFootholdTemplate> Footholds { get; }
         public IDictionary<int, FieldPortalTemplate> Portals { get; }
@@ -49,6 +54,17 @@ namespace Edelstein.Provider.Templates.Field
             property.Resolve("info").ResolveAll(i =>
             {
                 Limit = (FieldOpt) (i.Resolve<int>("fieldLimit") ?? 0);
+
+                FieldReturn = i.Resolve<int>("returnMap");
+                ForcedReturn = i.Resolve<int>("forcedReturn");
+                if (FieldReturn == 999999999) FieldReturn = null;
+                if (ForcedReturn == 999999999) ForcedReturn = null;
+
+                ScriptFirstUserEnter = i.ResolveOrDefault<string>("onFirstUserEnter");
+                ScriptUserEnter = i.ResolveOrDefault<string>("onUserEnter");
+                if (string.IsNullOrWhiteSpace(ScriptFirstUserEnter)) ScriptFirstUserEnter = null;
+                if (string.IsNullOrWhiteSpace(ScriptUserEnter)) ScriptUserEnter = null;
+
 
                 var footholds = Footholds.Values;
                 var leftTop = new Point(

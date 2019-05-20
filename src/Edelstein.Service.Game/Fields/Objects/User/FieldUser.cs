@@ -15,6 +15,7 @@ using Edelstein.Service.Game.Fields.Objects.User.Effects;
 using Edelstein.Service.Game.Fields.Objects.User.Messages;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
 using Edelstein.Service.Game.Fields.Objects.User.Stats;
+using Edelstein.Service.Game.Interactions;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;
 
@@ -38,8 +39,10 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public BasicStat BasicStat { get; }
         public ForcedStat ForcedStat { get; }
         public IDictionary<TemporaryStatType, TemporaryStat> TemporaryStats { get; }
+        public int? PortableChairID { get; set; }
 
         public IConversationContext ConversationContext { get; private set; }
+        public IDialog Dialog { get; private set; }
 
         public FieldUser(GameSocket socket)
         {
@@ -93,6 +96,21 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                     await Field.BroadcastPacket(this, p);
                 }
             }
+        }
+
+        public async Task Interact(IDialog dialog = null, bool close = false)
+        {
+            if (close)
+            {
+                Dialog?.Leave();
+                Dialog = null;
+                return;
+            }
+
+            if (Dialog != null) return;
+
+            Dialog = dialog;
+            Dialog?.Enter();
         }
 
         public Task<T> Prompt<T>(Func<ISpeaker, T> func, SpeakerParamType param = 0)
@@ -175,7 +193,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 p.Encode<int>(0);
                 p.Encode<int>(0);
                 p.Encode<int>(BasicStat.CompletedSetItemID);
-                p.Encode<int>(0);
+                p.Encode<int>(PortableChairID ?? 0);
 
                 p.Encode<Point>(Position);
                 p.Encode<byte>(MoveAction);
@@ -251,10 +269,11 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             }
         }
 
-        public void Dispose()
+        public async Task Dispose()
         {
             ConversationContext?.Dispose();
             ForcedStat.Reset();
+            await Interact(close: true);
         }
 
         public Task SendPacket(IPacket packet)

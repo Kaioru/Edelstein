@@ -23,4 +23,4 @@ services:
     links:
       - db
   db:
-    image: postgres
+    image: postgres:11-alpine

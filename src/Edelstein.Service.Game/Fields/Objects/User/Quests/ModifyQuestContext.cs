@@ -42,8 +42,15 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
 
         public void Resign(short templateID)
         {
+            if (_character.QuestComplete.ContainsKey(templateID))
+            {
+                _character.QuestComplete.Remove(templateID);
+                Messages.Enqueue(new ResignQuestRecordMessage(templateID, true));
+                return;
+            }
+
             _character.QuestRecord.Remove(templateID);
-            Messages.Enqueue(new ResignQuestRecordMessage(templateID));
+            Messages.Enqueue(new ResignQuestRecordMessage(templateID, false));
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider.Logging;
 using Edelstein.Provider.Templates.Etc.MakeCharInfo;
+using Edelstein.Provider.Templates.Etc.NPCShop;
 using Edelstein.Provider.Templates.Field;
 using Edelstein.Provider.Templates.Field.Continent;
 using Edelstein.Provider.Templates.Field.Life.Mob;
@@ -50,7 +51,8 @@ namespace Edelstein.Provider.Templates
                     [typeof(FieldStringTemplate)] = new FieldStringTemplateCollection(collection),
                     [typeof(ItemStringTemplate)] = new ItemStringTemplateCollection(collection),
                     [typeof(SkillStringTemplate)] = new SkillStringTemplateCollection(collection),
-                    [typeof(QuestStringTemplate)] = new QuestStringTemplateCollection(collection)
+                    [typeof(QuestStringTemplate)] = new QuestStringTemplateCollection(collection),
+                    [typeof(NPCShopTemplate)] = new NPCShopTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);

@@ -55,18 +55,24 @@ namespace Edelstein.Service.Game.Services
         {
             using (var store = Service.DataStore.OpenSession())
             {
-                Character.FieldPortal = (byte) FieldUser.Field.Template.Portals
-                    .Values
-                    .Where(p => p.Type == FieldPortalType.StartPoint)
-                    .OrderBy(p =>
-                    {
-                        var xd = p.Position.X - FieldUser.Position.X;
-                        var yd = p.Position.Y - FieldUser.Position.Y;
+                if (FieldUser.Field.Template.ForcedReturn.HasValue)
+                {
+                    Character.FieldID = FieldUser.Field.Template.ForcedReturn.Value;
+                    Character.FieldPortal = 0;
+                }
+                else
+                    Character.FieldPortal = (byte) FieldUser.Field.Template.Portals
+                        .Values
+                        .Where(p => p.Type == FieldPortalType.StartPoint)
+                        .OrderBy(p =>
+                        {
+                            var xd = p.Position.X - FieldUser.Position.X;
+                            var yd = p.Position.Y - FieldUser.Position.Y;
 
-                        return xd * xd + yd * yd;
-                    })
-                    .First()
-                    .ID;
+                            return xd * xd + yd * yd;
+                        })
+                        .First()
+                        .ID;
 
                 await store.UpdateAsync(Account);
                 await store.UpdateAsync(AccountData);
