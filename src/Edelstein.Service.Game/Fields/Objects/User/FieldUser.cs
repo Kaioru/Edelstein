@@ -38,6 +38,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public BasicStat BasicStat { get; }
         public ForcedStat ForcedStat { get; }
         public IDictionary<TemporaryStatType, TemporaryStat> TemporaryStats { get; }
+        public int? PortableChairID { get; set; }
 
         public IConversationContext ConversationContext { get; private set; }
 
@@ -175,7 +176,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 p.Encode<int>(0);
                 p.Encode<int>(0);
                 p.Encode<int>(BasicStat.CompletedSetItemID);
-                p.Encode<int>(0);
+                p.Encode<int>(PortableChairID ?? 0);
 
                 p.Encode<Point>(Position);
                 p.Encode<byte>(MoveAction);

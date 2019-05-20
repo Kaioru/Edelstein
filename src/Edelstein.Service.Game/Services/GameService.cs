@@ -83,6 +83,8 @@ namespace Edelstein.Service.Game.Services
                 [RecvPacketOperations.UserMigrateToCashShopRequest] = new UserMigrateToCashShopRequestHandler(),
                 [RecvPacketOperations.UserMigrateToITCRequest] = new UserMigrateToITCRequestHandler(),
                 [RecvPacketOperations.UserMove] = new UserMoveHandler(),
+                [RecvPacketOperations.UserSitRequest] = new UserSitRequestHandler(),
+                [RecvPacketOperations.UserPortableChairSitRequest] = new UserPortableChairSitRequestHandler(),
                 [RecvPacketOperations.UserChat] = new UserChatHandler(),
                 [RecvPacketOperations.UserEmotion] = new UserEmotionHandler(),
                 [RecvPacketOperations.UserSelectNpc] = new UserSelectNPCHandler(),
