@@ -20,7 +20,7 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             var template = user.Service.TemplateManager.Get<QuestTemplate>(templateID);
 
             if (template == null) return;
-            
+
             // TODO: check quest state
 
             var result = action switch {
@@ -48,6 +48,13 @@ namespace Edelstein.Service.Game.Services.Handlers.User
                 return;
             }
 
+            await (action switch {
+                QuestRequest.AcceptQuest => user.ModifyQuests(q => q.Accept(templateID)),
+                QuestRequest.CompleteQuest => user.ModifyQuests(q => q.Complete(templateID)),
+                QuestRequest.ResignQuest => user.ModifyQuests(q => q.Resign(templateID)),
+                _ => Task.CompletedTask
+                });
+
             switch (action)
             {
                 case QuestRequest.AcceptQuest:
@@ -60,7 +67,7 @@ namespace Edelstein.Service.Game.Services.Handlers.User
                         p.Encode<byte>((byte) QuestResult.ActSuccess);
                         p.Encode<short>(templateID);
                         p.Encode<int>(npcTemplateID);
-                        p.Encode<int>(0); // TODO: nextQuest
+                        p.Encode<int>(0); // nextQuest
 
                         await user.SendPacket(p);
                     }
@@ -90,13 +97,6 @@ namespace Edelstein.Service.Game.Services.Handlers.User
                     break;
                 }
             }
-
-            await (action switch {
-                QuestRequest.AcceptQuest => user.ModifyQuests(q => q.Accept(templateID)),
-                QuestRequest.CompleteQuest => user.ModifyQuests(q => q.Complete(templateID)),
-                QuestRequest.ResignQuest => user.ModifyQuests(q => q.Resign(templateID)),
-                _ => Task.CompletedTask
-                });
         }
     }
 }
