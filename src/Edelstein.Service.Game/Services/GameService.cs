@@ -90,6 +90,8 @@ namespace Edelstein.Service.Game.Services
                 [RecvPacketOperations.UserSelectNpc] = new UserSelectNPCHandler(),
                 [RecvPacketOperations.UserScriptMessageAnswer] = new UserScriptMessageAnswerHandler(),
                 [RecvPacketOperations.UserShopRequest] = new UserShopRequestHandler(),
+                [RecvPacketOperations.UserGatherItemRequest] = new UserGatherItemRequestHandler(),
+                [RecvPacketOperations.UserSortItemRequest] = new UserSortItemRequestHandler(),
                 [RecvPacketOperations.UserChangeSlotPositionRequest] = new UserChangeSlotPositionRequestHandler(),
                 [RecvPacketOperations.UserChangeStatRequest] = new UserChangeStatRequestHandler(),
                 [RecvPacketOperations.UserSkillUpRequest] = new UserSkillUpRequestHandler(),
