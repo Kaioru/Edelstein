@@ -26,6 +26,14 @@ namespace Edelstein.Core.Gameplay.Inventories
 
             Operations = new Queue<AbstractModifyInventoryOperation>();
         }
+        
+        public ModifyInventoryContext(ItemInventory inventory)
+        {
+            _type = ItemInventoryType.Equip;
+            _inventory = inventory;
+
+            Operations = new Queue<AbstractModifyInventoryOperation>();
+        }
 
         public void Add(ItemSlot item)
         {
@@ -38,6 +46,7 @@ namespace Edelstein.Core.Gameplay.Inventories
 
                     var mergeable = _inventory.Items.Values
                         .OfType<ItemSlotBundle>()
+                        .Where(b => bundle.Number + b.Number <= b.MaxNumber)
                         .FirstOrDefault(b => b.Equals(bundle));
 
                     if (mergeable != null)
@@ -246,12 +255,12 @@ namespace Edelstein.Core.Gameplay.Inventories
 
         public ItemSlotBundle Take(ItemSlotBundle bundle, short count = 1)
         {
-            return Take(_inventory.Items.First(i => i.Value.Equals(bundle)).Key);
+            return Take(_inventory.Items.First(i => i.Value.Equals(bundle)).Key, count);
         }
 
         public ItemSlotBundle Take(int template, short count = 1)
         {
-            return Take(_inventory.Items.First(i => i.Value.TemplateID == template).Key);
+            return Take(_inventory.Items.First(i => i.Value.TemplateID == template).Key, count);
         }
 
         public void Update(short slot)

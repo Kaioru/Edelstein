@@ -20,6 +20,13 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             if (npc == null) return;
 
             var template = npc.Template;
+
+            if (template.Trunk)
+            {
+                await user.Interact(new TrunkDialog(user, template, user.AccountData.Trunk));
+                return;
+            }
+            
             var shop = user.Service.TemplateManager.Get<NPCShopTemplate>(template.ID);
 
             if (shop != null)
