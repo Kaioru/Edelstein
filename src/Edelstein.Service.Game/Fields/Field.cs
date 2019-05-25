@@ -107,6 +107,9 @@ namespace Edelstein.Service.Game.Fields
             obj.Field = this;
             await pool.Enter(obj);
 
+            if (obj is IFieldOwnedObj owned)
+                owned.Position = owned.Owner.Position;
+
             if (obj is FieldUser user)
             {
                 var portal = Template.Portals.Values.FirstOrDefault(p => p.ID == user.Character.FieldPortal) ??
