@@ -23,6 +23,7 @@ using Edelstein.Service.Game.Services.Handlers.Dragon;
 using Edelstein.Service.Game.Services.Handlers.Drop;
 using Edelstein.Service.Game.Services.Handlers.Mob;
 using Edelstein.Service.Game.Services.Handlers.NPC;
+using Edelstein.Service.Game.Services.Handlers.Pet;
 using Edelstein.Service.Game.Services.Handlers.Summoned;
 using Edelstein.Service.Game.Services.Handlers.User;
 using Foundatio.Caching;
@@ -102,6 +103,8 @@ namespace Edelstein.Service.Game.Services
                 [RecvPacketOperations.UserCharacterInfoRequest] = new UserCharacterInfoRequestHandler(),
                 [RecvPacketOperations.UserPortalScriptRequest] = new UserPortalScriptRequestHandler(),
                 [RecvPacketOperations.UserQuestRequest] = new UserQuestRequestHandler(),
+
+                [RecvPacketOperations.PetMove] = new PetMoveHandler(),
 
                 [RecvPacketOperations.SummonedMove] = new SummonedMoveHandler(),
 

@@ -18,6 +18,7 @@ using Edelstein.Service.Game.Fields.Objects.User.Stats;
 using Edelstein.Service.Game.Interactions;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;
+using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields.Objects.User
 {
@@ -35,6 +36,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public ICollection<IFieldControlledObj> Controlled { get; }
         public ICollection<IFieldOwnedObj> Owned { get; }
+        public ICollection<FieldUserPet> Pets { get; }
 
         public BasicStat BasicStat { get; }
         public ForcedStat ForcedStat { get; }
@@ -50,6 +52,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
             Controlled = new List<IFieldControlledObj>();
             Owned = new List<IFieldOwnedObj>();
+            Pets = new List<FieldUserPet>();
 
             BasicStat = new BasicStat(this);
             ForcedStat = new ForcedStat(this);
@@ -200,7 +203,12 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 p.Encode<short>(Foothold);
                 p.Encode<byte>(0);
 
-                p.Encode<byte>(0);
+                Pets.ForEach(pet =>
+                {
+                    p.Encode<bool>(true);
+                    pet.EncodeData(p);
+                });
+                p.Encode<bool>(false);
 
                 p.Encode<int>(0);
                 p.Encode<int>(0);
