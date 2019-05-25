@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using CommandLine;
+using Edelstein.Core.Extensions;
 using Edelstein.Provider.Templates.Skill;
 using Edelstein.Provider.Templates.String;
 using Edelstein.Service.Game.Fields.Objects.User;

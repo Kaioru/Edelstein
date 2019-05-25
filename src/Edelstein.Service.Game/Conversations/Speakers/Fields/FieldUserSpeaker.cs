@@ -1,3 +1,4 @@
+using Edelstein.Core.Extensions;
 using Edelstein.Service.Game.Conversations.Speakers.Fields.Inventories;
 using Edelstein.Service.Game.Conversations.Speakers.Fields.Quests;
 using Edelstein.Service.Game.Fields.Objects.User;

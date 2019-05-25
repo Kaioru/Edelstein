@@ -134,23 +134,5 @@ namespace Edelstein.Database.Entities.Characters
 
             WishList = new int[10];
         }
-
-        public byte GetExtendSP(byte jobLevel)
-            => ExtendSP.ContainsKey(jobLevel)
-                ? ExtendSP[jobLevel]
-                : (byte) 0;
-
-        public void SetExtendSP(byte jobLevel, byte sp)
-            => ExtendSP[jobLevel] = sp;
-
-        public int GetSkillLevel(int skill)
-            => SkillRecord.ContainsKey(skill)
-                ? SkillRecord[skill].Level
-                : 0;
-
-        public int GetSkillMasterLevel(int skill)
-            => SkillRecord.ContainsKey(skill)
-                ? SkillRecord[skill].MasterLevel
-                : 0;
     }
 }
