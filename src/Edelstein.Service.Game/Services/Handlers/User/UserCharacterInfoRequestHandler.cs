@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.User;
+using MoreLinq;
 
 namespace Edelstein.Service.Game.Services.Handlers.User
 {
@@ -29,8 +30,22 @@ namespace Edelstein.Service.Game.Services.Handlers.User
                 p.Encode<string>(""); // sCommunity
                 p.Encode<string>(""); // sAlliance
 
-                p.Encode<byte>(0);
-                p.Encode<byte>(0);
+                p.Encode<byte>(0); // Medal?
+
+                var petCount = user.Pets.Count;
+                p.Encode<bool>(petCount > 0);
+                user.Pets.ForEach(pet =>
+                {
+                    p.Encode<int>(pet.Item.TemplateID);
+                    p.Encode<string>(pet.Item.PetName);
+                    p.Encode<byte>(pet.Item.Level);
+                    p.Encode<short>(pet.Item.Tameness);
+                    p.Encode<byte>(pet.Item.Repleteness);
+                    p.Encode<short>(pet.Item.PetSkill);
+                    p.Encode<int>(0); // Pet Equip
+                    p.Encode<bool>(--petCount > 0);
+                });
+
                 p.Encode<byte>(0); // TamingMobInfo
                 p.Encode<byte>(0); // Wishlist
 
