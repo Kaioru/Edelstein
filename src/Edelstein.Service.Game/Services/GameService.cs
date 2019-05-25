@@ -101,6 +101,7 @@ namespace Edelstein.Service.Game.Services
                 [RecvPacketOperations.UserSkillCancelRequest] = new UserSkillCancelRequestHandler(),
                 [RecvPacketOperations.UserSkillPrepareRequest] = new UserSkillPrepareRequestHandler(),
                 [RecvPacketOperations.UserCharacterInfoRequest] = new UserCharacterInfoRequestHandler(),
+                [RecvPacketOperations.UserActivatePetRequest] = new UserActivatePetRequestHandler(),
                 [RecvPacketOperations.UserPortalScriptRequest] = new UserPortalScriptRequestHandler(),
                 [RecvPacketOperations.UserQuestRequest] = new UserQuestRequestHandler(),
 

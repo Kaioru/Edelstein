@@ -11,7 +11,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public IFieldUser Owner { get; }
         public ItemSlotPet Item { get; }
-        public byte IDx { get; }
+        public byte IDx { get; set; }
         public bool NameTag { get; }
         public bool ChatBalloon { get; }
 
@@ -63,7 +63,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 p.Encode<int>(Owner.ID);
                 p.Encode<byte>(IDx);
 
-                p.Encode<bool>(true);
+                p.Encode<bool>(false);
                 p.Encode<byte>(leaveType);
                 return p;
             }
