@@ -194,8 +194,7 @@ namespace Edelstein.Core.Extensions
             p.Encode<int>(c.Face);
             p.Encode<int>(c.Hair);
 
-            for (var i = 0; i < 3; i++)
-                p.Encode<long>(0); // Pet stuff.
+            c.Pets.ForEach(sn => p.Encode<long>(sn));
 
             p.Encode<byte>(c.Level);
             p.Encode(c.Job);

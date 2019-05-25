@@ -23,8 +23,6 @@ namespace Edelstein.Service.Game.Commands
             Commands.Add(new FieldCommand(parser));
             Commands.Add(new QuestCommand(parser));
             Commands.Add(new ContinentCommand(parser));
-            
-            Commands.Add(new TestCommand(parser));
         }
 
         protected override Task Execute(FieldUser sender, object option)

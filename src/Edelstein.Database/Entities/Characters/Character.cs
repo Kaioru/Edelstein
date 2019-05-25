@@ -18,6 +18,8 @@ namespace Edelstein.Database.Entities.Characters
         public byte Skin { get; set; }
         public int Face { get; set; }
         public int Hair { get; set; }
+        
+        public long[] Pets { get; set; }
 
         public byte Level { get; set; }
         public short Job { get; set; }
@@ -62,8 +64,9 @@ namespace Edelstein.Database.Entities.Characters
         public Character()
         {
             ExtendSP = new Dictionary<byte, byte>();
+            Pets = new long[3];
+            
             FunctionKeys = new FunctionKey[90];
-
             FunctionKeys[2] = new FunctionKey(KeyType.Menu, KeyMenu.ChatAll);
             FunctionKeys[3] = new FunctionKey(KeyType.Menu, KeyMenu.ChatParty);
             FunctionKeys[4] = new FunctionKey(KeyType.Menu, KeyMenu.ChatFriend);
@@ -107,7 +110,6 @@ namespace Edelstein.Database.Entities.Characters
             FunctionKeys[65] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion6);
 
             QuickSlotKeys = new int[8];
-
             QuickSlotKeys[0] = 42;
             QuickSlotKeys[1] = 82;
             QuickSlotKeys[2] = 71;
