@@ -8,6 +8,8 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Utils;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
+using Edelstein.Database.Entities.Inventories;
+using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
@@ -18,6 +20,7 @@ using Edelstein.Service.Game.Fields.Objects.User.Stats;
 using Edelstein.Service.Game.Interactions;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;
+using Marten.Util;
 using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields.Objects.User
@@ -52,7 +55,19 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
             Controlled = new List<IFieldControlledObj>();
             Owned = new List<IFieldOwnedObj>();
-            Pets = new List<FieldUserPet>();
+            Pets = Character.Pets
+                .Where(sn => sn > 0)
+                .Select(sn => Character
+                    .Inventories[ItemInventoryType.Cash].Items.Values
+                    .OfType<ItemSlotPet>()
+                    .FirstOrDefault(i => i.CashItemSN == sn))
+                .Where(item => item != null)
+                .Select(item => new FieldUserPet(
+                    this,
+                    item,
+                    (byte) Character.Pets.IndexOf(item.CashItemSN ?? 0)
+                ))
+                .ToList();
 
             BasicStat = new BasicStat(this);
             ForcedStat = new ForcedStat(this);
