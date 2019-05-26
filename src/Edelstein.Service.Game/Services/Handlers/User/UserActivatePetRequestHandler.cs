@@ -37,7 +37,7 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             }
             else
             {
-                if (user.Pets.Count >= 3 || !pet.Item.CashItemSN.HasValue)
+                if (user.Pets.Count >= 3)
                 {
                     await user.ModifyStats(exclRequest: true);
                     return;
@@ -56,8 +56,8 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             await user.ModifyStats(s =>
             {
                 s.Pet1 = user.Pets.FirstOrDefault(p => p.IDx == 0)?.Item.CashItemSN ?? 0;
-                s.Pet2 = user.Pets.FirstOrDefault(p => p.IDx == 2)?.Item.CashItemSN ?? 0;
-                s.Pet3 = user.Pets.FirstOrDefault(p => p.IDx == 3)?.Item.CashItemSN ?? 0;
+                s.Pet2 = user.Pets.FirstOrDefault(p => p.IDx == 1)?.Item.CashItemSN ?? 0;
+                s.Pet3 = user.Pets.FirstOrDefault(p => p.IDx == 2)?.Item.CashItemSN ?? 0;
             }, true);
         }
     }
