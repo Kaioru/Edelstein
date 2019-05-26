@@ -15,10 +15,12 @@ using Edelstein.Provider.Templates;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Foundatio.Messaging;
+using Foundatio.Serializer;
 using Marten;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using Serilog;
 using StackExchange.Redis;
 
@@ -119,6 +121,13 @@ namespace Edelstein.Core.Bootstrap
                             builder.AddSingleton<IMessageBusFactory, InMemoryMessageBusFactory>();
                             break;
                         case DistributedType.Redis:
+                            DefaultSerializer.Instance = new JsonNetSerializer(
+                                new JsonSerializerSettings
+                                {
+                                    TypeNameHandling = TypeNameHandling.All
+                                }
+                            );
+
                             builder.AddSingleton<ConnectionMultiplexer>(f =>
                                 ConnectionMultiplexer.Connect(_option.DistributedConnectionString)
                             );
