@@ -15,7 +15,7 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             if (!(user.Dialog is ShopDialog shop)) return;
             if (request == ShopRequest.Close)
             {
-                await user.Interact(close: true);
+                await shop.Leave();
                 return;
             }
 

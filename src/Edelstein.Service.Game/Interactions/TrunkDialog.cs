@@ -38,9 +38,9 @@ namespace Edelstein.Service.Game.Interactions
             }
         }
 
-        public override Task Leave()
+        public override async Task Leave()
         {
-            return Task.CompletedTask;
+            await User.Interact(close: true);
         }
 
         public void EncodeItems(IPacket packet, DbChar flags = DbChar.All)

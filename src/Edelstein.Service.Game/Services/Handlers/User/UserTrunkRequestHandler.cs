@@ -17,7 +17,7 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             if (!(user.Dialog is TrunkDialog trunk)) return;
             if (request == TrunkRequest.CloseDialog)
             {
-                await user.Interact(close: true);
+                await trunk.Leave();
                 return;
             }
 
