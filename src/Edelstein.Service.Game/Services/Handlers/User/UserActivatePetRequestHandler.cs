@@ -37,7 +37,7 @@ namespace Edelstein.Service.Game.Services.Handlers.User
             }
             else
             {
-                if (user.Pets.Count >= 3)
+                if (user.Pets.Count >= 3 || !pet.Item.CashItemSN.HasValue)
                 {
                     await user.ModifyStats(exclRequest: true);
                     return;
