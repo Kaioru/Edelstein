@@ -130,7 +130,6 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         {
             if (close)
             {
-                Dialog?.Leave();
                 Dialog = null;
                 return;
             }
