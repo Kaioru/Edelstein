@@ -5,7 +5,7 @@ namespace Edelstein.Service.Game.Interactions
 {
     public abstract class AbstractDialog : IDialog
     {
-        protected FieldUser User { get; }
+        public FieldUser User { get; }
 
         protected AbstractDialog(FieldUser user)
         {

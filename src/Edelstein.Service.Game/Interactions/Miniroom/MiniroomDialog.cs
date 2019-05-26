@@ -8,6 +8,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
     public class MiniroomDialog : AbstractDialog, IMiniroomDialog
     {
         public IMiniroom Miniroom { get; }
+        public byte ID { get; set; }
 
         public MiniroomDialog(FieldUser user, IMiniroom miniroom) : base(user)
         {
@@ -16,7 +17,8 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
 
         public override async Task Enter()
         {
-            var result = await Miniroom.Enter(User);
+            var result = await Miniroom.Enter(this);
+
             if (result != MiniroomEnterResult.Success)
             {
                 await User.Interact(close: true);
@@ -32,7 +34,7 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
 
         public override async Task Leave()
         {
-            await Miniroom.Leave(User);
+            await Miniroom.Leave(this);
             await User.Interact(close: true);
         }
     }
