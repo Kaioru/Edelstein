@@ -13,6 +13,7 @@ using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
+using Edelstein.Service.Game.Fields.Objects.User.Broadcasts;
 using Edelstein.Service.Game.Fields.Objects.User.Effects;
 using Edelstein.Service.Game.Fields.Objects.User.Messages;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
@@ -83,6 +84,15 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public Task Message(IMessage message)
         {
             using (var p = new Packet(SendPacketOperations.Message))
+            {
+                message.Encode(p);
+                return SendPacket(p);
+            }
+        }
+
+        public Task Message(IBroadcastMessage message)
+        {
+            using (var p = new Packet(SendPacketOperations.BroadcastMsg))
             {
                 message.Encode(p);
                 return SendPacket(p);
