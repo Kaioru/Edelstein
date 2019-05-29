@@ -11,7 +11,7 @@ namespace Edelstein.Service.Game.Commands.Handling
 
         public LevelUpCommand(Parser parser) : base(parser)
         {
-            Aliases.Add("LevelUp");
+            Aliases.Add("LvlUp");
             Aliases.Add("LVLUP");
         }
 
