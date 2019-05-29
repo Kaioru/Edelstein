@@ -107,6 +107,9 @@ namespace Edelstein.Service.Game.Fields
             obj.Field = this;
             await pool.Enter(obj);
 
+            if (obj is IFieldOwnedObj owned)
+                owned.Position = owned.Owner.Position;
+
             if (obj is FieldUser user)
             {
                 var portal = Template.Portals.Values.FirstOrDefault(p => p.ID == user.Character.FieldPortal) ??
@@ -122,6 +125,13 @@ namespace Edelstein.Service.Game.Fields
                     : 0);
 
                 await user.SendPacket(user.GetSetFieldPacket());
+                await Task.WhenAll(user.Pets.Select(async pet =>
+                {
+                    pet.Field = user.Field;
+                    pet.Position = user.Position;
+                    pet.Foothold = user.Foothold;
+                    await user.SendPacket(pet.GetEnterFieldPacket());
+                }));
                 await BroadcastPacket(user, getEnterPacket?.Invoke() ?? user.GetEnterFieldPacket());
 
                 if (!user.IsInstantiated) user.IsInstantiated = true;

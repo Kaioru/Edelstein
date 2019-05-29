@@ -8,6 +8,24 @@ namespace Edelstein.Core.Extensions
 {
     public static class CharacterExtensions
     {
+        public static byte GetExtendSP(this Character c, byte jobLevel)
+            => c.ExtendSP.ContainsKey(jobLevel)
+                ? c.ExtendSP[jobLevel]
+                : (byte) 0;
+
+        public static void SetExtendSP(this Character c, byte jobLevel, byte sp)
+            => c.ExtendSP[jobLevel] = sp;
+
+        public static int GetSkillLevel(this Character c, int skill)
+            => c.SkillRecord.ContainsKey(skill)
+                ? c.SkillRecord[skill].Level
+                : 0;
+
+        public static int GetSkillMasterLevel(this Character c, int skill)
+            => c.SkillRecord.ContainsKey(skill)
+                ? c.SkillRecord[skill].MasterLevel
+                : 0;
+
         public static bool HasSlotFor(this Character c, ItemSlot item)
         {
             return HasSlotFor(

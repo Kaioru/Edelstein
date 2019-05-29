@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Edelstein.Core;
+using Edelstein.Core.Extensions;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Skill;

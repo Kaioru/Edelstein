@@ -33,7 +33,7 @@ To change this, create a .env file and add ```HOST={ip}``` to change the host th
 ### Running the Container service
 The Container service is the quick and easy way to spin up Edelstein
 1. ```cd src/Edelstein.Service.All```
-2. ```cp appsettings appsettings.Production.json```
+2. ```cp appsettings.json appsettings.Production.json```
 3. Edit the appsettings.Production.json appropriately (remember to set the scripts and data path!)
 4. ```dotnet run```
 

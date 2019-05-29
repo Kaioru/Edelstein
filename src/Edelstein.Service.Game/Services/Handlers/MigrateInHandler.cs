@@ -4,9 +4,13 @@ using Edelstein.Core;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
+using Edelstein.Database.Entities.Inventories;
+using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.Dragon;
 using Edelstein.Service.Game.Fields.Objects.User;
+using Marten.Util;
+using MoreLinq;
 
 namespace Edelstein.Service.Game.Services.Handlers
 {

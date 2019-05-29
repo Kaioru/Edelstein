@@ -12,6 +12,7 @@
 
     <ItemGroup>
         <PackageReference Include="Foundatio" Version="7.1.1845" />
+        <PackageReference Include="Foundatio.JsonNet" Version="7.1.1845" />
         <PackageReference Include="Foundatio.Redis" Version="7.1.1608" />
         <PackageReference Include="IronPython" Version="2.7.9" />
         <PackageReference Include="LibLog" Version="5.0.6" />

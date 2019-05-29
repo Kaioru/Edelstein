@@ -41,7 +41,35 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
             }
         }
 
-        // TODO: Pet stuff
+        public long Pet1
+        {
+            get => _character.Pets[0];
+            set
+            {
+                Flag |= ModifyStatType.Pet;
+                _character.Pets[0] = value;
+            }
+        }
+
+        public long Pet2
+        {
+            get => _character.Pets[1];
+            set
+            {
+                Flag |= ModifyStatType.Pet2;
+                _character.Pets[1] = value;
+            }
+        }
+
+        public long Pet3
+        {
+            get => _character.Pets[2];
+            set
+            {
+                Flag |= ModifyStatType.Pet3;
+                _character.Pets[2] = value;
+            }
+        }
 
         public byte Level
         {
@@ -225,9 +253,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
             if ((Flag & ModifyStatType.Face) != 0) packet.Encode<int>(Face);
             if ((Flag & ModifyStatType.Hair) != 0) packet.Encode<int>(Hair);
 
-            if ((Flag & ModifyStatType.Pet) != 0) packet.Encode<long>(0);
-            if ((Flag & ModifyStatType.Pet2) != 0) packet.Encode<long>(0);
-            if ((Flag & ModifyStatType.Pet3) != 0) packet.Encode<long>(0);
+            if ((Flag & ModifyStatType.Pet) != 0) packet.Encode<long>(Pet1);
+            if ((Flag & ModifyStatType.Pet2) != 0) packet.Encode<long>(Pet2);
+            if ((Flag & ModifyStatType.Pet3) != 0) packet.Encode<long>(Pet3);
 
             if ((Flag & ModifyStatType.Level) != 0) packet.Encode<byte>(Level);
             if ((Flag & ModifyStatType.Job) != 0) packet.Encode<short>(Job);

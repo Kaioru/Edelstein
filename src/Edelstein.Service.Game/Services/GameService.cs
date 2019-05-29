@@ -23,6 +23,7 @@ using Edelstein.Service.Game.Services.Handlers.Dragon;
 using Edelstein.Service.Game.Services.Handlers.Drop;
 using Edelstein.Service.Game.Services.Handlers.Mob;
 using Edelstein.Service.Game.Services.Handlers.NPC;
+using Edelstein.Service.Game.Services.Handlers.Pet;
 using Edelstein.Service.Game.Services.Handlers.Summoned;
 using Edelstein.Service.Game.Services.Handlers.User;
 using Foundatio.Caching;
@@ -90,6 +91,7 @@ namespace Edelstein.Service.Game.Services
                 [RecvPacketOperations.UserSelectNpc] = new UserSelectNPCHandler(),
                 [RecvPacketOperations.UserScriptMessageAnswer] = new UserScriptMessageAnswerHandler(),
                 [RecvPacketOperations.UserShopRequest] = new UserShopRequestHandler(),
+                [RecvPacketOperations.UserTrunkRequest] = new UserTrunkRequestHandler(),
                 [RecvPacketOperations.UserGatherItemRequest] = new UserGatherItemRequestHandler(),
                 [RecvPacketOperations.UserSortItemRequest] = new UserSortItemRequestHandler(),
                 [RecvPacketOperations.UserChangeSlotPositionRequest] = new UserChangeSlotPositionRequestHandler(),
@@ -99,8 +101,11 @@ namespace Edelstein.Service.Game.Services
                 [RecvPacketOperations.UserSkillCancelRequest] = new UserSkillCancelRequestHandler(),
                 [RecvPacketOperations.UserSkillPrepareRequest] = new UserSkillPrepareRequestHandler(),
                 [RecvPacketOperations.UserCharacterInfoRequest] = new UserCharacterInfoRequestHandler(),
+                [RecvPacketOperations.UserActivatePetRequest] = new UserActivatePetRequestHandler(),
                 [RecvPacketOperations.UserPortalScriptRequest] = new UserPortalScriptRequestHandler(),
                 [RecvPacketOperations.UserQuestRequest] = new UserQuestRequestHandler(),
+
+                [RecvPacketOperations.PetMove] = new PetMoveHandler(),
 
                 [RecvPacketOperations.SummonedMove] = new SummonedMoveHandler(),
 

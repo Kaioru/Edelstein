@@ -8,9 +8,12 @@ using Edelstein.Core.Extensions;
 using Edelstein.Core.Utils;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
+using Edelstein.Database.Entities.Inventories;
+using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
+using Edelstein.Service.Game.Fields.Objects.User.Broadcasts;
 using Edelstein.Service.Game.Fields.Objects.User.Effects;
 using Edelstein.Service.Game.Fields.Objects.User.Messages;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
@@ -18,6 +21,8 @@ using Edelstein.Service.Game.Fields.Objects.User.Stats;
 using Edelstein.Service.Game.Interactions;
 using Edelstein.Service.Game.Logging;
 using Edelstein.Service.Game.Services;
+using Marten.Util;
+using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields.Objects.User
 {
@@ -35,6 +40,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public ICollection<IFieldControlledObj> Controlled { get; }
         public ICollection<IFieldOwnedObj> Owned { get; }
+        public ICollection<FieldUserPet> Pets { get; }
 
         public BasicStat BasicStat { get; }
         public ForcedStat ForcedStat { get; }
@@ -50,6 +56,19 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
             Controlled = new List<IFieldControlledObj>();
             Owned = new List<IFieldOwnedObj>();
+            Pets = Character.Pets
+                .Where(sn => sn > 0)
+                .Select(sn => Character
+                    .Inventories[ItemInventoryType.Cash].Items.Values
+                    .OfType<ItemSlotPet>()
+                    .FirstOrDefault(i => i.CashItemSN == sn))
+                .Where(item => item != null)
+                .Select(item => new FieldUserPet(
+                    this,
+                    item,
+                    (byte) Character.Pets.IndexOf(item.CashItemSN ?? 0)
+                ))
+                .ToList();
 
             BasicStat = new BasicStat(this);
             ForcedStat = new ForcedStat(this);
@@ -65,6 +84,15 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public Task Message(IMessage message)
         {
             using (var p = new Packet(SendPacketOperations.Message))
+            {
+                message.Encode(p);
+                return SendPacket(p);
+            }
+        }
+
+        public Task Message(IBroadcastMessage message)
+        {
+            using (var p = new Packet(SendPacketOperations.BroadcastMsg))
             {
                 message.Encode(p);
                 return SendPacket(p);
@@ -200,7 +228,12 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 p.Encode<short>(Foothold);
                 p.Encode<byte>(0);
 
-                p.Encode<byte>(0);
+                Pets.ForEach(pet =>
+                {
+                    p.Encode<bool>(true);
+                    pet.EncodeData(p);
+                });
+                p.Encode<bool>(false);
 
                 p.Encode<int>(0);
                 p.Encode<int>(0);
