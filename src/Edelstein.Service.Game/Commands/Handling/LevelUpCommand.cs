@@ -12,7 +12,6 @@ namespace Edelstein.Service.Game.Commands.Handling
         public LevelUpCommand(Parser parser) : base(parser)
         {
             Aliases.Add("LvlUp");
-            Aliases.Add("LVLUP");
         }
 
         protected override async Task Execute(FieldUser sender, LevelUpCommandOption option)
