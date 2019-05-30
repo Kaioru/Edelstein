@@ -283,5 +283,27 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
             if ((Flag & ModifyStatType.Money) != 0) packet.Encode<int>(Money);
             if ((Flag & ModifyStatType.TempEXP) != 0) packet.Encode<int>(TempEXP);
         }
+
+        // TODO: figure out stat increases for each job
+        public void LevelUp()
+        {
+            if (Level < 250 && Level > 0) Level++;
+
+            System.Random r = new System.Random();
+            int rndHPBonus = r.Next(10, 16);
+            int rndMPBonus = r.Next(10, 12);
+
+            // give bonus HP/MP
+            MaxHP += rndHPBonus;
+            MaxMP += rndMPBonus;
+
+            // HP/MP to full
+            if (HP < MaxHP) { HP = MaxHP; }
+            if (MP < MaxMP) { MP = MaxMP; }
+
+            // give AP/SP
+            AP += 5;
+            SP += 3;
+        }
     }
 }
