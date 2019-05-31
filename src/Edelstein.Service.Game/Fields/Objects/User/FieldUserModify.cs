@@ -67,12 +67,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 await AvatarModified();
 
             if (context.Flag.HasFlag(ModifyStatType.Job))
-                await Effect(new Effect(EffectType.JobChanged), false, true);
-            if (context.Flag.HasFlag(ModifyStatType.Level))
-                await Effect(new Effect(EffectType.LevelUp), false, true);
-
-            if (context.Flag.HasFlag(ModifyStatType.Job))
             {
+                await Effect(new Effect(EffectType.JobChanged), false, true);
+
                 if (SkillConstants.HasEvanDragon(Character.Job))
                 {
                     if (!Owned.OfType<FieldDragon>().Any())
@@ -95,6 +92,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                     }
                 }
             }
+
+            if (context.Flag.HasFlag(ModifyStatType.Level))
+                await Effect(new Effect(EffectType.LevelUp), false, true);
         }
 
         public async Task ModifyForcedStats(Action<ModifyForcedStatContext> action = null)
