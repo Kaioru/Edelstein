@@ -15,6 +15,7 @@ namespace Edelstein.Service.Game.Commands
 
         public CommandManager(Parser parser) : base(parser)
         {
+            Commands.Add(new LevelUpCommand(parser));
             Commands.Add(new StatCommand(parser));
             Commands.Add(new CashCommand(parser));
             Commands.Add(new BuffCommand(parser));

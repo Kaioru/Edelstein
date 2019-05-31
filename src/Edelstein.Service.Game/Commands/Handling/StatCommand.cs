@@ -18,6 +18,12 @@ namespace Edelstein.Service.Game.Commands.Handling
 
         protected override async Task Execute(FieldUser sender, StatCommandOption option)
         {
+            if (option.Value < 0)
+            {
+                await sender.Message($"This command cannot use negative integers use only positive integers!");
+                return;
+            }
+
             switch (option.Type)
             {
                 case ModifyStatType.Skin:
