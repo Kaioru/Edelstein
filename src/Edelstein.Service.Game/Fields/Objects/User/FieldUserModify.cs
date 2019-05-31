@@ -9,6 +9,7 @@ using Edelstein.Core.Gameplay.Inventories.Operations;
 using Edelstein.Core.Gameplay.Skills;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.Dragon;
+using Edelstein.Service.Game.Fields.Objects.User.Effects;
 using Edelstein.Service.Game.Fields.Objects.User.Quests;
 using Edelstein.Service.Game.Fields.Objects.User.Stats;
 using Edelstein.Service.Game.Fields.Objects.User.Stats.Modify;
@@ -64,6 +65,11 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 context.Flag.HasFlag(ModifyStatType.Face) ||
                 context.Flag.HasFlag(ModifyStatType.Hair))
                 await AvatarModified();
+
+            if (context.Flag.HasFlag(ModifyStatType.Job))
+                await Effect(new Effect(EffectType.JobChanged), false, true);
+            if (context.Flag.HasFlag(ModifyStatType.Level))
+                await Effect(new Effect(EffectType.LevelUp), false, true);
 
             if (context.Flag.HasFlag(ModifyStatType.Job))
             {
