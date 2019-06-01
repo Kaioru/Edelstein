@@ -4,7 +4,8 @@ using Edelstein.Service.Game.Conversations.Speakers.Fields.Inventories;
 using Edelstein.Service.Game.Conversations.Speakers.Fields.Quests;
 using Edelstein.Service.Game.Fields.Objects.User;
 using Edelstein.Service.Game.Fields.Objects.User.Effects;
-using Edelstein.Service.Game.Fields.Objects.User.Effects.Types;
+using Edelstein.Service.Game.Fields.Objects.User.Effects.Field;
+using Edelstein.Service.Game.Fields.Objects.User.Effects.User;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 {
@@ -189,9 +190,11 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 
         public void ReservedEffect(string path)
             => Obj.Effect(new ReservedEffect(path)).Wait();
-        
-        
+
         public void AvatarOrientedEffect(string path)
             => Obj.Effect(new AvatarOrientedEffect(path)).Wait();
+
+        public void ScreenFieldEffect(string path)
+            => Obj.Effect(new ScreenFieldEffect(path)).Wait();
     }
 }

@@ -1,6 +1,6 @@
 using Edelstein.Network.Packets;
 
-namespace Edelstein.Service.Game.Fields.Objects.User.Effects.Types
+namespace Edelstein.Service.Game.Fields.Objects.User.Effects.User
 {
     public class ReservedEffect : AbstractEffect
     {

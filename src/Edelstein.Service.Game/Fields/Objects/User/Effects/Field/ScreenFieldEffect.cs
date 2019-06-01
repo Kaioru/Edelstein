@@ -1,14 +1,14 @@
 using Edelstein.Network.Packets;
 
-namespace Edelstein.Service.Game.Fields.Objects.User.Effects.Types
+namespace Edelstein.Service.Game.Fields.Objects.User.Effects.Field
 {
-    public class SquibEffect : AbstractEffect
+    public class ScreenFieldEffect : AbstractFieldEffect
     {
-        public override EffectType Type => EffectType.SquibEffect;
+        public override FieldEffectType Type => FieldEffectType.Screen;
 
         private readonly string _path;
 
-        public SquibEffect(string path)
+        public ScreenFieldEffect(string path)
         {
             _path = path;
         }

@@ -126,7 +126,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 p.Encode<bool>(true);
                 p.Encode<int>(idx);
                 p.Encode<int>(duration);
-                
+
                 return SendPacket(p);
             }
         }
@@ -139,7 +139,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 p.Encode<string>(text);
                 p.Encode<int>(width);
                 p.Encode<int>(duration);
-                
+
                 return SendPacket(p);
             }
         }
@@ -168,6 +168,15 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                     effect.Encode(p);
                     await Field.BroadcastPacket(this, p);
                 }
+            }
+        }
+
+        public Task Effect(IFieldEffect effect)
+        {
+            using (var p = new Packet(SendPacketOperations.FieldEffect))
+            {
+                effect.Encode(p);
+                return SendPacket(p);
             }
         }
 
