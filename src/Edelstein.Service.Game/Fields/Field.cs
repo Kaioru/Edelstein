@@ -250,6 +250,7 @@ namespace Edelstein.Service.Game.Fields
                 await Task.WhenAll(generators
                     .Except(mobGenerators)
                     .Shuffle()
+                    .Where(g => g.Generated == null && now > g.RegenAfter)
                     .Select(g => g.Generate(this)));
 
                 LastGenObjTime = now;
