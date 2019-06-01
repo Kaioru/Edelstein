@@ -177,6 +177,8 @@ namespace Edelstein.Service.Game.Fields
 
             if (obj is IFieldGeneratedObj g && g.Generator != null)
                 await g.Generator.Reset();
+            if (obj is IFieldControlledObj c)
+                c.Controller?.Controlled.Remove(c);
 
             await GetPool(obj.Type).Leave(obj);
             UpdateControlledObjects();

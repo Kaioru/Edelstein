@@ -12,11 +12,11 @@ namespace Edelstein.Service.Game.Fields.Objects
             set
             {
                 if (_controller == value) return;
+
+                _controller?.Controlled.Remove(this);
+
                 if (_controller?.Field == Field)
-                {
-                    _controller?.Controlled.Remove(this);
                     _controller?.SendPacket(GetChangeControllerPacket(false));
-                }
 
                 _controller = value;
                 if (value == null) return;
