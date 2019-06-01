@@ -52,7 +52,16 @@ namespace Edelstein.Service.Game.Commands
             }
 
             if (templateID == null) return;
-            await ExecuteAfter(sender, templateManager.Get<TTemplate>(templateID.Value), option);
+
+            var template = templateManager.Get<TTemplate>(templateID.Value);
+
+            if (template == null)
+            {
+                await sender.Message($"Unable to find template of ID: {templateID}");
+                return;
+            }
+
+            await ExecuteAfter(sender, template, option);
         }
 
         protected abstract Task ExecuteAfter(FieldUser sender, TTemplate template, TOption option);
