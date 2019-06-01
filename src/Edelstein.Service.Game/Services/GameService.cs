@@ -115,7 +115,9 @@ namespace Edelstein.Service.Game.Services
 
                 [RecvPacketOperations.NpcMove] = new NPCMoveHandler(),
 
-                [RecvPacketOperations.DropPickUpRequest] = new DropPickupRequestHandler()
+                [RecvPacketOperations.DropPickUpRequest] = new DropPickupRequestHandler(),
+                
+                [RecvPacketOperations.CONTISTATE] = new ContiStateHandler()
             };
 
             var userAttackHandler = new UserAttackHandler();
