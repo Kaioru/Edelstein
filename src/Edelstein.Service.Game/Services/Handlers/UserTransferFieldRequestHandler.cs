@@ -10,10 +10,19 @@ namespace Edelstein.Service.Game.Services.Handlers
         public override async Task Handle(RecvPacketOperations operation, IPacket packet, FieldUser user)
         {
             packet.Decode<byte>();
-            packet.Decode<int>();
+            
+            var fieldID = packet.Decode<int>();
 
-            var name = packet.Decode<string>();
-            var portal = user.Field.GetPortal(name);
+            if (fieldID != -1)
+            {
+                var field = user.Service.FieldManager.Get(fieldID);
+
+                await field.Enter(user);
+                return;
+            }
+            
+            var portalName = packet.Decode<string>();
+            var portal = user.Field.GetPortal(portalName);
 
             await portal.Enter(user);
         }
