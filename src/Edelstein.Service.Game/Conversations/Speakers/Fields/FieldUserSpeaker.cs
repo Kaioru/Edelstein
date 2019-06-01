@@ -186,5 +186,12 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 
         public void SquibEffect(string path)
             => Obj.Effect(new SquibEffect(path)).Wait();
+
+        public void ReservedEffect(string path)
+            => Obj.Effect(new ReservedEffect(path)).Wait();
+        
+        
+        public void AvatarOrientedEffect(string path)
+            => Obj.Effect(new AvatarOrientedEffect(path)).Wait();
     }
 }
