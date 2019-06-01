@@ -140,10 +140,26 @@ namespace Edelstein.Service.Game.Fields.Continents
                     NextEvent = null;
                     EventDoing = true;
                     Logger.Debug($"{Template.Info} started the {nextState} event");
+
+                    using (var p = new Packet(SendPacketOperations.CONTIMOVE))
+                    {
+                        p.Encode<byte>((byte) ContinentState.TargetMoveField);
+                        p.Encode<byte>((byte) ContinentState.MobGen);
+                        await EndShipMoveField.BroadcastPacket(p);
+                    }
+
                     break;
                 case ContinentState.MobDestroy:
                     EventDoing = false;
                     Logger.Debug($"{Template.Info} started the {nextState} event");
+
+                    using (var p = new Packet(SendPacketOperations.CONTIMOVE))
+                    {
+                        p.Encode<byte>((byte) ContinentState.TargetMoveField);
+                        p.Encode<byte>((byte) ContinentState.MobDestroy);
+                        await EndShipMoveField.BroadcastPacket(p);
+                    }
+
                     break;
                 case ContinentState.End:
                     using (var p = new Packet(SendPacketOperations.CONTIMOVE))
