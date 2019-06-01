@@ -99,6 +99,51 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             }
         }
 
+        public Task BalloonMessage(string text, Rectangle bounds, Point? origin = null)
+        {
+            using (var p = new Packet(SendPacketOperations.UserBalloonMsg))
+            {
+                p.Encode<string>(text);
+                p.Encode<short>((short) bounds.Width);
+                p.Encode<short>((short) bounds.Height);
+
+                p.Encode<bool>(origin.HasValue);
+                if (origin.HasValue)
+                {
+                    // For some reason, the point here is sent as 2 int.
+                    p.Encode<int>(origin.Value.X);
+                    p.Encode<int>(origin.Value.Y);
+                }
+
+                return SendPacket(p);
+            }
+        }
+
+        public Task TutorMessage(int idx, int duration)
+        {
+            using (var p = new Packet(SendPacketOperations.UserTutorMsg))
+            {
+                p.Encode<bool>(true);
+                p.Encode<int>(idx);
+                p.Encode<int>(duration);
+                
+                return SendPacket(p);
+            }
+        }
+
+        public Task TutorMessage(string text, int width, int duration)
+        {
+            using (var p = new Packet(SendPacketOperations.UserTutorMsg))
+            {
+                p.Encode<bool>(false);
+                p.Encode<string>(text);
+                p.Encode<int>(width);
+                p.Encode<int>(duration);
+                
+                return SendPacket(p);
+            }
+        }
+
         public Task Effect(EffectType type, bool local = true, bool remote = false)
         {
             return Effect(new Effect(type), local, remote);
