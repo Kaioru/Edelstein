@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace Edelstein.Service.Game.Fields
         public FieldManager(ITemplateManager templateManager)
         {
             _templateManager = templateManager;
-            _fields = new Dictionary<int, IField>();
+            _fields = new ConcurrentDictionary<int, IField>();
         }
 
         public IField Get(int id)

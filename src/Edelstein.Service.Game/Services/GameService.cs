@@ -19,13 +19,6 @@ using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Fields.Continents;
 using Edelstein.Service.Game.Services.Handlers;
-using Edelstein.Service.Game.Services.Handlers.Dragon;
-using Edelstein.Service.Game.Services.Handlers.Drop;
-using Edelstein.Service.Game.Services.Handlers.Mob;
-using Edelstein.Service.Game.Services.Handlers.NPC;
-using Edelstein.Service.Game.Services.Handlers.Pet;
-using Edelstein.Service.Game.Services.Handlers.Summoned;
-using Edelstein.Service.Game.Services.Handlers.User;
 using Foundatio.Caching;
 using Microsoft.Extensions.Options;
 using MoonSharp.Interpreter;
@@ -95,6 +88,8 @@ namespace Edelstein.Service.Game.Services
                 [RecvPacketOperations.UserGatherItemRequest] = new UserGatherItemRequestHandler(),
                 [RecvPacketOperations.UserSortItemRequest] = new UserSortItemRequestHandler(),
                 [RecvPacketOperations.UserChangeSlotPositionRequest] = new UserChangeSlotPositionRequestHandler(),
+                [RecvPacketOperations.UserAbilityUpRequest] = new UserAbilityUpRequestHandler(),
+                [RecvPacketOperations.UserAbilityMassUpRequest] = new UserAbilityMassUpRequestHandler(),
                 [RecvPacketOperations.UserChangeStatRequest] = new UserChangeStatRequestHandler(),
                 [RecvPacketOperations.UserSkillUpRequest] = new UserSkillUpRequestHandler(),
                 [RecvPacketOperations.UserSkillUseRequest] = new UserSkillUseRequestHandler(),
@@ -115,7 +110,9 @@ namespace Edelstein.Service.Game.Services
 
                 [RecvPacketOperations.NpcMove] = new NPCMoveHandler(),
 
-                [RecvPacketOperations.DropPickUpRequest] = new DropPickupRequestHandler()
+                [RecvPacketOperations.DropPickUpRequest] = new DropPickupRequestHandler(),
+                
+                [RecvPacketOperations.CONTISTATE] = new ContiStateHandler()
             };
 
             var userAttackHandler = new UserAttackHandler();

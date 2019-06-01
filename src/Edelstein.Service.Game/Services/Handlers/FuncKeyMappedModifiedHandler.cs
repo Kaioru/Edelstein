@@ -3,7 +3,6 @@ using Edelstein.Core;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.User;
-using Edelstein.Service.Game.Services.Handlers.User;
 
 namespace Edelstein.Service.Game.Services.Handlers
 {

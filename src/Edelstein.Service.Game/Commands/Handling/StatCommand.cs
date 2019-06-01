@@ -20,7 +20,7 @@ namespace Edelstein.Service.Game.Commands.Handling
         {
             if (option.Value < 0)
             {
-                await sender.Message($"This command cannot use negative integers use only positive integers!");
+                await sender.Message("This command cannot use negative integers use only positive integers!");
                 return;
             }
 

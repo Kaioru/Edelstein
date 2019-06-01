@@ -61,15 +61,12 @@ namespace Edelstein.Service.Game.Fields.Continents
         {
             var random = new Random();
 
-            if (Template.Event &&
-                random.Next(100) <= 30
-            )
-            {
-                NextEvent = NextBoarding
-                    .AddMinutes(Template.Wait)
-                    .AddMinutes(random.Next(Template.Required - 5))
-                    .AddMinutes(2);
-            }
+            if (!Template.Event || random.Next(100) > 30) return;
+            NextEvent = NextBoarding
+                .AddMinutes(Template.Wait)
+                .AddMinutes(random.Next(Template.Required - 5))
+                .AddMinutes(2);
+            Logger.Debug($"{Template.Info} continent event is scheduled at {NextEvent}");
         }
 
         public async Task OnTick(DateTime now)
@@ -96,17 +93,14 @@ namespace Edelstein.Service.Game.Fields.Continents
 
                     break;
                 case ContinentState.Move:
-                    if (NextEvent.HasValue)
-                    {
-                        if (!EventDoing && now > NextEvent.Value)
-                            eventState = ContinentState.MobGen;
-
-                        if (EventDoing && now > NextBoarding
-                                .AddMinutes(Template.Wait)
-                                .AddMinutes(Template.EventEnd))
-                            eventState = ContinentState.MobDestroy;
-                    }
-
+                    if (NextEvent.HasValue &&
+                        !EventDoing &&
+                        now > NextEvent.Value)
+                        eventState = ContinentState.MobGen;
+                    if (EventDoing && now > NextBoarding
+                            .AddMinutes(Template.Wait)
+                            .AddMinutes(Template.EventEnd))
+                        eventState = ContinentState.MobDestroy;
                     if (now > NextBoarding
                             .AddMinutes(Template.Wait)
                             .AddMinutes(Template.Required))
@@ -139,11 +133,27 @@ namespace Edelstein.Service.Game.Fields.Continents
                 case ContinentState.MobGen:
                     NextEvent = null;
                     EventDoing = true;
-                    Logger.Debug($"{Template.Info} started the {nextState} event");
+                    Logger.Debug($"{Template.Info} started the {eventState} event");
+
+                    using (var p = new Packet(SendPacketOperations.CONTIMOVE))
+                    {
+                        p.Encode<byte>((byte) ContinentState.TargetMoveField);
+                        p.Encode<byte>((byte) ContinentState.MobGen);
+                        await MoveField.BroadcastPacket(p);
+                    }
+
                     break;
                 case ContinentState.MobDestroy:
                     EventDoing = false;
-                    Logger.Debug($"{Template.Info} started the {nextState} event");
+                    Logger.Debug($"{Template.Info} started the {eventState} event");
+
+                    using (var p = new Packet(SendPacketOperations.CONTIMOVE))
+                    {
+                        p.Encode<byte>((byte) ContinentState.TargetMoveField);
+                        p.Encode<byte>((byte) ContinentState.MobDestroy);
+                        await MoveField.BroadcastPacket(p);
+                    }
+
                     break;
                 case ContinentState.End:
                     using (var p = new Packet(SendPacketOperations.CONTIMOVE))

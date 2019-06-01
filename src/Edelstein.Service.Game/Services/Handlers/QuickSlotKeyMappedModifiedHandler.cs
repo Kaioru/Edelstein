@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.User;
-using Edelstein.Service.Game.Services.Handlers.User;
 
 namespace Edelstein.Service.Game.Services.Handlers
 {

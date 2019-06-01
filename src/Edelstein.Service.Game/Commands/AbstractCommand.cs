@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -33,13 +34,12 @@ namespace Edelstein.Service.Game.Commands
                 {
                     var res = m.Value;
 
-                    if (res.StartsWith("'") && res.EndsWith("'") ||
-                        res.StartsWith("\"") && res.EndsWith("\""))
-                    {
-                        res = res.Substring(1);
-                        res = res.Remove(res.Length - 1);
-                    }
-
+                    if ((!res.StartsWith("'") || !res.EndsWith("'")) && 
+                        (!res.StartsWith("\"") || !res.EndsWith("\"")))
+                        return res;
+                    
+                    res = res.Substring(1);
+                    res = res.Remove(res.Length - 1);
                     return res;
                 })
                 .ToList();
@@ -48,8 +48,8 @@ namespace Edelstein.Service.Game.Commands
 
         public ICommand GetCommand(string name)
         {
-            return Commands.FirstOrDefault(c => c.Name.ToLower().StartsWith(name) ||
-                                                c.Aliases.Count(s => s.ToLower().StartsWith(name)) > 0);
+            return Commands.FirstOrDefault(c => c.Name.StartsWith(name, StringComparison.OrdinalIgnoreCase) ||
+                                                c.Aliases.Any(s => s.StartsWith(name, StringComparison.OrdinalIgnoreCase)));
         }
 
         public Task Process(FieldUser sender, Queue<string> args)
