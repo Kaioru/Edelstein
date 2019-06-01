@@ -145,7 +145,7 @@ namespace Edelstein.Service.Game.Fields.Continents
                     {
                         p.Encode<byte>((byte) ContinentState.TargetMoveField);
                         p.Encode<byte>((byte) ContinentState.MobGen);
-                        await EndShipMoveField.BroadcastPacket(p);
+                        await MoveField.BroadcastPacket(p);
                     }
 
                     break;
@@ -157,7 +157,7 @@ namespace Edelstein.Service.Game.Fields.Continents
                     {
                         p.Encode<byte>((byte) ContinentState.TargetMoveField);
                         p.Encode<byte>((byte) ContinentState.MobDestroy);
-                        await EndShipMoveField.BroadcastPacket(p);
+                        await MoveField.BroadcastPacket(p);
                     }
 
                     break;
