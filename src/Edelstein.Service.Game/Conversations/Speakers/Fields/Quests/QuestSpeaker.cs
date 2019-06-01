@@ -1,3 +1,4 @@
+using Edelstein.Provider.Templates.Quest;
 using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields.Quests
@@ -18,6 +19,13 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields.Quests
             _fieldUser = fieldUser;
             _questTemplateID = questTemplateID;
         }
+
+        // TODO: redundant code
+        public QuestState State => _fieldUser.Character.QuestComplete.ContainsKey(_questTemplateID)
+            ? QuestState.Complete
+            : _fieldUser.Character.QuestRecord.ContainsKey(_questTemplateID)
+                ? QuestState.Perform
+                : QuestState.None;
 
         public void Accept(string value = "")
             => Update(value);
