@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
@@ -35,8 +36,17 @@ namespace Edelstein.Service.Game.Commands.Handling
                                 return c.Template.StartShipMoveFieldID;
                         }
                     },
-                    c => $"{c.Template.Info} ({c.State})"
-                )
+                    c =>
+                    {
+                        var ret = $"{c.Template.Info} ({c.State})";
+
+                        if (c.NextEvent.HasValue)
+                            ret += $" #r(Event at {c.NextEvent.Value:H:mm tt})#b";
+                        if (c.EventDoing)
+                            ret += " #r(Event ongoing)#b";
+
+                        return ret;
+                    })
             ));
             var fieldManager = sender.Service.FieldManager;
             var field = fieldManager.Get(templateID);
