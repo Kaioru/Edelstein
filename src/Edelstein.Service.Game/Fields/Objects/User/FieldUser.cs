@@ -99,7 +99,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             }
         }
 
-        public Task BalloonMessage(string text, Rectangle bounds, Point? origin = null)
+        public Task BalloonMessage(string text, Size bounds, Point? origin = null)
         {
             using (var p = new Packet(SendPacketOperations.UserBalloonMsg))
             {

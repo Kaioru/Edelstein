@@ -1,7 +1,10 @@
+using System.Drawing;
 using Edelstein.Core.Extensions;
 using Edelstein.Service.Game.Conversations.Speakers.Fields.Inventories;
 using Edelstein.Service.Game.Conversations.Speakers.Fields.Quests;
 using Edelstein.Service.Game.Fields.Objects.User;
+using Edelstein.Service.Game.Fields.Objects.User.Effects;
+using Edelstein.Service.Game.Fields.Objects.User.Effects.Types;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 {
@@ -159,7 +162,7 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
         }
 
         public void Message(string text)
-            => Obj.Message(text);
+            => Obj.Message(text).Wait();
 
         public void Converse(string script, ISpeaker self, ISpeaker target)
             => Obj.Service.ConversationManager.Build(
@@ -168,5 +171,20 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
                 self,
                 target
             ).Result.Start().Wait();
+
+        public void BalloonMessage(string text, int width, int height)
+            => Obj.BalloonMessage(text, new Size(width, height)).Wait();
+
+        public void TutorMessage(int idx, int duration)
+            => Obj.TutorMessage(idx, duration).Wait();
+
+        public void TutorMessage(string text, int width, int duration)
+            => Obj.TutorMessage(text, width, duration).Wait();
+
+        public void Effect(EffectType type, bool remote = true)
+            => Obj.Effect(new Effect(type), true, remote).Wait();
+
+        public void SquibEffect(string path)
+            => Obj.Effect(new SquibEffect(path)).Wait();
     }
 }
