@@ -11,6 +11,8 @@ namespace Edelstein.Service.Game.Conversations.Speakers
     {
         public static readonly ICollection<Type> Types = new List<Type>
         {
+            typeof(Speech),
+
             typeof(Speaker),
             typeof(FieldSpeaker),
             typeof(ContinentSpeaker),
