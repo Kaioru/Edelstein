@@ -33,7 +33,7 @@ namespace Edelstein.Service.Game.Fields
 
             _pools = new Dictionary<FieldObjType, IFieldPool>();
             _portals = template.Portals
-                .Where(kv => kv.Value.ToMap != 999999999)
+                .Where(kv => kv.Value.Name != "sp" && kv.Value.Name != "tp")
                 .ToDictionary(
                     kv => kv.Value.Name,
                     kv => (IFieldPortal) new FieldPortal(this, kv.Value)
