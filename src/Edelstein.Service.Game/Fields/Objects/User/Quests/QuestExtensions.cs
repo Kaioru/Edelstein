@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Provider.Templates.Quest;
@@ -21,12 +23,26 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
                 ? c.QuestRecord[templateID]
                 : string.Empty;
         }
-        
+
         public static string GetQuestRecordEX(this Character c, short templateID)
         {
             return c.QuestRecordEx.ContainsKey(templateID)
                 ? c.QuestRecordEx[templateID]
                 : string.Empty;
+        }
+
+        public static IDictionary<string, string> GetQuestRecordEXDict(this Character c, short templateID)
+        {
+            return c.GetQuestRecordEX(templateID)
+                .Split(';')
+                .Select(v => v.Split('='))
+                .ToDictionary(pair => pair[0], pair => pair[1]);
+        }
+
+        public static string GetQuestRecordEX(this Character c, short templateID, string key)
+        {
+            var dictionary = c.GetQuestRecordEXDict(templateID);
+            return dictionary.ContainsKey(key) ? dictionary[key] : string.Empty;
         }
 
         public static async Task<QuestResult> Check(this QuestTemplate template, QuestState state, FieldUser user)
