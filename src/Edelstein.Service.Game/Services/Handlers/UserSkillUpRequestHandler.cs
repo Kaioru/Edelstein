@@ -21,6 +21,16 @@ namespace Edelstein.Service.Game.Services.Handlers
             var job = template.ID / 10000;
             var jobLevel = (byte) SkillConstants.GetJobLevel(job);
 
+            if (jobLevel == 1)
+            {
+                var sp = job == 3000 ? 9 : 6;
+                for (var i = 0; i < 3; i++)
+                    sp -= user.Character.GetSkillLevel(job * 1000 + 1000 + i);
+                if (sp > 0)
+                    await user.ModifySkills(s => s.Add(templateID), true);
+                return;
+            }
+
             if (SkillConstants.IsExtendSPJob(job) && user.Character.GetExtendSP(jobLevel) <= 0) return;
             if (!SkillConstants.IsExtendSPJob(job) && user.Character.SP <= 0) return;
 

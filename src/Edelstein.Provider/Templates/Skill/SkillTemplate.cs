@@ -33,7 +33,7 @@ namespace Edelstein.Provider.Templates.Skill
                 entry = property.Resolve("level");
                 levelData = entry.Children.ToDictionary(
                     c => Convert.ToInt32(c.Name),
-                    c => new SkillLevelTemplate(Convert.ToInt32(c.Name), id, c)
+                    c => new SkillLevelTemplate(Convert.ToInt32(c.Name), id, c.ResolveAll(), false)
                 );
             }
 
