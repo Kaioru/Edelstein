@@ -31,7 +31,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
         {
             var dictionary = _character.GetQuestRecordDict(templateID);
             dictionary[key] = value;
-            UpdateEx(templateID, string.Join(';', dictionary.Select(d => $"{d.Key}={d.Value}")));
+            Update(templateID, string.Join(';', dictionary.Select(d => $"{d.Key}={d.Value}")));
         }
 
         public void UpdateEx(short templateID, string value)
