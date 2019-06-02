@@ -6,8 +6,8 @@ using Edelstein.Core.Scripts;
 using Edelstein.Core.Scripts.Lua;
 using Edelstein.Core.Scripts.Python;
 using Edelstein.Core.Utils.Messaging;
-using Edelstein.Database;
 using Edelstein.Database.InMemory;
+using Edelstein.Database.LiteDB;
 using Edelstein.Database.Postgres;
 using Edelstein.Provider;
 using Edelstein.Provider.NX;
@@ -23,6 +23,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
 using StackExchange.Redis;
+using IDataStore = Edelstein.Database.IDataStore;
 
 namespace Edelstein.Core.Bootstrap
 {
@@ -152,6 +153,11 @@ namespace Edelstein.Core.Bootstrap
                         case null:
                         case DatabaseType.InMemory:
                             builder.AddSingleton<IDataStore, InMemoryDataStore>();
+                            break;
+                        case DatabaseType.LiteDB:
+                            builder.AddSingleton<IDataStore>(f =>
+                                new LiteDBDataStore(_option.DatabaseConnectionString)
+                            );
                             break;
                         case DatabaseType.PostgreSQL:
                             builder.AddSingleton<IDataStore>(f =>

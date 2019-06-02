@@ -13,6 +13,10 @@ namespace Edelstein.Database.Entities.Inventories.Cash
         public string BuyCharacterName { get; set; }
         public int PaybackRate { get; set; }
         public int DiscountRate { get; set; }
+        
+        public ItemLockerSlot()
+        {
+        }
 
         public ItemLockerSlot(ItemSlot item)
         {

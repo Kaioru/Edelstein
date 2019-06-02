@@ -17,10 +17,13 @@ namespace Edelstein.Service.Game.Fields
 
         public async Task Enter(IFieldUser user)
         {
-            var to = user.Service.FieldManager.Get(_template.ToMap);
-            var portal = to.GetPortal(_template.ToName);
+            if (_template.ToMap != 999999999)
+            {
+                var to = user.Service.FieldManager.Get(_template.ToMap);
+                var portal = to.GetPortal(_template.ToName);
 
-            await portal.Leave(user);
+                await portal.Leave(user);
+            }
         }
 
         public async Task Leave(IFieldUser user)
