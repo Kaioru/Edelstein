@@ -29,13 +29,13 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields.Quests
             set => Update(value);
         }
 
-        public string RecordEX
+        public string RecordEx
         {
             get => _fieldUser.Character.GetQuestRecordEX(_questTemplateID);
             set => UpdateEx(value);
         }
 
-        public string RecordEXKey(string key)
+        public string RecordExKey(string key)
             => _fieldUser.Character.GetQuestRecordEX(_questTemplateID, key);
 
         public void Accept(string value = "")
