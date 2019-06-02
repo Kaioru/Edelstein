@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Service.Game.Conversations.Messages;
 using Edelstein.Service.Game.Conversations.Speakers.Fields;
@@ -36,6 +37,9 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         public byte Say(string[] text, int current = 0)
             => SayAsync(text, current).Result;
 
+        public byte Say(IDictionary<ISpeaker, string> text, int current = 0)
+            => SayAsync(text, current).Result;
+
         public byte Say(string text = "", bool prev = false, bool next = true)
             => SayAsync(text, prev, next).Result;
 
@@ -66,16 +70,23 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         public int AskSlideMenu(IDictionary<int, string> options, int type = 0, int selected = 0)
             => AskSlideMenuAsync(options, type, selected).Result;
 
-        public async Task<byte> SayAsync(string[] text, int current = 0)
+        public Task<byte> SayAsync(string[] text, int current = 0)
+            => SayAsync(text.ToDictionary(
+                t => (ISpeaker) this,
+                t => t
+            ), current);
+
+        public async Task<byte> SayAsync(IDictionary<ISpeaker, string> text, int current = 0)
         {
+            var array = text.ToArray();
             byte result = 0;
 
-            while (current >= 0 && current < text.Length)
+            while (current >= 0 && current < array.Length)
             {
-                result = await SayAsync(text[current], current > 0);
+                result = await array[current].Key.SayAsync(array[current].Value, current > 0);
 
                 if (result == 0) current = Math.Max(0, --current);
-                if (result == 1) current = Math.Min(text.Length, ++current);
+                if (result == 1) current = Math.Min(array.Length, ++current);
             }
 
             return result;

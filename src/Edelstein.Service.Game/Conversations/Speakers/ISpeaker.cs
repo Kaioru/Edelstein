@@ -6,13 +6,14 @@ namespace Edelstein.Service.Game.Conversations.Speakers
     public interface ISpeaker
     {
         IConversationContext Context { get; }
-        
+
         int TemplateID { get; }
         SpeakerParamType ParamType { get; }
 
         ISpeaker AsSpeaker(int templateID, SpeakerParamType param = 0);
-        
+
         byte Say(string[] text, int current = 0);
+        byte Say(IDictionary<ISpeaker, string> text, int current = 0);
         byte Say(string text = "", bool prev = false, bool next = true);
         bool AskYesNo(string text = "");
         bool AskAccept(string text = "");
@@ -25,6 +26,7 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         int AskSlideMenu(IDictionary<int, string> options, int type = 0, int selected = 0);
 
         Task<byte> SayAsync(string[] text, int current = 0);
+        Task<byte> SayAsync(IDictionary<ISpeaker, string> text, int current = 0);
         Task<byte> SayAsync(string text = "", bool prev = false, bool next = true);
         Task<bool> AskYesNoAsync(string text = "");
         Task<bool> AskAcceptAsync(string text = "");
