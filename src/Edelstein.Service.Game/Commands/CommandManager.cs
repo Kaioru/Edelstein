@@ -26,6 +26,7 @@ namespace Edelstein.Service.Game.Commands
             Commands.Add(new ContinentCommand(parser));
             
             Commands.Add(new TestCommand(parser));
+            Commands.Add(new DebugCommand(parser));
         }
 
         protected override Task Execute(FieldUser sender, object option)

@@ -59,7 +59,13 @@ namespace Edelstein.Service.Game.Fields.Continents
 
         private void ResetEvent()
         {
-            var random = new Random();
+            var random = new Random(
+                NextBoarding.Year +
+                NextBoarding.Month +
+                NextBoarding.Day +
+                NextBoarding.Hour +
+                NextBoarding.Minute
+            );
 
             if (!Template.Event || random.Next(100) > 30) return;
             NextEvent = NextBoarding

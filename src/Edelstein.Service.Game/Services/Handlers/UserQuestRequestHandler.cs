@@ -20,11 +20,7 @@ namespace Edelstein.Service.Game.Services.Handlers
 
             if (template == null) return;
 
-            var state = user.Character.QuestComplete.ContainsKey(templateID)
-                ? QuestState.Complete
-                : user.Character.QuestRecord.ContainsKey(templateID)
-                    ? QuestState.Perform
-                    : QuestState.None;
+            var state = user.Character.GetQuestState(templateID);
 
             if (state == QuestState.Perform &&
                 action == QuestRequest.ResignQuest
