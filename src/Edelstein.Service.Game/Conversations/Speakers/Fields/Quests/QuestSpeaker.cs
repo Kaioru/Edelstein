@@ -39,7 +39,7 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields.Quests
             => _fieldUser.Character.GetQuestRecordEX(_questTemplateID, key);
 
         public void Accept(string value = "")
-            => Update(value);
+            => _fieldUser.ModifyQuests(q => q.Accept(_questTemplateID, value)).Wait();
 
         public void Update(string value)
             => _fieldUser.ModifyQuests(q => q.Update(_questTemplateID, value)).Wait();
