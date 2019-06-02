@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Types.Quests;
+using Microsoft.Scripting.Utils;
 
 namespace Edelstein.Service.Game.Fields.Objects.User.Quests
 {
@@ -24,11 +26,25 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
             _character.QuestRecord[templateID] = value;
             Messages.Enqueue(new PerformQuestRecordMessage(templateID, value));
         }
+        
+        public void Update(short templateID, string key, string value)
+        {
+            var dictionary = _character.GetQuestRecordDict(templateID);
+            dictionary[key] = value;
+            UpdateEx(templateID, string.Join(';', dictionary.Select(d => $"{d.Key}={d.Value}")));
+        }
 
         public void UpdateEx(short templateID, string value)
         {
             _character.QuestRecordEx[templateID] = value;
             Messages.Enqueue(new QuestRecordExMessage(templateID, value));
+        }
+
+        public void UpdateEx(short templateID, string key, string value)
+        {
+            var dictionary = _character.GetQuestRecordEXDict(templateID);
+            dictionary[key] = value;
+            UpdateEx(templateID, string.Join(';', dictionary.Select(d => $"{d.Key}={d.Value}")));
         }
 
         public void Complete(short templateID, DateTime? dateComplete = null)

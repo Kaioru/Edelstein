@@ -6,7 +6,7 @@ using Marten.Schema;
 
 namespace Edelstein.Database.Entities.Characters
 {
-    public class Character
+    public class Character : IDataEntity
     {
         public int ID { get; set; }
         [ForeignKey(typeof(AccountData))] public int AccountDataID { get; set; }

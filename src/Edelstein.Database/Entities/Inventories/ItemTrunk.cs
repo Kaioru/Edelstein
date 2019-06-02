@@ -4,6 +4,10 @@ namespace Edelstein.Database.Entities.Inventories
     {
         public int Money { get; set; }
 
+        public ItemTrunk()
+        {
+        }
+        
         public ItemTrunk(short slotMax) : base(slotMax)
         {
         }

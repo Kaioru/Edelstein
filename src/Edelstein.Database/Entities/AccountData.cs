@@ -4,7 +4,7 @@ using Marten.Schema;
 
 namespace Edelstein.Database.Entities
 {
-    public class AccountData
+    public class AccountData : IDataEntity
     {
         private const string UniqueIndexName = "accountdata_uidx_accountid_worldid";
 
