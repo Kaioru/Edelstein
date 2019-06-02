@@ -2,7 +2,7 @@ using Marten.Schema;
 
 namespace Edelstein.Database.Entities
 {
-    public class Account
+    public class Account : IDataEntity
     {
         public int ID { get; set; }
 

@@ -3,7 +3,7 @@ using Marten.Schema;
 
 namespace Edelstein.Database.Entities
 {
-    public class CoupleRecord
+    public class CoupleRecord : IDataEntity
     {
         public int ID { get; set; }
         

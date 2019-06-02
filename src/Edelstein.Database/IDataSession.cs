@@ -5,14 +5,14 @@ namespace Edelstein.Database
 {
     public interface IDataSession : IDisposable
     {
-        IDataQuery<T> Query<T>();
-        
-        void Insert<T>(T entity);
-        void Update<T>(T entity);
-        void Delete<T>(T entity);
+        IDataQuery<T> Query<T>() where T : class, IDataEntity;
 
-        Task InsertAsync<T>(T entity);
-        Task UpdateAsync<T>(T entity);
-        Task DeleteAsync<T>(T entity);
+        void Insert<T>(T entity) where T : class, IDataEntity;
+        void Update<T>(T entity) where T : class, IDataEntity;
+        void Delete<T>(T entity) where T : class, IDataEntity;
+
+        Task InsertAsync<T>(T entity) where T : class, IDataEntity;
+        Task UpdateAsync<T>(T entity) where T : class, IDataEntity;
+        Task DeleteAsync<T>(T entity) where T : class, IDataEntity;
     }
 }

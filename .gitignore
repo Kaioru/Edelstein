@@ -1,5 +1,6 @@
 # --- Application specific ignores --- #
 **/*.aes
+**/*.db
 **/*.json
 !**/*.example.json
 !**/appsettings.json

@@ -24,10 +24,10 @@ namespace Edelstein.Database.InMemory
             return _database[typeof(T)];
         }
 
-        public IDataQuery<T> Query<T>()
+        public IDataQuery<T> Query<T>() where T : class, IDataEntity
             => new InMemoryDataQuery<T>(GetCollection<T>().OfType<T>().AsQueryable());
 
-        public void Insert<T>(T entity)
+        public void Insert<T>(T entity) where T : class, IDataEntity
         {
             if (!_keys.ContainsKey(typeof(T)))
                 _keys[typeof(T)] = 0;
@@ -41,27 +41,27 @@ namespace Edelstein.Database.InMemory
             GetCollection<T>().Add(entity);
         }
 
-        public void Update<T>(T entity)
+        public void Update<T>(T entity) where T : class, IDataEntity
         {
             // Do nothing, because sharing memory
         }
 
-        public void Delete<T>(T entity)
+        public void Delete<T>(T entity) where T : class, IDataEntity
             => GetCollection<T>().Remove(entity);
 
-        public Task InsertAsync<T>(T entity)
+        public Task InsertAsync<T>(T entity) where T : class, IDataEntity
         {
             Insert<T>(entity);
             return Task.CompletedTask;
         }
 
-        public Task UpdateAsync<T>(T entity)
+        public Task UpdateAsync<T>(T entity) where T : class, IDataEntity
         {
             // Do nothing, because sharing memory
             return Task.CompletedTask;
         }
 
-        public Task DeleteAsync<T>(T entity)
+        public Task DeleteAsync<T>(T entity) where T : class, IDataEntity
         {
             Delete<T>(entity);
             return Task.CompletedTask;
