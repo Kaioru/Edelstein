@@ -72,7 +72,7 @@ namespace Edelstein.Service.Game.Conversations.Speakers
 
             while (current >= 0 && current < text.Length)
             {
-                result = await SayAsync(text[current], current > 0, current < text.Length - 1);
+                result = await SayAsync(text[current], current > 0);
 
                 if (result == 0) current = Math.Max(0, --current);
                 if (result == 1) current = Math.Min(text.Length, ++current);
