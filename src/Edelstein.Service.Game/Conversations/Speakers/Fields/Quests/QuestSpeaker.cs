@@ -35,6 +35,9 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields.Quests
             set => UpdateEx(value);
         }
 
+        public string RecordKey(string key)
+            => _fieldUser.Character.GetQuestRecord(_questTemplateID, key);
+
         public string RecordExKey(string key)
             => _fieldUser.Character.GetQuestRecordEX(_questTemplateID, key);
 
@@ -43,6 +46,9 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields.Quests
 
         public void Update(string value)
             => _fieldUser.ModifyQuests(q => q.Update(_questTemplateID, value)).Wait();
+
+        public void Update(string key, string value)
+            => _fieldUser.ModifyQuests(q => q.Update(_questTemplateID, key, value)).Wait();
 
         public void UpdateEx(string value)
             => _fieldUser.ModifyQuests(q => q.UpdateEx(_questTemplateID, value)).Wait();

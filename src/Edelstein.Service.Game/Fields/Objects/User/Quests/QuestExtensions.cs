@@ -31,12 +31,26 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
                 : string.Empty;
         }
 
+        public static IDictionary<string, string> GetQuestRecordDict(this Character c, short templateID)
+        {
+            return c.GetQuestRecord(templateID)
+                .Split(';')
+                .Select(v => v.Split('='))
+                .ToDictionary(pair => pair[0], pair => pair[1]);
+        }
+        
         public static IDictionary<string, string> GetQuestRecordEXDict(this Character c, short templateID)
         {
             return c.GetQuestRecordEX(templateID)
                 .Split(';')
                 .Select(v => v.Split('='))
                 .ToDictionary(pair => pair[0], pair => pair[1]);
+        }
+        
+        public static string GetQuestRecord(this Character c, short templateID, string key)
+        {
+            var dictionary = c.GetQuestRecordDict(templateID);
+            return dictionary.ContainsKey(key) ? dictionary[key] : string.Empty;
         }
 
         public static string GetQuestRecordEX(this Character c, short templateID, string key)
