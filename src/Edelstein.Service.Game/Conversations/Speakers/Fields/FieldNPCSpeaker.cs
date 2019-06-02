@@ -9,5 +9,8 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
         public FieldNPCSpeaker(IConversationContext context, FieldNPC obj) : base(context, obj)
         {
         }
+        
+        public ISpeaker AsSpeaker(SpeakerParamType param = 0)
+            => new Speaker(Context, TemplateID, param);
     }
 }
