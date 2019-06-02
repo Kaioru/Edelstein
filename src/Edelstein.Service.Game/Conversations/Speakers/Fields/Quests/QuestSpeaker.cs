@@ -23,6 +23,18 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields.Quests
 
         public QuestState State => _fieldUser.Character.GetQuestState(_questTemplateID);
 
+        public string Record
+        {
+            get => _fieldUser.Character.GetQuestRecord(_questTemplateID);
+            set => Update(value);
+        }
+        
+        public string RecordEX
+        {
+            get => _fieldUser.Character.GetQuestRecordEX(_questTemplateID);
+            set => UpdateEx(value);
+        }
+
         public void Accept(string value = "")
             => Update(value);
 

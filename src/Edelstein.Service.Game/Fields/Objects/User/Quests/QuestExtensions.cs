@@ -15,6 +15,20 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
                     : QuestState.None;
         }
 
+        public static string GetQuestRecord(this Character c, short templateID)
+        {
+            return c.QuestRecord.ContainsKey(templateID)
+                ? c.QuestRecord[templateID]
+                : string.Empty;
+        }
+        
+        public static string GetQuestRecordEX(this Character c, short templateID)
+        {
+            return c.QuestRecordEx.ContainsKey(templateID)
+                ? c.QuestRecordEx[templateID]
+                : string.Empty;
+        }
+
         public static async Task<QuestResult> Check(this QuestTemplate template, QuestState state, FieldUser user)
         {
             var check = template.Check[state];
