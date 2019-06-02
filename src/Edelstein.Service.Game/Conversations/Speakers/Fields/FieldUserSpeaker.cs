@@ -6,6 +6,7 @@ using Edelstein.Service.Game.Fields.Objects.User;
 using Edelstein.Service.Game.Fields.Objects.User.Effects;
 using Edelstein.Service.Game.Fields.Objects.User.Effects.Field;
 using Edelstein.Service.Game.Fields.Objects.User.Effects.User;
+using MoonSharp.Interpreter.Interop;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 {
@@ -55,79 +56,79 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
             set => Obj.ModifyStats(s => s.Job = value).Wait();
         }
 
-        public short STR
+        public short Str
         {
             get => Obj.Character.STR;
             set => Obj.ModifyStats(s => s.STR = value).Wait();
         }
 
-        public short DEX
+        public short Dex
         {
             get => Obj.Character.DEX;
             set => Obj.ModifyStats(s => s.DEX = value).Wait();
         }
 
-        public short INT
+        public short Int
         {
             get => Obj.Character.INT;
             set => Obj.ModifyStats(s => s.INT = value).Wait();
         }
 
-        public short LUK
+        public short Luk
         {
             get => Obj.Character.LUK;
             set => Obj.ModifyStats(s => s.LUK = value).Wait();
         }
 
-        public int HP
+        public int Hp
         {
             get => Obj.Character.HP;
             set => Obj.ModifyStats(s => s.HP = value).Wait();
         }
 
-        public int MaxHP
+        public int MaxHp
         {
             get => Obj.Character.MaxHP;
             set => Obj.ModifyStats(s => s.MaxHP = value).Wait();
         }
 
-        public int MP
+        public int Mp
         {
             get => Obj.Character.MP;
             set => Obj.ModifyStats(s => s.MP = value).Wait();
         }
 
-        public int MaxMP
+        public int MaxMp
         {
             get => Obj.Character.MaxMP;
             set => Obj.ModifyStats(s => s.MaxMP = value).Wait();
         }
 
-        public short AP
+        public short Ap
         {
             get => Obj.Character.AP;
             set => Obj.ModifyStats(s => s.AP = value).Wait();
         }
 
-        public short SP
+        public short Sp
         {
             get => Obj.Character.SP;
             set => Obj.ModifyStats(s => s.SP = value).Wait();
         }
 
-        public byte GetExtendSP(byte jobLevel)
+        public byte GetExtendSp(byte jobLevel)
             => Obj.Character.GetExtendSP(jobLevel);
 
-        public void SetExtendSP(byte jobLevel, byte sp)
+        public void SetExtendSp(byte jobLevel, byte sp)
             => Obj.ModifyStats(s => s.SetExtendSP(jobLevel, sp)).Wait();
 
-        public int EXP
+        public int Exp
         {
             get => Obj.Character.EXP;
             set => Obj.ModifyStats(s => s.EXP = value).Wait();
         }
 
-        public short POP
+        public short Pop
         {
             get => Obj.Character.POP;
             set => Obj.ModifyStats(s => s.POP = value).Wait();
@@ -139,7 +140,7 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
             set => Obj.ModifyStats(s => s.Money = value).Wait();
         }
 
-        public int TempEXP
+        public int TempExp
         {
             get => Obj.Character.TempEXP;
             set => Obj.ModifyStats(s => s.TempEXP = value).Wait();

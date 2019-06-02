@@ -26,6 +26,13 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
             _character.QuestRecord[templateID] = value;
             Messages.Enqueue(new PerformQuestRecordMessage(templateID, value));
         }
+        
+        public void Update(short templateID, string key, string value)
+        {
+            var dictionary = _character.GetQuestRecordDict(templateID);
+            dictionary[key] = value;
+            UpdateEx(templateID, string.Join(';', dictionary.Select(d => $"{d.Key}={d.Value}")));
+        }
 
         public void UpdateEx(short templateID, string value)
         {
