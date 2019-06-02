@@ -17,8 +17,7 @@ namespace Edelstein.Service.Game.Services.Handlers
             {
                 var field = user.Service.FieldManager.Get(fieldID);
 
-                user.Character.FieldPortal = 0;
-                await field.Enter(user);
+                await field.Enter(user, 0);
                 return;
             }
 
