@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions;
@@ -23,7 +24,7 @@ namespace Edelstein.Service.Game.Services.Handlers
 
             if (jobLevel == 1)
             {
-                var sp = job == 3000 ? 9 : 6;
+                var sp = Math.Min(user.Character.Level - 1, job == 3000 ? 9 : 6);
                 for (var i = 0; i < 3; i++)
                     sp -= user.Character.GetSkillLevel(job * 1000 + 1000 + i);
                 if (sp > 0)
