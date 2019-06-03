@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Service.Game.Conversations.Messages;
 using Edelstein.Service.Game.Conversations.Speakers.Fields;
@@ -33,7 +34,13 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         public ISpeaker AsSpeaker(int templateID, SpeakerParamType param = 0)
             => new Speaker(Context, templateID, param);
 
+        public ISpeech GetSpeech(string text)
+            => new Speech(this, text);
+
         public byte Say(string[] text, int current = 0)
+            => SayAsync(text, current).Result;
+
+        public byte Say(ISpeech[] text, int current = 0)
             => SayAsync(text, current).Result;
 
         public byte Say(string text = "", bool prev = false, bool next = true)
@@ -66,16 +73,28 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         public int AskSlideMenu(IDictionary<int, string> options, int type = 0, int selected = 0)
             => AskSlideMenuAsync(options, type, selected).Result;
 
-        public async Task<byte> SayAsync(string[] text, int current = 0)
+        public Task<byte> SayAsync(string[] text, int current = 0)
+            => SayAsync(text
+                    .Select(t => (ISpeech) new Speech(this, t))
+                    .ToArray(),
+                current
+            );
+
+        public async Task<byte> SayAsync(ISpeech[] text, int current = 0)
         {
             byte result = 0;
 
             while (current >= 0 && current < text.Length)
             {
-                result = await SayAsync(text[current], current > 0, current < text.Length - 1);
+                result = await text[current].Speaker.SayAsync(text[current].Text, current > 0);
 
                 if (result == 0) current = Math.Max(0, --current);
-                if (result == 1) current = Math.Min(text.Length, ++current);
+                if (result == 1)
+                {
+                    if (current == text.Length)
+                        break;
+                    current = Math.Min(text.Length, ++current);
+                }
             }
 
             return result;

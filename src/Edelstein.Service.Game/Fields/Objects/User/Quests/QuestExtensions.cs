@@ -36,17 +36,19 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
             return c.GetQuestRecord(templateID)
                 .Split(';')
                 .Select(v => v.Split('='))
+                .Where(a => a.Length > 1)
                 .ToDictionary(pair => pair[0], pair => pair[1]);
         }
-        
+
         public static IDictionary<string, string> GetQuestRecordEXDict(this Character c, short templateID)
         {
             return c.GetQuestRecordEX(templateID)
                 .Split(';')
                 .Select(v => v.Split('='))
+                .Where(a => a.Length > 1)
                 .ToDictionary(pair => pair[0], pair => pair[1]);
         }
-        
+
         public static string GetQuestRecord(this Character c, short templateID, string key)
         {
             var dictionary = c.GetQuestRecordDict(templateID);
