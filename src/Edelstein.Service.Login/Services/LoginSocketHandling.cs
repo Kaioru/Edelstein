@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Extensions;
+using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Gameplay.Inventories;
+using Edelstein.Core.Types;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
@@ -359,12 +361,12 @@ namespace Edelstein.Service.Login.Services
                     {
                         AccountDataID = AccountData.ID,
                         Name = name,
-                        Job = RaceConstants.ChooseStartingJob(race),
+                        Job = GameConstants.GetStartJob(race),
                         Face = face,
                         Hair = hair + hairColor,
                         Skin = (byte) skin,
                         Gender = gender,
-                        FieldID = RaceConstants.ChooseStartingMap(race),
+                        FieldID = GameConstants.GetStartField(race),
                         FieldPortal = 0,
                         Level = 1,
                         HP = 50,
