@@ -47,9 +47,10 @@ namespace Edelstein.Provider.Templates.Field
             Life = property.Resolve("life").Children
                 .Select(p => new FieldLifeTemplate(p.ResolveAll()))
                 .ToList();
-            Reactors = property.Resolve("reactor").Children
-                .Select(p => new FieldReactorTemplate(p.ResolveAll()))
-                .ToList();
+            Reactors = property.Resolve("reactor")?.Children
+                           .Select(p => new FieldReactorTemplate(p.ResolveAll()))
+                           .ToList()
+                       ?? new List<FieldReactorTemplate>();
 
             property.Resolve("info").ResolveAll(i =>
             {
