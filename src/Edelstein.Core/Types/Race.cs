@@ -1,4 +1,4 @@
-namespace Edelstein.Service.Login.Types
+namespace Edelstein.Core.Types
 {
     public enum Race
     {

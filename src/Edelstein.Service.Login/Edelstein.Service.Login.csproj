@@ -6,17 +6,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj"/>
+        <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="BCrypt.Net" Version="0.1.0"/>
-        <PackageReference Include="LibLog" Version="5.0.6"/>
-        <PackageReference Include="morelinq" Version="3.1.1"/>
+        <PackageReference Include="BCrypt.Net" Version="0.1.0" />
+        <PackageReference Include="LibLog" Version="5.0.6" />
+        <PackageReference Include="morelinq" Version="3.1.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="appsettings.json"/>
+        <None Remove="appsettings.json" />
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
