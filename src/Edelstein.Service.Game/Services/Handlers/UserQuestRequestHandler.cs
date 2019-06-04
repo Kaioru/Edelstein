@@ -93,8 +93,8 @@ namespace Edelstein.Service.Game.Services.Handlers
                     var conversation = await user.Service.ConversationManager.Build(
                         script,
                         context,
-                        new FieldSpeaker(context, user.Field),
-                        new QuestSpeaker(context, user, templateID, npcTemplateID)
+                        new QuestSpeaker(context, user, templateID, npcTemplateID),
+                        new FieldUserSpeaker(context, user)
                     );
 
                     await user.Converse(conversation);
