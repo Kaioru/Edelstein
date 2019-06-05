@@ -27,6 +27,7 @@ namespace Edelstein.Service.Game.Services.Handlers
             if (item.TemplateID != templateID) return;
 
             await Handle(operation, packet, user, castTemplate, item);
+            await user.ModifyInventory(i => i.Remove(item, 1), true);
         }
 
         public abstract Task Handle(
