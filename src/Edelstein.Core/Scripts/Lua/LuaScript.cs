@@ -1,6 +1,8 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MoonSharp.Interpreter;
+using MoonSharp.Interpreter.Loaders;
 
 namespace Edelstein.Core.Scripts.Lua
 {
@@ -9,10 +11,20 @@ namespace Edelstein.Core.Scripts.Lua
         private readonly string _path;
         private readonly Script _script;
 
-        public LuaScript(string path)
+        public LuaScript(string path, string searchPath)
         {
             _path = path;
-            _script = new Script();
+            _script = new Script
+            {
+                Options =
+                {
+                    ScriptLoader = new FileSystemScriptLoader
+                    {
+                        IgnoreLuaPathGlobal = true,
+                        ModulePaths = new[] {$"{searchPath}/?", $"{searchPath}/?.lua"}
+                    }
+                }
+            };
         }
 
         public Task Register(string key, object value)

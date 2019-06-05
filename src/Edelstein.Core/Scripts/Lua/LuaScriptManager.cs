@@ -19,7 +19,7 @@ namespace Edelstein.Core.Scripts.Lua
             
             if (!File.Exists(path)) throw new FileNotFoundException(path);
 
-            return Task.FromResult<IScript>(new LuaScript(path));
+            return Task.FromResult<IScript>(new LuaScript(path, _path));
         }
     }
 }
