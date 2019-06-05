@@ -61,49 +61,64 @@ namespace Edelstein.Service.Game.Interactions
 
         public async Task<ShopResult> Buy(short position, short count)
         {
-            if (!_template.Items.ContainsKey(position))
-                return ShopResult.CantBuyAnymore;
+            try
+            {
+                var shopItems = _template.Items
+                    .OrderBy(kv => kv.Key)
+                    .Select(kv => kv.Value)
+                    .Where(i => i.Price > 0 ||
+                                i.TokenPrice > 0)
+                    .ToList();
 
-            var shopItem = _template.Items[position];
-            var item = User.Service.TemplateManager.Get<ItemTemplate>(shopItem.TemplateID);
+                if (position > shopItems.Count)
+                    return ShopResult.CantBuyAnymore;
 
-            if (shopItem.Quantity > 1) count = 1;
+                var shopItem = shopItems[position];
+                var item = User.Service.TemplateManager.Get<ItemTemplate>(shopItem.TemplateID);
 
-            count = Math.Max(count, shopItem.MaxPerSlot);
-            count = Math.Min(count, (short) 1);
+                if (shopItem.Quantity > 1) count = 1;
 
-            if (item == null) return ShopResult.BuyUnknown;
-            if (shopItem.Price > 0 &&
-                User.Character.Money < shopItem.Price * count)
-                return ShopResult.BuyNoMoney;
-            if (shopItem.TokenTemplateID > 0 &&
-                User.Character.GetItemCount(shopItem.TokenTemplateID) > shopItem.TokenPrice * count)
-                return ShopResult.BuyNoToken;
-            if (User.Character.Level < shopItem.LevelLimited)
-                return ShopResult.LimitLevel_Less;
+                count = Math.Max(count, shopItem.MaxPerSlot);
+                count = Math.Min(count, (short) 1);
 
-            var itemSlot = item.ToItemSlot();
+                if (item == null) return ShopResult.BuyUnknown;
+                if (shopItem.Price > 0 &&
+                    User.Character.Money < shopItem.Price * count)
+                    return ShopResult.BuyNoMoney;
+                if (shopItem.TokenTemplateID > 0 &&
+                    User.Character.GetItemCount(shopItem.TokenTemplateID) > shopItem.TokenPrice * count)
+                    return ShopResult.BuyNoToken;
+                if (User.Character.Level < shopItem.LevelLimited)
+                    return ShopResult.LimitLevel_Less;
 
-            if (itemSlot is ItemSlotBundle bundle)
-                if (ItemConstants.IsRechargeableItem(bundle.TemplateID))
-                    bundle.Number = bundle.MaxNumber;
-                else
-                    bundle.Number = (short) (count * shopItem.Quantity);
-            if (!User.Character.HasSlotFor(itemSlot))
-                return ShopResult.BuyUnknown;
+                var itemSlot = item.ToItemSlot();
 
-            if (shopItem.ItemPeriod > 0)
-                itemSlot.DateExpire = DateTime.Now.AddMinutes(shopItem.ItemPeriod);
+                if (itemSlot is ItemSlotBundle bundle)
+                    if (ItemConstants.IsRechargeableItem(bundle.TemplateID))
+                        bundle.Number = bundle.MaxNumber;
+                    else
+                        bundle.Number = (short) (count * shopItem.Quantity);
+                if (!User.Character.HasSlotFor(itemSlot))
+                    return ShopResult.BuyUnknown;
 
-            if (shopItem.Price > 0)
-                await User.ModifyStats(s => s.Money -= shopItem.Price * count);
-            if (shopItem.TokenTemplateID > 0)
-                await User.ModifyInventory(i => i.Remove(
-                    shopItem.TokenTemplateID,
-                    (short) (shopItem.TokenPrice * count)
-                ));
-            await User.ModifyInventory(i => i.Add(itemSlot));
-            return ShopResult.BuySuccess;
+                if (shopItem.ItemPeriod > 0)
+                    itemSlot.DateExpire = DateTime.Now.AddMinutes(shopItem.ItemPeriod);
+
+                if (shopItem.Price > 0)
+                    await User.ModifyStats(s => s.Money -= shopItem.Price * count);
+                if (shopItem.TokenTemplateID > 0)
+                    await User.ModifyInventory(i => i.Remove(
+                        shopItem.TokenTemplateID,
+                        (short) (shopItem.TokenPrice * count)
+                    ));
+                await User.ModifyInventory(i => i.Add(itemSlot));
+                return ShopResult.BuySuccess;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return ShopResult.BuySuccess;
+            }
         }
 
         public async Task<ShopResult> Sell(short position, int templateID, short count)
@@ -132,6 +147,7 @@ namespace Edelstein.Service.Game.Interactions
 
         public async Task<ShopResult> Recharge(short position)
         {
+            // TODO
             return ShopResult.RechargeSuccess;
         }
     }

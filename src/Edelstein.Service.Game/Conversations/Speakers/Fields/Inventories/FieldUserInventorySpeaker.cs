@@ -27,6 +27,12 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields.Inventories
         public void Remove(int templateID, short quantity = 1)
             => _fieldUser.ModifyInventory(i => i.Remove(templateID, quantity)).Wait();
 
+        public byte GetInventoryLimit(ItemInventoryType type)
+            => (byte) _fieldUser.Character.Inventories[type].SlotMax;
+
+        public void SetInventoryLimit(ItemInventoryType type, byte slotMax)
+            => _fieldUser.ModifyInventoryLimit(type, slotMax).Wait();
+
         public int SlotCount(ItemInventoryType inventory) => _fieldUser.Character.AvailableSlotsFor(inventory);
         public int ItemCount(int templateID) => _fieldUser.Character.GetItemCount(templateID);
 

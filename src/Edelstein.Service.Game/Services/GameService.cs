@@ -88,6 +88,9 @@ namespace Edelstein.Service.Game.Services
                 [RecvPacketOperations.UserGatherItemRequest] = new UserGatherItemRequestHandler(),
                 [RecvPacketOperations.UserSortItemRequest] = new UserSortItemRequestHandler(),
                 [RecvPacketOperations.UserChangeSlotPositionRequest] = new UserChangeSlotPositionRequestHandler(),
+                [RecvPacketOperations.UserStatChangeItemUseRequest] = new UserStatChangeItemUseRequestHandler(),
+                [RecvPacketOperations.UserMobSummonItemUseRequest] = new UserMobSummonItemUseRequestHandler(),
+                [RecvPacketOperations.UserPortalScrollUseRequest] = new UserPortalScrollUseRequestHandler(),
                 [RecvPacketOperations.UserAbilityUpRequest] = new UserAbilityUpRequestHandler(),
                 [RecvPacketOperations.UserAbilityMassUpRequest] = new UserAbilityMassUpRequestHandler(),
                 [RecvPacketOperations.UserChangeStatRequest] = new UserChangeStatRequestHandler(),
@@ -111,7 +114,7 @@ namespace Edelstein.Service.Game.Services
                 [RecvPacketOperations.NpcMove] = new NPCMoveHandler(),
 
                 [RecvPacketOperations.DropPickUpRequest] = new DropPickupRequestHandler(),
-                
+
                 [RecvPacketOperations.CONTISTATE] = new ContiStateHandler()
             };
 

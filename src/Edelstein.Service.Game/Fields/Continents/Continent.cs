@@ -4,15 +4,23 @@ using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
+using Edelstein.Provider.Templates;
 using Edelstein.Provider.Templates.Field.Continent;
+using Edelstein.Provider.Templates.Field.Life.Mob;
+using Edelstein.Provider.Templates.Item;
+using Edelstein.Provider.Templates.Item.Consume;
 using Edelstein.Service.Game.Fields.Objects;
+using Edelstein.Service.Game.Fields.Objects.Mob;
 using Edelstein.Service.Game.Logging;
+using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields.Continents
 {
     public class Continent : ITickable
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
+        private readonly ITemplateManager _templateManager;
 
         public ContinentTemplate Template { get; }
         public ContinentState State { get; set; } = ContinentState.Dormant;
@@ -27,9 +35,10 @@ namespace Edelstein.Service.Game.Fields.Continents
         public IField EndField { get; }
         public IField EndShipMoveField { get; }
 
-        public Continent(FieldManager fieldManager, ContinentTemplate template)
+        public Continent(ITemplateManager templateManager, FieldManager fieldManager, ContinentTemplate template)
         {
             Template = template;
+            _templateManager = templateManager;
             StartShipMoveField = fieldManager.Get(template.StartShipMoveFieldID);
             WaitField = fieldManager.Get(template.WaitFieldID);
             MoveField = fieldManager.Get(template.MoveFieldID);
@@ -103,9 +112,11 @@ namespace Edelstein.Service.Game.Fields.Continents
                         !EventDoing &&
                         now > NextEvent.Value)
                         eventState = ContinentState.MobGen;
-                    if (EventDoing && now > NextBoarding
-                            .AddMinutes(Template.Wait)
-                            .AddMinutes(Template.EventEnd))
+                    if (EventDoing &&
+                        (now > NextBoarding
+                             .AddMinutes(Template.Wait)
+                             .AddMinutes(Template.EventEnd) ||
+                         MoveField.GetObjects<FieldMob>().Any()))
                         eventState = ContinentState.MobDestroy;
                     if (now > NextBoarding
                             .AddMinutes(Template.Wait)
@@ -141,6 +152,14 @@ namespace Edelstein.Service.Game.Fields.Continents
                     EventDoing = true;
                     Logger.Debug($"{Template.Info} started the {eventState} event");
 
+                    await Task.WhenAll(((MobSummonItemTemplate) _templateManager
+                            .Get<ItemTemplate>(Template.GenMob.TemplateID)).Mobs
+                        .Select(m => _templateManager.Get<MobTemplate>(m.TemplateID))
+                        .Select(m => MoveField.Enter(new FieldMob(m)
+                        {
+                            Position = Template.GenMob.Position
+                        })));
+
                     using (var p = new Packet(SendPacketOperations.CONTIMOVE))
                     {
                         p.Encode<byte>((byte) ContinentState.TargetMoveField);
@@ -152,6 +171,10 @@ namespace Edelstein.Service.Game.Fields.Continents
                 case ContinentState.MobDestroy:
                     EventDoing = false;
                     Logger.Debug($"{Template.Info} started the {eventState} event");
+
+                    await Task.WhenAll(MoveField
+                        .GetObjects<FieldMob>()
+                        .Select(m => MoveField.Leave(m)));
 
                     using (var p = new Packet(SendPacketOperations.CONTIMOVE))
                     {

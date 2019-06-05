@@ -10,7 +10,8 @@ namespace Edelstein.Core.Gameplay.Constants
 
         static GameConstants()
         {
-            CharacterEXPTable = new int[200];
+            CharacterEXPTable = new int[201];
+            CharacterEXPTable[0] = 15;
             CharacterEXPTable[1] = 15;
             CharacterEXPTable[2] = 34;
             CharacterEXPTable[3] = 57;
@@ -26,7 +27,10 @@ namespace Edelstein.Core.Gameplay.Constants
             for (var i = 15; i < 30; i++)
                 CharacterEXPTable[i] = (int) (CharacterEXPTable[i - 1] * 1.2 + 0.5);
             for (var i = 30; i < 35; i++) CharacterEXPTable[i] = CharacterEXPTable[i - 1];
-            for (var i = 35; i < 70; i++)
+
+            for (var i = 35; i < 40; i++)
+                CharacterEXPTable[i] = (int) (CharacterEXPTable[i - 1] * 1.2 + 0.5);
+            for (var i = 40; i < 70; i++)
                 CharacterEXPTable[i] = (int) (CharacterEXPTable[i - 1] * 1.08 + 0.5);
 
             for (var i = 70; i < 75; i++) CharacterEXPTable[i] = CharacterEXPTable[i - 1];

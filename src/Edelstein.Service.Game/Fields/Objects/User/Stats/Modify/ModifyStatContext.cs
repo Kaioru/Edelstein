@@ -1,3 +1,4 @@
+using System;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Database.Entities.Characters;
@@ -207,6 +208,15 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
             {
                 Flag |= ModifyStatType.EXP;
                 _character.EXP = value;
+
+                if (_character.Level > GameConstants.CharacterEXPTable.Length - 1) return;
+                if (EXP < GameConstants.CharacterEXPTable[_character.Level]) return;
+
+                LevelUp();
+                EXP = Math.Min(
+                    GameConstants.CharacterEXPTable[_character.Level] - 1,
+                    EXP - GameConstants.CharacterEXPTable[_character.Level - 1]
+                );
             }
         }
 
@@ -287,21 +297,20 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
         // TODO: figure out stat increases for each job
         public void LevelUp()
         {
-            if (Level < 250 && Level > 0) Level++;
+            if (Level < 200 && Level > 0) Level++;
 
-            System.Random r = new System.Random();
-            int rndHPBonus = r.Next(10, 16);
-            int rndMPBonus = r.Next(10, 12);
+            var random = new Random();
+            var hpBonus = random.Next(10, 16);
+            var mpBonus = random.Next(10, 12);
 
-            // give bonus HP/MP
-            MaxHP += rndHPBonus;
-            MaxMP += rndMPBonus;
+            MaxHP += Math.Min(999999, MaxHP + hpBonus);
+            MaxMP += Math.Min(999999, MaxMP + mpBonus);
 
-            // HP/MP to full
-            if (HP < MaxHP) { HP = MaxHP; }
-            if (MP < MaxMP) { MP = MaxMP; }
+            if (HP < MaxHP)
+                HP = MaxHP;
+            if (MP < MaxMP)
+                MP = MaxMP;
 
-            // give AP/SP
             AP += 5;
             SP += 3;
         }

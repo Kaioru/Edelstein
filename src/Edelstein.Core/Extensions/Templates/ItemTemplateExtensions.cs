@@ -20,7 +20,7 @@ namespace Edelstein.Core.Extensions.Templates
                     return equipTemplate.ToItemSlot(type);
                 case ItemBundleTemplate bundleTemplate:
                     return bundleTemplate.ToItemSlot();
-                case ItemPetTemplate petTemplate:
+                case PetItemTemplate petTemplate:
                     return petTemplate.ToItemSlot();
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -67,7 +67,7 @@ namespace Edelstein.Core.Extensions.Templates
             };
         }
 
-        private static ItemSlotPet ToItemSlot(this ItemPetTemplate template)
+        private static ItemSlotPet ToItemSlot(this PetItemTemplate template)
         {
             var i = new ItemSlotPet
             {

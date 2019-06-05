@@ -7,6 +7,7 @@ using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Core.Gameplay.Inventories.Operations;
 using Edelstein.Core.Gameplay.Skills;
+using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.Dragon;
 using Edelstein.Service.Game.Fields.Objects.User.Effects;
@@ -18,6 +19,40 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 {
     public partial class FieldUser
     {
+        private bool _directionMode;
+        private bool _standAloneMode;
+
+        public bool DirectionMode
+        {
+            get => _directionMode;
+            set
+            {
+                _directionMode = value;
+                
+                using (var p = new Packet(SendPacketOperations.SetDirectionMode))
+                {
+                    p.Encode<bool>(value);
+                    p.Encode<int>(0); // tAfterLeaveDirectionMode
+                    SendPacket(p);
+                }
+            }
+        }
+
+        public bool StandAloneMode
+        {
+            get => _standAloneMode;
+            set
+            {
+                _standAloneMode = value;
+                
+                using (var p = new Packet(SendPacketOperations.SetStandAloneMode))
+                {
+                    p.Encode<bool>(value);
+                    SendPacket(p);
+                }
+            }
+        }
+
         public async Task ValidateStat()
         {
             BasicStat.Calculate();
@@ -174,6 +209,21 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             {
                 await ValidateStat();
                 await AvatarModified();
+            }
+        }
+
+        public async Task ModifyInventoryLimit(ItemInventoryType type, byte slotMax)
+        {
+            slotMax = (byte) (slotMax / 4 * 4);
+            slotMax = Math.Max((byte) 4, slotMax);
+            slotMax = Math.Min((byte) sbyte.MaxValue, slotMax);
+
+            Character.Inventories[type].SlotMax = slotMax;
+            using (var p = new Packet(SendPacketOperations.InventoryGrow))
+            {
+                p.Encode<byte>((byte) type);
+                p.Encode<byte>(slotMax);
+                await SendPacket(p);
             }
         }
 

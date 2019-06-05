@@ -163,6 +163,19 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
             return true;
         }
 
+
+        public bool DirectionMode
+        {
+            get => Obj.DirectionMode;
+            set => Obj.DirectionMode = value;
+        }
+
+        public bool StandAloneMode
+        {
+            get => Obj.StandAloneMode;
+            set => Obj.StandAloneMode = value;
+        }
+
         public void Message(string text)
             => Obj.Message(text).Wait();
 
@@ -185,6 +198,9 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 
         public void Effect(EffectType type, bool remote = true)
             => Obj.Effect(new Effect(type), true, remote).Wait();
+
+        public void PlayPortalSoundEffect()
+            => Obj.Effect(EffectType.PlayPortalSE);
 
         public void SquibEffect(string path)
             => Obj.Effect(new SquibEffect(path)).Wait();
