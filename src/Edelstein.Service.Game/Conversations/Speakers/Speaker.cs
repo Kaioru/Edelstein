@@ -37,9 +37,6 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         public ISpeech GetSpeech(string text)
             => new Speech(this, text);
 
-        public byte Say(string[] text, int current = 0)
-            => SayAsync(text, current).Result;
-
         public byte Say(ISpeech[] text, int current = 0)
             => SayAsync(text, current).Result;
 
@@ -72,13 +69,6 @@ namespace Edelstein.Service.Game.Conversations.Speakers
 
         public int AskSlideMenu(IDictionary<int, string> options, int type = 0, int selected = 0)
             => AskSlideMenuAsync(options, type, selected).Result;
-
-        public Task<byte> SayAsync(string[] text, int current = 0)
-            => SayAsync(text
-                    .Select(t => (ISpeech) new Speech(this, t))
-                    .ToArray(),
-                current
-            );
 
         public async Task<byte> SayAsync(ISpeech[] text, int current = 0)
         {
