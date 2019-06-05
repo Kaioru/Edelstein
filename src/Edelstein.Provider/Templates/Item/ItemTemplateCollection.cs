@@ -44,7 +44,7 @@ namespace Edelstein.Provider.Templates.Item
                         case 36:
                         case 38:
                         case 45:
-                            return new StateChangeItemTemplate(
+                            return new StatChangeItemTemplate(
                                 id,
                                 property.Resolve("info").ResolveAll(),
                                 property.Resolve("spec").ResolveAll()

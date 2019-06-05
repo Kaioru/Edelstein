@@ -1,6 +1,6 @@
 namespace Edelstein.Provider.Templates.Item.Consume
 {
-    public class StateChangeItemTemplate : ItemBundleTemplate
+    public class StatChangeItemTemplate : ItemBundleTemplate
     {
         public int HP { get; set; }
         public int MP { get; set; }
@@ -22,7 +22,7 @@ namespace Edelstein.Provider.Templates.Item.Consume
         public short Morph { get; set; }
         public int Time { get; set; }
 
-        public StateChangeItemTemplate(int id, IDataProperty info, IDataProperty spec) : base(id, info)
+        public StatChangeItemTemplate(int id, IDataProperty info, IDataProperty spec) : base(id, info)
         {
             HP = spec.Resolve<short>("hp") ?? 0;
             MP = spec.Resolve<short>("mp") ?? 0;
