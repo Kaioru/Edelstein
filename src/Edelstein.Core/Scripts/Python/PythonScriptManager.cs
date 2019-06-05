@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Scripting.Hosting;
+using Microsoft.VisualBasic;
 
 namespace Edelstein.Core.Scripts.Python
 {
@@ -15,6 +17,7 @@ namespace Edelstein.Core.Scripts.Python
         {
             _path = path;
             _engine = IronPython.Hosting.Python.CreateEngine();
+            _engine.SetSearchPaths(new List<string> {_path});
         }
 
         public Task<IScript> Build(string script)

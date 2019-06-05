@@ -22,7 +22,7 @@ namespace Edelstein.Service.Game.Services.Handlers
             var job = template.ID / 10000;
             var jobLevel = (byte) SkillConstants.GetJobLevel(job);
 
-            if (jobLevel == 1)
+            if (jobLevel == 0)
             {
                 var sp = Math.Min(user.Character.Level - 1, job == 3000 ? 9 : 6);
                 for (var i = 0; i < 3; i++)

@@ -16,7 +16,7 @@ namespace Edelstein.Core.Gameplay.Constants
                            ? (job - 430) / 2
                            : job % 10
                        ) + 2;
-            return 1;
+            return job % 1000 == 0 || job == 2001 ? 0 : 1;
         }
 
         public static bool IsEvanJob(int job)
