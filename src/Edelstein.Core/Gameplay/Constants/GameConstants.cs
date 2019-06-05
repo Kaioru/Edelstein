@@ -1,10 +1,62 @@
-using System;
 using Edelstein.Core.Types;
 
 namespace Edelstein.Core.Gameplay.Constants
 {
     public class GameConstants
     {
+        public static readonly int[] CharacterEXPTable;
+        public static readonly int[] PetTamenessTable;
+        public static readonly int[] TamingMobTamenessTable;
+
+        static GameConstants()
+        {
+            CharacterEXPTable = new int[200];
+            CharacterEXPTable[1] = 15;
+            CharacterEXPTable[2] = 34;
+            CharacterEXPTable[3] = 57;
+            CharacterEXPTable[4] = 92;
+            CharacterEXPTable[5] = 135;
+            CharacterEXPTable[6] = 372;
+            CharacterEXPTable[7] = 560;
+            CharacterEXPTable[8] = 840;
+            CharacterEXPTable[9] = 1242;
+
+            for (var i = 10; i < 15; i++) CharacterEXPTable[i] = CharacterEXPTable[i - 1];
+
+            for (var i = 15; i < 30; i++)
+                CharacterEXPTable[i] = (int) (CharacterEXPTable[i - 1] * 1.2 + 0.5);
+            for (var i = 30; i < 35; i++) CharacterEXPTable[i] = CharacterEXPTable[i - 1];
+            for (var i = 35; i < 70; i++)
+                CharacterEXPTable[i] = (int) (CharacterEXPTable[i - 1] * 1.08 + 0.5);
+
+            for (var i = 70; i < 75; i++) CharacterEXPTable[i] = CharacterEXPTable[i - 1];
+
+            for (var i = 75; i < 120; i++)
+                CharacterEXPTable[i] = (int) (CharacterEXPTable[i - 1] * 1.07 + 0.5);
+
+            for (var i = 120; i < 125; i++) CharacterEXPTable[i] = CharacterEXPTable[i - 1];
+
+            for (var i = 125; i < 160; i++)
+                CharacterEXPTable[i] = (int) (CharacterEXPTable[i - 1] * 1.07 + 0.5);
+            for (var i = 160; i < 200; i++)
+                CharacterEXPTable[i] = (int) (CharacterEXPTable[i - 1] * 1.06 + 0.5);
+
+            CharacterEXPTable[200] = 0;
+
+            PetTamenessTable = new[]
+            {
+                0x1, 0x3, 0x6, 0xE, 0x1F, 0x3C, 0x6C, 0x0B5, 0x11F, 0x1B2,
+                0x278, 0x37B, 0x4C8, 0x66A, 0x871, 0x0AE9, 0x0DE5, 0x1173, 0x15A6, 0x1A91,
+                0x2047, 0x26DE, 0x2E6A, 0x3704, 0x40C2, 0x4BBF, 0x5813, 0x65DA, 0x7530, 0x0
+            };
+            TamingMobTamenessTable = new[]
+            {
+                0x0, 0x14, 0x2D, 0x4B, 0x6F, 0x99, 0x0C9, 0x100, 0x13F, 0x185,
+                0x1D3, 0x22A, 0x28B, 0x2F5, 0x36A, 0x3EB, 0x478, 0x511, 0x5B8, 0x66E,
+                0x734, 0x80A, 0x8F2, 0x9ED, 0x0AFC, 0x0C21, 0x0D5C, 0x0EB0, 0x101E, 0x11A8
+            };
+        }
+
         public static int GetStartField(Race race)
         {
             switch (race)
@@ -40,30 +92,5 @@ namespace Edelstein.Core.Gameplay.Constants
                     return (short) Job.Evan;
             }
         }
-
-        public static readonly int[] begginerLevels = { 1, 15, 34, 57, 92, 135, 372, 560, 840, 1242, 1144 };
-        public static readonly int[] firstJobLevels = { 1573, 2144, 2800, 3640, 4700, 5893, 7360, 9144, 11120, 13477,
-                                                        16268, 19320, 22880, 27008, 31477, 36600, 42444, 48720, 55813, 63800 };
-        public static readonly int[] secondJobLevels = { 86784, 98208, 110932, 124432, 139372, 155865, 173280, 192400, 213345, 235372, 259392, 285532, 312928, 342624, 374760, 408336, 445544,
-                                                        483532, 524160, 567772, 598886, 631704, 666321, 702836, 741351, 781976, 824828, 870028, 917625, 967995, 1021041, 1076994, 1136013, 1198266,
-                                                        1263930, 1333194, 1406252, 1483314, 1564600, 1650340 };
-        public static readonly int[] thirdJobLevels = { 1740778, 1836173, 1936794, 2042930, 2154882, 2272970, 2397528, 2528912, 2667496, 2813674, 2967863, 3130502, 3302053, 3483005, 3673873,
-                                                        3875201, 4087562, 4311559, 4547832, 4797053, 5059931, 5337215, 5629694, 5938202, 6263614, 6606860, 6968915, 7350811, 7753635, 8178534,
-                                                        8626718, 9099462, 9598112, 10124088, 10678888, 11264090, 11881362, 12532461, 13219239, 13943653, 14707765, 15513750, 16363902, 17260644,
-                                                        18206527, 19204245, 20256637, 21366700, 22537594, 23772654 };
-        public static readonly int[] fourthJobLevels = { 25075395, 26449526, 27898960, 29427822, 31040466, 32741483, 34535716, 36428273, 38424542, 40530206, 42751262, 45094030, 47565183, 50171755,
-                                                        52921167, 55821246, 58880250, 62106888, 65510344, 69100311, 72887008, 76881216, 81094306, 85594273, 90225770, 95170142, 100385466, 105886589,
-                                                        111689174, 117809740, 124265714, 131075474, 138258410, 145834970, 153826726, 162256430, 171148082, 180526997, 190419876, 200854885, 211861732,
-                                                        223471711, 223471711, 248635353, 262260570, 276632449, 291791906, 307782102, 324648562, 342439302, 361204976, 380999008, 401877754, 423900654,
-                                                        447130410, 471633156, 497478653, 524740482, 553496261, 583827855, 615821622, 649568646, 685165008, 722712050, 762316670, 804091623, 848155844,
-                                                        894634784, 943660770, 995373379, 1049919840, 1107455447, 1168144006, 1232158297, 1299680571, 1370903066, 1446028554, 1525246918, 1608855764,
-                                                        1697021059 };
-
-        public static readonly int[] petLevels = { 1, 1, 3, 6, 14, 31, 60, 108, 181, 287, 434, 632, 891, 1224, 1642, 2161, 2793, 3557, 4467, 5542, 6801, 8263, 9950, 11882,
-                                                    14084, 16578, 19391, 22547, 26074, 30000, int.MaxValue };
-        public static readonly int[] petCloseness = { 0, 1, 3, 6, 14, 31, 60, 108, 181, 287, 434, 632, 891, 1224, 1642, 2161, 2793, 3557,
-                                                    4467, 5542, 9000 };
-        public static readonly int[] mountLevels = { 1, 24, 50, 105, 134, 196, 254, 263, 315, 367, 430, 543, 587, 679, 725, 897, 1146, 1394, 1701, 2247,
-                                                    2543, 2898, 3156, 3313, 3584, 3923, 4150, 4305, 4550 };
     }
 }
