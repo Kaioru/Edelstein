@@ -10,7 +10,7 @@ namespace Edelstein.Provider.Templates.Item.Consume
         
         public PortalScrollItemTemplate(int id, IDataProperty info, IDataProperty spec) : base(id, info)
         {
-            MoveTo = spec.Resolve<short>("spec/moveTo") ?? 0;
+            MoveTo = spec.Resolve<int>("moveTo") ?? 999999999;
         }
     }
 }
