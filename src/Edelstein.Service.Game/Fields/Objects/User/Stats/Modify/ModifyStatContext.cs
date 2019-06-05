@@ -303,8 +303,8 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
             var hpBonus = random.Next(10, 16);
             var mpBonus = random.Next(10, 12);
 
-            MaxHP += Math.Min(999999, MaxHP + hpBonus);
-            MaxMP += Math.Min(999999, MaxMP + mpBonus);
+            MaxHP = Math.Min(999999, MaxHP + hpBonus);
+            MaxMP = Math.Min(999999, MaxMP + mpBonus);
 
             if (HP < MaxHP)
                 HP = MaxHP;
