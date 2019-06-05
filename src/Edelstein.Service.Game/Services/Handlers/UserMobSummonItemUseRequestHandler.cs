@@ -34,6 +34,7 @@ namespace Edelstein.Service.Game.Services.Handlers
                         Foothold = user.Foothold
                     });
                 }));
+            await user.ModifyInventory(i => i.Remove(item, 1), true);
         }
     }
 }

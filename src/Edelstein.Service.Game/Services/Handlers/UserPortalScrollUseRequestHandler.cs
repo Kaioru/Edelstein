@@ -24,6 +24,7 @@ namespace Edelstein.Service.Game.Services.Handlers
             var field = user.Service.FieldManager.Get(fieldID);
 
             await field.Enter(user, 0);
+            await user.ModifyInventory(i => i.Remove(item, 1), true);
         }
     }
 }

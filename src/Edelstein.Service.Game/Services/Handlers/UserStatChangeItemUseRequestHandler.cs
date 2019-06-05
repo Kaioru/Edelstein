@@ -55,6 +55,8 @@ namespace Edelstein.Service.Game.Services.Handlers
                     });
                 }
             }
+
+            await user.ModifyInventory(i => i.Remove(item, 1), true);
         }
     }
 }
