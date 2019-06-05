@@ -10,7 +10,8 @@ namespace Edelstein.Core.Gameplay.Constants
 
         static GameConstants()
         {
-            CharacterEXPTable = new int[200];
+            CharacterEXPTable = new int[201];
+            CharacterEXPTable[0] = 15;
             CharacterEXPTable[1] = 15;
             CharacterEXPTable[2] = 34;
             CharacterEXPTable[3] = 57;
