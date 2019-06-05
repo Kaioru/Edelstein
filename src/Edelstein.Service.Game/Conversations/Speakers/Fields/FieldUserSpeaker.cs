@@ -163,6 +163,19 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
             return true;
         }
 
+
+        public bool DirectionMode
+        {
+            get => Obj.DirectionMode;
+            set => Obj.DirectionMode = value;
+        }
+
+        public bool StandAloneMode
+        {
+            get => Obj.StandAloneMode;
+            set => Obj.StandAloneMode = value;
+        }
+
         public void Message(string text)
             => Obj.Message(text).Wait();
 

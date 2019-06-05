@@ -19,6 +19,40 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 {
     public partial class FieldUser
     {
+        private bool _directionMode;
+        private bool _standAloneMode;
+
+        public bool DirectionMode
+        {
+            get => _directionMode;
+            set
+            {
+                _directionMode = value;
+                
+                using (var p = new Packet(SendPacketOperations.SetDirectionMode))
+                {
+                    p.Encode<bool>(value);
+                    p.Encode<int>(0); // tAfterLeaveDirectionMode
+                    SendPacket(p);
+                }
+            }
+        }
+
+        public bool StandAloneMode
+        {
+            get => _standAloneMode;
+            set
+            {
+                _standAloneMode = value;
+                
+                using (var p = new Packet(SendPacketOperations.SetStandAloneMode))
+                {
+                    p.Encode<bool>(value);
+                    SendPacket(p);
+                }
+            }
+        }
+
         public async Task ValidateStat()
         {
             BasicStat.Calculate();
