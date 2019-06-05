@@ -17,7 +17,7 @@ namespace Edelstein.Service.Game.Fields.Continents
         {
             Continents = templateManager
                 .GetAll<ContinentTemplate>()
-                .Select(c => new Continent(fieldManager, c))
+                .Select(c => new Continent(templateManager, fieldManager, c))
                 .ToList();
         }
 
