@@ -31,11 +31,17 @@ namespace Edelstein.Core.Bootstrap
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
+        private readonly IHostBuilder _builder;
         private readonly StartupOption _option;
         private TemplateCollectionType _templateCollectionType = TemplateCollectionType.All;
 
-        public Startup()
+        public Startup() : this(new HostBuilder())
         {
+        }
+
+        public Startup(IHostBuilder builder)
+        {
+            _builder = builder;
             _option = new StartupOption();
         }
 
@@ -77,7 +83,7 @@ namespace Edelstein.Core.Bootstrap
             where TService : class, IHostedService
             where TOption : class
         {
-            return new HostBuilder()
+            return _builder
                 .ConfigureHostConfiguration(builder =>
                 {
                     builder.SetBasePath(Directory.GetCurrentDirectory());
