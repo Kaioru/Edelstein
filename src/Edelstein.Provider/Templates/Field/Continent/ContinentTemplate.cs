@@ -46,7 +46,7 @@ namespace Edelstein.Provider.Templates.Field.Continent
             });
 
             property.Resolve("genMob")?.ResolveAll(g =>
-                GenMob = new ContinentGenMobTemplate(0, g)
+                GenMob = new ContinentGenMobTemplate(0, g.ResolveAll())
             );
 
             Event = GenMob != null;

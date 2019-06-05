@@ -36,6 +36,7 @@ namespace Edelstein.Service.Game.Fields.Continents
         public Continent(ITemplateManager templateManager, FieldManager fieldManager, ContinentTemplate template)
         {
             Template = template;
+            _templateManager = templateManager;
             StartShipMoveField = fieldManager.Get(template.StartShipMoveFieldID);
             WaitField = fieldManager.Get(template.WaitFieldID);
             MoveField = fieldManager.Get(template.MoveFieldID);
