@@ -7,10 +7,12 @@ using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates;
 using Edelstein.Provider.Templates.Field.Continent;
 using Edelstein.Provider.Templates.Field.Life.Mob;
+using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Item.Consume;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Mob;
 using Edelstein.Service.Game.Logging;
+using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields.Continents
 {
@@ -150,16 +152,13 @@ namespace Edelstein.Service.Game.Fields.Continents
                     EventDoing = true;
                     Logger.Debug($"{Template.Info} started the {eventState} event");
 
-                    if (Template.GenMob != null)
-                    {
-                        await Task.WhenAll(_templateManager
-                            .Get<MobSummonItemTemplate>(Template.GenMob.TemplateID).Mobs
-                            .Select(m => _templateManager.Get<MobTemplate>(m.TemplateID))
-                            .Select(m => MoveField.Enter(new FieldMob(m)
-                            {
-                                Position = Template.GenMob.Position
-                            })));
-                    }
+                    await Task.WhenAll(((MobSummonItemTemplate) _templateManager
+                            .Get<ItemTemplate>(Template.GenMob.TemplateID)).Mobs
+                        .Select(m => _templateManager.Get<MobTemplate>(m.TemplateID))
+                        .Select(m => MoveField.Enter(new FieldMob(m)
+                        {
+                            Position = Template.GenMob.Position
+                        })));
 
                     using (var p = new Packet(SendPacketOperations.CONTIMOVE))
                     {
