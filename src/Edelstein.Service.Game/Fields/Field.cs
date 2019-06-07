@@ -42,7 +42,8 @@ namespace Edelstein.Service.Game.Fields
         }
 
         public Task Enter(IFieldObj obj) => Enter(obj, null);
-        public Task Leave(IFieldObj obj) => Leave(obj, null);
+
+        public Task Leave(IFieldObj obj) => Leave(obj,obj, null);
 
         public IFieldObj GetObject(int id)
             => GetObjects().FirstOrDefault(o => o.ID == id);
@@ -174,6 +175,38 @@ namespace Edelstein.Service.Game.Fields
                 await Task.WhenAll(user.Owned.Select(Leave));
             }
             else await BroadcastPacket(getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket());
+
+            if (obj is IFieldGeneratedObj g && g.Generator != null)
+                await g.Generator.Reset();
+            if (obj is IFieldControlledObj c)
+                c.Controller?.Controlled.Remove(c);
+
+            await GetPool(obj.Type).Leave(obj);
+            UpdateControlledObjects();
+        }
+
+        public async Task Leave(IFieldObj obj, IFieldObj src, Func<IPacket> getLeavePacket = null)
+        {
+            if (obj is FieldUser user)
+            {
+                await user.Dispose();
+                await BroadcastPacket(user, user.GetLeaveFieldPacket());
+                await Task.WhenAll(user.Owned.Select(Leave));
+            }
+            else await BroadcastPacket(getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket());
+
+            if (obj is FieldMob mob)
+            {
+                if (src is FieldUser usr)
+                {
+                    await usr.ModifyStats(s => { s.EXP = s.EXP + mob.EXP; });
+                    await BroadcastPacket(mob, mob.GetLeaveFieldPacket());
+                }
+                else
+                {
+                    await BroadcastPacket(mob, mob.GetLeaveFieldPacket());
+                }
+            }
 
             if (obj is IFieldGeneratedObj g && g.Generator != null)
                 await g.Generator.Reset();

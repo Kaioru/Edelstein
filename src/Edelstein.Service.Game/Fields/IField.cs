@@ -22,6 +22,7 @@ namespace Edelstein.Service.Game.Fields
 
         Task Enter(IFieldObj obj, Func<IPacket> getEnterPacket = null);
         Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket = null);
+        Task Leave(IFieldObj obj, IFieldObj src, Func<IPacket> getLeavePacket = null);
 
         Task BroadcastPacket(IPacket packet);
         Task BroadcastPacket(IFieldObj source, IPacket packet);

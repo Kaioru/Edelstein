@@ -19,6 +19,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
 
         public int HP { get; set; }
         public int MP { get; set; }
+        public int EXP { get; set; }
 
         public FieldMob(MobTemplate template, bool left = true)
         {
@@ -35,6 +36,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
 
             HP = template.MaxHP;
             MP = template.MaxHP;
+            EXP = template.EXP;
         }
 
         public void Damage(IFieldObj source, int damage)
@@ -57,7 +59,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
                     }
                 }
 
-                if (HP <= 0) Field.Leave(this);
+                if (HP <= 0) Field.Leave(this, source);
             }
         }
 
@@ -83,7 +85,6 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
             packet.Encode<int>(0);
             packet.Encode<int>(0);
         }
-
         public IPacket GetEnterFieldPacket(MobAppearType summonType, int? summonOption = null)
         {
             using (var p = new Packet(SendPacketOperations.MobEnterField))
