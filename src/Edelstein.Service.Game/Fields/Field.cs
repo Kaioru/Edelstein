@@ -199,7 +199,7 @@ namespace Edelstein.Service.Game.Fields
             {
                 if (src is FieldUser usr)
                 {
-                    await usr.ModifyStats(s => { s.EXP = s.EXP + mob.EXP; });
+                    await usr.ModifyStats(s => { s.EXP += mob.EXP; });
                     await BroadcastPacket(mob, mob.GetLeaveFieldPacket());
                 }
                 else
