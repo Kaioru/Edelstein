@@ -42,7 +42,22 @@ namespace Edelstein.Core.Gameplay.Constants
 
         public static bool HasEvanDragon(int job)
         {
-            return job / 100 == 22;
+            switch ((Job) job)
+            {
+                case Job.Evan:
+                case Job.Evan2:
+                case Job.Evan3:
+                case Job.Evan4:
+                case Job.Evan5:
+                case Job.Evan6:
+                case Job.Evan7:
+                case Job.Evan8:
+                case Job.Evan9:
+                case Job.Evan10:
+                    return true;
+            }
+
+            return false;
         }
 
         public static bool IsKeydownSkill(int skill)
