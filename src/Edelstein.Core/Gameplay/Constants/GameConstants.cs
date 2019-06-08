@@ -93,7 +93,7 @@ namespace Edelstein.Core.Gameplay.Constants
                 case Race.Aran:
                     return (short) Job.Legend;
                 case Race.Evan:
-                    return (short) Job.Evan;
+                    return (short) Job.Evanjr;
             }
         }
     }
