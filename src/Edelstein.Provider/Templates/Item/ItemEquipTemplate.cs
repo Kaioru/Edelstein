@@ -2,54 +2,54 @@ namespace Edelstein.Provider.Templates.Item
 {
     public class ItemEquipTemplate : ItemTemplate
     {
-        public short ReqSTR { get; set; }
-        public short ReqDEX { get; set; }
-        public short ReqINT { get; set; }
-        public short ReqLUK { get; set; }
-        public short ReqPOP { get; set; }
-        public short ReqJob { get; set; }
-        public byte ReqLevel { get; set; }
+        public short ReqSTR { get; }
+        public short ReqDEX { get; }
+        public short ReqINT { get; }
+        public short ReqLUK { get; }
+        public short ReqPOP { get; }
+        public short ReqJob { get; }
+        public byte ReqLevel { get; }
 
-        public byte TUC { get; set; }
-        public short IncSTR { get; set; }
-        public short IncDEX { get; set; }
-        public short IncINT { get; set; }
-        public short IncLUK { get; set; }
-        public int IncMaxHP { get; set; }
-        public int IncMaxMP { get; set; }
-        public int IncMaxHPr { get; set; }
-        public int IncMaxMPr { get; set; }
-        public short IncPAD { get; set; }
-        public short IncMAD { get; set; }
-        public short IncPDD { get; set; }
-        public short IncMDD { get; set; }
-        public short IncACC { get; set; }
-        public short IncEVA { get; set; }
-        public short IncCraft { get; set; }
-        public short IncSpeed { get; set; }
-        public short IncJump { get; set; }
+        public byte TUC { get; }
+        public short IncSTR { get; }
+        public short IncDEX { get; }
+        public short IncINT { get; }
+        public short IncLUK { get; }
+        public int IncMaxHP { get; }
+        public int IncMaxMP { get; }
+        public int IncMaxHPr { get; }
+        public int IncMaxMPr { get; }
+        public short IncPAD { get; }
+        public short IncMAD { get; }
+        public short IncPDD { get; }
+        public short IncMDD { get; }
+        public short IncACC { get; }
+        public short IncEVA { get; }
+        public short IncCraft { get; }
+        public short IncSpeed { get; }
+        public short IncJump { get; }
 
         // fs, swim, tamingmob
-        // public int IUC { get; set; }
-        // public byte MinGrade { get; set; }
+        // public int IUC { get; }
+        // public byte MinGrade { get; }
 
-        public bool OnlyEquip { get; set; }
-        public bool TradeBlockEquip { get; set; }
+        public bool OnlyEquip { get; }
+        public bool TradeBlockEquip { get; }
 
         // nirPoison, nirIce, nirFire, nirLight, nirHoly
         // other random stuff
 
-        public bool NotExtend { get; set; }
-        public bool SharableOnce { get; set; }
+        public bool NotExtend { get; }
+        public bool SharableOnce { get; }
 
-        public byte AppliableKarmaType { get; set; }
+        public byte AppliableKarmaType { get; }
 
-        public int SetItemID { get; set; }
+        public int SetItemID { get; }
 
-        public int Durability { get; set; }
-        // public int EnchantCategory { get; set; }
-        // public int Transform { get; set; }
-        // public int IUCMax { get; set; }
+        public int Durability { get; }
+        // public int EnchantCategory { get; }
+        // public int Transform { get; }
+        // public int IUCMax { get; }
 
         public ItemEquipTemplate(int id, IDataProperty info) : base(id, info)
         {

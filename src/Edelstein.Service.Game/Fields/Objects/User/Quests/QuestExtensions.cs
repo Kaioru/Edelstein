@@ -1,8 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Extensions;
+using Edelstein.Core.Extensions.Templates;
 using Edelstein.Database.Entities.Characters;
+using Edelstein.Database.Entities.Inventories.Items;
+using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Quest;
+using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
+using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Fields.Objects.User.Quests
 {
@@ -70,6 +76,33 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
         public static async Task<QuestResult> Act(this QuestTemplate template, QuestState state, FieldUser user)
         {
             var act = template.Act[state];
+
+            if (act.EXP != 0)
+            {
+                await user.ModifyStats(s => s.EXP += act.EXP);
+                await user.Message(new IncEXPMessage
+                {
+                    EXP = act.EXP,
+                    OnQuest = true
+                });
+            }
+
+            if (act.Items.Any())
+            {
+                await user.ModifyInventory(i =>
+                    act.Items.ForEach(ii =>
+                        {
+                            if (ii.Quantity > 0)
+                                i.Add(
+                                    user.Service.TemplateManager.Get<ItemTemplate>(ii.TemplateID),
+                                    (short) ii.Quantity
+                                );
+                            else
+                                i.Remove(ii.TemplateID, (short) ii.Quantity);
+                        }
+                    ));
+            }
+
             return QuestResult.ActSuccess;
         }
     }

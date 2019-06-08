@@ -4,24 +4,24 @@ namespace Edelstein.Provider.Templates.Field.Continent
     {
         public int ID { get; }
 
-        public string Info { get; set; }
+        public string Info { get; }
 
-        public int StartShipMoveFieldID { get; set; }
-        public int WaitFieldID { get; set; }
-        public int MoveFieldID { get; set; }
-        public int? CabinFieldID { get; set; }
-        public int EndFieldID { get; set; }
-        public int EndShipMoveFieldID { get; set; }
+        public int StartShipMoveFieldID { get; private set; }
+        public int WaitFieldID { get; private set; }
+        public int MoveFieldID { get; private set; }
+        public int? CabinFieldID { get; private set; }
+        public int EndFieldID { get; private set; }
+        public int EndShipMoveFieldID { get; private set; }
 
-        public int Term { get; set; }
-        public int Delay { get; set; }
+        public int Term { get; private set; }
+        public int Delay { get; private set; }
 
-        public bool Event { get; set; }
-        public ContinentGenMobTemplate? GenMob { get; set; }
+        public bool Event { get; }
+        public ContinentGenMobTemplate? GenMob { get; private set; }
 
-        public int Wait { get; set; }
-        public int EventEnd { get; set; }
-        public int Required { get; set; }
+        public int Wait { get; private set; }
+        public int EventEnd { get; private set; }
+        public int Required { get; private set; }
 
         public ContinentTemplate(int id, IDataProperty property)
         {

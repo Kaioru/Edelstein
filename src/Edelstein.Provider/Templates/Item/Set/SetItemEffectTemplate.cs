@@ -4,21 +4,21 @@ namespace Edelstein.Provider.Templates.Item.Set
     {
         public int ID { get; }
 
-        public short IncSTR { get; set; }
-        public short IncDEX { get; set; }
-        public short IncINT { get; set; }
-        public short IncLUK { get; set; }
-        public short IncMaxHP { get; set; }
-        public short IncMaxMP { get; set; }
-        public short IncPAD { get; set; }
-        public short IncMAD { get; set; }
-        public short IncPDD { get; set; }
-        public short IncMDD { get; set; }
-        public short IncACC { get; set; }
-        public short IncEVA { get; set; }
-        public short IncCraft { get; set; }
-        public short IncSpeed { get; set; }
-        public short IncJump { get; set; }
+        public short IncSTR { get; }
+        public short IncDEX { get; }
+        public short IncINT { get; }
+        public short IncLUK { get; }
+        public short IncMaxHP { get; }
+        public short IncMaxMP { get; }
+        public short IncPAD { get; }
+        public short IncMAD { get; }
+        public short IncPDD { get; }
+        public short IncMDD { get; }
+        public short IncACC { get; }
+        public short IncEVA { get; }
+        public short IncCraft { get; }
+        public short IncSpeed { get; }
+        public short IncJump { get; }
 
         public SetItemEffectTemplate(int id, IDataProperty property)
         {

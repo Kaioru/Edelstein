@@ -1,12 +1,12 @@
 namespace Edelstein.Provider.Templates.Quest
 {
-    public class QuestActTemplate : ITemplate
+    public class QuestActTemplate : QuestOperationTemplate
     {
-        public int ID { get; }
-        
-        public QuestActTemplate(int id, IDataProperty property)
+        public int EXP { get; }
+
+        public QuestActTemplate(int id, IDataProperty property) : base(id, property)
         {
-            ID = id;
+            EXP = property.Resolve<int>("exp") ?? 0;
         }
     }
 }

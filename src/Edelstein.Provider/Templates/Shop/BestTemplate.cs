@@ -6,9 +6,9 @@ namespace Edelstein.Provider.Templates.Shop
     {
         public int ID { get; }
 
-        public int Category { get; set; }
-        public int Gender { get; set; }
-        public int CommoditySN { get; set; }
+        public int Category { get; }
+        public int Gender { get; }
+        public int CommoditySN { get; }
 
         public BestTemplate(int id, IDataProperty property)
         {

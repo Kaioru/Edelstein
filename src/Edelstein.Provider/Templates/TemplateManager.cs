@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using Edelstein.Provider.Templates.Field.Life.NPC;
 using Edelstein.Provider.Templates.Field.Reactor;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Item.Option;
+using Edelstein.Provider.Templates.Item.Reward;
 using Edelstein.Provider.Templates.Item.Set;
 using Edelstein.Provider.Templates.Quest;
 using Edelstein.Provider.Templates.Shop;
@@ -52,10 +54,11 @@ namespace Edelstein.Provider.Templates
                     [typeof(ItemStringTemplate)] = new ItemStringTemplateCollection(collection),
                     [typeof(SkillStringTemplate)] = new SkillStringTemplateCollection(collection),
                     [typeof(QuestStringTemplate)] = new QuestStringTemplateCollection(collection),
-                    [typeof(NPCShopTemplate)] = new NPCShopTemplateCollection(collection)
+                    [typeof(NPCShopTemplate)] = new NPCShopTemplateCollection(collection),
+                    [typeof(RewardTemplate)] = new RewardTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))
-                .ToDictionary(kv => kv.Key, kv => kv.Value);
+                .ToImmutableDictionary(kv => kv.Key, kv => kv.Value);
         }
 
         public T Get<T>(int id) where T : ITemplate

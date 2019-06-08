@@ -4,11 +4,11 @@ namespace Edelstein.Provider.Templates.Field.Reactor
 {
     public class FieldReactorTemplate : ITemplate
     {
-        public int ID { get; set; }
+        public int ID { get; }
 
-        public int ReactorTime { get; set; }
-        public bool F { get; set; }
-        public Point Position { get; set; }
+        public int ReactorTime { get; }
+        public bool F { get; }
+        public Point Position { get; }
 
         public FieldReactorTemplate(IDataProperty property)
         {

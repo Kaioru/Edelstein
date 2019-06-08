@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using Edelstein.Core.Types;
 using Edelstein.Provider.Templates.Item.Consume;
 using Edelstein.Provider.Templates.Skill;
-using Edelstein.Service.Game.Fields.Objects.User.Stats;
 
-namespace Edelstein.Service.Game.Extensions
+namespace Edelstein.Service.Game.Fields.Objects.User.Stats
 {
     public static class TemporayStatExtensions
     {

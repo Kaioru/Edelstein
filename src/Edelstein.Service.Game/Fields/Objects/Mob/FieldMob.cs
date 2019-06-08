@@ -1,12 +1,21 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
 using Edelstein.Core;
+using Edelstein.Core.Extensions.Templates;
+using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Life;
 using Edelstein.Provider.Templates.Field.Life.Mob;
+using Edelstein.Provider.Templates.Item;
+using Edelstein.Provider.Templates.Item.Reward;
 using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Movements;
+using Edelstein.Service.Game.Fields.Objects.Drop;
 using Edelstein.Service.Game.Fields.Objects.User;
+using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Fields.Objects.Mob
 {
@@ -39,27 +48,56 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
             EXP = template.EXP;
         }
 
-        public void Damage(IFieldObj source, int damage)
+        public void Damage(FieldUser user, int damage)
         {
             lock (this)
             {
                 HP -= damage;
 
-                if (source is FieldUser user)
-                {
-                    var indicator = HP / (float) Template.MaxHP * 100f;
+                var indicator = HP / (float) Template.MaxHP * 100f;
 
-                    indicator = Math.Min(100, indicator);
-                    indicator = Math.Max(0, indicator);
-                    using (var p = new Packet(SendPacketOperations.MobHPIndicator))
-                    {
-                        p.Encode<int>(ID);
-                        p.Encode<byte>((byte) indicator);
-                        user.SendPacket(p);
-                    }
+                indicator = Math.Min(100, indicator);
+                indicator = Math.Max(0, indicator);
+
+                using (var p = new Packet(SendPacketOperations.MobHPIndicator))
+                {
+                    p.Encode<int>(ID);
+                    p.Encode<byte>((byte) indicator);
+                    user.SendPacket(p);
                 }
 
-                if (HP <= 0) Field.Leave(this, source);
+                if (HP <= 0)
+                {
+                    Field.Leave(this);
+
+                    var reward = user.Service.TemplateManager.Get<RewardTemplate>(Template.ID);
+                    var rewards = reward?.Entries
+                                      .Where(e => new Random().NextDouble() <= e.Prob)
+                                      .Shuffle()
+                                      .ToList()
+                                  ?? new List<RewardEntryTemplate>();
+                    var drops = rewards
+                        .Select<RewardEntryTemplate, AbstractFieldDrop>(r =>
+                        {
+                            if (r.Money > 0)
+                                return new MoneyFieldDrop(r.Money); // TODO: random money
+                            var template = user.Service.TemplateManager.Get<ItemTemplate>(r.TemplateID);
+                            var item = template.ToItemSlot();
+
+                            if (item is ItemSlotBundle bundle)
+                                bundle.Number = (short) new Random().Next(r.MinQuantity, r.MaxQuantity);
+                            return new ItemFieldDrop(item);
+                        })
+                        .ToList();
+
+                    drops.ForEach(d => d.Position = new Point(
+                        Position.X + (drops.IndexOf(d) - (drops.Count - 1) / 2) * -20,
+                        Position.Y
+                    ));
+                    Task.WhenAll(drops
+                        .Select(d => Field.Enter(d, () => d.GetEnterFieldPacket(0x1, this)))
+                    );
+                }
             }
         }
 

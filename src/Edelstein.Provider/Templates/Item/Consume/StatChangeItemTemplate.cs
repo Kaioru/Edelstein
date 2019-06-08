@@ -2,25 +2,25 @@ namespace Edelstein.Provider.Templates.Item.Consume
 {
     public class StatChangeItemTemplate : ItemBundleTemplate
     {
-        public int HP { get; set; }
-        public int MP { get; set; }
-        public int HPr { get; set; }
-        public int MPr { get; set; }
+        public int HP { get; }
+        public int MP { get; }
+        public int HPr { get; }
+        public int MPr { get; }
 
-        public bool NoCancelMouse { get; set; }
+        public bool NoCancelMouse { get; }
 
-        public short PAD { get; set; }
-        public short PDD { get; set; }
-        public short MAD { get; set; }
-        public short MDD { get; set; }
-        public short ACC { get; set; }
-        public short EVA { get; set; }
-        public short Craft { get; set; }
-        public short Speed { get; set; }
-        public short Jump { get; set; }
+        public short PAD { get; }
+        public short PDD { get; }
+        public short MAD { get; }
+        public short MDD { get; }
+        public short ACC { get; }
+        public short EVA { get; }
+        public short Craft { get; }
+        public short Speed { get; }
+        public short Jump { get; }
 
-        public short Morph { get; set; }
-        public int Time { get; set; }
+        public short Morph { get; }
+        public int Time { get; }
 
         public StatChangeItemTemplate(int id, IDataProperty info, IDataProperty spec) : base(id, info)
         {

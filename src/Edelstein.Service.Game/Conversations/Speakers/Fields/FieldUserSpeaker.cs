@@ -6,6 +6,7 @@ using Edelstein.Service.Game.Fields.Objects.User;
 using Edelstein.Service.Game.Fields.Objects.User.Effects;
 using Edelstein.Service.Game.Fields.Objects.User.Effects.Field;
 using Edelstein.Service.Game.Fields.Objects.User.Effects.User;
+using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
 using MoonSharp.Interpreter.Interop;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields
@@ -113,31 +114,54 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
         public short Sp
         {
             get => Obj.Character.SP;
-            set => Obj.ModifyStats(s => s.SP = value).Wait();
+            set
+            {
+                Obj.Message(new IncSPMessage(Job, (byte) (value - Money))).Wait();
+                Obj.ModifyStats(s => s.SP = value).Wait();
+            }
         }
 
         public byte GetExtendSp(byte jobLevel)
             => Obj.Character.GetExtendSP(jobLevel);
 
         public void SetExtendSp(byte jobLevel, byte sp)
-            => Obj.ModifyStats(s => s.SetExtendSP(jobLevel, sp)).Wait();
+        {
+            Obj.Message(new IncSPMessage(Job, (byte) (sp - GetExtendSp(jobLevel)))).Wait();
+            Obj.ModifyStats(s => s.SetExtendSP(jobLevel, sp)).Wait();
+        }
 
         public int Exp
         {
             get => Obj.Character.EXP;
-            set => Obj.ModifyStats(s => s.EXP = value).Wait();
+            set
+            {
+                Obj.Message(new IncEXPMessage
+                {
+                    EXP = value - Exp,
+                    OnQuest = true
+                }).Wait();
+                Obj.ModifyStats(s => s.EXP = value).Wait();
+            }
         }
 
         public short Pop
         {
             get => Obj.Character.POP;
-            set => Obj.ModifyStats(s => s.POP = value).Wait();
+            set
+            {
+                Obj.Message(new IncPOPMessage(value - Pop)).Wait();
+                Obj.ModifyStats(s => s.POP = value).Wait();
+            }
         }
 
         public int Money
         {
             get => Obj.Character.Money;
-            set => Obj.ModifyStats(s => s.Money = value).Wait();
+            set
+            {
+                Obj.Message(new IncMoneyMessage(value - Money)).Wait();
+                Obj.ModifyStats(s => s.Money = value).Wait();
+            }
         }
 
         public int TempExp

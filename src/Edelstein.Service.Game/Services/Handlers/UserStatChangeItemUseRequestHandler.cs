@@ -4,7 +4,6 @@ using Edelstein.Core;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Item.Consume;
-using Edelstein.Service.Game.Extensions;
 using Edelstein.Service.Game.Fields.Objects.User;
 using Edelstein.Service.Game.Fields.Objects.User.Stats;
 using MoreLinq.Extensions;

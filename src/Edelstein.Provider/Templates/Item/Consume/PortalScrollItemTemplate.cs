@@ -2,7 +2,7 @@ namespace Edelstein.Provider.Templates.Item.Consume
 {
     public class PortalScrollItemTemplate : ItemBundleTemplate
     {
-        public int MoveTo { get; set; }
+        public int MoveTo { get; }
         
         // Continent
         // FieldSet

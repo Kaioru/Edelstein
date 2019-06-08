@@ -4,7 +4,7 @@ namespace Edelstein.Provider.Templates.Field.Life.Mob
     {
         public int ID { get; }
 
-        public MoveAbilityType MoveAbility { get; set; }
+        public MoveAbilityType MoveAbility { get; }
 
         public short Level { get; set; }
         public int EXP { get; set; }

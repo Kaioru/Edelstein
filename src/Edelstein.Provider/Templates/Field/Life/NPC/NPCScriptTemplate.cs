@@ -4,11 +4,11 @@ namespace Edelstein.Provider.Templates.Field.Life.NPC
 {
     public class NPCScriptTemplate : ITemplate
     {
-        public int ID { get; set; }
+        public int ID { get; }
 
-        public string Script { get; set; }
-        public int Start { get; set; }
-        public int End { get; set; }
+        public string Script { get; }
+        public int Start { get; }
+        public int End { get; }
 
         public NPCScriptTemplate(IDataProperty property)
         {
