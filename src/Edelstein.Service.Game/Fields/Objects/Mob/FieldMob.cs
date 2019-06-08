@@ -70,7 +70,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
 
                     var reward = user.Service.TemplateManager.Get<RewardTemplate>(Template.ID);
                     var rewards = reward?.Entries
-                                      // .Where(e => new Random().NextDouble() <= e.Prob)
+                                      .Where(e => new Random().NextDouble() <= e.Prob)
                                       .Shuffle()
                                       .ToList()
                                   ?? new List<RewardEntryTemplate>();
