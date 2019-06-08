@@ -69,7 +69,11 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
 
             await Field.Leave(this);
             await user.ModifyStats(s => { s.EXP += Template.EXP; });
-            await user.Message(new IncEXPMessage {EXP = Template.EXP});
+            await user.Message(new IncEXPMessage
+            {
+                IsLastHit = true,
+                EXP = Template.EXP
+            });
 
             var reward = user.Service.TemplateManager.Get<RewardTemplate>(Template.ID);
             var rewards = reward?.Entries

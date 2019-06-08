@@ -154,9 +154,8 @@ namespace Edelstein.Service.Shop.Services
                 await SendWishListData();
                 await SendCashData();
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
                 await Close();
             }
         }
