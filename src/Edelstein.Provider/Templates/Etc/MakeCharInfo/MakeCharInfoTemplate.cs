@@ -1,4 +1,5 @@
 using System.Linq;
+using Edelstein.Provider.Parsing;
 
 namespace Edelstein.Provider.Templates.Etc.MakeCharInfo
 {

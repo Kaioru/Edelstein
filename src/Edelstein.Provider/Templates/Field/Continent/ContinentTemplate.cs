@@ -1,3 +1,5 @@
+using Edelstein.Provider.Parsing;
+
 namespace Edelstein.Provider.Templates.Field.Continent
 {
     public class ContinentTemplate : ITemplate

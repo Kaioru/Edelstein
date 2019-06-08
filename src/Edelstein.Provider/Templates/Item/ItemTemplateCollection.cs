@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Edelstein.Provider.Parsing;
 using Edelstein.Provider.Templates.Item.Cash;
 using Edelstein.Provider.Templates.Item.Consume;
 

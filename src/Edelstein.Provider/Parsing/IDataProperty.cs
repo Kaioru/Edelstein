@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Edelstein.Provider
+namespace Edelstein.Provider.Parsing
 {
     public interface IDataProperty : IDataDirectory
     {

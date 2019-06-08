@@ -1,3 +1,5 @@
+using Edelstein.Provider.Parsing;
+
 namespace Edelstein.Provider.Templates.Item.Reward
 {
     public class RewardEntryTemplate : ITemplate

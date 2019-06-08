@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edelstein.Provider.Parsing;
 
 namespace Edelstein.Provider.Templates.String
 {
