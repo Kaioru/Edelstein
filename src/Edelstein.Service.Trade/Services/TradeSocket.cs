@@ -62,9 +62,12 @@ namespace Edelstein.Service.Trade.Services
         public override async Task OnDisconnect()
         {
             if (Account == null) return;
+
             var state = (await Service.AccountStateCache.GetAsync<MigrationState>(Account.ID.ToString())).Value;
+
             if (state != MigrationState.Migrating)
             {
+                await OnUpdate();
                 await Service.AccountStateCache.RemoveAsync(Account.ID.ToString());
             }
         }
