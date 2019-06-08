@@ -312,7 +312,15 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
                 MP = MaxMP;
 
             AP += 5;
-            SP += 3;
+
+            if (SkillConstants.IsExtendSPJob(Job))
+            {
+                SetExtendSP((byte)SkillConstants.GetJobLevel(Job), +3);
+            }
+            else if (Job != 0 && Job != 2000 && Job != 2001 && Job != 3000)
+            {
+                SP += 3;
+            }
         }
     }
 }
