@@ -6,9 +6,10 @@ namespace Edelstein.Provider.Templates.Field.Life.Mob
 
         public MoveAbilityType MoveAbility { get; }
 
-        public short Level { get; }
-        public int MaxHP { get; }
-        public int MaxMP { get; }
+        public short Level { get; set; }
+        public int EXP { get; set; }
+        public int MaxHP { get; set; }
+        public int MaxMP { get; set; }
 
         public MobTemplate(int id, IDataProperty property)
         {
@@ -20,6 +21,7 @@ namespace Edelstein.Provider.Templates.Field.Life.Mob
             else MoveAbility = MoveAbilityType.Stop;
 
             Level = property.Resolve<short>("info/level") ?? 0;
+            EXP = property.Resolve<int>("info/exp") ?? 0;
             MaxHP = property.Resolve<int>("info/maxHP") ?? 1;
             MaxMP = property.Resolve<int>("info/maxMP") ?? 0;
         }
