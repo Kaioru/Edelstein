@@ -17,6 +17,8 @@ namespace Edelstein.Service.Game.Services.Handlers
             var templateID = packet.Decode<int>();
             var template = user.Service.TemplateManager.Get<SkillTemplate>(templateID);
 
+            Console.WriteLine(template);
+            
             if (template == null) return;
 
             var job = template.ID / 10000;
@@ -36,6 +38,7 @@ namespace Edelstein.Service.Game.Services.Handlers
             if (!SkillConstants.IsExtendSPJob(job) && user.Character.SP <= 0) return;
 
             var maxLevel = template.MaxLevel;
+            
             if (SkillConstants.IsSkillNeedMasterLevel(templateID))
                 maxLevel = (short) user.Character.GetSkillMasterLevel(templateID);
 

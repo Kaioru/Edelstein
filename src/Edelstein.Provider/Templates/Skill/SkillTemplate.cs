@@ -20,14 +20,18 @@ namespace Edelstein.Provider.Templates.Skill
             ID = id;
 
             var entry = property.Resolve("common");
-            var levelData = ImmutableDictionary<int, SkillLevelTemplate>.Empty;
+            ImmutableDictionary<int, SkillLevelTemplate> levelData;
 
             if (entry != null)
             {
-                var maxLevel = entry.Resolve<int>("maxLevel");
+                var maxLevel = entry.Resolve<int>("maxLevel") ?? 0;
 
-                for (var i = 1; i <= maxLevel; i++)
-                    levelData.Add(i, new SkillLevelTemplate(i, id, entry.ResolveAll()));
+                levelData = Enumerable
+                    .Range(1, maxLevel)
+                    .ToImmutableDictionary(
+                        i => i,
+                        i => new SkillLevelTemplate(i, id, entry.ResolveAll())
+                    );
             }
             else
             {
