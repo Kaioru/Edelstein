@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
@@ -147,14 +148,15 @@ namespace Edelstein.Service.Shop.Services
                         p.Encode<int>(0); // m_nHighestCharacterLevelInThisAccount
                         await SendPacket(p);
                     }
-
-                    await SendLockerData();
-                    await SendWishListData();
-                    await SendCashData();
                 }
+
+                await SendLockerData();
+                await SendWishListData();
+                await SendCashData();
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 await Close();
             }
         }
