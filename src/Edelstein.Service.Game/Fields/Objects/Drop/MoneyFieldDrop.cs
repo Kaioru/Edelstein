@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Edelstein.Service.Game.Fields.Objects.User;
+using Edelstein.Service.Game.Fields.Objects.User.Messages.Types.Drops;
 
 namespace Edelstein.Service.Game.Fields.Objects.Drop
 {
@@ -17,6 +18,10 @@ namespace Edelstein.Service.Game.Fields.Objects.Drop
         {
             await Field.Leave(this, () => GetLeaveFieldPacket(0x2, user));
             await user.ModifyStats(s => s.Money += _money, true);
+            await user.Message(new MoneyDropPickUpMessage
+            {
+                Money = _money
+            });
         }
     }
 }

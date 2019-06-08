@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Extensions.Templates;
+using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Field.Life;
@@ -85,9 +86,15 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
                 .Select<RewardEntryTemplate, AbstractFieldDrop>(r =>
                 {
                     if (r.Money > 0)
-                        return new MoneyFieldDrop(r.Money); // TODO: random money
+                    {
+                        var money = r.Money;
+                        var modifier = 2 * money / 5 + 1;
+
+                        return new MoneyFieldDrop(Math.Max(1, 4 * money / 5 + new Random().Next() % modifier));
+                    }
+
                     var template = user.Service.TemplateManager.Get<ItemTemplate>(r.TemplateID);
-                    var item = template.ToItemSlot();
+                    var item = template.ToItemSlot(ItemVariationType.Normal);
 
                     if (item is ItemSlotBundle bundle)
                         bundle.Number = (short) new Random().Next(r.MinQuantity, r.MaxQuantity);
