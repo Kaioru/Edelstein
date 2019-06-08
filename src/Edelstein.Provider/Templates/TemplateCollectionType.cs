@@ -25,6 +25,7 @@ namespace Edelstein.Provider.Templates
         Reactor = 0x4000,
         Skill = 0x8000,
         Quest = 0x100000,
+        Reward = 0x200000,
 
         FieldString = 0x10000,
         ItemString = 0x20000,
@@ -48,7 +49,8 @@ namespace Edelstein.Provider.Templates
                Skill |
                Quest |
                String |
-               NPCShop,
+               NPCShop |
+               Reward,
         Shop = Item | 
                Commodity | 
                CashPackage | 
