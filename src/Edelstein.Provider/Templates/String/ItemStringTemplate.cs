@@ -3,7 +3,7 @@ namespace Edelstein.Provider.Templates.String
     public class ItemStringTemplate : IStringTemplate
     {
         public int ID { get; }
-        public string Name { get; set; }
+        public string Name { get; }
 
         public ItemStringTemplate(int id, IDataProperty property)
         {

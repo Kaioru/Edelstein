@@ -8,11 +8,11 @@ namespace Edelstein.Provider.Templates.Skill
     {
         public int ID { get; }
 
-        public short MaxLevel { get; set; }
-        public bool Summon { get; set; }
+        public short MaxLevel { get; }
+        public bool Summon { get; }
 
-        public IDictionary<int, int> ReqSkill;
-        public IDictionary<int, SkillLevelTemplate> LevelData;
+        public IDictionary<int, int> ReqSkill { get; }
+        public IDictionary<int, SkillLevelTemplate> LevelData { get; }
 
         public SkillTemplate(int id, IDataProperty property)
         {

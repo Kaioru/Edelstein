@@ -6,7 +6,7 @@ namespace Edelstein.Provider.Templates.Item.Consume
 {
     public class MobSummonItemTemplate : ItemBundleTemplate
     {
-        public ICollection<MobSummonItemEntry> Mobs { get; set; }
+        public ICollection<MobSummonItemEntry> Mobs { get; }
 
         public MobSummonItemTemplate(int id, IDataProperty info, IDataProperty mob) : base(id, info)
         {
@@ -18,8 +18,8 @@ namespace Edelstein.Provider.Templates.Item.Consume
 
     public class MobSummonItemEntry
     {
-        public int TemplateID { get; set; }
-        public int Prob { get; set; }
+        public int TemplateID { get; }
+        public int Prob { get; }
 
         public MobSummonItemEntry(IDataProperty property)
         {

@@ -10,25 +10,25 @@ namespace Edelstein.Provider.Templates.Field
 {
     public class FieldTemplate : ITemplate
     {
-        public int ID { get; set; }
+        public int ID { get; }
 
-        public FieldOpt Limit { get; set; }
-        public Rectangle Bounds { get; set; }
+        public FieldOpt Limit { get; private set; }
+        public Rectangle Bounds { get; private set; }
 
-        public int? FieldReturn { get; set; }
-        public int? ForcedReturn { get; set; }
+        public int? FieldReturn { get; private set; }
+        public int? ForcedReturn { get; private set; }
 
-        public string? ScriptFirstUserEnter { get; set; }
-        public string? ScriptUserEnter { get; set; }
+        public string? ScriptFirstUserEnter { get; private set; }
+        public string? ScriptUserEnter { get; private set; }
 
         public IDictionary<int, FieldFootholdTemplate> Footholds { get; }
         public IDictionary<int, FieldPortalTemplate> Portals { get; }
         public ICollection<FieldLifeTemplate> Life { get; }
         public ICollection<FieldReactorTemplate> Reactors { get; }
 
-        public double MobRate { get; set; }
-        public int MobCapacityMin { get; set; }
-        public int MobCapacityMax { get; set; }
+        public double MobRate { get; private set; }
+        public int MobCapacityMin { get; private set; }
+        public int MobCapacityMax { get; private set; }
 
         public FieldTemplate(int id, IDataProperty property)
         {

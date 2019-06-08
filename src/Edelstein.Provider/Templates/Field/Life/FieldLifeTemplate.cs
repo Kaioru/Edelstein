@@ -4,16 +4,16 @@ namespace Edelstein.Provider.Templates.Field.Life
 {
     public class FieldLifeTemplate : ITemplate
     {
-        public int ID { get; set; }
-        public FieldLifeType Type { get; set; }
+        public int ID { get; }
+        public FieldLifeType Type { get; }
 
-        public int MobTime { get; set; }
+        public int MobTime { get; }
 
-        public bool Left { get; set; }
-        public Point Position { get; set; }
-        public int RX0 { get; set; }
-        public int RX1 { get; set; }
-        public int FH { get; set; }
+        public bool Left { get; }
+        public Point Position { get; }
+        public int RX0 { get; }
+        public int RX1 { get; }
+        public int FH { get; }
 
         public FieldLifeTemplate(IDataProperty property)
         {

@@ -4,11 +4,11 @@ namespace Edelstein.Provider.Templates.Field.Life.Mob
     {
         public int ID { get; }
 
-        public MoveAbilityType MoveAbility { get; set; }
+        public MoveAbilityType MoveAbility { get; }
 
-        public short Level { get; set; }
-        public int MaxHP { get; set; }
-        public int MaxMP { get; set; }
+        public short Level { get; }
+        public int MaxHP { get; }
+        public int MaxMP { get; }
 
         public MobTemplate(int id, IDataProperty property)
         {

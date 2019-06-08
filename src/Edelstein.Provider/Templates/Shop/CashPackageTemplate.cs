@@ -5,7 +5,7 @@ namespace Edelstein.Provider.Templates.Shop
     public class CashPackageTemplate : ITemplate
     {
         public int ID { get; }
-        public int[] PackageSN { get; set; }
+        public int[] PackageSN { get; }
 
         public CashPackageTemplate(int id, IDataProperty property)
         {

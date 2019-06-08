@@ -5,22 +5,22 @@ namespace Edelstein.Provider.Templates.Field.Life.NPC
 {
     public class NPCTemplate : ITemplate
     {
-        public int ID { get; set; }
+        public int ID { get; }
 
-        public int TrunkPut { get; set; }
-        public int TrunkGet { set; get; }
+        public int TrunkPut { get; private set; }
+        public int TrunkGet { get; private set; }
 
         public bool Trunk => TrunkPut > 0 || TrunkGet > 0;
-        public bool StoreBank { get; set; }
-        public bool Parcel { get; set; }
+        public bool StoreBank { get; private set; }
+        public bool Parcel { get; private set; }
         public ICollection<NPCScriptTemplate> Scripts;
 
-        public bool Move { get; set; }
+        public bool Move { get; }
 
         public NPCTemplate(int id, IDataProperty property)
         {
             ID = id;
- 
+
             property.Resolve("info").ResolveAll(i =>
             {
                 TrunkPut = i.Resolve<int>("trunkPut") ?? 0;

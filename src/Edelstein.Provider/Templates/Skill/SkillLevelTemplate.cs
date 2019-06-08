@@ -7,50 +7,50 @@ namespace Edelstein.Provider.Templates.Skill
         public int ID { get; }
         public int SkillID { get; }
 
-        public short HP { get; set; }
-        public short MP { get; set; }
-        public short PAD { get; set; }
-        public short PDD { get; set; }
-        public short MAD { get; set; }
-        public short MDD { get; set; }
-        public short ACC { get; set; }
-        public short EVA { get; set; }
-        public short Craft { get; set; }
-        public short Speed { get; set; }
-        public short Jump { get; set; }
+        public short HP { get; }
+        public short MP { get; }
+        public short PAD { get; }
+        public short PDD { get; }
+        public short MAD { get; }
+        public short MDD { get; }
+        public short ACC { get; }
+        public short EVA { get; }
+        public short Craft { get; }
+        public short Speed { get; }
+        public short Jump { get; }
 
-        public short Morph { get; set; }
-        public short HPCon { get; set; }
-        public short MPCon { get; set; }
-        public short MoneyCon { get; set; }
-        public short ItemCon { get; set; }
-        public short ItemConNo { get; set; }
-        public short Damage { get; set; }
-        public short FixDamage { get; set; }
-        public short SelfDesctruction { get; set; }
+        public short Morph { get; }
+        public short HPCon { get; }
+        public short MPCon { get; }
+        public short MoneyCon { get; }
+        public short ItemCon { get; }
+        public short ItemConNo { get; }
+        public short Damage { get; }
+        public short FixDamage { get; }
+        public short SelfDesctruction { get; }
 
-        public short Time { get; set; }
-        public short SubTime { get; set; }
+        public short Time { get; }
+        public short SubTime { get; }
 
-        public short Prop { get; set; }
-        public short SubProp { get; set; }
+        public short Prop { get; }
+        public short SubProp { get; }
 
-        public short AttackCount { get; set; }
-        public short BulletCount { get; set; }
-        public short BulletConsume { get; set; }
-        public short Mastery { get; set; }
-        public short MobCount { get; set; }
+        public short AttackCount { get; }
+        public short BulletCount { get; }
+        public short BulletConsume { get; }
+        public short Mastery { get; }
+        public short MobCount { get; }
 
-        public short X { get; set; }
-        public short Y { get; set; }
-        public short Z { get; set; }
+        public short X { get; }
+        public short Y { get; }
+        public short Z { get; }
 
-        public short EMHP { get; set; }
-        public short EMMP { get; set; }
-        public short EPAD { get; set; }
-        public short EMAD { get; set; }
-        public short EPDD { get; set; }
-        public short EMDD { get; set; }
+        public short EMHP { get; }
+        public short EMMP { get; }
+        public short EPAD { get; }
+        public short EMAD { get; }
+        public short EPDD { get; }
+        public short EMDD { get; }
 
         public SkillLevelTemplate(int id, int skillID, IDataProperty property, bool resolveExpression = true)
         {

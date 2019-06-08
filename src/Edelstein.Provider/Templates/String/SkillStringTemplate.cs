@@ -2,9 +2,9 @@ namespace Edelstein.Provider.Templates.String
 {
     public class SkillStringTemplate : IStringTemplate
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Desc { get; set; }
+        public int ID { get; }
+        public string Name { get; }
+        public string Desc { get; }
         
         public SkillStringTemplate(int id, IDataProperty property)
         {

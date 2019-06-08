@@ -5,16 +5,16 @@ namespace Edelstein.Provider.Templates.Field
 {
     public class FieldPortalTemplate : ITemplate
     {
-        public int ID { get; set; }
-        public FieldPortalType Type { get; set; }
+        public int ID { get; }
+        public FieldPortalType Type { get; }
 
-        public string Name { get; set; }
-        public string Script { get; set; }
+        public string Name { get; }
+        public string Script { get; }
 
-        public int ToMap { get; set; }
-        public string ToName { get; set; }
+        public int ToMap { get; }
+        public string ToName { get; }
 
-        public Point Position { get; set; }
+        public Point Position { get; }
 
         public FieldPortalTemplate(IDataProperty property)
         {

@@ -5,8 +5,8 @@ namespace Edelstein.Provider.Templates.String
         public int ID { get; }
         public string Name => MapName;
         
-        public string MapName { get; set; }
-        public string StreetName { get; set; }
+        public string MapName { get; }
+        public string StreetName { get; }
         
         public FieldStringTemplate(int id, IDataProperty property)
         {

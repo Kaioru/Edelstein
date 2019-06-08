@@ -4,24 +4,24 @@ namespace Edelstein.Provider.Templates.Shop
     {
         public int ID { get; }
 
-        public int ItemID { get; set; }
-        public short Count { get; set; }
-        public byte Priority { get; set; }
-        public int Price { get; set; }
-        public byte Bonus { get; set; }
-        public short Period { get; set; }
-        public short ReqPOP { get; set; }
-        public short ReqLEV { get; set; }
-        public int MaplePoint { get; set; }
-        public int Meso { get; set; }
-        public bool ForPremiumUser { get; set; }
-        public sbyte Gender { get; set; }
-        public bool OnSale { get; set; }
-        public byte Class { get; set; }
-        public byte Limit { get; set; }
-        public short PbCash { get; set; }
-        public short PbPoint { get; set; }
-        public short PbGift { get; set; }
+        public int ItemID { get; }
+        public short Count { get; }
+        public byte Priority { get; }
+        public int Price { get; }
+        public byte Bonus { get; }
+        public short Period { get; }
+        public short ReqPOP { get; }
+        public short ReqLEV { get; }
+        public int MaplePoint { get; }
+        public int Meso { get; }
+        public bool ForPremiumUser { get; }
+        public sbyte Gender { get; }
+        public bool OnSale { get; }
+        public byte Class { get; }
+        public byte Limit { get; }
+        public short PbCash { get; }
+        public short PbPoint { get; }
+        public short PbGift { get; }
 
         public CommodityTemplate(int id, IDataProperty property)
         {

@@ -4,13 +4,13 @@ namespace Edelstein.Provider.Templates.Field
 {
     public class FieldFootholdTemplate : ITemplate
     {
-        public int ID { get; set; }
-        public int Next { get; set; }
-        public int Prev { get; set; }
-        public int X1 { get; set; }
-        public int X2 { get; set; }
-        public int Y1 { get; set; }
-        public int Y2 { get; set; }
+        public int ID { get; }
+        public int Next { get; }
+        public int Prev { get; }
+        public int X1 { get; }
+        public int X2 { get; }
+        public int Y1 { get; }
+        public int Y2 { get; }
 
         public FieldFootholdTemplate(IDataProperty property)
         {

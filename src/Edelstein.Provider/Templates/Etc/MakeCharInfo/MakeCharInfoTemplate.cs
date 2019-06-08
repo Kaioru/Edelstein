@@ -4,19 +4,19 @@ namespace Edelstein.Provider.Templates.Etc.MakeCharInfo
 {
     public class MakeCharInfoTemplate : ITemplate
     {
-        public int ID { get; set; }
+        public int ID { get; }
 
-        public MakeCharInfoType Type { get; set; }
-        public byte Gender { get; set; }
+        public MakeCharInfoType Type { get; }
+        public byte Gender { get; }
 
-        public int[] Face { get; set; }
-        public int[] Hair { get; set; }
-        public int[] HairColor { get; set; }
-        public int[] Skin { get; set; }
-        public int[] Coat { get; set; }
-        public int[] Pants { get; set; }
-        public int[] Shoes { get; set; }
-        public int[] Weapon { get; set; }
+        public int[] Face { get; }
+        public int[] Hair { get; }
+        public int[] HairColor { get; }
+        public int[] Skin { get; }
+        public int[] Coat { get; }
+        public int[] Pants { get; }
+        public int[] Shoes { get; }
+        public int[] Weapon { get; }
 
         public MakeCharInfoTemplate(MakeCharInfoType type, byte gender, IDataProperty property)
         {

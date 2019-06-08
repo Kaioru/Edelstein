@@ -6,8 +6,8 @@ namespace Edelstein.Provider.Templates.Etc.NPCShop
 {
     public class NPCShopTemplate : ITemplate
     {
-        public int ID { get; set; }
-        public IDictionary<int, NPCShopItemTemplate> Items { get; set; }
+        public int ID { get; }
+        public IDictionary<int, NPCShopItemTemplate> Items { get; }
 
         public NPCShopTemplate(int id, IDataProperty property)
         {

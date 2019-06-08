@@ -6,9 +6,9 @@ namespace Edelstein.Provider.Templates.Shop
     {
         public int ID { get; }
         
-        public byte Category { get; set; }
-        public byte CategorySub { get; set; }
-        public byte DiscountRate { get; set; }
+        public byte Category { get; }
+        public byte CategorySub { get; }
+        public byte DiscountRate { get; }
 
         public CategoryDiscountTemplate(int id, IDataProperty property)
         {

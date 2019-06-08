@@ -2,24 +2,24 @@ namespace Edelstein.Provider.Templates.Etc.NPCShop
 {
     public class NPCShopItemTemplate : ITemplate
     {
-        public int ID { get; set; }
-        
-        public int TemplateID { get; set; }
-        public int Price { get; set; }
-        public byte DiscountRate { get; set; }
-        public int TokenTemplateID { get; set; }
-        public int TokenPrice { get; set; }
-        public int ItemPeriod { get; set; }
-        public int LevelLimited { get; set; }
-        public double UnitPrice { get; set; }
-        public short MaxPerSlot { get; set; }
-        public int Stock { get; set; }
-        public short Quantity { get; set; }
+        public int ID { get; }
+
+        public int TemplateID { get; }
+        public int Price { get; }
+        public byte DiscountRate { get; }
+        public int TokenTemplateID { get; }
+        public int TokenPrice { get; }
+        public int ItemPeriod { get; }
+        public int LevelLimited { get; }
+        public double UnitPrice { get; }
+        public short MaxPerSlot { get; }
+        public int Stock { get; }
+        public short Quantity { get; }
 
         public NPCShopItemTemplate(int id, IDataProperty property)
         {
             ID = id;
-            
+
             TemplateID = property.Resolve<int>("item") ?? 0;
             Price = property.Resolve<int>("price") ?? 0;
             DiscountRate = property.Resolve<byte>("discountRate") ?? 0;

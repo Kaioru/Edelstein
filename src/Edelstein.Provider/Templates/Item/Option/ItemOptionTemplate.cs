@@ -8,9 +8,9 @@ namespace Edelstein.Provider.Templates.Item.Option
     {
         public int ID { get; }
 
-        public short ReqLevel { get; set; }
-        public int OptionType { get; set; }
-        public IDictionary<int, ItemOptionLevelTemplate> LevelData;
+        public short ReqLevel { get; private set; }
+        public int OptionType { get; private set; }
+        public IDictionary<int, ItemOptionLevelTemplate> LevelData { get; }
 
         public ItemOptionTemplate(int id, IDataProperty property)
         {

@@ -7,10 +7,10 @@ namespace Edelstein.Provider.Templates.Item.Set
     public class SetItemInfoTemplate : ITemplate
     {
         public int ID { get; }
-        public int SetCompleteCount { get; set; }
+        public int SetCompleteCount { get; }
 
-        public ICollection<int> TemplateID { get; set; }
-        public IDictionary<int, SetItemEffectTemplate> Effect { get; set; }
+        public ICollection<int> TemplateID { get; }
+        public IDictionary<int, SetItemEffectTemplate> Effect { get; }
 
         public SetItemInfoTemplate(int id, IDataProperty property)
         {
