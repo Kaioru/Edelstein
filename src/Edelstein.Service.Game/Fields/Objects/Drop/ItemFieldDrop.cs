@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Service.Game.Fields.Objects.User;
+using Edelstein.Service.Game.Fields.Objects.User.Messages.Types.Drops;
 
 namespace Edelstein.Service.Game.Fields.Objects.Drop
 {
@@ -18,6 +19,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Drop
         {
             await Field.Leave(this, () => GetLeaveFieldPacket(0x2, user));
             await user.ModifyInventory(i => i.Add(_item), true);
+            await user.Message(new ItemDropPickUpMessage(_item.TemplateID));
         }
     }
 }
