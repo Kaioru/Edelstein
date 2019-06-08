@@ -70,7 +70,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
 
                     var reward = user.Service.TemplateManager.Get<RewardTemplate>(Template.ID);
                     var rewards = reward?.Entries
-                                      .Where(e => new Random().NextDouble() <= e.Prob)
+                                      // .Where(e => new Random().NextDouble() <= e.Prob)
                                       .Shuffle()
                                       .ToList()
                                   ?? new List<RewardEntryTemplate>();
@@ -87,11 +87,17 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
                             return new ItemFieldDrop(item);
                         })
                         .ToList();
+                    var bounds = Field.Template.Bounds;
 
-                    drops.ForEach(d => d.Position = new Point(
-                        Position.X + (drops.IndexOf(d) - (drops.Count - 1) / 2) * -20,
-                        Position.Y
-                    ));
+                    drops.ForEach(d =>
+                    {
+                        var x = Position.X + (drops.IndexOf(d) - (drops.Count - 1) / 2) * -20;
+                        var y = Position.Y;
+
+                        x = Math.Min(bounds.Right - 10, x);
+                        x = Math.Max(bounds.Left + 10, x);
+                        d.Position = new Point(x, y);
+                    });
                     Task.WhenAll(drops
                         .Select(d => Field.Enter(d, () => d.GetEnterFieldPacket(0x1, this)))
                     );
