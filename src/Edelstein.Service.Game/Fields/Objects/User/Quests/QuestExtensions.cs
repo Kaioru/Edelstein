@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Edelstein.Database.Entities.Characters;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Quest;
+using Edelstein.Service.Game.Fields.Objects.User.Effects.User;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
 using MoreLinq.Extensions;
 
@@ -115,6 +117,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
                                 i.Remove(ii.TemplateID, (short) ii.Quantity);
                         }
                     ));
+                await user.Effect(new QuestEffect(act.Items
+                    .Select(i => Tuple.Create(i.TemplateID, i.Quantity))
+                    .ToList()));
             }
 
             return QuestResult.ActSuccess;
