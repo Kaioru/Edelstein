@@ -4,9 +4,9 @@ using Edelstein.Core;
 using Edelstein.Core.Extensions;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Skill;
-using Edelstein.Service.Game.Extensions;
 using Edelstein.Service.Game.Fields.Objects.User;
 using Edelstein.Service.Game.Fields.Objects.User.Effects.User;
+using Edelstein.Service.Game.Fields.Objects.User.Stats;
 using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Services.Handlers
