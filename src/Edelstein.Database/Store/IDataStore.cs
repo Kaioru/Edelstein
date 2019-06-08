@@ -1,6 +1,6 @@
 using System;
 
-namespace Edelstein.Database
+namespace Edelstein.Database.Store
 {
     public interface IDataStore : IDisposable
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Edelstein.Database.InMemory
+namespace Edelstein.Database.Store.InMemory
 {
     public class InMemoryDataQuery<T> : IDataQuery<T>
     {

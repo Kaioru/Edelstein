@@ -1,5 +1,6 @@
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Database.Entities.Inventories.Cash;
+using Edelstein.Database.Store;
 using Marten.Schema;
 
 namespace Edelstein.Database.Entities

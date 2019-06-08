@@ -1,7 +1,7 @@
 
 using LiteDB;
 
-namespace Edelstein.Database.LiteDB
+namespace Edelstein.Database.Store.LiteDB
 {
     public class LiteDBDataStore : IDataStore
     {

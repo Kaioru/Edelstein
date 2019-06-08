@@ -3,18 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Marten.Linq;
 
-namespace Edelstein.Database.LiteDB
+namespace Edelstein.Database.Store.Postgres
 {
-    public class LiteDBDataQuery<T> : IDataQuery<T>
+    public class MartenDataQuery<T> : IDataQuery<T>
     {
-        private readonly IQueryable<T> _queryable;
-        
+        private readonly IMartenQueryable<T> _queryable;
+
         public Type ElementType => _queryable.ElementType;
         public Expression Expression => _queryable.Expression;
         public IQueryProvider Provider => _queryable.Provider;
 
-        public LiteDBDataQuery(IQueryable<T> queryable)
+        public MartenDataQuery(IMartenQueryable<T> queryable)
             => _queryable = queryable;
 
         public IEnumerator<T> GetEnumerator()

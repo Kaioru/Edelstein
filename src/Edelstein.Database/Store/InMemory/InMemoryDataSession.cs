@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Edelstein.Database.InMemory
+namespace Edelstein.Database.Store.InMemory
 {
     public class InMemoryDataSession : IDataSession
     {

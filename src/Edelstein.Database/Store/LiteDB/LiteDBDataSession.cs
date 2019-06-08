@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LiteDB;
 
-namespace Edelstein.Database.LiteDB
+namespace Edelstein.Database.Store.LiteDB
 {
     public class LiteDBDataSession : IDataSession
     {
