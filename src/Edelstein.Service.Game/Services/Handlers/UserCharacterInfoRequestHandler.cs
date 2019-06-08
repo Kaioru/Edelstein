@@ -32,9 +32,9 @@ namespace Edelstein.Service.Game.Services.Handlers
 
                 p.Encode<byte>(0); // Medal?
 
-                var petCount = user.Pets.Count;
+                var petCount = target.Pets.Count;
                 p.Encode<bool>(petCount > 0);
-                user.Pets
+                target.Pets
                     .OrderBy(pet => pet.IDx)
                     .ForEach(pet =>
                     {
