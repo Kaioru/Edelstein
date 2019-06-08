@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Edelstein.Provider.Templates.Skill
@@ -19,7 +20,7 @@ namespace Edelstein.Provider.Templates.Skill
             ID = id;
 
             var entry = property.Resolve("common");
-            var levelData = new Dictionary<int, SkillLevelTemplate>();
+            var levelData = ImmutableDictionary<int, SkillLevelTemplate>.Empty;
 
             if (entry != null)
             {
@@ -31,7 +32,7 @@ namespace Edelstein.Provider.Templates.Skill
             else
             {
                 entry = property.Resolve("level");
-                levelData = entry.Children.ToDictionary(
+                levelData = entry.Children.ToImmutableDictionary(
                     c => Convert.ToInt32(c.Name),
                     c => new SkillLevelTemplate(Convert.ToInt32(c.Name), id, c.ResolveAll(), false)
                 );
@@ -40,10 +41,10 @@ namespace Edelstein.Provider.Templates.Skill
             MaxLevel = (short) levelData.Count;
             Summon = property.Resolve("summon") != null;
             ReqSkill = property.Resolve("req")?.Children
-                           .ToDictionary(
+                           .ToImmutableDictionary(
                                c => Convert.ToInt32(c.Name),
                                c => c.Resolve<int>() ?? 0
-                           ) ?? new Dictionary<int, int>();
+                           ) ?? ImmutableDictionary<int, int>.Empty;
             LevelData = levelData;
         }
     }

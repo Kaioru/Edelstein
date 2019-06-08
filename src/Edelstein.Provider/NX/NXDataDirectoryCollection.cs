@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Edelstein.Provider.NX
 
         public NXDataDirectoryCollection(string path)
         {
-            _files = Directory.GetFiles(path, "*.nx").ToDictionary(
+            _files = Directory.GetFiles(path, "*.nx").ToImmutableDictionary(
                 Path.GetFileNameWithoutExtension,
                 d => new NXFile(d)
             );

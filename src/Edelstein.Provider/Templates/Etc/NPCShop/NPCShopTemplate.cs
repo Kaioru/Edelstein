@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Edelstein.Provider.Templates.Etc.NPCShop
@@ -13,7 +14,7 @@ namespace Edelstein.Provider.Templates.Etc.NPCShop
         {
             ID = id;
             Items = property.Children
-                .ToDictionary(
+                .ToImmutableDictionary(
                     c => Convert.ToInt32(c.Name),
                     c => new NPCShopItemTemplate(Convert.ToInt32(c.Name), c.ResolveAll())
                 );

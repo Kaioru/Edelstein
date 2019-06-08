@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Edelstein.Provider.Templates.Item.Consume
@@ -12,7 +13,7 @@ namespace Edelstein.Provider.Templates.Item.Consume
         {
             Mobs = mob.Children
                 .Select(c => new MobSummonItemEntry(c.ResolveAll()))
-                .ToList();
+                .ToImmutableList();
         }
     }
 

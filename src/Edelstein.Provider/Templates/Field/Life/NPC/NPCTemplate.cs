@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Edelstein.Provider.Templates.Field.Life.NPC
@@ -29,8 +30,8 @@ namespace Edelstein.Provider.Templates.Field.Life.NPC
                 Parcel = i.Resolve<bool>("parcel") ?? false;
                 Scripts = i.Resolve("script")?.Children
                               .Select(p => new NPCScriptTemplate(p))
-                              .ToList()
-                          ?? new List<NPCScriptTemplate>();
+                              .ToImmutableList()
+                          ?? ImmutableList<NPCScriptTemplate>.Empty;
             });
 
             Move = property.Resolve("move") != null;

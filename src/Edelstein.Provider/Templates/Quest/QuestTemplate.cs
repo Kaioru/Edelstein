@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Edelstein.Provider.Logging;
 
@@ -18,11 +19,11 @@ namespace Edelstein.Provider.Templates.Quest
         {
             ID = id;
 
-            Act = act.Children.ToDictionary(
+            Act = act.Children.ToImmutableDictionary(
                 c => (QuestState) Convert.ToInt32(c.Name),
                 c => new QuestActTemplate(Convert.ToInt32(c.Name), c.ResolveAll())
             );
-            Check = check.Children.ToDictionary(
+            Check = check.Children.ToImmutableDictionary(
                 c => (QuestState) Convert.ToInt32(c.Name),
                 c => new QuestCheckTemplate(Convert.ToInt32(c.Name), c.ResolveAll())
             );

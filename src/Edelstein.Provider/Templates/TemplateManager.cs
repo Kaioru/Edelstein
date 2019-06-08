@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,7 +56,7 @@ namespace Edelstein.Provider.Templates
                     [typeof(NPCShopTemplate)] = new NPCShopTemplateCollection(collection)
                 }
                 .Where(c => types.HasFlag(c.Value.Type))
-                .ToDictionary(kv => kv.Key, kv => kv.Value);
+                .ToImmutableDictionary(kv => kv.Key, kv => kv.Value);
         }
 
         public T Get<T>(int id) where T : ITemplate

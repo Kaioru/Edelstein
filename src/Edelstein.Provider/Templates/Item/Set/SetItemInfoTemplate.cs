@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Edelstein.Provider.Templates.Item.Set
@@ -20,9 +21,9 @@ namespace Edelstein.Provider.Templates.Item.Set
 
             TemplateID = property.Resolve("ItemID")?.Children
                 .Select(c => c.Resolve<int>() ?? 0)
-                .ToList();
+                .ToImmutableList();
             Effect = property.Resolve("Effect")?.Children
-                .ToDictionary(
+                .ToImmutableDictionary(
                     c => Convert.ToInt32(c.Name),
                     c => new SetItemEffectTemplate(Convert.ToInt32(c.Name), c.ResolveAll())
                 );
