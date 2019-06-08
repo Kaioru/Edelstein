@@ -70,9 +70,12 @@ namespace Edelstein.Service.Shop.Services
         public override async Task OnDisconnect()
         {
             if (Account == null) return;
+
             var state = (await Service.AccountStateCache.GetAsync<MigrationState>(Account.ID.ToString())).Value;
+
             if (state != MigrationState.Migrating)
             {
+                await OnUpdate();
                 await Service.AccountStateCache.RemoveAsync(Account.ID.ToString());
             }
         }
@@ -108,7 +111,7 @@ namespace Edelstein.Service.Shop.Services
                 await SendPacket(p);
             }
         }
-        
+
         public async Task SendCashData()
         {
             using (var p = new Packet(SendPacketOperations.CashShopQueryCashResult))
