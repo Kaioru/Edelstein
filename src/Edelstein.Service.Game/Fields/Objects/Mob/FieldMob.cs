@@ -70,6 +70,8 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
                 {
                     Field.Leave(this);
 
+                    user.ModifyStats(s => { s.EXP += this.EXP; }).Wait();
+
                     var reward = user.Service.TemplateManager.Get<RewardTemplate>(Template.ID);
                     var rewards = reward?.Entries
                                       .Where(e => new Random().NextDouble() <= e.Prob)

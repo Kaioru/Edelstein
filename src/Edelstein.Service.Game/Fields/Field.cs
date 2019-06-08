@@ -183,9 +183,10 @@ namespace Edelstein.Service.Game.Fields
             await GetPool(obj.Type).Leave(obj);
             UpdateControlledObjects();
         }
-        
+
         public Task BroadcastPacket(IPacket packet)
             => BroadcastPacket(null, packet);
+
         public Task BroadcastPacket(IFieldObj source, IPacket packet)
             => Task.WhenAll(
                 GetObjects<IFieldUser>()
@@ -256,3 +257,4 @@ namespace Edelstein.Service.Game.Fields
             }
         }
     }
+}
