@@ -77,7 +77,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
         {
             var act = template.Act[state];
 
-            if (act.EXP > 0)
+            if (act.EXP != 0)
             {
                 await user.ModifyStats(s => s.EXP += act.EXP);
                 await user.Message(new IncEXPMessage
@@ -91,10 +91,15 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
             {
                 await user.ModifyInventory(i =>
                     act.Items.ForEach(ii =>
-                        i.Add(
-                            user.Service.TemplateManager.Get<ItemTemplate>(ii.TemplateID),
-                            (short) ii.Quantity
-                        )
+                        {
+                            if (ii.Quantity > 0)
+                                i.Add(
+                                    user.Service.TemplateManager.Get<ItemTemplate>(ii.TemplateID),
+                                    (short) ii.Quantity
+                                );
+                            else
+                                i.Remove(ii.TemplateID, (short) ii.Quantity);
+                        }
                     ));
             }
 
