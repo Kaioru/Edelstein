@@ -15,6 +15,7 @@ using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Movements;
 using Edelstein.Service.Game.Fields.Objects.Drop;
 using Edelstein.Service.Game.Fields.Objects.User;
+using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
 using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Fields.Objects.Mob
@@ -28,7 +29,6 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
 
         public int HP { get; set; }
         public int MP { get; set; }
-        public int EXP { get; set; }
 
         public FieldMob(MobTemplate template, bool left = true)
         {
@@ -45,68 +45,63 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
 
             HP = template.MaxHP;
             MP = template.MaxHP;
-            EXP = template.EXP;
         }
 
-        public void Damage(FieldUser user, int damage)
+        public async Task Damage(FieldUser user, int damage)
         {
-            lock (this)
+            lock (this) HP -= damage;
+
+            var indicator = HP / (float) Template.MaxHP * 100f;
+
+            indicator = Math.Min(100, indicator);
+            indicator = Math.Max(0, indicator);
+
+            using (var p = new Packet(SendPacketOperations.MobHPIndicator))
             {
-                HP -= damage;
-
-                var indicator = HP / (float) Template.MaxHP * 100f;
-
-                indicator = Math.Min(100, indicator);
-                indicator = Math.Max(0, indicator);
-
-                using (var p = new Packet(SendPacketOperations.MobHPIndicator))
-                {
-                    p.Encode<int>(ID);
-                    p.Encode<byte>((byte) indicator);
-                    user.SendPacket(p);
-                }
-
-                if (HP <= 0)
-                {
-                    Field.Leave(this);
-
-                    user.ModifyStats(s => { s.EXP += this.EXP; }).Wait();
-
-                    var reward = user.Service.TemplateManager.Get<RewardTemplate>(Template.ID);
-                    var rewards = reward?.Entries
-                                      .Where(e => new Random().NextDouble() <= e.Prob)
-                                      .Shuffle()
-                                      .ToList()
-                                  ?? new List<RewardEntryTemplate>();
-                    var drops = rewards
-                        .Select<RewardEntryTemplate, AbstractFieldDrop>(r =>
-                        {
-                            if (r.Money > 0)
-                                return new MoneyFieldDrop(r.Money); // TODO: random money
-                            var template = user.Service.TemplateManager.Get<ItemTemplate>(r.TemplateID);
-                            var item = template.ToItemSlot();
-
-                            if (item is ItemSlotBundle bundle)
-                                bundle.Number = (short) new Random().Next(r.MinQuantity, r.MaxQuantity);
-                            return new ItemFieldDrop(item);
-                        })
-                        .ToList();
-                    var bounds = Field.Template.Bounds;
-
-                    drops.ForEach(d =>
-                    {
-                        var x = Position.X + (drops.IndexOf(d) - (drops.Count - 1) / 2) * -20;
-                        var y = Position.Y;
-
-                        x = Math.Min(bounds.Right - 10, x);
-                        x = Math.Max(bounds.Left + 10, x);
-                        d.Position = new Point(x, y);
-                    });
-                    Task.WhenAll(drops
-                        .Select(d => Field.Enter(d, () => d.GetEnterFieldPacket(0x1, this)))
-                    );
-                }
+                p.Encode<int>(ID);
+                p.Encode<byte>((byte) indicator);
+                await user.SendPacket(p);
             }
+
+            if (HP > 0) return;
+
+            await Field.Leave(this);
+            await user.ModifyStats(s => { s.EXP += Template.EXP; });
+            await user.Message(new IncEXPMessage {EXP = Template.EXP});
+
+            var reward = user.Service.TemplateManager.Get<RewardTemplate>(Template.ID);
+            var rewards = reward?.Entries
+                              .Where(e => new Random().NextDouble() <= e.Prob)
+                              .Shuffle()
+                              .ToList()
+                          ?? new List<RewardEntryTemplate>();
+            var drops = rewards
+                .Select<RewardEntryTemplate, AbstractFieldDrop>(r =>
+                {
+                    if (r.Money > 0)
+                        return new MoneyFieldDrop(r.Money); // TODO: random money
+                    var template = user.Service.TemplateManager.Get<ItemTemplate>(r.TemplateID);
+                    var item = template.ToItemSlot();
+
+                    if (item is ItemSlotBundle bundle)
+                        bundle.Number = (short) new Random().Next(r.MinQuantity, r.MaxQuantity);
+                    return new ItemFieldDrop(item);
+                })
+                .ToList();
+            var bounds = Field.Template.Bounds;
+
+            drops.ForEach(d =>
+            {
+                var x = Position.X + (drops.IndexOf(d) - (drops.Count - 1) / 2) * -20;
+                var y = Position.Y;
+
+                x = Math.Min(bounds.Right - 10, x);
+                x = Math.Max(bounds.Left + 10, x);
+                d.Position = new Point(x, y);
+            });
+            await Task.WhenAll(drops
+                .Select(d => Field.Enter(d, () => d.GetEnterFieldPacket(0x1, this)))
+            );
         }
 
         private void EncodeData(IPacket packet, MobAppearType summonType, int? summonOption = null)
@@ -131,6 +126,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
             packet.Encode<int>(0);
             packet.Encode<int>(0);
         }
+
         public IPacket GetEnterFieldPacket(MobAppearType summonType, int? summonOption = null)
         {
             using (var p = new Packet(SendPacketOperations.MobEnterField))
