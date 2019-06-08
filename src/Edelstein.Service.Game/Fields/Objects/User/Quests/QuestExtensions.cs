@@ -77,6 +77,20 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
         {
             var act = template.Act[state];
 
+            if (!user.Character.HasSlotFor(act.Items
+                .Select(i =>
+                {
+                    var item = user.Service.TemplateManager.Get<ItemTemplate>(i.TemplateID);
+                    var slot = item.ToItemSlot();
+
+                    if (slot is ItemSlotBundle bundle)
+                        bundle.Number = (short) i.Quantity;
+
+                    return slot;
+                })
+                .ToList()))
+                return QuestResult.ActFailedInventory;
+
             if (act.EXP != 0)
             {
                 await user.ModifyStats(s => s.EXP += act.EXP);

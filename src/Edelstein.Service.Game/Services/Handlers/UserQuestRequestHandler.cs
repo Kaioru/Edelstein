@@ -47,6 +47,7 @@ namespace Edelstein.Service.Game.Services.Handlers
                 using (var p = new Packet(SendPacketOperations.UserQuestResult))
                 {
                     p.Encode<byte>((byte) result);
+                    p.Encode<short>(templateID);
                     await user.SendPacket(p);
                 }
 
