@@ -6,6 +6,7 @@ using Edelstein.Service.Game.Fields.Objects.User;
 using Edelstein.Service.Game.Fields.Objects.User.Effects;
 using Edelstein.Service.Game.Fields.Objects.User.Effects.Field;
 using Edelstein.Service.Game.Fields.Objects.User.Effects.User;
+using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
 using MoonSharp.Interpreter.Interop;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields
@@ -125,7 +126,15 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
         public int Exp
         {
             get => Obj.Character.EXP;
-            set => Obj.ModifyStats(s => s.EXP = value).Wait();
+            set
+            {
+                Obj.Message(new IncEXPMessage
+                {
+                    EXP = value - Exp,
+                    OnQuest = true
+                }).Wait();
+                Obj.ModifyStats(s => s.EXP = value).Wait();
+            }
         }
 
         public short Pop
