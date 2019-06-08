@@ -42,7 +42,6 @@ namespace Edelstein.Service.Game.Fields
         }
 
         public Task Enter(IFieldObj obj) => Enter(obj, null);
-
         public Task Leave(IFieldObj obj) => Leave(obj, null);
 
         public IFieldObj GetObject(int id)
