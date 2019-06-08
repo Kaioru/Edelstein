@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Gameplay.Constants;
@@ -34,7 +35,11 @@ namespace Edelstein.Service.Game.Services.Handlers
                     }
                     else i[type].Remove(from);
 
-                    var drop = new ItemFieldDrop(item) {Position = user.Position};
+                    var drop = new ItemFieldDrop(item)
+                    {
+                        Position = user.Position,
+                        DateExpire = DateTime.Now.AddMinutes(3)
+                    };
                     user.Field.Enter(drop, () => drop.GetEnterFieldPacket(0x1, user));
                 }, true);
                 return;

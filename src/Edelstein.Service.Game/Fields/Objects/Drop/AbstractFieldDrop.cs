@@ -1,19 +1,23 @@
+using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core;
+using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Fields.Objects.Drop
 {
-    public abstract class AbstractFieldDrop : AbstractFieldObj
+    public abstract class AbstractFieldDrop : AbstractFieldObj, ITickable
     {
         public override FieldObjType Type => FieldObjType.Drop;
         public abstract bool IsMoney { get; }
         public abstract int Info { get; }
-        
+
+        public DateTime? DateExpire { get; set; }
+
         public abstract Task PickUp(FieldUser user);
-        
+
         public IPacket GetEnterFieldPacket(
             byte enterType,
             IFieldObj source = null,
@@ -68,11 +72,17 @@ namespace Edelstein.Service.Game.Fields.Objects.Drop
                 return p;
             }
         }
-        
+
         public override IPacket GetEnterFieldPacket()
             => GetEnterFieldPacket(0x2);
 
         public override IPacket GetLeaveFieldPacket()
             => GetLeaveFieldPacket(0x1);
+
+        public async Task OnTick(DateTime now)
+        {
+            if (DateExpire.HasValue && now > DateExpire.Value)
+                await Field.Leave(this);
+        }
     }
 }

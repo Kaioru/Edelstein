@@ -100,6 +100,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
                 })
                 .ToList();
             var bounds = Field.Template.Bounds;
+            var expire = DateTime.Now.AddMinutes(3);
 
             drops.ForEach(d =>
             {
@@ -109,6 +110,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
                 x = Math.Min(bounds.Right - 10, x);
                 x = Math.Max(bounds.Left + 10, x);
                 d.Position = new Point(x, y);
+                d.DateExpire = expire;
             });
             await Task.WhenAll(drops
                 .Select(d => Field.Enter(d, () => d.GetEnterFieldPacket(0x1, this)))
