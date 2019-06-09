@@ -98,6 +98,13 @@ namespace Edelstein.Service.Game.Commands.Handling
         protected override async Task Execute(FieldUser sender, object option)
         {
             var records = _ex ? sender.Character.QuestRecordEx : sender.Character.QuestRecord;
+
+            if (!records.Any())
+            {
+                await sender.Prompt(target => target.Say("You don't have any quest records."));
+                return;
+            }
+
             var templateID = await sender.Prompt<int>(target => target.AskMenu(
                 $"Here are your quest records",
                 records.ToDictionary(
