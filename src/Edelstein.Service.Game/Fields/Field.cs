@@ -21,6 +21,7 @@ namespace Edelstein.Service.Game.Fields
         public int ID => Template.ID;
         public FieldTemplate Template { get; }
 
+        private DateTime LastTickObjTime { get; set; }
         private DateTime LastGenObjTime { get; set; }
 
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
@@ -215,10 +216,14 @@ namespace Edelstein.Service.Game.Fields
         {
             if (!GetObjects<IFieldUser>().Any()) return;
 
-            await Task.WhenAll(GetObjects()
-                .OfType<ITickable>()
-                .Select(o => o.OnTick(now))
-            );
+            if ((now - LastTickObjTime).TotalSeconds >= 10)
+            {
+                await Task.WhenAll(GetObjects()
+                    .OfType<ITickable>()
+                    .Select(o => o.OnTick(now))
+                );
+                LastTickObjTime = now;
+            }
 
             if ((now - LastGenObjTime).TotalSeconds >= 7)
             {

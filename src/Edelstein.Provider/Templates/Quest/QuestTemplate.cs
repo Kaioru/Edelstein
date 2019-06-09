@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Edelstein.Provider.Logging;
+using Edelstein.Provider.Parsing;
 
 namespace Edelstein.Provider.Templates.Quest
 {

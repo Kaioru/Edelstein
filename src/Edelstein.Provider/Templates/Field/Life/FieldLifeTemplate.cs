@@ -1,4 +1,5 @@
 using System.Drawing;
+using Edelstein.Provider.Parsing;
 
 namespace Edelstein.Provider.Templates.Field.Life
 {

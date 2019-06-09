@@ -1,3 +1,4 @@
+using Edelstein.Database.Store;
 using Marten.Schema;
 
 namespace Edelstein.Database.Entities

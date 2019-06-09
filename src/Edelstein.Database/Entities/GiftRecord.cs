@@ -1,4 +1,5 @@
 using Edelstein.Database.Entities.Inventories.Items;
+using Edelstein.Database.Store;
 using Marten.Schema;
 
 namespace Edelstein.Database.Entities

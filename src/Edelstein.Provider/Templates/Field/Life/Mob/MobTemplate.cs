@@ -1,3 +1,5 @@
+using Edelstein.Provider.Parsing;
+
 namespace Edelstein.Provider.Templates.Field.Life.Mob
 {
     public class MobTemplate : ITemplate

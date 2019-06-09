@@ -1,6 +1,6 @@
 using Marten;
 
-namespace Edelstein.Database.Postgres
+namespace Edelstein.Database.Store.Postgres
 {
     public class MartenDataStore : IDataStore
     {

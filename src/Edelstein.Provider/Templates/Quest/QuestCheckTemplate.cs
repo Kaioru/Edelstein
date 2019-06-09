@@ -1,3 +1,5 @@
+using Edelstein.Provider.Parsing;
+
 namespace Edelstein.Provider.Templates.Quest
 {
     public class QuestCheckTemplate : QuestOperationTemplate

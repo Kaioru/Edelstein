@@ -8,6 +8,7 @@ using Edelstein.Core.Distributed;
 using Edelstein.Core.Scripts;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
+using Edelstein.Database.Store;
 using Edelstein.Provider.Templates;
 using Edelstein.Service.Game.Services;
 using Edelstein.Service.Login.Services;

@@ -206,17 +206,19 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
             get => _character.EXP;
             set
             {
-                Flag |= ModifyStatType.EXP;
-                _character.EXP = value;
+                var isMaxLevel = _character.Level >= GameConstants.CharacterEXPTable.Length - 1;
 
-                if (_character.Level > GameConstants.CharacterEXPTable.Length - 1) return;
+                Flag |= ModifyStatType.EXP;
+                _character.EXP = isMaxLevel ? 0 : value;
+
+                if (isMaxLevel) return;
                 if (EXP < GameConstants.CharacterEXPTable[_character.Level]) return;
 
                 LevelUp();
-                EXP = Math.Min(
+                EXP = Math.Max(0, Math.Min(
                     GameConstants.CharacterEXPTable[_character.Level] - 1,
                     EXP - GameConstants.CharacterEXPTable[_character.Level - 1]
-                );
+                ));
             }
         }
 
@@ -297,7 +299,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
         // TODO: figure out stat increases for each job
         public void LevelUp()
         {
-            if (Level < 200 && Level > 0) Level++;
+            if (Level >= 200) return;
+
+            Level++;
 
             var random = new Random();
             var hpBonus = random.Next(10, 16);

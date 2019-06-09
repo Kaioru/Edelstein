@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Edelstein.Database.Entities.Characters.Records;
 using Edelstein.Database.Entities.Inventories;
+using Edelstein.Database.Store;
 using Marten.Schema;
 
 namespace Edelstein.Database.Entities.Characters

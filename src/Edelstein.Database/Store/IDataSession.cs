@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Edelstein.Database
+namespace Edelstein.Database.Store
 {
     public interface IDataSession : IDisposable
     {

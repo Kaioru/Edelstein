@@ -1,3 +1,4 @@
+using Edelstein.Provider.Parsing;
 using org.mariuszgromada.math.mxparser;
 
 namespace Edelstein.Provider.Templates.Skill

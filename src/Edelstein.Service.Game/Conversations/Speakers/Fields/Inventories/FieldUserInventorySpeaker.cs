@@ -5,6 +5,7 @@ using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Service.Game.Fields.Objects.User;
+using Edelstein.Service.Game.Fields.Objects.User.Effects.User;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields.Inventories
 {
@@ -22,10 +23,14 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields.Inventories
             var template = _fieldUser.Service.TemplateManager
                 .Get<ItemTemplate>(templateID);
             _fieldUser.ModifyInventory(i => i.Add(template, quantity)).Wait();
+            _fieldUser.Effect(new QuestEffect(templateID, quantity)).Wait();
         }
 
         public void Remove(int templateID, short quantity = 1)
-            => _fieldUser.ModifyInventory(i => i.Remove(templateID, quantity)).Wait();
+        {
+            _fieldUser.ModifyInventory(i => i.Remove(templateID, quantity)).Wait();
+            _fieldUser.Effect(new QuestEffect(templateID, quantity)).Wait();
+        }
 
         public byte GetInventoryLimit(ItemInventoryType type)
             => (byte) _fieldUser.Character.Inventories[type].SlotMax;

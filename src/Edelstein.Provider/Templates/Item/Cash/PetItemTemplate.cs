@@ -1,3 +1,5 @@
+using Edelstein.Provider.Parsing;
+
 namespace Edelstein.Provider.Templates.Item.Cash
 {
     public class PetItemTemplate : ItemTemplate

@@ -6,11 +6,12 @@ using Edelstein.Core.Scripts;
 using Edelstein.Core.Scripts.Lua;
 using Edelstein.Core.Scripts.Python;
 using Edelstein.Core.Utils.Messaging;
-using Edelstein.Database.InMemory;
-using Edelstein.Database.LiteDB;
-using Edelstein.Database.Postgres;
+using Edelstein.Database.Store.InMemory;
+using Edelstein.Database.Store.LiteDB;
+using Edelstein.Database.Store.Postgres;
 using Edelstein.Provider;
-using Edelstein.Provider.NX;
+using Edelstein.Provider.Parsing;
+using Edelstein.Provider.Parsing.NX;
 using Edelstein.Provider.Templates;
 using Foundatio.Caching;
 using Foundatio.Lock;
@@ -23,7 +24,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
 using StackExchange.Redis;
-using IDataStore = Edelstein.Database.IDataStore;
+using IDataStore = Edelstein.Database.Store.IDataStore;
 
 namespace Edelstein.Core.Bootstrap
 {

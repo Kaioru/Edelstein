@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Edelstein.Database.Entities.Characters;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Provider.Templates.Item;
 using Edelstein.Provider.Templates.Quest;
+using Edelstein.Service.Game.Fields.Objects.User.Effects.User;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
 using MoreLinq.Extensions;
 
@@ -77,6 +79,20 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
         {
             var act = template.Act[state];
 
+            if (!user.Character.HasSlotFor(act.Items
+                .Select(i =>
+                {
+                    var item = user.Service.TemplateManager.Get<ItemTemplate>(i.TemplateID);
+                    var slot = item.ToItemSlot();
+
+                    if (slot is ItemSlotBundle bundle)
+                        bundle.Number = (short) i.Quantity;
+
+                    return slot;
+                })
+                .ToList()))
+                return QuestResult.ActFailedInventory;
+
             if (act.EXP != 0)
             {
                 await user.ModifyStats(s => s.EXP += act.EXP);
@@ -101,6 +117,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
                                 i.Remove(ii.TemplateID, (short) ii.Quantity);
                         }
                     ));
+                await user.Effect(new QuestEffect(act.Items
+                    .Select(i => Tuple.Create(i.TemplateID, i.Quantity))
+                    .ToList()));
             }
 
             return QuestResult.ActSuccess;
