@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MoreLinq;
+using Serilog;
 
 namespace Edelstein.Core.Bootstrap
 {
@@ -92,6 +93,10 @@ namespace Edelstein.Core.Bootstrap
                 .ConfigureServices((context, collection) =>
                 {
                     var options = new StartupOptions();
+                    
+                    Log.Logger = new LoggerConfiguration()
+                        .ReadFrom.Configuration(context.Configuration)
+                        .CreateLogger();
                     
                     context.Configuration.Bind(options);
                     GetProviders(options).ForEach(p => p.Provide(context, collection));
