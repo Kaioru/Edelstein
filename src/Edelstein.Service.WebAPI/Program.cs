@@ -9,7 +9,8 @@ namespace Edelstein.Service.WebAPI
     {
         private static Task Main(string[] args)
             => new Startup()
-                .WithTemplates(TemplateCollectionType.None)
-                .Start<WebAPIService, ServerServiceInfo>(args);
+                .FromConfiguration(args)
+                .ForService<WebAPIService, ServerServiceInfo>()
+                .StartAsync();
     }
 }

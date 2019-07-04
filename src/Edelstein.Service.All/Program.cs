@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
+using Edelstein.Core.Bootstrap.Providers;
+using Edelstein.Provider.Templates;
 
 namespace Edelstein.Service.All
 {
@@ -7,6 +9,9 @@ namespace Edelstein.Service.All
     {
         private static Task Main(string[] args)
             => new Startup()
-                .Start<ContainerService, ContainerServiceInfo>(args);
+                .FromConfiguration(args)
+                .WithProvider(new TemplateProvider(TemplateCollectionType.All))
+                .ForService<ContainerService, ContainerServiceInfo>()
+                .StartAsync();
     }
 }

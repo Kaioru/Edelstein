@@ -10,7 +10,8 @@ namespace Edelstein.Service.Trade
     {
         private static Task Main(string[] args)
             => new Startup()
-                .WithTemplates(TemplateCollectionType.None)
-                .Start<TradeService, TradeServiceInfo>(args);
+                .FromConfiguration(args)
+                .ForService<TradeService, TradeServiceInfo>()
+                .StartAsync();
     }
 }
