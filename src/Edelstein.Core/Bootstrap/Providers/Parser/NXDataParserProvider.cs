@@ -3,7 +3,7 @@ using Edelstein.Provider.Parsing.NX;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Edelstein.Core.Bootstrap.Providers.Data
+namespace Edelstein.Core.Bootstrap.Providers.Parser
 {
     public class NXDataParserProvider : AbstractDataParserProvider
     {
