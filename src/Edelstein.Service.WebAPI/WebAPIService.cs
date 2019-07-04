@@ -9,13 +9,13 @@ using Nancy.Hosting.Self;
 
 namespace Edelstein.Service.WebAPI
 {
-    public class WebAPIService : AbstractPeerService<ServerServiceInfo>
+    public class WebAPIService : AbstractPeerService<WebAPIInfo>
     {
-        private readonly ServerServiceInfo _info;
+        private readonly WebAPIInfo _info;
         private readonly NancyHost _host;
 
         public WebAPIService(
-            IOptions<ServerServiceInfo> info,
+            IOptions<WebAPIInfo> info,
             ICacheClient cacheClient,
             IMessageBusFactory messageBusFactory
         ) : base(info.Value, cacheClient, messageBusFactory)
