@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Edelstein.Service.WebAPI
 {
@@ -15,7 +16,9 @@ namespace Edelstein.Service.WebAPI
     {
         public static void Main(string[] args)
             => new Startup(Host.CreateDefaultBuilder(args)
-                    .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<WebAPIStartup>(); }))
+                    .ConfigureWebHostDefaults(webBuilder => webBuilder
+                        .UseStartup<WebAPIStartup>()
+                        .UseSerilog()))
                 .FromConfiguration(args)
                 .ForService<WebAPIService, WebAPIInfo>()
                 .StartAsync();

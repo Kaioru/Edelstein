@@ -8,4 +8,8 @@
       <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    </ItemGroup>
+
 </Project>
