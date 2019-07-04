@@ -1,8 +1,8 @@
-using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Core.Distributed.Peers;
 
 namespace Edelstein.Service.WebAPI
 {
-    public class WebAPIInfo : ServerServiceInfo
+    public class WebAPIInfo : PeerServiceInfo
     {
         
     }

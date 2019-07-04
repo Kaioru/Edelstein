@@ -17,7 +17,7 @@ namespace Edelstein.Core.Bootstrap
     public class Startup : IStartup
     {
         private readonly IHostBuilder _builder;
-        
+
         public Startup() : this(new HostBuilder())
         {
         }
@@ -34,8 +34,10 @@ namespace Edelstein.Core.Bootstrap
             var parser = options.DataParser;
             var script = options.Script;
             var distributionProvider = distribution.Type switch {
-                StartupDistributionType.InMemory => (IProvider) new InMemoryDistributionProvider(distribution.ConnectionString),
-                StartupDistributionType.Redis => (IProvider) new RedisDistributionProvider(distribution.ConnectionString)
+                StartupDistributionType.InMemory => (IProvider) new InMemoryDistributionProvider(distribution
+                    .ConnectionString),
+                StartupDistributionType.Redis => (IProvider) new RedisDistributionProvider(
+                    distribution.ConnectionString)
                 };
             var databaseProvider = database.Type switch {
                 StartupDatabaseType.InMemory => (IProvider) new InMemoryDatabaseProvider(database.ConnectionString),
@@ -49,10 +51,10 @@ namespace Edelstein.Core.Bootstrap
                 StartupScriptType.Lua => (IProvider) new LuaScriptProvider(script.Path),
                 StartupScriptType.Python => (IProvider) new PythonScriptProvider(script.Path)
                 };
-            
+
             return new List<IProvider> {distributionProvider, databaseProvider, parserProvider, scriptProvider};
         }
-        
+
         public IStartup From(StartupOptions options)
         {
             GetProviders(options).ForEach(p => WithProvider(p));
@@ -77,27 +79,27 @@ namespace Edelstein.Core.Bootstrap
                 })
                 .ConfigureAppConfiguration((context, builder) =>
                 {
-                    var env = context.HostingEnvironment.EnvironmentName;
+                    var env = context.Configuration["ENV"];
                     var split = app.Split(".").ToList();
 
                     split.Insert(split.Count - 1, env);
-                    
+
                     var envFile = string.Join(".", split);
 
                     builder.SetBasePath(Directory.GetCurrentDirectory());
                     builder.AddJsonFile(app, true);
-                    builder.AddJsonFile(envFile , true);
+                    builder.AddJsonFile(envFile, true);
                     builder.AddEnvironmentVariables(appEnv);
                     builder.AddCommandLine(args);
                 })
                 .ConfigureServices((context, collection) =>
                 {
                     var options = new StartupOptions();
-                    
+
                     Log.Logger = new LoggerConfiguration()
                         .ReadFrom.Configuration(context.Configuration)
                         .CreateLogger();
-                    
+
                     context.Configuration.Bind(options);
                     GetProviders(options).ForEach(p => p.Provide(context, collection));
                 });

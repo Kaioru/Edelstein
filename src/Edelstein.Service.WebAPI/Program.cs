@@ -1,14 +1,21 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
 using Edelstein.Core.Distributed.Peers.Info;
-using Edelstein.Provider.Templates;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Service.WebAPI
 {
-    internal static class Program
+    public class Program
     {
-        private static Task Main(string[] args)
-            => new Startup()
+        public static void Main(string[] args)
+            => new Startup(Host.CreateDefaultBuilder(args)
+                    .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<WebAPIStartup>(); }))
                 .FromConfiguration(args)
                 .ForService<WebAPIService, WebAPIInfo>()
                 .StartAsync();
