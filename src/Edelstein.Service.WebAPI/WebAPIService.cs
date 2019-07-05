@@ -31,7 +31,7 @@ namespace Edelstein.Service.WebAPI
 
         public override Task OnStart()
         {
-            WebHost = Host.CreateDefaultBuilder(new string[]{})
+            WebHost = Host.CreateDefaultBuilder()
                 .ConfigureWebHostDefaults(webBuilder => webBuilder
                     .UseStartup<WebAPIStartup>()
                     .UseSerilog()
