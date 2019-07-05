@@ -40,7 +40,6 @@ namespace Edelstein.Service.WebAPI.Controllers
                 _.OperationName = contract.OperationName;
                 _.Inputs = inputs;
                 _.UserContext = new WebAPIContext(Service);
-                _.ThrowOnUnhandledException = true;
             });
 
             if (result.Errors?.Count > 0)
