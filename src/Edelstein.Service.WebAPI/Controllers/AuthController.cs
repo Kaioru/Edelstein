@@ -23,6 +23,33 @@ namespace Edelstein.Service.WebAPI.Controllers
             Service = service;
         }
 
+        private string GetToken(Account account)
+        {
+            var signingKey = Convert.FromBase64String(Service.Info.TokenKey);
+            var expiryDuration = Service.Info.TokenExpiry;
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Issuer = null,
+                Audience = null,
+                IssuedAt = DateTime.UtcNow,
+                NotBefore = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddMinutes(expiryDuration),
+                Subject = new ClaimsIdentity(new List<Claim>
+                {
+                    new Claim("account", account.ID.ToString())
+                }),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(signingKey),
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = jwtTokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+            var token = jwtTokenHandler.WriteToken(jwtToken);
+
+            return token;
+        }
+
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(LoginInput input)
@@ -35,31 +62,11 @@ namespace Edelstein.Service.WebAPI.Controllers
 
                 if (account == null || !BCrypt.Net.BCrypt.Verify(input.Password, account.Password))
                     return Unauthorized("Failed to authenticate");
-                
-                var signingKey = Convert.FromBase64String(Service.Info.TokenKey);
-                var expiryDuration = Service.Info.TokenExpiry;
 
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Issuer = null,
-                    Audience = null,
-                    IssuedAt = DateTime.UtcNow,
-                    NotBefore = DateTime.UtcNow,
-                    Expires = DateTime.UtcNow.AddMinutes(expiryDuration),
-                    Subject = new ClaimsIdentity(new List<Claim> {
-                        new Claim("account", account.ID.ToString())
-                    }),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(signingKey), SecurityAlgorithms.HmacSha256Signature)
-                };
-                
-                var jwtTokenHandler = new JwtSecurityTokenHandler();
-                var jwtToken = jwtTokenHandler.CreateJwtSecurityToken(tokenDescriptor);
-                var token = jwtTokenHandler.WriteToken(jwtToken);
-                
-                return Ok(token);
+                return Ok(GetToken(account));
             }
         }
-        
+
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register(RegisterInput input)
@@ -72,39 +79,19 @@ namespace Edelstein.Service.WebAPI.Controllers
 
                 if (account != null)
                     return Unauthorized("Account already exists");
-                
+
                 account = new Account
                 {
                     Username = input.Username,
                     Password = BCrypt.Net.BCrypt.HashPassword(input.Password)
                 };
-                
+
                 store.Insert(account);
-                
-                var signingKey = Convert.FromBase64String(Service.Info.TokenKey);
-                var expiryDuration = Service.Info.TokenExpiry;
 
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Issuer = null,
-                    Audience = null,
-                    IssuedAt = DateTime.UtcNow,
-                    NotBefore = DateTime.UtcNow,
-                    Expires = DateTime.UtcNow.AddMinutes(expiryDuration),
-                    Subject = new ClaimsIdentity(new List<Claim> {
-                        new Claim("account", account.ID.ToString())
-                    }),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(signingKey), SecurityAlgorithms.HmacSha256Signature)
-                };
-                
-                var jwtTokenHandler = new JwtSecurityTokenHandler();
-                var jwtToken = jwtTokenHandler.CreateJwtSecurityToken(tokenDescriptor);
-                var token = jwtTokenHandler.WriteToken(jwtToken);
-
-                return Ok(token);
+                return Ok(GetToken(account));
             }
         }
-        
+
         [Authorize]
         [HttpGet]
         [Route("test")]
