@@ -1,5 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Edelstein.Database.Entities;
 using Edelstein.Database.Store;
+using Edelstein.Service.WebAPI.Types;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Edelstein.Service.WebAPI.Controllers
 {
@@ -14,11 +24,94 @@ namespace Edelstein.Service.WebAPI.Controllers
             _dataStore = dataStore;
         }
 
-        [HttpGet]
-        [Route("hello")]
-        public string Hello()
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login(LoginInput input)
         {
-            return "hello world";
+            using (var store = _dataStore.OpenSession())
+            {
+                var account = store
+                    .Query<Account>()
+                    .FirstOrDefault(a => a.Username == input.Username);
+
+                if (account == null || !BCrypt.Net.BCrypt.Verify(input.Password, account.Password))
+                    return Unauthorized("Failed to authenticate");
+                
+                var signingKey = Convert.FromBase64String("aGVsbG9oZWxsb215bmFtZXNkaWJv");
+                var expiryDuration = 24 * 60;
+
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Issuer = null,
+                    Audience = null,
+                    IssuedAt = DateTime.UtcNow,
+                    NotBefore = DateTime.UtcNow,
+                    Expires = DateTime.UtcNow.AddMinutes(expiryDuration),
+                    Subject = new ClaimsIdentity(new List<Claim> {
+                        new Claim("account", account.ID.ToString())
+                    }),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(signingKey), SecurityAlgorithms.HmacSha256Signature)
+                };
+                
+                var jwtTokenHandler = new JwtSecurityTokenHandler();
+                var jwtToken = jwtTokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+                var token = jwtTokenHandler.WriteToken(jwtToken);
+                
+                return Ok(token);
+            }
+        }
+        
+        [HttpPost]
+        [Route("register")]
+        public async Task<IActionResult> Register(RegisterInput input)
+        {
+            using (var store = _dataStore.OpenSession())
+            {
+                var account = store
+                    .Query<Account>()
+                    .FirstOrDefault(a => a.Username == input.Username);
+
+                if (account != null)
+                    return Unauthorized("Account already exists");
+                
+                account = new Account
+                {
+                    Username = input.Username,
+                    Password = BCrypt.Net.BCrypt.HashPassword(input.Password)
+                };
+                
+                store.Insert(account);
+                
+                var signingKey = Convert.FromBase64String("aGVsbG9oZWxsb215bmFtZXNkaWJv");
+                var expiryDuration = 24 * 60;
+
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Issuer = null,
+                    Audience = null,
+                    IssuedAt = DateTime.UtcNow,
+                    NotBefore = DateTime.UtcNow,
+                    Expires = DateTime.UtcNow.AddMinutes(expiryDuration),
+                    Subject = new ClaimsIdentity(new List<Claim> {
+                        new Claim("account", account.ID.ToString())
+                    }),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(signingKey), SecurityAlgorithms.HmacSha256Signature)
+                };
+                
+                var jwtTokenHandler = new JwtSecurityTokenHandler();
+                var jwtToken = jwtTokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+                var token = jwtTokenHandler.WriteToken(jwtToken);
+
+                return Ok(token);
+            }
+        }
+        
+        [Authorize]
+        [HttpGet]
+        [Route("test")]
+        public string Test()
+        {
+            return "Accessed";
         }
     }
 }
