@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Edelstein.Database.Entities;
-using Edelstein.Database.Store;
 using Edelstein.Service.WebAPI.Types;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,18 +16,18 @@ namespace Edelstein.Service.WebAPI.Controllers
     [Route("auth")]
     public class AuthController : Controller
     {
-        private readonly IDataStore _dataStore;
+        private WebAPIService Service { get; }
 
-        public AuthController(IDataStore dataStore)
+        public AuthController(WebAPIService service)
         {
-            _dataStore = dataStore;
+            Service = service;
         }
 
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(LoginInput input)
         {
-            using (var store = _dataStore.OpenSession())
+            using (var store = Service.DataStore.OpenSession())
             {
                 var account = store
                     .Query<Account>()
@@ -37,8 +36,8 @@ namespace Edelstein.Service.WebAPI.Controllers
                 if (account == null || !BCrypt.Net.BCrypt.Verify(input.Password, account.Password))
                     return Unauthorized("Failed to authenticate");
                 
-                var signingKey = Convert.FromBase64String("aGVsbG9oZWxsb215bmFtZXNkaWJv");
-                var expiryDuration = 24 * 60;
+                var signingKey = Convert.FromBase64String(Service.Info.TokenKey);
+                var expiryDuration = Service.Info.TokenExpiry;
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
@@ -65,7 +64,7 @@ namespace Edelstein.Service.WebAPI.Controllers
         [Route("register")]
         public async Task<IActionResult> Register(RegisterInput input)
         {
-            using (var store = _dataStore.OpenSession())
+            using (var store = Service.DataStore.OpenSession())
             {
                 var account = store
                     .Query<Account>()
@@ -82,8 +81,8 @@ namespace Edelstein.Service.WebAPI.Controllers
                 
                 store.Insert(account);
                 
-                var signingKey = Convert.FromBase64String("aGVsbG9oZWxsb215bmFtZXNkaWJv");
-                var expiryDuration = 24 * 60;
+                var signingKey = Convert.FromBase64String(Service.Info.TokenKey);
+                var expiryDuration = Service.Info.TokenExpiry;
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
