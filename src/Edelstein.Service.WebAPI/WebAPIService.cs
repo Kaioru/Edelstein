@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database.Store;
+using Edelstein.Service.WebAPI.Logging;
 using Foundatio.Caching;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +17,8 @@ namespace Edelstein.Service.WebAPI
 {
     public class WebAPIService : AbstractPeerService<WebAPIInfo>
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+        
         public IHost WebHost { get; set; }
         public IDataStore DataStore { get; }
 
@@ -29,7 +32,7 @@ namespace Edelstein.Service.WebAPI
             DataStore = dataStore;
         }
 
-        public override Task OnStart()
+        public override async Task OnStart()
         {
             WebHost = Host.CreateDefaultBuilder()
                 .ConfigureWebHostDefaults(webBuilder => webBuilder
@@ -53,12 +56,15 @@ namespace Edelstein.Service.WebAPI
                             });
                     }))
                 .Build();
-            return WebHost.StartAsync();
+            
+            await base.OnStart();
+            await WebHost.StartAsync();
         }
 
-        public override Task OnStop()
+        public override async Task OnStop()
         {
-            return WebHost?.StopAsync();
+            await base.OnStop();
+            await WebHost.StopAsync();
         }
 
         public override Task OnTick(DateTime now)
