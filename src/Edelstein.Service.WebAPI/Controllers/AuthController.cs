@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Edelstein.Database.Entities;
-using Edelstein.Service.WebAPI.Types;
+using Edelstein.Service.WebAPI.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -52,15 +52,15 @@ namespace Edelstein.Service.WebAPI.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(LoginInput input)
+        public async Task<IActionResult> Login(LoginContract contract)
         {
             using (var store = Service.DataStore.OpenSession())
             {
                 var account = store
                     .Query<Account>()
-                    .FirstOrDefault(a => a.Username == input.Username);
+                    .FirstOrDefault(a => a.Username == contract.Username);
 
-                if (account == null || !BCrypt.Net.BCrypt.Verify(input.Password, account.Password))
+                if (account == null || !BCrypt.Net.BCrypt.Verify(contract.Password, account.Password))
                     return Unauthorized("Failed to authenticate");
 
                 return Ok(GetToken(account));
@@ -69,21 +69,21 @@ namespace Edelstein.Service.WebAPI.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register(RegisterInput input)
+        public async Task<IActionResult> Register(RegisterContract contract)
         {
             using (var store = Service.DataStore.OpenSession())
             {
                 var account = store
                     .Query<Account>()
-                    .FirstOrDefault(a => a.Username == input.Username);
+                    .FirstOrDefault(a => a.Username == contract.Username);
 
                 if (account != null)
                     return Unauthorized("Account already exists");
 
                 account = new Account
                 {
-                    Username = input.Username,
-                    Password = BCrypt.Net.BCrypt.HashPassword(input.Password)
+                    Username = contract.Username,
+                    Password = BCrypt.Net.BCrypt.HashPassword(contract.Password)
                 };
 
                 store.Insert(account);
