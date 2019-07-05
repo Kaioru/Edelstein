@@ -41,7 +41,8 @@ namespace Edelstein.Service.WebAPI
                     .ConfigureServices((context, collection) => collection.AddSingleton(f => this))
                     .ConfigureServices((context, collection) =>
                     {
-                        collection.AddControllers();
+                        collection.AddControllers()
+                            .AddNewtonsoftJson();
                         collection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                             .AddJwtBearer(options =>
                             {

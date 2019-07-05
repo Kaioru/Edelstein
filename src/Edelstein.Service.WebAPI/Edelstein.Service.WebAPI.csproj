@@ -10,8 +10,10 @@
 
     <ItemGroup>
       <PackageReference Include="BCrypt.Net" Version="0.1.0" />
+      <PackageReference Include="GraphQL" Version="2.4.0" />
       <PackageReference Include="LibLog" Version="5.0.6" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0-preview6.19307.2" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
       <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
     </ItemGroup>

@@ -37,7 +37,7 @@ namespace Edelstein.Service.WebAPI.Controllers
                 Expires = DateTime.UtcNow.AddMinutes(expiryDuration),
                 Subject = new ClaimsIdentity(new List<Claim>
                 {
-                    new Claim("account", account.ID.ToString())
+                    new Claim(ClaimTypes.Sid, account.ID.ToString())
                 }),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(signingKey),
                     SecurityAlgorithms.HmacSha256Signature)
@@ -90,14 +90,6 @@ namespace Edelstein.Service.WebAPI.Controllers
 
                 return Ok(GetToken(account));
             }
-        }
-
-        [Authorize]
-        [HttpGet]
-        [Route("test")]
-        public string Test()
-        {
-            return "Accessed";
         }
     }
 }
