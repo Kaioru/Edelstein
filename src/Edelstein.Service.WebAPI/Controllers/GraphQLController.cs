@@ -46,7 +46,7 @@ namespace Edelstein.Service.WebAPI.Controllers
             if (result.Errors?.Count > 0)
                 return BadRequest(result);
 
-            return Json(result);
+            return Ok(result);
         }
     }
 }
