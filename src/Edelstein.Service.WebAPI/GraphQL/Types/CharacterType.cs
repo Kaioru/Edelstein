@@ -5,7 +5,7 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
 {
     public class CharacterType : ObjectGraphType<Character>
     {
-        public CharacterType()
+        public CharacterType(WebAPIService service)
         {
             Name = "Character";
             

@@ -3,8 +3,11 @@ using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database.Store;
+using Edelstein.Service.WebAPI.GraphQL;
+using Edelstein.Service.WebAPI.GraphQL.Types;
 using Edelstein.Service.WebAPI.Logging;
 using Foundatio.Caching;
+using GraphQL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,14 +21,14 @@ namespace Edelstein.Service.WebAPI
     public class WebAPIService : AbstractPeerService<WebAPIInfo>
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
-        
+
         public IHost WebHost { get; set; }
         public IDataStore DataStore { get; }
 
         public WebAPIService(
             IOptions<WebAPIInfo> info,
             ICacheClient cacheClient,
-            IMessageBusFactory messageBusFactory, 
+            IMessageBusFactory messageBusFactory,
             IDataStore dataStore
         ) : base(info.Value, cacheClient, messageBusFactory)
         {
@@ -55,9 +58,17 @@ namespace Edelstein.Service.WebAPI
                                     IssuerSigningKey = new SymmetricSecurityKey(signingKey)
                                 };
                             });
+
+                        collection.AddSingleton<IDependencyResolver>(s =>
+                            new FuncDependencyResolver(s.GetRequiredService));
+                        collection.AddSingleton<WebAPISchema>();
+                        collection.AddSingleton<WebAPIQuery>();
+                        collection.AddSingleton<AccountDataType>();
+                        collection.AddSingleton<AccountType>();
+                        collection.AddSingleton<CharacterType>();
                     }))
                 .Build();
-            
+
             await base.OnStart();
             await WebHost.StartAsync();
         }

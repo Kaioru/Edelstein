@@ -6,7 +6,7 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
 {
     public class AccountType : ObjectGraphType<Account>
     {
-        public AccountType()
+        public AccountType(WebAPIService service)
         {
             Name = "Account";
 
@@ -20,9 +20,6 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
                 "data",
                 resolve: ctx =>
                 {
-                    var userCtx = (WebAPIContext) ctx.UserContext;
-                    var service = userCtx.Service;
-
                     using (var store = service.DataStore.OpenSession())
                     {
                         return store

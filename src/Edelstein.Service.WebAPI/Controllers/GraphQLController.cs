@@ -1,13 +1,13 @@
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Edelstein.Service.WebAPI.Contracts;
 using Edelstein.Service.WebAPI.GraphQL;
+using Edelstein.Service.WebAPI.GraphQL.Types;
 using GraphQL;
-using GraphQL.Types;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Edelstein.Service.WebAPI.Controllers
 {
@@ -15,10 +15,12 @@ namespace Edelstein.Service.WebAPI.Controllers
     public class GraphQLController : Controller
     {
         private WebAPIService Service { get; }
+        private IServiceProvider Provider { get; }
 
-        public GraphQLController(WebAPIService service)
+        public GraphQLController(WebAPIService service, IServiceProvider provider)
         {
             Service = service;
+            Provider = provider;
         }
 
         [Authorize]
@@ -26,20 +28,15 @@ namespace Edelstein.Service.WebAPI.Controllers
         [Route("graphql")]
         public async Task<IActionResult> Post(GraphQLContract contract)
         {
-            var accountID = Convert.ToInt32(((ClaimsIdentity) User.Identity).Claims
-                .Single(c => c.Type == ClaimTypes.Sid).Value);
             var inputs = contract.Variables.ToInputs();
-            var schema = new Schema
-            {
-                Query = new WebAPIQuery(Service, accountID)
-            };
+            var schema = Provider.GetService<WebAPISchema>();
             var result = await new DocumentExecuter().ExecuteAsync(_ =>
             {
                 _.Schema = schema;
                 _.Query = contract.Query;
                 _.OperationName = contract.OperationName;
                 _.Inputs = inputs;
-                _.UserContext = new WebAPIContext(Service);
+                _.UserContext = User.Identity;
             });
 
             if (result.Errors?.Count > 0)
