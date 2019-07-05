@@ -24,6 +24,7 @@ namespace Edelstein.Service.WebAPI
 
         public IHost WebHost { get; set; }
         public IDataStore DataStore { get; }
+        public ICacheClient AccountStateCache { get; }
 
         public WebAPIService(
             IOptions<WebAPIInfo> info,
@@ -33,6 +34,7 @@ namespace Edelstein.Service.WebAPI
         ) : base(info.Value, cacheClient, messageBusFactory)
         {
             DataStore = dataStore;
+            AccountStateCache = new ScopedCacheClient(cacheClient, Scopes.MigrationAccountCache);
         }
 
         public override async Task OnStart()
@@ -63,8 +65,9 @@ namespace Edelstein.Service.WebAPI
                             new FuncDependencyResolver(s.GetRequiredService));
                         collection.AddSingleton<WebAPISchema>();
                         collection.AddSingleton<WebAPIQuery>();
-                        collection.AddSingleton<AccountDataType>();
                         collection.AddSingleton<AccountType>();
+                        collection.AddSingleton<AccountStateType>();
+                        collection.AddSingleton<AccountDataType>();
                         collection.AddSingleton<CharacterType>();
                     }))
                 .Build();

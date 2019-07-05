@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Database.Entities;
 using GraphQL.Types;
 
@@ -10,11 +12,18 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
         {
             Name = "Account";
 
-            Field(x => x.ID);
+            Field("id", x => x.ID);
             Field(x => x.Username);
             Field(x => x.NexonCash);
             Field(x => x.MaplePoint);
             Field(x => x.PrepaidNXCash);
+
+            Field<AccountStateType>("state", resolve: ctx =>
+            {
+                if (service.AccountStateCache.ExistsAsync(ctx.Source.ID.ToString()).Result)
+                    return service.AccountStateCache.GetAsync<MigrationState>(ctx.Source.ID.ToString()).Result;
+                return MigrationState.LoggedOut;
+            });
 
             Field<ListGraphType<AccountDataType>>(
                 "data",

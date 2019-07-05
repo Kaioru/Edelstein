@@ -9,7 +9,7 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
         {
             Name = "Character";
             
-            Field(x => x.ID);
+            Field("id", x => x.ID);
             Field(x => x.Name);
             Field<int>("gender", x => x.Gender);
             Field<int>("skin", x => x.Skin);
