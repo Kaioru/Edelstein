@@ -1,3 +1,5 @@
+using System;
+using Edelstein.Core.Types;
 using Edelstein.Database.Entities.Characters;
 using GraphQL.Types;
 
@@ -8,7 +10,7 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
         public CharacterType(WebAPIService service)
         {
             Name = "Character";
-            
+
             Field("id", x => x.ID);
             Field(x => x.Name);
             Field<int>("gender", x => x.Gender);
@@ -17,6 +19,7 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
             Field(x => x.Hair);
             Field<int>("level", x => x.Level);
             Field<int>("job", x => x.Job);
+            Field<string>("jobName", x => Enum.GetName(typeof(Job), x.Job));
             Field<int>("str", x => x.STR);
             Field<int>("dex", x => x.DEX);
             Field<int>("int", x => x.INT);
