@@ -18,8 +18,8 @@ services:
       - "APP_Service__GameServices__1__Host=${HOST:-127.0.0.1}"
       - "APP_Service__ShopServices__0__Host=${HOST:-127.0.0.1}"
       - "APP_Service__TradeServices__0__Host=${HOST:-127.0.0.1}"
-      - "APP_DatabaseType=PostgreSQL"
-      - "APP_DatabaseConnectionString=host=db;username=postgres;database=postgres;"
+      - "APP_Database_Type=PostgreSQL"
+      - "APP_Database_ConnectionString=host=db;username=postgres;database=postgres;"
     links:
       - db
   db:
