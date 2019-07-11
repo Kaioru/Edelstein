@@ -4,10 +4,12 @@ using Edelstein.Core.Distributed;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database.Store;
 using Edelstein.Service.WebAPI.GraphQL;
-using Edelstein.Service.WebAPI.GraphQL.Types;
 using Edelstein.Service.WebAPI.Logging;
 using Foundatio.Caching;
 using GraphQL;
+using GraphQL.Server;
+using GraphQL.Server.Transports.AspNetCore;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,32 +45,42 @@ namespace Edelstein.Service.WebAPI
                 .ConfigureWebHostDefaults(webBuilder => webBuilder
                     .UseStartup<WebAPIStartup>()
                     .UseSerilog()
+                    .ConfigureKestrel(context => context.AllowSynchronousIO = true)
                     .ConfigureServices((context, collection) => collection.AddSingleton(f => this))
                     .ConfigureServices((context, collection) =>
                     {
-                        collection.AddControllers()
+                        collection
+                            .AddControllers()
                             .AddNewtonsoftJson();
-                        collection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                        collection
+                            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                             .AddJwtBearer(options =>
                             {
                                 var signingKey = Convert.FromBase64String(Info.TokenKey);
                                 options.TokenValidationParameters = new TokenValidationParameters
                                 {
-                                    ValidateIssuer = false,
-                                    ValidateAudience = false,
+                                    ValidateIssuer = !string.IsNullOrEmpty(Info.TokenIssuer),
+                                    ValidateAudience = !string.IsNullOrEmpty(Info.TokenAudience),
                                     ValidateIssuerSigningKey = true,
+                                    ValidIssuer = Info.TokenIssuer,
+                                    ValidAudience = Info.TokenAudience,
                                     IssuerSigningKey = new SymmetricSecurityKey(signingKey)
                                 };
                             });
 
-                        collection.AddSingleton<IDependencyResolver>(s =>
-                            new FuncDependencyResolver(s.GetRequiredService));
-                        collection.AddSingleton<WebAPISchema>();
-                        collection.AddSingleton<WebAPIQuery>();
-                        collection.AddSingleton<AccountType>();
-                        collection.AddSingleton<AccountStateType>();
-                        collection.AddSingleton<AccountDataType>();
-                        collection.AddSingleton<CharacterType>();
+                        collection.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
+                        collection.AddSingleton<ISchema, WebAPISchema>();
+                        collection.AddSingleton<IUserContextBuilder, WebAPIContextBuilder>();
+
+                        collection
+                            .AddGraphQL()
+                            .AddGraphTypes()
+                            .AddGraphQLAuthorization(options =>
+                            {
+                                options.AddPolicy("Authorized", p => p.RequireAuthenticatedUser());
+                            })
+                            .AddDataLoader()
+                            .AddWebSockets();
                     }))
                 .Build();
 

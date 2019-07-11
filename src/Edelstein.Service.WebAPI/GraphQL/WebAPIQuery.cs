@@ -1,8 +1,7 @@
-using System;
 using System.Linq;
-using System.Security.Claims;
 using Edelstein.Database.Entities;
 using Edelstein.Service.WebAPI.GraphQL.Types;
+using GraphQL.Server.Authorization.AspNetCore;
 using GraphQL.Types;
 
 namespace Edelstein.Service.WebAPI.GraphQL
@@ -15,9 +14,7 @@ namespace Edelstein.Service.WebAPI.GraphQL
                 "account",
                 resolve: ctx =>
                 {
-                    var identity = (ClaimsIdentity) ctx.UserContext;
-                    var accountID = Convert.ToInt32(identity.Claims
-                        .Single(c => c.Type == ClaimTypes.Sid).Value);
+                    var accountID = ((WebAPIContext) ctx.UserContext).AccountID;
                     using (var store = service.DataStore.OpenSession())
                     {
                         return store
@@ -25,7 +22,7 @@ namespace Edelstein.Service.WebAPI.GraphQL
                             .First(a => a.ID == accountID);
                     }
                 }
-            );
+            ).AuthorizeWith("Authorized");
         }
     }
 }
