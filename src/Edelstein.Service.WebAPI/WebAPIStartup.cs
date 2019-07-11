@@ -1,5 +1,6 @@
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
+using GraphQL.Server.Ui.Voyager;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,7 @@ namespace Edelstein.Service.WebAPI
             app.UseGraphQL<ISchema>();
             app.UseGraphQLWebSockets<ISchema>();
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
+            app.UseGraphQLVoyager(new GraphQLVoyagerOptions());
         }
     }
 }

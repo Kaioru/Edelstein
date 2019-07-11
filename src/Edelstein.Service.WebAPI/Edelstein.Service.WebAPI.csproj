@@ -16,6 +16,7 @@
       <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="3.4.0" />
       <PackageReference Include="GraphQL.Server.Transports.WebSockets" Version="3.4.0" />
       <PackageReference Include="GraphQL.Server.Ui.Playground" Version="3.4.0" />
+      <PackageReference Include="GraphQL.Server.Ui.Voyager" Version="3.4.0" />
       <PackageReference Include="LibLog" Version="5.0.6" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0-preview6.19307.2" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
