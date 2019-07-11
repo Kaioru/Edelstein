@@ -59,9 +59,11 @@ namespace Edelstein.Service.WebAPI
                                 var signingKey = Convert.FromBase64String(Info.TokenKey);
                                 options.TokenValidationParameters = new TokenValidationParameters
                                 {
-                                    ValidateIssuer = false,
-                                    ValidateAudience = false,
+                                    ValidateIssuer = string.IsNullOrEmpty(Info.TokenIssuer),
+                                    ValidateAudience = string.IsNullOrEmpty(Info.TokenAudience),
                                     ValidateIssuerSigningKey = true,
+                                    ValidIssuer = Info.TokenIssuer,
+                                    ValidAudience = Info.TokenAudience,
                                     IssuerSigningKey = new SymmetricSecurityKey(signingKey)
                                 };
                             });
