@@ -59,8 +59,8 @@ namespace Edelstein.Service.WebAPI
                                 var signingKey = Convert.FromBase64String(Info.TokenKey);
                                 options.TokenValidationParameters = new TokenValidationParameters
                                 {
-                                    ValidateIssuer = string.IsNullOrEmpty(Info.TokenIssuer),
-                                    ValidateAudience = string.IsNullOrEmpty(Info.TokenAudience),
+                                    ValidateIssuer = !string.IsNullOrEmpty(Info.TokenIssuer),
+                                    ValidateAudience = !string.IsNullOrEmpty(Info.TokenAudience),
                                     ValidateIssuerSigningKey = true,
                                     ValidIssuer = Info.TokenIssuer,
                                     ValidAudience = Info.TokenAudience,
