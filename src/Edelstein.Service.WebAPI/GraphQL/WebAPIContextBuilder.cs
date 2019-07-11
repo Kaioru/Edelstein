@@ -15,7 +15,7 @@ namespace Edelstein.Service.WebAPI.GraphQL
             {
                 AccountID = Convert.ToInt32(
                     httpContext.User.Claims
-                        .Single(c => c.Type == ClaimTypes.Name)?.Value
+                        .SingleOrDefault(c => c.Type == ClaimTypes.Name)?.Value
                 )
             };
         }
