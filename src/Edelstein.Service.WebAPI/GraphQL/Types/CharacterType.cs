@@ -21,11 +21,11 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
             Field<int>("dex", x => x.DEX);
             Field<int>("int", x => x.INT);
             Field<int>("luk", x => x.LUK);
-            Field(x => x.HP);
+            Field("hp", x => x.HP);
             Field(x => x.MaxHP);
-            Field(x => x.MP);
+            Field("mp", x => x.MP);
             Field(x => x.MaxMP);
-            Field(x => x.EXP);
+            Field("exp", x => x.EXP);
             Field<int>("pop", x => x.POP);
             Field(x => x.Money);
         }
