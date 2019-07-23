@@ -119,6 +119,16 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             }
         }
 
+        public Task HireTutor(bool spawn)
+        {
+            using (var p = new Packet(SendPacketOperations.UserHireTutor))
+            {
+                p.Encode<bool>(spawn);
+
+                return SendPacket(p);
+            }
+        }
+
         public Task TutorMessage(int idx, int duration)
         {
             using (var p = new Packet(SendPacketOperations.UserTutorMsg))

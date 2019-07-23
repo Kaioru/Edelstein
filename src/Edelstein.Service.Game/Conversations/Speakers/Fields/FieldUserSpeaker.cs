@@ -214,6 +214,9 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
         public void BalloonMessage(string text, int width, int height)
             => Obj.BalloonMessage(text, new Size(width, height)).Wait();
 
+        public void HireTutor(bool spawn)
+            => Obj.HireTutor(spawn).Wait();
+
         public void TutorMessage(int idx, int duration)
             => Obj.TutorMessage(idx, duration).Wait();
 
