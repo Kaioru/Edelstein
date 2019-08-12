@@ -315,8 +315,38 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
             if (MP < MaxMP)
                 MP = MaxMP;
 
+            if (Level <= 10) return;
+            if (SkillConstants.IsExtendSPJob(Job))
+            {
+                byte jobLevel = 0;
+
+                if (SkillConstants.IsEvanJob(Job))
+                {
+                    if (Level <= 200) jobLevel = 10;
+                    if (Level <= 160) jobLevel = 9;
+                    if (Level <= 120) jobLevel = 8;
+                    if (Level <= 100) jobLevel = 7;
+                    if (Level <= 80) jobLevel = 6;
+                    if (Level <= 60) jobLevel = 5;
+                    if (Level <= 50) jobLevel = 4;
+                    if (Level <= 40) jobLevel = 3;
+                    if (Level <= 30) jobLevel = 2;
+                    if (Level <= 20) jobLevel = 1;
+                }
+                else
+                {
+                    if (Level <= 200) jobLevel = 4;
+                    if (Level <= 120) jobLevel = 3;
+                    if (Level <= 70) jobLevel = 2;
+                    if (Level <= 30) jobLevel = 1;
+                }
+
+                if (jobLevel > 0)
+                    SetExtendSP(jobLevel, (byte) (GetExtendSP(jobLevel) + 3));
+            }
+            else SP += 3;
+            
             AP += 5;
-            SP += 3;
         }
     }
 }
