@@ -28,6 +28,8 @@ namespace Edelstein.Service.Shop.Services
         public AccountData AccountData { get; set; }
         public Character Character { get; set; }
 
+        public int HighestCharacterLevelInThisAccount { get; set; }
+
         public ShopSocket(
             IChannel channel,
             uint seqSend,

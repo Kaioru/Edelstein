@@ -45,6 +45,11 @@ namespace Edelstein.Service.Shop.Services
                     AccountData = data;
                     Character = character;
 
+                    HighestCharacterLevelInThisAccount = store
+                        .Query<Character>()
+                        .Where(c => c.AccountDataID == data.ID)
+                        .Max(c => c.Level);
+
                     using (var p = new Packet(SendPacketOperations.SetCashShop))
                     {
                         character.EncodeData(p);
@@ -145,7 +150,7 @@ namespace Edelstein.Service.Shop.Services
                         p.Encode<short>(0);
 
                         p.Encode<bool>(false); // m_bEventOn
-                        p.Encode<int>(0); // m_nHighestCharacterLevelInThisAccount
+                        p.Encode<int>(HighestCharacterLevelInThisAccount);
                         await SendPacket(p);
                     }
                 }
