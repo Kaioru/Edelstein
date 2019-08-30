@@ -12,4 +12,4 @@ jobs:
       - run: git submodule update --init --recursive
       - run: dotnet restore
       - run: dotnet build
-      - run: for d in test/*; do dotnet test "$d"; done
+      # - run: for d in test/*; do dotnet test "$d"; done
