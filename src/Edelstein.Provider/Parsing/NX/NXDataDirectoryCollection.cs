@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Duey.NX;
+using Duey;
 
 namespace Edelstein.Provider.Parsing.NX
 {
