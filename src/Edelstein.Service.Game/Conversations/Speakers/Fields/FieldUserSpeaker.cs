@@ -130,6 +130,11 @@ namespace Edelstein.Service.Game.Conversations.Speakers.Fields
             Obj.ModifyStats(s => s.SetExtendSP(jobLevel, sp)).Wait();
         }
 
+        public void ModifySkill(int skill, int level, int masterLevel = 0)
+        {
+            Obj.ModifySkills(s => s.Set(skill, level, masterLevel)).Wait();
+        }
+
         public int Exp
         {
             get => Obj.Character.EXP;
