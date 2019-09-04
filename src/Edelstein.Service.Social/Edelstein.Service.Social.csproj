@@ -9,4 +9,8 @@
       <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="LibLog" Version="5.0.6" />
+    </ItemGroup>
+
 </Project>

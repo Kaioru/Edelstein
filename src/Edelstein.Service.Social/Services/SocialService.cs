@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Utils.Messaging;
+using Edelstein.Database.Store;
+using Edelstein.Service.Social.Managers;
 using Foundatio.Caching;
 using Microsoft.Extensions.Options;
 
@@ -10,18 +12,23 @@ namespace Edelstein.Service.Social.Services
 {
     public class SocialService : AbstractPeerService<SocialServiceInfo>
     {
+        public IDataStore DataStore { get; }
+        public RankingManager RankingManager { get; }
+
         public SocialService(
             IOptions<SocialServiceInfo> info,
             ICacheClient cacheClient,
-            IMessageBusFactory messageBusFactory
+            IMessageBusFactory messageBusFactory,
+            IDataStore dataStore
         ) : base(info.Value, cacheClient, messageBusFactory)
         {
-            // TODO: MessageBus.SubscribeAsync<>();
+            DataStore = dataStore;
+            RankingManager = new RankingManager(this);
         }
 
-        public override Task OnTick(DateTime now)
+        public override async Task OnTick(DateTime now)
         {
-            return Task.CompletedTask;
+            await RankingManager.OnTick(now);
         }
     }
 }

@@ -74,7 +74,8 @@ namespace Edelstein.Service.All
                 .Select(i => new SocialService(
                     Options.Create(i),
                     _serviceProvider.GetService<ICacheClient>(),
-                    _serviceProvider.GetService<IMessageBusFactory>()
+                    _serviceProvider.GetService<IMessageBusFactory>(),
+                    _serviceProvider.GetService<IDataStore>()
                 )));
 
             await Task.WhenAll(_services.Select(s => s.StartAsync(cancellationToken)));
