@@ -57,7 +57,7 @@ namespace Edelstein.Service.Social.Managers
                         var jobRanking = new Dictionary<int, int>();
 
                         characters
-                            .GroupBy(c => c.Job / 100)
+                            .GroupBy(c => c.Job % 1000 / 100)
                             .ForEach(job => job
                                 .OrderBy(c => c.Level, OrderByDirection.Descending)
                                 .Select((c, index) => new {CharacterID = c.ID, Rank = index + 1})
