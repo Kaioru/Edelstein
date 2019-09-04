@@ -229,7 +229,20 @@ namespace Edelstein.Service.Login.Services
                             c.EncodeLook(p);
 
                             p.Encode<bool>(false);
-                            p.Encode<bool>(false);
+
+                            var rank = store
+                                .Query<RankRecord>()
+                                .FirstOrDefault(r => r.CharacterID == c.ID);
+
+                            if (rank != null)
+                            {
+                                p.Encode<bool>(true);
+                                p.Encode<int>(rank.WorldRank);
+                                p.Encode<int>(rank.WorldRankGap);
+                                p.Encode<int>(rank.JobRank);
+                                p.Encode<int>(rank.JobRankGap);
+                            }
+                            else p.Encode<bool>(false);
                         });
 
                         p.Encode<bool>(
