@@ -78,11 +78,13 @@ namespace Edelstein.Service.Social.Managers
                                 };
                                 store.Insert(ranking);
                             }
+                            else
+                            {
+                                ranking.WorldRankGap = worldRanking[c.ID] - ranking.WorldRank;
+                                ranking.JobRankGap = jobRanking[c.ID] - ranking.JobRank;
+                            }
 
-                            ranking.WorldRankGap = worldRanking[c.ID] - ranking.WorldRank;
                             ranking.WorldRank = worldRanking[c.ID];
-
-                            ranking.JobRankGap = jobRanking[c.ID] - ranking.JobRank;
                             ranking.JobRank = jobRanking[c.ID];
 
                             store.Update(ranking);
