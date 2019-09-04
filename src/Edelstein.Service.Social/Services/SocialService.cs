@@ -4,16 +4,17 @@ using Edelstein.Core.Distributed;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Utils.Messaging;
 using Foundatio.Caching;
+using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Social.Services
 {
     public class SocialService : AbstractPeerService<SocialServiceInfo>
     {
         public SocialService(
-            SocialServiceInfo info,
+            IOptions<SocialServiceInfo> info,
             ICacheClient cacheClient,
             IMessageBusFactory messageBusFactory
-        ) : base(info, cacheClient, messageBusFactory)
+        ) : base(info.Value, cacheClient, messageBusFactory)
         {
             // TODO: MessageBus.SubscribeAsync<>();
         }

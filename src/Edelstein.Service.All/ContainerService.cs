@@ -7,12 +7,12 @@ using Baseline;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Scripts;
 using Edelstein.Core.Utils.Messaging;
-using Edelstein.Database;
 using Edelstein.Database.Store;
 using Edelstein.Provider.Templates;
 using Edelstein.Service.Game.Services;
 using Edelstein.Service.Login.Services;
 using Edelstein.Service.Shop.Services;
+using Edelstein.Service.Social.Services;
 using Edelstein.Service.Trade.Services;
 using Foundatio.Caching;
 using Foundatio.Lock;
@@ -69,6 +69,12 @@ namespace Edelstein.Service.All
                     _serviceProvider.GetService<ICacheClient>(),
                     _serviceProvider.GetService<IMessageBusFactory>(),
                     _serviceProvider.GetService<IDataStore>()
+                )));
+            _services.AddRange(_info.SocialServices
+                .Select(i => new SocialService(
+                    Options.Create(i),
+                    _serviceProvider.GetService<ICacheClient>(),
+                    _serviceProvider.GetService<IMessageBusFactory>()
                 )));
 
             await Task.WhenAll(_services.Select(s => s.StartAsync(cancellationToken)));
