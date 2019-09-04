@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Provider.Templates.String;
+using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Mob;
 using Edelstein.Service.Game.Fields.Objects.NPC;
@@ -69,6 +70,14 @@ namespace Edelstein.Service.Game.Commands.Handling
                             $"{reactor.ID} - " +
                             $"{reactor.Template.ID} " +
                             $"at {reactor.Position}"))));
+            Commands.Add(new CommandBuilder(parser)
+                .WithName("portals")
+                .WithDescription("Debugs portals in the field")
+                .Build(sender => sender.Field.Template.Portals
+                    .ForEach(portal => sender.Message(
+                        $"{portal.Key} - " +
+                        $"{portal.Value.Name} " +
+                        $"at {portal.Value.Position}"))));
         }
 
         protected override async Task Execute(FieldUser sender, object option)
