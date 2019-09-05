@@ -32,8 +32,9 @@ namespace Edelstein.Service.Social.Managers
             Logger.Info($"Ranking is scheduled at {_nextUpdate}");
         }
 
-        public Task Rank()
-            => Task.WhenAll(_service.Info.Worlds.Select(async w =>
+        public void Rank()
+        {
+            _service.Info.Worlds.ForEach(w =>
             {
                 var watch = Stopwatch.StartNew();
 
@@ -80,7 +81,7 @@ namespace Edelstein.Service.Social.Managers
                         }
                         else
                         {
-                            ranking.WorldRankGap =  ranking.WorldRank - worldRanking[c.ID];
+                            ranking.WorldRankGap = ranking.WorldRank - worldRanking[c.ID];
                             ranking.JobRankGap = ranking.JobRank - jobRanking[c.ID];
                         }
 
@@ -90,17 +91,18 @@ namespace Edelstein.Service.Social.Managers
                         batch.Update(ranking);
                     });
 
-                    await batch.SaveChangesAsync();
+                    batch.SaveChanges();
                     Logger.Info($"Ranked {characters.Count} characters (world {w}) in {watch.ElapsedMilliseconds}ms");
                 }
-            }));
+            });
+        }
 
         public async Task OnTick(DateTime now)
         {
             if (now > _nextUpdate)
             {
                 Reset();
-                await Rank();
+                Rank();
             }
         }
     }
