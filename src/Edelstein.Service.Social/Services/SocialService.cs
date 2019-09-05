@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Gameplay.Social.Messages;
+using Edelstein.Core.Types;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database.Store;
 using Edelstein.Service.Social.Managers;
@@ -30,6 +31,16 @@ namespace Edelstein.Service.Social.Services
             {
                 // TODO
                 Console.WriteLine($"{message.CharacterID} is now {message.State} at {message.Service}");
+            });
+
+            MessageBus.SubscribeAsync<SocialUpdateLevelMessage>(async (message, token) =>
+            {
+                Console.WriteLine($"{message.CharacterID} is now level {message.Level}");
+            });
+
+            MessageBus.SubscribeAsync<SocialUpdateJobMessage>(async (message, token) =>
+            {
+                Console.WriteLine($"{message.CharacterID} is now a {(Job) message.Job}");
             });
         }
 

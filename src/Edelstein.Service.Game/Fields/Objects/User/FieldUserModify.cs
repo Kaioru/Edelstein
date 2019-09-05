@@ -7,6 +7,7 @@ using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Core.Gameplay.Inventories.Operations;
 using Edelstein.Core.Gameplay.Skills;
+using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Database.Entities.Inventories;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.Dragon;
@@ -28,7 +29,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             set
             {
                 _directionMode = value;
-                
+
                 using (var p = new Packet(SendPacketOperations.SetDirectionMode))
                 {
                     p.Encode<bool>(value);
@@ -44,7 +45,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             set
             {
                 _standAloneMode = value;
-                
+
                 using (var p = new Packet(SendPacketOperations.SetStandAloneMode))
                 {
                     p.Encode<bool>(value);
@@ -130,6 +131,23 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
             if (context.Flag.HasFlag(ModifyStatType.Level))
                 await Effect(new Effect(EffectType.LevelUp), false, true);
+
+            if (Socket.SocialService != null)
+            {
+                if (context.Flag.HasFlag(ModifyStatType.Level))
+                    await Socket.Service.SendMessage(Socket.SocialService, new SocialUpdateLevelMessage
+                    {
+                        CharacterID = Character.ID,
+                        Level = Character.Level
+                    });
+
+                if (context.Flag.HasFlag(ModifyStatType.Job))
+                    await Socket.Service.SendMessage(Socket.SocialService, new SocialUpdateJobMessage()
+                    {
+                        CharacterID = Character.ID,
+                        Job = Character.Job
+                    });
+            }
         }
 
         public async Task ModifyForcedStats(Action<ModifyForcedStatContext> action = null)
