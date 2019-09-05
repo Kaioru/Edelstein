@@ -6,6 +6,7 @@ using DotNetty.Transport.Channels;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Core.Scripts;
 using Edelstein.Core.Scripts.Lua;
 using Edelstein.Core.Utils.Messaging;
@@ -21,13 +22,14 @@ using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Fields.Continents;
 using Edelstein.Service.Game.Services.Handlers;
 using Foundatio.Caching;
+using Foundatio.Messaging;
 using Microsoft.Extensions.Options;
 using MoonSharp.Interpreter;
 using MoreLinq;
 
 namespace Edelstein.Service.Game.Services
 {
-    public class GameService : AbstractMigrateableService<GameServiceInfo>
+    public partial class GameService : AbstractMigrateableService<GameServiceInfo>
     {
         public IDataStore DataStore { get; }
         public ITemplateManager TemplateManager { get; }
@@ -65,6 +67,8 @@ namespace Edelstein.Service.Game.Services
             ConversationManager = new ScriptedConversationManager(scriptManager);
             FieldManager = new FieldManager(templateManager);
             ContinentManager = new ContinentManager(templateManager, FieldManager);
+
+            MessageBus.SubscribeAsync<SocialInitPartyMessage>(HandleSocialInitParty);
 
             Handlers = new Dictionary<RecvPacketOperations, IGameHandler>
             {

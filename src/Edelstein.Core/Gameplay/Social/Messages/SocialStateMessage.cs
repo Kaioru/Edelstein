@@ -2,7 +2,7 @@ using Edelstein.Core.Distributed.Migrations;
 
 namespace Edelstein.Core.Gameplay.Social.Messages
 {
-    public class SocialUpdateStateMessage : ISocialUpdateMessage
+    public class SocialStateMessage : ISocialMessage
     {
         public int CharacterID { get; set; }
 

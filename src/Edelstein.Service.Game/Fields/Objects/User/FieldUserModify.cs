@@ -135,14 +135,14 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             if (Socket.SocialService != null)
             {
                 if (context.Flag.HasFlag(ModifyStatType.Level))
-                    await Socket.Service.SendMessage(Socket.SocialService, new SocialUpdateLevelMessage
+                    await Socket.Service.SendMessage(Socket.SocialService, new SocialLevelMessage
                     {
                         CharacterID = Character.ID,
                         Level = Character.Level
                     });
 
                 if (context.Flag.HasFlag(ModifyStatType.Job))
-                    await Socket.Service.SendMessage(Socket.SocialService, new SocialUpdateJobMessage()
+                    await Socket.Service.SendMessage(Socket.SocialService, new SocialJobMessage()
                     {
                         CharacterID = Character.ID,
                         Job = Character.Job

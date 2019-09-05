@@ -27,6 +27,14 @@ namespace Edelstein.Service.Game.Fields
             _fields = new ConcurrentDictionary<int, IField>();
         }
 
+        public ICollection<IField> GetAll()
+        {
+            lock (this)
+            {
+                return _fields.Values;
+            }
+        }
+
         public IField Get(int id)
         {
             lock (this)

@@ -16,8 +16,8 @@ namespace Edelstein.Service.Social.Managers
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        private SocialService _service;
-        private DateTime _nextUpdate;
+        private readonly SocialService _service;
+        private DateTime NextUpdate { get; set; }
 
         public RankingManager(SocialService service)
         {
@@ -28,8 +28,8 @@ namespace Edelstein.Service.Social.Managers
 
         public void Reset()
         {
-            _nextUpdate = DateTime.Now.Date.AddDays(1);
-            Logger.Info($"Ranking is scheduled at {_nextUpdate}");
+            NextUpdate = DateTime.Now.Date.AddDays(1);
+            Logger.Info($"Ranking is scheduled at {NextUpdate}");
         }
 
         public void Rank()
@@ -99,7 +99,7 @@ namespace Edelstein.Service.Social.Managers
 
         public async Task OnTick(DateTime now)
         {
-            if (now > _nextUpdate)
+            if (now > NextUpdate)
             {
                 Reset();
                 Rank();

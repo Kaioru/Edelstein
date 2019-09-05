@@ -1,6 +1,6 @@
 namespace Edelstein.Core.Gameplay.Social.Messages
 {
-    public interface ISocialUpdateMessage
+    public interface ISocialMessage
     {
         int CharacterID { get; set; }
     }

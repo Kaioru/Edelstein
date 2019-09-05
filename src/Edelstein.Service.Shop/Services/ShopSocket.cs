@@ -86,7 +86,7 @@ namespace Edelstein.Service.Shop.Services
                 await Service.AccountStateCache.RemoveAsync(Account.ID.ToString());
                 
                 if (SocialService != null)
-                    await Service.SendMessage(SocialService, new SocialUpdateStateMessage
+                    await Service.SendMessage(SocialService, new SocialStateMessage
                     {
                         CharacterID = Character.ID,
                         State = MigrationState.LoggedOut,

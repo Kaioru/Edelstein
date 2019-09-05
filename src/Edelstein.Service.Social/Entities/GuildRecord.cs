@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Edelstein.Database.Store;
 
-namespace Edelstein.Database.Entities.Social
+namespace Edelstein.Service.Social.Entities
 {
     public class GuildRecord : IDataEntity
     {

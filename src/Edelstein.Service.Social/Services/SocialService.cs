@@ -7,6 +7,7 @@ using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database.Store;
 using Edelstein.Service.Social.Logging;
 using Edelstein.Service.Social.Managers;
+using Edelstein.Service.Social.Managers.Party;
 using Foundatio.Caching;
 using Foundatio.Messaging;
 using Microsoft.Extensions.Options;
@@ -19,6 +20,7 @@ namespace Edelstein.Service.Social.Services
         
         public IDataStore DataStore { get; }
         public RankingManager RankingManager { get; }
+        public PartyManager PartyManager { get; }
 
         public SocialService(
             IOptions<SocialServiceInfo> info,
@@ -29,10 +31,11 @@ namespace Edelstein.Service.Social.Services
         {
             DataStore = dataStore;
             RankingManager = new RankingManager(this);
+            PartyManager = new PartyManager(dataStore);
 
-            MessageBus.SubscribeAsync<SocialUpdateStateMessage>(HandleSocialUpdateState);
-            MessageBus.SubscribeAsync<SocialUpdateLevelMessage>(HandleSocialUpdateLevel);
-            MessageBus.SubscribeAsync<SocialUpdateJobMessage>(HandleSocialUpdateJob);
+            MessageBus.SubscribeAsync<SocialStateMessage>(HandleSocialUpdateState);
+            MessageBus.SubscribeAsync<SocialLevelMessage>(HandleSocialUpdateLevel);
+            MessageBus.SubscribeAsync<SocialJobMessage>(HandleSocialUpdateJob);
         }
 
         public override async Task OnTick(DateTime now)

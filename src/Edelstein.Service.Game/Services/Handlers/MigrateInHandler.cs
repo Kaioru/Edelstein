@@ -51,7 +51,7 @@ namespace Edelstein.Service.Game.Services.Handlers
                     await field.Enter(fieldUser);
 
                     if (socket.SocialService != null)
-                        await socket.Service.SendMessage(socket.SocialService, new SocialUpdateStateMessage
+                        await socket.Service.SendMessage(socket.SocialService, new SocialStateMessage
                         {
                             CharacterID = character.ID,
                             State = MigrationState.LoggedIn,

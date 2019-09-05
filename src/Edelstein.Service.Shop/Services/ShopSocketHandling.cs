@@ -49,7 +49,7 @@ namespace Edelstein.Service.Shop.Services
                     await TryMigrateFrom(account, character);
 
                     if (SocialService != null)
-                        await Service.SendMessage(SocialService, new SocialUpdateStateMessage
+                        await Service.SendMessage(SocialService, new SocialStateMessage
                         {
                             CharacterID = character.ID,
                             State = MigrationState.LoggedIn,

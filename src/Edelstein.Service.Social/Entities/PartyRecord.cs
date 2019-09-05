@@ -2,7 +2,7 @@ using Edelstein.Database.Entities.Characters;
 using Edelstein.Database.Store;
 using Marten.Schema;
 
-namespace Edelstein.Database.Entities.Social
+namespace Edelstein.Service.Social.Entities
 {
     public class PartyRecord : IDataEntity
     {
