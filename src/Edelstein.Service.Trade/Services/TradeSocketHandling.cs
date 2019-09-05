@@ -1,8 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
+using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Extensions;
+using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
@@ -29,11 +31,19 @@ namespace Edelstein.Service.Trade.Services
                         .Query<Account>()
                         .First(a => a.ID == data.AccountID);
 
-                    await TryMigrateFrom(account, character);
-
                     Account = account;
                     AccountData = data;
                     Character = character;
+
+                    await TryMigrateFrom(account, character);
+
+                    if (SocialService != null)
+                        await Service.SendMessage(SocialService, new SocialUpdateStateMessage
+                        {
+                            CharacterID = character.ID,
+                            State = MigrationState.LoggedIn,
+                            Service = Service.Info.Name
+                        });
 
                     using (var p = new Packet(SendPacketOperations.SetITC))
                     {

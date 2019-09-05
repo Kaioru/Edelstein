@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database.Store;
 using Edelstein.Service.Social.Managers;
@@ -24,6 +25,12 @@ namespace Edelstein.Service.Social.Services
         {
             DataStore = dataStore;
             RankingManager = new RankingManager(this);
+
+            MessageBus.SubscribeAsync<SocialUpdateStateMessage>(async (message, token) =>
+            {
+                // TODO
+                Console.WriteLine($"{message.CharacterID} is now {message.State} at {message.Service}");
+            });
         }
 
         public override async Task OnTick(DateTime now)

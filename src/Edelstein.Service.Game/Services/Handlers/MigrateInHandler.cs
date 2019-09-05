@@ -1,7 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
+using Edelstein.Core.Distributed.Migrations;
+using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Gameplay.Constants;
+using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Database.Entities.Inventories;
@@ -46,6 +49,14 @@ namespace Edelstein.Service.Game.Services.Handlers
                     socket.FieldUser = fieldUser;
 
                     await field.Enter(fieldUser);
+
+                    if (socket.SocialService != null)
+                        await socket.Service.SendMessage(socket.SocialService, new SocialUpdateStateMessage
+                        {
+                            CharacterID = character.ID,
+                            State = MigrationState.LoggedIn,
+                            Service = socket.Service.Info.Name
+                        });
 
                     using (var p = new Packet(SendPacketOperations.FuncKeyMappedInit))
                     {

@@ -2,10 +2,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
+using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Extensions;
 using Edelstein.Core.Extensions.Templates;
 using Edelstein.Core.Gameplay.Inventories;
+using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Database.Entities.Inventories.Cash;
@@ -15,6 +17,7 @@ using Edelstein.Provider.Templates.Shop;
 using Edelstein.Service.Shop.Extensions;
 using Edelstein.Service.Shop.Logging;
 using Edelstein.Service.Shop.Types;
+using IronPython.Modules;
 using MoreLinq;
 
 namespace Edelstein.Service.Shop.Services
@@ -39,11 +42,19 @@ namespace Edelstein.Service.Shop.Services
                         .Query<Account>()
                         .First(a => a.ID == data.AccountID);
 
-                    await TryMigrateFrom(account, character);
-
                     Account = account;
                     AccountData = data;
                     Character = character;
+
+                    await TryMigrateFrom(account, character);
+
+                    if (SocialService != null)
+                        await Service.SendMessage(SocialService, new SocialUpdateStateMessage
+                        {
+                            CharacterID = character.ID,
+                            State = MigrationState.LoggedIn,
+                            Service = Service.Info.Name
+                        });
 
                     HighestCharacterLevelInThisAccount = store
                         .Query<Character>()

@@ -5,6 +5,7 @@ using DotNetty.Transport.Channels;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Migrations;
 using Edelstein.Core.Distributed.Peers.Info;
+using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Network.Packets;
@@ -20,6 +21,10 @@ namespace Edelstein.Service.Game.Services
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
         public GameService Service { get; }
+
+        public SocialServiceInfo SocialService => Service.Peers
+            .OfType<SocialServiceInfo>()
+            .FirstOrDefault(s => s.Worlds.Contains(AccountData.WorldID));
 
         public Account Account { get; set; }
         public AccountData AccountData { get; set; }
@@ -91,6 +96,14 @@ namespace Edelstein.Service.Game.Services
             {
                 await OnUpdate();
                 await Service.AccountStateCache.RemoveAsync(Account.ID.ToString());
+
+                if (SocialService != null)
+                    await Service.SendMessage(SocialService, new SocialUpdateStateMessage
+                    {
+                        CharacterID = Character.ID,
+                        State = MigrationState.LoggedOut,
+                        Service = Service.Info.Name
+                    });
             }
         }
     }
