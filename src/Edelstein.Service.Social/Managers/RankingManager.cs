@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils;
@@ -38,7 +39,10 @@ namespace Edelstein.Service.Social.Managers
 
                 _service.Info.Worlds.ForEach(w =>
                 {
+                    var watch = Stopwatch.StartNew();
+
                     using (var store = _service.DataStore.OpenSession())
+                    using (var batch = store.Batch())
                     {
                         var characters = store
                             .Query<AccountData>()
@@ -76,7 +80,7 @@ namespace Edelstein.Service.Social.Managers
                                 {
                                     CharacterID = c.ID
                                 };
-                                store.Insert(ranking);
+                                batch.Insert(ranking);
                             }
                             else
                             {
@@ -87,10 +91,12 @@ namespace Edelstein.Service.Social.Managers
                             ranking.WorldRank = worldRanking[c.ID];
                             ranking.JobRank = jobRanking[c.ID];
 
-                            store.Update(ranking);
+                            batch.Update(ranking);
                         });
 
-                        Logger.Info($"Finished ranking {characters.Count} characters in world {w}");
+                        batch.SaveChanges();
+                        Logger.Info(
+                            $"Ranked {characters.Count} characters (world {w}) in {watch.ElapsedMilliseconds}ms");
                     }
                 });
             }

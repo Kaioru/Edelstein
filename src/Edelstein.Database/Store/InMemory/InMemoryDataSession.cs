@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Edelstein.Database.Store.InMemory
 {
-    public class InMemoryDataSession : IDataSession
+    public class InMemoryDataSession : IDataBatch, IDataSession
     {
         private readonly IDictionary<Type, IList> _database;
         private readonly IDictionary<Type, int> _keys;
@@ -26,6 +26,9 @@ namespace Edelstein.Database.Store.InMemory
 
         public IDataQuery<T> Query<T>() where T : class, IDataEntity
             => new InMemoryDataQuery<T>(GetCollection<T>().OfType<T>().AsQueryable());
+
+        public IDataBatch Batch()
+            => this;
 
         public void Insert<T>(T entity) where T : class, IDataEntity
         {
@@ -70,6 +73,17 @@ namespace Edelstein.Database.Store.InMemory
         public void Dispose()
         {
             // Do nothing
+        }
+
+        public void SaveChanges()
+        {
+            // Do nothing
+        }
+
+        public Task SaveChangesAsync()
+        {
+            // Do nothing
+            return Task.CompletedTask;
         }
     }
 }

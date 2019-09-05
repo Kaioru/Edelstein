@@ -13,6 +13,9 @@ namespace Edelstein.Database.Store.Postgres
         public IDataQuery<T> Query<T>() where T : class, IDataEntity
             => new MartenDataQuery<T>(_session.Query<T>());
 
+        public IDataBatch Batch()
+            => new MartenDataBatch(_session);
+
         public void Insert<T>(T entity) where T : class, IDataEntity
         {
             _session.Insert<T>(entity);

@@ -3,13 +3,10 @@ using System.Threading.Tasks;
 
 namespace Edelstein.Database.Store
 {
-    public interface IDataSession : IDisposable
+    public interface IDataSession : IDataAction, IDisposable
     {
         IDataQuery<T> Query<T>() where T : class, IDataEntity;
-
-        void Insert<T>(T entity) where T : class, IDataEntity;
-        void Update<T>(T entity) where T : class, IDataEntity;
-        void Delete<T>(T entity) where T : class, IDataEntity;
+        IDataBatch Batch();
 
         Task InsertAsync<T>(T entity) where T : class, IDataEntity;
         Task UpdateAsync<T>(T entity) where T : class, IDataEntity;

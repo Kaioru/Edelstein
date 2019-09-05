@@ -16,6 +16,9 @@ namespace Edelstein.Database.Store.LiteDB
         public IDataQuery<T> Query<T>() where T : class, IDataEntity
             => new LiteDBDataQuery<T>(_database.GetCollection<T>().FindAll().AsQueryable());
 
+        public IDataBatch Batch()
+            => new LiteDBDataBatch(_database);
+
         public void Insert<T>(T entity) where T : class, IDataEntity
             => _database.GetCollection<T>().Insert(entity);
 
