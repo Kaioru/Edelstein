@@ -80,8 +80,8 @@ namespace Edelstein.Service.Social.Managers
                         }
                         else
                         {
-                            ranking.WorldRankGap = worldRanking[c.ID] - ranking.WorldRank;
-                            ranking.JobRankGap = jobRanking[c.ID] - ranking.JobRank;
+                            ranking.WorldRankGap =  ranking.WorldRank - worldRanking[c.ID];
+                            ranking.JobRankGap = ranking.JobRank - jobRanking[c.ID];
                         }
 
                         ranking.WorldRank = worldRanking[c.ID];
