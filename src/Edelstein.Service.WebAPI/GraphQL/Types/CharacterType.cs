@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using Edelstein.Core.Types;
+using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
 using GraphQL.Types;
 
@@ -31,6 +33,18 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
             Field("exp", x => x.EXP);
             Field<int>("pop", x => x.POP);
             Field(x => x.Money);
+
+            Field<CharacterRankType>(
+                "rank",
+                resolve: ctx =>
+                {
+                    using (var store = service.DataStore.OpenSession())
+                    {
+                        return store
+                            .Query<RankRecord>()
+                            .FirstOrDefault(r => r.CharacterID == ctx.Source.ID);
+                    }
+                });
         }
     }
 }
