@@ -52,7 +52,7 @@ namespace Edelstein.Service.Game.Services
 
         public override Task OnException(Exception exception)
         {
-            Logger.Error(exception, "Socket caught exception");
+            Logger.Error(exception, "Socket caught exception !");
             return Task.CompletedTask;
         }
 
@@ -74,7 +74,7 @@ namespace Edelstein.Service.Game.Services
                             var xd = p.Position.X - FieldUser.Position.X;
                             var yd = p.Position.Y - FieldUser.Position.Y;
 
-                            return xd * xd + yd * yd;
+                            return xd + xd + yd + yd;
                         })
                         .First()
                         .ID;
