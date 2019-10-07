@@ -1,3 +1,5 @@
+using System;
+
 namespace Edelstein.Database.Entities.Inventories.Items
 {
     public class ItemSlotBundle : ItemSlot
@@ -18,5 +20,7 @@ namespace Edelstein.Database.Entities.Inventories.Items
                    CashItemSN == b.CashItemSN &&
                    DateExpire == b.DateExpire;
         }
+
+        public override int GetHashCode() => HashCode.Combine(TemplateID, MaxNumber, Attribute, Title, CashItemSN, DateExpire);
     }
 }

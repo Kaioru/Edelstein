@@ -19,7 +19,7 @@ namespace Edelstein.Provider.Templates.Field.Continent
         public int Delay { get; private set; }
 
         public bool Event { get; }
-        public ContinentGenMobTemplate? GenMob { get; private set; }
+        public ContinentGenMobTemplate GenMob { get; private set; }
 
         public int Wait { get; private set; }
         public int EventEnd { get; private set; }
