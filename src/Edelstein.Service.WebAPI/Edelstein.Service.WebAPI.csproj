@@ -9,7 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="BCrypt.Net" Version="0.1.0" />
+      <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
       <PackageReference Include="GraphQL" Version="2.4.0" />
       <PackageReference Include="GraphQL.Server.Authorization.AspNetCore" Version="3.4.0" />
       <PackageReference Include="GraphQL.Server.Core" Version="3.4.0" />
