@@ -20,71 +20,70 @@ namespace Edelstein.Service.Game.Services.Handlers
 
             try
             {
-                using (var store = socket.Service.DataStore.OpenSession())
+                using var store = socket.Service.DataStore.OpenSession();
+                var character = store
+                    .Query<Character>()
+                    .First(c => c.ID == characterID);
+                var data = store
+                    .Query<AccountData>()
+                    .First(d => d.ID == character.AccountDataID);
+                var account = store
+                    .Query<Account>()
+                    .First(a => a.ID == data.AccountID);
+
+                await socket.TryMigrateFrom(account, character);
+
+                socket.Account = account;
+                socket.AccountData = data;
+                socket.Character = character;
+
+                var field = socket.Service.FieldManager.Get(character.FieldID);
+                var fieldUser = new FieldUser(socket);
+                await fieldUser.ValidateStat();
+
+                socket.FieldUser = fieldUser;
+
+                await field.Enter(fieldUser);
+
+                if (socket.SocialService != null)
+                    await socket.Service.SendMessage(socket.SocialService, new SocialStateMessage
+                    {
+                        CharacterID = character.ID,
+                        State = MigrationState.LoggedIn,
+                        Service = socket.Service.Info.Name
+                    });
+
+                using (var p = new Packet(SendPacketOperations.FuncKeyMappedInit))
                 {
-                    var character = store
-                        .Query<Character>()
-                        .First(c => c.ID == characterID);
-                    var data = store
-                        .Query<AccountData>()
-                        .First(d => d.ID == character.AccountDataID);
-                    var account = store
-                        .Query<Account>()
-                        .First(a => a.ID == data.AccountID);
+                    p.Encode<bool>(false);
 
-                    await socket.TryMigrateFrom(account, character);
-
-                    socket.Account = account;
-                    socket.AccountData = data;
-                    socket.Character = character;
-
-                    var field = socket.Service.FieldManager.Get(character.FieldID);
-                    var fieldUser = new FieldUser(socket);
-
-                    socket.FieldUser = fieldUser;
-
-                    await field.Enter(fieldUser);
-
-                    if (socket.SocialService != null)
-                        await socket.Service.SendMessage(socket.SocialService, new SocialStateMessage
-                        {
-                            CharacterID = character.ID,
-                            State = MigrationState.LoggedIn,
-                            Service = socket.Service.Info.Name
-                        });
-
-                    using (var p = new Packet(SendPacketOperations.FuncKeyMappedInit))
+                    for (var i = 0; i < 90; i++)
                     {
-                        p.Encode<bool>(false);
+                        var key = character.FunctionKeys[i];
 
-                        for (var i = 0; i < 90; i++)
-                        {
-                            var key = character.FunctionKeys[i];
-
-                            p.Encode<byte>(key?.Type ?? 0);
-                            p.Encode<int>(key?.Action ?? 0);
-                        }
-
-                        await socket.SendPacket(p);
+                        p.Encode<byte>(key?.Type ?? 0);
+                        p.Encode<int>(key?.Action ?? 0);
                     }
 
-                    using (var p = new Packet(SendPacketOperations.QuickslotMappedInit))
-                    {
-                        p.Encode<bool>(true);
+                    await socket.SendPacket(p);
+                }
 
-                        for (var i = 0; i < 8; i++)
-                            p.Encode<int>(character.QuickSlotKeys[i]);
+                using (var p = new Packet(SendPacketOperations.QuickslotMappedInit))
+                {
+                    p.Encode<bool>(true);
 
-                        await socket.SendPacket(p);
-                    }
+                    for (var i = 0; i < 8; i++)
+                        p.Encode<int>(character.QuickSlotKeys[i]);
 
-                    if (SkillConstants.HasEvanDragon(fieldUser.Character.Job))
-                    {
-                        var dragon = new FieldDragon(fieldUser);
+                    await socket.SendPacket(p);
+                }
 
-                        fieldUser.Owned.Add(dragon);
-                        await fieldUser.Field.Enter(dragon);
-                    }
+                if (SkillConstants.HasEvanDragon(fieldUser.Character.Job))
+                {
+                    var dragon = new FieldDragon(fieldUser);
+
+                    fieldUser.Owned.Add(dragon);
+                    await fieldUser.Field.Enter(dragon);
                 }
             }
             catch

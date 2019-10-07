@@ -17,13 +17,11 @@ namespace Edelstein.Service.Game.Services.Handlers
             if (template == null) return;
             if (SkillConstants.IsKeydownSkill(templateID))
             {
-                using (var p = new Packet(SendPacketOperations.UserSkillCancel))
-                {
-                    p.Encode<int>(user.ID);
-                    p.Encode<int>(templateID);
+                using var p = new Packet(SendPacketOperations.UserSkillCancel);
+                p.Encode<int>(user.ID);
+                p.Encode<int>(templateID);
 
-                    await user.Field.BroadcastPacket(user, p);
-                }
+                await user.Field.BroadcastPacket(user, p);
             }
             else await user.ModifyTemporaryStats(ts => ts.Reset(templateID));
         }

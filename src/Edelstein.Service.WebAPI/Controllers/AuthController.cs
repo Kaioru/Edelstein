@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Edelstein.Database.Entities;
 using Edelstein.Service.WebAPI.Contracts;
+using Marten;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -62,42 +63,38 @@ namespace Edelstein.Service.WebAPI.Controllers
         [Route("login")]
         public async Task<IActionResult> Login(LoginContract contract)
         {
-            using (var store = Service.DataStore.OpenSession())
-            {
-                var account = store
-                    .Query<Account>()
-                    .FirstOrDefault(a => a.Username == contract.Username);
+            using var store = Service.DataStore.OpenSession();
+            var account = await store
+                .Query<Account>()
+                .FirstOrDefaultAsync(a => a.Username == contract.Username);
 
-                if (account == null || !BCrypt.Net.BCrypt.Verify(contract.Password, account.Password))
-                    return Unauthorized("Failed to authenticate");
+            if (account == null || !BCrypt.Net.BCrypt.Verify(contract.Password, account.Password))
+                return Unauthorized("Failed to authenticate");
 
-                return Ok(GetToken(account));
-            }
+            return Ok(GetToken(account));
         }
 
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register(RegisterContract contract)
         {
-            using (var store = Service.DataStore.OpenSession())
+            using var store = Service.DataStore.OpenSession();
+            var account = await store
+                .Query<Account>()
+                .FirstOrDefaultAsync(a => a.Username == contract.Username);
+
+            if (account != null)
+                return Unauthorized("Account already exists");
+
+            account = new Account
             {
-                var account = store
-                    .Query<Account>()
-                    .FirstOrDefault(a => a.Username == contract.Username);
+                Username = contract.Username,
+                Password = BCrypt.Net.BCrypt.HashPassword(contract.Password)
+            };
 
-                if (account != null)
-                    return Unauthorized("Account already exists");
+            await store.InsertAsync(account);
 
-                account = new Account
-                {
-                    Username = contract.Username,
-                    Password = BCrypt.Net.BCrypt.HashPassword(contract.Password)
-                };
-
-                store.Insert(account);
-
-                return Ok(GetToken(account));
-            }
+            return Ok(GetToken(account));
         }
 
         [Authorize]
@@ -105,17 +102,15 @@ namespace Edelstein.Service.WebAPI.Controllers
         [Route("refresh")]
         public async Task<IActionResult> Refresh()
         {
-            using (var store = Service.DataStore.OpenSession())
-            {
-                var accountID = Convert.ToInt32(
-                    HttpContext.User.Claims
-                        .Single(c => c.Type == ClaimTypes.Name)?.Value
-                );
-                var account = store
-                    .Query<Account>()
-                    .First(a => a.ID == accountID);
-                return Ok(GetToken(account));
-            }
+            using var store = Service.DataStore.OpenSession();
+            var accountID = Convert.ToInt32(
+                HttpContext.User.Claims
+                    .Single(c => c.Type == ClaimTypes.Name)?.Value
+            );
+            var account = await store
+                .Query<Account>()
+                .FirstAsync(a => a.ID == accountID);
+            return Ok(GetToken(account));
         }
     }
 }

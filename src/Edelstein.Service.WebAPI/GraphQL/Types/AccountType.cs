@@ -28,12 +28,10 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
                 "data",
                 resolve: ctx =>
                 {
-                    using (var store = service.DataStore.OpenSession())
-                    {
-                        return store
-                            .Query<AccountData>()
-                            .Where(a => a.AccountID == ctx.Source.ID);
-                    }
+                    using var store = service.DataStore.OpenSession();
+                    return store
+                        .Query<AccountData>()
+                        .Where(a => a.AccountID == ctx.Source.ID);
                 });
         }
     }

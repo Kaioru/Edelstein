@@ -30,12 +30,10 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             {
                 _directionMode = value;
 
-                using (var p = new Packet(SendPacketOperations.SetDirectionMode))
-                {
-                    p.Encode<bool>(value);
-                    p.Encode<int>(0); // tAfterLeaveDirectionMode
-                    SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.SetDirectionMode);
+                p.Encode<bool>(value);
+                p.Encode<int>(0); // tAfterLeaveDirectionMode
+                SendPacket(p);
             }
         }
 
@@ -46,11 +44,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             {
                 _standAloneMode = value;
 
-                using (var p = new Packet(SendPacketOperations.SetStandAloneMode))
-                {
-                    p.Encode<bool>(value);
-                    SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.SetStandAloneMode);
+                p.Encode<bool>(value);
+                SendPacket(p);
             }
         }
 
@@ -64,19 +60,17 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public async Task AvatarModified()
         {
-            using (var p = new Packet(SendPacketOperations.UserAvatarModified))
-            {
-                p.Encode<int>(ID);
-                p.Encode<byte>(0x1); // Flag
-                Character.EncodeLook(p);
+            using var p = new Packet(SendPacketOperations.UserAvatarModified);
+            p.Encode<int>(ID);
+            p.Encode<byte>(0x1); // Flag
+            Character.EncodeLook(p);
 
-                p.Encode<bool>(false);
-                p.Encode<bool>(false);
-                p.Encode<bool>(false);
-                p.Encode<int>(BasicStat.CompletedSetItemID); // Completed Set ID
+            p.Encode<bool>(false);
+            p.Encode<bool>(false);
+            p.Encode<bool>(false);
+            p.Encode<int>(BasicStat.CompletedSetItemID); // Completed Set ID
 
-                await Field.BroadcastPacket(this, p);
-            }
+            await Field.BroadcastPacket(this, p);
         }
 
         public async Task ModifyStats(Action<ModifyStatContext> action = null, bool exclRequest = false)
@@ -158,11 +152,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             await ValidateStat();
 
             if (!IsInstantiated) return;
-            using (var p = new Packet(SendPacketOperations.ForcedStatSet))
-            {
-                context.Encode(p);
-                await SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.ForcedStatSet);
+            context.Encode(p);
+            await SendPacket(p);
         }
 
         public async Task ModifyTemporaryStats(Action<ModifyTemporaryStatContext> action = null)
@@ -237,12 +229,10 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             slotMax = Math.Min((byte) sbyte.MaxValue, slotMax);
 
             Character.Inventories[type].SlotMax = slotMax;
-            using (var p = new Packet(SendPacketOperations.InventoryGrow))
-            {
-                p.Encode<byte>((byte) type);
-                p.Encode<byte>(slotMax);
-                await SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.InventoryGrow);
+            p.Encode<byte>((byte) type);
+            p.Encode<byte>(slotMax);
+            await SendPacket(p);
         }
 
         public async Task ModifySkills(Action<ModifySkillContext> action = null, bool exclRequest = false)
@@ -252,13 +242,11 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             action?.Invoke(context);
             await ValidateStat();
 
-            using (var p = new Packet(SendPacketOperations.ChangeSkillRecordResult))
-            {
-                p.Encode<bool>(exclRequest);
-                context.Encode(p);
-                p.Encode<bool>(true);
-                await SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.ChangeSkillRecordResult);
+            p.Encode<bool>(exclRequest);
+            context.Encode(p);
+            p.Encode<bool>(true);
+            await SendPacket(p);
         }
 
         public async Task ModifyQuests(Action<ModifyQuestContext> action = null)

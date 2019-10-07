@@ -22,13 +22,11 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
             if (result != MiniroomEnterResult.Success)
             {
                 await User.Interact(close: true);
-                using (var p = new Packet(SendPacketOperations.MiniRoom))
-                {
-                    p.Encode<byte>((byte) MiniroomAction.MRP_EnterResult);
-                    p.Encode<byte>(0x0);
-                    p.Encode<byte>((byte) result);
-                    await User.SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.MiniRoom);
+                p.Encode<byte>((byte) MiniroomAction.MRP_EnterResult);
+                p.Encode<byte>(0x0);
+                p.Encode<byte>((byte) result);
+                await User.SendPacket(p);
             }
         }
 

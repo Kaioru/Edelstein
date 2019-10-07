@@ -25,11 +25,9 @@ namespace Edelstein.Service.Game.Services.Handlers
             }
             catch
             {
-                using (var p = new Packet(SendPacketOperations.TransferChannelReqIgnored))
-                {
-                    p.Encode<byte>(0x1);
-                    await user.SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.TransferChannelReqIgnored);
+                p.Encode<byte>(0x1);
+                await user.SendPacket(p);
             }
         }
     }

@@ -66,12 +66,10 @@ namespace Edelstein.Service.Shop.Services
 
         public override async Task OnUpdate()
         {
-            using (var store = Service.DataStore.OpenSession())
-            {
-                await store.UpdateAsync(Account);
-                await store.UpdateAsync(AccountData);
-                await store.UpdateAsync(Character);
-            }
+            using var store = Service.DataStore.OpenSession();
+            await store.UpdateAsync(Account);
+            await store.UpdateAsync(AccountData);
+            await store.UpdateAsync(Character);
         }
 
         public override async Task OnDisconnect()
@@ -97,45 +95,39 @@ namespace Edelstein.Service.Shop.Services
 
         public async Task SendLockerData()
         {
-            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
-            using (var store = Service.DataStore.OpenSession())
-            {
-                p.Encode<byte>((byte) CashItemResult.LoadLocker_Done);
+            using var p = new Packet(SendPacketOperations.CashShopCashItemResult);
+            using var store = Service.DataStore.OpenSession();
+            p.Encode<byte>((byte) CashItemResult.LoadLocker_Done);
 
-                var locker = AccountData.Locker;
+            var locker = AccountData.Locker;
 
-                p.Encode<short>((short) locker.Items.Count);
-                locker.Items.ForEach(i => i.Encode(p));
+            p.Encode<short>((short) locker.Items.Count);
+            locker.Items.ForEach(i => i.Encode(p));
 
-                p.Encode<short>(AccountData.Trunk.SlotMax);
-                p.Encode<short>((short) AccountData.SlotCount);
-                p.Encode<short>(0);
-                p.Encode<short>((short) store
-                    .Query<Character>()
-                    .Count(c => c.AccountDataID == AccountData.ID));
-                await SendPacket(p);
-            }
+            p.Encode<short>(AccountData.Trunk.SlotMax);
+            p.Encode<short>((short) AccountData.SlotCount);
+            p.Encode<short>(0);
+            p.Encode<short>((short) store
+                .Query<Character>()
+                .Count(c => c.AccountDataID == AccountData.ID));
+            await SendPacket(p);
         }
 
         public async Task SendWishListData()
         {
-            using (var p = new Packet(SendPacketOperations.CashShopCashItemResult))
-            {
-                p.Encode<byte>((byte) CashItemResult.LoadWish_Done);
-                Character.WishList.ForEach(w => p.Encode<int>(w));
-                await SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.CashShopCashItemResult);
+            p.Encode<byte>((byte) CashItemResult.LoadWish_Done);
+            Character.WishList.ForEach(w => p.Encode<int>(w));
+            await SendPacket(p);
         }
 
         public async Task SendCashData()
         {
-            using (var p = new Packet(SendPacketOperations.CashShopQueryCashResult))
-            {
-                p.Encode<int>(Account.NexonCash);
-                p.Encode<int>(Account.MaplePoint);
-                p.Encode<int>(Account.PrepaidNXCash);
-                await SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.CashShopQueryCashResult);
+            p.Encode<int>(Account.NexonCash);
+            p.Encode<int>(Account.MaplePoint);
+            p.Encode<int>(Account.PrepaidNXCash);
+            await SendPacket(p);
         }
 
         public int GetDiscountedPrice(Commodity c)

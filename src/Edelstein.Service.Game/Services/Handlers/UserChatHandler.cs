@@ -25,7 +25,7 @@ namespace Edelstein.Service.Game.Services.Handlers
                         message.Substring(1)
                     );
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     await user.Message("An error has occured while executing that command.");
                 }
@@ -33,14 +33,12 @@ namespace Edelstein.Service.Game.Services.Handlers
                 return;
             }
 
-            using (var p = new Packet(SendPacketOperations.UserChat))
-            {
-                p.Encode<int>(user.ID);
-                p.Encode<bool>(false);
-                p.Encode<string>(message);
-                p.Encode<bool>(onlyBalloon);
-                await user.Field.BroadcastPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.UserChat);
+            p.Encode<int>(user.ID);
+            p.Encode<bool>(false);
+            p.Encode<string>(message);
+            p.Encode<bool>(onlyBalloon);
+            await user.Field.BroadcastPacket(p);
         }
     }
 }

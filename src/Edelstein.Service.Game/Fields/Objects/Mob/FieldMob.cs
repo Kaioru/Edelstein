@@ -142,12 +142,10 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
 
         public IPacket GetEnterFieldPacket(MobAppearType summonType, int? summonOption = null)
         {
-            using (var p = new Packet(SendPacketOperations.MobEnterField))
-            {
-                p.Encode<int>(ID);
-                EncodeData(p, summonType, summonOption);
-                return p;
-            }
+            using var p = new Packet(SendPacketOperations.MobEnterField);
+            p.Encode<int>(ID);
+            EncodeData(p, summonType, summonOption);
+            return p;
         }
 
 
@@ -156,25 +154,21 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
 
         public override IPacket GetLeaveFieldPacket()
         {
-            using (var p = new Packet(SendPacketOperations.MobLeaveField))
-            {
-                p.Encode<int>(ID);
-                p.Encode<byte>(1); // m_tLastUpdateAmbush?
-                return p;
-            }
+            using var p = new Packet(SendPacketOperations.MobLeaveField);
+            p.Encode<int>(ID);
+            p.Encode<byte>(1); // m_tLastUpdateAmbush?
+            return p;
         }
 
         protected override IPacket GetChangeControllerPacket(bool setAsController)
         {
-            using (var p = new Packet(SendPacketOperations.MobChangeController))
-            {
-                p.Encode<bool>(setAsController);
-                p.Encode<int>(ID);
+            using var p = new Packet(SendPacketOperations.MobChangeController);
+            p.Encode<bool>(setAsController);
+            p.Encode<int>(ID);
 
-                if (setAsController)
-                    EncodeData(p, MobAppearType.Regen);
-                return p;
-            }
+            if (setAsController)
+                EncodeData(p, MobAppearType.Regen);
+            return p;
         }
     }
 }

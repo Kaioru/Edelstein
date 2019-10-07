@@ -17,13 +17,11 @@ namespace Edelstein.Service.Game.Services
                 .FirstOrDefault(u => u != null);
             if (user == null) return;
 
-            using (var p = new Packet(SendPacketOperations.PartyResult))
-            {
-                p.Encode<byte>(0x7);
-                p.Encode<int>(message.Data.ID);
-                message.Data.Encode(p);
-                user.SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.PartyResult);
+            p.Encode<byte>(0x7);
+            p.Encode<int>(message.Data.ID);
+            message.Data.Encode(p);
+            user.SendPacket(p);
         }
     }
 }

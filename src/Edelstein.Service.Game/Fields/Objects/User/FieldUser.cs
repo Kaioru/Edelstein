@@ -73,7 +73,6 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             BasicStat = new BasicStat(this);
             ForcedStat = new ForcedStat(this);
             TemporaryStats = new Dictionary<TemporaryStatType, TemporaryStat>();
-            ValidateStat();
         }
 
         public Task Message(string text)
@@ -83,74 +82,62 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public Task Message(IMessage message)
         {
-            using (var p = new Packet(SendPacketOperations.Message))
-            {
-                message.Encode(p);
-                return SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.Message);
+            message.Encode(p);
+            return SendPacket(p);
         }
 
         public Task Message(IBroadcastMessage message)
         {
-            using (var p = new Packet(SendPacketOperations.BroadcastMsg))
-            {
-                message.Encode(p);
-                return SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.BroadcastMsg);
+            message.Encode(p);
+            return SendPacket(p);
         }
 
         public Task BalloonMessage(string text, Size bounds, Point? origin = null)
         {
-            using (var p = new Packet(SendPacketOperations.UserBalloonMsg))
+            using var p = new Packet(SendPacketOperations.UserBalloonMsg);
+            p.Encode<string>(text);
+            p.Encode<short>((short) bounds.Width);
+            p.Encode<short>((short) bounds.Height);
+
+            p.Encode<bool>(origin.HasValue);
+            if (origin.HasValue)
             {
-                p.Encode<string>(text);
-                p.Encode<short>((short) bounds.Width);
-                p.Encode<short>((short) bounds.Height);
-
-                p.Encode<bool>(origin.HasValue);
-                if (origin.HasValue)
-                {
-                    // For some reason, the point here is sent as 2 int.
-                    p.Encode<int>(origin.Value.X);
-                    p.Encode<int>(origin.Value.Y);
-                }
-
-                return SendPacket(p);
+                // For some reason, the point here is sent as 2 int.
+                p.Encode<int>(origin.Value.X);
+                p.Encode<int>(origin.Value.Y);
             }
+
+            return SendPacket(p);
         }
 
         public Task HireTutor(bool spawn)
         {
-            using (var p = new Packet(SendPacketOperations.UserHireTutor))
-            {
-                p.Encode<bool>(spawn);
-                return SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.UserHireTutor);
+            p.Encode<bool>(spawn);
+            return SendPacket(p);
         }
 
         public Task TutorMessage(int idx, int duration)
         {
-            using (var p = new Packet(SendPacketOperations.UserTutorMsg))
-            {
-                p.Encode<bool>(true);
-                p.Encode<int>(idx);
-                p.Encode<int>(duration);
+            using var p = new Packet(SendPacketOperations.UserTutorMsg);
+            p.Encode<bool>(true);
+            p.Encode<int>(idx);
+            p.Encode<int>(duration);
 
-                return SendPacket(p);
-            }
+            return SendPacket(p);
         }
 
         public Task TutorMessage(string text, int width, int duration)
         {
-            using (var p = new Packet(SendPacketOperations.UserTutorMsg))
-            {
-                p.Encode<bool>(false);
-                p.Encode<string>(text);
-                p.Encode<int>(width);
-                p.Encode<int>(duration);
+            using var p = new Packet(SendPacketOperations.UserTutorMsg);
+            p.Encode<bool>(false);
+            p.Encode<string>(text);
+            p.Encode<int>(width);
+            p.Encode<int>(duration);
 
-                return SendPacket(p);
-            }
+            return SendPacket(p);
         }
 
         public Task Effect(EffectType type, bool local = true, bool remote = false)
@@ -162,45 +149,41 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         {
             if (local)
             {
-                using (var p = new Packet(SendPacketOperations.UserEffectLocal))
-                {
-                    effect.Encode(p);
-                    await SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.UserEffectLocal);
+                effect.Encode(p);
+                await SendPacket(p);
             }
 
             if (remote)
             {
-                using (var p = new Packet(SendPacketOperations.UserEffectRemote))
-                {
-                    p.Encode<int>(ID);
-                    effect.Encode(p);
-                    await Field.BroadcastPacket(this, p);
-                }
+                using var p = new Packet(SendPacketOperations.UserEffectRemote);
+                p.Encode<int>(ID);
+                effect.Encode(p);
+                await Field.BroadcastPacket(this, p);
             }
         }
 
         public Task Effect(IFieldEffect effect)
         {
-            using (var p = new Packet(SendPacketOperations.FieldEffect))
-            {
-                effect.Encode(p);
-                return SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.FieldEffect);
+            effect.Encode(p);
+            return SendPacket(p);
         }
 
-        public async Task Interact(IDialog dialog = null, bool close = false)
+        public Task Interact(IDialog dialog = null, bool close = false)
         {
             if (close)
             {
                 Dialog = null;
-                return;
+                return Task.CompletedTask;
             }
 
-            if (Dialog != null) return;
+            if (Dialog != null) return Task.CompletedTask;
 
             Dialog = dialog;
             Dialog?.Enter();
+            
+            return Task.CompletedTask;
         }
 
         public Task<T> Prompt<T>(Func<ISpeaker, T> func, SpeakerParamType param = 0)
@@ -259,109 +242,103 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public override IPacket GetEnterFieldPacket()
         {
-            using (var p = new Packet(SendPacketOperations.UserEnterField))
+            using var p = new Packet(SendPacketOperations.UserEnterField);
+            p.Encode<int>(ID);
+
+            p.Encode<byte>(Character.Level);
+            p.Encode<string>(Character.Name);
+
+            // Guild
+            p.Encode<string>("");
+            p.Encode<short>(0);
+            p.Encode<byte>(0);
+            p.Encode<short>(0);
+            p.Encode<byte>(0);
+
+            TemporaryStats.EncodeRemote(p);
+
+            p.Encode<short>(Character.Job);
+            Character.EncodeLook(p);
+
+            p.Encode<int>(0);
+            p.Encode<int>(0);
+            p.Encode<int>(0);
+            p.Encode<int>(0);
+            p.Encode<int>(BasicStat.CompletedSetItemID);
+            p.Encode<int>(PortableChairID ?? 0);
+
+            p.Encode<Point>(Position);
+            p.Encode<byte>(MoveAction);
+            p.Encode<short>(Foothold);
+            p.Encode<byte>(0);
+
+            Pets.ForEach(pet =>
             {
-                p.Encode<int>(ID);
+                p.Encode<bool>(true);
+                pet.EncodeData(p);
+            });
+            p.Encode<bool>(false);
 
-                p.Encode<byte>(Character.Level);
-                p.Encode<string>(Character.Name);
+            p.Encode<int>(0);
+            p.Encode<int>(0);
+            p.Encode<int>(0);
 
-                // Guild
-                p.Encode<string>("");
-                p.Encode<short>(0);
-                p.Encode<byte>(0);
-                p.Encode<short>(0);
-                p.Encode<byte>(0);
+            p.Encode<byte>(0);
 
-                TemporaryStats.EncodeRemote(p);
+            p.Encode<bool>(false);
 
-                p.Encode<short>(Character.Job);
-                Character.EncodeLook(p);
+            p.Encode<bool>(false);
+            p.Encode<bool>(false);
+            p.Encode<bool>(false);
 
-                p.Encode<int>(0);
-                p.Encode<int>(0);
-                p.Encode<int>(0);
-                p.Encode<int>(0);
-                p.Encode<int>(BasicStat.CompletedSetItemID);
-                p.Encode<int>(PortableChairID ?? 0);
+            p.Encode<byte>(0);
 
-                p.Encode<Point>(Position);
-                p.Encode<byte>(MoveAction);
-                p.Encode<short>(Foothold);
-                p.Encode<byte>(0);
-
-                Pets.ForEach(pet =>
-                {
-                    p.Encode<bool>(true);
-                    pet.EncodeData(p);
-                });
-                p.Encode<bool>(false);
-
-                p.Encode<int>(0);
-                p.Encode<int>(0);
-                p.Encode<int>(0);
-
-                p.Encode<byte>(0);
-
-                p.Encode<bool>(false);
-
-                p.Encode<bool>(false);
-                p.Encode<bool>(false);
-                p.Encode<bool>(false);
-
-                p.Encode<byte>(0);
-
-                p.Encode<byte>(0);
-                p.Encode<int>(0);
-                return p;
-            }
+            p.Encode<byte>(0);
+            p.Encode<int>(0);
+            return p;
         }
 
         public override IPacket GetLeaveFieldPacket()
         {
-            using (var p = new Packet(SendPacketOperations.UserLeaveField))
-            {
-                p.Encode<int>(ID);
-                return p;
-            }
+            using var p = new Packet(SendPacketOperations.UserLeaveField);
+            p.Encode<int>(ID);
+            return p;
         }
 
         public IPacket GetSetFieldPacket()
         {
-            using (var p = new Packet(SendPacketOperations.SetField))
+            using var p = new Packet(SendPacketOperations.SetField);
+            p.Encode<short>(0); // ClientOpt
+
+            p.Encode<int>(Service.Info.ID);
+            p.Encode<int>(Service.Info.WorldID);
+
+            p.Encode<bool>(true); // sNotifierMessage._m_pStr
+            p.Encode<bool>(!IsInstantiated);
+            p.Encode<short>(0); // nNotifierCheck, loops
+
+            if (!IsInstantiated)
             {
-                p.Encode<short>(0); // ClientOpt
+                p.Encode<int>(0);
+                p.Encode<int>(0);
+                p.Encode<int>(0);
 
-                p.Encode<int>(Service.Info.ID);
-                p.Encode<int>(Service.Info.WorldID);
+                Character.EncodeData(p);
 
-                p.Encode<bool>(true); // sNotifierMessage._m_pStr
-                p.Encode<bool>(!IsInstantiated);
-                p.Encode<short>(0); // nNotifierCheck, loops
-
-                if (!IsInstantiated)
-                {
-                    p.Encode<int>(0);
-                    p.Encode<int>(0);
-                    p.Encode<int>(0);
-
-                    Character.EncodeData(p);
-
-                    p.Encode<int>(0);
-                    for (var i = 0; i < 3; i++) p.Encode<int>(0);
-                }
-                else
-                {
-                    p.Encode<byte>(0);
-                    p.Encode<int>(Character.FieldID);
-                    p.Encode<byte>(Character.FieldPortal);
-                    p.Encode<int>(Character.HP);
-                    p.Encode<bool>(false);
-                }
-
-                p.Encode<DateTime>(DateTime.Now);
-                return p;
+                p.Encode<int>(0);
+                for (var i = 0; i < 3; i++) p.Encode<int>(0);
             }
+            else
+            {
+                p.Encode<byte>(0);
+                p.Encode<int>(Character.FieldID);
+                p.Encode<byte>(Character.FieldPortal);
+                p.Encode<int>(Character.HP);
+                p.Encode<bool>(false);
+            }
+
+            p.Encode<DateTime>(DateTime.Now);
+            return p;
         }
 
         public async Task Dispose()

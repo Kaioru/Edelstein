@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -36,19 +37,25 @@ namespace Edelstein.Core.Bootstrap
                 StartupDistributionType.InMemory => (IProvider) new InMemoryDistributionProvider(distribution
                     .ConnectionString),
                 StartupDistributionType.Redis => (IProvider) new RedisDistributionProvider(
-                    distribution.ConnectionString)
+                    distribution.ConnectionString),
+                _ => throw new ArgumentOutOfRangeException()
                 };
-            var databaseProvider = database.Type switch {
+            var databaseProvider = database.Type switch
+            {
                 StartupDatabaseType.InMemory => (IProvider) new InMemoryDatabaseProvider(database.ConnectionString),
                 StartupDatabaseType.LiteDB => (IProvider) new LiteDBDatabaseProvider(database.ConnectionString),
-                StartupDatabaseType.PostgreSQL => (IProvider) new PostgreSQLDatabaseProvider(database.ConnectionString)
-                };
+                StartupDatabaseType.PostgreSQL => (IProvider) new PostgreSQLDatabaseProvider(database.ConnectionString),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
             var parserProvider = parser.Type switch {
-                StartupDataParserType.NX => (IProvider) new NXDataParserProvider(parser.Path)
+                StartupDataParserType.NX => (IProvider) new NXDataParserProvider(parser.Path),
+                _ => throw new ArgumentOutOfRangeException()
                 };
             var scriptProvider = script.Type switch {
                 StartupScriptType.Lua => (IProvider) new LuaScriptProvider(script.Path),
-                StartupScriptType.Python => (IProvider) new PythonScriptProvider(script.Path)
+                StartupScriptType.Python => (IProvider) new PythonScriptProvider(script.Path),
+                _ => throw new ArgumentOutOfRangeException()
                 };
 
             return new List<IProvider> {distributionProvider, databaseProvider, parserProvider, scriptProvider};

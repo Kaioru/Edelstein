@@ -15,14 +15,12 @@ namespace Edelstein.Service.Game.Services.Handlers
 
             // TODO: item option checks
 
-            using (var p = new Packet(SendPacketOperations.UserEmotion))
-            {
-                p.Encode<int>(user.ID);
-                p.Encode<int>(emotion);
-                p.Encode<int>(duration);
-                p.Encode<bool>(byItemOption);
-                await user.Field.BroadcastPacket(user, p);
-            }
+            using var p = new Packet(SendPacketOperations.UserEmotion);
+            p.Encode<int>(user.ID);
+            p.Encode<int>(emotion);
+            p.Encode<int>(duration);
+            p.Encode<bool>(byItemOption);
+            await user.Field.BroadcastPacket(user, p);
         }
     }
 }

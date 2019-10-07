@@ -30,7 +30,7 @@ namespace Edelstein.Service.Game.Fields.Continents
         public IField StartShipMoveField { get; }
         public IField WaitField { get; }
         public IField MoveField { get; }
-        public IField? CabinField { get; }
+        public IField CabinField { get; }
         public IField EndField { get; }
         public IField EndShipMoveField { get; }
 

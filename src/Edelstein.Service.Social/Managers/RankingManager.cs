@@ -38,72 +38,72 @@ namespace Edelstein.Service.Social.Managers
             {
                 var watch = Stopwatch.StartNew();
 
-                using (var store = _service.DataStore.OpenSession())
-                using (var batch = store.Batch())
-                {
-                    var characters = store
-                        .Query<AccountData>()
-                        .Where(d => d.WorldID == w)
-                        .ToList()
-                        .SelectMany(d => store
-                            .Query<Character>()
-                            .Where(c => c.AccountDataID == d.ID)
-                            .ToList())
-                        .ToList();
+                using var store = _service.DataStore.OpenSession();
+                using var batch = store.Batch();
+                var characters = store
+                    .Query<AccountData>()
+                    .Where(d => d.WorldID == w)
+                    .ToList()
+                    .SelectMany(d => store
+                        .Query<Character>()
+                        .Where(c => c.AccountDataID == d.ID)
+                        .ToList())
+                    .ToList();
 
-                    var worldRanking = characters
+                var worldRanking = characters
+                    .OrderBy(c => c.Level, OrderByDirection.Descending)
+                    .Select((c, index) => new {CharacterID = c.ID, Rank = index + 1})
+                    .ToDictionary(r => r.CharacterID, r => r.Rank);
+                var jobRanking = new Dictionary<int, int>();
+
+                characters
+                    .GroupBy(c => c.Job % 1000 / 100)
+                    .ForEach(job => job
                         .OrderBy(c => c.Level, OrderByDirection.Descending)
                         .Select((c, index) => new {CharacterID = c.ID, Rank = index + 1})
-                        .ToDictionary(r => r.CharacterID, r => r.Rank);
-                    var jobRanking = new Dictionary<int, int>();
+                        .ToDictionary(r => r.CharacterID, r => r.Rank)
+                        .ForEach(kv => jobRanking.Add(kv.Key, kv.Value)));
 
-                    characters
-                        .GroupBy(c => c.Job % 1000 / 100)
-                        .ForEach(job => job
-                            .OrderBy(c => c.Level, OrderByDirection.Descending)
-                            .Select((c, index) => new {CharacterID = c.ID, Rank = index + 1})
-                            .ToDictionary(r => r.CharacterID, r => r.Rank)
-                            .ForEach(kv => jobRanking.Add(kv.Key, kv.Value)));
+                characters.ForEach(c =>
+                {
+                    var ranking = store
+                        .Query<RankRecord>()
+                        .FirstOrDefault(r => r.CharacterID == c.ID);
 
-                    characters.ForEach(c =>
+                    if (ranking == null)
                     {
-                        var ranking = store
-                            .Query<RankRecord>()
-                            .FirstOrDefault(r => r.CharacterID == c.ID);
-
-                        if (ranking == null)
+                        ranking = new RankRecord
                         {
-                            ranking = new RankRecord
-                            {
-                                CharacterID = c.ID
-                            };
-                            batch.Insert(ranking);
-                        }
-                        else
-                        {
-                            ranking.WorldRankGap = ranking.WorldRank - worldRanking[c.ID];
-                            ranking.JobRankGap = ranking.JobRank - jobRanking[c.ID];
-                        }
+                            CharacterID = c.ID
+                        };
+                        batch.Insert(ranking);
+                    }
+                    else
+                    {
+                        ranking.WorldRankGap = ranking.WorldRank - worldRanking[c.ID];
+                        ranking.JobRankGap = ranking.JobRank - jobRanking[c.ID];
+                    }
 
-                        ranking.WorldRank = worldRanking[c.ID];
-                        ranking.JobRank = jobRanking[c.ID];
+                    ranking.WorldRank = worldRanking[c.ID];
+                    ranking.JobRank = jobRanking[c.ID];
 
-                        batch.Update(ranking);
-                    });
+                    batch.Update(ranking);
+                });
 
-                    batch.SaveChanges();
-                    Logger.Info($"Ranked {characters.Count} characters (world {w}) in {watch.ElapsedMilliseconds}ms");
-                }
+                batch.SaveChanges();
+                Logger.Info($"Ranked {characters.Count} characters (world {w}) in {watch.ElapsedMilliseconds}ms");
             });
         }
 
-        public async Task OnTick(DateTime now)
+        public Task OnTick(DateTime now)
         {
             if (now > NextUpdate)
             {
                 Reset();
                 Rank();
             }
+
+            return Task.CompletedTask;
         }
     }
 }

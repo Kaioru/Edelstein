@@ -21,47 +21,45 @@ namespace Edelstein.Service.Game.Services.Handlers
                 return;
             }
 
-            using (var p = new Packet(SendPacketOperations.TrunkResult))
+            using var p = new Packet(SendPacketOperations.TrunkResult);
+            switch (request)
             {
-                switch (request)
+                case TrunkRequest.GetItem:
                 {
-                    case TrunkRequest.GetItem:
-                    {
-                        var type = (ItemInventoryType) packet.Decode<byte>();
-                        var position = packet.Decode<byte>();
-                        p.Encode<byte>((byte) await trunk.Get(type, position));
-                        trunk.EncodeItems(p);
-                        break;
-                    }
-
-                    case TrunkRequest.PutItem:
-                    {
-                        var position = packet.Decode<short>();
-                        var templateID = packet.Decode<int>();
-                        var count = packet.Decode<short>();
-                        p.Encode<byte>((byte) await trunk.Put(position, templateID, count));
-                        trunk.EncodeItems(p);
-                        break;
-                    }
-
-                    case TrunkRequest.SortItem:
-                    {
-                        p.Encode<byte>((byte) await trunk.Sort());
-                        trunk.EncodeItems(p);
-                        break;
-                    }
-
-                    case TrunkRequest.Money:
-                    {
-                        var amount = packet.Decode<int>();
-                        p.Encode<byte>((byte) await trunk.Transact(amount));
-                        trunk.EncodeItems(p, DbChar.Money);
-                        break;
-                    }
+                    var type = (ItemInventoryType) packet.Decode<byte>();
+                    var position = packet.Decode<byte>();
+                    p.Encode<byte>((byte) await trunk.Get(type, position));
+                    trunk.EncodeItems(p);
+                    break;
                 }
 
-                await user.SendPacket(p);
+                case TrunkRequest.PutItem:
+                {
+                    var position = packet.Decode<short>();
+                    var templateID = packet.Decode<int>();
+                    var count = packet.Decode<short>();
+                    p.Encode<byte>((byte) await trunk.Put(position, templateID, count));
+                    trunk.EncodeItems(p);
+                    break;
+                }
+
+                case TrunkRequest.SortItem:
+                {
+                    p.Encode<byte>((byte) await trunk.Sort());
+                    trunk.EncodeItems(p);
+                    break;
+                }
+
+                case TrunkRequest.Money:
+                {
+                    var amount = packet.Decode<int>();
+                    p.Encode<byte>((byte) await trunk.Transact(amount));
+                    trunk.EncodeItems(p, DbChar.Money);
+                    break;
+                }
             }
+
+            await user.SendPacket(p);
         }
     }
 }
