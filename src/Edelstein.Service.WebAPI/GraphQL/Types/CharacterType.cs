@@ -38,12 +38,10 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
                 "rank",
                 resolve: ctx =>
                 {
-                    using (var store = service.DataStore.OpenSession())
-                    {
-                        return store
-                            .Query<RankRecord>()
-                            .FirstOrDefault(r => r.CharacterID == ctx.Source.ID);
-                    }
+                    using var store = service.DataStore.OpenSession();
+                    return store
+                        .Query<RankRecord>()
+                        .FirstOrDefault(r => r.CharacterID == ctx.Source.ID);
                 });
         }
     }

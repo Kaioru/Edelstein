@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
 using Edelstein.Core.Distributed.Peers.Info;
-using Edelstein.Provider.Templates;
 using Edelstein.Service.Trade.Services;
 
 namespace Edelstein.Service.Trade

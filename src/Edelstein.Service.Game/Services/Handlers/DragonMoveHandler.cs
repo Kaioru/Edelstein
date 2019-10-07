@@ -9,13 +9,11 @@ namespace Edelstein.Service.Game.Services.Handlers
     {
         public override async Task Handle(RecvPacketOperations operation, IPacket packet, FieldDragon dragon)
         {
-            using (var p = new Packet(SendPacketOperations.DragonMove))
-            {
-                p.Encode<int>(dragon.Owner.ID);
-                dragon.Move(packet).Encode(p);
+            using var p = new Packet(SendPacketOperations.DragonMove);
+            p.Encode<int>(dragon.Owner.ID);
+            dragon.Move(packet).Encode(p);
 
-                await dragon.Field.BroadcastPacket(dragon.Owner, p);
-            }
+            await dragon.Field.BroadcastPacket(dragon.Owner, p);
         }
     }
 }

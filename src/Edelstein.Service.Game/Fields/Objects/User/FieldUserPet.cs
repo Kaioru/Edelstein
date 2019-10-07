@@ -40,17 +40,15 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public override IPacket GetEnterFieldPacket()
         {
-            using (var p = new Packet(SendPacketOperations.PetActivated))
-            {
-                p.Encode<int>(Owner.ID);
-                p.Encode<byte>(IDx);
+            using var p = new Packet(SendPacketOperations.PetActivated);
+            p.Encode<int>(Owner.ID);
+            p.Encode<byte>(IDx);
 
-                p.Encode<bool>(true);
-                p.Encode<bool>(true);
+            p.Encode<bool>(true);
+            p.Encode<bool>(true);
 
-                EncodeData(p);
-                return p;
-            }
+            EncodeData(p);
+            return p;
         }
 
         public override IPacket GetLeaveFieldPacket()
@@ -58,15 +56,13 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public IPacket GetLeaveFieldPacket(byte leaveType)
         {
-            using (var p = new Packet(SendPacketOperations.PetActivated))
-            {
-                p.Encode<int>(Owner.ID);
-                p.Encode<byte>(IDx);
+            using var p = new Packet(SendPacketOperations.PetActivated);
+            p.Encode<int>(Owner.ID);
+            p.Encode<byte>(IDx);
 
-                p.Encode<bool>(false);
-                p.Encode<byte>(leaveType);
-                return p;
-            }
+            p.Encode<bool>(false);
+            p.Encode<byte>(leaveType);
+            return p;
         }
     }
 }

@@ -17,12 +17,10 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
                 "characters",
                 resolve: ctx =>
                 {
-                    using (var store = service.DataStore.OpenSession())
-                    {
-                        return store
-                            .Query<Character>()
-                            .Where(a => a.AccountDataID == ctx.Source.ID);
-                    }
+                    using var store = service.DataStore.OpenSession();
+                    return store
+                        .Query<Character>()
+                        .Where(a => a.AccountDataID == ctx.Source.ID);
                 });
         }
     }

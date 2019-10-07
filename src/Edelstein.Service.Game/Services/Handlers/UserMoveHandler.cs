@@ -18,12 +18,10 @@ namespace Edelstein.Service.Game.Services.Handlers
 
             var path = user.Move(packet);
 
-            using (var p = new Packet(SendPacketOperations.UserMove))
-            {
-                p.Encode<int>(user.ID);
-                path.Encode(p);
-                await user.Field.BroadcastPacket(user, p);
-            }
+            using var p = new Packet(SendPacketOperations.UserMove);
+            p.Encode<int>(user.ID);
+            path.Encode(p);
+            await user.Field.BroadcastPacket(user, p);
         }
     }
 }

@@ -80,13 +80,11 @@ namespace Edelstein.Service.Game.Interactions.Miniroom
             MiniroomLeaveResult leaveResult = MiniroomLeaveResult.UserRequest)
         {
             Users.Remove(dialog.ID);
-            using (var p = new Packet(SendPacketOperations.MiniRoom))
-            {
-                p.Encode<byte>((byte) MiniroomAction.MRP_Leave);
-                p.Encode<byte>(dialog.ID);
-                p.Encode<byte>((byte) leaveResult);
-                await BroadcastPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.MiniRoom);
+            p.Encode<byte>((byte) MiniroomAction.MRP_Leave);
+            p.Encode<byte>(dialog.ID);
+            p.Encode<byte>((byte) leaveResult);
+            await BroadcastPacket(p);
         }
 
         public Task BroadcastPacket(IPacket packet)

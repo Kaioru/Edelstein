@@ -19,47 +19,43 @@ namespace Edelstein.Service.Trade.Services
 
             try
             {
-                using (var store = Service.DataStore.OpenSession())
-                {
-                    var character = store
-                        .Query<Character>()
-                        .First(c => c.ID == characterID);
-                    var data = store
-                        .Query<AccountData>()
-                        .First(d => d.ID == character.AccountDataID);
-                    var account = store
-                        .Query<Account>()
-                        .First(a => a.ID == data.AccountID);
+                using var store = Service.DataStore.OpenSession();
+                var character = store
+                    .Query<Character>()
+                    .First(c => c.ID == characterID);
+                var data = store
+                    .Query<AccountData>()
+                    .First(d => d.ID == character.AccountDataID);
+                var account = store
+                    .Query<Account>()
+                    .First(a => a.ID == data.AccountID);
 
-                    Account = account;
-                    AccountData = data;
-                    Character = character;
+                Account = account;
+                AccountData = data;
+                Character = character;
 
-                    await TryMigrateFrom(account, character);
+                await TryMigrateFrom(account, character);
 
-                    if (SocialService != null)
-                        await Service.SendMessage(SocialService, new SocialStateMessage
-                        {
-                            CharacterID = character.ID,
-                            State = MigrationState.LoggedIn,
-                            Service = Service.Info.Name
-                        });
-
-                    using (var p = new Packet(SendPacketOperations.SetITC))
+                if (SocialService != null)
+                    await Service.SendMessage(SocialService, new SocialStateMessage
                     {
-                        character.EncodeData(p);
+                        CharacterID = character.ID,
+                        State = MigrationState.LoggedIn,
+                        Service = Service.Info.Name
+                    });
 
-                        p.Encode<string>(Account.Username); // m_sNexonClubID
+                using var p = new Packet(SendPacketOperations.SetITC);
+                character.EncodeData(p);
 
-                        p.Encode<int>(Service.Info.RegisterFeeMeso);
-                        p.Encode<int>(Service.Info.CommissionRate);
-                        p.Encode<int>(Service.Info.CommissionBase);
-                        p.Encode<int>(Service.Info.AuctionDurationMin);
-                        p.Encode<int>(Service.Info.AuctionDurationMax);
-                        p.Encode<long>(0);
-                        await SendPacket(p);
-                    }
-                }
+                p.Encode<string>(Account.Username); // m_sNexonClubID
+
+                p.Encode<int>(Service.Info.RegisterFeeMeso);
+                p.Encode<int>(Service.Info.CommissionRate);
+                p.Encode<int>(Service.Info.CommissionBase);
+                p.Encode<int>(Service.Info.AuctionDurationMin);
+                p.Encode<int>(Service.Info.AuctionDurationMax);
+                p.Encode<long>(0);
+                await SendPacket(p);
             }
             catch
             {

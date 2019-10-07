@@ -31,76 +31,72 @@ namespace Edelstein.Service.Login.Services
             {
                 await Service.LockProvider.AcquireAsync("loginLock");
 
-                using (var p = new Packet(SendPacketOperations.CheckPasswordResult))
-                using (var store = Service.DataStore.OpenSession())
+                using var p = new Packet(SendPacketOperations.CheckPasswordResult);
+                using var store = Service.DataStore.OpenSession();
+                var account = store
+                    .Query<Account>()
+                    .FirstOrDefault(a => a.Username == username);
+                var result = LoginResultCode.Success;
+
+                if (account == null)
                 {
-                    var account = store
-                        .Query<Account>()
-                        .FirstOrDefault(a => a.Username == username);
-                    var result = LoginResultCode.Success;
-
-                    if (account == null)
+                    if (Service.Info.AutoRegister)
                     {
-                        if (Service.Info.AutoRegister)
+                        account = new Account
                         {
-                            account = new Account
-                            {
-                                Username = username,
-                                Password = BCrypt.Net.BCrypt.HashPassword(password)
-                            };
+                            Username = username,
+                            Password = BCrypt.Net.BCrypt.HashPassword(password)
+                        };
 
-                            await store.InsertAsync(account);
-                            Logger.Debug($"Created new account, {username}");
-                        }
-                        else result = LoginResultCode.NotRegistered;
+                        await store.InsertAsync(account);
+                        Logger.Debug($"Created new account, {username}");
                     }
-                    else
-                    {
-                        if (await Service.AccountStateCache.ExistsAsync(account.ID.ToString()))
-                            result = LoginResultCode.AlreadyConnected;
-                        if (!BCrypt.Net.BCrypt.Verify(password, account.Password))
-                            result = LoginResultCode.IncorrectPassword;
-                    }
-
-                    p.Encode<byte>((byte) result);
-                    p.Encode<byte>(0);
-                    p.Encode<int>(0);
-
-                    if (result == LoginResultCode.Success)
-                    {
-                        Account = account;
-                        await TryProcessHeartbeat(Account, Character, true);
-
-                        p.Encode<int>(account.ID); // pBlockReason
-                        p.Encode<byte>(account.Gender ?? (byte) 0xA);
-                        p.Encode<byte>(0); // nGradeCode
-                        p.Encode<short>(0); // nSubGradeCode
-                        p.Encode<byte>(0); // nCountryID
-                        p.Encode<string>(account.Username); // sNexonClubID
-                        p.Encode<byte>(0); // nPurchaseEXP
-                        p.Encode<byte>(0); // ChatUnblockReason
-                        p.Encode<long>(0); // dtChatUnblockDate
-                        p.Encode<long>(0); // dtRegisterDate
-                        p.Encode<int>(4); // nNumOfCharacter
-                        p.Encode<byte>(1); // v44
-                        p.Encode<byte>(0); // sMsg
-
-                        p.Encode<long>(0); // dwHighDateTime
-                    }
-
-                    await SendPacket(p);
+                    else result = LoginResultCode.NotRegistered;
                 }
+                else
+                {
+                    if (await Service.AccountStateCache.ExistsAsync(account.ID.ToString()))
+                        result = LoginResultCode.AlreadyConnected;
+                    if (!BCrypt.Net.BCrypt.Verify(password, account.Password))
+                        result = LoginResultCode.IncorrectPassword;
+                }
+
+                p.Encode<byte>((byte) result);
+                p.Encode<byte>(0);
+                p.Encode<int>(0);
+
+                if (result == LoginResultCode.Success)
+                {
+                    Account = account;
+                    await TryProcessHeartbeat(Account, Character, true);
+
+                    p.Encode<int>(account.ID); // pBlockReason
+                    p.Encode<byte>(account.Gender ?? (byte) 0xA);
+                    p.Encode<byte>(0); // nGradeCode
+                    p.Encode<short>(0); // nSubGradeCode
+                    p.Encode<byte>(0); // nCountryID
+                    p.Encode<string>(account.Username); // sNexonClubID
+                    p.Encode<byte>(0); // nPurchaseEXP
+                    p.Encode<byte>(0); // ChatUnblockReason
+                    p.Encode<long>(0); // dtChatUnblockDate
+                    p.Encode<long>(0); // dtRegisterDate
+                    p.Encode<int>(4); // nNumOfCharacter
+                    p.Encode<byte>(1); // v44
+                    p.Encode<byte>(0); // sMsg
+
+                    p.Encode<long>(0); // dwHighDateTime
+                }
+
+                await SendPacket(p);
             }
             catch
             {
-                using (var p = new Packet(SendPacketOperations.CheckPasswordResult))
-                {
-                    p.Encode<byte>((byte) LoginResultCode.Unknown);
-                    p.Encode<byte>(0);
-                    p.Encode<int>(0);
+                using var p = new Packet(SendPacketOperations.CheckPasswordResult);
+                p.Encode<byte>((byte) LoginResultCode.Unknown);
+                p.Encode<byte>(0);
+                p.Encode<int>(0);
 
-                    await SendPacket(p);
-                }
+                await SendPacket(p);
             }
             finally
             {
@@ -112,40 +108,38 @@ namespace Edelstein.Service.Login.Services
         {
             await Task.WhenAll(Service.Info.Worlds.Select(w =>
             {
-                using (var p = new Packet(SendPacketOperations.WorldInformation))
+                using var p = new Packet(SendPacketOperations.WorldInformation);
+                p.Encode<byte>(w.ID);
+                p.Encode<string>(w.Name);
+                p.Encode<byte>(w.State);
+                p.Encode<string>(w.EventDesc);
+                p.Encode<short>(w.EventEXP);
+                p.Encode<short>(w.EventDrop);
+                p.Encode<bool>(w.BlockCharCreation);
+
+                var services = Service.Peers
+                    .OfType<GameServiceInfo>()
+                    .Where(g => g.WorldID == w.ID)
+                    .OrderBy(g => g.ID)
+                    .ToImmutableList();
+
+                p.Encode<byte>((byte) services.Count);
+                services.ForEach(g =>
                 {
-                    p.Encode<byte>(w.ID);
-                    p.Encode<string>(w.Name);
-                    p.Encode<byte>(w.State);
-                    p.Encode<string>(w.EventDesc);
-                    p.Encode<short>(w.EventEXP);
-                    p.Encode<short>(w.EventDrop);
-                    p.Encode<bool>(w.BlockCharCreation);
+                    p.Encode<string>(g.Name);
+                    p.Encode<int>(0); // UserNo
+                    p.Encode<byte>(g.WorldID);
+                    p.Encode<byte>(g.ID);
+                    p.Encode<bool>(g.AdultChannel);
+                });
 
-                    var services = Service.Peers
-                        .OfType<GameServiceInfo>()
-                        .Where(g => g.WorldID == w.ID)
-                        .OrderBy(g => g.ID)
-                        .ToImmutableList();
-
-                    p.Encode<byte>((byte) services.Count);
-                    services.ForEach(g =>
-                    {
-                        p.Encode<string>(g.Name);
-                        p.Encode<int>(0); // UserNo
-                        p.Encode<byte>(g.WorldID);
-                        p.Encode<byte>(g.ID);
-                        p.Encode<bool>(g.AdultChannel);
-                    });
-
-                    p.Encode<short>((short) Service.Info.Balloons.Count);
-                    Service.Info.Balloons.ForEach(b =>
-                    {
-                        p.Encode<Point>(b.Position);
-                        p.Encode<string>(b.Message);
-                    });
-                    return SendPacket(p);
-                }
+                p.Encode<short>((short) Service.Info.Balloons.Count);
+                Service.Info.Balloons.ForEach(b =>
+                {
+                    p.Encode<Point>(b.Position);
+                    p.Encode<string>(b.Message);
+                });
+                return SendPacket(p);
             }));
 
             using (var p = new Packet(SendPacketOperations.WorldInformation))
@@ -161,10 +155,11 @@ namespace Edelstein.Service.Login.Services
             }
         }
 
-        private async Task OnLogoutWorld(IPacket packet)
+        private Task OnLogoutWorld(IPacket packet)
         {
             AccountData = null;
             SelectedService = null;
+            return Task.CompletedTask;
         }
 
         private async Task OnSelectWorld(IPacket packet)
@@ -176,104 +171,98 @@ namespace Edelstein.Service.Login.Services
 
             try
             {
-                using (var p = new Packet(SendPacketOperations.SelectWorldResult))
-                using (var store = Service.DataStore.OpenSession())
+                using var p = new Packet(SendPacketOperations.SelectWorldResult);
+                using var store = Service.DataStore.OpenSession();
+                var service = Service.Peers
+                    .OfType<GameServiceInfo>()
+                    .FirstOrDefault(g => g.ID == channelID &&
+                                         g.WorldID == worldID);
+                var result = LoginResultCode.Success;
+
+                if (service == null) result = LoginResultCode.NotConnectableWorld;
+
+                p.Encode<byte>((byte) result);
+
+                if (result == LoginResultCode.Success)
                 {
-                    var service = Service.Peers
-                        .OfType<GameServiceInfo>()
-                        .FirstOrDefault(g => g.ID == channelID &&
-                                             g.WorldID == worldID);
-                    var result = LoginResultCode.Success;
+                    var data = store
+                        .Query<AccountData>()
+                        .Where(d => d.AccountID == Account.ID)
+                        .FirstOrDefault(d => d.WorldID == worldID);
 
-                    if (service == null) result = LoginResultCode.NotConnectableWorld;
-
-                    p.Encode<byte>((byte) result);
-
-                    if (result == LoginResultCode.Success)
+                    if (data == null)
                     {
-                        var data = store
-                            .Query<AccountData>()
-                            .Where(d => d.AccountID == Account.ID)
-                            .FirstOrDefault(d => d.WorldID == worldID);
-
-                        if (data == null)
+                        data = new AccountData
                         {
-                            data = new AccountData
-                            {
-                                AccountID = Account.ID,
-                                WorldID = worldID,
-                                SlotCount = 3
-                            };
+                            AccountID = Account.ID,
+                            WorldID = worldID,
+                            SlotCount = 3
+                        };
 
-                            await store.InsertAsync(data);
-                        }
-
-                        AccountData = data;
-                        SelectedService = service;
-
-                        if (Account.LatestConnectedWorld != worldID)
-                        {
-                            Account.LatestConnectedWorld = worldID;
-                            await store.UpdateAsync(Account);
-                        }
-
-                        var characters = store
-                            .Query<Character>()
-                            .Where(c => c.AccountDataID == data.ID)
-                            .ToList();
-
-                        p.Encode<byte>((byte) characters.Count);
-                        characters.ForEach(c =>
-                        {
-                            c.EncodeStats(p);
-                            c.EncodeLook(p);
-
-                            p.Encode<bool>(false);
-
-                            var rank = store
-                                .Query<RankRecord>()
-                                .FirstOrDefault(r => r.CharacterID == c.ID);
-
-                            if (rank != null)
-                            {
-                                p.Encode<bool>(true);
-                                p.Encode<int>(rank.WorldRank);
-                                p.Encode<int>(rank.WorldRankGap);
-                                p.Encode<int>(rank.JobRank);
-                                p.Encode<int>(rank.JobRankGap);
-                            }
-                            else p.Encode<bool>(false);
-                        });
-
-                        p.Encode<bool>(
-                            !string.IsNullOrEmpty(Account.SecondPassword)
-                        ); // bLoginOpt TODO: proper bLoginOpt stuff
-                        p.Encode<int>(data.SlotCount); // nSlotCount
-                        p.Encode<int>(0); // nBuyCharCount
+                        await store.InsertAsync(data);
                     }
 
-                    await SendPacket(p);
+                    AccountData = data;
+                    SelectedService = service;
+
+                    if (Account.LatestConnectedWorld != worldID)
+                    {
+                        Account.LatestConnectedWorld = worldID;
+                        await store.UpdateAsync(Account);
+                    }
+
+                    var characters = store
+                        .Query<Character>()
+                        .Where(c => c.AccountDataID == data.ID)
+                        .ToList();
+
+                    p.Encode<byte>((byte) characters.Count);
+                    characters.ForEach(c =>
+                    {
+                        c.EncodeStats(p);
+                        c.EncodeLook(p);
+
+                        p.Encode<bool>(false);
+
+                        var rank = store
+                            .Query<RankRecord>()
+                            .FirstOrDefault(r => r.CharacterID == c.ID);
+
+                        if (rank != null)
+                        {
+                            p.Encode<bool>(true);
+                            p.Encode<int>(rank.WorldRank);
+                            p.Encode<int>(rank.WorldRankGap);
+                            p.Encode<int>(rank.JobRank);
+                            p.Encode<int>(rank.JobRankGap);
+                        }
+                        else p.Encode<bool>(false);
+                    });
+
+                    p.Encode<bool>(
+                        !string.IsNullOrEmpty(Account.SecondPassword)
+                    ); // bLoginOpt TODO: proper bLoginOpt stuff
+                    p.Encode<int>(data.SlotCount); // nSlotCount
+                    p.Encode<int>(0); // nBuyCharCount
                 }
+
+                await SendPacket(p);
             }
             catch
             {
-                using (var p = new Packet(SendPacketOperations.SelectWorldResult))
-                {
-                    p.Encode<byte>((byte) LoginResultCode.Unknown);
-                    await SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.SelectWorldResult);
+                p.Encode<byte>((byte) LoginResultCode.Unknown);
+                await SendPacket(p);
             }
         }
 
         private async Task OnCheckUserLimit(IPacket packet)
         {
-            using (var p = new Packet(SendPacketOperations.CheckUserLimitResult))
-            {
-                p.Encode<byte>(0); // bOverUserLimit
-                p.Encode<byte>(0); // bPopulateLevel
+            using var p = new Packet(SendPacketOperations.CheckUserLimitResult);
+            p.Encode<byte>(0); // bOverUserLimit
+            p.Encode<byte>(0); // bPopulateLevel
 
-                await SendPacket(p);
-            }
+            await SendPacket(p);
         }
 
         private async Task OnSetGender(IPacket packet)
@@ -282,35 +271,29 @@ namespace Edelstein.Service.Login.Services
 
             try
             {
-                using (var p = new Packet(SendPacketOperations.SetAccountResult))
-                using (var store = Service.DataStore.OpenSession())
-                {
-                    Account.Gender = gender;
-                    await store.UpdateAsync(Account);
+                using var p = new Packet(SendPacketOperations.SetAccountResult);
+                using var store = Service.DataStore.OpenSession();
+                Account.Gender = gender;
+                await store.UpdateAsync(Account);
 
-                    p.Encode<byte>(gender);
-                    p.Encode<bool>(true);
-                    await SendPacket(p);
-                }
+                p.Encode<byte>(gender);
+                p.Encode<bool>(true);
+                await SendPacket(p);
             }
             catch
             {
-                using (var p = new Packet(SendPacketOperations.SetAccountResult))
-                {
-                    p.Encode<bool>(false);
-                    p.Encode<bool>(false);
-                    await SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.SetAccountResult);
+                p.Encode<bool>(false);
+                p.Encode<bool>(false);
+                await SendPacket(p);
             }
         }
 
         private async Task OnCheckPinCode(IPacket packet)
         {
-            using (var p = new Packet(SendPacketOperations.CheckPinCodeResult))
-            {
-                p.Encode<byte>(0);
-                await SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.CheckPinCodeResult);
+            p.Encode<byte>(0);
+            await SendPacket(p);
         }
 
         private async Task OnCheckDuplicatedID(IPacket packet)
@@ -321,26 +304,22 @@ namespace Edelstein.Service.Login.Services
             {
                 await Service.LockProvider.AcquireAsync("creationLock");
 
-                using (var p = new Packet(SendPacketOperations.CheckDuplicatedIDResult))
-                using (var store = Service.DataStore.OpenSession())
-                {
-                    var duplicatedID = store
-                        .Query<Character>()
-                        .Any(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                using var p = new Packet(SendPacketOperations.CheckDuplicatedIDResult);
+                using var store = Service.DataStore.OpenSession();
+                var duplicatedID = store
+                    .Query<Character>()
+                    .Any(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
-                    p.Encode<string>(name);
-                    p.Encode<bool>(duplicatedID);
-                    await SendPacket(p);
-                }
+                p.Encode<string>(name);
+                p.Encode<bool>(duplicatedID);
+                await SendPacket(p);
             }
             catch
             {
-                using (var p = new Packet(SendPacketOperations.CheckDuplicatedIDResult))
-                {
-                    p.Encode<string>(name);
-                    p.Encode<byte>(0x2);
-                    await SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.CheckDuplicatedIDResult);
+                p.Encode<string>(name);
+                p.Encode<byte>(0x2);
+                await SendPacket(p);
             }
             finally
             {
@@ -367,89 +346,86 @@ namespace Edelstein.Service.Login.Services
             {
                 await Service.LockProvider.AcquireAsync("creationLock");
 
-                using (var p = new Packet(SendPacketOperations.CreateNewCharacterResult))
-                using (var store = Service.DataStore.OpenSession())
+                using var p = new Packet(SendPacketOperations.CreateNewCharacterResult);
+                using var store = Service.DataStore.OpenSession();
+                var character = new Character
                 {
-                    var character = new Character
-                    {
-                        AccountDataID = AccountData.ID,
-                        Name = name,
-                        Job = GameConstants.GetStartJob(race),
-                        Face = face,
-                        Hair = hair + hairColor,
-                        Skin = (byte) skin,
-                        Gender = gender,
-                        FieldID = GameConstants.GetStartField(race),
-                        FieldPortal = 0,
-                        Level = 1,
-                        HP = 50,
-                        MaxHP = 50,
-                        MP = 50,
-                        MaxMP = 50,
-                        SubJob = (short) (race == Race.Normal ? subJob : 0)
-                    };
-                    var result = LoginResultCode.Success;
-                    var templates = Service.TemplateManager;
-                    var makeCharInfo = templates
-                        .GetAll<MakeCharInfoTemplate>()
-                        .First(
-                            i => i.Type == (race switch {
+                    AccountDataID = AccountData.ID,
+                    Name = name,
+                    Job = GameConstants.GetStartJob(race),
+                    Face = face,
+                    Hair = hair + hairColor,
+                    Skin = (byte) skin,
+                    Gender = gender,
+                    FieldID = GameConstants.GetStartField(race),
+                    FieldPortal = 0,
+                    Level = 1,
+                    HP = 50,
+                    MaxHP = 50,
+                    MP = 50,
+                    MaxMP = 50,
+                    SubJob = (short) (race == Race.Normal ? subJob : 0)
+                };
+                var result = LoginResultCode.Success;
+                var templates = Service.TemplateManager;
+                var makeCharInfo = templates
+                    .GetAll<MakeCharInfoTemplate>()
+                    .First(
+                        i => i.Type == (race switch {
                                      Race.Normal => MakeCharInfoType.Normal,
                                      Race.Cygnus => MakeCharInfoType.Premium,
                                      Race.Aran => MakeCharInfoType.Orient,
                                      Race.Evan => MakeCharInfoType.Evan,
-                                     Race.Resistance => MakeCharInfoType.Resistance
-                                     }
-                                 ) &&
-                                 i.Gender == gender);
+                                     Race.Resistance => MakeCharInfoType.Resistance,
+                                     _ => throw new ArgumentOutOfRangeException()
+                                 }
+                             ) &&
+                             i.Gender == gender);
 
-                    if (makeCharInfo.Face.All(i => i != face) ||
-                        makeCharInfo.Hair.All(i => i != hair) ||
-                        makeCharInfo.HairColor.All(i => i != hairColor) ||
-                        makeCharInfo.Skin.All(i => i != skin) ||
-                        makeCharInfo.Coat.All(i => i != coat) ||
-                        makeCharInfo.Pants.All(i => i != pants) ||
-                        makeCharInfo.Shoes.All(i => i != shoes) ||
-                        makeCharInfo.Weapon.All(i => i != weapon)
-                    ) result = LoginResultCode.Unknown;
+                if (makeCharInfo.Face.All(i => i != face) ||
+                    makeCharInfo.Hair.All(i => i != hair) ||
+                    makeCharInfo.HairColor.All(i => i != hairColor) ||
+                    makeCharInfo.Skin.All(i => i != skin) ||
+                    makeCharInfo.Coat.All(i => i != coat) ||
+                    makeCharInfo.Pants.All(i => i != pants) ||
+                    makeCharInfo.Shoes.All(i => i != shoes) ||
+                    makeCharInfo.Weapon.All(i => i != weapon)
+                ) result = LoginResultCode.Unknown;
 
-                    p.Encode<byte>((byte) result);
+                p.Encode<byte>((byte) result);
 
-                    if (result == LoginResultCode.Success)
-                    {
-                        var context = new ModifyInventoriesContext(character.Inventories);
+                if (result == LoginResultCode.Success)
+                {
+                    var context = new ModifyInventoriesContext(character.Inventories);
 
-                        context.Set(-5, templates.Get<ItemTemplate>(coat));
-                        context.Set(-7, templates.Get<ItemTemplate>(shoes));
-                        context.Set(-11, templates.Get<ItemTemplate>(weapon));
-                        if (pants > 0)
-                            context.Set(-6, templates.Get<ItemTemplate>(pants));
+                    context.Set(-5, templates.Get<ItemTemplate>(coat));
+                    context.Set(-7, templates.Get<ItemTemplate>(shoes));
+                    context.Set(-11, templates.Get<ItemTemplate>(weapon));
+                    if (pants > 0)
+                        context.Set(-6, templates.Get<ItemTemplate>(pants));
 
-                        await store.InsertAsync(character);
+                    await store.InsertAsync(character);
 
-                        Logger.Debug($"Created new {race} character, {name}");
+                    Logger.Debug($"Created new {race} character, {name}");
 
-                        character.EncodeStats(p);
-                        character.EncodeLook(p);
-                        p.Encode<bool>(false);
-                        p.Encode<bool>(false);
-                    }
-                    else
-                    {
-                        p.Encode<int>(0);
-                    }
-
-                    await SendPacket(p);
+                    character.EncodeStats(p);
+                    character.EncodeLook(p);
+                    p.Encode<bool>(false);
+                    p.Encode<bool>(false);
                 }
+                else
+                {
+                    p.Encode<int>(0);
+                }
+
+                await SendPacket(p);
             }
             catch
             {
-                using (var p = new Packet(SendPacketOperations.CreateNewCharacterResult))
-                {
-                    p.Encode<byte>((byte) LoginResultCode.DBFail);
-                    p.Encode<int>(0);
-                    await SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.CreateNewCharacterResult);
+                p.Encode<byte>((byte) LoginResultCode.DBFail);
+                p.Encode<int>(0);
+                await SendPacket(p);
             }
             finally
             {
@@ -464,36 +440,32 @@ namespace Edelstein.Service.Login.Services
 
             try
             {
-                using (var p = new Packet(SendPacketOperations.DeleteCharacterResult))
-                using (var store = Service.DataStore.OpenSession())
+                using var p = new Packet(SendPacketOperations.DeleteCharacterResult);
+                using var store = Service.DataStore.OpenSession();
+                var character = store.Query<Character>()
+                    .Where(c => c.AccountDataID == AccountData.ID)
+                    .First(c => c.ID == characterID);
+                var result = LoginResultCode.Success;
+
+                if (!BCrypt.Net.BCrypt.Verify(spw, Account.SecondPassword))
+                    result = LoginResultCode.IncorrectSPW;
+
+                p.Encode<int>(characterID);
+                p.Encode<byte>((byte) result);
+
+                if (result == LoginResultCode.Success)
                 {
-                    var character = store.Query<Character>()
-                        .Where(c => c.AccountDataID == AccountData.ID)
-                        .First(c => c.ID == characterID);
-                    var result = LoginResultCode.Success;
-
-                    if (!BCrypt.Net.BCrypt.Verify(spw, Account.SecondPassword))
-                        result = LoginResultCode.IncorrectSPW;
-
-                    p.Encode<int>(characterID);
-                    p.Encode<byte>((byte) result);
-
-                    if (result == LoginResultCode.Success)
-                    {
-                        await store.DeleteAsync(character);
-                    }
-
-                    await SendPacket(p);
+                    await store.DeleteAsync(character);
                 }
+
+                await SendPacket(p);
             }
             catch
             {
-                using (var p = new Packet(SendPacketOperations.DeleteCharacterResult))
-                {
-                    p.Encode<int>(characterID);
-                    p.Encode<byte>((byte) LoginResultCode.Unknown);
-                    await SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.DeleteCharacterResult);
+                p.Encode<int>(characterID);
+                p.Encode<byte>((byte) LoginResultCode.Unknown);
+                await SendPacket(p);
             }
         }
 
@@ -510,56 +482,52 @@ namespace Edelstein.Service.Login.Services
 
             try
             {
-                using (var store = Service.DataStore.OpenSession())
+                using var store = Service.DataStore.OpenSession();
+                var character = store.Query<Character>()
+                    .First(c => c.ID == characterID);
+                var result = LoginResultCode.Success;
+
+                if (vac)
                 {
-                    var character = store.Query<Character>()
-                        .First(c => c.ID == characterID);
-                    var result = LoginResultCode.Success;
+                    AccountData = store.Query<AccountData>()
+                        .First(a => a.ID == Character.ID);
+                    SelectedService = Service.Peers
+                        .OfType<GameServiceInfo>()
+                        .First(g => g.WorldID == AccountData.WorldID);
 
-                    if (vac)
-                    {
-                        AccountData = store.Query<AccountData>()
-                            .First(a => a.ID == Character.ID);
-                        SelectedService = Service.Peers
-                            .OfType<GameServiceInfo>()
-                            .First(g => g.WorldID == AccountData.WorldID);
-
-                        if (AccountData.AccountID != Account.ID)
-                            result = LoginResultCode.Unknown;
-                    }
-
-                    Character = character;
-
-                    if (!string.IsNullOrEmpty(Account.SecondPassword))
+                    if (AccountData.AccountID != Account.ID)
                         result = LoginResultCode.Unknown;
-                    if (BCrypt.Net.BCrypt.Verify(spw, Account.Password))
-                        result = LoginResultCode.SamePasswordAndSPW;
+                }
 
-                    if (result != LoginResultCode.Success)
+                Character = character;
+
+                if (!string.IsNullOrEmpty(Account.SecondPassword))
+                    result = LoginResultCode.Unknown;
+                if (BCrypt.Net.BCrypt.Verify(spw, Account.Password))
+                    result = LoginResultCode.SamePasswordAndSPW;
+
+                if (result != LoginResultCode.Success)
+                {
+                    using (var p = new Packet(SendPacketOperations.EnableSPWResult))
                     {
-                        using (var p = new Packet(SendPacketOperations.EnableSPWResult))
-                        {
-                            p.Encode<bool>(false);
-                            p.Encode<byte>((byte) result);
-                            await SendPacket(p);
-                        }
-
-                        return;
+                        p.Encode<bool>(false);
+                        p.Encode<byte>((byte) result);
+                        await SendPacket(p);
                     }
 
-                    Account.SecondPassword = BCrypt.Net.BCrypt.HashPassword(spw);
-                    await store.UpdateAsync(Account);
-                    await TryMigrateTo(Account, Character, SelectedService);
+                    return;
                 }
+
+                Account.SecondPassword = BCrypt.Net.BCrypt.HashPassword(spw);
+                await store.UpdateAsync(Account);
+                await TryMigrateTo(Account, Character, SelectedService);
             }
             catch
             {
-                using (var p = new Packet(SendPacketOperations.EnableSPWResult))
-                {
-                    p.Encode<bool>(false);
-                    p.Encode<byte>((byte) LoginResultCode.Unknown);
-                    await SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.EnableSPWResult);
+                p.Encode<bool>(false);
+                p.Encode<byte>((byte) LoginResultCode.Unknown);
+                await SendPacket(p);
             }
         }
 
@@ -572,52 +540,48 @@ namespace Edelstein.Service.Login.Services
 
             try
             {
-                using (var store = Service.DataStore.OpenSession())
+                using var store = Service.DataStore.OpenSession();
+                var character = store.Query<Character>()
+                    .First(c => c.ID == characterID);
+                var result = LoginResultCode.Success;
+
+                if (vac)
                 {
-                    var character = store.Query<Character>()
-                        .First(c => c.ID == characterID);
-                    var result = LoginResultCode.Success;
+                    AccountData = store.Query<AccountData>()
+                        .First(a => a.ID == Character.ID);
+                    SelectedService = Service.Peers
+                        .OfType<GameServiceInfo>()
+                        .First(g => g.WorldID == AccountData.WorldID);
 
-                    if (vac)
-                    {
-                        AccountData = store.Query<AccountData>()
-                            .First(a => a.ID == Character.ID);
-                        SelectedService = Service.Peers
-                            .OfType<GameServiceInfo>()
-                            .First(g => g.WorldID == AccountData.WorldID);
-
-                        if (AccountData.AccountID != Account.ID)
-                            result = LoginResultCode.Unknown;
-                    }
-
-                    Character = character;
-
-                    if (string.IsNullOrEmpty(Account.SecondPassword))
+                    if (AccountData.AccountID != Account.ID)
                         result = LoginResultCode.Unknown;
-                    else if (!BCrypt.Net.BCrypt.Verify(spw, Account.SecondPassword))
-                        result = LoginResultCode.IncorrectSPW;
+                }
 
-                    if (result != LoginResultCode.Success)
+                Character = character;
+
+                if (string.IsNullOrEmpty(Account.SecondPassword))
+                    result = LoginResultCode.Unknown;
+                else if (!BCrypt.Net.BCrypt.Verify(spw, Account.SecondPassword))
+                    result = LoginResultCode.IncorrectSPW;
+
+                if (result != LoginResultCode.Success)
+                {
+                    using (var p = new Packet(SendPacketOperations.CheckSPWResult))
                     {
-                        using (var p = new Packet(SendPacketOperations.CheckSPWResult))
-                        {
-                            p.Encode<byte>((byte) result);
-                            await SendPacket(p);
-                        }
-
-                        return;
+                        p.Encode<byte>((byte) result);
+                        await SendPacket(p);
                     }
 
-                    await TryMigrateTo(Account, Character, SelectedService);
+                    return;
                 }
+
+                await TryMigrateTo(Account, Character, SelectedService);
             }
             catch
             {
-                using (var p = new Packet(SendPacketOperations.CheckSPWResult))
-                {
-                    p.Encode<byte>((byte) LoginResultCode.Unknown);
-                    await SendPacket(p);
-                }
+                using var p = new Packet(SendPacketOperations.CheckSPWResult);
+                p.Encode<byte>((byte) LoginResultCode.Unknown);
+                await SendPacket(p);
             }
         }
     }

@@ -12,7 +12,6 @@ using Edelstein.Provider.Templates.Item.Consume;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Mob;
 using Edelstein.Service.Game.Logging;
-using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields.Continents
 {
@@ -31,7 +30,7 @@ namespace Edelstein.Service.Game.Fields.Continents
         public IField StartShipMoveField { get; }
         public IField WaitField { get; }
         public IField MoveField { get; }
-        public IField? CabinField { get; }
+        public IField CabinField { get; }
         public IField EndField { get; }
         public IField EndShipMoveField { get; }
 

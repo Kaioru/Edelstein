@@ -19,38 +19,36 @@ namespace Edelstein.Service.Game.Services.Handlers
                 return;
             }
 
-            using (var p = new Packet(SendPacketOperations.ShopResult))
+            using var p = new Packet(SendPacketOperations.ShopResult);
+            switch (request)
             {
-                switch (request)
+                case ShopRequest.Buy:
                 {
-                    case ShopRequest.Buy:
-                    {
-                        var position = packet.Decode<short>();
-                        var templateID = packet.Decode<int>();
-                        var count = packet.Decode<short>();
-                        p.Encode<byte>((byte) await shop.Buy(position, count));
-                        break;
-                    }
-
-                    case ShopRequest.Sell:
-                    {
-                        var position = packet.Decode<short>();
-                        var templateID = packet.Decode<int>();
-                        var count = packet.Decode<short>();
-                        p.Encode<byte>((byte) await shop.Sell(position, templateID, count));
-                        break;
-                    }
-
-                    case ShopRequest.Recharge:
-                    {
-                        var position = packet.Decode<short>();
-                        p.Encode<byte>((byte) await shop.Recharge(position));
-                        break;
-                    }
+                    var position = packet.Decode<short>();
+                    var templateID = packet.Decode<int>();
+                    var count = packet.Decode<short>();
+                    p.Encode<byte>((byte) await shop.Buy(position, count));
+                    break;
                 }
 
-                await user.SendPacket(p);
+                case ShopRequest.Sell:
+                {
+                    var position = packet.Decode<short>();
+                    var templateID = packet.Decode<int>();
+                    var count = packet.Decode<short>();
+                    p.Encode<byte>((byte) await shop.Sell(position, templateID, count));
+                    break;
+                }
+
+                case ShopRequest.Recharge:
+                {
+                    var position = packet.Decode<short>();
+                    p.Encode<byte>((byte) await shop.Recharge(position));
+                    break;
+                }
             }
+
+            await user.SendPacket(p);
         }
     }
 }

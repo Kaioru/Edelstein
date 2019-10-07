@@ -58,31 +58,29 @@ namespace Edelstein.Service.Game.Services
 
         public override async Task OnUpdate()
         {
-            using (var store = Service.DataStore.OpenSession())
+            using var store = Service.DataStore.OpenSession();
+            if (FieldUser.Field.Template.ForcedReturn.HasValue)
             {
-                if (FieldUser.Field.Template.ForcedReturn.HasValue)
-                {
-                    Character.FieldID = FieldUser.Field.Template.ForcedReturn.Value;
-                    Character.FieldPortal = 0;
-                }
-                else
-                    Character.FieldPortal = (byte) FieldUser.Field.Template.Portals
-                        .Values
-                        .Where(p => p.Type == FieldPortalType.StartPoint)
-                        .OrderBy(p =>
-                        {
-                            var xd = p.Position.X - FieldUser.Position.X;
-                            var yd = p.Position.Y - FieldUser.Position.Y;
-
-                            return xd * xd + yd * yd;
-                        })
-                        .First()
-                        .ID;
-
-                await store.UpdateAsync(Account);
-                await store.UpdateAsync(AccountData);
-                await store.UpdateAsync(Character);
+                Character.FieldID = FieldUser.Field.Template.ForcedReturn.Value;
+                Character.FieldPortal = 0;
             }
+            else
+                Character.FieldPortal = (byte) FieldUser.Field.Template.Portals
+                    .Values
+                    .Where(p => p.Type == FieldPortalType.StartPoint)
+                    .OrderBy(p =>
+                    {
+                        var xd = p.Position.X - FieldUser.Position.X;
+                        var yd = p.Position.Y - FieldUser.Position.Y;
+
+                        return xd * xd + yd * yd;
+                    })
+                    .First()
+                    .ID;
+
+            await store.UpdateAsync(Account);
+            await store.UpdateAsync(AccountData);
+            await store.UpdateAsync(Character);
         }
 
         public override async Task OnDisconnect()

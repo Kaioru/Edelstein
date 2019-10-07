@@ -69,10 +69,10 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Quests
             return dictionary.ContainsKey(key) ? dictionary[key] : string.Empty;
         }
 
-        public static async Task<QuestResult> Check(this QuestTemplate template, QuestState state, FieldUser user)
+        public static Task<QuestResult> Check(this QuestTemplate template, QuestState state, FieldUser user)
         {
             var check = template.Check[state];
-            return QuestResult.ActSuccess;
+            return Task.FromResult(QuestResult.ActSuccess);
         }
 
         public static async Task<QuestResult> Act(this QuestTemplate template, QuestState state, FieldUser user)

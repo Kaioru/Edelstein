@@ -20,16 +20,14 @@ namespace Edelstein.Service.Game.Services.Handlers
             if (skillLevel <= 0) return;
             if (!SkillConstants.IsKeydownSkill(templateID)) return;
 
-            using (var p = new Packet(SendPacketOperations.UserSkillPrepare))
-            {
-                p.Encode<int>(user.ID);
-                p.Encode<int>(templateID);
-                p.Encode<byte>(packet.Decode<byte>());
-                p.Encode<short>(packet.Decode<short>());
-                p.Encode<byte>(packet.Decode<byte>());
+            using var p = new Packet(SendPacketOperations.UserSkillPrepare);
+            p.Encode<int>(user.ID);
+            p.Encode<int>(templateID);
+            p.Encode<byte>(packet.Decode<byte>());
+            p.Encode<short>(packet.Decode<short>());
+            p.Encode<byte>(packet.Decode<byte>());
 
-                await user.Field.BroadcastPacket(user, p);
-            }
+            await user.Field.BroadcastPacket(user, p);
         }
     }
 }

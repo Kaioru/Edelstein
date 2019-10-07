@@ -10,7 +10,6 @@ using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Core.Scripts;
 using Edelstein.Core.Scripts.Lua;
 using Edelstein.Core.Utils.Messaging;
-using Edelstein.Database;
 using Edelstein.Database.Store;
 using Edelstein.Network;
 using Edelstein.Provider.Templates;

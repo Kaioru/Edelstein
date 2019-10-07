@@ -64,7 +64,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Attacking
             if (mob != null)
             {
                 mob.Controller = _user;
-                mob.Damage(_user, totalDamage);
+                await mob.Damage(_user, totalDamage);
             }
         }
     }

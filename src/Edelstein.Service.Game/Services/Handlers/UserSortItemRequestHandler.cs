@@ -25,12 +25,10 @@ namespace Edelstein.Service.Game.Services.Handlers
                 inventoryCopy.ForEach(kv => i.Set(position++, kv.Value));
             }, true);
 
-            using (var p = new Packet(SendPacketOperations.SortItemResult))
-            {
-                p.Encode<bool>(false);
-                p.Encode<byte>((byte) inventoryType);
-                await user.SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.SortItemResult);
+            p.Encode<bool>(false);
+            p.Encode<byte>((byte) inventoryType);
+            await user.SendPacket(p);
         }
     }
 }

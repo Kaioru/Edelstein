@@ -112,19 +112,17 @@ namespace Edelstein.Core.Distributed.Migrations
 
         protected virtual IPacket GetMigrationPacket(ServerServiceInfo to)
         {
-            using (var p = new Packet(SendPacketOperations.MigrateCommand))
-            {
-                p.Encode<bool>(true);
+            using var p = new Packet(SendPacketOperations.MigrateCommand);
+            p.Encode<bool>(true);
 
-                var endpoint = new IPEndPoint(IPAddress.Parse(to.Host), to.Port);
-                var address = endpoint.Address.MapToIPv4().GetAddressBytes();
-                var port = endpoint.Port;
+            var endpoint = new IPEndPoint(IPAddress.Parse(to.Host), to.Port);
+            var address = endpoint.Address.MapToIPv4().GetAddressBytes();
+            var port = endpoint.Port;
 
-                foreach (var b in address)
-                    p.Encode<byte>(b);
-                p.Encode<short>((short) port);
-                return p;
-            }
+            foreach (var b in address)
+                p.Encode<byte>(b);
+            p.Encode<short>((short) port);
+            return p;
         }
     }
 }

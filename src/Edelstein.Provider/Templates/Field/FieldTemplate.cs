@@ -20,8 +20,8 @@ namespace Edelstein.Provider.Templates.Field
         public int? FieldReturn { get; private set; }
         public int? ForcedReturn { get; private set; }
 
-        public string? ScriptFirstUserEnter { get; private set; }
-        public string? ScriptUserEnter { get; private set; }
+        public string ScriptFirstUserEnter { get; private set; }
+        public string ScriptUserEnter { get; private set; }
 
         public IDictionary<int, FieldFootholdTemplate> Footholds { get; }
         public IDictionary<int, FieldPortalTemplate> Portals { get; }
