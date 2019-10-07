@@ -20,12 +20,10 @@ namespace Edelstein.Service.WebAPI.GraphQL.Types
                 "character",
                 resolve: ctx =>
                 {
-                    using (var store = service.DataStore.OpenSession())
-                    {
-                        return store
-                            .Query<Character>()
-                            .FirstOrDefault(c => c.ID == ctx.Source.CharacterID);
-                    }
+                    using var store = service.DataStore.OpenSession();
+                    return store
+                        .Query<Character>()
+                        .FirstOrDefault(c => c.ID == ctx.Source.CharacterID);
                 });
         }
     }

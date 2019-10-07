@@ -21,27 +21,23 @@ namespace Edelstein.Service.Game.Fields.Objects.Reactor
 
         public override IPacket GetEnterFieldPacket()
         {
-            using (var p = new Packet(SendPacketOperations.ReactorEnterField))
-            {
-                p.Encode<int>(ID);
-                p.Encode<int>(Template.ID);
-                p.Encode<byte>(0); // State
-                p.Encode<Point>(Position);
-                p.Encode<bool>(Flip);
-                p.Encode<string>(""); // Name?
-                return p;
-            }
+            using var p = new Packet(SendPacketOperations.ReactorEnterField);
+            p.Encode<int>(ID);
+            p.Encode<int>(Template.ID);
+            p.Encode<byte>(0); // State
+            p.Encode<Point>(Position);
+            p.Encode<bool>(Flip);
+            p.Encode<string>(""); // Name?
+            return p;
         }
 
         public override IPacket GetLeaveFieldPacket()
         {
-            using (var p = new Packet(SendPacketOperations.ReactorLeaveField))
-            {
-                p.Encode<int>(ID);
-                p.Encode<byte>(0); // State
-                p.Encode<Point>(Position);
-                return p;
-            }
+            using var p = new Packet(SendPacketOperations.ReactorLeaveField);
+            p.Encode<int>(ID);
+            p.Encode<byte>(0); // State
+            p.Encode<Point>(Position);
+            return p;
         }
     }
 }

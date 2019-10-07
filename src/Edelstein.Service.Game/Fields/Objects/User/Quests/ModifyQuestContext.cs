@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Edelstein.Database.Entities.Characters;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Types.Quests;
-using Microsoft.Scripting.Utils;
 
 namespace Edelstein.Service.Game.Fields.Objects.User.Quests
 {

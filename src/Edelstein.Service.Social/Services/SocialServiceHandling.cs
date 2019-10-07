@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Edelstein.Core.Gameplay.Social;
 using Edelstein.Core.Gameplay.Social.Messages;

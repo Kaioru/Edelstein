@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Provider.Templates.String;
-using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Mob;
 using Edelstein.Service.Game.Fields.Objects.NPC;

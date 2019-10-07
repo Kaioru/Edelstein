@@ -16,12 +16,10 @@ namespace Edelstein.Service.Game.Services.Handlers
 
             if (continent == null) return;
 
-            using (var p = new Packet(SendPacketOperations.CONTISTATE))
-            {
-                p.Encode<byte>((byte) continent.State);
-                p.Encode<bool>(continent.EventDoing);
-                await user.SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.CONTISTATE);
+            p.Encode<byte>((byte) continent.State);
+            p.Encode<bool>(continent.EventDoing);
+            await user.SendPacket(p);
         }
     }
 }

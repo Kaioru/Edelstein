@@ -82,24 +82,22 @@ namespace Edelstein.Service.Login.Services
 
         protected override IPacket GetMigrationPacket(ServerServiceInfo to)
         {
-            using (var p = new Packet(SendPacketOperations.SelectCharacterResult))
-            {
-                p.Encode<byte>(0);
-                p.Encode<byte>(0);
+            using var p = new Packet(SendPacketOperations.SelectCharacterResult);
+            p.Encode<byte>(0);
+            p.Encode<byte>(0);
 
-                var endpoint = new IPEndPoint(IPAddress.Parse(to.Host), to.Port);
-                var address = endpoint.Address.MapToIPv4().GetAddressBytes();
-                var port = endpoint.Port;
+            var endpoint = new IPEndPoint(IPAddress.Parse(to.Host), to.Port);
+            var address = endpoint.Address.MapToIPv4().GetAddressBytes();
+            var port = endpoint.Port;
 
-                address.ForEach(b => p.Encode<byte>(b));
-                p.Encode<short>((short) port);
+            address.ForEach(b => p.Encode<byte>(b));
+            p.Encode<short>((short) port);
 
-                p.Encode<int>(Character.ID);
-                p.Encode<byte>(0);
-                p.Encode<int>(0);
+            p.Encode<int>(Character.ID);
+            p.Encode<byte>(0);
+            p.Encode<int>(0);
 
-                return p;
-            }
+            return p;
         }
     }
 }

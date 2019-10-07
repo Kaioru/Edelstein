@@ -17,12 +17,10 @@ namespace Edelstein.Service.Game.Services.Handlers
             user.PortableChairID = templateID;
             await user.ModifyStats(exclRequest: true);
 
-            using (var p = new Packet(SendPacketOperations.UserSetActivePortableChair))
-            {
-                p.Encode<int>(user.ID);
-                p.Encode<int>(templateID);
-                await user.Field.BroadcastPacket(user, p);
-            }
+            using var p = new Packet(SendPacketOperations.UserSetActivePortableChair);
+            p.Encode<int>(user.ID);
+            p.Encode<int>(templateID);
+            await user.Field.BroadcastPacket(user, p);
         }
     }
 }

@@ -25,33 +25,31 @@ namespace Edelstein.Service.Game.Interactions
 
         public override async Task Enter()
         {
-            using (var p = new Packet(SendPacketOperations.OpenShopDlg))
+            using var p = new Packet(SendPacketOperations.OpenShopDlg);
+            p.Encode<int>(_template.ID);
+
+            var items = _template.Items.Values
+                .OrderBy(i => i.ID)
+                .ToList();
+
+            p.Encode<short>((short) items.Count);
+            items.ForEach(i =>
             {
-                p.Encode<int>(_template.ID);
+                p.Encode<int>(i.TemplateID);
+                p.Encode<int>(i.Price);
+                p.Encode<byte>(i.DiscountRate);
+                p.Encode<int>(i.TokenTemplateID);
+                p.Encode<int>(i.TokenPrice);
+                p.Encode<int>(i.ItemPeriod);
+                p.Encode<int>(i.LevelLimited);
 
-                var items = _template.Items.Values
-                    .OrderBy(i => i.ID)
-                    .ToList();
+                if (!ItemConstants.IsRechargeableItem(i.TemplateID)) p.Encode<short>(i.Quantity);
+                else p.Encode<double>(i.UnitPrice);
 
-                p.Encode<short>((short) items.Count);
-                items.ForEach(i =>
-                {
-                    p.Encode<int>(i.TemplateID);
-                    p.Encode<int>(i.Price);
-                    p.Encode<byte>(i.DiscountRate);
-                    p.Encode<int>(i.TokenTemplateID);
-                    p.Encode<int>(i.TokenPrice);
-                    p.Encode<int>(i.ItemPeriod);
-                    p.Encode<int>(i.LevelLimited);
+                p.Encode<short>(i.MaxPerSlot);
+            });
 
-                    if (!ItemConstants.IsRechargeableItem(i.TemplateID)) p.Encode<short>(i.Quantity);
-                    else p.Encode<double>(i.UnitPrice);
-
-                    p.Encode<short>(i.MaxPerSlot);
-                });
-
-                await User.SendPacket(p);
-            }
+            await User.SendPacket(p);
         }
 
         public override async Task Leave()
@@ -145,10 +143,10 @@ namespace Edelstein.Service.Game.Interactions
             return ShopResult.SellSuccess;
         }
 
-        public async Task<ShopResult> Recharge(short position)
+        public Task<ShopResult> Recharge(short position)
         {
             // TODO
-            return ShopResult.RechargeSuccess;
+            return Task.FromResult(ShopResult.RechargeSuccess);
         }
     }
 }

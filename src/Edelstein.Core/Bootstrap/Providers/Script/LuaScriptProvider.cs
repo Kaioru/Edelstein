@@ -1,6 +1,5 @@
 using Edelstein.Core.Scripts;
 using Edelstein.Core.Scripts.Lua;
-using Edelstein.Core.Scripts.Python;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 

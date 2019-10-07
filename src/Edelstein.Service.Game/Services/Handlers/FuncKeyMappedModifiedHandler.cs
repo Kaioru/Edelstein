@@ -8,11 +8,11 @@ namespace Edelstein.Service.Game.Services.Handlers
 {
     public class FuncKeyMappedModifiedHandler : AbstractFieldUserHandler
     {
-        public override async Task Handle(RecvPacketOperations operation, IPacket packet, FieldUser user)
+        public override Task Handle(RecvPacketOperations operation, IPacket packet, FieldUser user)
         {
             var v3 = packet.Decode<int>();
 
-            if (v3 > 0) return;
+            if (v3 > 0) return Task.CompletedTask;
             var count = packet.Decode<int>();
 
             for (var i = 0; i < count; i++)
@@ -25,6 +25,8 @@ namespace Edelstein.Service.Game.Services.Handlers
                     Action = packet.Decode<int>()
                 };
             }
+
+            return Task.CompletedTask;
         }
     }
 }

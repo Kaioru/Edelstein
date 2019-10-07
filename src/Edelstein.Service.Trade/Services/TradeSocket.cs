@@ -57,12 +57,10 @@ namespace Edelstein.Service.Trade.Services
 
         public override async Task OnUpdate()
         {
-            using (var store = Service.DataStore.OpenSession())
-            {
-                await store.UpdateAsync(Account);
-                await store.UpdateAsync(AccountData);
-                await store.UpdateAsync(Character);
-            }
+            using var store = Service.DataStore.OpenSession();
+            await store.UpdateAsync(Account);
+            await store.UpdateAsync(AccountData);
+            await store.UpdateAsync(Character);
         }
 
         public override async Task OnDisconnect()

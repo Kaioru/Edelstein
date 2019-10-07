@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,13 +28,11 @@ namespace Edelstein.Service.Game.Interactions
 
         public override async Task Enter()
         {
-            using (var p = new Packet(SendPacketOperations.TrunkResult))
-            {
-                p.Encode<byte>((byte) TrunkResult.OpenTrunkDlg);
-                p.Encode<int>(_template.ID);
-                EncodeItems(p);
-                await User.SendPacket(p);
-            }
+            using var p = new Packet(SendPacketOperations.TrunkResult);
+            p.Encode<byte>((byte) TrunkResult.OpenTrunkDlg);
+            p.Encode<int>(_template.ID);
+            EncodeItems(p);
+            await User.SendPacket(p);
         }
 
         public override async Task Leave()
@@ -107,9 +104,9 @@ namespace Edelstein.Service.Game.Interactions
             return TrunkResult.PutSuccess;
         }
 
-        public async Task<TrunkResult> Sort()
+        public Task<TrunkResult> Sort()
         {
-            return TrunkResult.SortItem;
+            return Task.FromResult(TrunkResult.SortItem);
         }
 
         public async Task<TrunkResult> Transact(int amount)

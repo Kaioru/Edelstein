@@ -15,12 +15,10 @@ namespace Edelstein.Service.WebAPI.GraphQL
                 resolve: ctx =>
                 {
                     var accountID = ((WebAPIContext) ctx.UserContext).AccountID;
-                    using (var store = service.DataStore.OpenSession())
-                    {
-                        return store
-                            .Query<Account>()
-                            .First(a => a.ID == accountID);
-                    }
+                    using var store = service.DataStore.OpenSession();
+                    return store
+                        .Query<Account>()
+                        .First(a => a.ID == accountID);
                 }
             ).AuthorizeWith("Authorized");
         }

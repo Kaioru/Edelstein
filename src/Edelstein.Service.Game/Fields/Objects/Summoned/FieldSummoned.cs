@@ -52,35 +52,31 @@ namespace Edelstein.Service.Game.Fields.Objects.Summoned
 
         public IPacket GetEnterFieldPacket(byte enterType)
         {
-            using (var p = new Packet(SendPacketOperations.SummonedEnterField))
-            {
-                p.Encode<int>(Owner.ID);
-                p.Encode<int>(ID);
-                p.Encode<int>(SkillID);
-                p.Encode<byte>(Owner.Character.Level);
-                p.Encode<byte>(SkillLevel);
-                p.Encode<Point>(Position);
-                p.Encode<byte>(MoveAction);
-                p.Encode<short>(Foothold);
-                p.Encode<byte>((byte) MoveAbility);
-                p.Encode<byte>((byte) AssistType);
-                p.Encode<byte>(enterType);
+            using var p = new Packet(SendPacketOperations.SummonedEnterField);
+            p.Encode<int>(Owner.ID);
+            p.Encode<int>(ID);
+            p.Encode<int>(SkillID);
+            p.Encode<byte>(Owner.Character.Level);
+            p.Encode<byte>(SkillLevel);
+            p.Encode<Point>(Position);
+            p.Encode<byte>(MoveAction);
+            p.Encode<short>(Foothold);
+            p.Encode<byte>((byte) MoveAbility);
+            p.Encode<byte>((byte) AssistType);
+            p.Encode<byte>(enterType);
 
-                p.Encode<bool>(false); // Mirror Image avatarlook
+            p.Encode<bool>(false); // Mirror Image avatarlook
 
-                return p;
-            }
+            return p;
         }
 
         public IPacket GetLeaveFieldPacket(byte leaveType)
         {
-            using (var p = new Packet(SendPacketOperations.SummonedLeaveField))
-            {
-                p.Encode<int>(Owner.ID);
-                p.Encode<int>(ID);
-                p.Encode<byte>(leaveType);
-                return p;
-            }
+            using var p = new Packet(SendPacketOperations.SummonedLeaveField);
+            p.Encode<int>(Owner.ID);
+            p.Encode<int>(ID);
+            p.Encode<byte>(leaveType);
+            return p;
         }
 
         public override IPacket GetEnterFieldPacket()

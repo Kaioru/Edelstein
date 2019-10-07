@@ -67,15 +67,13 @@ namespace Edelstein.Service.Game.Services.Handlers
                 {
                     var npcTemplateID = packet.Decode<int>();
 
-                    using (var p = new Packet(SendPacketOperations.UserQuestResult))
-                    {
-                        p.Encode<byte>((byte) QuestResult.ActSuccess);
-                        p.Encode<short>(templateID);
-                        p.Encode<int>(npcTemplateID);
-                        p.Encode<int>(0); // nextQuest
+                    using var p = new Packet(SendPacketOperations.UserQuestResult);
+                    p.Encode<byte>((byte) QuestResult.ActSuccess);
+                    p.Encode<short>(templateID);
+                    p.Encode<int>(npcTemplateID);
+                    p.Encode<int>(0); // nextQuest
 
-                        await user.SendPacket(p);
-                    }
+                    await user.SendPacket(p);
 
                     break;
                 }

@@ -17,25 +17,21 @@ namespace Edelstein.Service.Game.Fields.Objects.Dragon
 
         public override IPacket GetEnterFieldPacket()
         {
-            using (var p = new Packet(SendPacketOperations.DragonEnterField))
-            {
-                p.Encode<int>(Owner.ID);
-                p.Encode<int>(Position.X);
-                p.Encode<int>(Position.Y);
-                p.Encode<byte>(MoveAction);
-                p.Encode<short>(0);
-                p.Encode<short>(JobCode);
-                return p;
-            }
+            using var p = new Packet(SendPacketOperations.DragonEnterField);
+            p.Encode<int>(Owner.ID);
+            p.Encode<int>(Position.X);
+            p.Encode<int>(Position.Y);
+            p.Encode<byte>(MoveAction);
+            p.Encode<short>(0);
+            p.Encode<short>(JobCode);
+            return p;
         }
 
         public override IPacket GetLeaveFieldPacket()
         {
-            using (var p = new Packet(SendPacketOperations.DragonLeaveField))
-            {
-                p.Encode<int>(Owner.ID);
-                return p;
-            }
+            using var p = new Packet(SendPacketOperations.DragonLeaveField);
+            p.Encode<int>(Owner.ID);
+            return p;
         }
     }
 }
