@@ -8,7 +8,6 @@ using Edelstein.Provider.Templates.Field.Life.Mob;
 using Edelstein.Provider.Templates.Item.Consume;
 using Edelstein.Service.Game.Fields.Objects.Mob;
 using Edelstein.Service.Game.Fields.Objects.User;
-using MoreLinq;
 
 namespace Edelstein.Service.Game.Services.Handlers
 {

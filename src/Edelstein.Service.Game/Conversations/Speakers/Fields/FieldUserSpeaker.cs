@@ -7,7 +7,6 @@ using Edelstein.Service.Game.Fields.Objects.User.Effects;
 using Edelstein.Service.Game.Fields.Objects.User.Effects.Field;
 using Edelstein.Service.Game.Fields.Objects.User.Effects.User;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Types;
-using MoonSharp.Interpreter.Interop;
 
 namespace Edelstein.Service.Game.Conversations.Speakers.Fields
 {

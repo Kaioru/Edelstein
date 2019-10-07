@@ -2,8 +2,6 @@ using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Service.Game.Fields.Objects.User;
-using Edelstein.Service.Game.Interactions.Miniroom;
-using Edelstein.Service.Game.Interactions.Miniroom.Types;
 
 namespace Edelstein.Service.Game.Commands.Handling
 {

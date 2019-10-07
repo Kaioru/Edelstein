@@ -5,7 +5,6 @@ using Edelstein.Database.Entities.Inventories;
 using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Provider.Templates.Item;
-using MoreLinq;
 
 namespace Edelstein.Core.Gameplay.Inventories
 {

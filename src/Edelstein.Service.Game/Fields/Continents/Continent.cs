@@ -12,7 +12,6 @@ using Edelstein.Provider.Templates.Item.Consume;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Mob;
 using Edelstein.Service.Game.Logging;
-using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields.Continents
 {

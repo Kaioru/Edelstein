@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
@@ -17,7 +16,6 @@ using Edelstein.Provider.Templates.Shop;
 using Edelstein.Service.Shop.Extensions;
 using Edelstein.Service.Shop.Logging;
 using Edelstein.Service.Shop.Types;
-using IronPython.Modules;
 using MoreLinq;
 
 namespace Edelstein.Service.Shop.Services

@@ -1,4 +1,3 @@
-using System;
 using Edelstein.Core.Gameplay.Social;
 using Edelstein.Network.Packets;
 

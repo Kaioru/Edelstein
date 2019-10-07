@@ -2,18 +2,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core;
 using Edelstein.Core.Distributed.Migrations;
-using Edelstein.Core.Distributed.Peers.Info;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Database.Entities;
 using Edelstein.Database.Entities.Characters;
-using Edelstein.Database.Entities.Inventories;
-using Edelstein.Database.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.Dragon;
 using Edelstein.Service.Game.Fields.Objects.User;
-using Marten.Util;
-using MoreLinq;
 
 namespace Edelstein.Service.Game.Services.Handlers
 {
