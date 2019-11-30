@@ -56,8 +56,9 @@ namespace Edelstein.Provider.Templates
                     [typeof(SkillStringTemplate)] = new SkillStringTemplateCollection(collection),
                     [typeof(QuestStringTemplate)] = new QuestStringTemplateCollection(collection),
                     [typeof(NPCShopTemplate)] = new NPCShopTemplateCollection(collection),
-                    [typeof(RewardTemplate)] = new RewardTemplateCollection(collection)
-                }
+                    [typeof(RewardTemplate)] = new RewardTemplateCollection(collection),
+                    [typeof(MobStringTemplate)] = new MobStringTemplateCollection(collection)
+            }
                 .Where(c => types.HasFlag(c.Value.Type))
                 .ToImmutableDictionary(kv => kv.Key, kv => kv.Value);
         }

@@ -24,6 +24,7 @@ namespace Edelstein.Service.Game.Commands
             Commands.Add(new FieldCommand(parser));
             Commands.Add(new QuestCommand(parser));
             Commands.Add(new ContinentCommand(parser));
+            Commands.Add(new SpawnCommand(parser));
             
             Commands.Add(new TestCommand(parser));
             Commands.Add(new DebugCommand(parser));

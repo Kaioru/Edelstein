@@ -31,7 +31,8 @@ namespace Edelstein.Provider.Templates
         ItemString = 0x20000,
         SkillString = 0x40000,
         QuestString = 0x80000,
-        String = FieldString | ItemString | SkillString | QuestString,
+        MobString = 0x400000,
+        String = FieldString | ItemString | SkillString | QuestString | MobString,
 
         NPCShop = 0x200000,
 
