@@ -5,6 +5,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>8</LangVersion>
         <Nullable>enable</Nullable>
+        <RootNamespace>Edelstein.Network</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
