@@ -4,9 +4,8 @@ using System.Threading.Tasks;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
+using Edelstein.Network.Codecs;
 using Edelstein.Network.Logging;
-using Edelstein.Network.Packets.Codecs;
-using Edelstein.Network.Transport.Channels;
 
 namespace Edelstein.Network.Transport
 {
@@ -14,17 +13,23 @@ namespace Edelstein.Network.Transport
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        private readonly ISocketFactory _socketFactory;
+        public ISocketAdapterFactory AdapterFactory { get; }
+        public short Version { get; }
+        public string Patch { get; }
+        public byte Locale { get; }
 
-        private IChannel Channel { get; set; }
-        private IEventLoopGroup BossGroup { get; set; }
-        private IEventLoopGroup WorkerGroup { get; set; }
+        private IChannel? Channel { get; set; }
+        private IEventLoopGroup? BossGroup { get; set; }
+        private IEventLoopGroup? WorkerGroup { get; set; }
 
         public ICollection<ISocket> Sockets { get; }
 
-        public Server(ISocketFactory socketFactory)
+        public Server(ISocketAdapterFactory adapterFactory, short version, string patch, byte locale)
         {
-            _socketFactory = socketFactory;
+            AdapterFactory = adapterFactory;
+            Version = version;
+            Patch = patch;
+            Locale = locale;
             Sockets = new List<ISocket>();
         }
 
@@ -40,9 +45,9 @@ namespace Edelstein.Network.Transport
                 .ChildHandler(new ActionChannelInitializer<IChannel>(ch =>
                 {
                     ch.Pipeline.AddLast(
-                        new PacketDecoder(),
-                        new ServerAdapter(this, _socketFactory),
-                        new PacketEncoder()
+                        new PacketDecoder(Version),
+                        new ServerAdapter(this),
+                        new PacketEncoder(Version)
                     );
                 }))
                 .BindAsync(port);

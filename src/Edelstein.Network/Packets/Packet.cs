@@ -50,9 +50,7 @@ namespace Edelstein.Network.Packets
         }
 
         public IEnumerable<byte> DecodeFixedLength(int length)
-        {
-            return _buffer.ReadBytes(length).Array;
-        }
+            => _buffer.ReadBytes(length).Array;
 
         public void Dispose() => _buffer.DiscardReadBytes();
     }

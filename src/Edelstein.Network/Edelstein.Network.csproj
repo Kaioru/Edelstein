@@ -1,14 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>8</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DotNetty.Buffers" Version="0.6.0"/>
-        <PackageReference Include="DotNetty.Codecs" Version="0.6.0"/>
-        <PackageReference Include="LibLog" Version="5.0.6"/>
+      <PackageReference Include="DotNetty.Buffers" Version="0.6.0" />
+      <PackageReference Include="DotNetty.Codecs" Version="0.6.0" />
+      <PackageReference Include="DotNetty.Common" Version="0.6.0" />
+      <PackageReference Include="LibLog" Version="5.0.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Ciphers" />
     </ItemGroup>
 
 </Project>

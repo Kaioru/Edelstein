@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
+using Edelstein.Network.Codecs;
 using Edelstein.Network.Logging;
-using Edelstein.Network.Packets.Codecs;
-using Edelstein.Network.Transport.Channels;
 
 namespace Edelstein.Network.Transport
 {
@@ -13,15 +12,22 @@ namespace Edelstein.Network.Transport
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        private readonly ISocketFactory _socketFactory;
+        public ISocketAdapterFactory AdapterFactory { get; }
+        public short Version { get; }
+        public string Patch { get; }
+        public byte Locale { get; }
 
-        private IChannel Channel { get; set; }
-        private IEventLoopGroup WorkerGroup { get; set; }
-        public ISocket Socket { get; set; }
+        private IChannel? Channel { get; set; }
+        private IEventLoopGroup? WorkerGroup { get; set; }
+        
+        public ISocket? Socket { get; protected internal set; }
 
-        public Client(ISocketFactory socketFactory)
+        public Client(ISocketAdapterFactory adapterFactory, short version, string patch, byte locale)
         {
-            _socketFactory = socketFactory;
+            AdapterFactory = adapterFactory;
+            Version = version;
+            Patch = patch;
+            Locale = locale;
         }
 
         public async Task Start(string host, int port)
@@ -34,9 +40,9 @@ namespace Edelstein.Network.Transport
                 .Handler(new ActionChannelInitializer<IChannel>(ch =>
                 {
                     ch.Pipeline.AddLast(
-                        new PacketDecoder(),
-                        new ClientAdapter(this, _socketFactory),
-                        new PacketEncoder()
+                        new PacketDecoder(Version),
+                        new ClientAdapter(this),
+                        new PacketEncoder(Version)
                     );
                 }))
                 .ConnectAsync(IPAddress.Parse(host), port);
