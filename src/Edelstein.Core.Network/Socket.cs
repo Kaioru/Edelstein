@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using DotNetty.Common.Utilities;
 using DotNetty.Transport.Channels;
@@ -11,6 +14,7 @@ namespace Edelstein.Network
         public static readonly AttributeKey<ISocket> Key = AttributeKey<ISocket>.ValueOf("Socket");
 
         private readonly IChannel _channel;
+        private readonly SemaphoreSlim _sendLock;
 
         public uint SeqSend { get; set; }
         public uint SeqRecv { get; set; }
@@ -20,6 +24,7 @@ namespace Edelstein.Network
         public Socket(IChannel channel, uint seqSend, uint seqRecv)
         {
             _channel = channel;
+            _sendLock = new SemaphoreSlim(1, 1);
             SeqSend = seqSend;
             SeqRecv = seqRecv;
             ClientKey = new Random().NextLong();
@@ -27,8 +32,33 @@ namespace Edelstein.Network
 
         public async Task SendPacket(IPacket packet)
         {
-            if (_channel.Open)
-                await _channel.WriteAndFlushAsync(packet);
+            await _sendLock.WaitAsync();
+
+            try
+            {
+                if (_channel.Open)
+                    await _channel.WriteAndFlushAsync(packet);
+            }
+            finally
+            {
+                _sendLock.Release();
+            }
+        }
+
+        public async Task SendPacket(IEnumerable<IPacket> packets)
+        {
+            try
+            {
+                if (_channel.Open)
+                {
+                    await Task.WhenAll(packets.Select(p => _channel.WriteAsync(p)));
+                    _channel.Flush();
+                }
+            }
+            finally
+            {
+                _sendLock.Release();
+            }
         }
 
         public Task Close() => _channel.DisconnectAsync();
