@@ -121,6 +121,8 @@ namespace Edelstein.Core.Services.Migrations
             var state = (await AccountStateCache.GetAsync<MigrationState>(socketAdapter.Account.ID.ToString())).Value;
             if (state != MigrationState.Migrating)
             {
+                Sockets.Remove(socketAdapter.Character.ID);
+
                 await socketAdapter.OnUpdate();
                 if (socketAdapter.Account != null)
                     await AccountStateCache.RemoveAsync(socketAdapter.Account.ID.ToString());
