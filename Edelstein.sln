@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Core.Network", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Core.Provider", "src\Edelstein.Core.Provider\Edelstein.Core.Provider.csproj", "{8A044F51-2AE0-40E0-8BB6-463C36B0AF7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Entities", "src\Edelstein.Entities\Edelstein.Entities.csproj", "{974C2753-A0B8-49F8-B91D-6F9C33CFC329}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Core.Entities", "src\Edelstein.Core.Entities\Edelstein.Core.Entities.csproj", "{974C2753-A0B8-49F8-B91D-6F9C33CFC329}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Database", "src\Edelstein.Database\Edelstein.Database.csproj", "{338D1DF0-B675-46E3-932A-71BCE69C912E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Core.Database", "src\Edelstein.Core.Database\Edelstein.Core.Database.csproj", "{338D1DF0-B675-46E3-932A-71BCE69C912E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

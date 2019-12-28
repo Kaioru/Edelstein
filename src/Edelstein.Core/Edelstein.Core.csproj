@@ -10,8 +10,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Edelstein.Core.Entities\Edelstein.Core.Entities.csproj" />
       <ProjectReference Include="..\Edelstein.Core.Network\Edelstein.Core.Network.csproj" />
-      <ProjectReference Include="..\Edelstein.Entities\Edelstein.Entities.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -2,10 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
+        <RootNamespace>Edelstein.Entities</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Edelstein.Database\Edelstein.Database.csproj" />
+      <ProjectReference Include="..\Edelstein.Core.Database\Edelstein.Core.Database.csproj" />
     </ItemGroup>
 
 </Project>
