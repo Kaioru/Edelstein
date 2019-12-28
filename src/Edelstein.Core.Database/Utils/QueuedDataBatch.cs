@@ -15,6 +15,9 @@ namespace Edelstein.Database.Utils
             _queue = new Queue<Action<IDataSession>>();
         }
 
+        public T Retrieve<T>(int id) where T : class, IDataEntity
+            => _session.Retrieve<T>(id);
+
         public void Insert<T>(T entity) where T : class, IDataEntity
             => _queue.Enqueue(s => s.Insert(entity));
 
@@ -23,6 +26,9 @@ namespace Edelstein.Database.Utils
 
         public void Delete<T>(T entity) where T : class, IDataEntity
             => _queue.Enqueue(s => s.Delete(entity));
+
+        public Task<T> RetrieveAsync<T>(int id) where T : class, IDataEntity
+            => _session.RetrieveAsync<T>(id);
 
         public Task InsertAsync<T>(T entity) where T : class, IDataEntity
         {

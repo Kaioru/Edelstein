@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Database.Utils;
 using JsonFlatFileDataStore;
@@ -17,6 +19,9 @@ namespace Edelstein.Database.Json
         public IDataBatch Batch()
             => new QueuedDataBatch(this);
 
+        public T Retrieve<T>(int id) where T : class, IDataEntity
+            => Query<T>().First(d => d.ID == id);
+
         public void Insert<T>(T entity) where T : class, IDataEntity
         {
             entity.ID = _dataStore.GetCollection<T>().GetNextIdValue();
@@ -28,6 +33,9 @@ namespace Edelstein.Database.Json
 
         public void Delete<T>(T entity) where T : class, IDataEntity
             => _dataStore.GetCollection<T>().DeleteOne(entity.ID);
+
+        public Task<T> RetrieveAsync<T>(int id) where T : class, IDataEntity
+            => Task.FromResult(Query<T>().First(d => d.ID == id));
 
         public Task InsertAsync<T>(T entity) where T : class, IDataEntity
         {
