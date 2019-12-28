@@ -25,5 +25,8 @@ namespace Edelstein.Core.Utils.Ticks
 
         public void Stop()
             => _cts.Cancel();
+
+        public Task ForceTick()
+            => _behavior.TryTick();
     }
 }

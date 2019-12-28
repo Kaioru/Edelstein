@@ -1,20 +1,23 @@
 using System;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace Edelstein.Core.Utils.Ticks
 {
     public class TimerTicker : ITicker
     {
+        private readonly ITickBehavior _behavior;
         private readonly Timer _timer;
 
         public TimerTicker(TimeSpan time, ITickBehavior behavior)
         {
+            _behavior = behavior;
             _timer = new Timer
             {
                 Interval = time.TotalMilliseconds,
                 AutoReset = true
             };
-            _timer.Elapsed += async (sender, args) => await behavior.TryTick();
+            _timer.Elapsed += async (sender, args) => await _behavior.TryTick();
         }
 
         public void Start()
@@ -22,5 +25,8 @@ namespace Edelstein.Core.Utils.Ticks
 
         public void Stop()
             => _timer.Stop();
+
+        public Task ForceTick()
+            => _behavior.TryTick();
     }
 }
