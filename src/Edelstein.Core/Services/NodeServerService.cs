@@ -7,12 +7,12 @@ using Foundatio.Messaging;
 
 namespace Edelstein.Core.Services
 {
-    public class AbstractNodeServerService<TState> : AbstractNodeService<TState>
+    public class NodeServerService<TState> : NodeService<TState>
         where TState : IServerNodeState
     {
         private readonly Server _server;
 
-        public AbstractNodeServerService(
+        public NodeServerService(
             TState state,
             ICacheClient cache,
             IMessageBus bus,

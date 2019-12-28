@@ -7,10 +7,10 @@ using Microsoft.Extensions.Hosting;
 
 namespace Edelstein.Core.Services
 {
-    public abstract class AbstractNodeService<TState> : NodeLocal<TState>, IHostedService
+    public class NodeService<TState> : NodeLocal<TState>, IHostedService
         where TState : INodeState
     {
-        protected AbstractNodeService(
+        public NodeService(
             TState state,
             ICacheClient cache,
             IMessageBus bus
