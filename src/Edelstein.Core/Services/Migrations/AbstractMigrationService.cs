@@ -8,6 +8,7 @@ using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Core.Utils.Ticks;
 using Edelstein.Database;
+using Edelstein.Network;
 using Edelstein.Network.Packets;
 using Edelstein.Network.Transport;
 using Foundatio.Caching;
@@ -36,7 +37,7 @@ namespace Edelstein.Core.Services.Migrations
             Server server
         ) : base(state, cache, bus, server)
         {
-            _ticker = new TimerTicker(TimeSpan.FromSeconds(1), new MigrationServiceTickBehavior(this));
+            _ticker = new TimerTicker(TimeSpan.FromSeconds(15), new MigrationServiceTickBehavior(this));
             DataStore = dataStore;
             AccountStateCache = new ScopedCacheClient(cache, Scopes.StateAccount);
             CharacterStateCache = new ScopedCacheClient(cache, Scopes.StateCharacter);
@@ -90,6 +91,8 @@ namespace Edelstein.Core.Services.Migrations
                 },
                 TimeSpan.FromSeconds(15)
             );
+
+            Sockets.Remove(socketAdapter.Character.ID);
         }
 
         public async Task ProcessMigrateFrom(IMigrationSocketAdapter socketAdapter, int characterID, long clientKey)
@@ -109,6 +112,8 @@ namespace Edelstein.Core.Services.Migrations
 
             await MigrationCache.RemoveAsync(characterID.ToString());
             await socketAdapter.TryRecvHeartbeat();
+
+            Sockets.Add(socketAdapter.Character.ID, socketAdapter);
         }
 
         public async Task ProcessDisconnect(IMigrationSocketAdapter socketAdapter)
