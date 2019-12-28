@@ -104,6 +104,8 @@ namespace Edelstein.Core.Services.Migrations
 
             if (State.Name != entry.To.Name)
                 throw new Exception("Migration target is not the current service");
+            if (clientKey != entry.ClientKey)
+                throw new Exception("Migration client key is invalid");
 
             socketAdapter.Account = entry.Account;
             socketAdapter.AccountWorld = entry.AccountWorld;
