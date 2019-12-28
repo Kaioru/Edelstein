@@ -21,8 +21,8 @@ namespace Edelstein.Core.Services.Distributed
 
         public async Task<IEnumerable<INodeRemote>> GetPeers()
         {
-            if (!await _cache.ExistsAsync(Scopes.NodeSetKey)) return new List<INodeRemote>();
-            return (await _cache.GetSetAsync<INodeState>(Scopes.NodeSetKey)).Value
+            if (!await _cache.ExistsAsync(Scopes.NodeSet)) return new List<INodeRemote>();
+            return (await _cache.GetSetAsync<INodeState>(Scopes.NodeSet)).Value
                 .Select(s => new NodeRemote(s, _cache, _bus))
                 .ToImmutableList();
         }

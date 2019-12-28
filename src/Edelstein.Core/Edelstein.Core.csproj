@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="Foundatio" Version="8.1.2126" />
+      <PackageReference Include="LibLog" Version="5.0.8" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.0" />
     </ItemGroup>
 

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Services.Distributed;
 using Edelstein.Entities;
@@ -8,12 +9,18 @@ namespace Edelstein.Core.Services.Migrations
     public interface IMigrationSocketAdapter : ISocketAdapter
     {
         IMigrationService Service { get; }
-        
+
         Account Account { get; set; }
         AccountWorld AccountWorld { get; set; }
         Character Character { get; set; }
 
+        DateTime LastSentHeartbeatDate { get; set; }
+        DateTime LastRecvHeartbeatDate { get; set; }
+
         Task TryMigrateTo(IServerNodeState nodeState);
         Task TryMigrateFrom(int characterID, long clientKey);
+
+        Task TrySendHeartbeat();
+        Task TryRecvHeartbeat(bool init = false);
     }
 }

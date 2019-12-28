@@ -20,7 +20,7 @@ namespace Edelstein.Core.Services.Distributed
 
         public async Task<bool> TryTick()
         {
-            await _cache.SetAddAsync<INodeState>(Scopes.NodeSetKey, _node.State, TimeSpan.FromSeconds(15));
+            await _cache.SetAddAsync<INodeState>(Scopes.NodeSet, _node.State, TimeSpan.FromSeconds(15));
             return true;
         }
     }
