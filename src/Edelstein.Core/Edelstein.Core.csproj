@@ -5,16 +5,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Bootstrap" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Foundatio" Version="8.1.2126" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Edelstein.Core.Network\Edelstein.Core.Network.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Bootstrap\Providers" />
     </ItemGroup>
 
 </Project>

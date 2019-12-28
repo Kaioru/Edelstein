@@ -8,6 +8,6 @@ namespace Edelstein.Core.Services.Distributed
         public INodeState State { get; }
 
         public NodeRemote(INodeState state, ICacheClient cache, IMessageBus bus) : base(cache, bus)
-        => State = state;
+            => State = state;
     }
 }
