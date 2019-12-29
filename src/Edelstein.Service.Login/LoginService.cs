@@ -27,6 +27,7 @@ namespace Edelstein.Service.Login
             LockProvider = lockProvider;
 
             Handlers[RecvPacketOperations.CheckPassword] = new CheckPasswordHandler();
+            Handlers[RecvPacketOperations.SetGender] = new SetGenderHandler();
         }
 
         public override ISocketAdapter Build(ISocket socket)
