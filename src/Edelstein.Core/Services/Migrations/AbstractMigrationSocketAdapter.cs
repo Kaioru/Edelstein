@@ -40,7 +40,7 @@ namespace Edelstein.Core.Services.Migrations
             => _service.ProcessMigrateFrom(this, characterID, clientKey);
 
         public Task TrySendHeartbeat()
-            => _service.ProcessRecvHeartbeat(this);
+            => _service.ProcessSendHeartbeat(this);
 
         public Task TryRecvHeartbeat(bool init = false)
             => _service.ProcessRecvHeartbeat(this, init);
