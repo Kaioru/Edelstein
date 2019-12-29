@@ -89,7 +89,7 @@ namespace Edelstein.Core.Services.Migrations
                 TimeSpan.FromSeconds(15)
             );
 
-            Sockets.Remove(socketAdapter.Character.ID);
+            Sockets.Remove(socketAdapter.Account.ID);
         }
 
         public async Task ProcessMigrateFrom(IMigrationSocketAdapter socketAdapter, int characterID, long clientKey)
@@ -112,16 +112,16 @@ namespace Edelstein.Core.Services.Migrations
             await MigrationCache.RemoveAsync(characterID.ToString());
             await socketAdapter.TryRecvHeartbeat();
 
-            Sockets.Add(socketAdapter.Character.ID, socketAdapter);
+            Sockets.Add(socketAdapter.Account.ID, socketAdapter);
         }
 
         public async Task ProcessDisconnect(IMigrationSocketAdapter socketAdapter)
         {
+            if (socketAdapter.Account == null) return;
             var state = (await AccountStateCache.GetAsync<MigrationState>(socketAdapter.Account.ID.ToString())).Value;
             if (state != MigrationState.Migrating)
             {
-                Sockets.Remove(socketAdapter.Character.ID);
-
+                Sockets.Remove(socketAdapter.Account.ID);
                 await socketAdapter.OnUpdate();
                 if (socketAdapter.Account != null)
                     await AccountStateCache.RemoveAsync(socketAdapter.Account.ID.ToString());
@@ -156,6 +156,9 @@ namespace Edelstein.Core.Services.Migrations
                 await socketAdapter.Socket.Close();
                 return;
             }
+
+            if (init)
+                Sockets.Add(socketAdapter.Account.ID, socketAdapter);
 
             await AccountStateCache.SetAsync(
                 socketAdapter.Account.ID.ToString(),
