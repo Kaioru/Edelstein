@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DotNetty.Common.Utilities;
@@ -38,22 +36,6 @@ namespace Edelstein.Network
             {
                 if (_channel.Open)
                     await _channel.WriteAndFlushAsync(packet);
-            }
-            finally
-            {
-                _sendLock.Release();
-            }
-        }
-
-        public async Task SendPacket(IEnumerable<IPacket> packets)
-        {
-            try
-            {
-                if (_channel.Open)
-                {
-                    await Task.WhenAll(packets.Select(p => _channel.WriteAsync(p)));
-                    _channel.Flush();
-                }
             }
             finally
             {

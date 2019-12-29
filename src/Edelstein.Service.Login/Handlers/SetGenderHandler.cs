@@ -9,8 +9,11 @@ namespace Edelstein.Service.Login.Handlers
 {
     public class SetGenderHandler : AbstractPacketHandler<LoginServiceAdapter>
     {
-        protected override async Task Handle(LoginServiceAdapter adapter, RecvPacketOperations operation,
-            IPacket packet)
+        protected override async Task Handle(
+            LoginServiceAdapter adapter,
+            RecvPacketOperations operation,
+            IPacket packet
+        )
         {
             var cancel = !packet.Decode<bool>();
             var gender = (byte) (packet.Decode<bool>() ? 1 : 0);

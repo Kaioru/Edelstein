@@ -13,5 +13,7 @@ namespace Edelstein.Entities
         public string PIC { get; set; }
 
         public byte? Gender { get; set; }
+        
+        public byte LatestConnectedWorld { get; set; }
     }
 }

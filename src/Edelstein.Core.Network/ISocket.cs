@@ -12,7 +12,6 @@ namespace Edelstein.Network
         bool EncryptData { get; }
 
         Task SendPacket(IPacket packet);
-        Task SendPacket(IEnumerable<IPacket> packets);
         Task Close();
     }
 }

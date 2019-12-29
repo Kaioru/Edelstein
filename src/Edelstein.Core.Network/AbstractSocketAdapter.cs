@@ -22,9 +22,6 @@ namespace Edelstein.Network
         public Task SendPacket(IPacket packet)
             => Socket.SendPacket(packet);
 
-        public Task SendPacket(IEnumerable<IPacket> packets)
-            => Socket.SendPacket(packets);
-
         public Task Close()
             => Socket.Close();
     }
