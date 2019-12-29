@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
 using Edelstein.Core.Services.Distributed.States;
-using Edelstein.Service.Login.Service;
+using Edelstein.Service.Login.Services;
 
 namespace Edelstein.Service.Login
 {

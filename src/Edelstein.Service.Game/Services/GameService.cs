@@ -6,12 +6,12 @@ using Foundatio.Caching;
 using Foundatio.Messaging;
 using Microsoft.Extensions.Options;
 
-namespace Edelstein.Service.Login.Service
+namespace Edelstein.Service.Game.Services
 {
-    public class LoginService : AbstractMigrationService<LoginServiceState>
+    public class GameService : AbstractMigrationService<GameServiceState>
     {
-        public LoginService(
-            IOptions<LoginServiceState> state,
+        public GameService(
+            IOptions<GameServiceState> state,
             IDataStore dataStore,
             ICacheClient cache,
             IMessageBus bus
@@ -20,6 +20,6 @@ namespace Edelstein.Service.Login.Service
         }
 
         public override ISocketAdapter Build(ISocket socket)
-            => new LoginServiceAdapter(socket, this);
+            => new GameServiceAdapter(socket, this);
     }
 }

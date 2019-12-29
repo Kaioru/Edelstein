@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
-using Edelstein.Service.All.Service;
+using Edelstein.Service.All.Services;
 
 namespace Edelstein.Service.All
 {

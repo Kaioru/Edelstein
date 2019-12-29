@@ -4,16 +4,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Database;
-using Edelstein.Service.Game.Service;
-using Edelstein.Service.Login.Service;
+using Edelstein.Service.Game.Services;
+using Edelstein.Service.Login.Services;
 using Foundatio.Caching;
-using Foundatio.Lock;
 using Foundatio.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
-namespace Edelstein.Service.All.Service
+namespace Edelstein.Service.All.Services
 {
     public class ContainerService : IHostedService
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Edelstein.Core.Services.Distributed.States;
 
-namespace Edelstein.Service.All.Service
+namespace Edelstein.Service.All.Services
 {
     public class ContainerServiceState
     {

@@ -1,11 +1,11 @@
 using Edelstein.Core.Services.Migrations;
 using Edelstein.Network;
 
-namespace Edelstein.Service.Game.Service
+namespace Edelstein.Service.Login.Services
 {
-    public class GameServiceAdapter : AbstractMigrationSocketAdapter
+    public class LoginServiceAdapter : AbstractMigrationSocketAdapter
     {
-        public GameServiceAdapter(
+        public LoginServiceAdapter(
             ISocket socket,
             IMigrationService service
         ) : base(socket, service)
