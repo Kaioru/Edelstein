@@ -5,18 +5,18 @@ namespace Edelstein.Core.Utils.Messaging
 {
     public class RedisMessageBusFactory : AbstractMessageBusFactory
     {
-        private readonly ConnectionMultiplexer _connection;
+        private readonly ISubscriber _connection;
 
         public RedisMessageBusFactory(ConnectionMultiplexer connection)
         {
-            _connection = connection;
+            _connection = connection.GetSubscriber();
         }
 
         protected override IMessageBus Create(string topic)
         {
             return new RedisMessageBus(new RedisMessageBusOptions
             {
-                Subscriber = _connection.GetSubscriber(),
+                Subscriber = _connection,
                 Topic = topic
             });
         }
