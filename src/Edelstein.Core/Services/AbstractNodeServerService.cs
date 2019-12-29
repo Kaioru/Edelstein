@@ -1,24 +1,26 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Services.Distributed;
+using Edelstein.Network;
 using Edelstein.Network.Transport;
 using Foundatio.Caching;
 using Foundatio.Messaging;
 
 namespace Edelstein.Core.Services
 {
-    public class NodeServerService<TState> : NodeService<TState>
+    public abstract class AbstractNodeServerService<TState> : NodeService<TState> , ISocketAdapterFactory
         where TState : IServerNodeState
     {
         private readonly Server _server;
 
-        public NodeServerService(
+        public AbstractNodeServerService(
             TState state,
             ICacheClient cache,
-            IMessageBus bus,
-            Server server
+            IMessageBus bus
         ) : base(state, cache, bus)
-            => _server = server;
+        {
+            _server = new Server(this, state.Version, state.Patch, state.Locale);
+        }
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
@@ -31,5 +33,7 @@ namespace Edelstein.Core.Services
             await _server.Stop();
             await base.StopAsync(cancellationToken);
         }
+
+        public abstract ISocketAdapter Build(ISocket socket);
     }
 }

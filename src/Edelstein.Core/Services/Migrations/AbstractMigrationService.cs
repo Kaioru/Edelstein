@@ -8,15 +8,13 @@ using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Core.Utils.Ticks;
 using Edelstein.Database;
-using Edelstein.Network;
 using Edelstein.Network.Packets;
-using Edelstein.Network.Transport;
 using Foundatio.Caching;
 using Foundatio.Messaging;
 
 namespace Edelstein.Core.Services.Migrations
 {
-    public abstract class AbstractMigrationService<TState> : NodeServerService<TState>, IMigrationService
+    public abstract class AbstractMigrationService<TState> : AbstractNodeServerService<TState>, IMigrationService
         where TState : IServerNodeState
     {
         private readonly ITicker _ticker;
@@ -33,9 +31,8 @@ namespace Edelstein.Core.Services.Migrations
             TState state,
             IDataStore dataStore,
             ICacheClient cache,
-            IMessageBus bus,
-            Server server
-        ) : base(state, cache, bus, server)
+            IMessageBus bus
+        ) : base(state, cache, bus)
         {
             _ticker = new TimerTicker(TimeSpan.FromSeconds(15), new MigrationServiceTickBehavior(this));
             DataStore = dataStore;

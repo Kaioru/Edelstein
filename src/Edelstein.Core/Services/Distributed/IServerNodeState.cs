@@ -2,9 +2,11 @@ namespace Edelstein.Core.Services.Distributed
 {
     public interface IServerNodeState : INodeState
     {
-        string Type { get; }
-
         string Host { get; }
         int Port { get; }
+        
+        short Version { get; }
+        string Patch { get; }
+        byte Locale { get; }
     }
 }

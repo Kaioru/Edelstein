@@ -61,7 +61,9 @@ namespace Edelstein.Core.Bootstrap
             _builder.ConfigureServices((context, collection) =>
             {
                 collection.AddSingleton<T>();
-                collection.AddHostedService<BackgroundService<T>>();
+                collection.AddHostedService<BackgroundService<T>>(f
+                    => new BackgroundService<T>(f.GetService<T>())
+                );
             });
             return this;
         }
