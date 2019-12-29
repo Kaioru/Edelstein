@@ -22,6 +22,9 @@ namespace Edelstein.Core.Bootstrap.Providers
                 case DatabaseProviderTypes.Json:
                     new JsonDatabaseProvider(section["Path"]).Provide(context, collection);
                     break;
+                case DatabaseProviderTypes.Postgres:
+                    new MartenDatabaseProvider(section["ConnectionString"]).Provide(context, collection);
+                    break;
             }
         }
     }
