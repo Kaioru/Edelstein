@@ -1,5 +1,6 @@
 using Edelstein.Core.Utils.Messaging;
 using Foundatio.Caching;
+using Foundatio.Lock;
 using Foundatio.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +14,7 @@ namespace Edelstein.Core.Bootstrap.Providers.Caching
             collection.AddSingleton<ICacheClient, InMemoryCacheClient>();
             collection.AddSingleton<IMessageBus, InMemoryMessageBus>();
             collection.AddSingleton<IMessageBusFactory, InMemoryMessageBusFactory>();
+            collection.AddSingleton<ILockProvider, CacheLockProvider>();
         }
     }
 }

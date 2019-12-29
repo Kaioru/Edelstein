@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="BCrypt.Net-Next" Version="3.2.1" />
       <PackageReference Include="LibLog" Version="5.0.8" />
     </ItemGroup>
 

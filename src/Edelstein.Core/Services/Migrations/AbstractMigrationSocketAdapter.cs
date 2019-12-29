@@ -59,6 +59,7 @@ namespace Edelstein.Core.Services.Migrations
             var context = new PacketHandlerContext(operation, packet, this);
 
             await handler.Handle(context);
+            Logger.Debug($"Handled packet operation {operation}");
         }
 
         public override Task OnException(Exception exception)
