@@ -58,9 +58,11 @@ namespace Edelstein.Service.Login.Handlers
                 await adapter.SendPacket(p);
             }
 
+            if (adapter.Account.LatestConnectedWorld == null) return;
+
             using (var p = new Packet(SendPacketOperations.LatestConnectedWorld))
             {
-                p.Encode<int>(adapter.Account.LatestConnectedWorld);
+                p.Encode<int>(adapter.Account.LatestConnectedWorld ?? 0);
                 await adapter.SendPacket(p);
             }
         }

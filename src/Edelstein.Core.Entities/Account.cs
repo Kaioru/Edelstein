@@ -14,6 +14,6 @@ namespace Edelstein.Entities
 
         public byte? Gender { get; set; }
         
-        public byte LatestConnectedWorld { get; set; }
+        public byte? LatestConnectedWorld { get; set; }
     }
 }
