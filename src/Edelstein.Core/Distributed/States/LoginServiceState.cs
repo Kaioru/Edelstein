@@ -1,4 +1,4 @@
-namespace Edelstein.Core.Services.Distributed.States
+namespace Edelstein.Core.Distributed.States
 {
     public class LoginServiceState : IServerNodeState
     {

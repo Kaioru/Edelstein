@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
 using Edelstein.Service.Game.Services;
 using Edelstein.Service.Login.Services;
 using Foundatio.Caching;
-using Foundatio.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -36,14 +36,14 @@ namespace Edelstein.Service.All.Services
                     Options.Create(i),
                     _provider.GetService<IDataStore>(),
                     _provider.GetService<ICacheClient>(),
-                    _provider.GetService<IMessageBus>()
+                    _provider.GetService<IMessageBusFactory>()
                 )));
             Services.AddRange(_state.GameServices
                 .Select(i => new GameService(
                     Options.Create(i),
                     _provider.GetService<IDataStore>(),
                     _provider.GetService<ICacheClient>(),
-                    _provider.GetService<IMessageBus>()
+                    _provider.GetService<IMessageBusFactory>()
                 )));
 
             await Task.WhenAll(Services.Select(s => s.StartAsync(cancellationToken)));

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Edelstein.Core.Services.Distributed;
+using Edelstein.Core.Distributed;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Database;

@@ -1,4 +1,4 @@
-using Edelstein.Core.Services.Distributed;
+using Edelstein.Core.Distributed;
 using Edelstein.Entities;
 
 namespace Edelstein.Core.Services.Migrations

@@ -1,20 +1,20 @@
 using System;
+using Edelstein.Core.Utils.Messaging;
 using Edelstein.Core.Utils.Ticks;
 using Foundatio.Caching;
-using Foundatio.Messaging;
 
-namespace Edelstein.Core.Services.Distributed
+namespace Edelstein.Core.Distributed
 {
-    public class NodeLocal<TState> : AbstractNode, INodeLocal<TState>
+    public class CachedNodeLocal<TState> : AbstractCachedNode, INodeLocal<TState>
         where TState : INodeState
     {
         private readonly ITicker _ticker;
 
         public TState State { get; }
 
-        public NodeLocal(TState state, ICacheClient cache, IMessageBus bus) : base(cache, bus)
+        public CachedNodeLocal(TState state, ICacheClient cache, IMessageBusFactory busFactory) : base(cache, busFactory, state.Name)
         {
-            _ticker = new TimerTicker(TimeSpan.FromSeconds(10), new NodeLocalTickBehavior<TState>(this, cache));
+            _ticker = new TimerTicker(TimeSpan.FromSeconds(10), new CachedNodeLocalTickBehavior<TState>(this, cache));
             State = state;
         }
 

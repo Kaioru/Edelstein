@@ -1,14 +1,14 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Edelstein.Core.Services.Distributed;
+using Edelstein.Core.Distributed;
+using Edelstein.Core.Utils.Messaging;
 using Edelstein.Network;
 using Edelstein.Network.Transport;
 using Foundatio.Caching;
-using Foundatio.Messaging;
 
 namespace Edelstein.Core.Services
 {
-    public abstract class AbstractNodeServerService<TState> : NodeService<TState> , ISocketAdapterFactory
+    public abstract class AbstractNodeServerService<TState> : NodeService<TState>, ISocketAdapterFactory
         where TState : IServerNodeState
     {
         private readonly Server _server;
@@ -16,8 +16,8 @@ namespace Edelstein.Core.Services
         public AbstractNodeServerService(
             TState state,
             ICacheClient cache,
-            IMessageBus bus
-        ) : base(state, cache, bus)
+            IMessageBusFactory busFactory
+        ) : base(state, cache, busFactory)
         {
             _server = new Server(this, state.Version, state.Patch, state.Locale);
         }

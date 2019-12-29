@@ -1,9 +1,9 @@
-using Edelstein.Core.Services.Distributed.States;
+using Edelstein.Core.Distributed.States;
 using Edelstein.Core.Services.Migrations;
+using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
 using Edelstein.Network;
 using Foundatio.Caching;
-using Foundatio.Messaging;
 using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Login.Services
@@ -14,8 +14,8 @@ namespace Edelstein.Service.Login.Services
             IOptions<LoginServiceState> state,
             IDataStore dataStore,
             ICacheClient cache,
-            IMessageBus bus
-        ) : base(state.Value, dataStore, cache, bus)
+            IMessageBusFactory busFactory
+        ) : base(state.Value, dataStore, cache, busFactory)
         {
         }
 

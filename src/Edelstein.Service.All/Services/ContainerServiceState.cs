@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Edelstein.Core.Services.Distributed.States;
+using Edelstein.Core.Distributed.States;
 
 namespace Edelstein.Service.All.Services
 {

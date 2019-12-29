@@ -1,4 +1,4 @@
-namespace Edelstein.Core.Services.Distributed
+namespace Edelstein.Core.Distributed
 {
     public interface INodeRemote : INode
     {

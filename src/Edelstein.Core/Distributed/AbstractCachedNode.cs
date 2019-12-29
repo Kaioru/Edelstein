@@ -3,27 +3,30 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils;
+using Edelstein.Core.Utils.Messaging;
 using Foundatio.Caching;
 using Foundatio.Messaging;
 
-namespace Edelstein.Core.Services.Distributed
+namespace Edelstein.Core.Distributed
 {
-    public abstract class AbstractNode : INode
+    public abstract class AbstractCachedNode : INode
     {
         private readonly ICacheClient _cache;
+        private readonly IMessageBusFactory _busFactory;
         private readonly IMessageBus _bus;
 
-        protected AbstractNode(ICacheClient cache, IMessageBus bus)
+        protected AbstractCachedNode(ICacheClient cache, IMessageBusFactory busFactory, string name)
         {
             _cache = cache;
-            _bus = bus;
+            _busFactory = busFactory;
+            _bus = busFactory.Build(name);
         }
 
         public async Task<IEnumerable<INodeRemote>> GetPeers()
         {
             if (!await _cache.ExistsAsync(Scopes.NodeSet)) return new List<INodeRemote>();
             return (await _cache.GetSetAsync<INodeState>(Scopes.NodeSet)).Value
-                .Select(s => new NodeRemote(s, _cache, _bus))
+                .Select(s => new CachedNodeRemote(s, _cache, _busFactory))
                 .ToImmutableList();
         }
 

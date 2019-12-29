@@ -1,4 +1,4 @@
-namespace Edelstein.Core.Services.Distributed
+namespace Edelstein.Core.Distributed
 {
     public interface INodeLocal<out TState> : INode
         where TState : INodeState

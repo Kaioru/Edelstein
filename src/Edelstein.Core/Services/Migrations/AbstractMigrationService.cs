@@ -3,14 +3,14 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Edelstein.Core.Services.Distributed;
+using Edelstein.Core.Distributed;
 using Edelstein.Core.Utils;
+using Edelstein.Core.Utils.Messaging;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Core.Utils.Ticks;
 using Edelstein.Database;
 using Edelstein.Network.Packets;
 using Foundatio.Caching;
-using Foundatio.Messaging;
 
 namespace Edelstein.Core.Services.Migrations
 {
@@ -31,8 +31,8 @@ namespace Edelstein.Core.Services.Migrations
             TState state,
             IDataStore dataStore,
             ICacheClient cache,
-            IMessageBus bus
-        ) : base(state, cache, bus)
+            IMessageBusFactory busFactory
+        ) : base(state, cache, busFactory)
         {
             _ticker = new TimerTicker(TimeSpan.FromSeconds(15), new MigrationServiceTickBehavior(this));
             DataStore = dataStore;

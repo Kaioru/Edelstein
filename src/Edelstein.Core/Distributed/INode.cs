@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Edelstein.Core.Services.Distributed
+namespace Edelstein.Core.Distributed
 {
     public interface INode
     {

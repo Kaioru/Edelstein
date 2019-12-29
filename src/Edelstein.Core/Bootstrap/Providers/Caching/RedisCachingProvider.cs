@@ -1,3 +1,4 @@
+using Edelstein.Core.Utils.Messaging;
 using Foundatio.Caching;
 using Foundatio.Messaging;
 using Foundatio.Serializer;
@@ -38,6 +39,7 @@ namespace Edelstein.Core.Bootstrap.Providers.Caching
 
             collection.AddSingleton<ICacheClient, RedisHybridCacheClient>();
             collection.AddSingleton<IMessageBus, RedisMessageBus>();
+            collection.AddSingleton<IMessageBusFactory, RedisMessageBusFactory>();
         }
     }
 }
