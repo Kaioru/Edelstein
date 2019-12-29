@@ -14,7 +14,7 @@ namespace Edelstein.Core.Services.Migrations
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        public IMigrationService Service { get; }
+        private readonly IMigrationService _service;
 
         public Account Account { get; set; }
         public AccountWorld AccountWorld { get; set; }
@@ -28,34 +28,34 @@ namespace Edelstein.Core.Services.Migrations
             IMigrationService service
         ) : base(socket)
         {
-            Service = service;
+            _service = service;
             LastSentHeartbeatDate = DateTime.UtcNow;
             LastRecvHeartbeatDate = DateTime.UtcNow;
         }
 
         public Task TryMigrateTo(IServerNodeState nodeState)
-            => Service.ProcessMigrateTo(this, nodeState);
+            => _service.ProcessMigrateTo(this, nodeState);
 
         public Task TryMigrateFrom(int characterID, long clientKey)
-            => Service.ProcessMigrateFrom(this, characterID, clientKey);
+            => _service.ProcessMigrateFrom(this, characterID, clientKey);
 
         public Task TrySendHeartbeat()
-            => Service.ProcessRecvHeartbeat(this);
+            => _service.ProcessRecvHeartbeat(this);
 
         public Task TryRecvHeartbeat(bool init = false)
-            => Service.ProcessRecvHeartbeat(this, init);
+            => _service.ProcessRecvHeartbeat(this, init);
 
         public override async Task OnPacket(IPacket packet)
         {
             var operation = (RecvPacketOperations) packet.Decode<short>();
 
-            if (!Service.Handlers.ContainsKey(operation))
+            if (!_service.Handlers.ContainsKey(operation))
             {
                 Logger.Warn($"Unhandled packet operation {operation}");
                 return;
             }
 
-            var handler = Service.Handlers[operation];
+            var handler = _service.Handlers[operation];
             var context = new PacketHandlerContext(operation, packet, this);
 
             await handler.Handle(context);
@@ -69,7 +69,7 @@ namespace Edelstein.Core.Services.Migrations
 
         public override async Task OnUpdate()
         {
-            using var batch = Service.DataStore.StartBatch();
+            using var batch = _service.DataStore.StartBatch();
 
             if (Account != null) await batch.UpdateAsync(Account);
             if (AccountWorld != null) await batch.UpdateAsync(AccountWorld);
@@ -79,6 +79,6 @@ namespace Edelstein.Core.Services.Migrations
         }
 
         public override Task OnDisconnect()
-            => Service.ProcessDisconnect(this);
+            => _service.ProcessDisconnect(this);
     }
 }

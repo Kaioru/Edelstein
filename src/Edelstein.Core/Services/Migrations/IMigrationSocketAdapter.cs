@@ -8,8 +8,6 @@ namespace Edelstein.Core.Services.Migrations
 {
     public interface IMigrationSocketAdapter : ISocketAdapter
     {
-        IMigrationService Service { get; }
-
         Account Account { get; set; }
         AccountWorld AccountWorld { get; set; }
         Character Character { get; set; }
