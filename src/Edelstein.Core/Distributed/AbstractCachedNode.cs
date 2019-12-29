@@ -19,7 +19,7 @@ namespace Edelstein.Core.Distributed
         {
             _cache = cache;
             _busFactory = busFactory;
-            _bus = busFactory.Build(name);
+            _bus = busFactory.Build($"{Scopes.NodeMessaging}:{name}");
         }
 
         public async Task<IEnumerable<INodeRemote>> GetPeers()
