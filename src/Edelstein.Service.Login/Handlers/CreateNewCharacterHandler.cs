@@ -111,11 +111,6 @@ namespace Edelstein.Service.Login.Handlers
                         Gender = gender,
                         FieldID = GameConstants.GetStartField(race),
                         FieldPortal = 0,
-                        Level = 1,
-                        HP = 50,
-                        MaxHP = 50,
-                        MP = 50,
-                        MaxMP = 50,
                         SubJob = (short) (race == Race.Normal ? subJob : 0)
                     };
                     var context = new ModifyInventoriesContext(character.Inventories);

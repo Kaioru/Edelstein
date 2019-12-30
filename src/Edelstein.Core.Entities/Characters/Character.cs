@@ -62,10 +62,15 @@ namespace Edelstein.Entities.Characters
 
         public Character()
         {
+            Level = 1;
             STR = 4;
             DEX = 4;
             INT = 4;
             LUK = 4;
+            HP = 50;
+            MaxHP = 50;
+            MP = 50;
+            MaxMP = 50;
 
             Pets = new long[3];
             ExtendSP = new Dictionary<byte, byte>();
