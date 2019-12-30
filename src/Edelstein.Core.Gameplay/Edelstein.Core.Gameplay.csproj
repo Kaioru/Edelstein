@@ -11,6 +11,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Edelstein.Core.Entities\Edelstein.Core.Entities.csproj" />
       <ProjectReference Include="..\Edelstein.Core.Network\Edelstein.Core.Network.csproj" />
+      <ProjectReference Include="..\Edelstein.Core.Templates\Edelstein.Core.Templates.csproj" />
     </ItemGroup>
 
 </Project>

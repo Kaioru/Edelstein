@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Templates.Items.Cash;
 using Edelstein.Provider;
 
 namespace Edelstein.Core.Templates.Items
@@ -54,7 +55,7 @@ namespace Edelstein.Core.Templates.Items
                 {
                     if (subType == 0)
                     {
-                        return new ItemBundleTemplate(
+                        return new PetItemTemplate(
                             id,
                             _collection.Resolve($"Item/Pet/{id:D7}.img/info").ResolveAll()
                         );
