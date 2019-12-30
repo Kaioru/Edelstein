@@ -8,4 +8,8 @@
       <ProjectReference Include="..\Edelstein.Core.Parsing\Edelstein.Core.Parsing.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="morelinq" Version="3.3.2" />
+    </ItemGroup>
+
 </Project>

@@ -32,7 +32,9 @@ namespace Edelstein.Provider
 
                 await eagerCollection.Populate();
                 Logger.Info(
-                    $"Loaded {eagerCollection.GetAll().Count()} {type.Name} in {watch.ElapsedMilliseconds}ms"
+                    $"Loaded {eagerCollection.GetAll().Count()} " +
+                    $"{type.Name.Replace("Template", "")} " +
+                    $"templates in {watch.ElapsedMilliseconds}ms"
                 );
             }
         }

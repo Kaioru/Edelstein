@@ -5,16 +5,16 @@ namespace Edelstein.Provider
 {
     public abstract class AbstractEagerDataTemplateCollection : IDataTemplateCollection
     {
-        private readonly IDictionary<int, IDataTemplate> _templates;
+        public IDictionary<int, IDataTemplate> Templates { get; }
 
         protected AbstractEagerDataTemplateCollection()
-            => _templates = new Dictionary<int, IDataTemplate>();
+            => Templates = new Dictionary<int, IDataTemplate>();
 
         public IDataTemplate Get(int id)
-            => _templates.ContainsKey(id) ? _templates[id] : null;
+            => Templates.ContainsKey(id) ? Templates[id] : null;
 
         public IEnumerable<IDataTemplate> GetAll()
-            => _templates.Values;
+            => Templates.Values;
 
         public Task<IDataTemplate> GetAsync(int id)
             => Task.FromResult(Get(id));
