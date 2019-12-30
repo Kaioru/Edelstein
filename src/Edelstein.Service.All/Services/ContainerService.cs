@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
+using Edelstein.Provider;
 using Edelstein.Service.Game.Services;
 using Edelstein.Service.Login;
 using Foundatio.Caching;
@@ -38,7 +39,8 @@ namespace Edelstein.Service.All.Services
                     _provider.GetService<IDataStore>(),
                     _provider.GetService<ICacheClient>(),
                     _provider.GetService<IMessageBusFactory>(),
-                    _provider.GetService<ILockProvider>()
+                    _provider.GetService<ILockProvider>(),
+                    _provider.GetService<IDataTemplateManager>()
                 )));
             Services.AddRange(_state.GameServices
                 .Select(i => new GameService(

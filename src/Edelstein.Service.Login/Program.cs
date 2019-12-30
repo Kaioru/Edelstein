@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
+using Edelstein.Core.Bootstrap.Providers.Templates;
 using Edelstein.Core.Distributed.States;
 
 namespace Edelstein.Service.Login
@@ -12,6 +13,8 @@ namespace Edelstein.Service.Login
                 .WithConfiguredLogging()
                 .WithConfiguredCaching()
                 .WithConfiguredDatabase()
+                .WithConfiguredParsing()
+                .WithProvider(new DataTemplateProvider(DataTemplateType.Login))
                 .WithConfig<LoginServiceState>("Service")
                 .WithService<LoginService>()
                 .Build()

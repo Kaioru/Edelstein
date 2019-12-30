@@ -1,8 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Entities;
 using Edelstein.Network.Packets;
 
 namespace Edelstein.Service.Login.Handlers

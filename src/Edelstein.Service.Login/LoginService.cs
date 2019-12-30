@@ -4,6 +4,7 @@ using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
 using Edelstein.Network;
+using Edelstein.Provider;
 using Edelstein.Service.Login.Handlers;
 using Foundatio.Caching;
 using Foundatio.Lock;
@@ -16,17 +17,20 @@ namespace Edelstein.Service.Login
         public const string AuthLockKey = "lock:auth";
         public const string CreateCharLockKey = "lock:createChar";
         public ILockProvider LockProvider { get; }
+        public IDataTemplateManager TemplateManager { get; }
 
         public LoginService(
             IOptions<LoginServiceState> state,
             IDataStore dataStore,
             ICacheClient cache,
             IMessageBusFactory busFactory,
-            ILockProvider lockProvider
+            ILockProvider lockProvider,
+            IDataTemplateManager templateManager
         ) : base(state.Value, dataStore, cache, busFactory)
         {
             LockProvider = lockProvider;
-
+            TemplateManager = templateManager;
+            
             Handlers[RecvPacketOperations.CheckPassword] = new CheckPasswordHandler();
             Handlers[RecvPacketOperations.WorldInfoRequest] = new WorldRequestHandler();
             Handlers[RecvPacketOperations.SelectWorld] = new SelectWorldHandler();

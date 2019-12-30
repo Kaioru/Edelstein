@@ -7,6 +7,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Edelstein.Core.Gameplay\Edelstein.Core.Gameplay.csproj" />
+      <ProjectReference Include="..\Edelstein.Core.Parsing\Edelstein.Core.Parsing.csproj" />
+      <ProjectReference Include="..\Edelstein.Core.Templates\Edelstein.Core.Templates.csproj" />
       <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
     </ItemGroup>
 

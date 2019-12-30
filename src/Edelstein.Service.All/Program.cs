@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
+using Edelstein.Core.Bootstrap.Providers.Templates;
 using Edelstein.Service.All.Services;
 
 namespace Edelstein.Service.All
@@ -12,6 +13,8 @@ namespace Edelstein.Service.All
                 .WithConfiguredLogging()
                 .WithConfiguredCaching()
                 .WithConfiguredDatabase()
+                .WithConfiguredParsing()
+                .WithProvider(new DataTemplateProvider(DataTemplateType.Login))
                 .WithConfig<ContainerServiceState>("Service")
                 .WithService<ContainerService>()
                 .Build()

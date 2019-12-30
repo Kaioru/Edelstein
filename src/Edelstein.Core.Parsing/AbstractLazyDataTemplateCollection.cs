@@ -5,31 +5,31 @@ namespace Edelstein.Provider
 {
     public abstract class AbstractLazyDataTemplateCollection : IDataTemplateCollection
     {
-        protected IDictionary<int, IDataTemplate> Templates { get; }
+        private readonly IDictionary<int, IDataTemplate> _templates;
 
         protected AbstractLazyDataTemplateCollection()
-            => Templates = new Dictionary<int, IDataTemplate>();
+            => _templates = new Dictionary<int, IDataTemplate>();
 
         public IDataTemplate Get(int id)
             => GetAsync(id).Result;
 
         public IEnumerable<IDataTemplate> GetAll()
-            => Templates.Values;
+            => _templates.Values;
 
         public async Task<IDataTemplate> GetAsync(int id)
         {
-            if (Templates.ContainsKey(id)) return Templates[id];
+            if (_templates.ContainsKey(id)) return _templates[id];
 
             try
             {
                 var template = await Load(id);
 
-                Templates[id] = template;
+                _templates[id] = template;
                 return template;
             }
             catch
             {
-                Templates[id] = null;
+                _templates[id] = null;
                 return null;
             }
         }
