@@ -30,7 +30,7 @@ namespace Edelstein.Service.Login
         {
             LockProvider = lockProvider;
             TemplateManager = templateManager;
-            
+
             Handlers[RecvPacketOperations.CheckPassword] = new CheckPasswordHandler();
             Handlers[RecvPacketOperations.WorldInfoRequest] = new WorldRequestHandler();
             Handlers[RecvPacketOperations.SelectWorld] = new SelectWorldHandler();
@@ -38,6 +38,7 @@ namespace Edelstein.Service.Login
             Handlers[RecvPacketOperations.SetGender] = new SetGenderHandler();
             Handlers[RecvPacketOperations.WorldRequest] = new WorldRequestHandler();
             Handlers[RecvPacketOperations.CheckDuplicatedID] = new CheckDuplicatedIDHandler();
+            Handlers[RecvPacketOperations.CreateNewCharacter] = new CreateNewCharacterHandler();
         }
 
         public override ISocketAdapter Build(ISocket socket)

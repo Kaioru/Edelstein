@@ -33,15 +33,21 @@ namespace Edelstein.Service.Login.Handlers
                 using var store = adapter.Service.DataStore.StartSession();
                 var result = LoginResultCode.Success;
 
-                var service = (await adapter.Service.GetPeers())
+                var peers = await adapter.Service.GetPeers();
+                var serviceState = (await adapter.Service.GetPeers())
                     .Select(n => n.State)
                     .OfType<GameServiceState>()
                     .FirstOrDefault(s =>
                         s.ChannelID == channelID &&
                         s.Worlds.Contains(worldID)
                     );
+                var service = peers
+                    .FirstOrDefault(n => n.State == serviceState);
 
-                if (service == null) result = LoginResultCode.NotConnectableWorld;
+                if (
+                    serviceState == null ||
+                    service == null
+                ) result = LoginResultCode.NotConnectableWorld;
 
                 p.Encode<byte>((byte) result);
 
@@ -65,6 +71,7 @@ namespace Edelstein.Service.Login.Handlers
                         await store.InsertAsync(accountWorld);
                     }
 
+                    adapter.SelectedNode = service;
                     adapter.AccountWorld = accountWorld;
                     if (adapter.Account.LatestConnectedWorld != worldID)
                         adapter.Account.LatestConnectedWorld = worldID;
@@ -97,7 +104,7 @@ namespace Edelstein.Service.Login.Handlers
             {
                 using var p = new Packet(SendPacketOperations.SelectWorldResult);
 
-                p.Encode<byte>((byte) LoginResultCode.Unknown);
+                p.Encode<byte>((byte) LoginResultCode.DBFail);
 
                 await adapter.SendPacket(p);
             }

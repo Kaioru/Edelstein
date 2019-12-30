@@ -7,6 +7,7 @@ namespace Edelstein.Core.Templates.Etc.MakeCharInfo
     {
         public int ID { get; }
 
+        public MakeCharInfoType Type { get; }
         public byte Gender { get; }
 
         public int[] Face { get; }
@@ -21,6 +22,7 @@ namespace Edelstein.Core.Templates.Etc.MakeCharInfo
         public MakeCharInfoTemplate(MakeCharInfoType type, byte gender, IDataProperty property)
         {
             ID = (int) type * 0x2 + gender;
+            Type = type;
             Gender = gender;
 
             Face = property.Resolve("0").Children.Select(c => c.Resolve<int>() ?? 0).ToArray();
