@@ -7,6 +7,7 @@
 
     <ItemGroup>
       <PackageReference Include="Duey" Version="1.0.0" />
+      <PackageReference Include="LibLog" Version="5.0.8" />
     </ItemGroup>
 
 </Project>
