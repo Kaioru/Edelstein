@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
@@ -69,6 +70,8 @@ namespace Edelstein.Core.Services.Migrations
             if (await MigrationCache.ExistsAsync(socketAdapter.Character.ID.ToString()))
                 throw new Exception("Already migrating");
 
+            Sockets.Remove(socketAdapter.Account.ID);
+
             await socketAdapter.OnUpdate();
             await AccountStateCache.SetAsync(
                 socketAdapter.Account.ID.ToString(),
@@ -88,8 +91,7 @@ namespace Edelstein.Core.Services.Migrations
                 },
                 TimeSpan.FromSeconds(15)
             );
-
-            Sockets.Remove(socketAdapter.Account.ID);
+            await socketAdapter.SendPacket(GetMigrationPacket(nodeState));
         }
 
         public async Task ProcessMigrateFrom(IMigrationSocketAdapter socketAdapter, int characterID, long clientKey)
@@ -173,6 +175,21 @@ namespace Edelstein.Core.Services.Migrations
                 State,
                 TimeSpan.FromMinutes(1)
             );
+        }
+
+        protected virtual IPacket GetMigrationPacket(IServerNodeState to)
+        {
+            using var p = new Packet(SendPacketOperations.MigrateCommand);
+            p.Encode<bool>(true);
+
+            var endpoint = new IPEndPoint(IPAddress.Parse(to.Host), to.Port);
+            var address = endpoint.Address.MapToIPv4().GetAddressBytes();
+            var port = endpoint.Port;
+
+            foreach (var b in address)
+                p.Encode<byte>(b);
+            p.Encode<short>((short) port);
+            return p;
         }
     }
 }
