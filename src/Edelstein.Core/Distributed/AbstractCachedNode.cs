@@ -1,34 +1,31 @@
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
-using Foundatio.Caching;
 using Foundatio.Messaging;
 
 namespace Edelstein.Core.Distributed
 {
     public abstract class AbstractCachedNode : INode
     {
-        private readonly ICacheClient _cache;
+        protected IDictionary<string, INodeRemote> Remotes { get; }
+
         private readonly IMessageBusFactory _busFactory;
         private readonly IMessageBus _bus;
 
-        protected AbstractCachedNode(ICacheClient cache, IMessageBusFactory busFactory, string name)
+        protected AbstractCachedNode(IMessageBusFactory busFactory, string name)
         {
-            _cache = cache;
+            Remotes = new ConcurrentDictionary<string, INodeRemote>();
             _busFactory = busFactory;
             _bus = busFactory.Build($"{Scopes.NodeMessaging}:{name}");
         }
 
-        public async Task<IEnumerable<INodeRemote>> GetPeers()
-        {
-            if (!await _cache.ExistsAsync(Scopes.NodeSet)) return new List<INodeRemote>();
-            return (await _cache.GetSetAsync<INodeState>(Scopes.NodeSet)).Value
-                .Select(s => new CachedNodeRemote(s, _cache, _busFactory))
-                .ToImmutableList();
-        }
+        public Task<IEnumerable<INodeRemote>> GetPeers()
+            => Task.FromResult(Remotes.Values
+                .Where(p => p.Expire > DateTime.UtcNow));
 
         public Task SendMessage<T>(T message) where T : class
             => _bus.PublishAsync<T>(message);

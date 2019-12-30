@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Utils.Messaging;
-using Foundatio.Caching;
 using Microsoft.Extensions.Hosting;
 
 namespace Edelstein.Core.Services
@@ -12,9 +11,8 @@ namespace Edelstein.Core.Services
     {
         public NodeService(
             TState state,
-            ICacheClient cache,
             IMessageBusFactory busFactory
-        ) : base(state, cache, busFactory)
+        ) : base(state, busFactory)
         {
         }
 

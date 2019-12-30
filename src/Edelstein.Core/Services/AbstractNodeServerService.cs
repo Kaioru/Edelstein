@@ -4,7 +4,6 @@ using Edelstein.Core.Distributed;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Network;
 using Edelstein.Network.Transport;
-using Foundatio.Caching;
 
 namespace Edelstein.Core.Services
 {
@@ -15,9 +14,8 @@ namespace Edelstein.Core.Services
 
         public AbstractNodeServerService(
             TState state,
-            ICacheClient cache,
             IMessageBusFactory busFactory
-        ) : base(state, cache, busFactory)
+        ) : base(state, busFactory)
         {
             _server = new Server(this, state.Version, state.Patch, state.Locale);
         }

@@ -1,8 +1,6 @@
-using System;
 using System.Threading.Tasks;
-using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Ticks;
-using Foundatio.Caching;
+using Foundatio.Messaging;
 
 namespace Edelstein.Core.Distributed
 {
@@ -10,17 +8,20 @@ namespace Edelstein.Core.Distributed
         where TState : INodeState
     {
         private readonly CachedNodeLocal<TState> _cachedNode;
-        private readonly ICacheClient _cache;
+        private readonly IMessageBus _bus;
 
-        public CachedNodeLocalTickBehavior(CachedNodeLocal<TState> cachedNode, ICacheClient cache)
+        public CachedNodeLocalTickBehavior(CachedNodeLocal<TState> cachedNode, IMessageBus bus)
         {
             _cachedNode = cachedNode;
-            _cache = cache;
+            _bus = bus;
         }
 
         public async Task<bool> TryTick()
         {
-            await _cache.SetAddAsync<INodeState>(Scopes.NodeSet, _cachedNode.State, TimeSpan.FromMinutes(1));
+            await _bus.PublishAsync(new CachedNodeHeartbeatMessage
+            {
+                State = _cachedNode.State
+            });
             return true;
         }
     }

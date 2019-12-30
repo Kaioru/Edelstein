@@ -35,7 +35,7 @@ namespace Edelstein.Core.Services.Migrations
             IDataStore dataStore,
             ICacheClient cache,
             IMessageBusFactory busFactory
-        ) : base(state, cache, busFactory)
+        ) : base(state, busFactory)
         {
             _ticker = new TimerTicker(TimeSpan.FromSeconds(15), new MigrationServiceTickBehavior(this));
 
