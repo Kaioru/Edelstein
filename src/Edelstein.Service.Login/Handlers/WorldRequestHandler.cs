@@ -5,7 +5,6 @@ using Edelstein.Core.Distributed.States;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
-using MoreLinq;
 
 namespace Edelstein.Service.Login.Handlers
 {
