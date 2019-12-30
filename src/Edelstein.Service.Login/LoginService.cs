@@ -14,6 +14,7 @@ namespace Edelstein.Service.Login
     public class LoginService : AbstractMigrationService<LoginServiceState>
     {
         public const string AuthLockKey = "lock:auth";
+        public const string CreateCharLockKey = "lock:createChar";
         public ILockProvider LockProvider { get; }
 
         public LoginService(
@@ -32,6 +33,7 @@ namespace Edelstein.Service.Login
             Handlers[RecvPacketOperations.CheckUserLimit] = new CheckUserLimitHandler();
             Handlers[RecvPacketOperations.SetGender] = new SetGenderHandler();
             Handlers[RecvPacketOperations.WorldRequest] = new WorldRequestHandler();
+            Handlers[RecvPacketOperations.CheckDuplicatedID] = new CheckDuplicatedIDHandler();
         }
 
         public override ISocketAdapter Build(ISocket socket)
