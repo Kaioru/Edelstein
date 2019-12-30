@@ -2,16 +2,9 @@ using System.Collections.Generic;
 
 namespace Edelstein.Core.Distributed.States
 {
-    public class LoginServiceState : IServerNodeState
+    public class LoginServiceState : ServerServiceState
     {
-        public string Name { get; set; }
-        public string Host { get; set; }
-        public int Port { get; set; }
-
-        public short Version { get; set; }
-        public string Patch { get; set; }
-        public byte Locale { get; set; }
-
+        public bool AutoRegister { get; set; } = false;
         public ICollection<LoginServiceWorldState> Worlds { get; set; }
 
         public class LoginServiceWorldState
