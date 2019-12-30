@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace Edelstein.Core.Services.Migrations
         public ICacheClient AccountStateCache { get; }
         public ICacheClient CharacterStateCache { get; }
         public ICacheClient MigrationCache { get; }
+        public ICacheClient SocketCountCache { get; }
 
         public IDictionary<int, IMigrationSocketAdapter> Sockets { get; }
         public IDictionary<RecvPacketOperations, IPacketHandler> Handlers { get; }
@@ -36,10 +38,14 @@ namespace Edelstein.Core.Services.Migrations
         ) : base(state, cache, busFactory)
         {
             _ticker = new TimerTicker(TimeSpan.FromSeconds(15), new MigrationServiceTickBehavior(this));
+
             DataStore = dataStore;
+
             AccountStateCache = new ScopedCacheClient(cache, Scopes.StateAccount);
             CharacterStateCache = new ScopedCacheClient(cache, Scopes.StateCharacter);
             MigrationCache = new ScopedCacheClient(cache, Scopes.NodeMigration);
+            SocketCountCache = new ScopedCacheClient(cache, Scopes.NodeSocketCount);
+
             Sockets = new ConcurrentDictionary<int, IMigrationSocketAdapter>();
             Handlers = new ConcurrentDictionary<RecvPacketOperations, IPacketHandler>
             {
@@ -54,6 +60,7 @@ namespace Edelstein.Core.Services.Migrations
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
+            await SocketCountCache.RemoveAsync(State.Name);
             _ticker.Start();
         }
 
@@ -92,6 +99,7 @@ namespace Edelstein.Core.Services.Migrations
                 TimeSpan.FromSeconds(15)
             );
             await socketAdapter.SendPacket(GetMigrationPacket(nodeState));
+            await SocketCountCache.DecrementAsync(State.Name);
         }
 
         public async Task ProcessMigrateFrom(IMigrationSocketAdapter socketAdapter, int characterID, long clientKey)
@@ -113,6 +121,7 @@ namespace Edelstein.Core.Services.Migrations
 
             await MigrationCache.RemoveAsync(characterID.ToString());
             await socketAdapter.TryRecvHeartbeat();
+            await SocketCountCache.IncrementAsync(State.Name);
 
             Sockets.Add(socketAdapter.Account.ID, socketAdapter);
         }

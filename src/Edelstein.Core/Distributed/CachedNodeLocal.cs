@@ -14,7 +14,7 @@ namespace Edelstein.Core.Distributed
 
         public CachedNodeLocal(TState state, ICacheClient cache, IMessageBusFactory busFactory) : base(cache, busFactory, state.Name)
         {
-            _ticker = new TimerTicker(TimeSpan.FromSeconds(10), new CachedNodeLocalTickBehavior<TState>(this, cache));
+            _ticker = new TimerTicker(TimeSpan.FromSeconds(30), new CachedNodeLocalTickBehavior<TState>(this, cache));
             State = state;
         }
 
