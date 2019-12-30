@@ -37,8 +37,8 @@ namespace Edelstein.Service.Login.Handlers
                 .Select(r => r.HasValue ? r.Value : 0)
                 .Sum();
             var userLimit = adapter.Service.State.Worlds
-                                .FirstOrDefault(w => w.ID == worldID)
-                                ?.UserLimit ?? 1000;
+                .First(w => w.ID == worldID)
+                .UserLimit;
             var capacity = (double) userNo / Math.Max(1, userLimit);
 
             capacity = Math.Min(1, capacity);

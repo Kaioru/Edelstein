@@ -16,7 +16,7 @@ namespace Edelstein.Core.Distributed.States
             public short EventEXP { get; set; }
             public short EventDrop { get; set; }
             public bool BlockCharCreation { get; set; }
-            public int UserLimit { get; set; } = 1000;
+            public int UserLimit { get; set; } = 1200;
         }
     }
 }
