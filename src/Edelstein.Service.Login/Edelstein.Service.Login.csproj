@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Edelstein.Core.Gameplay\Edelstein.Core.Gameplay.csproj" />
       <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
     </ItemGroup>
 
@@ -18,6 +19,12 @@
     <ItemGroup>
       <PackageReference Include="BCrypt.Net-Next" Version="3.2.1" />
       <PackageReference Include="LibLog" Version="5.0.8" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MoreLinq, Version=3.3.2.0, Culture=neutral, PublicKeyToken=384d532d7e88985d">
+        <HintPath>..\..\..\..\.nuget\packages\morelinq\3.3.2\lib\netstandard2.0\MoreLinq.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
