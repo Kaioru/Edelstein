@@ -62,6 +62,11 @@ namespace Edelstein.Entities.Characters
 
         public Character()
         {
+            STR = 4;
+            DEX = 4;
+            INT = 4;
+            LUK = 4;
+
             Pets = new long[3];
             ExtendSP = new Dictionary<byte, byte>();
 
