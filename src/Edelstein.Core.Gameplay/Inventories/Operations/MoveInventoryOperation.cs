@@ -6,7 +6,7 @@ namespace Edelstein.Core.Gameplay.Inventories.Operations
     public class MoveInventoryOperation : AbstractModifyInventoryOperation
     {
         protected override ModifyInventoryOperationType Type => ModifyInventoryOperationType.Move;
-        public short ToSlot { get; }
+        private readonly short _toSlot;
 
         public MoveInventoryOperation(
             ItemInventoryType inventory,
@@ -14,12 +14,12 @@ namespace Edelstein.Core.Gameplay.Inventories.Operations
             short toSlot
         ) : base(inventory, slot)
         {
-            ToSlot = toSlot;
+            _toSlot = toSlot;
         }
 
         protected override void EncodeData(IPacket packet)
         {
-            packet.Encode<short>(ToSlot);
+            packet.Encode<short>(_toSlot);
         }
     }
 }
