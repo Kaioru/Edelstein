@@ -34,20 +34,15 @@ namespace Edelstein.Service.Login.Handlers
                 var result = LoginResultCode.Success;
 
                 var peers = await adapter.Service.GetPeers();
-                var serviceState = (await adapter.Service.GetPeers())
+                var service = (await adapter.Service.GetPeers())
                     .Select(n => n.State)
                     .OfType<GameServiceState>()
                     .FirstOrDefault(s =>
                         s.ChannelID == channelID &&
                         s.Worlds.Contains(worldID)
                     );
-                var service = peers
-                    .FirstOrDefault(n => n.State == serviceState);
 
-                if (
-                    serviceState == null ||
-                    service == null
-                ) result = LoginResultCode.NotConnectableWorld;
+                if (service == null) result = LoginResultCode.NotConnectableWorld;
 
                 p.Encode<byte>((byte) result);
 

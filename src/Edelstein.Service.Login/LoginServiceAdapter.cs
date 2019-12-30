@@ -7,7 +7,7 @@ namespace Edelstein.Service.Login
     public class LoginServiceAdapter : AbstractMigrationSocketAdapter
     {
         public LoginService Service { get; }
-        public INodeRemote SelectedNode { get; set; }
+        public IServerNodeState SelectedNode { get; set; }
 
         public LoginServiceAdapter(
             ISocket socket,

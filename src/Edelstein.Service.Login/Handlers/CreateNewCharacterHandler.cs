@@ -91,6 +91,10 @@ namespace Edelstein.Service.Login.Handlers
                     makeCharInfo.Shoes.All(i => i != shoes) ||
                     makeCharInfo.Weapon.All(i => i != weapon)
                 ) result = LoginResultCode.Unknown;
+                if (adapter.Service.State.Worlds
+                        .FirstOrDefault(w => w.ID == adapter.AccountWorld.WorldID)
+                        ?.BlockCharCreation == true
+                ) result = LoginResultCode.NotConnectableWorld;
 
                 p.Encode<byte>((byte) result);
 
