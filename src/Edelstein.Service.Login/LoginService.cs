@@ -3,6 +3,9 @@ using Edelstein.Core.Services.Migrations;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
+using Edelstein.Entities;
+using Edelstein.Entities.Inventories;
+using Edelstein.Entities.Inventories.Items;
 using Edelstein.Network;
 using Edelstein.Service.Login.Handlers;
 using Foundatio.Caching;
@@ -32,6 +35,13 @@ namespace Edelstein.Service.Login
             Handlers[RecvPacketOperations.CheckUserLimit] = new CheckUserLimitHandler();
             Handlers[RecvPacketOperations.SetGender] = new SetGenderHandler();
             Handlers[RecvPacketOperations.WorldRequest] = new WorldRequestHandler();
+
+            var store = DataStore.StartSession();
+            var character = new Character();
+            
+            character.Inventories[ItemInventoryType.Equip].Items[0] = new ItemSlotBundle();
+            character.Inventories[ItemInventoryType.Equip].Items[1] = new ItemSlotEquip();
+            store.Insert(character);
         }
 
         public override ISocketAdapter Build(ISocket socket)
