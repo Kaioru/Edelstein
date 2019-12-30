@@ -1,9 +1,14 @@
-using System.Collections.Generic;
+using System;
+using System.Linq.Expressions;
 
 namespace Edelstein.Database
 {
-    public interface IDataQuery<out T> : IEnumerable<T>
+    public interface IDataQuery<T> : IDataQueryResult<T>
         where T : class, IDataEntity
     {
+        IDataQuery<T> OrderBy<K>(Expression<Func<T, K>> keySelector);
+        IDataQuery<T> OrderByDescending<K>(Expression<Func<T, K>> keySelector);
+
+        IDataQuery<T> Where(Expression<Func<T, bool>> predicate);
     }
 }

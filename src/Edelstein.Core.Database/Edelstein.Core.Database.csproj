@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="JsonFlatFileDataStore" Version="2.2.1" />
+      <PackageReference Include="LiteDB" Version="5.0.0-beta" />
       <PackageReference Include="Marten" Version="3.10.0" />
     </ItemGroup>
 

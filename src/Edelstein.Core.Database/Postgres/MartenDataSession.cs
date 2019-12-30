@@ -12,7 +12,7 @@ namespace Edelstein.Database.Postgres
             => _session = session;
 
         public IDataQuery<T> Query<T>() where T : class, IDataEntity
-            => new QueryableDataQuery<T>(_session.Query<T>());
+            => new EnumerableDataQuery<T>(_session.Query<T>());
 
         public IDataBatch Batch()
             => new MartenDataBatch(_session);

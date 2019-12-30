@@ -14,13 +14,9 @@ namespace Edelstein.Database.Postgres
             => Task.CompletedTask;
 
         public IDataSession StartSession()
-        {
-            throw new System.NotImplementedException();
-        }
+            => new MartenDataSession(_store.OpenSession());
 
         public IDataBatch StartBatch()
-        {
-            throw new System.NotImplementedException();
-        }
+            => StartSession().Batch();
     }
 }

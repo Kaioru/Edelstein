@@ -46,10 +46,11 @@ namespace Edelstein.Service.Login.Handlers
                 {
                     var accountWorld = store
                         .Query<AccountWorld>()
-                        .FirstOrDefault(a =>
+                        .Where(a =>
                             a.AccountID == adapter.Account.ID &&
                             a.WorldID == worldID
-                        );
+                        )
+                        .FirstOrDefault();
 
                     if (accountWorld == null)
                     {

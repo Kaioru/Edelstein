@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils;
@@ -50,7 +49,8 @@ namespace Edelstein.Service.Login.Handlers
                 var result = LoginResultCode.Success;
                 var account = store
                     .Query<Account>()
-                    .FirstOrDefault(a => a.Username == username);
+                    .Where(a => a.Username == username)
+                    .FirstOrDefault();
 
                 if (account == null) result = LoginResultCode.NotRegistered;
                 else

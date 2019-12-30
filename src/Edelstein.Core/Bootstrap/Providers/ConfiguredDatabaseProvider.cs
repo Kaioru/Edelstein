@@ -19,8 +19,8 @@ namespace Edelstein.Core.Bootstrap.Providers
 
             switch (type)
             {
-                case DatabaseProviderTypes.Json:
-                    new JsonDatabaseProvider(section["Path"]).Provide(context, collection);
+                case DatabaseProviderTypes.LiteDB:
+                    new LiteDBDatabaseProvider(section["ConnectionString"]).Provide(context, collection);
                     break;
                 case DatabaseProviderTypes.Postgres:
                     new MartenDatabaseProvider(section["ConnectionString"]).Provide(context, collection);
