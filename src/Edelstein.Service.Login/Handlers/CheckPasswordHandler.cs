@@ -22,6 +22,16 @@ namespace Edelstein.Service.Login.Handlers
         {
             var password = packet.Decode<string>();
             var username = packet.Decode<string>();
+
+            if (adapter.Account != null ||
+                adapter.AccountWorld != null ||
+                adapter.Character != null
+            )
+            {
+                await adapter.Close();
+                return;
+            }
+
             var token = new CancellationTokenSource();
 
             token.CancelAfter(TimeSpan.FromSeconds(5));
