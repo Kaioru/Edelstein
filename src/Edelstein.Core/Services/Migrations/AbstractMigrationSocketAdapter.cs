@@ -5,6 +5,7 @@ using Edelstein.Core.Logging;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities;
+using Edelstein.Entities.Characters;
 using Edelstein.Network;
 using Edelstein.Network.Packets;
 

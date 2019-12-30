@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Entities;
+using Edelstein.Entities.Characters;
 using Edelstein.Network;
 
 namespace Edelstein.Core.Services.Migrations

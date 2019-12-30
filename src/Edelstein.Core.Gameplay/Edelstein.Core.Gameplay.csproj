@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="morelinq" Version="3.3.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Edelstein.Core.Entities\Edelstein.Core.Entities.csproj" />
+      <ProjectReference Include="..\Edelstein.Core.Network\Edelstein.Core.Network.csproj" />
+    </ItemGroup>
+
+</Project>
