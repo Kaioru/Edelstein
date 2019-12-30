@@ -5,12 +5,15 @@ using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Login.Logging;
 using Edelstein.Service.Login.Types;
 
 namespace Edelstein.Service.Login.Handlers
 {
     public class CheckPasswordHandler : AbstractPacketHandler<LoginServiceAdapter>
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         protected override async Task Handle(
             LoginServiceAdapter adapter,
             RecvPacketOperations operation,
@@ -52,7 +55,21 @@ namespace Edelstein.Service.Login.Handlers
                     .Where(a => a.Username == username)
                     .FirstOrDefault();
 
-                if (account == null) result = LoginResultCode.NotRegistered;
+                if (account == null)
+                {
+                    if (adapter.Service.State.AutoRegister)
+                    {
+                        account = new Account
+                        {
+                            Username = username,
+                            Password = BCrypt.Net.BCrypt.HashPassword(password)
+                        };
+
+                        await store.InsertAsync(account);
+                        Logger.Debug($"Created new account, {username}");
+                    }
+                    else result = LoginResultCode.NotRegistered;
+                }
                 else
                 {
                     if (await adapter.Service.AccountStateCache.ExistsAsync(account.ID.ToString()))
