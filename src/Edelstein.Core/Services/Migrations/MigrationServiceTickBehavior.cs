@@ -11,10 +11,7 @@ namespace Edelstein.Core.Services.Migrations
         public MigrationServiceTickBehavior(IMigrationService service)
             => _service = service;
 
-        public async Task<bool> TryTick()
-        {
-            await Task.WhenAll(_service.Sockets.Values.Select(s => s.TrySendHeartbeat()));
-            return true;
-        }
+        public async Task TryTick()
+            => await Task.WhenAll(_service.Sockets.Values.Select(s => s.TrySendHeartbeat()));
     }
 }

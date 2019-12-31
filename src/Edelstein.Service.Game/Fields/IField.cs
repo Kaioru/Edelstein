@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core.Templates.Fields;
+using Edelstein.Core.Utils.Ticks;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects;
 
 namespace Edelstein.Service.Game.Fields
 {
-    public interface IField
+    public interface IField : ITickBehavior
     {
         FieldTemplate Template { get; }
 

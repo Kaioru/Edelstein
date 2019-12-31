@@ -16,13 +16,12 @@ namespace Edelstein.Core.Distributed
             _bus = bus;
         }
 
-        public async Task<bool> TryTick()
+        public async Task TryTick()
         {
             await _bus.PublishAsync(new CachedNodeHeartbeatMessage
             {
                 State = _cachedNode.State
             });
-            return true;
         }
     }
 }
