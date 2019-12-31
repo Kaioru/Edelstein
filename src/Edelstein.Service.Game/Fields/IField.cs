@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core.Templates.Fields;
@@ -9,12 +8,13 @@ using Edelstein.Service.Game.Fields.Objects;
 
 namespace Edelstein.Service.Game.Fields
 {
-    public interface IField : ITickBehavior
+    public interface IField : IFieldPool, ITickBehavior
     {
         FieldTemplate Template { get; }
 
         IFieldSplit GetSplit(Point position);
-        ICollection<IFieldSplit> GetSplits(Point position);
+        IFieldSplit[] GetEnclosingSplits(Point position);
+        IFieldSplit[] GetEnclosingSplits(IFieldSplit split);
 
         IFieldPool GetPool(FieldObjType type);
         IFieldPortal GetPortal(byte portal);

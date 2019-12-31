@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using Edelstein.Provider;
 
@@ -5,6 +6,7 @@ namespace Edelstein.Core.Templates.Fields
 {
     public class FieldPortalTemplate
     {
+        public int ID { get; }
         public FieldPortalType Type { get; }
 
         public string Name { get; }
@@ -17,6 +19,7 @@ namespace Edelstein.Core.Templates.Fields
 
         public FieldPortalTemplate(IDataProperty property)
         {
+            ID = Convert.ToInt32(property.Name);
             Name = property.ResolveOrDefault<string>("pn");
             Type = (FieldPortalType) (property.Resolve<int>("pt") ?? 0);
             Script = property.ResolveOrDefault<string>("script");

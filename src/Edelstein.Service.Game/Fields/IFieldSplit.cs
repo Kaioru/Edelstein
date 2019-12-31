@@ -5,7 +5,7 @@ using Edelstein.Service.Game.Fields.Objects;
 
 namespace Edelstein.Service.Game.Fields
 {
-    public interface IFieldSplit
+    public interface IFieldSplit : IFieldPool
     {
         int Row { get; }
         int Col { get; }

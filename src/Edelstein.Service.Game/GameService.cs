@@ -5,6 +5,7 @@ using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
 using Edelstein.Network;
 using Edelstein.Provider;
+using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Handlers;
 using Foundatio.Caching;
 using Microsoft.Extensions.Options;
@@ -14,7 +15,8 @@ namespace Edelstein.Service.Game
     public class GameService : AbstractMigrationService<GameServiceState>
     {
         public IDataTemplateManager TemplateManager { get; }
-        
+        public FieldManager FieldManager { get; }
+
         public GameService(
             IOptions<GameServiceState> state,
             IDataStore dataStore,
@@ -24,6 +26,7 @@ namespace Edelstein.Service.Game
         ) : base(state.Value, dataStore, cache, busFactory)
         {
             TemplateManager = templateManager;
+            FieldManager = new FieldManager(templateManager);
 
             Handlers[RecvPacketOperations.MigrateIn] = new MigrateInHandler();
         }

@@ -1,7 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Handlers
 {
@@ -26,9 +28,17 @@ namespace Edelstein.Service.Game.Handlers
             try
             {
                 await adapter.TryMigrateFrom(characterID, clientKey);
+
+                var field = adapter.Service.FieldManager.Get(adapter.Character.FieldID);
+                var fieldUser = new FieldUser(adapter);
+
+                adapter.User = fieldUser;
+
+                await field.Enter(fieldUser);
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 await adapter.Close();
             }
         }
