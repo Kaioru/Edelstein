@@ -11,7 +11,12 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
         Item = 0x1,
         MakeCharInfo = 0x2,
 
+        Field = 0x4,
+
         Login = Item |
-                MakeCharInfo
+                MakeCharInfo,
+
+        Game = Item |
+               Field
     }
 }

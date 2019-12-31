@@ -47,7 +47,8 @@ namespace Edelstein.Service.All.Services
                     Options.Create(i),
                     _provider.GetService<IDataStore>(),
                     _provider.GetService<ICacheClient>(),
-                    _provider.GetService<IMessageBusFactory>()
+                    _provider.GetService<IMessageBusFactory>(),
+                    _provider.GetService<IDataTemplateManager>()
                 )));
 
             await Task.WhenAll(Services.Select(s => s.StartAsync(cancellationToken)));

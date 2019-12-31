@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
+using Edelstein.Core.Bootstrap.Providers.Templates;
 using Edelstein.Core.Distributed.States;
 
 namespace Edelstein.Service.Game
@@ -12,6 +13,8 @@ namespace Edelstein.Service.Game
                 .WithConfiguredLogging()
                 .WithConfiguredCaching()
                 .WithConfiguredDatabase()
+                .WithConfiguredParsing()
+                .WithProvider(new DataTemplateProvider(DataTemplateType.Game))
                 .WithConfig<GameServiceState>("Service")
                 .WithService<GameService>()
                 .Build()

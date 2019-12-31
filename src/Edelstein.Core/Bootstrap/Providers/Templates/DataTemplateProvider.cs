@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Templates.Etc.MakeCharInfo;
+using Edelstein.Core.Templates.Field;
 using Edelstein.Core.Templates.Items;
 using Edelstein.Provider;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,11 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
                             Tuple.Create<Type, IDataTemplateCollection>(
                                 typeof(MakeCharInfoTemplate),
                                 new MakeCharInfoTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.Field] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(FieldTemplate),
+                                new FieldTemplateCollection(directory)
                             )
                     }
                     .Where(kv => _type.HasFlag(kv.Key))
