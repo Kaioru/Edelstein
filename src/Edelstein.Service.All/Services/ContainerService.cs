@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
 using Edelstein.Provider;
-using Edelstein.Service.Game.Services;
+using Edelstein.Service.Game;
 using Edelstein.Service.Login;
 using Foundatio.Caching;
 using Foundatio.Lock;

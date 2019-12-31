@@ -108,7 +108,7 @@ namespace Edelstein.Service.Login.Handlers
                     p.Encode<byte>(1); // v44
                     p.Encode<byte>(0); // sMsg
 
-                    p.Encode<long>(0); // dwHighDateTime
+                    p.Encode<long>(adapter.Socket.ClientKey);
 
                     adapter.Account = account;
                     await adapter.TryRecvHeartbeat(true);

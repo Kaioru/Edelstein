@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Logging;
@@ -45,6 +46,22 @@ namespace Edelstein.Core.Services.Migrations
 
         public Task TryRecvHeartbeat(bool init = false)
             => _service.ProcessRecvHeartbeat(this, init);
+
+        public virtual IPacket GetMigrationPacket(IServerNodeState to)
+        {
+            using var p = new Packet(SendPacketOperations.MigrateCommand);
+
+            p.Encode<bool>(true);
+
+            var endpoint = new IPEndPoint(IPAddress.Parse(to.Host), to.Port);
+            var address = endpoint.Address.MapToIPv4().GetAddressBytes();
+            var port = endpoint.Port;
+
+            foreach (var b in address)
+                p.Encode<byte>(b);
+            p.Encode<short>((short) port);
+            return p;
+        }
 
         public override async Task OnPacket(IPacket packet)
         {

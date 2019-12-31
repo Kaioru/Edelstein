@@ -87,7 +87,7 @@ namespace Edelstein.Service.Login.Handlers
                     });
 
                     p.Encode<bool>(
-                        !string.IsNullOrEmpty(adapter.Account.PIC)
+                        !string.IsNullOrEmpty(adapter.Account.SPW)
                     ); // bLoginOpt TODO: proper bLoginOpt stuff
                     p.Encode<int>(accountWorld.SlotCount);
                     p.Encode<int>(0);

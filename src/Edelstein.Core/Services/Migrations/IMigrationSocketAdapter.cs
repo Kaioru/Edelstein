@@ -4,6 +4,7 @@ using Edelstein.Core.Distributed;
 using Edelstein.Entities;
 using Edelstein.Entities.Characters;
 using Edelstein.Network;
+using Edelstein.Network.Packets;
 
 namespace Edelstein.Core.Services.Migrations
 {
@@ -21,5 +22,7 @@ namespace Edelstein.Core.Services.Migrations
 
         Task TrySendHeartbeat();
         Task TryRecvHeartbeat(bool init = false);
+
+        IPacket GetMigrationPacket(IServerNodeState to);
     }
 }

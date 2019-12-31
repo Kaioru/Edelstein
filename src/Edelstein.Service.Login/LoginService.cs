@@ -39,6 +39,9 @@ namespace Edelstein.Service.Login
             Handlers[RecvPacketOperations.WorldRequest] = new WorldRequestHandler();
             Handlers[RecvPacketOperations.CheckDuplicatedID] = new CheckDuplicatedIDHandler();
             Handlers[RecvPacketOperations.CreateNewCharacter] = new CreateNewCharacterHandler();
+
+            Handlers[RecvPacketOperations.EnableSPWRequest] = new EnableSPWRequestHandler(false);
+            Handlers[RecvPacketOperations.CheckSPWRequest] = new CheckSPWRequestHandler(false);
         }
 
         public override ISocketAdapter Build(ISocket socket)

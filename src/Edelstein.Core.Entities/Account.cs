@@ -10,7 +10,7 @@ namespace Edelstein.Entities
 
         public string Password { get; set; }
         public string PIN { get; set; }
-        public string PIC { get; set; }
+        public string SPW { get; set; }
 
         public byte? Gender { get; set; }
         

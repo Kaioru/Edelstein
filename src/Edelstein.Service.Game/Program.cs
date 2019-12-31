@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
 using Edelstein.Core.Distributed.States;
-using Edelstein.Service.Game.Services;
 
 namespace Edelstein.Service.Game
 {

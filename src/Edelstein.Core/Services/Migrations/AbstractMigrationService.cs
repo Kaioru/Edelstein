@@ -98,7 +98,7 @@ namespace Edelstein.Core.Services.Migrations
                 },
                 TimeSpan.FromSeconds(15)
             );
-            await socketAdapter.SendPacket(GetMigrationPacket(nodeState));
+            await socketAdapter.SendPacket(socketAdapter.GetMigrationPacket(nodeState));
             await SocketCountCache.DecrementAsync(State.Name);
         }
 
@@ -184,21 +184,6 @@ namespace Edelstein.Core.Services.Migrations
                 State,
                 TimeSpan.FromMinutes(1)
             );
-        }
-
-        protected virtual IPacket GetMigrationPacket(IServerNodeState to)
-        {
-            using var p = new Packet(SendPacketOperations.MigrateCommand);
-            p.Encode<bool>(true);
-
-            var endpoint = new IPEndPoint(IPAddress.Parse(to.Host), to.Port);
-            var address = endpoint.Address.MapToIPv4().GetAddressBytes();
-            var port = endpoint.Port;
-
-            foreach (var b in address)
-                p.Encode<byte>(b);
-            p.Encode<short>((short) port);
-            return p;
         }
     }
 }
