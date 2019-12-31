@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Templates.Etc.MakeCharInfo;
-using Edelstein.Core.Templates.Field;
+using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Templates.Items;
 using Edelstein.Provider;
 using Microsoft.Extensions.DependencyInjection;

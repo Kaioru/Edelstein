@@ -1,7 +1,7 @@
 using System.Drawing;
 using Edelstein.Provider;
 
-namespace Edelstein.Core.Templates.Field.Life
+namespace Edelstein.Core.Templates.Fields.Life
 {
     public class FieldLifeTemplate
     {

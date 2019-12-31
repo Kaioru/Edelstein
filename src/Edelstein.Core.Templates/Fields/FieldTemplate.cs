@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Drawing;
 using System.Linq;
-using Edelstein.Core.Templates.Field.Life;
+using Edelstein.Core.Templates.Fields.Life;
 using Edelstein.Provider;
 using MoreLinq;
 
-namespace Edelstein.Core.Templates.Field
+namespace Edelstein.Core.Templates.Fields
 {
     public class FieldTemplate : IDataTemplate
     {

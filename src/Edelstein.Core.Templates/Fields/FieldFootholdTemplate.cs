@@ -1,6 +1,6 @@
 using Edelstein.Provider;
 
-namespace Edelstein.Core.Templates.Field
+namespace Edelstein.Core.Templates.Fields
 {
     public class FieldFootholdTemplate
     {

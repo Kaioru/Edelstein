@@ -1,6 +1,6 @@
 using System;
 
-namespace Edelstein.Core.Templates.Field
+namespace Edelstein.Core.Templates.Fields
 {
     [Flags]
     public enum FieldOpt

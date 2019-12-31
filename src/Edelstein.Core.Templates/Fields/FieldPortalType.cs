@@ -1,4 +1,4 @@
-namespace Edelstein.Core.Templates.Field
+namespace Edelstein.Core.Templates.Fields
 {
     public enum FieldPortalType
     {
