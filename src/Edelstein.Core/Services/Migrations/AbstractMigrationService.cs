@@ -35,7 +35,7 @@ namespace Edelstein.Core.Services.Migrations
             IMessageBusFactory busFactory
         ) : base(state, busFactory)
         {
-            _ticker = new TimerTicker(TimeSpan.FromSeconds(15), new MigrationServiceTickBehavior(this));
+            _ticker = new TimerTicker(TimeSpan.FromSeconds(20), new MigrationServiceTickBehavior(this));
 
             DataStore = dataStore;
 
@@ -170,21 +170,21 @@ namespace Edelstein.Core.Services.Migrations
                 await AccountStateCache.SetAsync(
                     socketAdapter.Account.ID.ToString(),
                     MigrationState.LoggedIn,
-                    socketAdapter.LastSentHeartbeatDate.AddMinutes(1)
+                    TimeSpan.FromMinutes(1)
                 );
                 await SocketCountCache.IncrementAsync(State.Name);
             }
 
             await AccountStateCache.SetExpirationAsync(
                 socketAdapter.Account.ID.ToString(),
-                socketAdapter.LastSentHeartbeatDate.AddMinutes(1)
+                socketAdapter.LastRecvHeartbeatDate.AddMinutes(1)
             );
 
             if (socketAdapter.Character == null) return;
 
             await CharacterStateCache.SetExpirationAsync(
                 socketAdapter.Character.ID.ToString(),
-                socketAdapter.LastSentHeartbeatDate.AddMinutes(1)
+                socketAdapter.LastRecvHeartbeatDate.AddMinutes(1)
             );
         }
     }
