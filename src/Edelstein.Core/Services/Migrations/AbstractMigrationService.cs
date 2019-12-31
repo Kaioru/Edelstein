@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
+using Edelstein.Core.Logging;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Core.Utils.Packets;
@@ -17,6 +18,8 @@ namespace Edelstein.Core.Services.Migrations
     public abstract class AbstractMigrationService<TState> : AbstractNodeServerService<TState>, IMigrationService
         where TState : IServerNodeState
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         private readonly ITicker _ticker;
 
         public IDataStore DataStore { get; }
@@ -141,6 +144,7 @@ namespace Edelstein.Core.Services.Migrations
             if ((DateTime.UtcNow - socketAdapter.LastRecvHeartbeatDate).TotalMinutes >= 1)
             {
                 await socketAdapter.Socket.Close();
+                Logger.Debug($"Closed connection from {socketAdapter.Account} due to heartbeat timeout");
                 return;
             }
 
@@ -160,6 +164,7 @@ namespace Edelstein.Core.Services.Migrations
             if (!await AccountStateCache.ExistsAsync(socketAdapter.Account.ID.ToString()) && !init)
             {
                 await socketAdapter.Socket.Close();
+                Logger.Debug($"Closed connection from {socketAdapter.Account} due to cache expiry");
                 return;
             }
 
