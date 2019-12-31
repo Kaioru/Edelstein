@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
@@ -120,10 +118,7 @@ namespace Edelstein.Core.Services.Migrations
             socketAdapter.Socket.ClientKey = entry.ClientKey;
 
             await MigrationCache.RemoveAsync(characterID.ToString());
-            await socketAdapter.TryRecvHeartbeat();
-            await SocketCountCache.IncrementAsync(State.Name);
-
-            Sockets.Add(socketAdapter.Account.ID, socketAdapter);
+            await socketAdapter.TryRecvHeartbeat(true);
         }
 
         public async Task ProcessDisconnect(IMigrationSocketAdapter socketAdapter)
@@ -169,20 +164,27 @@ namespace Edelstein.Core.Services.Migrations
             }
 
             if (init)
+            {
                 Sockets.Add(socketAdapter.Account.ID, socketAdapter);
 
-            await AccountStateCache.SetAsync(
+                await AccountStateCache.SetAsync(
+                    socketAdapter.Account.ID.ToString(),
+                    MigrationState.LoggedIn,
+                    socketAdapter.LastSentHeartbeatDate.AddMinutes(1)
+                );
+                await SocketCountCache.IncrementAsync(State.Name);
+            }
+
+            await AccountStateCache.SetExpirationAsync(
                 socketAdapter.Account.ID.ToString(),
-                MigrationState.LoggedIn,
-                TimeSpan.FromMinutes(1)
+                socketAdapter.LastSentHeartbeatDate.AddMinutes(1)
             );
 
             if (socketAdapter.Character == null) return;
 
-            await CharacterStateCache.SetAsync(
+            await CharacterStateCache.SetExpirationAsync(
                 socketAdapter.Character.ID.ToString(),
-                State,
-                TimeSpan.FromMinutes(1)
+                socketAdapter.LastSentHeartbeatDate.AddMinutes(1)
             );
         }
     }

@@ -67,8 +67,8 @@ namespace Edelstein.Service.Game.Fields
         private IFieldSplit GetSplit(int col, int row)
         {
             if (
-                col < 0 || col > _splits.GetLength(0) ||
-                row < 0 || row > _splits.GetLength(1)
+                col < 0 || col >= _splits.GetLength(0) ||
+                row < 0 || row >= _splits.GetLength(1)
             ) return null;
             return _splits[col, row];
         }
