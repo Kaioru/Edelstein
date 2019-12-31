@@ -12,10 +12,10 @@ namespace Edelstein.Service.Game.Fields
 {
     public class Field : IField
     {
-        public const int ScreenWidth = 800;
-        public const int ScreenHeight = 600;
-        public const int ScreenWidthOffset = ScreenWidth * 75 / 100;
-        public const int ScreenHeightOffset = ScreenHeight * 75 / 100;
+        private const int ScreenWidth = 1024;
+        private const int ScreenHeight = 768;
+        private const int ScreenWidthOffset = ScreenWidth * 75 / 100;
+        private const int ScreenHeightOffset = ScreenHeight * 75 / 100;
 
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
         private readonly IDictionary<string, IFieldPortal> _portals;
