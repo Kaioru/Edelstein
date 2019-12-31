@@ -19,11 +19,16 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public Account Account => Adapter.Account;
         public AccountWorld AccountWorld => Adapter.AccountWorld;
         public Character Character => Adapter.Character;
+        
+        public IFieldSplit[] Watching { get; }
 
         public bool IsInstantiated { get; set; }
 
         public FieldUser(GameServiceAdapter socketAdapter)
-            => Adapter = socketAdapter;
+        {
+            Adapter = socketAdapter;
+            Watching = new IFieldSplit[9];
+        }
 
         public Task SendPacket(IPacket packet)
             => Adapter.SendPacket(packet);

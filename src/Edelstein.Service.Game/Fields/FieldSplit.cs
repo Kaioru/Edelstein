@@ -10,48 +10,112 @@ namespace Edelstein.Service.Game.Fields
 {
     public class FieldSplit : IFieldSplit
     {
+        private readonly ICollection<IFieldUser> _watchers;
         private readonly ICollection<IFieldObj> _objects;
 
+        public ICollection<IFieldUser> Watchers => _watchers.ToImmutableList();
         public int Col { get; }
         public int Row { get; }
 
         public FieldSplit(int col, int row)
         {
+            _watchers = new List<IFieldUser>();
             _objects = new List<IFieldObj>();
             Row = row;
             Col = col;
         }
 
-        public async Task Enter(IFieldObj obj, Func<IPacket> getEnterPacket)
+        public async Task Enter(
+            IFieldObj obj,
+            IFieldSplit from,
+            Func<IPacket> getEnterPacket,
+            Func<IPacket> getLeavePacket
+        )
         {
-            lock (this) _objects.Add(obj);
+            if (from != null)
+                await from.LeaveQuietly(obj);
+            await EnterQuietly(obj);
+
+            var toWatchers = Watchers;
+            var fromWatchers = from?.Watchers ?? new List<IFieldUser>();
+            var newWatchers = toWatchers
+                .Except(fromWatchers)
+                .ToImmutableList();
+            var oldWatchers = fromWatchers
+                .Except(toWatchers)
+                .ToImmutableList();
 
             var enterPacket = getEnterPacket?.Invoke() ?? obj.GetEnterFieldPacket();
+            var leavePacket = getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket();
 
-            await Task.WhenAll(GetObjects<IFieldUser>()
-                .Select(u => u.SendPacket(enterPacket)));
+            await Task.WhenAll(newWatchers.Select(w => w.SendPacket(enterPacket)));
+            await Task.WhenAll(oldWatchers.Select(w => w.SendPacket(leavePacket)));
+
             if (obj is IFieldUser user)
-                await Task.WhenAll(GetObjects()
-                    .Where(o => o != obj)
-                    .Select(o => user.SendPacket(o.GetEnterFieldPacket())));
+            {
+                var enclosingSplits = user.Field.GetEnclosingSplits(this);
+                var oldSplits = user.Watching
+                    .Where(s => s != null)
+                    .Except(enclosingSplits)
+                    .ToImmutableArray();
+                var newSplits = enclosingSplits
+                    .Where(s => s != null)
+                    .Except(user.Watching)
+                    .ToImmutableArray();
+
+                enclosingSplits.CopyTo(user.Watching, 0);
+
+                await Task.WhenAll(newSplits.Select(s => s.Watch(user)));
+                await Task.WhenAll(oldSplits.Select(s => s.Unwatch(user)));
+            }
         }
 
         public async Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket)
         {
-            lock (this) _objects.Remove(obj);
-
-            var leavePacket = getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket();
-
-            await Task.WhenAll(GetObjects<IFieldUser>()
-                .Select(u => u.SendPacket(leavePacket)));
-            if (obj is IFieldUser user)
-                await Task.WhenAll(GetObjects()
-                    .Where(o => o != obj)
-                    .Select(o => user.SendPacket(o.GetLeaveFieldPacket())));
+            await LeaveQuietly(obj);
+            await BroadcastPacket(obj, getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket());
         }
 
+        public Task EnterQuietly(IFieldObj obj)
+        {
+            obj.FieldSplit = this;
+            lock (this) _objects.Add(obj);
+            return Task.CompletedTask;
+        }
+
+        public Task LeaveQuietly(IFieldObj obj)
+        {
+            obj.FieldSplit = null;
+            lock (this) _objects.Remove(obj);
+            return Task.CompletedTask;
+        }
+
+        public async Task Watch(IFieldUser user)
+        {
+            lock (this) _watchers.Add(user);
+            await Task.WhenAll(_objects
+                .Where(o => o != user)
+                .Select(o => user.SendPacket(o.GetEnterFieldPacket())));
+        }
+
+        public async Task Unwatch(IFieldUser user)
+        {
+            lock (this) _watchers.Remove(user);
+            await Task.WhenAll(_objects
+                .Where(o => o != user)
+                .Select(o => user.SendPacket(o.GetLeaveFieldPacket())));
+        }
+
+        public Task BroadcastPacket(IPacket packet)
+            => BroadcastPacket(null, packet);
+
+        public Task BroadcastPacket(IFieldObj source, IPacket packet)
+            => Task.WhenAll(_watchers
+                .Where(w => w != source)
+                .Select(w => w.SendPacket(packet)));
+
         public Task Enter(IFieldObj obj)
-            => Enter(obj, null);
+            => Enter(obj, null, null, null);
 
         public Task Leave(IFieldObj obj)
             => Leave(obj, null);

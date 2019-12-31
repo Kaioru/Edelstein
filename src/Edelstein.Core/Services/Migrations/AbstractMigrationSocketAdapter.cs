@@ -79,7 +79,7 @@ namespace Edelstein.Core.Services.Migrations
             try
             {
                 await handler.Handle(context);
-                Logger.Debug($"Handled packet operation {operation}");
+                Logger.Trace($"Handled packet operation {operation}");
             }
             catch (Exception e)
             {

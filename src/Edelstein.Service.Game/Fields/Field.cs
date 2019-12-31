@@ -184,12 +184,7 @@ namespace Edelstein.Service.Game.Fields
             );
 
         public Task BroadcastPacket(IFieldObj source, IPacket packet)
-            => Task.WhenAll(
-                source.SplitCenter
-                    .GetObjects<IFieldUser>()
-                    .Where(u => u != source)
-                    .Select(u => u.SendPacket(packet))
-            );
+            => source.FieldSplit.BroadcastPacket(source, packet);
 
         public Task TryTick()
             => Task.CompletedTask;

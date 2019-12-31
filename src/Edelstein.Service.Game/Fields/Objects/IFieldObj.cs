@@ -12,8 +12,7 @@ namespace Edelstein.Service.Game.Fields.Objects
 
         IField Field { get; set; }
 
-        IFieldSplit SplitCenter { get; }
-        IFieldSplit[] SplitEnclosing { get; }
+        IFieldSplit FieldSplit { get; set; }
 
         Point Position { get; set; }
 
@@ -24,5 +23,7 @@ namespace Edelstein.Service.Game.Fields.Objects
 
         IPacket GetEnterFieldPacket();
         IPacket GetLeaveFieldPacket();
+
+        Task BroadcastPacket(IPacket packet);
     }
 }

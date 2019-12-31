@@ -11,9 +11,10 @@ namespace Edelstein.Service.Game.Fields.Objects
         Character Character { get; }
         bool IsInstantiated { get; set; }
 
+        IFieldSplit[] Watching { get; }
+
         IPacket GetSetFieldPacket();
 
         Task SendPacket(IPacket packet);
-        Task BroadcastPacket(IPacket packet);
     }
 }
