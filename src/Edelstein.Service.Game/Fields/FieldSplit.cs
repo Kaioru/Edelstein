@@ -44,6 +44,10 @@ namespace Edelstein.Service.Game.Fields
 
             await Task.WhenAll(GetObjects<IFieldUser>()
                 .Select(u => u.SendPacket(leavePacket)));
+            if (obj is IFieldUser user)
+                await Task.WhenAll(GetObjects()
+                    .Where(o => o != obj)
+                    .Select(o => user.SendPacket(o.GetLeaveFieldPacket())));
         }
 
         public Task Enter(IFieldObj obj)
