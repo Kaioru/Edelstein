@@ -39,7 +39,7 @@ namespace Edelstein.Service.Login
             Handlers[RecvPacketOperations.WorldRequest] = new WorldRequestHandler();
             Handlers[RecvPacketOperations.CheckDuplicatedID] = new CheckDuplicatedIDHandler();
             Handlers[RecvPacketOperations.CreateNewCharacter] = new CreateNewCharacterHandler();
-
+            Handlers[RecvPacketOperations.DeleteCharacter] = new DeleteCharacterHandler();
             Handlers[RecvPacketOperations.EnableSPWRequest] = new EnableSPWRequestHandler(false);
             Handlers[RecvPacketOperations.CheckSPWRequest] = new CheckSPWRequestHandler(false);
         }
