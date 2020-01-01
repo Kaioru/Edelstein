@@ -4,7 +4,7 @@ using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.User;
 
-namespace Edelstein.Service.Game.Handlers
+namespace Edelstein.Service.Game.Handlers.Users
 {
     public abstract class AbstractFieldUserHandler : AbstractPacketHandler<GameServiceAdapter>
     {

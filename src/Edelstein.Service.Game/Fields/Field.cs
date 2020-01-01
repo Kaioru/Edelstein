@@ -82,6 +82,18 @@ namespace Edelstein.Service.Game.Fields
         public IEnumerable<T> GetObjects<T>() where T : IFieldObj
             => _pools.Values.SelectMany(p => p.GetObjects<T>()).ToImmutableList();
 
+        public IFieldObj GetControlledObject(IFieldUser controller, int id)
+            => GetControlledObjects(controller).First(o => o.ID == id);
+
+        public T GetControlledObject<T>(IFieldUser controller, int id) where T : IFieldControlled
+            => GetControlledObjects<T>(controller).First(o => o.ID == id);
+
+        public IEnumerable<IFieldObj> GetControlledObjects(IFieldUser controller)
+            => GetControlledObjects<IFieldControlled>(controller);
+
+        public IEnumerable<T> GetControlledObjects<T>(IFieldUser controller) where T : IFieldControlled
+            => GetObjects<T>().Where(o => o.Controller == controller).ToImmutableList();
+
         public IFieldSplit GetSplit(Point position)
         {
             var col = (position.X - Template.Bounds.Left) / ScreenWidthOffset;

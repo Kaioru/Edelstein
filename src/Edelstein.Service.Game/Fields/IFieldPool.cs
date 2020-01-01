@@ -14,5 +14,11 @@ namespace Edelstein.Service.Game.Fields
 
         IEnumerable<IFieldObj> GetObjects();
         IEnumerable<T> GetObjects<T>() where T : IFieldObj;
+
+        IFieldObj GetControlledObject(IFieldUser controller, int id);
+        T GetControlledObject<T>(IFieldUser controller, int id) where T : IFieldControlled;
+
+        IEnumerable<IFieldObj> GetControlledObjects(IFieldUser controller);
+        IEnumerable<T> GetControlledObjects<T>(IFieldUser controller) where T : IFieldControlled;
     }
 }

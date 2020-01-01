@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Entities.Characters;
 using Edelstein.Network.Packets;
@@ -12,6 +13,7 @@ namespace Edelstein.Service.Game.Fields.Objects
         bool IsInstantiated { get; set; }
 
         IFieldSplit[] Watching { get; }
+        ICollection<IFieldControlled> Controlling { get; }
 
         IPacket GetSetFieldPacket();
 

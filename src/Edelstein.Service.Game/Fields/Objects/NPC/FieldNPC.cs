@@ -6,7 +6,7 @@ using Edelstein.Network.Packets;
 
 namespace Edelstein.Service.Game.Fields.Objects.NPC
 {
-    public class FieldNPC : AbstractFieldLife
+    public class FieldNPC : AbstractFieldControlledLife
     {
         public override FieldObjType Type => FieldObjType.NPC;
 
@@ -41,6 +41,14 @@ namespace Edelstein.Service.Game.Fields.Objects.NPC
         public override IPacket GetLeaveFieldPacket()
         {
             using var p = new Packet(SendPacketOperations.NpcLeaveField);
+            p.Encode<int>(ID);
+            return p;
+        }
+
+        protected override IPacket GetChangeControllerPacket(bool setAsController)
+        {
+            using var p = new Packet(SendPacketOperations.NpcChangeController);
+            p.Encode<bool>(setAsController);
             p.Encode<int>(ID);
             return p;
         }

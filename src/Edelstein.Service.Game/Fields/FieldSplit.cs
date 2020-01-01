@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects;
+using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Fields
 {
@@ -68,12 +69,15 @@ namespace Edelstein.Service.Game.Fields
                 await Task.WhenAll(newSplits.Select(s => s.Watch(user)));
                 await Task.WhenAll(oldSplits.Select(s => s.Unwatch(user)));
             }
+
+            UpdateControlledObjects();
         }
 
         public async Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket)
         {
             await LeaveQuietly(obj);
             await BroadcastPacket(obj, getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket());
+            UpdateControlledObjects();
         }
 
         public Task EnterQuietly(IFieldObj obj)
@@ -96,6 +100,7 @@ namespace Edelstein.Service.Game.Fields
             await Task.WhenAll(_objects
                 .Where(o => o != user)
                 .Select(o => user.SendPacket(o.GetEnterFieldPacket())));
+            UpdateControlledObjects();
         }
 
         public async Task Unwatch(IFieldUser user)
@@ -104,6 +109,7 @@ namespace Edelstein.Service.Game.Fields
             await Task.WhenAll(_objects
                 .Where(o => o != user)
                 .Select(o => user.SendPacket(o.GetLeaveFieldPacket())));
+            UpdateControlledObjects();
         }
 
         public Task BroadcastPacket(IPacket packet)
@@ -137,5 +143,33 @@ namespace Edelstein.Service.Game.Fields
             => _objects
                 .OfType<T>()
                 .ToImmutableList();
+
+        public IFieldObj GetControlledObject(IFieldUser controller, int id)
+            => GetControlledObjects(controller).First(o => o.ID == id);
+
+        public T GetControlledObject<T>(IFieldUser controller, int id) where T : IFieldControlled
+            => GetControlledObjects<T>(controller).First(o => o.ID == id);
+
+        public IEnumerable<IFieldObj> GetControlledObjects(IFieldUser controller)
+            => GetControlledObjects<IFieldControlled>(controller);
+
+        public IEnumerable<T> GetControlledObjects<T>(IFieldUser controller) where T : IFieldControlled
+            => GetObjects<T>().Where(o => o.Controller == controller).ToImmutableList();
+
+        public void UpdateControlledObjects()
+        {
+            lock (this)
+            {
+                var controllers = _watchers
+                    .OrderBy(u => u.Controlling.Count)
+                    .ToImmutableList();
+                var controlled = GetObjects().OfType<IFieldControlled>().ToList();
+
+                controlled
+                    .Where(c => c.Controller == null ||
+                                !controllers.Contains(c.Controller))
+                    .ForEach(c => c.Controller = controllers.FirstOrDefault());
+            }
+        }
     }
 }

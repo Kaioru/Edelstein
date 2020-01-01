@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Extensions.Packets;
@@ -21,6 +22,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public Character Character => Adapter.Character;
         
         public IFieldSplit[] Watching { get; }
+        public ICollection<IFieldControlled> Controlling { get; }
 
         public bool IsInstantiated { get; set; }
 
@@ -28,6 +30,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         {
             Adapter = socketAdapter;
             Watching = new IFieldSplit[9];
+            Controlling = new List<IFieldControlled>();
         }
 
         public Task SendPacket(IPacket packet)

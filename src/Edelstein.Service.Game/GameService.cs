@@ -7,6 +7,7 @@ using Edelstein.Network;
 using Edelstein.Provider;
 using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Handlers;
+using Edelstein.Service.Game.Handlers.NPC;
 using Edelstein.Service.Game.Handlers.Users;
 using Foundatio.Caching;
 using Microsoft.Extensions.Options;
@@ -33,6 +34,9 @@ namespace Edelstein.Service.Game
 
             Handlers[RecvPacketOperations.UserTransferChannelRequest] = new UserTransferChannelRequestHandler();
             Handlers[RecvPacketOperations.UserMove] = new UserMoveHandler();
+            
+            Handlers[RecvPacketOperations.NpcMove] = new NPCMoveHandler();
+            
         }
 
         public override ISocketAdapter Build(ISocket socket)
