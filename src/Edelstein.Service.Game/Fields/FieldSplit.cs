@@ -40,9 +40,11 @@ namespace Edelstein.Service.Game.Fields
             var toWatchers = Watchers;
             var fromWatchers = from?.Watchers ?? new List<IFieldUser>();
             var newWatchers = toWatchers
+                .Where(w => w != obj)
                 .Except(fromWatchers)
                 .ToImmutableList();
             var oldWatchers = fromWatchers
+                .Where(w => w != obj)
                 .Except(toWatchers)
                 .ToImmutableList();
 
