@@ -30,6 +30,8 @@ namespace Edelstein.Service.Game.Handlers.Users
 
             await user.FieldSplit.BroadcastPacket(p1);
 
+            if (onlyBalloon) return;
+
             using var p2 = new Packet(SendPacketOperations.UserChatNLCPQ);
 
             p2.Encode<int>(user.ID);

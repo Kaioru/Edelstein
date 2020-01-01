@@ -83,10 +83,10 @@ namespace Edelstein.Service.Game.Fields
             => _pools.Values.SelectMany(p => p.GetObjects<T>()).ToImmutableList();
 
         public IFieldObj GetControlledObject(IFieldUser controller, int id)
-            => GetControlledObjects(controller).First(o => o.ID == id);
+            => GetControlledObjects(controller).FirstOrDefault(o => o.ID == id);
 
         public T GetControlledObject<T>(IFieldUser controller, int id) where T : IFieldControlled
-            => GetControlledObjects<T>(controller).First(o => o.ID == id);
+            => GetControlledObjects<T>(controller).FirstOrDefault(o => o.ID == id);
 
         public IEnumerable<IFieldObj> GetControlledObjects(IFieldUser controller)
             => GetControlledObjects<IFieldControlled>(controller);
