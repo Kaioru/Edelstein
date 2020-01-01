@@ -18,7 +18,6 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats
         public int DEX { get; private set; }
         public int INT { get; private set; }
         public int LUK { get; private set; }
-        public int POP { get; private set; }
 
         public int MaxHP { get; private set; }
         public int MaxMP { get; private set; }
@@ -64,8 +63,6 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats
             INT = character.INT;
             LUK = character.LUK;
 
-            POP = character.POP;
-
             MaxHP = character.MaxHP;
             MaxMP = character.MaxMP;
 
@@ -95,9 +92,6 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats
             EVAr = 0;
 
             CompletedSetItemID = 0;
-
-            var incMaxHPr = 0;
-            var incMaxMPr = 0;
 
             var templates = _user.Service.TemplateManager;
             var equipped = character.Inventories[ItemInventoryType.Equip].Items
@@ -149,8 +143,8 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats
 
                 itemOptionLevel = Math.Max(itemOptionLevel, 1);
 
-                incMaxHPr += equipTemplate.IncMaxHPr;
-                incMaxMPr += equipTemplate.IncMaxMPr;
+                MaxMPr += equipTemplate.IncMaxHPr;
+                MaxMPr += equipTemplate.IncMaxMPr;
 
                 ApplyItemOption(templates, i.Option1, itemOptionLevel);
                 ApplyItemOption(templates, i.Option2, itemOptionLevel);
@@ -214,10 +208,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats
             ACC += (int) (ACC * (ACCr / 100d));
             EVA += (int) (EVA * (EVAr / 100d));
 
-            MaxHP += (int) (MaxHP * ((MaxHPr + incMaxHPr) / 100d));
-            MaxMP += (int) (MaxMP * ((MaxMPr + incMaxMPr) / 100d));
-
-
+            MaxHP += (int) (MaxHP * (MaxHPr / 100d));
+            MaxMP += (int) (MaxMP * (MaxMPr / 100d));
+            
             var forced = _user.ForcedStat;
 
             if (forced.STR.HasValue) STR = forced.STR.Value;
