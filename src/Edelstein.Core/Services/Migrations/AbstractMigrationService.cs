@@ -101,6 +101,8 @@ namespace Edelstein.Core.Services.Migrations
             );
             await socketAdapter.SendPacket(socketAdapter.GetMigrationPacket(nodeState));
             await SocketCountCache.DecrementAsync(State.Name);
+
+            Logger.Debug($"Migrating {socketAdapter.Character.Name} from {State.Name} to {nodeState.Name}");
         }
 
         public async Task ProcessMigrateFrom(IMigrationSocketAdapter socketAdapter, int characterID, long clientKey)
@@ -122,6 +124,8 @@ namespace Edelstein.Core.Services.Migrations
 
             await MigrationCache.RemoveAsync(characterID.ToString());
             await socketAdapter.TryRecvHeartbeat(true);
+
+            Logger.Debug($"Migrated {socketAdapter.Character.Name} {entry.From.Name} to {entry.To.Name}");
         }
 
         public async Task ProcessDisconnect(IMigrationSocketAdapter socketAdapter)
