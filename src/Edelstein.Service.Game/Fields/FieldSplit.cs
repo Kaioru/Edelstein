@@ -114,6 +114,9 @@ namespace Edelstein.Service.Game.Fields
             UpdateControlledObjects();
         }
 
+        public IEnumerable<IFieldUser> GetWatchers()
+            => _watchers.ToImmutableList();
+
         public Task BroadcastPacket(IPacket packet)
             => BroadcastPacket(null, packet);
 

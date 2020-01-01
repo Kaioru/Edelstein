@@ -21,6 +21,8 @@ namespace Edelstein.Service.Game.Fields
 
         Task Watch(IFieldUser user);
         Task Unwatch(IFieldUser user);
+        
+        IEnumerable<IFieldUser> GetWatchers();
 
         Task BroadcastPacket(IPacket packet);
         Task BroadcastPacket(IFieldObj source, IPacket packet);

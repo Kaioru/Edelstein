@@ -34,6 +34,7 @@ namespace Edelstein.Service.Game
 
             Handlers[RecvPacketOperations.UserTransferChannelRequest] = new UserTransferChannelRequestHandler();
             Handlers[RecvPacketOperations.UserMove] = new UserMoveHandler();
+            Handlers[RecvPacketOperations.UserChat] = new UserChatHandler();
             
             Handlers[RecvPacketOperations.NpcMove] = new NPCMoveHandler();
             
