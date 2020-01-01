@@ -115,11 +115,11 @@ namespace Edelstein.Service.Login.Handlers
                     };
                     var context = new ModifyInventoriesContext(character.Inventories);
 
-                    context.Set(-5, templates.Get<ItemTemplate>(coat));
-                    context.Set(-7, templates.Get<ItemTemplate>(shoes));
-                    context.Set(-11, templates.Get<ItemTemplate>(weapon));
+                    context.Set(BodyPart.Clothes, templates.Get<ItemTemplate>(coat));
+                    context.Set(BodyPart.Shoes, templates.Get<ItemTemplate>(shoes));
+                    context.Set(BodyPart.Weapon, templates.Get<ItemTemplate>(weapon));
                     if (pants > 0)
-                        context.Set(-6, templates.Get<ItemTemplate>(pants));
+                        context.Set(BodyPart.Pants, templates.Get<ItemTemplate>(pants));
 
                     await store.InsertAsync(character);
 

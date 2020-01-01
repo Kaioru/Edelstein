@@ -25,7 +25,7 @@ namespace Edelstein.Core.Gameplay.Inventories
 
             Operations = new Queue<AbstractModifyInventoryOperation>();
         }
-        
+
         public ModifyInventoryContext(ItemInventory inventory)
         {
             _type = ItemInventoryType.Equip;
@@ -104,6 +104,12 @@ namespace Edelstein.Core.Gameplay.Inventories
                 b.Number = quantity;
             Set(slot, item);
         }
+
+        public void Set(BodyPart part, ItemSlot item)
+            => Set((short) -(short) part, item);
+
+        public void Set(BodyPart part, ItemTemplate template, short quantity = 1)
+            => Set((short) -(short) part, template, quantity);
 
         public void Remove(short slot)
         {

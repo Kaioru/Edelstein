@@ -36,6 +36,12 @@ namespace Edelstein.Core.Gameplay.Inventories
         public void Set(short slot, ItemTemplate template, short quantity = 1)
             => _inventories[(ItemInventoryType) (template.ID / 1000000)].Set(slot, template, quantity);
 
+        public void Set(BodyPart part, ItemSlot item)
+            => Set((short) -(short) part, item);
+
+        public void Set(BodyPart part, ItemTemplate template, short quantity = 1)
+            => Set((short) -(short) part, template, quantity);
+
         public void Remove(ItemSlot item)
             => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Remove(item);
 

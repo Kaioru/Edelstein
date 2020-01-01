@@ -11,6 +11,8 @@ namespace Edelstein.Core.Gameplay.Inventories
 
         void Set(short slot, ItemSlot item);
         void Set(short slot, ItemTemplate template, short quantity = 1);
+        void Set(BodyPart part, ItemSlot item);
+        void Set(BodyPart part, ItemTemplate template, short quantity = 1);
 
         void Remove(short slot);
         void Remove(short slot, short count);
