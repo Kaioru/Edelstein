@@ -37,7 +37,7 @@ namespace Edelstein.Service.Game.Fields
 
                 if (template == null) return null;
 
-                var field = new Field(template);
+                var field = new Field(template, _templateManager);
                 _fields[id] = field;
 
                 return _fields[id];

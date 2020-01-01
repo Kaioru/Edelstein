@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Templates.Etc.MakeCharInfo;
 using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Templates.Items;
+using Edelstein.Core.Templates.NPC;
 using Edelstein.Provider;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -40,6 +41,11 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
                             Tuple.Create<Type, IDataTemplateCollection>(
                                 typeof(FieldTemplate),
                                 new FieldTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.NPC] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(NPCTemplate),
+                                new NPCTemplateCollection(directory)
                             )
                     }
                     .Where(kv => _type.HasFlag(kv.Key))

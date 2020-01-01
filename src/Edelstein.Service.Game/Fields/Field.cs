@@ -5,8 +5,13 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Templates.Fields;
+using Edelstein.Core.Templates.Fields.Life;
+using Edelstein.Core.Templates.NPC;
 using Edelstein.Network.Packets;
+using Edelstein.Provider;
 using Edelstein.Service.Game.Fields.Objects;
+using Edelstein.Service.Game.Fields.Objects.NPC;
+using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields
 {
@@ -23,7 +28,7 @@ namespace Edelstein.Service.Game.Fields
 
         public FieldTemplate Template { get; }
 
-        public Field(FieldTemplate template)
+        public Field(FieldTemplate template, IDataTemplateManager manager)
         {
             _pools = new Dictionary<FieldObjType, IFieldPool>();
             _portals = template.Portals
@@ -43,6 +48,26 @@ namespace Edelstein.Service.Game.Fields
                 _splits[col, row] = new FieldSplit(col, row);
 
             Template = template;
+
+            template.Life.ForEach(l =>
+            {
+                switch (l.Type)
+                {
+                    case FieldLifeType.NPC:
+                        Enter(new FieldNPC(manager.Get<NPCTemplate>(l.TemplateID), l.Left)
+                        {
+                            Position = l.Position,
+                            Foothold = (short) l.FH,
+                            RX0 = l.RX0,
+                            RX1 = l.RX1
+                        });
+                        break;
+                    case FieldLifeType.Monster:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            });
         }
 
         public IFieldObj GetObject(int id)

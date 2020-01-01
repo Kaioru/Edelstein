@@ -5,6 +5,7 @@ namespace Edelstein.Core.Templates.Fields.Life
 {
     public class FieldLifeTemplate
     {
+        public int TemplateID { get; }
         public FieldLifeType Type { get; }
 
         public int MobTime { get; }
@@ -17,6 +18,7 @@ namespace Edelstein.Core.Templates.Fields.Life
 
         public FieldLifeTemplate(IDataProperty property)
         {
+            TemplateID = property.Resolve<int>("id") ?? -1;
             Type = property.ResolveOrDefault<string>("type").ToLower() == "n"
                 ? FieldLifeType.NPC
                 : FieldLifeType.Monster;

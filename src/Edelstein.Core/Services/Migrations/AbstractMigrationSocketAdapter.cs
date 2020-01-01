@@ -22,6 +22,8 @@ namespace Edelstein.Core.Services.Migrations
         public AccountWorld AccountWorld { get; set; }
         public Character Character { get; set; }
 
+        public bool isMigrating { get; set; }
+
         public DateTime LastSentHeartbeatDate { get; set; }
         public DateTime LastRecvHeartbeatDate { get; set; }
 

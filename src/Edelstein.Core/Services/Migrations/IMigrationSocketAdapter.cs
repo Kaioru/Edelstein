@@ -13,6 +13,8 @@ namespace Edelstein.Core.Services.Migrations
         Account Account { get; set; }
         AccountWorld AccountWorld { get; set; }
         Character Character { get; set; }
+        
+        bool isMigrating { get; set; }
 
         DateTime LastSentHeartbeatDate { get; set; }
         DateTime LastRecvHeartbeatDate { get; set; }

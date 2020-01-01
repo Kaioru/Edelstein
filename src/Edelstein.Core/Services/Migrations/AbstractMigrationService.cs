@@ -62,19 +62,19 @@ namespace Edelstein.Core.Services.Migrations
         {
             if (adapter.Account == null) return;
 
-            adapter.LastSentHeartbeatDate = DateTime.UtcNow;
+            var expire = DateTime.UtcNow.AddMinutes(1);
 
             await AccountStateCache.SetAsync(
                 adapter.Account.ID.ToString(),
                 MigrationState.LoggedIn,
-                adapter.LastSentHeartbeatDate.AddMinutes(1)
+                expire
             );
 
             if (adapter.Character != null)
                 await CharacterStateCache.SetAsync(
                     adapter.Character.ID.ToString(),
                     State,
-                    adapter.LastSentHeartbeatDate.AddMinutes(1)
+                    expire
                 );
 
             Sockets.Add(adapter.Account.ID, adapter);
@@ -85,12 +85,10 @@ namespace Edelstein.Core.Services.Migrations
         public async Task ProcessDisconnect(IMigrationSocketAdapter adapter)
         {
             if (adapter.Account == null) return;
-
-            var state = (await AccountStateCache.GetAsync<MigrationState>(adapter.Account.ID.ToString())).Value;
-
-            if (state != MigrationState.Migrating)
+            if (!adapter.isMigrating)
             {
                 await adapter.OnUpdate();
+
                 if (adapter.Account != null)
                     await AccountStateCache.RemoveAsync(adapter.Account.ID.ToString());
                 if (adapter.Character != null)
@@ -123,9 +121,7 @@ namespace Edelstein.Core.Services.Migrations
 
             var expiry = DateTime.UtcNow.AddSeconds(15);
 
-            Sockets.Remove(adapter.Account.ID);
-
-            await adapter.OnUpdate();
+            adapter.isMigrating = true;
             await AccountStateCache.SetAsync(
                 adapter.Account.ID.ToString(),
                 MigrationState.Migrating,
@@ -166,8 +162,8 @@ namespace Edelstein.Core.Services.Migrations
             adapter.Character = entry.Character;
             adapter.Socket.ClientKey = entry.ClientKey;
 
-            await MigrationCache.RemoveAsync(characterID.ToString());
             await adapter.TryConnect();
+            await MigrationCache.RemoveAsync(characterID.ToString());
 
             Logger.Debug($"Migrated {adapter.Character.Name} {entry.From.Name} to {entry.To.Name}");
         }
