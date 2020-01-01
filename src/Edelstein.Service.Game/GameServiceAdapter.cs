@@ -20,32 +20,37 @@ namespace Edelstein.Service.Game
 
         public override async Task OnUpdate()
         {
-            if (User.Field.Template.ForcedReturn.HasValue)
+            if (User?.Field != null)
             {
-                Character.FieldID = User.Field.Template.ForcedReturn.Value;
-                Character.FieldPortal = 0;
-            }
-            else
-                Character.FieldPortal = (byte) User.Field.Template.Portals
-                    .Values
-                    .Where(p => p.Type == FieldPortalType.StartPoint)
-                    .OrderBy(p =>
-                    {
-                        var xd = p.Position.X - User.Position.X;
-                        var yd = p.Position.Y - User.Position.Y;
+                var template = User.Field.Template;
 
-                        return xd * xd + yd * yd;
-                    })
-                    .First()
-                    .ID;
+                if (template.ForcedReturn.HasValue)
+                {
+                    Character.FieldID = template.ForcedReturn.Value;
+                    Character.FieldPortal = 0;
+                }
+                else
+                    Character.FieldPortal = (byte) template.Portals
+                        .Values
+                        .Where(p => p.Type == FieldPortalType.StartPoint)
+                        .OrderBy(p =>
+                        {
+                            var xd = p.Position.X - User.Position.X;
+                            var yd = p.Position.Y - User.Position.Y;
+
+                            return xd * xd + yd * yd;
+                        })
+                        .First()
+                        .ID;
+            }
 
             await base.OnUpdate();
         }
 
         public override async Task OnDisconnect()
         {
-            if (User != null) await User.Field.Leave(User);
             await base.OnDisconnect();
+            if (User != null) await User.Field.Leave(User);
         }
     }
 }
