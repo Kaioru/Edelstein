@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed.States;
@@ -34,13 +35,12 @@ namespace Edelstein.Service.Login.Handlers
                 var result = LoginResultCode.Success;
 
                 var peers = await adapter.Service.GetPeers();
-                var service = (await adapter.Service.GetPeers())
+                var service = peers
                     .Select(n => n.State)
                     .OfType<GameServiceState>()
-                    .FirstOrDefault(s =>
-                        s.ChannelID == channelID &&
-                        s.Worlds.Contains(worldID)
-                    );
+                    .Where(s => s.Worlds.Contains(worldID))
+                    .OrderBy(s => s.ChannelID)
+                    .ToImmutableList()[channelID];
 
                 if (service == null) result = LoginResultCode.NotConnectableWorld;
 

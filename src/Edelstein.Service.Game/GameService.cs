@@ -30,7 +30,8 @@ namespace Edelstein.Service.Game
             FieldManager = new FieldManager(templateManager);
 
             Handlers[RecvPacketOperations.MigrateIn] = new MigrateInHandler();
-            
+
+            Handlers[RecvPacketOperations.UserTransferChannelRequest] = new UserTransferChannelRequestHandler();
             Handlers[RecvPacketOperations.UserMove] = new UserMoveHandler();
         }
 
