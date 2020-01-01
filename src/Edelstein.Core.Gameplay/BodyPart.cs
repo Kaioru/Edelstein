@@ -76,13 +76,11 @@ namespace Edelstein.Core.Gameplay
 
         Sticker = 100,
 
-        DragonBase = 1000,
         DragonCap = 1000,
         DragonPendant = 1001,
         DragonWing = 1002,
         DragonShoes = 1003,
 
-        MechanicBase = 1100,
         MechanicEngine = 1100,
         MechanicArm = 1101,
         MechanicLeg = 1102,
