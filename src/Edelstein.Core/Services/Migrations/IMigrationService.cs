@@ -14,11 +14,13 @@ namespace Edelstein.Core.Services.Migrations
         IDictionary<int, IMigrationSocketAdapter> Sockets { get; }
         IDictionary<RecvPacketOperations, IPacketHandler> Handlers { get; }
 
-        Task ProcessMigrateTo(IMigrationSocketAdapter socketAdapter, IServerNodeState nodeState);
-        Task ProcessMigrateFrom(IMigrationSocketAdapter socketAdapter, int characterID, long clientKey);
-        Task ProcessDisconnect(IMigrationSocketAdapter socketAdapter);
+        Task ProcessConnect(IMigrationSocketAdapter adapter);
+        Task ProcessDisconnect(IMigrationSocketAdapter adapter);
+        
+        Task ProcessMigrateTo(IMigrationSocketAdapter adapter, IServerNodeState nodeState);
+        Task ProcessMigrateFrom(IMigrationSocketAdapter adapter, int characterID, long clientKey);
 
-        Task ProcessSendHeartbeat(IMigrationSocketAdapter socketAdapter);
-        Task ProcessRecvHeartbeat(IMigrationSocketAdapter socketAdapter, bool init = false);
+        Task ProcessSendHeartbeat(IMigrationSocketAdapter adapter);
+        Task ProcessRecvHeartbeat(IMigrationSocketAdapter adapter);
     }
 }

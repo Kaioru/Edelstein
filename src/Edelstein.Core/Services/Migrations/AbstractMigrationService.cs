@@ -38,7 +38,7 @@ namespace Edelstein.Core.Services.Migrations
             IMessageBusFactory busFactory
         ) : base(state, busFactory)
         {
-            _ticker = new TimerTicker(TimeSpan.FromSeconds(20), new MigrationServiceTickBehavior(this));
+            _ticker = new TimerTicker(TimeSpan.FromSeconds(10), new MigrationServiceTickBehavior(this));
 
             DataStore = dataStore;
 
@@ -58,6 +58,49 @@ namespace Edelstein.Core.Services.Migrations
             };
         }
 
+        public async Task ProcessConnect(IMigrationSocketAdapter adapter)
+        {
+            if (adapter.Account == null) return;
+
+            adapter.LastSentHeartbeatDate = DateTime.UtcNow;
+
+            await AccountStateCache.SetAsync(
+                adapter.Account.ID.ToString(),
+                MigrationState.LoggedIn,
+                adapter.LastSentHeartbeatDate.AddMinutes(1)
+            );
+
+            if (adapter.Character != null)
+                await CharacterStateCache.SetAsync(
+                    adapter.Character.ID.ToString(),
+                    State,
+                    adapter.LastSentHeartbeatDate.AddMinutes(1)
+                );
+
+            Sockets.Add(adapter.Account.ID, adapter);
+            await SocketCountCache.IncrementAsync(State.Name);
+        }
+
+
+        public async Task ProcessDisconnect(IMigrationSocketAdapter adapter)
+        {
+            if (adapter.Account == null) return;
+
+            var state = (await AccountStateCache.GetAsync<MigrationState>(adapter.Account.ID.ToString())).Value;
+
+            if (state != MigrationState.Migrating)
+            {
+                await adapter.OnUpdate();
+                if (adapter.Account != null)
+                    await AccountStateCache.RemoveAsync(adapter.Account.ID.ToString());
+                if (adapter.Character != null)
+                    await CharacterStateCache.RemoveAsync(adapter.Character.ID.ToString());
+            }
+
+            Sockets.Remove(adapter.Account.ID);
+            await SocketCountCache.DecrementAsync(State.Name);
+        }
+
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
@@ -71,41 +114,42 @@ namespace Edelstein.Core.Services.Migrations
             _ticker.Stop();
         }
 
-        public async Task ProcessMigrateTo(IMigrationSocketAdapter socketAdapter, IServerNodeState nodeState)
+        public async Task ProcessMigrateTo(IMigrationSocketAdapter adapter, IServerNodeState nodeState)
         {
-            if (socketAdapter.Account == null || socketAdapter.Character == null)
+            if (adapter.Account == null || adapter.Character == null)
                 throw new Exception("account or character is null");
-            if (await MigrationCache.ExistsAsync(socketAdapter.Character.ID.ToString()))
+            if (await MigrationCache.ExistsAsync(adapter.Character.ID.ToString()))
                 throw new Exception("Already migrating");
 
-            Sockets.Remove(socketAdapter.Account.ID);
+            var expiry = DateTime.UtcNow.AddSeconds(15);
 
-            await socketAdapter.OnUpdate();
+            Sockets.Remove(adapter.Account.ID);
+
+            await adapter.OnUpdate();
             await AccountStateCache.SetAsync(
-                socketAdapter.Account.ID.ToString(),
+                adapter.Account.ID.ToString(),
                 MigrationState.Migrating,
-                TimeSpan.FromSeconds(15)
+                expiry
             );
             await MigrationCache.SetAsync(
-                socketAdapter.Character.ID.ToString(),
+                adapter.Character.ID.ToString(),
                 new MigrationEntry
                 {
-                    Account = socketAdapter.Account,
-                    AccountWorld = socketAdapter.AccountWorld,
-                    Character = socketAdapter.Character,
-                    ClientKey = socketAdapter.Socket.ClientKey,
+                    Account = adapter.Account,
+                    AccountWorld = adapter.AccountWorld,
+                    Character = adapter.Character,
+                    ClientKey = adapter.Socket.ClientKey,
                     From = State,
                     To = nodeState
                 },
-                TimeSpan.FromSeconds(15)
+                expiry
             );
-            await socketAdapter.SendPacket(socketAdapter.GetMigrationPacket(nodeState));
-            await SocketCountCache.DecrementAsync(State.Name);
+            await adapter.SendPacket(adapter.GetMigrationPacket(nodeState));
 
-            Logger.Debug($"Migrating {socketAdapter.Character.Name} from {State.Name} to {nodeState.Name}");
+            Logger.Debug($"Migrating {adapter.Character.Name} from {State.Name} to {nodeState.Name}");
         }
 
-        public async Task ProcessMigrateFrom(IMigrationSocketAdapter socketAdapter, int characterID, long clientKey)
+        public async Task ProcessMigrateFrom(IMigrationSocketAdapter adapter, int characterID, long clientKey)
         {
             if (!await MigrationCache.ExistsAsync(characterID.ToString()))
                 throw new Exception("Not migrating");
@@ -117,83 +161,59 @@ namespace Edelstein.Core.Services.Migrations
             if (clientKey != entry.ClientKey)
                 throw new Exception("Migration client key is invalid");
 
-            socketAdapter.Account = entry.Account;
-            socketAdapter.AccountWorld = entry.AccountWorld;
-            socketAdapter.Character = entry.Character;
-            socketAdapter.Socket.ClientKey = entry.ClientKey;
+            adapter.Account = entry.Account;
+            adapter.AccountWorld = entry.AccountWorld;
+            adapter.Character = entry.Character;
+            adapter.Socket.ClientKey = entry.ClientKey;
 
             await MigrationCache.RemoveAsync(characterID.ToString());
-            await socketAdapter.TryRecvHeartbeat(true);
+            await adapter.TryConnect();
 
-            Logger.Debug($"Migrated {socketAdapter.Character.Name} {entry.From.Name} to {entry.To.Name}");
+            Logger.Debug($"Migrated {adapter.Character.Name} {entry.From.Name} to {entry.To.Name}");
         }
 
-        public async Task ProcessDisconnect(IMigrationSocketAdapter socketAdapter)
+        public async Task ProcessSendHeartbeat(IMigrationSocketAdapter adapter)
         {
-            if (socketAdapter.Account == null) return;
-            var state = (await AccountStateCache.GetAsync<MigrationState>(socketAdapter.Account.ID.ToString())).Value;
-            if (state != MigrationState.Migrating)
-            {
-                Sockets.Remove(socketAdapter.Account.ID);
-                await socketAdapter.OnUpdate();
-                if (socketAdapter.Account != null)
-                    await AccountStateCache.RemoveAsync(socketAdapter.Account.ID.ToString());
-                if (socketAdapter.Character != null)
-                    await CharacterStateCache.RemoveAsync(socketAdapter.Character.ID.ToString());
-            }
-        }
+            var now = DateTime.UtcNow;
 
-        public async Task ProcessSendHeartbeat(IMigrationSocketAdapter socketAdapter)
-        {
-            if ((DateTime.UtcNow - socketAdapter.LastRecvHeartbeatDate).TotalMinutes >= 1)
+            if ((now - adapter.LastRecvHeartbeatDate).TotalMinutes >= 1)
             {
-                await socketAdapter.Socket.Close();
-                Logger.Debug($"Closed connection from {socketAdapter.Account} due to heartbeat timeout");
+                await adapter.Socket.Close();
+                Logger.Debug($"Closed connection from {adapter.Account.Username} due to heartbeat timeout");
                 return;
             }
 
-            if ((DateTime.UtcNow - socketAdapter.LastSentHeartbeatDate).TotalSeconds >= 30)
+            if ((now - adapter.LastSentHeartbeatDate).TotalSeconds >= 30)
             {
+                adapter.LastSentHeartbeatDate = now;
+
                 using var p = new Packet(SendPacketOperations.AliveReq);
-                socketAdapter.LastSentHeartbeatDate = DateTime.UtcNow;
-                await socketAdapter.Socket.SendPacket(p);
+                await adapter.Socket.SendPacket(p);
             }
         }
 
-        public async Task ProcessRecvHeartbeat(IMigrationSocketAdapter socketAdapter, bool init = false)
+        public async Task ProcessRecvHeartbeat(IMigrationSocketAdapter adapter)
         {
-            socketAdapter.LastRecvHeartbeatDate = DateTime.UtcNow;
+            adapter.LastRecvHeartbeatDate = DateTime.UtcNow;
 
-            if (socketAdapter.Account == null) return;
-            if (!await AccountStateCache.ExistsAsync(socketAdapter.Account.ID.ToString()) && !init)
+            if (adapter.Account == null) return;
+            if (!await AccountStateCache.ExistsAsync(adapter.Account.ID.ToString()))
             {
-                await socketAdapter.Socket.Close();
-                Logger.Debug($"Closed connection from {socketAdapter.Account} due to cache expiry");
+                await adapter.Socket.Close();
+                Logger.Debug($"Closed connection from {adapter.Account.Username} due to cache expiry");
                 return;
-            }
-
-            if (init)
-            {
-                Sockets.Add(socketAdapter.Account.ID, socketAdapter);
-
-                await AccountStateCache.SetAsync(
-                    socketAdapter.Account.ID.ToString(),
-                    MigrationState.LoggedIn,
-                    TimeSpan.FromMinutes(1)
-                );
-                await SocketCountCache.IncrementAsync(State.Name);
             }
 
             await AccountStateCache.SetExpirationAsync(
-                socketAdapter.Account.ID.ToString(),
-                socketAdapter.LastRecvHeartbeatDate.AddMinutes(1)
+                adapter.Account.ID.ToString(),
+                adapter.LastSentHeartbeatDate.AddMinutes(1)
             );
 
-            if (socketAdapter.Character == null) return;
+            if (adapter.Character == null) return;
 
             await CharacterStateCache.SetExpirationAsync(
-                socketAdapter.Character.ID.ToString(),
-                socketAdapter.LastRecvHeartbeatDate.AddMinutes(1)
+                adapter.Character.ID.ToString(),
+                adapter.LastSentHeartbeatDate.AddMinutes(1)
             );
         }
     }

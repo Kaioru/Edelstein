@@ -17,11 +17,14 @@ namespace Edelstein.Core.Services.Migrations
         DateTime LastSentHeartbeatDate { get; set; }
         DateTime LastRecvHeartbeatDate { get; set; }
 
+        Task TryConnect();
+        Task TryDisconnect();
+        
         Task TryMigrateTo(IServerNodeState nodeState);
         Task TryMigrateFrom(int characterID, long clientKey);
 
         Task TrySendHeartbeat();
-        Task TryRecvHeartbeat(bool init = false);
+        Task TryRecvHeartbeat();
 
         IPacket GetMigrationPacket(IServerNodeState to);
     }

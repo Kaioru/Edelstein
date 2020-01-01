@@ -25,6 +25,7 @@ namespace Edelstein.Core.Services.Migrations
         public DateTime LastSentHeartbeatDate { get; set; }
         public DateTime LastRecvHeartbeatDate { get; set; }
 
+
         protected AbstractMigrationSocketAdapter(
             ISocket socket,
             IMigrationService service
@@ -35,6 +36,12 @@ namespace Edelstein.Core.Services.Migrations
             LastRecvHeartbeatDate = DateTime.UtcNow;
         }
 
+        public Task TryConnect()
+            => _service.ProcessConnect(this);
+
+        public Task TryDisconnect()
+            => _service.ProcessDisconnect(this);
+
         public Task TryMigrateTo(IServerNodeState nodeState)
             => _service.ProcessMigrateTo(this, nodeState);
 
@@ -44,8 +51,8 @@ namespace Edelstein.Core.Services.Migrations
         public Task TrySendHeartbeat()
             => _service.ProcessSendHeartbeat(this);
 
-        public Task TryRecvHeartbeat(bool init = false)
-            => _service.ProcessRecvHeartbeat(this, init);
+        public Task TryRecvHeartbeat()
+            => _service.ProcessRecvHeartbeat(this);
 
         public virtual IPacket GetMigrationPacket(IServerNodeState to)
         {

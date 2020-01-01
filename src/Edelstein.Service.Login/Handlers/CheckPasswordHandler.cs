@@ -111,7 +111,7 @@ namespace Edelstein.Service.Login.Handlers
                     p.Encode<long>(adapter.Socket.ClientKey);
 
                     adapter.Account = account;
-                    await adapter.TryRecvHeartbeat(true);
+                    await adapter.TryConnect();
                 }
 
                 await adapter.SendPacket(p);
