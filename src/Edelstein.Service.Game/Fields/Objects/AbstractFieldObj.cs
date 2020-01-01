@@ -9,7 +9,7 @@ namespace Edelstein.Service.Game.Fields.Objects
     public abstract class AbstractFieldObj : IFieldObj
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
-        
+
         public abstract FieldObjType Type { get; }
 
         public int ID { get; set; }
@@ -39,7 +39,8 @@ namespace Edelstein.Service.Game.Fields.Objects
             if (FieldSplit != split)
             {
                 await split.Enter(this, FieldSplit, getEnterPacket, getLeavePacket);
-                Logger.Debug($"Migrated {Type} {ID} to field split (col: {split.Col}, row: {split.Row})");
+                Logger.Debug($"Migrated {Type} {ID} to field split " +
+                             $"(id: {Field.Template.ID}, col: {split.Col}, row: {split.Row})");
             }
         }
 
