@@ -70,7 +70,11 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats
             MaxMP = character.MaxMP;
 
             PAD = 0;
+            PDD = (int) (INT * 0.4 + 0.5 * LUK + DEX * 0.5 + STR * 1.2);
             MAD = 0;
+            MDD = (int) (STR * 0.4 + 0.5 * DEX + LUK * 0.5 + INT * 1.2);
+            ACC = 0;
+            EVA = 0;
             Craft = INT + DEX + LUK;
             Speed = 100;
             Jump = 100;
