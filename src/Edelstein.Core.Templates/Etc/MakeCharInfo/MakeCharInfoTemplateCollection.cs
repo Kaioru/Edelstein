@@ -14,11 +14,11 @@ namespace Edelstein.Core.Templates.Etc.MakeCharInfo
         public MakeCharInfoTemplateCollection(IDataDirectoryCollection collection)
             => _collection = collection;
 
-        public override async Task Populate()
+        protected override async Task<IEnumerable<IDataTemplate>> Load()
         {
             var property = _collection.Resolve("Etc/MakeCharInfo.img").ResolveAll();
 
-            new List<Tuple<MakeCharInfoType, int, string>>
+            return new List<Tuple<MakeCharInfoType, int, string>>
                 {
                     Tuple.Create(MakeCharInfoType.Normal, 0, "Info/CharMale"),
                     Tuple.Create(MakeCharInfoType.Normal, 1, "Info/CharFemale"),
@@ -35,8 +35,7 @@ namespace Edelstein.Core.Templates.Etc.MakeCharInfo
                     t.Item1,
                     (byte) t.Item2,
                     property.Resolve(t.Item3).ResolveAll()
-                ))
-                .ForEach(t => Templates.Add(t.ID, t));
+                ));
         }
     }
 }

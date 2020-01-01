@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Templates.Etc.ItemOption;
 using Edelstein.Core.Templates.Etc.MakeCharInfo;
+using Edelstein.Core.Templates.Etc.SetItemInfo;
 using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Templates.Items;
 using Edelstein.Core.Templates.NPC;
@@ -46,6 +48,16 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
                             Tuple.Create<Type, IDataTemplateCollection>(
                                 typeof(NPCTemplate),
                                 new NPCTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.ItemOption] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(ItemOptionTemplate),
+                                new ItemOptionTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.SetItemInfo] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(SetItemInfoTemplate),
+                                new SetItemInfoTemplateCollection(directory)
                             )
                     }
                     .Where(kv => _type.HasFlag(kv.Key))

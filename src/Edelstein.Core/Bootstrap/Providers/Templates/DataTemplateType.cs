@@ -13,12 +13,16 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
 
         Field = 0x4,
         NPC = 0x8,
+        ItemOption = 0x10,
+        SetItemInfo = 0x20,
 
         Login = Item |
                 MakeCharInfo,
 
         Game = Item |
                Field |
-               NPC
+               NPC |
+               ItemOption |
+               SetItemInfo
     }
 }

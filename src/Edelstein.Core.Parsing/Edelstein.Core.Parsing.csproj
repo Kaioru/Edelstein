@@ -8,6 +8,7 @@
     <ItemGroup>
       <PackageReference Include="Duey" Version="1.0.0" />
       <PackageReference Include="LibLog" Version="5.0.8" />
+      <PackageReference Include="morelinq" Version="3.3.2" />
     </ItemGroup>
 
 </Project>

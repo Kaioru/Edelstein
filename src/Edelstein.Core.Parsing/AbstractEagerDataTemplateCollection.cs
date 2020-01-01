@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MoreLinq;
 
 namespace Edelstein.Provider
 {
     public abstract class AbstractEagerDataTemplateCollection : IDataTemplateCollection
     {
-        public IDictionary<int, IDataTemplate> Templates { get; }
+        private readonly IDictionary<int, IDataTemplate> _templates;
 
         protected AbstractEagerDataTemplateCollection()
-            => Templates = new Dictionary<int, IDataTemplate>();
+            => _templates = new Dictionary<int, IDataTemplate>();
 
         public IDataTemplate Get(int id)
-            => Templates.ContainsKey(id) ? Templates[id] : null;
+            => _templates.ContainsKey(id) ? _templates[id] : null;
 
         public IEnumerable<IDataTemplate> GetAll()
-            => Templates.Values;
+            => _templates.Values;
 
         public Task<IDataTemplate> GetAsync(int id)
             => Task.FromResult(Get(id));
@@ -22,6 +23,13 @@ namespace Edelstein.Provider
         public Task<IEnumerable<IDataTemplate>> GetAllAsync()
             => Task.FromResult(GetAll());
 
-        public abstract Task Populate();
+        public async Task Populate()
+        {
+            (await Load())
+                .DistinctBy(t => t.ID)
+                .ForEach(t => _templates.Add(t.ID, t));
+        }
+
+        protected abstract Task<IEnumerable<IDataTemplate>> Load();
     }
 }

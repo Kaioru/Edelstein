@@ -7,6 +7,7 @@ using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities;
 using Edelstein.Entities.Characters;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.Objects.User.Stats;
 
 namespace Edelstein.Service.Game.Fields.Objects.User
 {
@@ -20,24 +21,27 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public Account Account => Adapter.Account;
         public AccountWorld AccountWorld => Adapter.AccountWorld;
         public Character Character => Adapter.Character;
-        
+
         public IFieldSplit[] Watching { get; }
         public ICollection<IFieldControlled> Controlling { get; }
 
         public bool IsInstantiated { get; set; }
+
+        public BasicStat BasicStat { get; }
+        public ForcedStat ForcedStat { get; }
 
         public FieldUser(GameServiceAdapter socketAdapter)
         {
             Adapter = socketAdapter;
             Watching = new IFieldSplit[9];
             Controlling = new List<IFieldControlled>();
+
+            BasicStat = new BasicStat(this);
+            ForcedStat = new ForcedStat(this);
         }
 
         public Task SendPacket(IPacket packet)
             => Adapter.SendPacket(packet);
-
-        public Task BroadcastPacket(IPacket packet)
-            => Field.BroadcastPacket(this, packet);
 
         public override IPacket GetEnterFieldPacket()
         {
@@ -67,7 +71,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             p.Encode<int>(0);
             p.Encode<int>(0);
             p.Encode<int>(0);
-            p.Encode<int>(0);
+            p.Encode<int>(BasicStat.CompletedSetItemID);
             p.Encode<int>(0);
 
             p.Encode<Point>(Position);

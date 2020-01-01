@@ -33,6 +33,7 @@ namespace Edelstein.Service.Game.Handlers
 
                 adapter.User = fieldUser;
 
+                await fieldUser.UpdateStats();
                 await field.Enter(fieldUser);
             }
             catch
