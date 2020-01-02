@@ -44,13 +44,14 @@ namespace Edelstein.Network.Transport
 
         public override void ChannelInactive(IChannelHandlerContext context)
         {
+            var socket = context.Channel.GetAttribute(Socket.Key).Get();
             var adapter = context.Channel.GetAttribute(AbstractSocketAdapter.Key).Get();
 
             adapter?.OnDisconnect();
             base.ChannelInactive(context);
             Logger.Debug($"Released connection from {context.Channel.RemoteAddress}");
 
-            lock (_server) _server.Sockets.Remove(adapter?.Socket);
+            lock (_server) _server.Sockets.Remove(socket);
         }
 
         public override void ChannelRead(IChannelHandlerContext context, object message)

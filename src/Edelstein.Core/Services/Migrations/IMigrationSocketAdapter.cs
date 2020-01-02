@@ -13,7 +13,8 @@ namespace Edelstein.Core.Services.Migrations
         Account Account { get; set; }
         AccountWorld AccountWorld { get; set; }
         Character Character { get; set; }
-        
+
+        long ClientKey { get; set; }
         bool isMigrating { get; set; }
 
         DateTime LastSentHeartbeatDate { get; set; }
@@ -21,7 +22,7 @@ namespace Edelstein.Core.Services.Migrations
 
         Task TryConnect();
         Task TryDisconnect();
-        
+
         Task TryMigrateTo(IServerNodeState nodeState);
         Task TryMigrateFrom(int characterID, long clientKey);
 

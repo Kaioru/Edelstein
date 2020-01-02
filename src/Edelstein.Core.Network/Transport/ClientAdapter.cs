@@ -15,7 +15,6 @@ namespace Edelstein.Network.Transport
 
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
-            var socket = context.Channel.GetAttribute(Socket.Key).Get();
             var adapter = context.Channel.GetAttribute(AbstractSocketAdapter.Key).Get();
 
             var p = (IPacket) message;
@@ -40,8 +39,8 @@ namespace Edelstein.Network.Transport
                     seqSend,
                     seqRecv
                 );
-                var newAdapter = _client.AdapterFactory.Build(newSocket);
-                
+                var newAdapter = _client.Adapter;
+
                 lock (_client)
                 {
                     if (_client.Socket == null)

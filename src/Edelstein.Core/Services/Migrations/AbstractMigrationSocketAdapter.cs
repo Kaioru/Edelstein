@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using DotNetty.Common.Utilities;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Logging;
 using Edelstein.Core.Utils;
@@ -22,6 +23,7 @@ namespace Edelstein.Core.Services.Migrations
         public AccountWorld AccountWorld { get; set; }
         public Character Character { get; set; }
 
+        public long ClientKey { get; set; }
         public bool isMigrating { get; set; }
 
         public DateTime LastSentHeartbeatDate { get; set; }
@@ -34,6 +36,7 @@ namespace Edelstein.Core.Services.Migrations
         ) : base(socket)
         {
             _service = service;
+            ClientKey = new Random().NextLong();
             LastSentHeartbeatDate = DateTime.UtcNow;
             LastRecvHeartbeatDate = DateTime.UtcNow;
         }

@@ -134,7 +134,7 @@ namespace Edelstein.Core.Services.Migrations
                     Account = adapter.Account,
                     AccountWorld = adapter.AccountWorld,
                     Character = adapter.Character,
-                    ClientKey = adapter.Socket.ClientKey,
+                    ClientKey = adapter.ClientKey,
                     From = State,
                     To = nodeState
                 },
@@ -160,7 +160,7 @@ namespace Edelstein.Core.Services.Migrations
             adapter.Account = entry.Account;
             adapter.AccountWorld = entry.AccountWorld;
             adapter.Character = entry.Character;
-            adapter.Socket.ClientKey = entry.ClientKey;
+            adapter.ClientKey = entry.ClientKey;
 
             await adapter.TryConnect();
             await MigrationCache.RemoveAsync(characterID.ToString());
@@ -174,7 +174,7 @@ namespace Edelstein.Core.Services.Migrations
 
             if ((now - adapter.LastRecvHeartbeatDate).TotalMinutes >= 1)
             {
-                await adapter.Socket.Close();
+                await adapter.Close();
                 Logger.Debug($"Closed connection from {adapter.Account.Username} due to heartbeat timeout");
                 return;
             }
@@ -184,7 +184,7 @@ namespace Edelstein.Core.Services.Migrations
                 adapter.LastSentHeartbeatDate = now;
 
                 using var p = new Packet(SendPacketOperations.AliveReq);
-                await adapter.Socket.SendPacket(p);
+                await adapter.SendPacket(p);
             }
         }
 
@@ -195,7 +195,7 @@ namespace Edelstein.Core.Services.Migrations
             if (adapter.Account == null) return;
             if (!await AccountStateCache.ExistsAsync(adapter.Account.ID.ToString()))
             {
-                await adapter.Socket.Close();
+                await adapter.Close();
                 Logger.Debug($"Closed connection from {adapter.Account.Username} due to cache expiry");
                 return;
             }

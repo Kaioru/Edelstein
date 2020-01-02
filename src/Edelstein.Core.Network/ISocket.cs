@@ -7,7 +7,6 @@ namespace Edelstein.Network
     {
         uint SeqSend { get; set; }
         uint SeqRecv { get; set; }
-        long ClientKey { get; set; }
         bool EncryptData { get; }
 
         Task SendPacket(IPacket packet);

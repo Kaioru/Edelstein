@@ -14,7 +14,6 @@ namespace Edelstein.Network
 
         public uint SeqSend { get; set; }
         public uint SeqRecv { get; set; }
-        public long ClientKey { get; set; }
         public bool EncryptData => true;
 
         public Socket(IChannel channel, uint seqSend, uint seqRecv)
@@ -22,7 +21,6 @@ namespace Edelstein.Network
             _channel = channel;
             SeqSend = seqSend;
             SeqRecv = seqRecv;
-            ClientKey = new Random().NextLong();
         }
 
         public async Task SendPacket(IPacket packet)

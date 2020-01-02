@@ -12,19 +12,19 @@ namespace Edelstein.Network.Transport
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        public ISocketAdapterFactory AdapterFactory { get; }
+        public ISocketAdapter Adapter { get; }
         public short Version { get; }
         public string Patch { get; }
         public byte Locale { get; }
 
         private IChannel? Channel { get; set; }
         private IEventLoopGroup? WorkerGroup { get; set; }
-        
+
         public ISocket? Socket { get; protected internal set; }
 
-        public Client(ISocketAdapterFactory adapterFactory, short version, string patch, byte locale)
+        public Client(ISocketAdapter adapter, short version, string patch, byte locale)
         {
-            AdapterFactory = adapterFactory;
+            Adapter = adapter;
             Version = version;
             Patch = patch;
             Locale = locale;
