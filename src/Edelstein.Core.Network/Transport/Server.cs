@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
@@ -45,6 +47,7 @@ namespace Edelstein.Network.Transport
                 .ChildHandler(new ActionChannelInitializer<IChannel>(ch =>
                 {
                     ch.Pipeline.AddLast(
+                        new ReadTimeoutHandler(TimeSpan.FromMinutes(1)),
                         new PacketDecoder(Version),
                         new ServerAdapter(this),
                         new PacketEncoder(Version)

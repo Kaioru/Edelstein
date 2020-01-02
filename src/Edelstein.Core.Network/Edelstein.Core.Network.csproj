@@ -12,6 +12,7 @@
       <PackageReference Include="DotNetty.Buffers" Version="0.6.0" />
       <PackageReference Include="DotNetty.Codecs" Version="0.6.0" />
       <PackageReference Include="DotNetty.Common" Version="0.6.0" />
+      <PackageReference Include="DotNetty.Handlers" Version="0.6.0" />
       <PackageReference Include="LibLog" Version="5.0.6" />
     </ItemGroup>
 

@@ -1,4 +1,5 @@
 using System;
+using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Channels;
 using Edelstein.Network.Logging;
 using Edelstein.Network.Packets;
@@ -61,7 +62,10 @@ namespace Edelstein.Network.Transport
         public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
         {
             var adapter = context.Channel.GetAttribute(AbstractSocketAdapter.Key).Get();
-            adapter?.OnException(exception);
+
+            if (exception is ReadTimeoutException)
+                Logger.Debug($"Closing connection from {context.Channel.RemoteAddress} due to idle activity");
+            else adapter?.OnException(exception);
         }
     }
 }
