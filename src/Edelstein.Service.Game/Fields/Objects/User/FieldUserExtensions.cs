@@ -1,7 +1,11 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Extensions.Packets;
+using Edelstein.Core.Gameplay.Inventories;
+using Edelstein.Core.Gameplay.Inventories.Operations;
 using Edelstein.Core.Utils.Packets;
+using Edelstein.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.User.Stats.Modify;
 
@@ -78,6 +82,33 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             using var p = new Packet(SendPacketOperations.ForcedStatSet);
             context.Encode(p);
             await user.SendPacket(p);
+        }
+
+        public static async Task ModifyInventory(
+            this FieldUser user,
+            Action<IModifyInventoriesContext> action = null,
+            bool exclRequest = false
+        )
+        {
+            var context = new ModifyInventoriesContext(user.Character.Inventories);
+
+            action?.Invoke(context);
+            using (var p = new Packet(SendPacketOperations.InventoryOperation))
+            {
+                p.Encode<bool>(exclRequest);
+                context.Encode(p);
+                p.Encode<bool>(false);
+                await user.SendPacket(p);
+            }
+
+            if (
+                context.Operations.Any(o => o.Slot < 0) ||
+                context.Operations.OfType<MoveInventoryOperation>().Any(o => o.ToSlot < 0)
+            )
+            {
+                await user.UpdateStats();
+                await user.UpdateAvatar();
+            }
         }
     }
 }

@@ -7,21 +7,21 @@ namespace Edelstein.Core.Gameplay.Inventories.Operations
     {
         protected abstract ModifyInventoryOperationType Type { get; }
         private readonly ItemInventoryType _inventory;
-        private readonly short _slot;
+        public short Slot { get; }
 
         protected AbstractModifyInventoryOperation(
             ItemInventoryType inventory,
             short slot)
         {
             _inventory = inventory;
-            _slot = slot;
+            Slot = slot;
         }
 
         public void Encode(IPacket packet)
         {
             packet.Encode<byte>((byte) Type);
             packet.Encode<byte>((byte) _inventory);
-            packet.Encode<short>(_slot);
+            packet.Encode<short>(Slot);
 
             EncodeData(packet);
         }
