@@ -14,6 +14,7 @@ namespace Edelstein.Service.Game
                 .WithConfiguredCaching()
                 .WithConfiguredDatabase()
                 .WithConfiguredParsing()
+                .WithConfiguredScripting()
                 .WithProvider(new DataTemplateProvider(DataTemplateType.Game))
                 .WithConfig<GameServiceState>("Service")
                 .WithService<GameService>()

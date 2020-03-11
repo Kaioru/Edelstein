@@ -35,13 +35,20 @@ namespace Edelstein.Core.Bootstrap
         )
             => startup
                 .WithProvider(new ConfiguredDatabaseProvider(section));
-        
+
         public static IStartup WithConfiguredParsing(
             this IStartup startup,
             string section = "Parsing"
         )
             => startup
                 .WithProvider(new ConfiguredParsingProvider(section));
+
+        public static IStartup WithConfiguredScripting(
+            this IStartup startup,
+            string section = "Scripting"
+        )
+            => startup
+                .WithProvider(new ConfiguredScriptingProvider(section));
 
         public static IStartup WithConfiguredServer<TAdapterFactory>(
             this IStartup startup,

@@ -18,6 +18,7 @@
       <ProjectReference Include="..\Edelstein.Core.Entities\Edelstein.Core.Entities.csproj" />
       <ProjectReference Include="..\Edelstein.Core.Network\Edelstein.Core.Network.csproj" />
       <ProjectReference Include="..\Edelstein.Core.Parsing\Edelstein.Core.Parsing.csproj" />
+      <ProjectReference Include="..\Edelstein.Core.Scripting\Edelstein.Core.Scripting.csproj" />
       <ProjectReference Include="..\Edelstein.Core.Templates\Edelstein.Core.Templates.csproj" />
     </ItemGroup>
 
