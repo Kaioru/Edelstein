@@ -47,8 +47,8 @@ namespace Edelstein.Service.Game.Conversations
 
         public void Dispose()
         {
-            TokenSource?.Cancel();
-                //TokenSource?.Dispose();
+            TokenSource?.Cancel(); 
+            TokenSource?.Dispose();
         }
     }
 }
