@@ -6,9 +6,10 @@ using Edelstein.Core.Gameplay.Extensions.Packets;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Core.Gameplay.Inventories.Operations;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Conversations.Speakers;
+using Edelstein.Service.Game.Conversations.Util;
 using Edelstein.Service.Game.Fields.Objects.User.Messages;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Impl;
 using Edelstein.Service.Game.Fields.Objects.User.Stats.Modify;
@@ -70,6 +71,48 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 await user.Message("An error has occured while executing that command.");
                 Logger.Error(exception, "Caught exception when executing command.");
             }
+        }
+
+        public static Task<T> Prompt<T>(
+            this FieldUser user,
+            Func<IConversationSpeaker, T> func,
+            ConversationSpeakerType type = 0
+        )
+            => user.Prompt((self, target) => func.Invoke(target), type);
+
+        public static async Task<T> Prompt<T>(
+            this FieldUser user,
+            Func<IConversationSpeaker, IConversationSpeaker, T> func,
+            ConversationSpeakerType type = 0
+        )
+        {
+            var error = true;
+            var result = default(T);
+
+            await user.Prompt((self, target) =>
+            {
+                result = func.Invoke(self, target);
+                error = false;
+            }, type);
+
+            if (error) throw new TaskCanceledException();
+            return result;
+        }
+
+        public static Task Prompt(
+            this FieldUser user,
+            Action<IConversationSpeaker, IConversationSpeaker> action,
+            ConversationSpeakerType type = 0
+        )
+        {
+            var context = new ConversationContext(user.Adapter.Socket);
+            var conversation = new ActionConversation(
+                context,
+                new DefaultSpeaker(context, type: type),
+                new DefaultSpeaker(context, type: type | ConversationSpeakerType.NPCReplacedByUser),
+                action
+            );
+            return user.Converse(context, conversation);
         }
 
         public static async Task Converse(this FieldUser user, IConversationContext context, IConversation conversation)

@@ -15,12 +15,12 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         public DefaultSpeaker(
             IConversationContext context,
             int templateID = 9010000,
-            ConversationSpeakerType param = 0
+            ConversationSpeakerType type = 0
         )
         {
             Context = context;
             TemplateID = templateID;
-            Type = param;
+            Type = type;
         }
 
         public IConversationSpeaker AsSpeaker(int templateID, ConversationSpeakerType type = 0)
