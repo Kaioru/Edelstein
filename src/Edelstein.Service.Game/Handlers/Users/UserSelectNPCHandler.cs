@@ -4,6 +4,7 @@ using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
+using Edelstein.Service.Game.Conversations.Speakers.Field;
 using Edelstein.Service.Game.Fields.Objects.NPC;
 using Edelstein.Service.Game.Fields.Objects.User;
 
@@ -26,8 +27,8 @@ namespace Edelstein.Service.Game.Handlers.Users
             var conversation = await user.Service.ConversationManager.Build(
                 script,
                 context,
-                new DefaultSpeaker(context),
-                new DefaultSpeaker(context)
+                new FieldNPCSpeaker(context, npc),
+                new FieldUserSpeaker(context, user)
             );
 
             await user.Converse(context, conversation);
