@@ -58,9 +58,15 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                             Logger.Error(exception, "Caught exception when executing conversation");
                     }
 
-                    user.ConversationContext?.Dispose();
-                    user.ConversationContext = null;
-                    await user.ModifyStats(exclRequest: true);
+                    try
+                    {
+                        user.ConversationContext?.Dispose();
+                    }
+                    finally
+                    {
+                        user.ConversationContext = null;
+                        await user.ModifyStats(exclRequest: true);
+                    }
                 });
         }
 
