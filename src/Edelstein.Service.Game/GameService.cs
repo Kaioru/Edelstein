@@ -1,3 +1,4 @@
+using CommandLine;
 using Edelstein.Core.Distributed.States;
 using Edelstein.Core.Scripting;
 using Edelstein.Core.Services.Migrations;
@@ -6,6 +7,7 @@ using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
 using Edelstein.Network;
 using Edelstein.Provider;
+using Edelstein.Service.Game.Commands;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Scripted;
 using Edelstein.Service.Game.Conversations.Speakers;
@@ -22,6 +24,7 @@ namespace Edelstein.Service.Game
     {
         public IDataTemplateManager TemplateManager { get; }
         public IConversationManager ConversationManager { get; }
+        public ICommand CommandManager { get; }
         public FieldManager FieldManager { get; }
 
         public GameService(
@@ -35,6 +38,7 @@ namespace Edelstein.Service.Game
         {
             TemplateManager = templateManager;
             ConversationManager = new ScriptedConversationManager(scriptManager);
+            CommandManager = new CommandManager(new Parser());
             FieldManager = new FieldManager(templateManager);
 
             Handlers[RecvPacketOperations.MigrateIn] = new MigrateInHandler();

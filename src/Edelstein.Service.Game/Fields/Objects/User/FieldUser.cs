@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using Baseline;
 using Edelstein.Core.Gameplay.Extensions.Packets;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities;
@@ -13,7 +14,7 @@ using Edelstein.Service.Game.Fields.Objects.User.Stats;
 
 namespace Edelstein.Service.Game.Fields.Objects.User
 {
-    public class FieldUser : AbstractFieldLife, IFieldUser
+    public class FieldUser : AbstractFieldLife, IFieldUser, IDisposable
     {
         public override FieldObjType Type => FieldObjType.User;
 
@@ -169,6 +170,11 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             p.Encode<DateTime>(DateTime.Now);
 
             return p;
+        }
+
+        public void Dispose()
+        {
+            ConversationContext?.SafeDispose();
         }
     }
 }

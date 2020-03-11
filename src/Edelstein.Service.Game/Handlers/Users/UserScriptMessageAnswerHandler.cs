@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Baseline;
 using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
@@ -40,7 +41,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                  type == ConversationRequestType.AskAccept) && answer == byte.MaxValue
             )
             {
-                user.ConversationContext.Dispose();
+                user.ConversationContext.SafeDispose();
                 return;
             }
 

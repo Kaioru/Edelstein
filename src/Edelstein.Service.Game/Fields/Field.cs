@@ -210,6 +210,9 @@ namespace Edelstein.Service.Game.Fields
 
             obj.Field = null;
 
+            if (obj is IDisposable disposable)
+                disposable.Dispose();
+            
             await pool.Leave(obj);
             await obj.UpdateFieldSplit(getLeavePacket: getLeavePacket);
         }

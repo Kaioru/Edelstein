@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Baseline;
 using Edelstein.Core.Gameplay.Extensions.Packets;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Core.Gameplay.Inventories.Operations;
@@ -8,6 +9,8 @@ using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Fields.Objects.User.Messages;
+using Edelstein.Service.Game.Fields.Objects.User.Messages.Impl;
 using Edelstein.Service.Game.Fields.Objects.User.Stats.Modify;
 using Edelstein.Service.Game.Logging;
 
@@ -41,6 +44,34 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             await user.BroadcastPacket(p);
         }
 
+        public static Task Message(this FieldUser user, string text)
+        {
+            return user.Message(new SystemMessage(text));
+        }
+
+        public static Task Message(this FieldUser user, IMessage message)
+        {
+            using var p = new Packet(SendPacketOperations.Message);
+            message.Encode(p);
+            return user.SendPacket(p);
+        }
+
+        public static async Task Command(this FieldUser user, string text)
+        {
+            try
+            {
+                await user.Service.CommandManager.Process(
+                    user,
+                    text
+                );
+            }
+            catch (Exception exception)
+            {
+                await user.Message("An error has occured while executing that command.");
+                Logger.Error(exception, "Caught exception when executing command.");
+            }
+        }
+
         public static async Task Converse(this FieldUser user, IConversationContext context, IConversation conversation)
         {
             if (user.ConversationContext != null)
@@ -58,15 +89,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                             Logger.Error(exception, "Caught exception when executing conversation");
                     }
 
-                    try
-                    {
-                        user.ConversationContext?.Dispose();
-                    }
-                    finally
-                    {
-                        user.ConversationContext = null;
-                        await user.ModifyStats(exclRequest: true);
-                    }
+                    user.ConversationContext?.SafeDispose();
+                    user.ConversationContext = null;
+                    await user.ModifyStats(exclRequest: true);
                 });
         }
 

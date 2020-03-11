@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Commands;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.User;
 
@@ -20,6 +21,12 @@ namespace Edelstein.Service.Game.Handlers.Users
 
             var message = packet.Decode<string>();
             var onlyBalloon = packet.Decode<bool>();
+
+            if (message.StartsWith(CommandManager.Prefix))
+            {
+                await user.Command(message.Substring(1));
+                return;
+            }
 
             using var p1 = new Packet(SendPacketOperations.UserChat);
 

@@ -2,6 +2,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using Baseline;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network;
 using Edelstein.Network.Packets;
@@ -48,7 +49,7 @@ namespace Edelstein.Service.Game.Conversations
         public void Dispose()
         {
             TokenSource?.Cancel(); 
-            TokenSource?.Dispose();
+            TokenSource?.SafeDispose();
         }
     }
 }
