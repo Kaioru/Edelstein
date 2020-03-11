@@ -198,6 +198,8 @@ namespace Edelstein.Service.Game.Fields
                     : 0);
 
                 await user.SendPacket(user.GetSetFieldPacket());
+                
+                if (!user.IsInstantiated) user.IsInstantiated = true;
             }
 
             await pool.Enter(obj);

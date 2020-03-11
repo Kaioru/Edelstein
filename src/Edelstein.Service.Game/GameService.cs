@@ -38,7 +38,11 @@ namespace Edelstein.Service.Game
         {
             TemplateManager = templateManager;
             ConversationManager = new ScriptedConversationManager(scriptManager);
-            CommandManager = new CommandManager(new Parser());
+            CommandManager = new CommandManager(new Parser(settings =>
+            {
+                settings.CaseSensitive = false;
+                settings.CaseInsensitiveEnumValues = true;
+            }));
             FieldManager = new FieldManager(templateManager);
 
             Handlers[RecvPacketOperations.MigrateIn] = new MigrateInHandler();

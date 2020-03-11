@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommandLine;
+using Edelstein.Service.Game.Commands.Impl;
 using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Commands
@@ -14,6 +15,7 @@ namespace Edelstein.Service.Game.Commands
 
         public CommandManager(Parser parser) : base(parser)
         {
+            Commands.Add(new StatCommand(parser));
         }
 
         protected override Task Run(FieldUser sender, DefaultCommandContext ctx)
