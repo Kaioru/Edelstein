@@ -14,6 +14,7 @@ namespace Edelstein.Service.All
                 .WithConfiguredCaching()
                 .WithConfiguredDatabase()
                 .WithConfiguredParsing()
+                .WithConfiguredScripting()
                 .WithProvider(new DataTemplateProvider(DataTemplateType.All))
                 .WithConfig<ContainerServiceState>("Service")
                 .WithService<ContainerService>()

@@ -4,6 +4,6 @@ namespace Edelstein.Core.Scripting
 {
     public interface IScriptManager
     {
-        Task<object> Run(string script, IScriptContext context);
+        Task<IScript> Build(string script);
     }
 }

@@ -4,18 +4,17 @@ using MoreLinq;
 
 namespace Edelstein.Core.Scripting.Python
 {
-    public class PythonScript : IScript
+    public class PythonScript : AbstractScript
     {
         private readonly CompiledCode _code;
 
         public PythonScript(CompiledCode code)
             => _code = code;
 
-        public Task<object> Run(IScriptContext context)
+        public override Task<object> Run()
         {
             var scope = _code.DefaultScope;
-
-            context.All().ForEach(kv => scope.SetVariable(kv.Key, kv.Value));
+            All().ForEach(kv => scope.SetVariable(kv.Key, kv.Value));
             return Task.Run(_code.Execute());
         }
     }

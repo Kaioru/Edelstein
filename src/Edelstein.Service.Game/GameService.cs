@@ -1,10 +1,14 @@
 using Edelstein.Core.Distributed.States;
+using Edelstein.Core.Scripting;
 using Edelstein.Core.Services.Migrations;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
 using Edelstein.Network;
 using Edelstein.Provider;
+using Edelstein.Service.Game.Conversations;
+using Edelstein.Service.Game.Conversations.Scripted;
+using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Handlers;
 using Edelstein.Service.Game.Handlers.NPC;
@@ -17,6 +21,7 @@ namespace Edelstein.Service.Game
     public class GameService : AbstractMigrationService<GameServiceState>
     {
         public IDataTemplateManager TemplateManager { get; }
+        public IConversationManager ConversationManager { get; }
         public FieldManager FieldManager { get; }
 
         public GameService(
@@ -24,10 +29,12 @@ namespace Edelstein.Service.Game
             IDataStore dataStore,
             ICacheClient cache,
             IMessageBusFactory busFactory,
-            IDataTemplateManager templateManager
+            IDataTemplateManager templateManager,
+            IScriptManager scriptManager
         ) : base(state.Value, dataStore, cache, busFactory)
         {
             TemplateManager = templateManager;
+            ConversationManager = new ScriptedConversationManager(scriptManager);
             FieldManager = new FieldManager(templateManager);
 
             Handlers[RecvPacketOperations.MigrateIn] = new MigrateInHandler();

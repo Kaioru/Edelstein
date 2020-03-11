@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Edelstein.Core.Scripting;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
 using Edelstein.Provider;
@@ -48,7 +49,8 @@ namespace Edelstein.Service.All.Services
                     _provider.GetService<IDataStore>(),
                     _provider.GetService<ICacheClient>(),
                     _provider.GetService<IMessageBusFactory>(),
-                    _provider.GetService<IDataTemplateManager>()
+                    _provider.GetService<IDataTemplateManager>(),
+                    _provider.GetService<IScriptManager>()
                 )));
 
             await Task.WhenAll(Services.Select(s => s.StartAsync(cancellationToken)));

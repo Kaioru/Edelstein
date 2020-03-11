@@ -17,7 +17,7 @@ namespace Edelstein.Core.Scripting.Python
             _engine.SetSearchPaths(new List<string> {_path});
         }
 
-        public Task<object> Run(string script, IScriptContext context)
+        public Task<IScript> Build(string script)
         {
             var path = Path.Join(_path, Path.ChangeExtension(script, "py"));
 
@@ -26,7 +26,7 @@ namespace Edelstein.Core.Scripting.Python
             var source = _engine.CreateScriptSourceFromFile(path);
             var code = source.Compile();
 
-            return new PythonScript(code).Run(context);
+            return Task.FromResult<IScript>(new PythonScript(code));
         }
     }
 }

@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 
 namespace Edelstein.Core.Scripting
 {
-    public class ScriptContext : IScriptContext
+    public abstract class AbstractScript : IScript
     {
         private readonly IDictionary<string, object> _globals;
 
-        public ScriptContext()
+        public AbstractScript()
             => _globals = new Dictionary<string, object>();
 
         public IDictionary<string, object> All()
@@ -30,5 +31,7 @@ namespace Edelstein.Core.Scripting
 
         public void Deregister<T>(T obj)
             => _globals.Remove(typeof(T).Name);
+
+        public abstract Task<object> Run();
     }
 }
