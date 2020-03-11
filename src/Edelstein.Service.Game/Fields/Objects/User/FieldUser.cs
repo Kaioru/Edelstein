@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Extensions.Packets;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities;
 using Edelstein.Entities.Characters;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Fields.Objects.User.Stats;
 
 namespace Edelstein.Service.Game.Fields.Objects.User
@@ -30,6 +32,8 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public BasicStat BasicStat { get; }
         public ForcedStat ForcedStat { get; }
 
+        public IConversationContext ConversationContext { get; set; }
+
         public FieldUser(GameServiceAdapter socketAdapter)
         {
             Adapter = socketAdapter;
@@ -42,6 +46,22 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public Task SendPacket(IPacket packet)
             => Adapter.SendPacket(packet);
+
+        public IFieldObj GetWatchedObject(int id)
+            => Watching
+                .Select(w => w.GetObject(id))
+                .FirstOrDefault(o => o != null);
+
+        public T GetWatchedObject<T>(int id) where T : IFieldObj
+            => Watching
+                .Select(w => w.GetObject<T>(id))
+                .FirstOrDefault(o => o != null);
+
+        public IEnumerable<IFieldObj> GetWatchedObjects()
+            => Watching.SelectMany(w => w.GetObjects());
+
+        public IEnumerable<T> GetWatchedObjects<T>() where T : IFieldObj
+            => Watching.SelectMany(w => w.GetObjects<T>());
 
         public override IPacket GetEnterFieldPacket()
         {

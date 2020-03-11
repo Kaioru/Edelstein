@@ -32,6 +32,6 @@ namespace Edelstein.Core.Scripting
         public void Deregister<T>(T obj)
             => _globals.Remove(typeof(T).Name);
 
-        public abstract Task<object> Run();
+        public abstract Task<dynamic> Run();
     }
 }

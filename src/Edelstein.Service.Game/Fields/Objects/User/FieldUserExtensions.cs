@@ -7,12 +7,16 @@ using Edelstein.Core.Gameplay.Inventories.Operations;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities.Characters;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Fields.Objects.User.Stats.Modify;
+using Edelstein.Service.Game.Logging;
 
 namespace Edelstein.Service.Game.Fields.Objects.User
 {
     public static class FieldUserExtensions
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         public static async Task UpdateStats(this FieldUser user)
         {
             await user.BasicStat.Calculate();
@@ -35,6 +39,29 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             p.Encode<int>(user.BasicStat.CompletedSetItemID);
 
             await user.BroadcastPacket(p);
+        }
+
+        public static async Task Converse(this FieldUser user, IConversationContext context, IConversation conversation)
+        {
+            if (user.ConversationContext != null)
+                throw new InvalidOperationException("Already having a conversation");
+            user.ConversationContext = context;
+
+            await conversation.Start()
+                .ContinueWith(async t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        var exception = t.Exception?.Flatten().InnerException;
+
+                        if (!(exception is TaskCanceledException))
+                            Logger.Error(exception, "Caught exception when executing conversation");
+                    }
+
+                    user.ConversationContext?.Dispose();
+                    user.ConversationContext = null;
+                    await user.ModifyStats(exclRequest: true);
+                });
         }
 
         public static async Task ModifyStats(

@@ -11,11 +11,11 @@ namespace Edelstein.Core.Scripting.Python
         public PythonScript(CompiledCode code)
             => _code = code;
 
-        public override Task<object> Run()
+        public override async Task<dynamic> Run()
         {
             var scope = _code.DefaultScope;
             All().ForEach(kv => scope.SetVariable(kv.Key, kv.Value));
-            return Task.Run(_code.Execute());
+            return _code.Execute();
         }
     }
 }
