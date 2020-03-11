@@ -11,9 +11,10 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         ConversationSpeakerType Type { get; }
 
         IConversationSpeaker AsSpeaker(int templateID, ConversationSpeakerType type = 0);
-        IConversationSpeech GetSpeech(string text);
+        IConversationSpeech Speak(string text);
 
         byte Say(IConversationSpeech[] text, int current = 0);
+        byte Say(IEnumerable<IConversationSpeech> text, int current = 0);
         byte Say(string text = "", bool prev = false, bool next = true);
         bool AskYesNo(string text = "");
         bool AskAccept(string text = "");
@@ -26,6 +27,7 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         int AskSlideMenu(IDictionary<int, string> options, int type = 0, int selected = 0);
 
         Task<byte> SayAsync(IConversationSpeech[] text, int current = 0);
+        Task<byte> SayAsync(IEnumerable<IConversationSpeech> text, int current = 0);
         Task<byte> SayAsync(string text = "", bool prev = false, bool next = true);
         Task<bool> AskYesNoAsync(string text = "");
         Task<bool> AskAcceptAsync(string text = "");

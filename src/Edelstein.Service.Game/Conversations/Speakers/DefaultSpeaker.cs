@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Service.Game.Conversations.Requests;
 
@@ -25,10 +26,13 @@ namespace Edelstein.Service.Game.Conversations.Speakers
         public IConversationSpeaker AsSpeaker(int templateID, ConversationSpeakerType type = 0)
             => new DefaultSpeaker(Context, templateID, type);
 
-        public IConversationSpeech GetSpeech(string text)
+        public IConversationSpeech Speak(string text)
             => new DefaultSpeech(this, text);
 
         public byte Say(IConversationSpeech[] text, int current = 0)
+            => SayAsync(text, current).Result;
+
+        public byte Say(IEnumerable<IConversationSpeech> text, int current = 0)
             => SayAsync(text, current).Result;
 
         public byte Say(string text = "", bool prev = false, bool next = true)
@@ -80,6 +84,9 @@ namespace Edelstein.Service.Game.Conversations.Speakers
 
             return result;
         }
+
+        public Task<byte> SayAsync(IEnumerable<IConversationSpeech> text, int current = 0)
+            => SayAsync(text.ToArray(), current);
 
         public Task<byte> SayAsync(string text = "", bool prev = false, bool next = true)
             => Context.Request(new SayRequest(this, text, prev, next));
