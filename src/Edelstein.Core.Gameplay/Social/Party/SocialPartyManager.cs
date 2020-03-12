@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Migrations;
-using Edelstein.Core.Utils;
 using Edelstein.Database;
 using Edelstein.Entities.Characters;
 using Edelstein.Entities.Social;
@@ -45,9 +44,6 @@ namespace Edelstein.Core.Gameplay.Social.Party
             return @lock;
         }
 
-        public Task Unlock(ILock @lock)
-            => @lock.ReleaseAsync();
-
         public async Task<ISocialParty?> Load(Character character)
         {
             var @lock = await Lock();
@@ -68,7 +64,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
             }
             finally
             {
-                await Unlock(@lock);
+                await @lock.ReleaseAsync();
             }
         }
 
@@ -102,7 +98,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
             }
             finally
             {
-                await Unlock(@lock);
+                await @lock.ReleaseAsync();
             }
         }
 
