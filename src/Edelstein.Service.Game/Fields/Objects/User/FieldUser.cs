@@ -49,20 +49,22 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             => Adapter.SendPacket(packet);
 
         public IFieldObj GetWatchedObject(int id)
-            => Watching
-                .Select(w => w.GetObject(id))
-                .FirstOrDefault(o => o != null);
+            => GetWatchedObjects()
+                .FirstOrDefault(o => o.ID == id);
 
         public T GetWatchedObject<T>(int id) where T : IFieldObj
-            => Watching
-                .Select(w => w.GetObject<T>(id))
-                .FirstOrDefault(o => o != null);
+            => GetWatchedObjects<T>()
+                .FirstOrDefault(o => o.ID == id);
 
         public IEnumerable<IFieldObj> GetWatchedObjects()
-            => Watching.SelectMany(w => w.GetObjects());
+            => Watching
+                .Where(w => w != null)
+                .SelectMany(w => w.GetObjects());
 
         public IEnumerable<T> GetWatchedObjects<T>() where T : IFieldObj
-            => Watching.SelectMany(w => w.GetObjects<T>());
+            => Watching
+                .Where(w => w != null)
+                .SelectMany(w => w.GetObjects<T>());
 
         public override IPacket GetEnterFieldPacket()
         {

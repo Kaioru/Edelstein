@@ -31,6 +31,7 @@ namespace Edelstein.Service.Game.Commands.Impl
                             case ContinentState.Wait:
                                 return c.Template.WaitFieldID;
                             case ContinentState.Move:
+                            case ContinentState.Event:
                                 return c.Template.MoveFieldID;
                             default:
                                 return c.Template.StartShipMoveFieldID;
