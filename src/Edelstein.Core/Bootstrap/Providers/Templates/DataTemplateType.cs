@@ -15,6 +15,8 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
         NPC = 0x8,
         ItemOption = 0x10,
         SetItemInfo = 0x20,
+        
+        Continent = 0x40,
 
         Login = Item |
                 MakeCharInfo,
@@ -23,6 +25,7 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
                Field |
                NPC |
                ItemOption |
-               SetItemInfo
+               SetItemInfo |
+               Continent
     }
 }
