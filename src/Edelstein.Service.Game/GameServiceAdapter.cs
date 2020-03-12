@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Core.Services.Migrations;
+using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Core.Templates.Fields;
 using Edelstein.Network;
 using Edelstein.Service.Game.Fields.Objects.User;

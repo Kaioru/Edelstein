@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
@@ -29,7 +30,10 @@ namespace Edelstein.Service.Game.Handlers
                 await adapter.TryMigrateFrom(characterID, clientKey);
 
                 var field = adapter.Service.FieldManager.Get(adapter.Character.FieldID);
-                var fieldUser = new FieldUser(adapter);
+                var fieldUser = new FieldUser(adapter)
+                {
+                    Party = await adapter.Service.PartyManager.Load(adapter.Character)
+                };
 
                 adapter.User = fieldUser;
 

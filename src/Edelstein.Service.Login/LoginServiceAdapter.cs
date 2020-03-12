@@ -1,6 +1,6 @@
 using System.Net;
 using Edelstein.Core.Distributed;
-using Edelstein.Core.Services.Migrations;
+using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network;
 using Edelstein.Network.Packets;

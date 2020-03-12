@@ -3,8 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Core.Distributed.States;
+using Edelstein.Core.Gameplay.Migrations;
+using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Scripting;
-using Edelstein.Core.Services.Migrations;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Core.Utils.Ticks;
@@ -14,13 +15,13 @@ using Edelstein.Provider;
 using Edelstein.Service.Game.Commands;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Scripted;
-using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Fields.Continent;
 using Edelstein.Service.Game.Handlers;
 using Edelstein.Service.Game.Handlers.NPC;
 using Edelstein.Service.Game.Handlers.Users;
 using Foundatio.Caching;
+using Foundatio.Lock;
 using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Game
@@ -35,11 +36,14 @@ namespace Edelstein.Service.Game
         public FieldManager FieldManager { get; }
         public ContinentManager ContinentManager { get; }
 
+        public ISocialPartyManager PartyManager { get; }
+
         public GameService(
             IOptions<GameServiceState> state,
             IDataStore dataStore,
             ICacheClient cache,
             IMessageBusFactory busFactory,
+            ILockProvider lockProvider,
             IDataTemplateManager templateManager,
             IScriptManager scriptManager
         ) : base(state.Value, dataStore, cache, busFactory)
@@ -55,6 +59,8 @@ namespace Edelstein.Service.Game
             }));
             FieldManager = new FieldManager(templateManager);
             ContinentManager = new ContinentManager(templateManager, FieldManager);
+
+            PartyManager = new SocialPartyManager(dataStore, cache, lockProvider, state.Value.ChannelID);
 
             Handlers[RecvPacketOperations.MigrateIn] = new MigrateInHandler();
 

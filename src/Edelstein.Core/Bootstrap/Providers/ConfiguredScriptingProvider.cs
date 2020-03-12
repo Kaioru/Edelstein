@@ -1,5 +1,4 @@
 using System;
-using Edelstein.Core.Bootstrap.Providers.Database;
 using Edelstein.Core.Bootstrap.Providers.Scripting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

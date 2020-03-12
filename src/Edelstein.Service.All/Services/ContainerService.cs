@@ -49,6 +49,7 @@ namespace Edelstein.Service.All.Services
                     _provider.GetService<IDataStore>(),
                     _provider.GetService<ICacheClient>(),
                     _provider.GetService<IMessageBusFactory>(),
+                    _provider.GetService<ILockProvider>(),
                     _provider.GetService<IDataTemplateManager>(),
                     _provider.GetService<IScriptManager>()
                 )));

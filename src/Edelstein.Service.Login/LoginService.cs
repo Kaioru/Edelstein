@@ -1,5 +1,5 @@
 using Edelstein.Core.Distributed.States;
-using Edelstein.Core.Services.Migrations;
+using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;

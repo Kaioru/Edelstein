@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Common.Utilities;
 using Edelstein.Core.Distributed;
-using Edelstein.Core.Logging;
+using Edelstein.Core.Gameplay.Logging;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities;
@@ -11,7 +11,7 @@ using Edelstein.Entities.Characters;
 using Edelstein.Network;
 using Edelstein.Network.Packets;
 
-namespace Edelstein.Core.Services.Migrations
+namespace Edelstein.Core.Gameplay.Migrations
 {
     public abstract class AbstractMigrationSocketAdapter : AbstractSocketAdapter, IMigrationSocketAdapter
     {

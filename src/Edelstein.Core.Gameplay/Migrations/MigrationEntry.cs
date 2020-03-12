@@ -2,7 +2,7 @@ using Edelstein.Core.Distributed;
 using Edelstein.Entities;
 using Edelstein.Entities.Characters;
 
-namespace Edelstein.Core.Services.Migrations
+namespace Edelstein.Core.Gameplay.Migrations
 {
     public class MigrationEntry
     {

@@ -2,9 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.0</TargetFramework>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Foundatio" Version="8.1.2126" />
+      <PackageReference Include="LibLog" Version="5.0.8" />
       <PackageReference Include="morelinq" Version="3.3.2" />
     </ItemGroup>
 
@@ -12,6 +15,7 @@
       <ProjectReference Include="..\Edelstein.Core.Entities\Edelstein.Core.Entities.csproj" />
       <ProjectReference Include="..\Edelstein.Core.Network\Edelstein.Core.Network.csproj" />
       <ProjectReference Include="..\Edelstein.Core.Templates\Edelstein.Core.Templates.csproj" />
+      <ProjectReference Include="..\Edelstein.Core\Edelstein.Core.csproj" />
     </ItemGroup>
 
 </Project>

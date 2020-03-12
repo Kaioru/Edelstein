@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Foundatio.Messaging;
 
@@ -20,7 +19,7 @@ namespace Edelstein.Core.Distributed
         {
             Remotes = new ConcurrentDictionary<string, INodeRemote>();
             _busFactory = busFactory;
-            _bus = busFactory.Build($"{Scopes.NodeMessaging}:{name}");
+            _bus = busFactory.Build($"{DistributedScopes.NodeMessaging}:{name}");
         }
 
         public Task<IEnumerable<INodeRemote>> GetPeers()

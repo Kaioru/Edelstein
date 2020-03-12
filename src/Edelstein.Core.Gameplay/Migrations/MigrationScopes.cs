@@ -1,10 +1,8 @@
-namespace Edelstein.Core.Utils
+namespace Edelstein.Core.Gameplay.Migrations
 {
-    public static class Scopes
+    public static class MigrationScopes
     {
-        public const string NodeSet = "nodes";
         public const string NodeMigration = "nodes:migrations";
-        public const string NodeMessaging = "nodes:messaging";
         public const string NodeSocketCount = "nodes:socketCount";
         public const string NodeMigrationLock = "lock:node:migration";
 

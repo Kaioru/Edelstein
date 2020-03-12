@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Baseline;
 using Edelstein.Core.Gameplay.Extensions.Packets;
+using Edelstein.Core.Gameplay.Social;
+using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities;
 using Edelstein.Entities.Characters;
@@ -33,7 +35,10 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public BasicStat BasicStat { get; }
         public ForcedStat ForcedStat { get; }
 
-        public IConversationContext ConversationContext { get; set; }
+        public IConversationContext? ConversationContext { get; set; }
+        
+        public ISocialParty? Party { get; set; }
+        public ISocialGuild? Guild { get; set; }
 
         public FieldUser(GameServiceAdapter socketAdapter)
         {

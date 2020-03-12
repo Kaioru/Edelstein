@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
-using Edelstein.Core.Logging;
+using Edelstein.Core.Gameplay.Logging;
+using Edelstein.Core.Services;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Core.Utils.Packets;
@@ -13,7 +14,7 @@ using Edelstein.Database;
 using Edelstein.Network.Packets;
 using Foundatio.Caching;
 
-namespace Edelstein.Core.Services.Migrations
+namespace Edelstein.Core.Gameplay.Migrations
 {
     public abstract class AbstractMigrationService<TState> : AbstractNodeServerService<TState>, IMigrationService
         where TState : IServerNodeState
@@ -42,10 +43,10 @@ namespace Edelstein.Core.Services.Migrations
 
             DataStore = dataStore;
 
-            AccountStateCache = new ScopedCacheClient(cache, Scopes.StateAccount);
-            CharacterStateCache = new ScopedCacheClient(cache, Scopes.StateCharacter);
-            MigrationCache = new ScopedCacheClient(cache, Scopes.NodeMigration);
-            SocketCountCache = new ScopedCacheClient(cache, Scopes.NodeSocketCount);
+            AccountStateCache = new ScopedCacheClient(cache, MigrationScopes.StateAccount);
+            CharacterStateCache = new ScopedCacheClient(cache, MigrationScopes.StateCharacter);
+            MigrationCache = new ScopedCacheClient(cache, MigrationScopes.NodeMigration);
+            SocketCountCache = new ScopedCacheClient(cache, MigrationScopes.NodeSocketCount);
 
             Sockets = new ConcurrentDictionary<int, IMigrationSocketAdapter>();
             Handlers = new ConcurrentDictionary<RecvPacketOperations, IPacketHandler>

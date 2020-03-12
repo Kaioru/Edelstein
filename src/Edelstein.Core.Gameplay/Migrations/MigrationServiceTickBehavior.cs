@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils.Ticks;
 
-namespace Edelstein.Core.Services.Migrations
+namespace Edelstein.Core.Gameplay.Migrations
 {
     public class MigrationServiceTickBehavior : ITickBehavior
     {

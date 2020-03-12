@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Logging;
-using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Core.Utils.Ticks;
 using Foundatio.Messaging;
@@ -22,7 +21,7 @@ namespace Edelstein.Core.Distributed
         public CachedNodeLocal(TState state, IMessageBusFactory busFactory) : base(busFactory, state.Name)
         {
             _busFactory = busFactory;
-            _bus = busFactory.Build(Scopes.NodeSet);
+            _bus = busFactory.Build(DistributedScopes.NodeSet);
             _ticker = new TimerTicker(TimeSpan.FromSeconds(10), new CachedNodeLocalTickBehavior<TState>(this, _bus));
             State = state;
         }

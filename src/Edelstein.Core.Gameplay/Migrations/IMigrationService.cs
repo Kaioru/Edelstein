@@ -5,7 +5,7 @@ using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Database;
 
-namespace Edelstein.Core.Services.Migrations
+namespace Edelstein.Core.Gameplay.Migrations
 {
     public interface IMigrationService
     {
