@@ -61,6 +61,7 @@ namespace Edelstein.Service.Game
             Handlers[RecvPacketOperations.UserTransferChannelRequest] = new UserTransferChannelRequestHandler();
             Handlers[RecvPacketOperations.UserMove] = new UserMoveHandler();
             Handlers[RecvPacketOperations.UserChat] = new UserChatHandler();
+            Handlers[RecvPacketOperations.UserEmotion] = new UserEmotionHandler();
             Handlers[RecvPacketOperations.UserSelectNpc] = new UserSelectNPCHandler();
             Handlers[RecvPacketOperations.UserScriptMessageAnswer] = new UserScriptMessageAnswerHandler();
             Handlers[RecvPacketOperations.UserGatherItemRequest] = new UserGatherItemRequestHandler();
@@ -68,7 +69,7 @@ namespace Edelstein.Service.Game
             Handlers[RecvPacketOperations.UserChangeSlotPositionRequest] = new UserChangeSlotPositionRequestHandler();
 
             Handlers[RecvPacketOperations.NpcMove] = new NPCMoveHandler();
-            
+
             Handlers[RecvPacketOperations.CONTISTATE] = new ContiStateHandler();
         }
 
