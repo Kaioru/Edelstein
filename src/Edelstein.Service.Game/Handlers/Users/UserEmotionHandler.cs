@@ -25,7 +25,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             p.Encode<int>(emotion);
             p.Encode<int>(duration);
             p.Encode<bool>(byItemOption);
-            await user.Field.BroadcastPacket(user, p);
+            await user.BroadcastPacket(p);
         }
     }
 }
