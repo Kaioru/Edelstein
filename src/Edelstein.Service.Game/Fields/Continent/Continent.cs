@@ -78,6 +78,7 @@ namespace Edelstein.Service.Game.Fields.Continent
                 .SubstateOf(ContinentState.Move)
                 .OnEntryAsync(async () =>
                 {
+                    NextEvent = null;
                     Logger.Debug($"{Template.Info} started the event");
 
                     // TODO: Mobspawns
@@ -145,7 +146,11 @@ namespace Edelstein.Service.Game.Fields.Continent
                 .AddMinutes(Template.Wait)
                 .AddMinutes(random.Next(Template.Required - 5))
                 .AddMinutes(2);
-            Logger.Debug($"{Template.Info} continent event is scheduled at {NextEvent}");
+            Logger.Debug(
+                $"{Template.Info} continent event is scheduled at " +
+                $"{NextEvent} to " +
+                $"{NextBoarding.AddMinutes(Template.Wait).AddMinutes(Template.EventEnd)}"
+            );
         }
 
         private Task Move(IField from, IField to)
@@ -160,33 +165,36 @@ namespace Edelstein.Service.Game.Fields.Continent
         {
             var now = DateTime.UtcNow;
 
-            switch (State)
+            if (_stateMachine.IsInState(ContinentState.Dormant))
             {
-                case ContinentState.Dormant:
-                    if (now > NextBoarding)
-                        await _stateMachine.FireAsync(ContinentTrigger.Board);
-                    break;
-                case ContinentState.Wait:
-                    if (now > NextBoarding.AddMinutes(Template.Wait))
-                        await _stateMachine.FireAsync(ContinentTrigger.Start);
-                    break;
-                case ContinentState.Move:
-                    if (NextEvent.HasValue &&
-                        now > NextEvent.Value)
-                        await _stateMachine.FireAsync(ContinentTrigger.MobGen);
-
-                    if (now > NextBoarding
-                            .AddMinutes(Template.Wait)
-                            .AddMinutes(Template.Required))
-                        await _stateMachine.FireAsync(ContinentTrigger.End);
-                    break;
-                case ContinentState.Event:
-                    if (now > NextBoarding
-                            .AddMinutes(Template.Wait)
-                            .AddMinutes(Template.EventEnd))
-                        await _stateMachine.FireAsync(ContinentTrigger.MobDestroy);
-                    break;
+                if (now > NextBoarding)
+                    await _stateMachine.FireAsync(ContinentTrigger.Board);
             }
+
+            if (_stateMachine.IsInState(ContinentState.Wait))
+            {
+                if (now > NextBoarding.AddMinutes(Template.Wait))
+                    await _stateMachine.FireAsync(ContinentTrigger.Start);
+            }
+
+            if (_stateMachine.IsInState(ContinentState.Move))
+            {
+                if (now > NextBoarding
+                        .AddMinutes(Template.Wait)
+                        .AddMinutes(Template.Required))
+                    await _stateMachine.FireAsync(ContinentTrigger.End);
+            }
+
+            if (State == ContinentState.Move)
+                if (NextEvent.HasValue &&
+                    now > NextEvent.Value)
+                    await _stateMachine.FireAsync(ContinentTrigger.MobGen);
+
+            if (State == ContinentState.Event)
+                if (now > NextBoarding
+                        .AddMinutes(Template.Wait)
+                        .AddMinutes(Template.EventEnd))
+                    await _stateMachine.FireAsync(ContinentTrigger.MobDestroy);
         }
     }
 }
