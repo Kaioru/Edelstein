@@ -1,4 +1,3 @@
-using System;
 using Edelstein.Provider;
 
 namespace Edelstein.Core.Templates.NPC

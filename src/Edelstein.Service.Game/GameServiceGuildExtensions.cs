@@ -7,7 +7,6 @@ using Edelstein.Core.Gameplay.Social.Guild.Events;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects;
-using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game
 {

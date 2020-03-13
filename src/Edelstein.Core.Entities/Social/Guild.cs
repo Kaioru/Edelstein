@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Edelstein.Database;
 
 namespace Edelstein.Entities.Social

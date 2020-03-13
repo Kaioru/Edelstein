@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,7 +7,6 @@ using Edelstein.Core.Gameplay.Social.Party.Events;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects;
-using Marten;
 
 namespace Edelstein.Service.Game
 {

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,13 +6,11 @@ using Edelstein.Core.Distributed;
 using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Core.Gameplay.Social.Guild.Events;
 using Edelstein.Core.Gameplay.Social.Party;
-using Edelstein.Core.Gameplay.Social.Party.Events;
 using Edelstein.Database;
 using Edelstein.Entities.Characters;
 using Edelstein.Entities.Social;
 using Foundatio.Caching;
 using Foundatio.Lock;
-using Microsoft.Scripting.Utils;
 using MoreLinq;
 
 namespace Edelstein.Core.Gameplay.Social.Guild

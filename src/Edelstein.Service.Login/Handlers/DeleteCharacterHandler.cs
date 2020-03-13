@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Entities;
 using Edelstein.Entities.Characters;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Login.Types;

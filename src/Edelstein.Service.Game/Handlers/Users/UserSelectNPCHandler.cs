@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Edelstein.Core.Utils;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
-using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Conversations.Speakers.Field;
 using Edelstein.Service.Game.Fields.Objects.NPC;
 using Edelstein.Service.Game.Fields.Objects.User;

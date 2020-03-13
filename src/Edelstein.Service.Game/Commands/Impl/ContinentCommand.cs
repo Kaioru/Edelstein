@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Service.Game.Fields.Continent;
 using Edelstein.Service.Game.Fields.Objects.User;
-using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Commands.Impl
 {

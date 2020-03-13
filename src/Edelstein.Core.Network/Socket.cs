@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using DotNetty.Common.Utilities;
 using DotNetty.Transport.Channels;

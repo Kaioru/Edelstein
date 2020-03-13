@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Immutable;
 using System.Linq;
-using Baseline;
 using Edelstein.Network.Packets;
 
 namespace Edelstein.Core.Gameplay.Social.Party

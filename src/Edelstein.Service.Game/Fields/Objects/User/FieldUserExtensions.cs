@@ -5,7 +5,6 @@ using Baseline;
 using Edelstein.Core.Gameplay.Extensions.Packets;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Core.Gameplay.Inventories.Operations;
-using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;

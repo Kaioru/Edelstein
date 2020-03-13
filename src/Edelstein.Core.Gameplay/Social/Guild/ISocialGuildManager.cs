@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Entities.Characters;
