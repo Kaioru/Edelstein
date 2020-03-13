@@ -96,6 +96,37 @@ namespace Edelstein.Core.Gameplay.Social.Party
             }
         }
 
+        private async Task ProcessAfterLeaveProcess(Entities.Social.Party party)
+        {
+            using var store = _store.StartSession();
+            var count = store
+                .Query<PartyMember>()
+                .Where(m => m.PartyID == party.ID)
+                .Count();
+
+            if (count == 0)
+                await store.DeleteAsync(party);
+        }
+
+        private Task<ISocialParty> LoadInner(int partyID)
+        {
+            using var store = _store.StartSession();
+            var record = store
+                .Query<Entities.Social.Party>()
+                .Where(p => p.ID == partyID)
+                .FirstOrDefault();
+
+            if (record == null)
+                throw new PartyException("Tried to load non-existent party");
+
+            var members = store
+                .Query<PartyMember>()
+                .Where(m => m.PartyID == record.ID)
+                .ToImmutableList();
+
+            return Task.FromResult<ISocialParty?>(new SocialParty(this, record, members));
+        }
+
         private Task<ISocialParty?> LoadInner(Character character)
         {
             using var store = _store.StartSession();
@@ -105,20 +136,10 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 .FirstOrDefault();
 
             if (member == null) return Task.FromResult<ISocialParty?>(null);
-
-            var record = store
-                .Query<Entities.Social.Party>()
-                .Where(p => p.ID == member.PartyID)
-                .FirstOrDefault();
-            var members = store
-                .Query<PartyMember>()
-                .Where(m => m.PartyID == record.ID)
-                .ToImmutableList();
-
-            return Task.FromResult<ISocialParty?>(new SocialParty(this, record, members));
+            return LoadInner(member.PartyID);
         }
 
-        private async Task<ISocialParty> CreateInner(Character character)
+        private async Task CreateInner(Character character)
         {
             using var store = _store.StartSession();
             var member = store
@@ -151,39 +172,66 @@ namespace Edelstein.Core.Gameplay.Social.Party
             var members = store
                 .Query<PartyMember>()
                 .Where(m => m.PartyID == record.ID)
-                .ToImmutableList();
+                .ToList();
+            var party = new SocialParty(this, record, members);
 
-            return new SocialParty(this, record, members);
+            await BroadcastMessage(party, new PartyJoinEvent(
+                party.ID,
+                member.CharacterID,
+                record,
+                members
+            ));
         }
 
-        private async Task<ISocialParty> JoinInner(ISocialParty party, Character character)
+        private async Task JoinInner(ISocialParty party, Character character)
         {
             using var store = _store.StartSession();
             var record = store
                 .Query<Entities.Social.Party>()
                 .Where(p => p.ID == party.ID)
                 .FirstOrDefault();
-            var members = store
-                .Query<PartyMember>()
-                .Where(m => m.PartyID == record.ID)
-                .ToImmutableList();
 
             if (record == null)
                 throw new PartyException("Joining non-existent party");
+
+            var member = store
+                .Query<PartyMember>()
+                .Where(m => m.CharacterID == character.ID)
+                .FirstOrDefault();
+
+            if (member != null)
+                throw new PartyException("Joining party when character already in party");
+
+            var members = store
+                .Query<PartyMember>()
+                .Where(m => m.PartyID == record.ID)
+                .ToList();
+
             if (members.Any(m => m.ChannelID == character.ID))
                 throw new PartyException("Joining already joined party");
 
-            var member = new PartyMember
+            member = new PartyMember
             {
+                PartyID = party.ID,
                 CharacterID = character.ID,
                 CharacterName = character.Name,
                 Job = character.Job,
                 Level = character.Level,
-                ChannelID = _channelID
+                ChannelID = _channelID,
+                FieldID = character.FieldID
             };
 
             await store.InsertAsync(member);
-            return await LoadInner(character);
+
+            members.Add(member);
+            party = new SocialParty(this, record, members);
+
+            await BroadcastMessage(party, new PartyJoinEvent(
+                party.ID,
+                member.CharacterID,
+                record,
+                members
+            ));
         }
 
         private async Task DisbandInner(ISocialParty party)
@@ -193,10 +241,8 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 .Query<Entities.Social.Party>()
                 .Where(p => p.ID == party.ID)
                 .FirstOrDefault();
-
             if (record == null)
                 throw new PartyException("Disbanding a non-existent party");
-
             await Task.WhenAll(party.Members.Select(m => WithdrawInner(party, m, true)));
             await store.DeleteAsync(record);
         }
@@ -204,6 +250,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
         private async Task WithdrawInner(ISocialParty party, ISocialPartyMember member, bool disband = false)
         {
             using var store = _store.StartSession();
+
             var record = store
                 .Query<Entities.Social.Party>()
                 .Where(p => p.ID == party.ID)
@@ -226,19 +273,21 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 party.ID,
                 member.CharacterID,
                 disband,
-                member.CharacterID,
+                false,
                 member.CharacterName
             ));
+            if (!disband)
+                await ProcessAfterLeaveProcess(record);
         }
 
         private async Task KickInner(ISocialParty party, ISocialPartyMember member)
         {
             using var store = _store.StartSession();
+
             var record = store
                 .Query<Entities.Social.Party>()
                 .Where(p => p.ID == party.ID)
                 .FirstOrDefault();
-
             if (record == null)
                 throw new PartyException("Kicked from a non-existent party");
 
@@ -256,19 +305,20 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 party.ID,
                 member.CharacterID,
                 false,
-                party.BossCharacterID,
+                true,
                 member.CharacterName
             ));
+            await ProcessAfterLeaveProcess(record);
         }
 
         private async Task ChangeBossInner(ISocialParty party, ISocialPartyMember member, bool disconnect = false)
         {
             using var store = _store.StartSession();
+
             var record = store
                 .Query<Entities.Social.Party>()
                 .Where(p => p.ID == party.ID)
                 .FirstOrDefault();
-
             if (record == null)
                 throw new PartyException("Changing boss in a non-existent party");
             if (store.Query<PartyMember>()
@@ -276,7 +326,6 @@ namespace Edelstein.Core.Gameplay.Social.Party
                     .Where(p => p.PartyID == record.ID)
                     .FirstOrDefault() == null)
                 throw new PartyException("Changing boss to member not in party");
-
             record.BossCharacterID = member.CharacterID;
             await store.UpdateAsync(record);
             await BroadcastMessage(party, new PartyChangeBossEvent(
@@ -289,18 +338,15 @@ namespace Edelstein.Core.Gameplay.Social.Party
         private async Task UpdateUserMigrationInner(ISocialParty party, int characterID, int channelID, int fieldID)
         {
             using var store = _store.StartSession();
+
             var member = store
                 .Query<PartyMember>()
                 .Where(m => m.CharacterID == characterID)
                 .FirstOrDefault();
-
             if (member == null) return;
-
             member.ChannelID = channelID;
             member.FieldID = fieldID;
-
             store.Update(member);
-
             await BroadcastMessage(party, new PartyUserMigrationEvent(
                 party.ID,
                 characterID,
@@ -312,18 +358,15 @@ namespace Edelstein.Core.Gameplay.Social.Party
         public async Task UpdateChangeLevelOrJobInner(ISocialParty party, int characterID, int level, int job)
         {
             using var store = _store.StartSession();
+
             var member = store
                 .Query<PartyMember>()
                 .Where(m => m.CharacterID == characterID)
                 .FirstOrDefault();
-
             if (member == null) return;
-
             member.Level = level;
             member.Job = job;
-
             store.Update(member);
-
             await BroadcastMessage(party, new PartyChangeLevelOrJobEvent(
                 party.ID,
                 characterID,
@@ -333,6 +376,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
         }
 
         private async Task BroadcastMessage<T>(ISocialParty party, T message) where T : class
+
         {
             var targets = (await _characterCache.GetAllAsync<INodeState>(
                     party.Members.Select(m => m.CharacterID.ToString())
@@ -346,14 +390,17 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 .Select(p => p.SendMessage<T>(message)));
         }
 
+        public Task<ISocialParty> Load(int partyID)
+            => Lock<ISocialParty?>(() => LoadInner(partyID));
+
         public Task<ISocialParty?> Load(Character character)
             => Lock<ISocialParty?>(() => LoadInner(character));
 
-        public Task<ISocialParty> Create(Character character)
-            => Lock<ISocialParty?>(() => CreateInner(character));
+        public Task Create(Character character)
+            => Lock(() => CreateInner(character));
 
-        public Task<ISocialParty> Join(ISocialParty party, Character character)
-            => Lock<ISocialParty>(() => JoinInner(party, character));
+        public Task Join(ISocialParty party, Character character)
+            => Lock(() => JoinInner(party, character));
 
         public Task Disband(ISocialParty party)
             => Lock(() => DisbandInner(party));

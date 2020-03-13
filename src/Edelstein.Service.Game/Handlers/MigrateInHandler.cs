@@ -44,8 +44,9 @@ namespace Edelstein.Service.Game.Handlers
                 await fieldUser.UpdateStats();
                 await field.Enter(fieldUser);
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 await adapter.Close();
             }
         }

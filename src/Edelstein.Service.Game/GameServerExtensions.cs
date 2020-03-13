@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -7,6 +8,7 @@ using Edelstein.Core.Gameplay.Social.Party.Events;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects;
+using Marten;
 
 namespace Edelstein.Service.Game
 {
@@ -31,14 +33,78 @@ namespace Edelstein.Service.Game
 
         public static async Task SubscribePartyEvents(this GameService service, CancellationToken cancellationToken)
         {
+            await service.Bus.SubscribeAsync<PartyJoinEvent>(
+                async (msg, token) =>
+                {
+                    var user = service.FieldManager
+                        .GetAll()
+                        .SelectMany(f => f.GetObjects<IFieldUser>())
+                        .FirstOrDefault(u => u.ID == msg.PartyMemberID);
+
+                    if (user != null)
+                    {
+                        user.Party = new SocialParty(
+                            service.PartyManager,
+                            msg.Party,
+                            msg.PartyMembers
+                        );
+                    }
+
+                    var users = service.GetPartyMembers(msg);
+                    var member = msg.PartyMembers
+                        .FirstOrDefault(m => m.CharacterID == msg.PartyMemberID);
+
+                    if (member == null) return;
+
+                    await Task.WhenAll(users
+                        .Except(new[] {user})
+                        .Select(u => u.Party.OnUpdateJoin(new SocialPartyMember(
+                            u.Service.PartyManager,
+                            u.Party,
+                            member
+                        ))));
+                    await Task.WhenAll(users.Select(async u =>
+                    {
+                        using var p = new Packet(SendPacketOperations.PartyResult);
+
+                        p.Encode<byte>((byte) PartyResultType.JoinParty_Done);
+                        p.Encode<int>(msg.PartyID);
+                        p.Encode<string>(member.CharacterName);
+                        u.Party.EncodeData(u.Service.State.ChannelID, p);
+
+                        await u.SendPacket(p);
+                    }));
+
+                    if (user != null)
+                    {
+                        using var p = new Packet(SendPacketOperations.UserHP);
+
+                        p.Encode<int>(user.ID);
+                        p.Encode<int>(user.Character.HP);
+                        p.Encode<int>(user.Character.MaxHP);
+
+                        await user.Field.BroadcastPacket(user, user.Party, p);
+
+                        await Task.WhenAll(user
+                            .GetWatchedObjects<IFieldUser>()
+                            .Where(u => u.Party?.ID == user.Party.ID)
+                            .Where(u => u != user)
+                            .Select(async u =>
+                            {
+                                using var p = new Packet(SendPacketOperations.UserHP);
+
+                                p.Encode<int>(u.ID);
+                                p.Encode<int>(u.Character.HP);
+                                p.Encode<int>(u.Character.MaxHP);
+
+                                await user.SendPacket(p);
+                            }));
+                    }
+                }, cancellationToken);
             await service.Bus.SubscribeAsync<PartyWithdrawEvent>(
                 async (msg, token) =>
                 {
                     var user = service.GetPartyMember(msg);
-
-                    if (user != null)
-                        user.Party = null;
-
                     var users = service.GetPartyMembers(msg);
 
                     await Task.WhenAll(users.Select(u => u.Party.OnUpdateWithdraw(msg.PartyMemberID)));
@@ -53,12 +119,16 @@ namespace Edelstein.Service.Game
 
                         if (!msg.Disband)
                         {
-                            p.Encode<int>(msg.CharacterID);
+                            p.Encode<bool>(msg.Kick);
                             p.Encode<string>(msg.CharacterName);
+                            u.Party.EncodeData(u.Service.State.ChannelID, p);
                         }
 
                         await u.SendPacket(p);
                     }));
+
+                    if (user != null)
+                        user.Party = null;
                 }, cancellationToken);
             await service.Bus.SubscribeAsync<PartyChangeBossEvent>(
                 async (msg, token) =>
@@ -71,7 +141,6 @@ namespace Edelstein.Service.Game
                         using var p = new Packet(SendPacketOperations.PartyResult);
 
                         p.Encode<byte>((byte) PartyResultType.ChangePartyBoss_Done);
-                        p.Encode<int>(msg.PartyID);
                         p.Encode<int>(msg.PartyMemberID);
                         p.Encode<bool>(msg.Disconnect);
 

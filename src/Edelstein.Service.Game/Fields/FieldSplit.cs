@@ -117,7 +117,7 @@ namespace Edelstein.Service.Game.Fields
 
             if (user.Party != null)
                 await Task.WhenAll(GetObjects<IFieldUser>()
-                    .Where(u => u.Party.ID == user.Party.ID)
+                    .Where(u => u.Party?.ID == user.Party.ID)
                     .Where(u => u != user)
                     .Select(async u =>
                     {

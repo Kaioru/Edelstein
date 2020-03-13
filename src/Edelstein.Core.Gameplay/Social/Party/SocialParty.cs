@@ -29,7 +29,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 .ToList();
         }
 
-        public Task<ISocialParty> Join(Character character)
+        public Task Join(Character character)
             => _manager.Join(this, character);
 
         public Task Disband()
@@ -50,9 +50,15 @@ namespace Edelstein.Core.Gameplay.Social.Party
         public Task UpdateChangeLevelOrJob(int characterID, int level, int job)
             => _manager.UpdateChangeLevelOrJob(this, characterID, level, job);
 
+        public Task OnUpdateJoin(ISocialPartyMember member)
+        {
+            Members.Add(member);
+            return Task.CompletedTask;
+        }
+
         public Task OnUpdateWithdraw(int characterID)
         {
-            Members.Remove(Members.FirstOrDefault(m => m.ChannelID == characterID));
+            Members.Remove(Members.FirstOrDefault(m => m.CharacterID == characterID));
             return Task.CompletedTask;
         }
 
