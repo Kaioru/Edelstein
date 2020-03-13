@@ -4,6 +4,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
 {
     public class SocialGuildMember : ISocialGuildMember
     {
+        private readonly ISocialGuildManager _manager;
         private readonly ISocialGuild _guild;
         private readonly GuildMember _member;
 
@@ -15,8 +16,13 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public bool Online => _member.Online;
         public int Commitment => _member.Commitment;
 
-        public SocialGuildMember(ISocialGuild guild, GuildMember member)
+        public SocialGuildMember(
+            ISocialGuildManager manager,
+            ISocialGuild guild,
+            GuildMember member
+        )
         {
+            _manager = manager;
             _guild = guild;
             _member = member;
         }

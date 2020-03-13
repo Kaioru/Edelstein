@@ -391,10 +391,10 @@ namespace Edelstein.Core.Gameplay.Social.Party
         }
 
         public Task<ISocialParty> Load(int partyID)
-            => Lock<ISocialParty?>(() => LoadInner(partyID));
+            => Lock(() => LoadInner(partyID));
 
         public Task<ISocialParty?> Load(Character character)
-            => Lock<ISocialParty?>(() => LoadInner(character));
+            => Lock(() => LoadInner(character));
 
         public Task Create(Character character)
             => Lock(() => CreateInner(character));

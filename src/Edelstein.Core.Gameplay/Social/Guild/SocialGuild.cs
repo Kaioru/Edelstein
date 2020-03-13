@@ -7,6 +7,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
 {
     public class SocialGuild : ISocialGuild
     {
+        private readonly ISocialGuildManager _manager;
         private readonly Entities.Social.Guild _guild;
 
         public int ID => _guild.ID;
@@ -26,12 +27,17 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public int Point => _guild.Point;
         public byte Level => _guild.Level;
 
-        public SocialGuild(Entities.Social.Guild guild)
+        public SocialGuild(
+            ISocialGuildManager manager,
+            Entities.Social.Guild guild,
+            IEnumerable<GuildMember> members
+        )
         {
+            _manager = manager;
             _guild = guild;
 
-            Members = guild.Members
-                .Select<GuildMember, ISocialGuildMember>(p => new SocialGuildMember(this, p))
+            Members = members
+                .Select<GuildMember, ISocialGuildMember>(p => new SocialGuildMember(_manager, this, p))
                 .ToImmutableList();
         }
     }

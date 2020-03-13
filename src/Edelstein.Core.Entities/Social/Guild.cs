@@ -12,7 +12,6 @@ namespace Edelstein.Entities.Social
         public string[] GradeName { get; }
 
         public int MaxMemberNum { get; set; }
-        public ICollection<GuildMember> Members { get; set; }
 
         public short MarkBg { get; set; }
         public byte MarkBgColor { get; set; }
@@ -33,7 +32,6 @@ namespace Edelstein.Entities.Social
                 "Member",
                 "Member"
             };
-            Members = new List<GuildMember>();
         }
     }
 }

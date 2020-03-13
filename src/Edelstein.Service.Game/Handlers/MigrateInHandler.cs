@@ -36,11 +36,7 @@ namespace Edelstein.Service.Game.Handlers
                 var fieldUser = new FieldUser(adapter)
                 {
                     Party = await adapter.Service.PartyManager.Load(adapter.Character),
-                    Guild = new SocialGuild(new Guild
-                    {
-                        Name = "Edelstein Dev. Team"
-                    })
-                    // TODO: guild
+                    Guild = await adapter.Service.GuildManager.Load(adapter.Character)
                 };
 
                 adapter.User = fieldUser;

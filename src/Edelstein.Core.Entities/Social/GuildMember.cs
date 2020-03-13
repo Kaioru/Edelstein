@@ -1,7 +1,12 @@
+using Edelstein.Database;
+
 namespace Edelstein.Entities.Social
 {
-    public class GuildMember
+    public class GuildMember : IDataEntity
     {
+        public int ID { get; set; }
+        public int GuildID { get; set; }
+
         public int CharacterID { get; set; }
         public string CharacterName { get; set; }
         public int Job { get; set; }

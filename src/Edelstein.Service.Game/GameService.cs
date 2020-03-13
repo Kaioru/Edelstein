@@ -77,7 +77,13 @@ namespace Edelstein.Service.Game
                 lockProvider,
                 cache
             );
-            GuildManager = new SocialGuildManager();
+            GuildManager = new SocialGuildManager(
+                state.Value.ChannelID,
+                this,
+                dataStore,
+                lockProvider,
+                cache
+            );
 
             Handlers[RecvPacketOperations.MigrateIn] = new MigrateInHandler();
 
@@ -91,7 +97,7 @@ namespace Edelstein.Service.Game
             Handlers[RecvPacketOperations.UserSortItemRequest] = new UserSortItemRequestHandler();
             Handlers[RecvPacketOperations.UserChangeSlotPositionRequest] = new UserChangeSlotPositionRequestHandler();
             Handlers[RecvPacketOperations.UserCharacterInfoRequest] = new UserCharacterInfoRequestHandler();
-            
+
             Handlers[RecvPacketOperations.NpcMove] = new NPCMoveHandler();
 
             Handlers[RecvPacketOperations.CONTISTATE] = new ContiStateHandler();
