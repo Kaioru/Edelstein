@@ -4,10 +4,10 @@ namespace Edelstein.Entities.Social
     {
         public int CharacterID { get; set; }
         public string CharacterName { get; set; }
-        public int Job;
-        public int Level;
-        public int Grade;
-        public bool Online;
-        public int Commitment;
+        public int Job { get; set; }
+        public int Level { get; set; }
+        public int Grade { get; set; }
+        public bool Online { get; set; }
+        public int Commitment { get; set; }
     }
 }

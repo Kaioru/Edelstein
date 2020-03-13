@@ -4,9 +4,12 @@ using System.Collections.Immutable;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Gameplay.Social.Guild;
+using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Templates.Fields.Life;
 using Edelstein.Core.Templates.NPC;
+using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Provider;
 using Edelstein.Service.Game.Fields.Objects;
@@ -198,7 +201,29 @@ namespace Edelstein.Service.Game.Fields
                     : 0);
 
                 await user.SendPacket(user.GetSetFieldPacket());
-                
+
+                if (user.Party != null)
+                {
+                    if (!user.IsInstantiated)
+                    {
+                        using var p = new Packet(SendPacketOperations.PartyResult);
+                        p.Encode<byte>((byte) PartyResultType.LoadParty_Done);
+                        p.Encode<int>(user.Party.ID);
+
+                        user.Party.EncodeData(user.Service.State.ChannelID, p);
+
+                        await user.SendPacket(p);
+                    }
+
+                    await user.Service.PartyManager
+                        .UpdateUserMigration(
+                            user.Party,
+                            user.Character.ID,
+                            user.Service.State.ChannelID,
+                            user.Field.Template.ID
+                        );
+                }
+
                 if (!user.IsInstantiated) user.IsInstantiated = true;
             }
 
@@ -214,7 +239,7 @@ namespace Edelstein.Service.Game.Fields
 
             if (obj is IDisposable disposable)
                 disposable.Dispose();
-            
+
             await pool.Leave(obj);
             await obj.UpdateFieldSplit(getLeavePacket: getLeavePacket);
         }
@@ -227,6 +252,18 @@ namespace Edelstein.Service.Game.Fields
 
         public Task BroadcastPacket(IFieldObj source, IPacket packet)
             => source.FieldSplit.BroadcastPacket(source, packet);
+
+        public Task BroadcastPacket(IFieldObj source, ISocialParty party, IPacket packet)
+            => Task.WhenAll(source.FieldSplit
+                .GetWatchers()
+                .Where(u => u?.Party.ID == party.ID)
+                .Select(u => u.SendPacket(packet)));
+
+        public Task BroadcastPacket(IFieldObj source, ISocialGuild guild, IPacket packet)
+            => Task.WhenAll(source.FieldSplit
+                .GetWatchers()
+                .Where(u => u?.Guild.ID == guild.ID)
+                .Select(u => u.SendPacket(packet)));
 
         public Task TryTick()
             => Task.CompletedTask;

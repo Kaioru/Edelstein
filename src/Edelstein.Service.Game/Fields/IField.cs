@@ -1,6 +1,8 @@
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using Edelstein.Core.Gameplay.Social.Guild;
+using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Utils.Ticks;
 using Edelstein.Network.Packets;
@@ -28,5 +30,7 @@ namespace Edelstein.Service.Game.Fields
 
         Task BroadcastPacket(IPacket packet);
         Task BroadcastPacket(IFieldObj source, IPacket packet);
+        Task BroadcastPacket(IFieldObj source, ISocialParty party, IPacket packet);
+        Task BroadcastPacket(IFieldObj source, ISocialGuild guild, IPacket packet);
     }
 }

@@ -5,7 +5,6 @@ namespace Edelstein.Core.Gameplay.Social.Party
 {
     public class SocialPartyMember : ISocialPartyMember
     {
-        private readonly ISocialPartyManager _manager;
         private readonly ISocialParty _party;
         private readonly PartyMember _member;
 
@@ -14,25 +13,26 @@ namespace Edelstein.Core.Gameplay.Social.Party
         public int Job => _member.Job;
         public int Level => _member.Level;
         public int ChannelID => _member.ChannelID;
+        public int FieldID => _member.FieldID;
 
-        public SocialPartyMember(
-            ISocialPartyManager manager,
-            ISocialParty party,
-            PartyMember member
-        )
+        public SocialPartyMember(ISocialParty party, PartyMember member)
         {
-            _manager = manager;
             _party = party;
             _member = member;
         }
 
-        public Task ChangeBoss()
-            => _manager.ChangeBoss(_party, this);
+        public Task OnUpdateUserMigration(int channelID, int fieldID)
+        {
+            _member.ChannelID = channelID;
+            _member.FieldID = fieldID;
+            return Task.CompletedTask;
+        }
 
-        public Task Withdraw()
-            => _manager.Withdraw(_party, this);
-
-        public Task Kick()
-            => _manager.Kick(_party, this);
+        public Task OnUpdateChangeLevelOrJob(int level, int job)
+        {
+            _member.Level = level;
+            _member.Job = job;
+            return Task.CompletedTask;
+        }
     }
 }

@@ -7,13 +7,14 @@ namespace Edelstein.Core.Gameplay.Social.Party
     {
         Task<ISocialParty?> Load(Character character);
         Task<ISocialParty> Create(Character character);
-
-        Task Join(ISocialParty party, Character character);
-        Task Invite(ISocialParty party, Character character);
-        Task ChangeBoss(ISocialParty party, ISocialPartyMember member);
-        Task Withdraw(ISocialParty party, ISocialPartyMember member);
-        Task Kick(ISocialParty party, ISocialPartyMember member);
+        Task<ISocialParty> Join(ISocialParty party, Character character);
         
         Task Disband(ISocialParty party);
+        Task Withdraw(ISocialParty party, ISocialPartyMember member);
+        Task Kick(ISocialParty party, ISocialPartyMember member);
+        Task ChangeBoss(ISocialParty party, ISocialPartyMember member);
+
+        Task UpdateUserMigration(ISocialParty party, int characterID, int channelID, int fieldID);
+        Task UpdateChangeLevelOrJob(ISocialParty party, int characterID, int level, int job);
     }
 }

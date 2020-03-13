@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects;
 using MoreLinq.Extensions;
@@ -70,6 +71,17 @@ namespace Edelstein.Service.Game.Fields
 
                 await Task.WhenAll(newSplits.Select(s => s.Watch(user)));
                 await Task.WhenAll(oldSplits.Select(s => s.Unwatch(user)));
+
+                if (user.Party != null)
+                {
+                    using var p = new Packet(SendPacketOperations.UserHP);
+
+                    p.Encode<int>(user.ID);
+                    p.Encode<int>(user.Character.HP);
+                    p.Encode<int>(user.Character.MaxHP);
+
+                    await Task.WhenAll(newWatchers.Select(w => w.SendPacket(p)));
+                }
             }
 
             UpdateControlledObjects();
@@ -102,6 +114,22 @@ namespace Edelstein.Service.Game.Fields
             await Task.WhenAll(_objects
                 .Where(o => o != user)
                 .Select(o => user.SendPacket(o.GetEnterFieldPacket())));
+
+            if (user.Party != null)
+                await Task.WhenAll(GetObjects<IFieldUser>()
+                    .Where(u => u.Party.ID == user.Party.ID)
+                    .Where(u => u != user)
+                    .Select(async u =>
+                    {
+                        using var p = new Packet(SendPacketOperations.UserHP);
+
+                        p.Encode<int>(u.ID);
+                        p.Encode<int>(u.Character.HP);
+                        p.Encode<int>(u.Character.MaxHP);
+
+                        await user.SendPacket(p);
+                    }));
+
             UpdateControlledObjects();
         }
 

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Edelstein.Entities.Characters;
 
 namespace Edelstein.Core.Gameplay.Social.Party
 {
@@ -11,8 +10,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
         int BossCharacterID { get; }
         ICollection<ISocialPartyMember> Members { get; }
 
-        Task Join(Character character);
-        Task Invite(Character character);
-        Task Disband();
+        Task OnUpdateUserMigration(int characterID, int channelID, int fieldID);
+        Task OnUpdateChangeLevelOrJob(int characterID, int level, int job);
     }
 }

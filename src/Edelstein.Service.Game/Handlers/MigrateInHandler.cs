@@ -1,7 +1,10 @@
 using System;
 using System.Threading.Tasks;
+using Edelstein.Core.Gameplay.Social.Guild;
+using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
+using Edelstein.Entities.Social;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.User;
 
@@ -33,6 +36,7 @@ namespace Edelstein.Service.Game.Handlers
                 var fieldUser = new FieldUser(adapter)
                 {
                     Party = await adapter.Service.PartyManager.Load(adapter.Character)
+                    // TODO: guild
                 };
 
                 adapter.User = fieldUser;
@@ -40,8 +44,9 @@ namespace Edelstein.Service.Game.Handlers
                 await fieldUser.UpdateStats();
                 await field.Enter(fieldUser);
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e);
                 await adapter.Close();
             }
         }

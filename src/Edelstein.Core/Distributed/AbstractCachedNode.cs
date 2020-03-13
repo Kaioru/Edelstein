@@ -11,15 +11,15 @@ namespace Edelstein.Core.Distributed
     public abstract class AbstractCachedNode : INode
     {
         protected IDictionary<string, INodeRemote> Remotes { get; }
+        protected IMessageBus Bus { get; }
 
         private readonly IMessageBusFactory _busFactory;
-        private readonly IMessageBus _bus;
 
         protected AbstractCachedNode(IMessageBusFactory busFactory, string name)
         {
             Remotes = new ConcurrentDictionary<string, INodeRemote>();
             _busFactory = busFactory;
-            _bus = busFactory.Build($"{DistributedScopes.NodeMessaging}:{name}");
+            Bus = busFactory.Build($"{DistributedScopes.NodeMessaging}:{name}");
         }
 
         public Task<IEnumerable<INodeRemote>> GetPeers()
@@ -27,10 +27,10 @@ namespace Edelstein.Core.Distributed
                 .Where(p => p.Expire > DateTime.UtcNow));
 
         public Task SendMessage<T>(T message) where T : class
-            => _bus.PublishAsync<T>(message);
+            => Bus.PublishAsync<T>(message);
 
         public Task SendMessages<T>(IEnumerable<T> messages) where T : class
-            => Task.WhenAll(messages.Select(m => _bus.PublishAsync(m)));
+            => Task.WhenAll(messages.Select(m => Bus.PublishAsync(m)));
 
         public async Task BroadcastMessage<T>(T message) where T : class
             => await Task.WhenAll((await GetPeers()).Select(p => p.SendMessage(message)));

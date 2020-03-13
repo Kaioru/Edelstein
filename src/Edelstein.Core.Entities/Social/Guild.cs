@@ -19,13 +19,14 @@ namespace Edelstein.Entities.Social
         public short Mark { get; set; }
         public byte MarkColor { get; set; }
 
-        public string Notice;
-        public int Point;
-        public int Level;
+        public string Notice { get; set; }
+        public int Point { get; set; }
+        public int Level { get; set; }
 
         public Guild()
         {
             GradeName = new string[6];
+            Members = new List<GuildMember>();
         }
     }
 }

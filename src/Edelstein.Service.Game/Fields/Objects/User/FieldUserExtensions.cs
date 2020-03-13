@@ -5,6 +5,7 @@ using Baseline;
 using Edelstein.Core.Gameplay.Extensions.Packets;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Core.Gameplay.Inventories.Operations;
+using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
@@ -166,6 +167,34 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 context.Flag.HasFlag(ModifyStatType.Face) ||
                 context.Flag.HasFlag(ModifyStatType.Hair)
             ) await user.UpdateAvatar();
+
+            if (
+                user.Party != null &&
+                context.Flag.HasFlag(ModifyStatType.Level) ||
+                context.Flag.HasFlag(ModifyStatType.Job)
+            )
+                await user.Service.PartyManager
+                    .UpdateChangeLevelOrJob(
+                        user.Party,
+                        user.Character.ID,
+                        user.Character.Level,
+                        user.Character.Job
+                    );
+
+            if (
+                user.Party != null &&
+                context.Flag.HasFlag(ModifyStatType.HP) ||
+                context.Flag.HasFlag(ModifyStatType.MaxHP)
+            )
+            {
+                using var p = new Packet(SendPacketOperations.UserHP);
+
+                p.Encode<int>(user.ID);
+                p.Encode<int>(user.Character.HP);
+                p.Encode<int>(user.Character.MaxHP);
+
+                await user.Field.BroadcastPacket(user, user.Party, p);
+            }
         }
 
         public static async Task ModifyForcedStats(

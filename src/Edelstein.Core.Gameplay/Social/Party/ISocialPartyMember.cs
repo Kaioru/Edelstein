@@ -9,9 +9,9 @@ namespace Edelstein.Core.Gameplay.Social.Party
         int Job { get; }
         int Level { get; }
         int ChannelID { get; }
+        int FieldID { get; }
 
-        Task ChangeBoss();
-        Task Withdraw();
-        Task Kick();
+        Task OnUpdateUserMigration(int channelID, int fieldID);
+        Task OnUpdateChangeLevelOrJob(int level, int job);
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Edelstein.Core.Gameplay.Social.Guild;
+using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Entities.Characters;
 using Edelstein.Network.Packets;
 
@@ -11,6 +13,9 @@ namespace Edelstein.Service.Game.Fields.Objects
         GameServiceAdapter Adapter { get; }
         Character Character { get; }
         bool IsInstantiated { get; set; }
+        
+        ISocialParty? Party { get; set; }
+        ISocialGuild? Guild { get; set; }
 
         IFieldSplit[] Watching { get; }
         ICollection<IFieldControlled> Controlling { get; }

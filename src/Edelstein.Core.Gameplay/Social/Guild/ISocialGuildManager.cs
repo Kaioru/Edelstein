@@ -1,4 +1,4 @@
-namespace Edelstein.Core.Gameplay.Social
+namespace Edelstein.Core.Gameplay.Social.Guild
 {
     public interface ISocialGuildManager
     {

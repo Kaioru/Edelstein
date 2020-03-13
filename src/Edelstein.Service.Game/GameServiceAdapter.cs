@@ -50,7 +50,21 @@ namespace Edelstein.Service.Game
         public override async Task OnDisconnect()
         {
             await base.OnDisconnect();
-            if (User != null) await User.Field.Leave(User);
+            if (User != null)
+            {
+                await User.Field.Leave(User);
+
+                if (!isMigrating)
+                {
+                    await Service.PartyManager
+                        .UpdateUserMigration(
+                            User.Party,
+                            User.Character.ID,
+                            -2,
+                            -1
+                        );
+                }
+            }
         }
     }
 }
