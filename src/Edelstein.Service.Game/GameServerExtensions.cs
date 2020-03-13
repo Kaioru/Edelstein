@@ -34,11 +34,14 @@ namespace Edelstein.Service.Game
             await service.Bus.SubscribeAsync<PartyWithdrawEvent>(
                 async (msg, token) =>
                 {
-                    var users = service.GetPartyMembers(msg);
                     var user = service.GetPartyMember(msg);
 
+                    if (user != null)
+                        user.Party = null;
+
+                    var users = service.GetPartyMembers(msg);
+
                     await Task.WhenAll(users.Select(u => u.Party.OnUpdateWithdraw(msg.PartyMemberID)));
-                    user.Party = null;
                     await Task.WhenAll(users.Select(async u =>
                     {
                         using var p = new Packet(SendPacketOperations.PartyResult);

@@ -115,7 +115,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 .Where(m => m.PartyID == record.ID)
                 .ToImmutableList();
 
-            return Task.FromResult<ISocialParty?>(new SocialParty(record, members));
+            return Task.FromResult<ISocialParty?>(new SocialParty(this, record, members));
         }
 
         private async Task<ISocialParty> CreateInner(Character character)
@@ -153,7 +153,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 .Where(m => m.PartyID == record.ID)
                 .ToImmutableList();
 
-            return new SocialParty(record, members);
+            return new SocialParty(this, record, members);
         }
 
         private async Task<ISocialParty> JoinInner(ISocialParty party, Character character)

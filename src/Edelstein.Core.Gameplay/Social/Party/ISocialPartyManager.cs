@@ -8,7 +8,6 @@ namespace Edelstein.Core.Gameplay.Social.Party
         Task<ISocialParty?> Load(Character character);
         Task<ISocialParty> Create(Character character);
         Task<ISocialParty> Join(ISocialParty party, Character character);
-        
         Task Disband(ISocialParty party);
         Task Withdraw(ISocialParty party, ISocialPartyMember member);
         Task Kick(ISocialParty party, ISocialPartyMember member);

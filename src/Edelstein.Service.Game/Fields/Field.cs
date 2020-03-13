@@ -221,13 +221,11 @@ namespace Edelstein.Service.Game.Fields
                         await user.SendPacket(p);
                     }
 
-                    await user.Service.PartyManager
-                        .UpdateUserMigration(
-                            user.Party,
-                            user.Character.ID,
-                            user.Service.State.ChannelID,
-                            user.Field.Template.ID
-                        );
+                    await user.Party.UpdateUserMigration(
+                        user.Character.ID,
+                        user.Service.State.ChannelID,
+                        user.Field.Template.ID
+                    );
                 }
 
                 if (!user.IsInstantiated) user.IsInstantiated = true;

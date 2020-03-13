@@ -1,28 +1,55 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Entities.Characters;
 using Edelstein.Entities.Social;
 
 namespace Edelstein.Core.Gameplay.Social.Party
 {
     public class SocialParty : ISocialParty
     {
+        private readonly ISocialPartyManager _manager;
         private readonly Entities.Social.Party _party;
 
         public int ID => _party.ID;
         public int BossCharacterID => _party.BossCharacterID;
         public ICollection<ISocialPartyMember> Members { get; }
 
-        public SocialParty(Entities.Social.Party party, IEnumerable<PartyMember> members)
+        public SocialParty(
+            ISocialPartyManager manager,
+            Entities.Social.Party party,
+            IEnumerable<PartyMember> members
+        )
         {
+            _manager = manager;
             _party = party;
 
             Members = members
-                .Select<PartyMember, ISocialPartyMember>(p => new SocialPartyMember(this, p))
+                .Select<PartyMember, ISocialPartyMember>(p => new SocialPartyMember(_manager, this, p))
                 .ToList();
         }
-        
+
+        public Task<ISocialParty> Join(Character character)
+            => _manager.Join(this, character);
+
+        public Task Disband()
+            => _manager.Disband(this);
+
+        public Task Withdraw(ISocialPartyMember member)
+            => _manager.Withdraw(this, member);
+
+        public Task Kick(ISocialPartyMember member)
+            => _manager.Kick(this, member);
+
+        public Task ChangeBoss(ISocialPartyMember member, bool disconnect = false)
+            => _manager.ChangeBoss(this, member, disconnect);
+
+        public Task UpdateUserMigration(int characterID, int channelID, int fieldID)
+            => _manager.UpdateUserMigration(this, characterID, channelID, fieldID);
+
+        public Task UpdateChangeLevelOrJob(int characterID, int level, int job)
+            => _manager.UpdateChangeLevelOrJob(this, characterID, level, job);
+
         public Task OnUpdateWithdraw(int characterID)
         {
             Members.Remove(Members.FirstOrDefault(m => m.ChannelID == characterID));
