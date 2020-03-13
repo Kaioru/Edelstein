@@ -17,7 +17,7 @@ namespace Edelstein.Service.Game.Handlers.Users
         )
         {
             packet.Decode<int>();
-            var target = user.Field.GetObject<FieldUser>(packet.Decode<int>());
+            var target = user.GetWatchedObject<FieldUser>(packet.Decode<int>());
 
             if (target == null) return;
 
