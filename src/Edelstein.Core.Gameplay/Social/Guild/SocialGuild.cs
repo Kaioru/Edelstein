@@ -24,7 +24,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
 
         public string Notice => _guild.Notice;
         public int Point => _guild.Point;
-        public int Level => _guild.Level;
+        public byte Level => _guild.Level;
 
         public SocialGuild(Entities.Social.Guild guild)
         {

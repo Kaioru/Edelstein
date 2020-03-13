@@ -6,14 +6,14 @@ namespace Edelstein.Entities.Social
     public class Guild : IDataEntity
     {
         public int ID { get; set; }
-        
+
         public string Name { get; set; }
-        
+
         public string[] GradeName { get; }
-        
+
         public int MaxMemberNum { get; set; }
         public ICollection<GuildMember> Members { get; set; }
-        
+
         public short MarkBg { get; set; }
         public byte MarkBgColor { get; set; }
         public short Mark { get; set; }
@@ -21,11 +21,18 @@ namespace Edelstein.Entities.Social
 
         public string Notice { get; set; }
         public int Point { get; set; }
-        public int Level { get; set; }
+        public byte Level { get; set; }
 
         public Guild()
         {
-            GradeName = new string[6];
+            GradeName = new[]
+            {
+                "Master",
+                "Jr. Master",
+                "Member",
+                "Member",
+                "Member"
+            };
             Members = new List<GuildMember>();
         }
     }

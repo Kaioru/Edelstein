@@ -228,6 +228,18 @@ namespace Edelstein.Service.Game.Fields
                     );
                 }
 
+                if (user.Guild != null)
+                {
+                    if (!user.IsInstantiated)
+                    {
+                        using var p = new Packet(SendPacketOperations.GuildResult);
+                        p.Encode<byte>((byte) GuildResultType.LoadGuild_Done);
+                        p.Encode<bool>(true);
+                        user.Guild.EncodeData(p);
+                        await user.SendPacket(p);
+                    }
+                }
+
                 if (!user.IsInstantiated) user.IsInstantiated = true;
             }
 

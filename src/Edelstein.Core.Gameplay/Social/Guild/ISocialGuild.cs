@@ -20,6 +20,6 @@ namespace Edelstein.Core.Gameplay.Social.Guild
 
         public string Notice { get; }
         public int Point { get; }
-        public int Level { get; }
+        public byte Level { get; }
     }
 }
