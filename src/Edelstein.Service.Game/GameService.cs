@@ -90,7 +90,8 @@ namespace Edelstein.Service.Game
             Handlers[RecvPacketOperations.UserGatherItemRequest] = new UserGatherItemRequestHandler();
             Handlers[RecvPacketOperations.UserSortItemRequest] = new UserSortItemRequestHandler();
             Handlers[RecvPacketOperations.UserChangeSlotPositionRequest] = new UserChangeSlotPositionRequestHandler();
-
+            Handlers[RecvPacketOperations.UserCharacterInfoRequest] = new UserCharacterInfoRequestHandler();
+            
             Handlers[RecvPacketOperations.NpcMove] = new NPCMoveHandler();
 
             Handlers[RecvPacketOperations.CONTISTATE] = new ContiStateHandler();
