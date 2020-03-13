@@ -54,15 +54,25 @@ namespace Edelstein.Service.Game
             {
                 await User.Field.Leave(User);
 
-                if (!isMigrating)
+                if (User.Party != null && !isMigrating)
                 {
-                    await Service.PartyManager
-                        .UpdateUserMigration(
-                            User.Party,
-                            User.Character.ID,
-                            -2,
-                            -1
-                        );
+                    await User.Party.UpdateUserMigration(
+                        User.Character.ID,
+                        -2,
+                        -1
+                    );
+
+                    if (User.Party.BossCharacterID == User.ID)
+                    {
+                        var nextLeader = User.Party.Members
+                            .Where(m => m.CharacterID != User.ID)
+                            .Where(m => m.ChannelID >= 0)
+                            .OrderByDescending(m => m.Level)
+                            .FirstOrDefault();
+
+                        if (nextLeader != null)
+                            await nextLeader.ChangeBoss(true);
+                    }
                 }
             }
         }
