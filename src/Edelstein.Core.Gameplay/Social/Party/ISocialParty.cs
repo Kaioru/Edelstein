@@ -10,6 +10,8 @@ namespace Edelstein.Core.Gameplay.Social.Party
         int BossCharacterID { get; }
         ICollection<ISocialPartyMember> Members { get; }
 
+        Task OnUpdateWithdraw(int characterID);
+        Task OnUpdateBoss(int characterID);
         Task OnUpdateUserMigration(int characterID, int channelID, int fieldID);
         Task OnUpdateChangeLevelOrJob(int characterID, int level, int job);
     }

@@ -99,60 +99,8 @@ namespace Edelstein.Service.Game
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
+            await this.SubscribePartyEvents(cancellationToken);
             _ticker.Start();
-
-            await Bus.SubscribeAsync<PartyUserMigrationEvent>(
-                async (msg, token) =>
-                {
-                    var users = FieldManager
-                        .GetAll()
-                        .SelectMany(f => f.GetObjects<FieldUser>())
-                        .Where(u => u.Party != null)
-                        .Where(u => u.Party.ID == msg.PartyID)
-                        .ToImmutableList();
-
-                    await Task.WhenAll(users.Select(u => u.Party.OnUpdateUserMigration(
-                        msg.PartyMemberID,
-                        msg.ChannelID,
-                        msg.FieldID
-                    )));
-                    await Task.WhenAll(users.Select(async u =>
-                    {
-                        using var p = new Packet(SendPacketOperations.PartyResult);
-
-                        p.Encode<byte>((byte) PartyResultType.UserMigration);
-                        p.Encode<int>(u.Party.ID);
-                        u.Party.EncodeData(State.ChannelID, p);
-
-                        await u.SendPacket(p);
-                    }));
-                }, cancellationToken);
-            await Bus.SubscribeAsync<PartyChangeLevelOrJobEvent>(async (msg, token) =>
-            {
-                var users = FieldManager
-                    .GetAll()
-                    .SelectMany(f => f.GetObjects<FieldUser>())
-                    .Where(u => u.Party != null)
-                    .Where(u => u.Party.ID == msg.PartyID)
-                    .ToImmutableList();
-
-                await Task.WhenAll(users.Select(u => u.Party.OnUpdateChangeLevelOrJob(
-                    msg.PartyMemberID,
-                    msg.Level,
-                    msg.Job
-                )));
-                await Task.WhenAll(users.Select(async u =>
-                {
-                    using var p = new Packet(SendPacketOperations.PartyResult);
-
-                    p.Encode<byte>((byte) PartyResultType.ChangeLevelOrJob);
-                    p.Encode<int>(msg.PartyMemberID);
-                    p.Encode<int>(msg.Level);
-                    p.Encode<int>(msg.Job);
-
-                    await u.SendPacket(p);
-                }));
-            }, cancellationToken);
         }
 
         public override ISocketAdapter Build(ISocket socket)

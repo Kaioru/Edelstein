@@ -11,7 +11,7 @@ namespace Edelstein.Core.Distributed
     public abstract class AbstractCachedNode : INode
     {
         protected IDictionary<string, INodeRemote> Remotes { get; }
-        protected IMessageBus Bus { get; }
+        public IMessageBus Bus { get; }
 
         private readonly IMessageBusFactory _busFactory;
 

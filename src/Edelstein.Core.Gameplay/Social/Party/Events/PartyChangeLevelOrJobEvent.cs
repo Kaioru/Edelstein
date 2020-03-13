@@ -1,6 +1,6 @@
 namespace Edelstein.Core.Gameplay.Social.Party.Events
 {
-    public class PartyChangeLevelOrJobEvent : IPartyEvent
+    public class PartyChangeLevelOrJobEvent : IPartyMemberEvent
     {
         public int PartyID { get; }
         public int PartyMemberID { get; }

@@ -20,7 +20,19 @@ namespace Edelstein.Core.Gameplay.Social.Party
 
             Members = members
                 .Select<PartyMember, ISocialPartyMember>(p => new SocialPartyMember(this, p))
-                .ToImmutableList();
+                .ToList();
+        }
+        
+        public Task OnUpdateWithdraw(int characterID)
+        {
+            Members.Remove(Members.FirstOrDefault(m => m.ChannelID == characterID));
+            return Task.CompletedTask;
+        }
+
+        public Task OnUpdateBoss(int characterID)
+        {
+            _party.BossCharacterID = characterID;
+            return Task.CompletedTask;
         }
 
         public Task OnUpdateUserMigration(int characterID, int channelID, int fieldID)

@@ -186,24 +186,104 @@ namespace Edelstein.Core.Gameplay.Social.Party
             return await LoadInner(character);
         }
 
-        private Task DisbandInner(ISocialParty party)
+        private async Task DisbandInner(ISocialParty party)
         {
-            throw new System.NotImplementedException();
+            using var store = _store.StartSession();
+            var record = store
+                .Query<Entities.Social.Party>()
+                .Where(p => p.ID == party.ID)
+                .FirstOrDefault();
+
+            if (record == null)
+                throw new PartyException("Disbanding a non-existent party");
+
+            await Task.WhenAll(party.Members.Select(m => WithdrawInner(party, m, true)));
+            await store.DeleteAsync(record);
         }
 
-        private Task WithdrawInner(ISocialParty party, ISocialPartyMember member)
+        private async Task WithdrawInner(ISocialParty party, ISocialPartyMember member, bool disband = false)
         {
-            throw new System.NotImplementedException();
+            using var store = _store.StartSession();
+            var record = store
+                .Query<Entities.Social.Party>()
+                .Where(p => p.ID == party.ID)
+                .FirstOrDefault();
+
+            if (record == null)
+                throw new PartyException("Withdrawing from a non-existent party");
+
+            var memberRecord = store
+                .Query<PartyMember>()
+                .Where(m => m.PartyID == record.ID)
+                .Where(m => m.CharacterID == member.CharacterID)
+                .FirstOrDefault();
+
+            if (memberRecord == null)
+                throw new PartyException("Withdrawing from a party that user is not apart of");
+
+            await store.DeleteAsync(memberRecord);
+            await BroadcastMessage(party, new PartyWithdrawEvent(
+                party.ID,
+                member.CharacterID,
+                disband,
+                member.CharacterID,
+                member.CharacterName
+            ));
         }
 
-        private Task KickInner(ISocialParty party, ISocialPartyMember member)
+        private async Task KickInner(ISocialParty party, ISocialPartyMember member)
         {
-            throw new System.NotImplementedException();
+            using var store = _store.StartSession();
+            var record = store
+                .Query<Entities.Social.Party>()
+                .Where(p => p.ID == party.ID)
+                .FirstOrDefault();
+
+            if (record == null)
+                throw new PartyException("Kicked from a non-existent party");
+
+            var memberRecord = store
+                .Query<PartyMember>()
+                .Where(m => m.PartyID == record.ID)
+                .Where(m => m.CharacterID == member.CharacterID)
+                .FirstOrDefault();
+
+            if (memberRecord == null)
+                throw new PartyException("Kicked from a party that user is not apart of");
+
+            await store.DeleteAsync(memberRecord);
+            await BroadcastMessage(party, new PartyWithdrawEvent(
+                party.ID,
+                member.CharacterID,
+                false,
+                party.BossCharacterID,
+                member.CharacterName
+            ));
         }
 
-        private Task ChangeBossInner(ISocialParty party, ISocialPartyMember member)
+        private async Task ChangeBossInner(ISocialParty party, ISocialPartyMember member, bool disconnect = false)
         {
-            throw new System.NotImplementedException();
+            using var store = _store.StartSession();
+            var record = store
+                .Query<Entities.Social.Party>()
+                .Where(p => p.ID == party.ID)
+                .FirstOrDefault();
+
+            if (record == null)
+                throw new PartyException("Changing boss in a non-existent party");
+            if (store.Query<PartyMember>()
+                    .Where(p => p.CharacterID == member.CharacterID)
+                    .Where(p => p.PartyID == record.ID)
+                    .FirstOrDefault() == null)
+                throw new PartyException("Changing boss to member not in party");
+
+            record.BossCharacterID = member.CharacterID;
+            await store.UpdateAsync(record);
+            await BroadcastMessage(party, new PartyChangeBossEvent(
+                party.ID,
+                member.CharacterID,
+                disconnect
+            ));
         }
 
         private async Task UpdateUserMigrationInner(ISocialParty party, int characterID, int channelID, int fieldID)
@@ -284,8 +364,8 @@ namespace Edelstein.Core.Gameplay.Social.Party
         public Task Kick(ISocialParty party, ISocialPartyMember member)
             => Lock(() => KickInner(party, member));
 
-        public Task ChangeBoss(ISocialParty party, ISocialPartyMember member)
-            => Lock(() => ChangeBossInner(party, member));
+        public Task ChangeBoss(ISocialParty party, ISocialPartyMember member, bool disconnect = false)
+            => Lock(() => ChangeBossInner(party, member, disconnect));
 
         public Task UpdateUserMigration(ISocialParty party, int characterID, int channelID, int fieldID)
             => Lock(() => UpdateUserMigrationInner(party, characterID, channelID, fieldID));
