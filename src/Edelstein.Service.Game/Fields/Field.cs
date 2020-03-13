@@ -210,6 +210,12 @@ namespace Edelstein.Service.Game.Fields
                         p.Encode<byte>((byte) PartyResultType.LoadParty_Done);
                         p.Encode<int>(user.Party.ID);
 
+                        await user.Party.OnUpdateUserMigration(
+                            user.Character.ID,
+                            user.Service.State.ChannelID,
+                            Template.ID
+                        );
+
                         user.Party.EncodeData(user.Service.State.ChannelID, p);
 
                         await user.SendPacket(p);
