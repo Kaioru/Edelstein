@@ -28,7 +28,7 @@ namespace Edelstein.Service.Game.Commands.Impl
                     await user.Message($"Party ID: {user.Party.ID}");
                     await user.Message($"Party Boss ID: {user.Party.BossCharacterID}");
 
-                    await user.Message($"Party Members:");
+                    await user.Message("Party Members:");
                     user.Party.Members.ForEach(async (m, i) =>
                         await user.Message($"\t{i + 1}) {m.CharacterName} ({m.CharacterID})")
                     );
@@ -52,7 +52,7 @@ namespace Edelstein.Service.Game.Commands.Impl
                     }
                     catch
                     {
-                        await user.Message("Failed to join party, invalid party ID");
+                        await user.Message("Failed to join party.");
                     }
                 })
             );

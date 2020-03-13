@@ -1,6 +1,6 @@
 namespace Edelstein.Core.Gameplay.Social.Guild.Events
 {
-    public interface IGuildMemberEvent
+    public interface IGuildMemberEvent : IGuildEvent
     {
         int GuildMemberID { get; }
     }

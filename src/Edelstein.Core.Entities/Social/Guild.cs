@@ -32,6 +32,8 @@ namespace Edelstein.Entities.Social
                 "Member",
                 "Member"
             };
+            MaxMemberNum = 10;
+            Notice = "";
         }
     }
 }

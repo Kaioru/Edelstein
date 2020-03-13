@@ -12,7 +12,7 @@ using Marten;
 
 namespace Edelstein.Service.Game
 {
-    public static class GameServerExtensions
+    public static class GameServiceExtensions
     {
         private static ICollection<IFieldUser> GetPartyMembers(this GameService service, IPartyEvent msg)
         {

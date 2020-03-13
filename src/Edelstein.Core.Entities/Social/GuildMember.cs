@@ -14,5 +14,10 @@ namespace Edelstein.Entities.Social
         public int Grade { get; set; }
         public bool Online { get; set; }
         public int Commitment { get; set; }
+
+        public GuildMember()
+        {
+            Grade = 5;
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Entities.Characters;
@@ -8,7 +9,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
     {
         Task<ISocialGuild> Load(int guildID);
         Task<ISocialGuild?> Load(Character character);
-        Task Create(Character character);
+        Task Create(string name, ISocialParty party);
         Task Join(ISocialGuild guild, Character character);
         Task Disband(ISocialGuild guild);
         Task Withdraw(ISocialGuild guild, ISocialGuildMember member);

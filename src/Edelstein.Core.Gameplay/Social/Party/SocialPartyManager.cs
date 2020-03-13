@@ -96,6 +96,21 @@ namespace Edelstein.Core.Gameplay.Social.Party
             }
         }
 
+        private async Task BroadcastMessage<T>(ISocialParty party, T message) where T : class
+        {
+            var targets = (await _characterCache.GetAllAsync<INodeState>(
+                    party.Members.Select(m => m.CharacterID.ToString())
+                )).Values
+                .Where(t => t.HasValue)
+                .Select(t => t.Value.Name)
+                .Distinct();
+
+            await Task.WhenAll((await _node.GetPeers())
+                .Where(p => targets.Contains(p.State.Name))
+                .Select(p => p.SendMessage<T>(message)));
+        }
+
+
         private async Task ProcessAfterLeaveProcess(Entities.Social.Party party)
         {
             using var store = _store.StartSession();
@@ -149,6 +164,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
 
             if (member != null)
                 throw new PartyException("Creating party when character already in party");
+
             var record = new Entities.Social.Party
             {
                 BossCharacterID = character.ID
@@ -207,7 +223,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 .Where(m => m.PartyID == record.ID)
                 .ToList();
 
-            if (members.Any(m => m.ChannelID == character.ID))
+            if (members.Any(m => m.CharacterID == character.ID))
                 throw new PartyException("Joining already joined party");
 
             member = new PartyMember
@@ -343,10 +359,13 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 .Query<PartyMember>()
                 .Where(m => m.CharacterID == characterID)
                 .FirstOrDefault();
+
             if (member == null) return;
+
             member.ChannelID = channelID;
             member.FieldID = fieldID;
             store.Update(member);
+
             await BroadcastMessage(party, new PartyUserMigrationEvent(
                 party.ID,
                 characterID,
@@ -363,31 +382,19 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 .Query<PartyMember>()
                 .Where(m => m.CharacterID == characterID)
                 .FirstOrDefault();
+
             if (member == null) return;
+
             member.Level = level;
             member.Job = job;
             store.Update(member);
+
             await BroadcastMessage(party, new PartyChangeLevelOrJobEvent(
                 party.ID,
                 characterID,
                 level,
                 job
             ));
-        }
-
-        private async Task BroadcastMessage<T>(ISocialParty party, T message) where T : class
-
-        {
-            var targets = (await _characterCache.GetAllAsync<INodeState>(
-                    party.Members.Select(m => m.CharacterID.ToString())
-                )).Values
-                .Where(t => t.HasValue)
-                .Select(t => t.Value.Name)
-                .Distinct();
-
-            await Task.WhenAll((await _node.GetPeers())
-                .Where(p => targets.Contains(p.State.Name))
-                .Select(p => p.SendMessage<T>(message)));
         }
 
         public Task<ISocialParty> Load(int partyID)

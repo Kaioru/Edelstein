@@ -1,14 +1,20 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Gameplay.Migrations;
+using Edelstein.Core.Gameplay.Social.Guild.Events;
 using Edelstein.Core.Gameplay.Social.Party;
+using Edelstein.Core.Gameplay.Social.Party.Events;
 using Edelstein.Database;
 using Edelstein.Entities.Characters;
 using Edelstein.Entities.Social;
 using Foundatio.Caching;
 using Foundatio.Lock;
+using Microsoft.Scripting.Utils;
+using MoreLinq;
 
 namespace Edelstein.Core.Gameplay.Social.Guild
 {
@@ -95,6 +101,20 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             }
         }
 
+        private async Task BroadcastMessage<T>(ISocialGuild guild, T message) where T : class
+        {
+            var targets = (await _characterCache.GetAllAsync<INodeState>(
+                    guild.Members.Select(m => m.CharacterID.ToString())
+                )).Values
+                .Where(t => t.HasValue)
+                .Select(t => t.Value.Name)
+                .Distinct();
+
+            await Task.WhenAll((await _node.GetPeers())
+                .Where(p => targets.Contains(p.State.Name))
+                .Select(p => p.SendMessage<T>(message)));
+        }
+
         private Task<ISocialGuild> LoadInner(int guildID)
         {
             using var store = _store.StartSession();
@@ -126,14 +146,107 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             return LoadInner(member.GuildID);
         }
 
-        private Task CreateInner(Character character)
+        private async Task CreateInner(string name, ISocialParty party)
         {
-            throw new System.NotImplementedException();
+            using var store = _store.StartSession();
+            var members = store
+                .Query<GuildMember>()
+                .Where(m => party.Members.Any(c => c.CharacterID == m.CharacterID))
+                .ToList();
+            var record = store
+                .Query<Entities.Social.Guild>()
+                .Where(g => g.Name.ToLower() == name.ToLower())
+                .FirstOrDefault();
+
+            if (members.Count > 0)
+                throw new GuildException("Creating guild when character already in guild");
+            if (record != null)
+                throw new GuildException("Creating guild with same name as another guild");
+
+            record = new Entities.Social.Guild
+            {
+                Name = name
+            };
+
+            await store.InsertAsync(record);
+
+            using var batch = _store.StartBatch();
+
+            party.Members
+                .Select(m => new GuildMember
+                {
+                    GuildID = record.ID,
+                    CharacterID = m.CharacterID,
+                    CharacterName = m.CharacterName,
+                    Job = m.Job,
+                    Level = m.Level,
+                    Grade = party.BossCharacterID == m.CharacterID ? 1 : 2,
+                    Online = m.ChannelID >= 0
+                })
+                .ForEach(m => batch.Insert(m));
+            await batch.SaveChangesAsync();
+
+            members = store
+                .Query<GuildMember>()
+                .Where(m => m.GuildID == record.ID)
+                .ToList();
+
+            var guild = new SocialGuild(this, record, members);
+
+            await BroadcastMessage(guild, new GuildCreateEvent(
+                record.ID,
+                record,
+                members
+            ));
         }
 
-        private Task JoinInner(ISocialGuild guild, Character character)
+        private async Task JoinInner(ISocialGuild guild, Character character)
         {
-            throw new System.NotImplementedException();
+            using var store = _store.StartSession();
+            var record = store
+                .Query<Entities.Social.Guild>()
+                .Where(p => p.ID == guild.ID)
+                .FirstOrDefault();
+
+            if (record == null)
+                throw new GuildException("Joining non-existent guild");
+
+            var member = store
+                .Query<GuildMember>()
+                .Where(m => m.CharacterID == character.ID)
+                .FirstOrDefault();
+
+            if (member != null)
+                throw new GuildException("Joining guild when character already in guild");
+
+            var members = store
+                .Query<GuildMember>()
+                .Where(m => m.GuildID == record.ID)
+                .ToList();
+
+            if (members.Any(m => m.CharacterID == character.ID))
+                throw new PartyException("Joining already joined party");
+
+            member = new GuildMember
+            {
+                GuildID = guild.ID,
+                CharacterID = character.ID,
+                CharacterName = character.Name,
+                Job = character.Job,
+                Level = character.Level,
+                Online = true
+            };
+
+            await store.InsertAsync(member);
+
+            members.Add(member);
+            guild = new SocialGuild(this, record, members);
+
+            await BroadcastMessage(guild, new GuildJoinEvent(
+                guild.ID,
+                member.CharacterID,
+                member
+            ));
         }
 
         private Task DisbandInner(ISocialGuild guild)
@@ -187,8 +300,8 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public Task<ISocialGuild?> Load(Character character)
             => Lock(() => LoadInner(character));
 
-        public Task Create(Character character)
-            => Lock(() => CreateInner(character));
+        public Task Create(string name, ISocialParty party)
+            => Lock(() => CreateInner(name, party));
 
         public Task Join(ISocialGuild guild, Character character)
             => Lock(() => JoinInner(guild, character));

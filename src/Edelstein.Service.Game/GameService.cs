@@ -107,6 +107,7 @@ namespace Edelstein.Service.Game
         {
             await base.StartAsync(cancellationToken);
             await this.SubscribePartyEvents(cancellationToken);
+            await this.SubscribeGuildEvents(cancellationToken);
             _ticker.Start();
         }
 
