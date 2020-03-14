@@ -1,5 +1,7 @@
 using Edelstein.Core.Distributed.States;
 using Edelstein.Core.Gameplay.Migrations;
+using Edelstein.Core.Gameplay.Social.Guild;
+using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Database;
@@ -19,6 +21,9 @@ namespace Edelstein.Service.Login
         public ILockProvider LockProvider { get; }
         public IDataTemplateManager TemplateManager { get; }
 
+        public ISocialPartyManager PartyManager { get; }
+        public ISocialGuildManager GuildManager { get; }
+
         public LoginService(
             IOptions<LoginServiceState> state,
             IDataStore dataStore,
@@ -30,6 +35,20 @@ namespace Edelstein.Service.Login
         {
             LockProvider = lockProvider;
             TemplateManager = templateManager;
+
+            PartyManager = new SocialPartyManager(
+                -2,
+                this,
+                dataStore,
+                lockProvider,
+                cache
+            );
+            GuildManager = new SocialGuildManager(
+                this,
+                dataStore,
+                lockProvider,
+                cache
+            );
 
             Handlers[RecvPacketOperations.CheckPassword] = new CheckPasswordHandler();
             Handlers[RecvPacketOperations.WorldInfoRequest] = new WorldRequestHandler();
