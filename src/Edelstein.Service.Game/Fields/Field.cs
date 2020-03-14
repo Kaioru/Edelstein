@@ -272,6 +272,8 @@ namespace Edelstein.Service.Game.Fields
 
             if (obj is IDisposable disposable)
                 disposable.Dispose();
+            if (obj is IFieldUser user)
+                Array.Fill(user.Watching, null);
 
             await pool.Leave(obj);
             await obj.UpdateFieldSplit(getLeavePacket: getLeavePacket);
