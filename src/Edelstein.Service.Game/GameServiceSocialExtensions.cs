@@ -19,7 +19,7 @@ namespace Edelstein.Service.Game
                         .GetAll()
                         .SelectMany(f => f.GetObjects<IFieldUser>())
                         .Where(u => u.Character.Name != msg.Name)
-                        .Where(u => msg.Targets.Any(i => i == u.ID))
+                        .Where(u => msg.Recipients.Any(i => i == u.ID))
                         .ToList();
 
                     await Task.WhenAll(users

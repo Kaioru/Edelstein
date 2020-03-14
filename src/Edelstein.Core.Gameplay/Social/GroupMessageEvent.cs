@@ -5,19 +5,19 @@ namespace Edelstein.Core.Gameplay.Social.Messages
     public class GroupMessageEvent
     {
         public GroupMessageType Type { get; }
-        public ICollection<int> Targets { get; }
+        public ICollection<int> Recipients { get; }
         public string Name { get; }
         public string Text { get; }
 
         public GroupMessageEvent(
             GroupMessageType type,
-            ICollection<int> targets,
+            ICollection<int> recipients,
             string name,
             string text
         )
         {
             Type = type;
-            Targets = targets;
+            Recipients = recipients;
             Name = name;
             Text = text;
         }
