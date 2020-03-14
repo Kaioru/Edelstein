@@ -1,3 +1,4 @@
+using System;
 using Edelstein.Database;
 
 namespace Edelstein.Entities.Social
@@ -14,10 +15,12 @@ namespace Edelstein.Entities.Social
         public int Grade { get; set; }
         public bool Online { get; set; }
         public int Commitment { get; set; }
+        public DateTime DateLastLoginOrLogout { get; set; }
 
         public GuildMember()
         {
             Grade = 5;
+            DateLastLoginOrLogout = DateTime.UtcNow;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using Edelstein.Network.Packets;
 using MoreLinq;
@@ -40,8 +41,8 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public static void EncodeData(this ISocialGuildMember member, IPacket p)
         {
             p.EncodeFixedString(member.CharacterName, 13);
-            p.Encode<int>(member.Job);
-            p.Encode<int>(member.Level);
+            p.Encode<int>(member.Inactive ? -1 : member.Job);
+            p.Encode<int>(member.Inactive ? -1 : member.Level);
             p.Encode<int>(member.Grade);
             p.Encode<int>(member.Online ? 1 : 0);
             p.Encode<int>(member.Commitment);

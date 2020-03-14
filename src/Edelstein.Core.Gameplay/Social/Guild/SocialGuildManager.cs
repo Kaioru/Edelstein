@@ -274,6 +274,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             if (member == null) return;
 
             member.Online = online;
+            member.DateLastLoginOrLogout = DateTime.UtcNow;
             await store.UpdateAsync(member);
             await BroadcastMessage(guild, new GuildNotifyLoginOrLogoutEvent(
                 guild.ID,

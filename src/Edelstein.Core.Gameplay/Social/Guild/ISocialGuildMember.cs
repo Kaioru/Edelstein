@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace Edelstein.Core.Gameplay.Social.Guild
@@ -11,6 +12,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public int Grade { get; }
         public bool Online { get; }
         public int Commitment { get; }
+        public bool Inactive { get; }
 
         Task Withdraw();
         Task Kick();

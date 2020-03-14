@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Edelstein.Entities.Social;
 
@@ -16,6 +17,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public int Grade => _member.Grade;
         public bool Online => _member.Online;
         public int Commitment => _member.Commitment;
+        public bool Inactive => (DateTime.UtcNow - _member.DateLastLoginOrLogout).TotalDays >= 7;
 
         public SocialGuildMember(
             ISocialGuildManager manager,
