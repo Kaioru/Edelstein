@@ -361,6 +361,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
 
             var member = store
                 .Query<PartyMember>()
+                .Where(m => m.PartyID == party.ID)
                 .Where(m => m.CharacterID == characterID)
                 .FirstOrDefault();
 
@@ -383,6 +384,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
 
             var member = store
                 .Query<PartyMember>()
+                .Where(m => m.PartyID == party.ID)
                 .Where(m => m.CharacterID == characterID)
                 .FirstOrDefault();
 

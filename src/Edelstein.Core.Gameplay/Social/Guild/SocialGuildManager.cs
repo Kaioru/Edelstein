@@ -266,16 +266,15 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         {
             using var store = _store.StartSession();
 
-            var member = store
+            var record = store
                 .Query<GuildMember>()
+                .Where(m => m.GuildID == guild.ID)
                 .Where(m => m.CharacterID == characterID)
                 .FirstOrDefault();
 
-            if (member == null) return;
-
-            member.Online = online;
-            member.DateLastLoginOrLogout = DateTime.UtcNow;
-            await store.UpdateAsync(member);
+            record.Online = online;
+            record.DateLastLoginOrLogout = DateTime.UtcNow;
+            await store.UpdateAsync(record);
             await BroadcastMessage(guild, new GuildNotifyLoginOrLogoutEvent(
                 guild.ID,
                 characterID,
@@ -289,6 +288,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
 
             var member = store
                 .Query<GuildMember>()
+                .Where(m => m.GuildID == guild.ID)
                 .Where(m => m.CharacterID == characterID)
                 .FirstOrDefault();
 
@@ -336,6 +336,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
 
             var member = store
                 .Query<GuildMember>()
+                .Where(m => m.GuildID == guild.ID)
                 .Where(m => m.CharacterID == characterID)
                 .FirstOrDefault();
 

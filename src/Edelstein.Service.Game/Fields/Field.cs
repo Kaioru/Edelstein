@@ -230,6 +230,10 @@ namespace Edelstein.Service.Game.Fields
 
                 if (user.Guild != null && !user.IsInstantiated)
                 {
+                    var inactive = user.Guild.Members
+                                       .FirstOrDefault(m => m.CharacterID == user.ID)
+                                       ?.Inactive ?? false;
+
                     await user.Guild.OnUpdateNotifyLoginOrLogout(
                         user.Character.ID,
                         true
@@ -245,6 +249,12 @@ namespace Edelstein.Service.Game.Fields
                         user.Character.ID,
                         true
                     );
+                    if (inactive)
+                        await user.Guild.UpdateChangeLevelOrJob(
+                            user.Character.ID,
+                            user.Character.Level,
+                            user.Character.Job
+                        );
                 }
 
                 if (!user.IsInstantiated) user.IsInstantiated = true;
