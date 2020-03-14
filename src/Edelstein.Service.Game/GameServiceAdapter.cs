@@ -54,24 +54,35 @@ namespace Edelstein.Service.Game
             {
                 await User.Field.Leave(User);
 
-                if (User.Party != null && !isMigrating)
+                if (!isMigrating)
                 {
-                    await User.Party.UpdateUserMigration(
-                        User.Character.ID,
-                        -2,
-                        -1
-                    );
-
-                    if (User.Party.BossCharacterID == User.ID)
+                    if (User.Party != null)
                     {
-                        var nextLeader = User.Party.Members
-                            .Where(m => m.CharacterID != User.ID)
-                            .Where(m => m.ChannelID >= 0)
-                            .OrderByDescending(m => m.Level)
-                            .FirstOrDefault();
+                        await User.Party.UpdateUserMigration(
+                            User.Character.ID,
+                            -2,
+                            -1
+                        );
 
-                        if (nextLeader != null)
-                            await nextLeader.ChangeBoss(true);
+                        if (User.Party.BossCharacterID == User.ID)
+                        {
+                            var nextLeader = User.Party.Members
+                                .Where(m => m.CharacterID != User.ID)
+                                .Where(m => m.ChannelID >= 0)
+                                .OrderByDescending(m => m.Level)
+                                .FirstOrDefault();
+
+                            if (nextLeader != null)
+                                await nextLeader.ChangeBoss(true);
+                        }
+                    }
+
+                    if (User.Guild != null)
+                    {
+                        await User.Guild.UpdateNotifyLoginOrLogout(
+                            User.Character.ID,
+                            false
+                        );
                     }
                 }
             }

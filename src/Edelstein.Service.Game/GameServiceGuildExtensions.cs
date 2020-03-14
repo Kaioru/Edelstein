@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -117,6 +118,144 @@ namespace Edelstein.Service.Game
                         await user.Field.BroadcastPacket(user, p);
                     }
                 }, cancellationToken);
+            await service.Bus.SubscribeAsync<GuildNotifyLoginOrLogoutEvent>(async (msg, token) =>
+            {
+                var users = service.GetGuildMembers(msg);
+                var user = service.GetGuildMember(msg);
+
+                await Task.WhenAll(users
+                    .Except(new[] {user})
+                    .Select(async u =>
+                    {
+                        await u.Guild.OnUpdateNotifyLoginOrLogout(
+                            msg.GuildMemberID,
+                            msg.Online
+                        );
+
+                        using var p = new Packet(SendPacketOperations.GuildResult);
+
+                        p.Encode<byte>((byte) GuildResultType.NotifyLoginOrLogout);
+                        p.Encode<int>(msg.GuildID);
+                        p.Encode<int>(msg.GuildMemberID);
+                        p.Encode<bool>(msg.Online);
+
+                        await u.SendPacket(p);
+                    }));
+            }, cancellationToken);
+            await service.Bus.SubscribeAsync<GuildChangeLevelOrJobEvent>(async (msg, token) =>
+            {
+                var users = service.GetGuildMembers(msg);
+
+                await Task.WhenAll(users.Select(u => u.Guild.OnUpdateChangeLevelOrJob(
+                    msg.GuildMemberID,
+                    msg.Level,
+                    msg.Job
+                )));
+                await Task.WhenAll(users.Select(async u =>
+                {
+                    using var p = new Packet(SendPacketOperations.GuildResult);
+
+                    p.Encode<byte>((byte) GuildResultType.ChangeLevelOrJob);
+                    p.Encode<int>(msg.GuildID);
+                    p.Encode<int>(msg.GuildMemberID);
+                    p.Encode<int>(msg.Level);
+                    p.Encode<int>(msg.Job);
+
+                    await u.SendPacket(p);
+                }));
+            }, cancellationToken);
+            await service.Bus.SubscribeAsync<GuildSetGradeNameEvent>(async (msg, token) =>
+            {
+                var users = service.GetGuildMembers(msg);
+
+                await Task.WhenAll(users.Select(u => u.Guild.OnUpdateSetGradeName(
+                    msg.GradeName
+                )));
+                await Task.WhenAll(users.Select(async u =>
+                {
+                    using var p = new Packet(SendPacketOperations.GuildResult);
+
+                    p.Encode<byte>((byte) GuildResultType.SetGradeName_Done);
+                    p.Encode<int>(msg.GuildID);
+
+                    foreach (var name in msg.GradeName)
+                        p.Encode<string>(name);
+
+                    await u.SendPacket(p);
+                }));
+            }, cancellationToken);
+            await service.Bus.SubscribeAsync<GuildSetMemberGradeEvent>(async (msg, token) =>
+            {
+                var users = service.GetGuildMembers(msg);
+
+                await Task.WhenAll(users.Select(u => u.Guild.OnUpdateSetMemberGrade(
+                    msg.GuildMemberID,
+                    msg.Grade
+                )));
+                await Task.WhenAll(users.Select(async u =>
+                {
+                    using var p = new Packet(SendPacketOperations.GuildResult);
+
+                    p.Encode<byte>((byte) GuildResultType.SetMemberGrade_Done);
+                    p.Encode<int>(msg.GuildID);
+                    p.Encode<int>(msg.GuildMemberID);
+                    p.Encode<byte>(msg.Grade);
+
+                    await u.SendPacket(p);
+                }));
+            }, cancellationToken);
+            await service.Bus.SubscribeAsync<GuildSetMarkEvent>(async (msg, token) =>
+            {
+                var users = service.GetGuildMembers(msg);
+
+                await Task.WhenAll(users.Select(u => u.Guild.OnUpdateSetMark(
+                    msg.MarkBg,
+                    msg.MarkBgColor,
+                    msg.Mark,
+                    msg.MarkColor
+                )));
+                await Task.WhenAll(users.Select(async u =>
+                {
+                    using var p1 = new Packet(SendPacketOperations.GuildResult);
+
+                    p1.Encode<byte>((byte) GuildResultType.SetMark_Done);
+                    p1.Encode<int>(msg.GuildID);
+                    p1.Encode<short>(msg.MarkBg);
+                    p1.Encode<byte>(msg.MarkBgColor);
+                    p1.Encode<short>(msg.Mark);
+                    p1.Encode<byte>(msg.MarkColor);
+
+                    await u.SendPacket(p1);
+
+                    using var p2 = new Packet(SendPacketOperations.UserGuildMarkChanged);
+
+                    p2.Encode<int>(u.ID);
+                    p2.Encode<short>(msg.MarkBg);
+                    p2.Encode<byte>(msg.MarkBgColor);
+                    p2.Encode<short>(msg.Mark);
+                    p2.Encode<byte>(msg.MarkColor);
+
+                    await u.Field.BroadcastPacket(u, p2);
+                }));
+            }, cancellationToken);
+            await service.Bus.SubscribeAsync<GuildSetNoticeEvent>(async (msg, token) =>
+            {
+                var users = service.GetGuildMembers(msg);
+
+                await Task.WhenAll(users.Select(u => u.Guild.OnUpdateSetNotice(
+                    msg.Notice
+                )));
+                await Task.WhenAll(users.Select(async u =>
+                {
+                    using var p = new Packet(SendPacketOperations.GuildResult);
+
+                    p.Encode<byte>((byte) GuildResultType.SetNotice_Done);
+                    p.Encode<int>(msg.GuildID);
+                    p.Encode<string>(msg.Notice);
+
+                    await u.SendPacket(p);
+                }));
+            }, cancellationToken);
         }
     }
 }

@@ -1,17 +1,17 @@
 namespace Edelstein.Core.Gameplay.Social.Guild.Events
 {
-    public class GuildSetMemberGradeEvent : IGuildMemberEvent
+    public class GuildNotifyLoginOrLogoutEvent : IGuildMemberEvent
     {
         public int GuildID { get; }
         public int GuildMemberID { get; }
-
-        public byte Grade { get; }
-
-        public GuildSetMemberGradeEvent(int guildID, int guildMemberID, byte grade)
+        
+        public bool Online { get; }
+        
+        public GuildNotifyLoginOrLogoutEvent(int guildID, int guildMemberID, bool online)
         {
             GuildID = guildID;
             GuildMemberID = guildMemberID;
-            Grade = grade;
+            Online = online;
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
@@ -41,9 +40,8 @@ namespace Edelstein.Service.Game.Handlers
                 await fieldUser.UpdateStats();
                 await field.Enter(fieldUser);
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
                 await adapter.Close();
             }
         }

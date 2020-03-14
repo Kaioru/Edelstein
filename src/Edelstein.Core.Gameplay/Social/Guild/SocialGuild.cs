@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Entities.Characters;
 using Edelstein.Entities.Social;
 
 namespace Edelstein.Core.Gameplay.Social.Guild
@@ -42,6 +42,36 @@ namespace Edelstein.Core.Gameplay.Social.Guild
                 .Select<GuildMember, ISocialGuildMember>(p => new SocialGuildMember(_manager, this, p))
                 .ToList();
         }
+
+        public Task Join(Character character)
+            => _manager.Join(this, character);
+
+        public Task Disband()
+            => _manager.Disband(this);
+
+        public Task Withdraw(ISocialGuildMember member)
+            => _manager.Withdraw(this, member);
+
+        public Task Kick(ISocialGuildMember member)
+            => _manager.Kick(this, member);
+
+        public Task UpdateNotifyLoginOrLogout(int characterID, bool online)
+            => _manager.UpdateNotifyLoginOrLogout(this, characterID, online);
+
+        public Task UpdateChangeLevelOrJob(int characterID, int level, int job)
+            => _manager.UpdateChangeLevelOrJob(this, characterID, level, job);
+
+        public Task UpdateSetGradeName(string[] name)
+            => _manager.UpdateSetGradeName(this, name);
+
+        public Task UpdateSetMemberGrade(int characterID, byte grade)
+            => _manager.UpdateSetMemberGrade(this, characterID, grade);
+
+        public Task UpdateSetMark(short markBg, byte markBgColor, short mark, byte markColor)
+            => _manager.UpdateSetMark(this, markBg, markBgColor, mark, markColor);
+
+        public Task UpdateSetNotice(string notice)
+            => _manager.UpdateSetNotice(this, notice);
 
         public Task OnUpdateJoin(ISocialGuildMember member)
         {

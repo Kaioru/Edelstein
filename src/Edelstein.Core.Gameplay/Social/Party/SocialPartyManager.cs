@@ -342,6 +342,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
                     .Where(p => p.PartyID == record.ID)
                     .FirstOrDefault() == null)
                 throw new PartyException("Changing boss to member not in party");
+
             record.BossCharacterID = member.CharacterID;
             await store.UpdateAsync(record);
             await BroadcastMessage(party, new PartyChangeBossEvent(
@@ -364,8 +365,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
 
             member.ChannelID = channelID;
             member.FieldID = fieldID;
-            store.Update(member);
-
+            await store.UpdateAsync(member);
             await BroadcastMessage(party, new PartyUserMigrationEvent(
                 party.ID,
                 characterID,
@@ -387,8 +387,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
 
             member.Level = level;
             member.Job = job;
-            store.Update(member);
-
+            await store.UpdateAsync(member);
             await BroadcastMessage(party, new PartyChangeLevelOrJobEvent(
                 party.ID,
                 characterID,

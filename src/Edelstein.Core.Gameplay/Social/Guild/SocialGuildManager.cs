@@ -259,39 +259,137 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             throw new System.NotImplementedException();
         }
 
-        private Task UpdateNotifyLoginOrLogoutInner(ISocialGuild guild, int characterID, bool online)
+        private async Task UpdateNotifyLoginOrLogoutInner(ISocialGuild guild, int characterID, bool online)
         {
-            throw new System.NotImplementedException();
+            using var store = _store.StartSession();
+
+            var member = store
+                .Query<GuildMember>()
+                .Where(m => m.CharacterID == characterID)
+                .FirstOrDefault();
+
+            if (member == null) return;
+
+            member.Online = online;
+            await store.UpdateAsync(member);
+            await BroadcastMessage(guild, new GuildNotifyLoginOrLogoutEvent(
+                guild.ID,
+                characterID,
+                online
+            ));
         }
 
-        private Task UpdateChangeLevelOrJobInner(ISocialGuild guild, int characterID, int level, int job)
+        private async Task UpdateChangeLevelOrJobInner(ISocialGuild guild, int characterID, int level, int job)
         {
-            throw new System.NotImplementedException();
+            using var store = _store.StartSession();
+
+            var member = store
+                .Query<GuildMember>()
+                .Where(m => m.CharacterID == characterID)
+                .FirstOrDefault();
+
+            if (member == null) return;
+
+            member.Level = level;
+            member.Job = job;
+            await store.UpdateAsync(member);
+            await BroadcastMessage(guild, new GuildChangeLevelOrJobEvent(
+                guild.ID,
+                characterID,
+                level,
+                job
+            ));
         }
 
-        private Task UpdateChangeJobInner(ISocialGuild guild, int characterID, int job)
+        private async Task UpdateSetGradeNameInner(ISocialGuild guild, string[] name)
         {
-            throw new System.NotImplementedException();
+            if (name.Length != 5)
+                throw new GuildException("Guild grade name not length of 5");
+
+            using var store = _store.StartSession();
+
+            var record = store
+                .Query<Entities.Social.Guild>()
+                .Where(m => m.ID == guild.ID)
+                .FirstOrDefault();
+
+            if (record == null) return;
+
+            Array.Copy(name, record.GradeName, 5);
+            await store.UpdateAsync(record);
+            await BroadcastMessage(guild, new GuildSetGradeNameEvent(
+                guild.ID,
+                name
+            ));
         }
 
-        private Task UpdateSetGradeNameInner(ISocialGuild guild, string[] name)
+        private async Task UpdateSetMemberGradeInner(ISocialGuild guild, int characterID, byte grade)
         {
-            throw new System.NotImplementedException();
+            if (grade < 1 || grade > 5)
+                throw new GuildException("Grade not within the bounds of 1 to 5");
+
+            using var store = _store.StartSession();
+
+            var member = store
+                .Query<GuildMember>()
+                .Where(m => m.CharacterID == characterID)
+                .FirstOrDefault();
+
+            if (member == null) return;
+
+            member.Grade = grade;
+            await store.UpdateAsync(member);
+            await BroadcastMessage(guild, new GuildSetMemberGradeEvent(
+                guild.ID,
+                characterID,
+                grade
+            ));
         }
 
-        private Task UpdateSetMemberGradeInner(ISocialGuild guild, int characterID, int grade)
+        private async Task UpdateSetMarkInner(ISocialGuild guild, short markBg, byte markBgColor, short mark,
+            byte markColor)
         {
-            throw new System.NotImplementedException();
+            // TODO: Template validation
+            using var store = _store.StartSession();
+
+            var record = store
+                .Query<Entities.Social.Guild>()
+                .Where(m => m.ID == guild.ID)
+                .FirstOrDefault();
+
+            if (record == null) return;
+
+            record.MarkBg = markBg;
+            record.MarkBgColor = markBgColor;
+            record.Mark = mark;
+            record.MarkColor = markColor;
+            await store.UpdateAsync(record);
+            await BroadcastMessage(guild, new GuildSetMarkEvent(
+                guild.ID,
+                markBg,
+                markBgColor,
+                mark,
+                markColor
+            ));
         }
 
-        private Task UpdateSetMarkInner(ISocialGuild guild, short markBG, byte markBGColor, short mark, byte markColor)
+        private async Task UpdateSetNoticeInner(ISocialGuild guild, string notice)
         {
-            throw new System.NotImplementedException();
-        }
+            using var store = _store.StartSession();
 
-        private Task UpdateSetNoticeInner(ISocialGuild guild, string notice)
-        {
-            throw new System.NotImplementedException();
+            var record = store
+                .Query<Entities.Social.Guild>()
+                .Where(m => m.ID == guild.ID)
+                .FirstOrDefault();
+
+            if (record == null) return;
+
+            record.Notice = notice;
+            await store.UpdateAsync(record);
+            await BroadcastMessage(guild, new GuildSetNoticeEvent(
+                guild.ID,
+                notice
+            ));
         }
 
         public Task<ISocialGuild> Load(int guildID)
@@ -324,11 +422,11 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public Task UpdateSetGradeName(ISocialGuild guild, string[] name)
             => Lock(() => UpdateSetGradeNameInner(guild, name));
 
-        public Task UpdateSetMemberGrade(ISocialGuild guild, int characterID, int grade)
+        public Task UpdateSetMemberGrade(ISocialGuild guild, int characterID, byte grade)
             => Lock(() => UpdateSetMemberGradeInner(guild, characterID, grade));
 
-        public Task UpdateSetMark(ISocialGuild guild, short markBG, byte markBGColor, short mark, byte markColor)
-            => Lock(() => UpdateSetMarkInner(guild, markBG, markBGColor, mark, markColor));
+        public Task UpdateSetMark(ISocialGuild guild, short markBg, byte markBgColor, short mark, byte markColor)
+            => Lock(() => UpdateSetMarkInner(guild, markBg, markBgColor, mark, markColor));
 
         public Task UpdateSetNotice(ISocialGuild guild, string notice)
             => Lock(() => UpdateSetNoticeInner(guild, notice));

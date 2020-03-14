@@ -28,6 +28,21 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             _member = member;
         }
 
+        public Task Withdraw()
+            => _guild.Withdraw(this);
+
+        public Task Kick()
+            => _guild.Kick(this);
+
+        public Task UpdateNotifyLoginOrLogout(bool online)
+            => _guild.UpdateNotifyLoginOrLogout(CharacterID, online);
+
+        public Task UpdateChangeLevelOrJob(int level, int job)
+            => _guild.UpdateChangeLevelOrJob(CharacterID, level, job);
+
+        public Task UpdateSetMemberGrade(byte grade)
+            => _guild.UpdateSetMemberGrade(CharacterID, grade);
+
         public Task OnUpdateNotifyLoginOrLogout(bool online)
         {
             _member.Online = online;

@@ -17,8 +17,8 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         Task UpdateNotifyLoginOrLogout(ISocialGuild guild, int characterID, bool online);
         Task UpdateChangeLevelOrJob(ISocialGuild guild, int characterID, int level, int job);
         Task UpdateSetGradeName(ISocialGuild guild, string[] name);
-        Task UpdateSetMemberGrade(ISocialGuild guild, int characterID, int grade);
-        Task UpdateSetMark(ISocialGuild guild, short markBG, byte markBGColor, short mark, byte markColor);
+        Task UpdateSetMemberGrade(ISocialGuild guild, int characterID, byte grade);
+        Task UpdateSetMark(ISocialGuild guild, short markBg, byte markBgColor, short mark, byte markColor);
         Task UpdateSetNotice(ISocialGuild guild, string notice);
     }
 }

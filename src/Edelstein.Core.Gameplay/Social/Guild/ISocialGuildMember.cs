@@ -12,6 +12,13 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public bool Online { get; }
         public int Commitment { get; }
 
+        Task Withdraw();
+        Task Kick();
+
+        Task UpdateNotifyLoginOrLogout(bool online);
+        Task UpdateChangeLevelOrJob(int level, int job);
+        Task UpdateSetMemberGrade(byte grade);
+
         Task OnUpdateNotifyLoginOrLogout(bool online);
         Task OnUpdateChangeLevelOrJob(int level, int job);
         Task OnUpdateSetMemberGrade(int grade);
