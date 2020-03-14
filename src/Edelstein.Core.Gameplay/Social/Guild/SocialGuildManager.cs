@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Core.Gameplay.Social.Guild.Events;
+using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Database;
 using Edelstein.Entities.Characters;
@@ -458,6 +459,16 @@ namespace Edelstein.Core.Gameplay.Social.Guild
 
         public Task Kick(ISocialGuild guild, ISocialGuildMember member)
             => Lock(() => KickInner(guild, member));
+
+        public Task Chat(ISocialGuild guild, string name, string text)
+            => BroadcastMessage(guild, new GroupMessageEvent(
+                GroupMessageType.Guild,
+                guild.Members
+                    .Select(m => m.CharacterID)
+                    .ToImmutableList(),
+                name,
+                text
+            ));
 
         public Task UpdateNotifyLoginOrLogout(ISocialGuild guild, int characterID, bool online)
             => Lock(() => UpdateNotifyLoginOrLogoutInner(guild, characterID, online));

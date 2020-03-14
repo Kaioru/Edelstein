@@ -44,6 +44,9 @@ namespace Edelstein.Core.Gameplay.Social.Party
         public Task ChangeBoss(ISocialPartyMember member, bool disconnect = false)
             => _manager.ChangeBoss(this, member, disconnect);
 
+        public Task Chat(string name, string text)
+            => _manager.Chat(this, name, text);
+
         public Task UpdateUserMigration(int characterID, int channelID, int fieldID)
             => _manager.UpdateUserMigration(this, characterID, channelID, fieldID);
 

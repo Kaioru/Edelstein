@@ -55,6 +55,9 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public Task Kick(ISocialGuildMember member)
             => _manager.Kick(this, member);
 
+        public Task Chat(string name, string text)
+            => _manager.Chat(this, name, text);
+
         public Task UpdateNotifyLoginOrLogout(int characterID, bool online)
             => _manager.UpdateNotifyLoginOrLogout(this, characterID, online);
 

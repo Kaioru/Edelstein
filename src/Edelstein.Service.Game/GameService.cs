@@ -89,9 +89,10 @@ namespace Edelstein.Service.Game
             Handlers[RecvPacketOperations.UserChangeSlotPositionRequest] = new UserChangeSlotPositionRequestHandler();
             Handlers[RecvPacketOperations.UserCharacterInfoRequest] = new UserCharacterInfoRequestHandler();
 
+            Handlers[RecvPacketOperations.GroupMessage] = new GroupMessageHandler();
             Handlers[RecvPacketOperations.PartyRequest] = new PartyRequestHandler();
             Handlers[RecvPacketOperations.GuildRequest] = new GuildRequestHandler();
-            
+
             Handlers[RecvPacketOperations.NpcMove] = new NPCMoveHandler();
 
             Handlers[RecvPacketOperations.CONTISTATE] = new ContiStateHandler();
@@ -100,6 +101,7 @@ namespace Edelstein.Service.Game
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
+            await this.SubscribeSocialEvents(cancellationToken);
             await this.SubscribePartyEvents(cancellationToken);
             await this.SubscribeGuildEvents(cancellationToken);
             _ticker.Start();

@@ -29,6 +29,8 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         Task Withdraw(ISocialGuildMember member);
         Task Kick(ISocialGuildMember member);
 
+        Task Chat(string name, string text);
+
         Task UpdateNotifyLoginOrLogout(int characterID, bool online);
         Task UpdateChangeLevelOrJob(int characterID, int level, int job);
         Task UpdateSetGradeName(string[] name);

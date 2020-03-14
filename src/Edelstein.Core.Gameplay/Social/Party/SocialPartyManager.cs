@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Gameplay.Migrations;
+using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Core.Gameplay.Social.Party.Events;
 using Edelstein.Database;
 using Edelstein.Entities.Characters;
@@ -401,6 +402,16 @@ namespace Edelstein.Core.Gameplay.Social.Party
 
         public Task ChangeBoss(ISocialParty party, ISocialPartyMember member, bool disconnect = false)
             => Lock(() => ChangeBossInner(party, member, disconnect));
+
+        public Task Chat(ISocialParty party, string name, string text)
+            => BroadcastMessage(party, new GroupMessageEvent(
+                GroupMessageType.Party,
+                party.Members
+                    .Select(m => m.CharacterID)
+                    .ToImmutableList(),
+                name,
+                text
+            ));
 
         public Task UpdateUserMigration(ISocialParty party, int characterID, int channelID, int fieldID)
             => Lock(() => UpdateUserMigrationInner(party, characterID, channelID, fieldID));

@@ -17,6 +17,8 @@ namespace Edelstein.Core.Gameplay.Social.Party
         Task Kick(ISocialPartyMember member);
         Task ChangeBoss(ISocialPartyMember member, bool disconnect = false);
 
+        Task Chat(string name, string text);
+
         Task UpdateUserMigration(int characterID, int channelID, int fieldID);
         Task UpdateChangeLevelOrJob(int characterID, int level, int job);
 
