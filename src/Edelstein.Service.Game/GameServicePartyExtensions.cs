@@ -31,6 +31,35 @@ namespace Edelstein.Service.Game
 
         public static async Task SubscribePartyEvents(this GameService service, CancellationToken cancellationToken)
         {
+            await service.Bus.SubscribeAsync<PartyCreateEvent>(
+                async (msg, token) =>
+                {
+                    var user = service.FieldManager
+                        .GetAll()
+                        .SelectMany(f => f.GetObjects<IFieldUser>())
+                        .FirstOrDefault(u => u.ID == msg.PartyMemberID);
+
+                    if (user != null)
+                    {
+                        user.Party = new SocialParty(
+                            service.PartyManager,
+                            msg.Party,
+                            msg.PartyMembers
+                        );
+
+                        using var p = new Packet(SendPacketOperations.PartyResult);
+
+                        p.Encode<byte>((byte) PartyResultType.CreateNewParty_Done);
+                        p.Encode<int>(msg.PartyID);
+                        p.Encode<int>(0); // TownPortal-TownID
+                        p.Encode<int>(0); // TownPortal-FieldID
+                        p.Encode<int>(0); // TownPortal-SkillID
+                        p.Encode<short>(0); // TownPortal-pos x?
+                        p.Encode<short>(0); // TownPortal-pos y?
+
+                        await user.SendPacket(p);
+                    }
+                }, cancellationToken);
             await service.Bus.SubscribeAsync<PartyJoinEvent>(
                 async (msg, token) =>
                 {

@@ -191,7 +191,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 .ToList();
             var party = new SocialParty(this, record, members);
 
-            await BroadcastMessage(party, new PartyJoinEvent(
+            await BroadcastMessage(party, new PartyCreateEvent(
                 party.ID,
                 member.CharacterID,
                 record,
