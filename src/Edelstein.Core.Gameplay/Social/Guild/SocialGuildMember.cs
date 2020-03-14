@@ -17,7 +17,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public int Grade => _member.Grade;
         public bool Online => _member.Online;
         public int Commitment => _member.Commitment;
-        public bool Inactive => (DateTime.UtcNow - _member.DateLastLoginOrLogout).TotalDays >= 7;
+        public bool Inactive { get; private set; }
 
         public SocialGuildMember(
             ISocialGuildManager manager,
@@ -28,6 +28,8 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             _manager = manager;
             _guild = guild;
             _member = member;
+
+            Inactive = (DateTime.UtcNow - _member.DateLastLoginOrLogout).TotalDays >= 7;
         }
 
         public Task Withdraw()
@@ -48,6 +50,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public Task OnUpdateNotifyLoginOrLogout(bool online)
         {
             _member.Online = online;
+            Inactive = false;
             return Task.CompletedTask;
         }
 
