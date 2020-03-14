@@ -36,13 +36,35 @@ namespace Edelstein.Service.Game.Handlers.Users
                 }
                 case PartyRequestType.CreateNewParty:
                 {
-                    if (user.Party == null)
-                        await user.Service.PartyManager.Create(user.Character);
+                    if (user.Party != null) return;
+
+                    var result = PartyResultType.CreateNewParty_Done;
+
+                    try
+                    {
+                        // TODO: beginner check
+
+                        if (result == PartyResultType.CreateNewParty_Done)
+                        {
+                            await user.Service.PartyManager.Create(user.Character);
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        result = PartyResultType.CreateNewParty_Unknown;
+                    }
+
+                    using var p = new Packet(SendPacketOperations.PartyResult);
+                    p.Encode<byte>((byte) result);
+                    await user.SendPacket(p);
                     break;
                 }
                 case PartyRequestType.WithdrawParty:
                 {
-                    if (user.Party != null)
+                    if (user.Party == null) return;
+
+                    try
                     {
                         if (user.Party.BossCharacterID == user.ID)
                             await user.Party.Disband();
@@ -51,34 +73,76 @@ namespace Edelstein.Service.Game.Handlers.Users
                                 .First(m => m.CharacterID == user.ID)
                                 .Withdraw();
                     }
+                    catch
+                    {
+                        using var p = new Packet(SendPacketOperations.PartyResult);
+                        p.Encode<byte>((byte) PartyResultType.WithdrawParty_Unknown);
+                        await user.SendPacket(p);
+                    }
 
                     break;
                 }
                 case PartyRequestType.KickParty:
                 {
-                    if (user.Party != null && user.Party.BossCharacterID == user.ID)
-                    {
-                        var target = packet.Decode<int>();
+                    if (user.Party == null || user.Party.BossCharacterID != user.ID) return;
 
-                        await user.Party.Members
-                            .First(m => m.CharacterID == target)
-                            .Kick();
+                    var result = PartyResultType.KickParty_Done;
+                    var target = packet.Decode<int>();
+
+                    try
+                    {
+                        var member = user.Party.Members.First(m => m.CharacterID == target);
+
+                        // TODO: fieldlimit
+
+                        if (result == PartyResultType.JoinParty_Done)
+                        {
+                            await member.Kick();
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        result = PartyResultType.KickParty_Unknown;
                     }
 
+                    using var p = new Packet(SendPacketOperations.PartyResult);
+                    p.Encode<byte>((byte) result);
+                    await user.SendPacket(p);
                     break;
                 }
                 case PartyRequestType.ChangePartyBoss:
                 {
-                    if (user.Party != null && user.Party.BossCharacterID == user.ID)
-                    {
-                        var target = packet.Decode<int>();
+                    if (user.Party == null || user.Party.BossCharacterID != user.ID) return;
 
-                        await user.Party.Members
+                    var result = PartyResultType.ChangePartyBoss_Done;
+                    var target = packet.Decode<int>();
+
+                    try
+                    {
+                        var member = user.Party.Members
                             .Where(m => m.ChannelID >= 0)
-                            .First(m => m.CharacterID == target)
-                            .ChangeBoss();
+                            .First(m => m.CharacterID == target);
+
+                        if (member.ChannelID != user.Service.State.ChannelID)
+                            result = PartyResultType.ChangePartyBoss_NotSameChannel;
+                        if (member.FieldID != user.Field.Template.ID)
+                            result = PartyResultType.ChangePartyBoss_NotSameField;
+
+                        if (result == PartyResultType.ChangePartyBoss_Done)
+                        {
+                            await member.ChangeBoss();
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        result = PartyResultType.ChangePartyBoss_Unknown;
                     }
 
+                    using var p = new Packet(SendPacketOperations.PartyResult);
+                    p.Encode<byte>((byte) result);
+                    await user.SendPacket(p);
                     break;
                 }
                 default:
