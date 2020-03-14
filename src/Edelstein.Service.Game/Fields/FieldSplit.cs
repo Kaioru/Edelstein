@@ -97,6 +97,8 @@ namespace Edelstein.Service.Game.Fields
         public Task EnterQuietly(IFieldObj obj)
         {
             obj.FieldSplit = this;
+            if (obj is IFieldUser user)
+                Array.Fill(user.Watching, null);
             lock (this) _objects.Add(obj);
             return Task.CompletedTask;
         }
