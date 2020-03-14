@@ -50,7 +50,7 @@ namespace Edelstein.Service.Login.Handlers
 
             var createLock =
                 await adapter.Service.LockProvider.AcquireAsync(
-                    LoginService.AuthLockKey,
+                    LoginService.CreateCharLockKey,
                     cancellationToken: token.Token
                 );
 
