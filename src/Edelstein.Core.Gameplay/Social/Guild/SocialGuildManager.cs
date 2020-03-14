@@ -360,7 +360,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
 
             if (record == null) return;
 
-            Array.Copy(name, record.GradeName, 5);
+            record.GradeName = name;
             await store.UpdateAsync(record);
             await BroadcastMessage(guild, new GuildSetGradeNameEvent(
                 guild.ID,

@@ -1,5 +1,8 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Social.Guild;
+using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
@@ -35,6 +38,149 @@ namespace Edelstein.Service.Game.Handlers.Users
                     else p.Encode<bool>(false);
 
                     await user.SendPacket(p);
+                    break;
+                }
+                case GuildRequestType.WithdrawGuild:
+                {
+                    if (user.Guild == null) return;
+
+                    try
+                    {
+                        var member = user.Guild.Members
+                            .First(m => m.CharacterID == user.ID);
+
+                        if (member.Grade != 1)
+                            await member.Withdraw();
+                    }
+                    catch
+                    {
+                        using var p = new Packet(SendPacketOperations.GuildResult);
+                        p.Encode<byte>((byte) GuildResultType.WithdrawGuild_Unknown);
+                        await user.SendPacket(p);
+                    }
+
+                    break;
+                }
+                case GuildRequestType.KickGuild:
+                {
+                    if (user.Guild == null) return;
+
+                    var result = GuildResultType.KickGuild_Done;
+                    var target = packet.Decode<int>();
+
+                    try
+                    {
+                        var member = user.Guild.Members.First(m => m.CharacterID == user.ID);
+                        var targetMember = user.Guild.Members.First(m => m.CharacterID == target);
+
+                        if (member.Grade != 1 && member.Grade != 2) return;
+                        if (member.Grade >= targetMember.Grade) return;
+
+                        if (result == GuildResultType.KickGuild_Done)
+                        {
+                            await targetMember.Kick();
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        result = GuildResultType.KickGuild_Unknown;
+                    }
+
+                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    p.Encode<byte>((byte) result);
+                    await user.SendPacket(p);
+                    break;
+                }
+                case GuildRequestType.SetGradeName:
+                {
+                    if (user.Guild == null) return;
+
+                    var result = GuildResultType.SetGradeName_Done;
+                    var name = new[]
+                    {
+                        packet.Decode<string>(),
+                        packet.Decode<string>(),
+                        packet.Decode<string>(),
+                        packet.Decode<string>(),
+                        packet.Decode<string>()
+                    };
+
+                    try
+                    {
+                        var member = user.Guild.Members.First(m => m.CharacterID == user.ID);
+
+                        if (member.Grade != 1) return;
+
+                        if (result == GuildResultType.SetGradeName_Done)
+                        {
+                            await user.Guild.UpdateSetGradeName(name);
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        result = GuildResultType.CheckGuildName_Unknown;
+                    }
+
+                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    p.Encode<byte>((byte) result);
+                    await user.SendPacket(p);
+                    break;
+                }
+                case GuildRequestType.SetMemberGrade:
+                {
+                    if (user.Guild == null) return;
+
+                    var result = GuildResultType.SetMemberGrade_Done;
+                    var target = packet.Decode<int>();
+                    var grade = packet.Decode<byte>();
+
+                    try
+                    {
+                        var member = user.Guild.Members.First(m => m.CharacterID == user.ID);
+                        var targetMember = user.Guild.Members.First(m => m.CharacterID == target);
+
+                        if (member.Grade != 1 && member.Grade != 2) return;
+                        if (member.Grade >= targetMember.Grade) return;
+                        if (member.Grade >= grade) return;
+
+                        if (result == GuildResultType.SetMemberGrade_Done)
+                        {
+                            await targetMember.UpdateSetMemberGrade(grade);
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        result = GuildResultType.SetMemberGrade_Unknown;
+                    }
+
+                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    p.Encode<byte>((byte) result);
+                    await user.SendPacket(p);
+                    break;
+                }
+                case GuildRequestType.SetNotice:
+                {
+                    if (user.Guild == null) return;
+
+                    var notice = packet.Decode<string>();
+
+                    try
+                    {
+                        var member = user.Guild.Members.First(m => m.CharacterID == user.ID);
+
+                        if (member.Grade != 1 && member.Grade != 2) return;
+                        if (notice.Length > 100) return;
+
+                        await user.Guild.UpdateSetNotice(notice);
+                    }
+                    catch
+                    {
+                        await user.Message("Failed to set guild notice.");
+                    }
+
                     break;
                 }
                 default:

@@ -97,7 +97,8 @@ namespace Edelstein.Core.Gameplay.Social.Guild
 
         public Task OnUpdateSetGradeName(string[] name)
         {
-            Array.Copy(name, _guild.GradeName, 5);
+            if (name.Length == 5)
+                _guild.GradeName = name;
             return Task.CompletedTask;
         }
 

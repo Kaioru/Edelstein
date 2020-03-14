@@ -8,7 +8,7 @@ namespace Edelstein.Entities.Social
 
         public string Name { get; set; }
 
-        public string[] GradeName { get; }
+        public string[] GradeName { get; set; }
 
         public int MaxMemberNum { get; set; }
 
