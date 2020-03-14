@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Edelstein.Entities.Social;
 
 namespace Edelstein.Core.Gameplay.Social.Guild
@@ -25,6 +26,25 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             _manager = manager;
             _guild = guild;
             _member = member;
+        }
+
+        public Task OnUpdateNotifyLoginOrLogout(bool online)
+        {
+            _member.Online = online;
+            return Task.CompletedTask;
+        }
+
+        public Task OnUpdateChangeLevelOrJob(int level, int job)
+        {
+            _member.Level = level;
+            _member.Job = job;
+            return Task.CompletedTask;
+        }
+
+        public Task OnUpdateSetMemberGrade(int grade)
+        {
+            _member.Grade = grade;
+            return Task.CompletedTask;
         }
     }
 }

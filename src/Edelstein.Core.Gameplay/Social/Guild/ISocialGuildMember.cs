@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Edelstein.Core.Gameplay.Social.Guild
 {
     public interface ISocialGuildMember
@@ -9,5 +11,9 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public int Grade { get; }
         public bool Online { get; }
         public int Commitment { get; }
+
+        Task OnUpdateNotifyLoginOrLogout(bool online);
+        Task OnUpdateChangeLevelOrJob(int level, int job);
+        Task OnUpdateSetMemberGrade(int grade);
     }
 }

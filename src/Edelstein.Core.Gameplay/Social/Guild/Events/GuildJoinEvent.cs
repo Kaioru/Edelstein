@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Edelstein.Entities.Social;
 
 namespace Edelstein.Core.Gameplay.Social.Guild.Events
@@ -7,13 +8,15 @@ namespace Edelstein.Core.Gameplay.Social.Guild.Events
         public int GuildID { get; }
         public int GuildMemberID { get; }
 
-        public GuildMember Member { get; }
+        public Entities.Social.Guild Guild { get; }
+        public ICollection<GuildMember> GuildMembers { get; }
 
-        public GuildJoinEvent(int guildID, int guildMemberID, GuildMember member)
+        public GuildJoinEvent(int guildID, int guildMemberID, Entities.Social.Guild guild, ICollection<GuildMember> guildMembers)
         {
             GuildID = guildID;
             GuildMemberID = guildMemberID;
-            Member = member;
+            Guild = guild;
+            GuildMembers = guildMembers;
         }
     }
 }

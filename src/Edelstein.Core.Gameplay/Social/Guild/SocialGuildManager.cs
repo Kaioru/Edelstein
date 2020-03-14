@@ -19,21 +19,18 @@ namespace Edelstein.Core.Gameplay.Social.Guild
     {
         private const string GuildLockKey = "lock:guild";
 
-        private readonly int _channelID;
         private readonly INode _node;
         private readonly IDataStore _store;
         private readonly ILockProvider _lockProvider;
         private readonly ICacheClient _characterCache;
 
         public SocialGuildManager(
-            int channelID,
             INode node,
             IDataStore store,
             ILockProvider lockProvider,
             ICacheClient cache
         )
         {
-            _channelID = channelID;
             _node = node;
             _store = store;
             _lockProvider = lockProvider;
@@ -242,7 +239,8 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             await BroadcastMessage(guild, new GuildJoinEvent(
                 guild.ID,
                 member.CharacterID,
-                member
+                record,
+                members
             ));
         }
 
@@ -261,22 +259,27 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             throw new System.NotImplementedException();
         }
 
-        private Task UpdateChangeLevelOrJobInner(ISocialParty guild, int characterID, int level, int job)
+        private Task UpdateNotifyLoginOrLogoutInner(ISocialGuild guild, int characterID, bool online)
         {
             throw new System.NotImplementedException();
         }
 
-        private Task UpdateChangeJobInner(ISocialParty guild, int characterID, int job)
+        private Task UpdateChangeLevelOrJobInner(ISocialGuild guild, int characterID, int level, int job)
         {
             throw new System.NotImplementedException();
         }
 
-        private Task UpdateSetGradeNameInner(ISocialParty guild, int characterID, string[] name)
+        private Task UpdateChangeJobInner(ISocialGuild guild, int characterID, int job)
         {
             throw new System.NotImplementedException();
         }
 
-        private Task UpdateSetMemberGradeInner(ISocialParty guild, int characterID, int grade)
+        private Task UpdateSetGradeNameInner(ISocialGuild guild, string[] name)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private Task UpdateSetMemberGradeInner(ISocialGuild guild, int characterID, int grade)
         {
             throw new System.NotImplementedException();
         }
@@ -312,13 +315,16 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public Task Kick(ISocialGuild guild, ISocialGuildMember member)
             => Lock(() => KickInner(guild, member));
 
-        public Task UpdateChangeLevelOrJob(ISocialParty guild, int characterID, int level, int job)
+        public Task UpdateNotifyLoginOrLogout(ISocialGuild guild, int characterID, bool online)
+            => Lock(() => UpdateNotifyLoginOrLogoutInner(guild, characterID, online));
+
+        public Task UpdateChangeLevelOrJob(ISocialGuild guild, int characterID, int level, int job)
             => Lock(() => UpdateChangeLevelOrJobInner(guild, characterID, level, job));
 
-        public Task UpdateSetGradeName(ISocialParty guild, int characterID, string[] name)
-            => Lock(() => UpdateSetGradeName(guild, characterID, name));
+        public Task UpdateSetGradeName(ISocialGuild guild, string[] name)
+            => Lock(() => UpdateSetGradeNameInner(guild, name));
 
-        public Task UpdateSetMemberGrade(ISocialParty guild, int characterID, int grade)
+        public Task UpdateSetMemberGrade(ISocialGuild guild, int characterID, int grade)
             => Lock(() => UpdateSetMemberGradeInner(guild, characterID, grade));
 
         public Task UpdateSetMark(ISocialGuild guild, short markBG, byte markBGColor, short mark, byte markColor)

@@ -37,13 +37,13 @@ namespace Edelstein.Service.Game
                     var users = service.FieldManager
                         .GetAll()
                         .SelectMany(f => f.GetObjects<IFieldUser>())
-                        .Where(u => msg.Members.Any(m => m.CharacterID == u.ID))
+                        .Where(u => msg.GuildMembers.Any(m => m.CharacterID == u.ID))
                         .ToList();
 
                     users.ForEach(u => u.Guild = new SocialGuild(
                         u.Service.GuildManager,
                         msg.Guild,
-                        msg.Members
+                        msg.GuildMembers
                     ));
                     await Task.WhenAll(users.Select(async u =>
                     {
@@ -61,6 +61,61 @@ namespace Edelstein.Service.Game
 
                         await u.Field.BroadcastPacket(u, p2);
                     }));
+                }, cancellationToken);
+            await service.Bus.SubscribeAsync<GuildJoinEvent>(
+                async (msg, token) =>
+                {
+                    var user = service.FieldManager
+                        .GetAll()
+                        .SelectMany(f => f.GetObjects<IFieldUser>())
+                        .FirstOrDefault(u => u.ID == msg.GuildMemberID);
+
+                    if (user != null)
+                    {
+                        user.Guild = new SocialGuild(
+                            service.GuildManager,
+                            msg.Guild,
+                            msg.GuildMembers
+                        );
+                    }
+
+                    var users = service.GetGuildMembers(msg);
+                    var record = msg.GuildMembers
+                        .FirstOrDefault(m => m.CharacterID == msg.GuildMemberID);
+
+                    if (record == null) return;
+
+                    await Task.WhenAll(users
+                        .Select(async u =>
+                        {
+                            var member = new SocialGuildMember(
+                                u.Service.GuildManager,
+                                u.Guild,
+                                record
+                            );
+
+                            if (u != user) await u.Guild.OnUpdateJoin(member);
+
+                            using var p = new Packet(SendPacketOperations.GuildResult);
+
+                            p.Encode<byte>((byte) GuildResultType.JoinGuild_Done);
+                            p.Encode<int>(msg.GuildID);
+                            p.Encode<int>(msg.GuildMemberID);
+
+                            if (u.ID != msg.GuildMemberID)
+                                member.EncodeData(p);
+
+                            await u.SendPacket(p);
+                        }));
+                    if (user != null)
+                    {
+                        using var p = new Packet(SendPacketOperations.UserGuildNameChanged);
+
+                        p.Encode<int>(user.ID);
+                        p.Encode<string>(user.Guild.Name);
+
+                        await user.Field.BroadcastPacket(user, p);
+                    }
                 }, cancellationToken);
         }
     }

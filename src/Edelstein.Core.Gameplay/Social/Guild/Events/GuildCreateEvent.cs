@@ -8,13 +8,13 @@ namespace Edelstein.Core.Gameplay.Social.Guild.Events
         public int GuildID { get; }
 
         public Entities.Social.Guild Guild { get; }
-        public ICollection<GuildMember> Members { get; }
+        public ICollection<GuildMember> GuildMembers { get; }
 
-        public GuildCreateEvent(int guildID, Entities.Social.Guild guild, ICollection<GuildMember> members)
+        public GuildCreateEvent(int guildID, Entities.Social.Guild guild, ICollection<GuildMember> guildMembers)
         {
             GuildID = guildID;
             Guild = guild;
-            Members = members;
+            GuildMembers = guildMembers;
         }
     }
 }

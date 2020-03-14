@@ -19,16 +19,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             members.ForEach(m =>
                 p.Encode<int>(m.CharacterID)
             );
-            members.ForEach(m =>
-            {
-                p.EncodeFixedString(m.CharacterName, 13);
-                p.Encode<int>(m.Job);
-                p.Encode<int>(m.Level);
-                p.Encode<int>(m.Grade);
-                p.Encode<int>(m.Online ? 1 : 0);
-                p.Encode<int>(m.Commitment);
-                p.Encode<int>(0); // AllianceGrade
-            });
+            members.ForEach(m => m.EncodeData(p));
 
             p.Encode<int>(guild.MaxMemberNum);
             p.Encode<short>(guild.MarkBg);
@@ -44,6 +35,17 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             p.Encode<byte>(guild.Level);
 
             p.Encode<short>(0); // SkillRecord
+        }
+
+        public static void EncodeData(this ISocialGuildMember member, IPacket p)
+        {
+            p.EncodeFixedString(member.CharacterName, 13);
+            p.Encode<int>(member.Job);
+            p.Encode<int>(member.Level);
+            p.Encode<int>(member.Grade);
+            p.Encode<int>(member.Online ? 1 : 0);
+            p.Encode<int>(member.Commitment);
+            p.Encode<int>(0); // AllianceGrade
         }
     }
 }
