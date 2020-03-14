@@ -60,8 +60,7 @@ namespace Edelstein.Service.Game.Commands.Impl
                         var guildID = await user.Prompt<int>(s => s.AskNumber("What Guild ID would you like to join?"));
                         var guild = await user.Service.GuildManager.Load(guildID);
 
-                        // TODO: shortcut methods
-                        await user.Service.GuildManager.Join(guild, user.Character);
+                        await user.Guild.Join(user.Character);
                     }
                     catch
                     {

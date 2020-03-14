@@ -201,6 +201,9 @@ namespace Edelstein.Core.Gameplay.Social.Party
 
         private async Task JoinInner(ISocialParty party, Character character)
         {
+            if (party.Members.Count >= 6)
+                throw new PartyException("Joining a full party");
+            
             using var store = _store.StartSession();
             var record = store
                 .Query<Entities.Social.Party>()

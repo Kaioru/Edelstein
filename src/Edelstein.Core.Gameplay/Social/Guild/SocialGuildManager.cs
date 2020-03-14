@@ -196,6 +196,9 @@ namespace Edelstein.Core.Gameplay.Social.Guild
 
         private async Task JoinInner(ISocialGuild guild, Character character)
         {
+            if (guild.Members.Count >= guild.MaxMemberNum)
+                throw new GuildException("Joining a full guild");
+
             using var store = _store.StartSession();
             var record = store
                 .Query<Entities.Social.Guild>()
