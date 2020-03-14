@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -222,7 +223,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
                 .ToList();
 
             if (members.Any(m => m.CharacterID == character.ID))
-                throw new PartyException("Joining already joined party");
+                throw new GuildException("Joining already joined guild");
 
             member = new GuildMember
             {
@@ -247,20 +248,60 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             ));
         }
 
-        private Task DisbandInner(ISocialGuild guild)
+        private async Task DisbandInner(ISocialGuild guild)
         {
-            throw new System.NotImplementedException();
+            using var store = _store.StartSession();
+            var record = store
+                .Query<Entities.Social.Guild>()
+                .Where(p => p.ID == guild.ID)
+                .FirstOrDefault();
+            if (record == null)
+                throw new GuildException("Disbanding a non-existent guild");
+            await Task.WhenAll(guild.Members
+                .ToImmutableList()
+                .Select(m => WithdrawInner(guild, m, true))
+            );
+            await store.DeleteAsync(record);
         }
 
-        private Task WithdrawInner(ISocialGuild guild, ISocialGuildMember member)
+        private async Task WithdrawInner(
+            ISocialGuild guild,
+            ISocialGuildMember member,
+            bool disband = false,
+            bool kick = false
+        )
         {
-            throw new System.NotImplementedException();
+            using var store = _store.StartSession();
+
+            var record = store
+                .Query<Entities.Social.Guild>()
+                .Where(p => p.ID == guild.ID)
+                .FirstOrDefault();
+
+            if (record == null)
+                throw new GuildException("Withdrawing from a non-existent guild");
+
+            var memberRecord = store
+                .Query<GuildMember>()
+                .Where(m => m.GuildID == record.ID)
+                .Where(m => m.CharacterID == member.CharacterID)
+                .FirstOrDefault();
+
+            if (memberRecord == null)
+                throw new GuildException("Withdrawing from a guild that user is not apart of");
+
+            await store.DeleteAsync(memberRecord);
+            await BroadcastMessage(guild, new GuildWithdrawEvent(
+                guild.ID,
+                member.CharacterID,
+                disband,
+                kick,
+                member.CharacterName
+            ));
         }
 
         private Task KickInner(ISocialGuild guild, ISocialGuildMember member)
-        {
-            throw new System.NotImplementedException();
-        }
+            => WithdrawInner(guild, member, kick: true);
 
         private async Task UpdateNotifyLoginOrLogoutInner(ISocialGuild guild, int characterID, bool online)
         {

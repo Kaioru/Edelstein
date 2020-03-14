@@ -86,17 +86,17 @@ namespace Edelstein.Service.Game.Commands.Impl
                 {
                     if (user.Party != null)
                     {
-                        var targetName = await user.Prompt<string>(s =>
-                            s.AskText("Who would you like to kick from the party?")
+                        var targetID = await user.Prompt<int>(s =>
+                            s.AskMenu(
+                                "Who would you like to kick from the party?",
+                                user.Party.Members.ToDictionary(
+                                    m => m.CharacterID,
+                                    m => m.CharacterName
+                                )
+                            )
                         );
                         var target = user.Party.Members
-                            .FirstOrDefault(m => m.CharacterName == targetName);
-
-                        if (target == null)
-                        {
-                            await user.Message("Failed to kick from party, target not in party.");
-                            return;
-                        }
+                            .First(m => m.CharacterID == targetID);
 
                         await user.Party.Kick(target);
                     }

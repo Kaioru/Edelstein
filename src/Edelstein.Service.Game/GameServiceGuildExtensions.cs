@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Social.Guild;
 using Edelstein.Core.Gameplay.Social.Guild.Events;
+using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects;
@@ -114,6 +115,48 @@ namespace Edelstein.Service.Game
 
                         p.Encode<int>(user.ID);
                         p.Encode<string>(user.Guild.Name);
+
+                        await user.Field.BroadcastPacket(user, p);
+                    }
+                }, cancellationToken);
+            await service.Bus.SubscribeAsync<GuildWithdrawEvent>(
+                async (msg, token) =>
+                {
+                    var user = service.GetGuildMember(msg);
+                    var users = service.GetGuildMembers(msg);
+
+                    await Task.WhenAll(users.Select(u => u.Guild.OnUpdateWithdraw(msg.GuildMemberID)));
+                    await Task.WhenAll(users.Select(async u =>
+                    {
+                        using var p = new Packet(SendPacketOperations.GuildResult);
+
+                        if (msg.Disband)
+                        {
+                            p.Encode<byte>((byte) GuildResultType.RemoveGuild_Done);
+                            p.Encode<int>(msg.GuildID);
+                        }
+                        else
+                        {
+                            p.Encode<byte>((byte) (msg.Kick
+                                    ? GuildResultType.KickGuild_Done
+                                    : GuildResultType.WithdrawGuild_Done)
+                            );
+                            p.Encode<int>(msg.GuildID);
+                            p.Encode<int>(msg.GuildMemberID);
+                            p.Encode<string>(msg.CharacterName);
+                        }
+
+                        await u.SendPacket(p);
+                    }));
+
+                    if (user != null)
+                    {
+                        user.Guild = null;
+
+                        using var p = new Packet(SendPacketOperations.UserGuildNameChanged);
+
+                        p.Encode<int>(user.ID);
+                        p.Encode<string>("");
 
                         await user.Field.BroadcastPacket(user, p);
                     }
