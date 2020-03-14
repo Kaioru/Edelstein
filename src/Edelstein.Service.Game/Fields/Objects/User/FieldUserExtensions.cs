@@ -167,18 +167,24 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 context.Flag.HasFlag(ModifyStatType.Hair)
             ) await user.UpdateAvatar();
 
-            if (
-                user.Party != null &&
-                context.Flag.HasFlag(ModifyStatType.Level) ||
-                context.Flag.HasFlag(ModifyStatType.Job)
-            )
-                await user.Service.PartyManager
-                    .UpdateChangeLevelOrJob(
-                        user.Party,
-                        user.Character.ID,
-                        user.Character.Level,
-                        user.Character.Job
-                    );
+            if (context.Flag.HasFlag(ModifyStatType.Level) ||
+                context.Flag.HasFlag(ModifyStatType.Job))
+            {
+                if (user.Party != null)
+                    await user.Party
+                        .UpdateChangeLevelOrJob(
+                            user.Character.ID,
+                            user.Character.Level,
+                            user.Character.Job
+                        );
+                if (user.Guild != null)
+                    await user.Guild
+                        .UpdateChangeLevelOrJob(
+                            user.Character.ID,
+                            user.Character.Level,
+                            user.Character.Job
+                        );
+            }
 
             if (
                 user.Party != null &&
