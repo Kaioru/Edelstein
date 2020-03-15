@@ -9,6 +9,7 @@ using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Templates.Items;
 using Edelstein.Core.Templates.NPC;
 using Edelstein.Core.Templates.Server.Continent;
+using Edelstein.Core.Templates.Server.Shop;
 using Edelstein.Core.Templates.Strings;
 using Edelstein.Provider;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,6 +76,36 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
                             Tuple.Create<Type, IDataTemplateCollection>(
                                 typeof(FieldStringTemplate),
                                 new FieldStringTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.Commodity] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(CommodityTemplate),
+                                new CommodityTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.CashPackage] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(CashPackageTemplate),
+                                new CashPackageTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.ModifiedCommodity] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(ModifiedCommodityTemplate),
+                                new ModifiedCommodityTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.Best] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(BestTemplate),
+                                new BestTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.CategoryDiscount] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(CategoryDiscountTemplate),
+                                new CategoryDiscountTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.NotSale] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(NotSaleTemplate),
+                                new NotSaleTemplateCollection(directory)
                             )
                     }
                     .Where(kv => _type.HasFlag(kv.Key))

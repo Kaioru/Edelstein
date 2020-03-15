@@ -21,6 +21,13 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
         ItemString = 0x80,
         FieldString = 0x100,
 
+        Commodity = 0x200,
+        CashPackage = 0x400,
+        ModifiedCommodity = 0x800,
+        Best = 0x1000,
+        CategoryDiscount = 0x2000,
+        NotSale = 0x4000,
+
         Login = Item |
                 MakeCharInfo,
 
@@ -31,6 +38,14 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
                SetItemInfo |
                Continent |
                ItemString |
-               FieldString
+               FieldString,
+
+        Shop = Item |
+               Commodity |
+               CashPackage |
+               ModifiedCommodity |
+               Best |
+               CategoryDiscount |
+               NotSale
     }
 }
