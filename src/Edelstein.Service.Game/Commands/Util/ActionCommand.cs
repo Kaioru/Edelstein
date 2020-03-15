@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Service.Game.Fields.Objects.User;
 
-namespace Edelstein.Service.Game.Commands.Impl.Util
+namespace Edelstein.Service.Game.Commands.Util
 {
     public class ActionCommand : AbstractCommand<DefaultCommandContext>
     {

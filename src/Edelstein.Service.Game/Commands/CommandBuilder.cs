@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CommandLine;
-using Edelstein.Service.Game.Commands.Impl.Util;
+using Edelstein.Service.Game.Commands.Util;
 using Edelstein.Service.Game.Fields.Objects.User;
 using MoreLinq.Extensions;
 

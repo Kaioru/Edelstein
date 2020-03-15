@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Core.Templates.Items;
 using Edelstein.Core.Templates.Strings;
-using Edelstein.Service.Game.Commands.Impl.Util;
+using Edelstein.Service.Game.Commands.Util;
 using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Commands.Impl

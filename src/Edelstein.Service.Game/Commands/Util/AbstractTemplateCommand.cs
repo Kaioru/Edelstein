@@ -6,7 +6,7 @@ using Edelstein.Core.Templates;
 using Edelstein.Provider;
 using Edelstein.Service.Game.Fields.Objects.User;
 
-namespace Edelstein.Service.Game.Commands.Impl.Util
+namespace Edelstein.Service.Game.Commands.Util
 {
     public abstract class AbstractTemplateCommand<TTemplate, TString, TContext> : AbstractCommand<TContext>
         where TTemplate : IDataTemplate
