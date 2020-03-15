@@ -8,7 +8,7 @@ namespace Edelstein.Core.Templates.Etc.MakeCharInfo
 {
     public class MakeCharInfoTemplateCollection : AbstractEagerDataTemplateCollection
     {
-        private IDataDirectoryCollection _collection;
+        private readonly IDataDirectoryCollection _collection;
 
         public MakeCharInfoTemplateCollection(IDataDirectoryCollection collection)
             => _collection = collection;

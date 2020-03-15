@@ -9,6 +9,7 @@ using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Templates.Items;
 using Edelstein.Core.Templates.NPC;
 using Edelstein.Core.Templates.Server.Continent;
+using Edelstein.Core.Templates.Strings;
 using Edelstein.Provider;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -64,6 +65,16 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
                             Tuple.Create<Type, IDataTemplateCollection>(
                                 typeof(ContinentTemplate),
                                 new ContinentTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.ItemString] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(ItemStringTemplate),
+                                new ItemStringTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.FieldString] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(FieldStringTemplate),
+                                new FieldStringTemplateCollection(directory)
                             )
                     }
                     .Where(kv => _type.HasFlag(kv.Key))
