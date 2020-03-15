@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Core.Scripting", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Service.Shop", "src\Edelstein.Service.Shop\Edelstein.Service.Shop.csproj", "{80949D08-8447-4584-A992-6359A735B6E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Service.Trade", "src\Edelstein.Service.Trade\Edelstein.Service.Trade.csproj", "{C24AC7B6-C5BF-4980-9C62-C349179593AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,7 @@ Global
 		{4233F011-667F-46D0-9B61-7B444C59F78A} = {C47FC9BD-F5B2-4DEB-989C-7CC7A6F76D30}
 		{2DCD7927-DC60-4EA7-B7D1-FC7CF55CFC62} = {C47FC9BD-F5B2-4DEB-989C-7CC7A6F76D30}
 		{80949D08-8447-4584-A992-6359A735B6E6} = {C47FC9BD-F5B2-4DEB-989C-7CC7A6F76D30}
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF} = {C47FC9BD-F5B2-4DEB-989C-7CC7A6F76D30}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C45F9C3A-B614-4423-BE4A-618511663009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -200,5 +203,17 @@ Global
 		{80949D08-8447-4584-A992-6359A735B6E6}.Release|x64.Build.0 = Release|Any CPU
 		{80949D08-8447-4584-A992-6359A735B6E6}.Release|x86.ActiveCfg = Release|Any CPU
 		{80949D08-8447-4584-A992-6359A735B6E6}.Release|x86.Build.0 = Release|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Debug|x64.Build.0 = Debug|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Debug|x86.Build.0 = Debug|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Release|x64.ActiveCfg = Release|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Release|x64.Build.0 = Release|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Release|x86.ActiveCfg = Release|Any CPU
+		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

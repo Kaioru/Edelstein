@@ -46,6 +46,8 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
                ModifiedCommodity |
                Best |
                CategoryDiscount |
-               NotSale
+               NotSale,
+
+        Trade = Item
     }
 }

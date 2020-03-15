@@ -8,5 +8,6 @@ namespace Edelstein.Service.All
         public ICollection<LoginServiceState> LoginServices { get; set; }
         public ICollection<GameServiceState> GameServices { get; set; }
         public ICollection<ShopServiceState> ShopServices { get; set; }
+        public ICollection<TradeServiceState> TradeServices { get; set; }
     }
 }

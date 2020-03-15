@@ -10,6 +10,7 @@ using Edelstein.Provider;
 using Edelstein.Service.Game;
 using Edelstein.Service.Login;
 using Edelstein.Service.Shop;
+using Edelstein.Service.Trade;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,6 +57,15 @@ namespace Edelstein.Service.All
                 )));
             Services.AddRange(_state.ShopServices
                 .Select(i => new ShopService(
+                    Options.Create(i),
+                    _provider.GetService<IDataStore>(),
+                    _provider.GetService<ICacheClient>(),
+                    _provider.GetService<IMessageBusFactory>(),
+                    _provider.GetService<ILockProvider>(),
+                    _provider.GetService<IDataTemplateManager>()
+                )));
+            Services.AddRange(_state.TradeServices
+                .Select(i => new TradeService(
                     Options.Create(i),
                     _provider.GetService<IDataStore>(),
                     _provider.GetService<ICacheClient>(),

@@ -4,7 +4,6 @@ using Edelstein.Core.Gameplay.Extensions.Packets;
 using Edelstein.Core.Templates.Server.Shop;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Entities;
 using Edelstein.Network.Packets;
 using MoreLinq.Extensions;
 
