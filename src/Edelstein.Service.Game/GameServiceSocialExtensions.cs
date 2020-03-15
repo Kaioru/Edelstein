@@ -32,8 +32,7 @@ namespace Edelstein.Service.Game
                             await u.SendPacket(p);
                         })
                     );
-                }
-            );
+                }, cancellationToken);
         }
     }
 }
