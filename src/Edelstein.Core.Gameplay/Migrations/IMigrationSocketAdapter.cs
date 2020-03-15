@@ -16,6 +16,8 @@ namespace Edelstein.Core.Gameplay.Migrations
 
         long ClientKey { get; set; }
         bool isMigrating { get; set; }
+        
+        string LastConnectedService { get; set; }
 
         DateTime LastSentHeartbeatDate { get; set; }
         DateTime LastRecvHeartbeatDate { get; set; }

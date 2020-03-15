@@ -162,6 +162,7 @@ namespace Edelstein.Core.Gameplay.Migrations
             adapter.AccountWorld = entry.AccountWorld;
             adapter.Character = entry.Character;
             adapter.ClientKey = entry.ClientKey;
+            adapter.LastConnectedService = entry.From.Name;
 
             await adapter.TryConnect();
             await MigrationCache.RemoveAsync(characterID.ToString());
