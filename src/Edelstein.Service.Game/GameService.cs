@@ -79,6 +79,7 @@ namespace Edelstein.Service.Game
             Handlers[RecvPacketOperations.MigrateIn] = new MigrateInHandler();
 
             Handlers[RecvPacketOperations.UserTransferChannelRequest] = new UserTransferChannelRequestHandler();
+            Handlers[RecvPacketOperations.UserMigrateToCashShopRequest] = new UserMigrateToCashShopRequestHandler();
             Handlers[RecvPacketOperations.UserMove] = new UserMoveHandler();
             Handlers[RecvPacketOperations.UserChat] = new UserChatHandler();
             Handlers[RecvPacketOperations.UserEmotion] = new UserEmotionHandler();

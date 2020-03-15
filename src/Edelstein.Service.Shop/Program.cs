@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
 using Edelstein.Core.Bootstrap.Providers.Templates;
+using Edelstein.Core.Distributed.States;
 
-namespace Edelstein.Service.All
+namespace Edelstein.Service.Shop
 {
     internal static class Program
     {
@@ -13,10 +14,9 @@ namespace Edelstein.Service.All
                 .WithConfiguredCaching()
                 .WithConfiguredDatabase()
                 .WithConfiguredParsing()
-                .WithConfiguredScripting()
-                .WithProvider(new DataTemplateProvider(DataTemplateType.All))
-                .WithConfig<ContainerServiceState>("Service")
-                .WithService<ContainerService>()
+                .WithProvider(new DataTemplateProvider(DataTemplateType.Shop))
+                .WithConfig<ShopServiceState>("Service")
+                .WithService<ShopService>()
                 .Build()
                 .StartAsync();
     }
