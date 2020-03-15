@@ -16,6 +16,8 @@ namespace Edelstein.Service.Game.Commands
         public CommandManager(Parser parser) : base(parser)
         {
             Commands.Add(new StatCommand(parser));
+            Commands.Add(new ItemCommand(parser));
+            Commands.Add(new FieldCommand(parser));
             Commands.Add(new ContinentCommand(parser));
             Commands.Add(new PartyCommand(parser));
             Commands.Add(new GuildCommand(parser));
