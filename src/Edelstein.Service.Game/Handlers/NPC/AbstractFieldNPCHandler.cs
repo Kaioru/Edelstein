@@ -11,7 +11,7 @@ namespace Edelstein.Service.Game.Handlers.NPC
     {
         protected override Task Handle(FieldUser user, RecvPacketOperations operation, IPacket packet)
         {
-            var npc = user.Field.GetControlledObject<FieldNPC>(user, packet.Decode<int>());
+            var npc = user.Field.GetControlledObject<FieldNPC>(user, packet.DecodeInt());
             return npc == null
                 ? Task.CompletedTask
                 : Handle(npc, operation, packet);

@@ -33,14 +33,14 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         {
             using var p = new Packet(SendPacketOperations.UserAvatarModified);
 
-            p.Encode<int>(user.ID);
-            p.Encode<byte>(0x1); // Flag
+            p.EncodeInt(user.ID);
+            p.EncodeByte(0x1); // Flag
             user.Character.EncodeLook(p);
 
-            p.Encode<bool>(false);
-            p.Encode<bool>(false);
-            p.Encode<bool>(false);
-            p.Encode<int>(user.BasicStat.CompletedSetItemID);
+            p.EncodeBool(false);
+            p.EncodeBool(false);
+            p.EncodeBool(false);
+            p.EncodeInt(user.BasicStat.CompletedSetItemID);
 
             await user.BroadcastPacket(p);
         }
@@ -153,10 +153,10 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
             using (var p = new Packet(SendPacketOperations.StatChanged))
             {
-                p.Encode<bool>(exclRequest);
+                p.EncodeBool(exclRequest);
                 context.Encode(p);
-                p.Encode<bool>(false);
-                p.Encode<bool>(false);
+                p.EncodeBool(false);
+                p.EncodeBool(false);
 
                 await user.SendPacket(p);
             }
@@ -194,9 +194,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             {
                 using var p = new Packet(SendPacketOperations.UserHP);
 
-                p.Encode<int>(user.ID);
-                p.Encode<int>(user.Character.HP);
-                p.Encode<int>(user.Character.MaxHP);
+                p.EncodeInt(user.ID);
+                p.EncodeInt(user.Character.HP);
+                p.EncodeInt(user.Character.MaxHP);
 
                 await user.Field.BroadcastPacket(user, user.Party, p);
             }
@@ -230,9 +230,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             action?.Invoke(context);
             using (var p = new Packet(SendPacketOperations.InventoryOperation))
             {
-                p.Encode<bool>(exclRequest);
+                p.EncodeBool(exclRequest);
                 context.Encode(p);
-                p.Encode<bool>(false);
+                p.EncodeBool(false);
                 await user.SendPacket(p);
             }
 

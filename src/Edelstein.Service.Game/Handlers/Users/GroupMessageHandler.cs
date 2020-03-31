@@ -18,15 +18,15 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            packet.Decode<int>();
+            packet.DecodeInt();
             
-            var type = (GroupMessageType) packet.Decode<byte>();
-            var recipients = new int[packet.Decode<byte>()];
+            var type = (GroupMessageType) packet.DecodeByte();
+            var recipients = new int[packet.DecodeByte()];
 
             for (var i = 0; i < recipients.Length; i++)
-                recipients[i] = packet.Decode<int>();
+                recipients[i] = packet.DecodeInt();
 
-            var text = packet.Decode<string>();
+            var text = packet.DecodeString();
 
             switch (type)
             {

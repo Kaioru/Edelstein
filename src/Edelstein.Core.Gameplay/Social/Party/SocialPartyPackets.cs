@@ -13,39 +13,39 @@ namespace Edelstein.Core.Gameplay.Social.Party
             Array.Resize(ref members, 6);
 
             foreach (var member in members)
-                p.Encode<int>(member?.CharacterID ?? 0);
+                p.EncodeInt(member?.CharacterID ?? 0);
             foreach (var member in members)
-                p.EncodeFixedString(member?.CharacterName ?? "", 13);
+                p.EncodeString(member?.CharacterName ?? "", 13);
             foreach (var member in members)
-                p.Encode<int>(member?.Job ?? 0);
+                p.EncodeInt(member?.Job ?? 0);
             foreach (var member in members)
-                p.Encode<int>(member?.Level ?? 0);
+                p.EncodeInt(member?.Level ?? 0);
             foreach (var member in members)
-                p.Encode<int>(member?.ChannelID ?? 0);
-            p.Encode<int>(party.BossCharacterID);
+                p.EncodeInt(member?.ChannelID ?? 0);
+            p.EncodeInt(party.BossCharacterID);
 
             foreach (var member in members)
-                p.Encode<int>(member?.ChannelID == channelID
+                p.EncodeInt(member?.ChannelID == channelID
                     ? member.FieldID
                     : -1
                 );
             foreach (var member in members)
             {
                 // TownPortal;
-                p.Encode<int>(0); // TownID
-                p.Encode<int>(0); // FieldID
-                p.Encode<int>(0); // SkillID
-                p.Encode<long>(0); // FieldPortal X
-                p.Encode<long>(0); // FieldPortal Y
+                p.EncodeInt(0); // TownID
+                p.EncodeInt(0); // FieldID
+                p.EncodeInt(0); // SkillID
+                p.EncodeLong(0); // FieldPortal X
+                p.EncodeLong(0); // FieldPortal Y
             }
 
             foreach (var member in members)
-                p.Encode<int>(0); // PQReward
+                p.EncodeInt(0); // PQReward
             foreach (var member in members)
-                p.Encode<int>(0); // PQRewardType
+                p.EncodeInt(0); // PQRewardType
 
-            p.Encode<int>(0); // PQRewardMobTemplateID
-            p.Encode<int>(0); // PQReward
+            p.EncodeInt(0); // PQRewardMobTemplateID
+            p.EncodeInt(0); // PQReward
         }
     }
 }

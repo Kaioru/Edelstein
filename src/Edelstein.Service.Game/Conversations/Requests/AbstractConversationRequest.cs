@@ -13,10 +13,10 @@ namespace Edelstein.Service.Game.Conversations.Requests
 
         public void Encode(IPacket packet)
         {
-            packet.Encode<byte>(0); // SpeakerTypeID
-            packet.Encode<int>(Speaker.TemplateID);
-            packet.Encode<byte>((byte) Type);
-            packet.Encode<byte>((byte) Speaker.Type);
+            packet.EncodeByte(0); // SpeakerTypeID
+            packet.EncodeInt(Speaker.TemplateID);
+            packet.EncodeByte((byte) Type);
+            packet.EncodeByte((byte) Speaker.Type);
 
             EncodeData(packet);
         }

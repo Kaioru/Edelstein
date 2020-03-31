@@ -28,10 +28,10 @@ namespace Edelstein.Service.Game.Conversations.Requests
         public override void EncodeData(IPacket packet)
         {
             if (Speaker.Type.HasFlag(ConversationSpeakerType.NPCReplacedByNPC))
-                packet.Encode<int>(Speaker.TemplateID);
-            packet.Encode<string>(_text);
-            packet.Encode<bool>(_prev);
-            packet.Encode<bool>(_next);
+                packet.EncodeInt(Speaker.TemplateID);
+            packet.EncodeString(_text);
+            packet.EncodeBool(_prev);
+            packet.EncodeBool(_next);
         }
     }
 }

@@ -20,8 +20,8 @@ namespace Edelstein.Service.Login.Handlers
             IPacket packet
         )
         {
-            var password = packet.Decode<string>();
-            var username = packet.Decode<string>();
+            var password = packet.DecodeString();
+            var username = packet.DecodeString();
 
             if (adapter.Account != null ||
                 adapter.AccountWorld != null ||
@@ -46,9 +46,9 @@ namespace Edelstein.Service.Login.Handlers
             {
                 using var p = new Packet(SendPacketOperations.CheckPasswordResult);
 
-                p.Encode<byte>((byte) LoginResultCode.Timeout);
-                p.Encode<byte>(0);
-                p.Encode<int>(0);
+                p.EncodeByte((byte) LoginResultCode.Timeout);
+                p.EncodeByte(0);
+                p.EncodeInt(0);
 
                 await adapter.SendPacket(p);
                 return;
@@ -88,27 +88,27 @@ namespace Edelstein.Service.Login.Handlers
                         result = LoginResultCode.IncorrectPassword;
                 }
 
-                p.Encode<byte>((byte) result);
-                p.Encode<byte>(0);
-                p.Encode<int>(0);
+                p.EncodeByte((byte) result);
+                p.EncodeByte(0);
+                p.EncodeInt(0);
 
                 if (result == LoginResultCode.Success)
                 {
-                    p.Encode<int>(account.ID); // pBlockReason
-                    p.Encode<byte>(account.Gender ?? (byte) 0xA);
-                    p.Encode<byte>(0); // nGradeCode
-                    p.Encode<short>(0); // nSubGradeCode
-                    p.Encode<byte>(0); // nCountryID
-                    p.Encode<string>(account.Username); // sNexonClubID
-                    p.Encode<byte>(0); // nPurchaseEXP
-                    p.Encode<byte>(0); // ChatUnblockReason
-                    p.Encode<long>(0); // dtChatUnblockDate
-                    p.Encode<long>(0); // dtRegisterDate
-                    p.Encode<int>(4); // nNumOfCharacter
-                    p.Encode<byte>(1); // v44
-                    p.Encode<byte>(0); // sMsg
+                    p.EncodeInt(account.ID); // pBlockReason
+                    p.EncodeByte(account.Gender ?? (byte) 0xA);
+                    p.EncodeByte(0); // nGradeCode
+                    p.EncodeShort(0); // nSubGradeCode
+                    p.EncodeByte(0); // nCountryID
+                    p.EncodeString(account.Username); // sNexonClubID
+                    p.EncodeByte(0); // nPurchaseEXP
+                    p.EncodeByte(0); // ChatUnblockReason
+                    p.EncodeLong(0); // dtChatUnblockDate
+                    p.EncodeLong(0); // dtRegisterDate
+                    p.EncodeInt(4); // nNumOfCharacter
+                    p.EncodeByte(1); // v44
+                    p.EncodeByte(0); // sMsg
 
-                    p.Encode<long>(adapter.ClientKey);
+                    p.EncodeLong(adapter.ClientKey);
 
                     adapter.Account = account;
                     await adapter.TryConnect();

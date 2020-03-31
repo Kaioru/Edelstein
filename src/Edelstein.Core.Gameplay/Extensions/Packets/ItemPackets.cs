@@ -25,93 +25,93 @@ namespace Edelstein.Core.Gameplay.Extensions.Packets
 
         public static void EncodeBase(this ItemSlot i, IPacket p)
         {
-            p.Encode<int>(i.TemplateID);
-            p.Encode<bool>(i.CashItemSN.HasValue);
-            if (i.CashItemSN.HasValue) p.Encode<long>(i.CashItemSN.Value);
-            p.Encode<DateTime>(i.DateExpire ?? ItemConstants.Permanent);
+            p.EncodeInt(i.TemplateID);
+            p.EncodeBool(i.CashItemSN.HasValue);
+            if (i.CashItemSN.HasValue) p.EncodeLong(i.CashItemSN.Value);
+            p.EncodeDateTime(i.DateExpire ?? ItemConstants.Permanent);
         }
 
         private static void Encode(this ItemSlotEquip i, IPacket p)
         {
-            p.Encode<byte>(1);
+            p.EncodeByte(1);
 
             i.EncodeBase(p);
 
-            p.Encode<byte>(i.RUC);
-            p.Encode<byte>(i.CUC);
+            p.EncodeByte(i.RUC);
+            p.EncodeByte(i.CUC);
 
-            p.Encode<short>(i.STR);
-            p.Encode<short>(i.DEX);
-            p.Encode<short>(i.INT);
-            p.Encode<short>(i.LUK);
-            p.Encode<short>(i.MaxHP);
-            p.Encode<short>(i.MaxMP);
-            p.Encode<short>(i.PAD);
-            p.Encode<short>(i.MAD);
-            p.Encode<short>(i.PDD);
-            p.Encode<short>(i.MDD);
-            p.Encode<short>(i.ACC);
-            p.Encode<short>(i.EVA);
+            p.EncodeShort(i.STR);
+            p.EncodeShort(i.DEX);
+            p.EncodeShort(i.INT);
+            p.EncodeShort(i.LUK);
+            p.EncodeShort(i.MaxHP);
+            p.EncodeShort(i.MaxMP);
+            p.EncodeShort(i.PAD);
+            p.EncodeShort(i.MAD);
+            p.EncodeShort(i.PDD);
+            p.EncodeShort(i.MDD);
+            p.EncodeShort(i.ACC);
+            p.EncodeShort(i.EVA);
 
-            p.Encode<short>(i.Craft);
-            p.Encode<short>(i.Speed);
-            p.Encode<short>(i.Jump);
-            p.Encode<string>(i.Title);
-            p.Encode<short>(i.Attribute);
+            p.EncodeShort(i.Craft);
+            p.EncodeShort(i.Speed);
+            p.EncodeShort(i.Jump);
+            p.EncodeString(i.Title);
+            p.EncodeShort(i.Attribute);
 
-            p.Encode<byte>(i.LevelUpType);
-            p.Encode<byte>(i.Level);
-            p.Encode<int>(i.EXP);
-            p.Encode<int>(i.Durability);
+            p.EncodeByte(i.LevelUpType);
+            p.EncodeByte(i.Level);
+            p.EncodeInt(i.EXP);
+            p.EncodeInt(i.Durability);
 
-            p.Encode<int>(i.IUC);
+            p.EncodeInt(i.IUC);
 
-            p.Encode<byte>(i.Grade);
-            p.Encode<byte>(i.CHUC);
+            p.EncodeByte(i.Grade);
+            p.EncodeByte(i.CHUC);
 
-            p.Encode<short>(i.Option1);
-            p.Encode<short>(i.Option2);
-            p.Encode<short>(i.Option3);
-            p.Encode<short>(i.Socket1);
-            p.Encode<short>(i.Socket2);
+            p.EncodeShort(i.Option1);
+            p.EncodeShort(i.Option2);
+            p.EncodeShort(i.Option3);
+            p.EncodeShort(i.Socket1);
+            p.EncodeShort(i.Socket2);
 
-            if (!i.CashItemSN.HasValue) p.Encode<long>(0);
-            p.Encode<long>(0);
-            p.Encode<int>(0);
+            if (!i.CashItemSN.HasValue) p.EncodeLong(0);
+            p.EncodeLong(0);
+            p.EncodeInt(0);
         }
 
         public static void Encode(this ItemSlotBundle i, IPacket p)
         {
-            p.Encode<byte>(2);
+            p.EncodeByte(2);
 
             i.EncodeBase(p);
 
-            p.Encode<short>(i.Number);
-            p.Encode<string>(i.Title);
-            p.Encode<short>(i.Attribute);
+            p.EncodeShort(i.Number);
+            p.EncodeString(i.Title);
+            p.EncodeShort(i.Attribute);
 
             if (ItemConstants.IsRechargeableItem(i.TemplateID))
-                p.Encode<long>(0);
+                p.EncodeLong(0);
         }
 
         public static void Encode(this ItemSlotPet i, IPacket p)
         {
-            p.Encode<byte>(3);
+            p.EncodeByte(3);
 
             i.EncodeBase(p);
 
-            p.EncodeFixedString(i.PetName, 13);
-            p.Encode<byte>(i.Level);
-            p.Encode<short>(i.Tameness);
-            p.Encode<byte>(i.Repleteness);
+            p.EncodeString(i.PetName, 13);
+            p.EncodeByte(i.Level);
+            p.EncodeShort(i.Tameness);
+            p.EncodeByte(i.Repleteness);
 
-            if (i.DateDead == null) p.Encode<long>(0);
-            else p.Encode<DateTime>(i.DateDead.Value);
+            if (i.DateDead == null) p.EncodeLong(0);
+            else p.EncodeDateTime(i.DateDead.Value);
 
-            p.Encode<short>(i.PetAttribute);
-            p.Encode<short>(i.PetSkill);
-            p.Encode<int>(i.RemainLife);
-            p.Encode<short>(i.Attribute);
+            p.EncodeShort(i.PetAttribute);
+            p.EncodeShort(i.PetSkill);
+            p.EncodeInt(i.RemainLife);
+            p.EncodeShort(i.Attribute);
         }
     }
 }

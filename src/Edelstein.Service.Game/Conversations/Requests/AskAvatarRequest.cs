@@ -25,9 +25,9 @@ namespace Edelstein.Service.Game.Conversations.Requests
 
         public override void EncodeData(IPacket packet)
         {
-            packet.Encode<string>(_text);
-            packet.Encode<byte>((byte) _styles.Length);
-            _styles.ForEach(s => packet.Encode<int>(s));
+            packet.EncodeString(_text);
+            packet.EncodeByte((byte) _styles.Length);
+            _styles.ForEach(s => packet.EncodeInt(s));
         }
     }
 }

@@ -26,11 +26,11 @@ namespace Edelstein.Network.Transport
 
             using (var p = new Packet())
             {
-                p.Encode<short>(_server.Version);
-                p.Encode<string>(_server.Patch);
-                p.Encode<int>((int) socket.SeqRecv);
-                p.Encode<int>((int) socket.SeqSend);
-                p.Encode<byte>(_server.Locale);
+                p.EncodeShort(_server.Version);
+                p.EncodeString(_server.Patch);
+                p.EncodeInt((int) socket.SeqRecv);
+                p.EncodeInt((int) socket.SeqSend);
+                p.EncodeByte(_server.Locale);
 
                 socket.SendPacket(p);
             }

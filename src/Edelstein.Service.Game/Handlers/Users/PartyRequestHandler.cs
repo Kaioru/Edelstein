@@ -19,7 +19,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            var type = (PartyRequestType) packet.Decode<byte>();
+            var type = (PartyRequestType) packet.DecodeByte();
 
             switch (type)
             {
@@ -27,8 +27,8 @@ namespace Edelstein.Service.Game.Handlers.Users
                 {
                     using var p = new Packet(SendPacketOperations.PartyResult);
 
-                    p.Encode<byte>((byte) PartyResultType.LoadParty_Done);
-                    p.Encode<int>(user.Party.ID);
+                    p.EncodeByte((byte) PartyResultType.LoadParty_Done);
+                    p.EncodeInt(user.Party.ID);
                     user.Party.EncodeData(user.Service.State.ChannelID, p);
 
                     await user.SendPacket(p);
@@ -56,7 +56,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     }
 
                     using var p = new Packet(SendPacketOperations.PartyResult);
-                    p.Encode<byte>((byte) result);
+                    p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;
                 }
@@ -76,7 +76,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     catch
                     {
                         using var p = new Packet(SendPacketOperations.PartyResult);
-                        p.Encode<byte>((byte) PartyResultType.WithdrawParty_Unknown);
+                        p.EncodeByte((byte) PartyResultType.WithdrawParty_Unknown);
                         await user.SendPacket(p);
                     }
 
@@ -87,7 +87,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     if (user.Party == null || user.Party.BossCharacterID != user.ID) return;
 
                     var result = PartyResultType.KickParty_Done;
-                    var target = packet.Decode<int>();
+                    var target = packet.DecodeInt();
 
                     try
                     {
@@ -107,7 +107,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     }
 
                     using var p = new Packet(SendPacketOperations.PartyResult);
-                    p.Encode<byte>((byte) result);
+                    p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;
                 }
@@ -116,7 +116,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     if (user.Party == null || user.Party.BossCharacterID != user.ID) return;
 
                     var result = PartyResultType.ChangePartyBoss_Done;
-                    var target = packet.Decode<int>();
+                    var target = packet.DecodeInt();
 
                     try
                     {
@@ -141,7 +141,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     }
 
                     using var p = new Packet(SendPacketOperations.PartyResult);
-                    p.Encode<byte>((byte) result);
+                    p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;
                 }

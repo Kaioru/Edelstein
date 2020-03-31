@@ -80,60 +80,60 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         {
             using var p = new Packet(SendPacketOperations.UserEnterField);
 
-            p.Encode<int>(ID);
+            p.EncodeInt(ID);
 
-            p.Encode<byte>(Character.Level);
-            p.Encode<string>(Character.Name);
+            p.EncodeByte(Character.Level);
+            p.EncodeString(Character.Name);
 
             // Guild
-            p.Encode<string>(Guild?.Name ?? "");
-            p.Encode<short>(Guild?.MarkBg ?? 0);
-            p.Encode<byte>(Guild?.MarkBgColor ?? 0);
-            p.Encode<short>(Guild?.Mark ?? 0);
-            p.Encode<byte>(Guild?.MarkColor ?? 0);
+            p.EncodeString(Guild?.Name ?? "");
+            p.EncodeShort(Guild?.MarkBg ?? 0);
+            p.EncodeByte(Guild?.MarkBgColor ?? 0);
+            p.EncodeShort(Guild?.Mark ?? 0);
+            p.EncodeByte(Guild?.MarkColor ?? 0);
 
-            p.Encode<long>(0);
-            p.Encode<long>(0);
-            p.Encode<byte>(0); // nDefenseAtt
-            p.Encode<byte>(0); // nDefenseState
+            p.EncodeLong(0);
+            p.EncodeLong(0);
+            p.EncodeByte(0); // nDefenseAtt
+            p.EncodeByte(0); // nDefenseState
 
-            p.Encode<short>(Character.Job);
+            p.EncodeShort(Character.Job);
             Character.EncodeLook(p);
 
-            p.Encode<int>(0);
-            p.Encode<int>(0);
-            p.Encode<int>(0);
-            p.Encode<int>(0);
-            p.Encode<int>(BasicStat.CompletedSetItemID);
-            p.Encode<int>(0);
+            p.EncodeInt(0);
+            p.EncodeInt(0);
+            p.EncodeInt(0);
+            p.EncodeInt(0);
+            p.EncodeInt(BasicStat.CompletedSetItemID);
+            p.EncodeInt(0);
 
-            p.Encode<Point>(Position);
-            p.Encode<byte>(MoveAction);
-            p.Encode<short>(Foothold);
-            p.Encode<byte>(0);
+            p.EncodePoint(Position);
+            p.EncodeByte(MoveAction);
+            p.EncodeShort(Foothold);
+            p.EncodeByte(0);
 
-            p.Encode<bool>(false);
-            p.Encode<bool>(false);
-            p.Encode<bool>(false);
+            p.EncodeBool(false);
+            p.EncodeBool(false);
+            p.EncodeBool(false);
 
-            p.Encode<bool>(false);
+            p.EncodeBool(false);
 
-            p.Encode<int>(0);
-            p.Encode<int>(0);
-            p.Encode<int>(0);
+            p.EncodeInt(0);
+            p.EncodeInt(0);
+            p.EncodeInt(0);
 
-            p.Encode<byte>(0);
+            p.EncodeByte(0);
 
-            p.Encode<bool>(false);
+            p.EncodeBool(false);
 
-            p.Encode<bool>(false);
-            p.Encode<bool>(false);
-            p.Encode<bool>(false);
+            p.EncodeBool(false);
+            p.EncodeBool(false);
+            p.EncodeBool(false);
 
-            p.Encode<byte>(0);
+            p.EncodeByte(0);
 
-            p.Encode<byte>(0);
-            p.Encode<int>(0);
+            p.EncodeByte(0);
+            p.EncodeInt(0);
             return p;
         }
 
@@ -141,7 +141,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         {
             using var p = new Packet(SendPacketOperations.UserLeaveField);
 
-            p.Encode<int>(ID);
+            p.EncodeInt(ID);
 
             return p;
         }
@@ -150,36 +150,36 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         {
             using var p = new Packet(SendPacketOperations.SetField);
 
-            p.Encode<short>(0); // ClientOpt
+            p.EncodeShort(0); // ClientOpt
 
-            p.Encode<int>(Service.State.ChannelID);
-            p.Encode<int>(AccountWorld.WorldID);
+            p.EncodeInt(Service.State.ChannelID);
+            p.EncodeInt(AccountWorld.WorldID);
 
-            p.Encode<bool>(true); // sNotifierMessage._m_pStr
-            p.Encode<bool>(!IsInstantiated);
-            p.Encode<short>(0); // nNotifierCheck, loops
+            p.EncodeBool(true); // sNotifierMessage._m_pStr
+            p.EncodeBool(!IsInstantiated);
+            p.EncodeShort(0); // nNotifierCheck, loops
 
             if (!IsInstantiated)
             {
-                p.Encode<int>(0);
-                p.Encode<int>(0);
-                p.Encode<int>(0);
+                p.EncodeInt(0);
+                p.EncodeInt(0);
+                p.EncodeInt(0);
 
                 Character.EncodeData(p);
 
-                p.Encode<int>(0);
-                for (var i = 0; i < 3; i++) p.Encode<int>(0);
+                p.EncodeInt(0);
+                for (var i = 0; i < 3; i++) p.EncodeInt(0);
             }
             else
             {
-                p.Encode<byte>(0);
-                p.Encode<int>(Character.FieldID);
-                p.Encode<byte>(Character.FieldPortal);
-                p.Encode<int>(Character.HP);
-                p.Encode<bool>(false);
+                p.EncodeByte(0);
+                p.EncodeInt(Character.FieldID);
+                p.EncodeByte(Character.FieldPortal);
+                p.EncodeInt(Character.HP);
+                p.EncodeBool(false);
             }
 
-            p.Encode<DateTime>(DateTime.Now);
+            p.EncodeDateTime(DateTime.Now);
 
             return p;
         }

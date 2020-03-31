@@ -16,41 +16,41 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            packet.Decode<int>();
-            var target = user.GetWatchedObject<FieldUser>(packet.Decode<int>());
+            packet.DecodeInt();
+            var target = user.GetWatchedObject<FieldUser>(packet.DecodeInt());
 
             if (target == null) return;
 
             using var p = new Packet(SendPacketOperations.CharacterInfo);
             var c = target.Character;
 
-            p.Encode<int>(target.ID);
-            p.Encode<byte>(c.Level);
-            p.Encode<short>(c.Job);
-            p.Encode<short>(c.POP); // TODO: use basic stat POP
+            p.EncodeInt(target.ID);
+            p.EncodeByte(c.Level);
+            p.EncodeShort(c.Job);
+            p.EncodeShort(c.POP); // TODO: use basic stat POP
 
-            p.Encode<byte>(0);
+            p.EncodeByte(0);
 
-            p.Encode<string>(target.Guild?.Name ?? "");
-            p.Encode<string>(""); // sAlliance
+            p.EncodeString(target.Guild?.Name ?? "");
+            p.EncodeString(""); // sAlliance
 
-            p.Encode<byte>(0); // Medal?
+            p.EncodeByte(0); // Medal?
 
-            p.Encode<bool>(false); // Pets
+            p.EncodeBool(false); // Pets
 
-            p.Encode<byte>(0); // TamingMobInfo
-            p.Encode<byte>(0); // Wishlist
+            p.EncodeByte(0); // TamingMobInfo
+            p.EncodeByte(0); // Wishlist
 
-            p.Encode<int>(0); // MedalAchievementInfo
-            p.Encode<short>(0);
+            p.EncodeInt(0); // MedalAchievementInfo
+            p.EncodeShort(0);
 
             var chairs = c.Inventories[ItemInventoryType.Install].Items
                 .Select(kv => kv.Value)
                 .Select(i => i.TemplateID)
                 .Where(i => i / 10000 == 301)
                 .ToList();
-            p.Encode<int>(chairs.Count);
-            chairs.ForEach(i => p.Encode<int>(i));
+            p.EncodeInt(chairs.Count);
+            chairs.ForEach(i => p.EncodeInt(i));
             await user.SendPacket(p);
         }
     }

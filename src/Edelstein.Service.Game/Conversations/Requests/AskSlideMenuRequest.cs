@@ -34,9 +34,9 @@ namespace Edelstein.Service.Game.Conversations.Requests
 
         public override void EncodeData(IPacket packet)
         {
-            packet.Encode<int>(_type);
-            packet.Encode<int>(_selected);
-            packet.Encode<string>(_text);
+            packet.EncodeInt(_type);
+            packet.EncodeInt(_selected);
+            packet.EncodeString(_text);
         }
     }
 }

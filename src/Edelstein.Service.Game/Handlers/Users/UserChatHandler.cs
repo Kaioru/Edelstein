@@ -17,10 +17,10 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            packet.Decode<int>();
+            packet.DecodeInt();
 
-            var message = packet.Decode<string>();
-            var onlyBalloon = packet.Decode<bool>();
+            var message = packet.DecodeString();
+            var onlyBalloon = packet.DecodeBool();
 
             if (message.StartsWith(CommandManager.Prefix))
             {
@@ -30,10 +30,10 @@ namespace Edelstein.Service.Game.Handlers.Users
 
             using var p1 = new Packet(SendPacketOperations.UserChat);
 
-            p1.Encode<int>(user.ID);
-            p1.Encode<bool>(false);
-            p1.Encode<string>(message);
-            p1.Encode<bool>(onlyBalloon);
+            p1.EncodeInt(user.ID);
+            p1.EncodeBool(false);
+            p1.EncodeString(message);
+            p1.EncodeBool(onlyBalloon);
 
             await user.FieldSplit.BroadcastPacket(p1);
 
@@ -41,11 +41,11 @@ namespace Edelstein.Service.Game.Handlers.Users
 
             using var p2 = new Packet(SendPacketOperations.UserChatNLCPQ);
 
-            p2.Encode<int>(user.ID);
-            p2.Encode<bool>(false);
-            p2.Encode<string>(message);
-            p2.Encode<bool>(onlyBalloon);
-            p2.Encode<string>(user.Character.Name);
+            p2.EncodeInt(user.ID);
+            p2.EncodeBool(false);
+            p2.EncodeString(message);
+            p2.EncodeBool(onlyBalloon);
+            p2.EncodeString(user.Character.Name);
 
             await Task.WhenAll(user.Field
                 .GetObjects<IFieldUser>()

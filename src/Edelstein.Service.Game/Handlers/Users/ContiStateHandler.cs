@@ -24,8 +24,8 @@ namespace Edelstein.Service.Game.Handlers.Users
             if (continent == null) return;
 
             using var p = new Packet(SendPacketOperations.CONTISTATE);
-            p.Encode<byte>((byte) continent.State);
-            p.Encode<bool>(continent.EventDoing);
+            p.EncodeByte((byte) continent.State);
+            p.EncodeBool(continent.EventDoing);
             await user.SendPacket(p);
         }
     }

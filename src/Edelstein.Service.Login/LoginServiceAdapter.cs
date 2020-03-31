@@ -24,20 +24,20 @@ namespace Edelstein.Service.Login
         {
             using var p = new Packet(SendPacketOperations.SelectCharacterResult);
 
-            p.Encode<byte>(0);
-            p.Encode<byte>(0);
+            p.EncodeByte(0);
+            p.EncodeByte(0);
 
             var endpoint = new IPEndPoint(IPAddress.Parse(to.Host), to.Port);
             var address = endpoint.Address.MapToIPv4().GetAddressBytes();
             var port = endpoint.Port;
 
             foreach (var b in address)
-                p.Encode<byte>(b);
-            p.Encode<short>((short) port);
+                p.EncodeByte(b);
+            p.EncodeShort((short) port);
 
-            p.Encode<int>(Character.ID);
-            p.Encode<byte>(0);
-            p.Encode<int>(0);
+            p.EncodeInt(Character.ID);
+            p.EncodeByte(0);
+            p.EncodeInt(0);
 
             return p;
         }

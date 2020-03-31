@@ -76,9 +76,9 @@ namespace Edelstein.Service.Game.Fields
                 {
                     using var p = new Packet(SendPacketOperations.UserHP);
 
-                    p.Encode<int>(user.ID);
-                    p.Encode<int>(user.Character.HP);
-                    p.Encode<int>(user.Character.MaxHP);
+                    p.EncodeInt(user.ID);
+                    p.EncodeInt(user.Character.HP);
+                    p.EncodeInt(user.Character.MaxHP);
 
                     await Task.WhenAll(newWatchers.Select(w => w.SendPacket(p)));
                 }
@@ -123,9 +123,9 @@ namespace Edelstein.Service.Game.Fields
                     {
                         using var p = new Packet(SendPacketOperations.UserHP);
 
-                        p.Encode<int>(u.ID);
-                        p.Encode<int>(u.Character.HP);
-                        p.Encode<int>(u.Character.MaxHP);
+                        p.EncodeInt(u.ID);
+                        p.EncodeInt(u.Character.HP);
+                        p.EncodeInt(u.Character.MaxHP);
 
                         await user.SendPacket(p);
                     }));

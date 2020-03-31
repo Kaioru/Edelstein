@@ -258,41 +258,41 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
 
         public void Encode(IPacket packet)
         {
-            packet.Encode<int>((int) Flag);
+            packet.EncodeInt((int) Flag);
 
-            if ((Flag & ModifyStatType.Skin) != 0) packet.Encode<byte>(Skin);
-            if ((Flag & ModifyStatType.Face) != 0) packet.Encode<int>(Face);
-            if ((Flag & ModifyStatType.Hair) != 0) packet.Encode<int>(Hair);
+            if ((Flag & ModifyStatType.Skin) != 0) packet.EncodeByte(Skin);
+            if ((Flag & ModifyStatType.Face) != 0) packet.EncodeInt(Face);
+            if ((Flag & ModifyStatType.Hair) != 0) packet.EncodeInt(Hair);
 
-            if ((Flag & ModifyStatType.Pet) != 0) packet.Encode<long>(Pet1);
-            if ((Flag & ModifyStatType.Pet2) != 0) packet.Encode<long>(Pet2);
-            if ((Flag & ModifyStatType.Pet3) != 0) packet.Encode<long>(Pet3);
+            if ((Flag & ModifyStatType.Pet) != 0) packet.EncodeLong(Pet1);
+            if ((Flag & ModifyStatType.Pet2) != 0) packet.EncodeLong(Pet2);
+            if ((Flag & ModifyStatType.Pet3) != 0) packet.EncodeLong(Pet3);
 
-            if ((Flag & ModifyStatType.Level) != 0) packet.Encode<byte>(Level);
-            if ((Flag & ModifyStatType.Job) != 0) packet.Encode<short>(Job);
-            if ((Flag & ModifyStatType.STR) != 0) packet.Encode<short>(STR);
-            if ((Flag & ModifyStatType.DEX) != 0) packet.Encode<short>(DEX);
-            if ((Flag & ModifyStatType.INT) != 0) packet.Encode<short>(INT);
-            if ((Flag & ModifyStatType.LUK) != 0) packet.Encode<short>(LUK);
+            if ((Flag & ModifyStatType.Level) != 0) packet.EncodeByte(Level);
+            if ((Flag & ModifyStatType.Job) != 0) packet.EncodeShort(Job);
+            if ((Flag & ModifyStatType.STR) != 0) packet.EncodeShort(STR);
+            if ((Flag & ModifyStatType.DEX) != 0) packet.EncodeShort(DEX);
+            if ((Flag & ModifyStatType.INT) != 0) packet.EncodeShort(INT);
+            if ((Flag & ModifyStatType.LUK) != 0) packet.EncodeShort(LUK);
 
-            if ((Flag & ModifyStatType.HP) != 0) packet.Encode<int>(HP);
-            if ((Flag & ModifyStatType.MaxHP) != 0) packet.Encode<int>(MaxHP);
-            if ((Flag & ModifyStatType.MP) != 0) packet.Encode<int>(MP);
-            if ((Flag & ModifyStatType.MaxMP) != 0) packet.Encode<int>(MaxMP);
+            if ((Flag & ModifyStatType.HP) != 0) packet.EncodeInt(HP);
+            if ((Flag & ModifyStatType.MaxHP) != 0) packet.EncodeInt(MaxHP);
+            if ((Flag & ModifyStatType.MP) != 0) packet.EncodeInt(MP);
+            if ((Flag & ModifyStatType.MaxMP) != 0) packet.EncodeInt(MaxMP);
 
-            if ((Flag & ModifyStatType.AP) != 0) packet.Encode<short>(AP);
+            if ((Flag & ModifyStatType.AP) != 0) packet.EncodeShort(AP);
             if ((Flag & ModifyStatType.SP) != 0)
             {
                 if (!SkillConstants.IsExtendSPJob(Job))
-                    packet.Encode<short>(SP);
+                    packet.EncodeShort(SP);
                 else _character.EncodeExtendSP(packet);
             }
 
-            if ((Flag & ModifyStatType.EXP) != 0) packet.Encode<int>(EXP);
-            if ((Flag & ModifyStatType.POP) != 0) packet.Encode<short>(POP);
+            if ((Flag & ModifyStatType.EXP) != 0) packet.EncodeInt(EXP);
+            if ((Flag & ModifyStatType.POP) != 0) packet.EncodeShort(POP);
 
-            if ((Flag & ModifyStatType.Money) != 0) packet.Encode<int>(Money);
-            if ((Flag & ModifyStatType.TempEXP) != 0) packet.Encode<int>(TempEXP);
+            if ((Flag & ModifyStatType.Money) != 0) packet.EncodeInt(Money);
+            if ((Flag & ModifyStatType.TempEXP) != 0) packet.EncodeInt(TempEXP);
         }
 
         // TODO: figure out stat increases for each job

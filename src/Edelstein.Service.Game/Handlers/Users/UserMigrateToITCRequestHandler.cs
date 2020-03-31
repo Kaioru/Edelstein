@@ -42,7 +42,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             catch
             {
                 using var p = new Packet(SendPacketOperations.TransferChannelReqIgnored);
-                p.Encode<byte>(0x3);
+                p.EncodeByte(0x3);
                 await user.SendPacket(p);
             }
         }

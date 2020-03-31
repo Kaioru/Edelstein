@@ -17,7 +17,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            var channelID = packet.Decode<byte>();
+            var channelID = packet.DecodeByte();
 
             // TODO: checks
 
@@ -35,7 +35,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             catch
             {
                 using var p = new Packet(SendPacketOperations.TransferChannelReqIgnored);
-                p.Encode<byte>(0x1);
+                p.EncodeByte(0x1);
                 await user.SendPacket(p);
             }
         }

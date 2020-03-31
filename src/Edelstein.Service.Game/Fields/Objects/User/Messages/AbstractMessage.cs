@@ -8,7 +8,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Messages
 
         public void Encode(IPacket packet)
         {
-            packet.Encode<byte>((byte) Type);
+            packet.EncodeByte((byte) Type);
             EncodeData(packet);
         }
 

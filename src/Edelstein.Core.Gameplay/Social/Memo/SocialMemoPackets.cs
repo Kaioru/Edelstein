@@ -7,11 +7,11 @@ namespace Edelstein.Core.Gameplay.Social.Memo
     {
         public static void EncodeData(this ISocialMemo memo, IPacket p)
         {
-            p.Encode<int>(memo.ID);
-            p.Encode<string>(memo.Sender);
-            p.Encode<string>(memo.Content);
-            p.Encode<DateTime>(memo.DateSent);
-            p.Encode<byte>(memo.Flag);
+            p.EncodeInt(memo.ID);
+            p.EncodeString(memo.Sender);
+            p.EncodeString(memo.Content);
+            p.EncodeDateTime(memo.DateSent);
+            p.EncodeByte(memo.Flag);
         }
     }
 }

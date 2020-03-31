@@ -16,8 +16,8 @@ namespace Edelstein.Service.Login.Handlers
             IPacket packet
         )
         {
-            var spw = packet.Decode<string>();
-            var characterID = packet.Decode<int>();
+            var spw = packet.DecodeString();
+            var characterID = packet.DecodeInt();
             try
             {
                 using var p = new Packet(SendPacketOperations.DeleteCharacterResult);
@@ -43,8 +43,8 @@ namespace Edelstein.Service.Login.Handlers
                 if (guildMember?.Grade == 1)
                     result = LoginResultCode.DeleteCharacterFailedOnGuildMaster;
 
-                p.Encode<int>(characterID);
-                p.Encode<byte>((byte) result);
+                p.EncodeInt(characterID);
+                p.EncodeByte((byte) result);
 
                 if (result == LoginResultCode.Success)
                 {
@@ -60,8 +60,8 @@ namespace Edelstein.Service.Login.Handlers
             {
                 using var p = new Packet(SendPacketOperations.DeleteCharacterResult);
 
-                p.Encode<int>(characterID);
-                p.Encode<byte>((byte) LoginResultCode.Unknown);
+                p.EncodeInt(characterID);
+                p.EncodeByte((byte) LoginResultCode.Unknown);
 
                 await adapter.SendPacket(p);
             }

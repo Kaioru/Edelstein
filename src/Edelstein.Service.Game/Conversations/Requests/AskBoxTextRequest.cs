@@ -30,10 +30,10 @@ namespace Edelstein.Service.Game.Conversations.Requests
 
         public override void EncodeData(IPacket packet)
         {
-            packet.Encode<string>(_text);
-            packet.Encode<string>(_def);
-            packet.Encode<short>(_cols);
-            packet.Encode<short>(_rows);
+            packet.EncodeString(_text);
+            packet.EncodeString(_def);
+            packet.EncodeShort(_cols);
+            packet.EncodeShort(_rows);
         }
     }
 }

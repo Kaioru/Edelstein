@@ -21,10 +21,10 @@ namespace Edelstein.Service.Login.Handlers
             IPacket packet
         )
         {
-            packet.Decode<byte>();
+            packet.DecodeByte();
 
-            var worldID = packet.Decode<byte>();
-            var channelID = packet.Decode<byte>();
+            var worldID = packet.DecodeByte();
+            var channelID = packet.DecodeByte();
 
             if (adapter.Account == null) return;
 
@@ -44,7 +44,7 @@ namespace Edelstein.Service.Login.Handlers
 
                 if (service == null) result = LoginResultCode.NotConnectableWorld;
 
-                p.Encode<byte>((byte) result);
+                p.EncodeByte((byte) result);
 
                 if (result == LoginResultCode.Success)
                 {
@@ -76,21 +76,21 @@ namespace Edelstein.Service.Login.Handlers
                         .Where(c => c.AccountWorldID == accountWorld.ID)
                         .ToImmutableList();
 
-                    p.Encode<byte>((byte) characters.Count);
+                    p.EncodeByte((byte) characters.Count);
                     characters.ForEach(c =>
                     {
                         c.EncodeStats(p);
                         c.EncodeLook(p);
 
-                        p.Encode<bool>(false);
-                        p.Encode<bool>(false);
+                        p.EncodeBool(false);
+                        p.EncodeBool(false);
                     });
 
-                    p.Encode<bool>(
+                    p.EncodeBool(
                         !string.IsNullOrEmpty(adapter.Account.SPW)
                     ); // bLoginOpt TODO: proper bLoginOpt stuff
-                    p.Encode<int>(accountWorld.SlotCount);
-                    p.Encode<int>(0);
+                    p.EncodeInt(accountWorld.SlotCount);
+                    p.EncodeInt(0);
                 }
 
                 await adapter.SendPacket(p);
@@ -99,7 +99,7 @@ namespace Edelstein.Service.Login.Handlers
             {
                 using var p = new Packet(SendPacketOperations.SelectWorldResult);
 
-                p.Encode<byte>((byte) LoginResultCode.DBFail);
+                p.EncodeByte((byte) LoginResultCode.DBFail);
 
                 await adapter.SendPacket(p);
             }

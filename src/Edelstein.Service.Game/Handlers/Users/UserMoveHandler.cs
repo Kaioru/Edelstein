@@ -15,18 +15,18 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            packet.Decode<long>();
-            packet.Decode<byte>();
-            packet.Decode<long>();
-            packet.Decode<int>();
-            packet.Decode<int>();
-            packet.Decode<int>();
+            packet.DecodeLong();
+            packet.DecodeByte();
+            packet.DecodeLong();
+            packet.DecodeInt();
+            packet.DecodeInt();
+            packet.DecodeInt();
 
             var path = new MovePath(packet);
 
             using var p = new Packet(SendPacketOperations.UserMove);
 
-            p.Encode<int>(user.ID);
+            p.EncodeInt(user.ID);
             path.Encode(p);
 
             await user.BroadcastPacket(p);

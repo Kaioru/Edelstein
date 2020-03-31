@@ -34,14 +34,14 @@ namespace Edelstein.Service.Game.Fields.Movements
 
         public void Decode(IPacket packet)
         {
-            _position = packet.Decode<Point>();
-            _vPosition = packet.Decode<Point>();
+            _position = packet.DecodePoint();
+            _vPosition = packet.DecodePoint();
 
-            var size = packet.Decode<byte>();
+            var size = packet.DecodeByte();
 
             for (var i = 0; i < size; i++)
             {
-                var attribute = (MoveFragmentAttribute) packet.Decode<byte>();
+                var attribute = (MoveFragmentAttribute) packet.DecodeByte();
 
                 switch (attribute)
                 {
@@ -100,10 +100,10 @@ namespace Edelstein.Service.Game.Fields.Movements
 
         public void Encode(IPacket packet)
         {
-            packet.Encode<Point>(_position);
-            packet.Encode<Point>(_vPosition);
+            packet.EncodePoint(_position);
+            packet.EncodePoint(_vPosition);
 
-            packet.Encode<byte>((byte) _fragments.Count);
+            packet.EncodeByte((byte) _fragments.Count);
             _fragments.ForEach(f => f.Encode(packet));
         }
     }

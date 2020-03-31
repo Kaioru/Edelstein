@@ -14,7 +14,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Messages.Impl.Drops
 
         protected override void EncodeData(IPacket packet)
         {
-            packet.Encode<byte>(_result);
+            packet.EncodeByte(_result);
         }
     }
 }

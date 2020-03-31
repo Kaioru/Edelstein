@@ -16,11 +16,11 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            packet.Decode<int>();
-            var type = (ItemInventoryType) packet.Decode<byte>();
-            var from = packet.Decode<short>();
-            var to = packet.Decode<short>();
-            var number = packet.Decode<short>();
+            packet.DecodeInt();
+            var type = (ItemInventoryType) packet.DecodeByte();
+            var from = packet.DecodeShort();
+            var to = packet.DecodeShort();
+            var number = packet.DecodeShort();
 
             if (to == 0)
             {

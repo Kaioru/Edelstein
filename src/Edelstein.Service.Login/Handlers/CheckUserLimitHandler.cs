@@ -17,7 +17,7 @@ namespace Edelstein.Service.Login.Handlers
             IPacket packet
         )
         {
-            var worldID = packet.Decode<byte>();
+            var worldID = packet.DecodeByte();
 
             if (adapter.Account == null) return;
 
@@ -46,14 +46,14 @@ namespace Edelstein.Service.Login.Handlers
 
             using var p = new Packet(SendPacketOperations.CheckUserLimitResult);
 
-            p.Encode<byte>(
+            p.EncodeByte(
                 (byte) (capacity >= 1
                     ? 2
                     : capacity >= 0.75
                         ? 1
                         : 0)
             );
-            p.Encode<byte>(0); // TODO: bPopulateLevel
+            p.EncodeByte(0); // TODO: bPopulateLevel
 
             await adapter.SendPacket(p);
         }

@@ -16,15 +16,15 @@ namespace Edelstein.Service.Game.Handlers
             IPacket packet
         )
         {
-            var characterID = packet.Decode<int>();
+            var characterID = packet.DecodeInt();
 
-            packet.Decode<long>(); // MachineID 1
-            packet.Decode<long>(); // MachineID 2
+            packet.DecodeLong(); // MachineID 1
+            packet.DecodeLong(); // MachineID 2
 
-            packet.Decode<bool>(); // isUserGM
-            packet.Decode<byte>(); // Unk
+            packet.DecodeBool(); // isUserGM
+            packet.DecodeByte(); // Unk
 
-            var clientKey = packet.Decode<long>();
+            var clientKey = packet.DecodeLong();
 
             try
             {
@@ -50,8 +50,8 @@ namespace Edelstein.Service.Game.Handlers
                     {
                         var memos = fieldUser.Memos.Values;
 
-                        p.Encode<byte>((byte) MemoResultType.Load);
-                        p.Encode<byte>((byte) memos.Count);
+                        p.EncodeByte((byte) MemoResultType.Load);
+                        p.EncodeByte((byte) memos.Count);
                         memos.ForEach(m => m.EncodeData(p));
                         await fieldUser.SendPacket(p);
                     }

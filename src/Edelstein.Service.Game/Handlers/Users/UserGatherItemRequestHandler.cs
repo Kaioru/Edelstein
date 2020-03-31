@@ -16,9 +16,9 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            packet.Decode<int>();
+            packet.DecodeInt();
 
-            var inventoryType = (ItemInventoryType) packet.Decode<byte>();
+            var inventoryType = (ItemInventoryType) packet.DecodeByte();
             var inventoryCopy = user.Character.Inventories[inventoryType].Items
                 .Where(kv => kv.Key > 0)
                 .OrderBy(kv => kv.Key)
@@ -32,8 +32,8 @@ namespace Edelstein.Service.Game.Handlers.Users
             }, true);
 
             using var p = new Packet(SendPacketOperations.GatherItemResult);
-            p.Encode<bool>(false);
-            p.Encode<byte>((byte) inventoryType);
+            p.EncodeBool(false);
+            p.EncodeByte((byte) inventoryType);
             await user.SendPacket(p);
         }
     }

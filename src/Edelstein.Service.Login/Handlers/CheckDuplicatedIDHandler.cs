@@ -17,7 +17,7 @@ namespace Edelstein.Service.Login.Handlers
             IPacket packet
         )
         {
-            var name = packet.Decode<string>();
+            var name = packet.DecodeString();
 
             if (adapter.Account == null) return;
             if (adapter.AccountWorld == null) return;
@@ -36,8 +36,8 @@ namespace Edelstein.Service.Login.Handlers
             {
                 using var p = new Packet(SendPacketOperations.CheckDuplicatedIDResult);
 
-                p.Encode<string>(name);
-                p.Encode<byte>(0x2);
+                p.EncodeString(name);
+                p.EncodeByte(0x2);
 
                 await adapter.SendPacket(p);
                 return;
@@ -54,8 +54,8 @@ namespace Edelstein.Service.Login.Handlers
                     .ToImmutableList()
                     .Any();
 
-                p.Encode<string>(name);
-                p.Encode<bool>(isDuplicatedID);
+                p.EncodeString(name);
+                p.EncodeBool(isDuplicatedID);
 
                 await adapter.SendPacket(p);
             }

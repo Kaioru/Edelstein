@@ -27,18 +27,18 @@ namespace Edelstein.Service.Login.Handlers
             IPacket packet
         )
         {
-            var name = packet.Decode<string>();
-            var race = (Race) packet.Decode<int>();
-            var subJob = packet.Decode<short>();
-            var face = packet.Decode<int>();
-            var hair = packet.Decode<int>();
-            var hairColor = packet.Decode<int>();
-            var skin = packet.Decode<int>();
-            var coat = packet.Decode<int>();
-            var pants = packet.Decode<int>();
-            var shoes = packet.Decode<int>();
-            var weapon = packet.Decode<int>();
-            var gender = packet.Decode<byte>();
+            var name = packet.DecodeString();
+            var race = (Race) packet.DecodeInt();
+            var subJob = packet.DecodeShort();
+            var face = packet.DecodeInt();
+            var hair = packet.DecodeInt();
+            var hairColor = packet.DecodeInt();
+            var skin = packet.DecodeInt();
+            var coat = packet.DecodeInt();
+            var pants = packet.DecodeInt();
+            var shoes = packet.DecodeInt();
+            var weapon = packet.DecodeInt();
+            var gender = packet.DecodeByte();
 
             if (adapter.Account == null) return;
             if (adapter.AccountWorld == null) return;
@@ -58,8 +58,8 @@ namespace Edelstein.Service.Login.Handlers
             {
                 using var p = new Packet(SendPacketOperations.CreateNewCharacterResult);
 
-                p.Encode<byte>((byte) LoginResultCode.Timeout);
-                p.Encode<int>(0);
+                p.EncodeByte((byte) LoginResultCode.Timeout);
+                p.EncodeInt(0);
 
                 await adapter.SendPacket(p);
                 return;
@@ -96,7 +96,7 @@ namespace Edelstein.Service.Login.Handlers
                         ?.BlockCharCreation == true
                 ) result = LoginResultCode.NotConnectableWorld;
 
-                p.Encode<byte>((byte) result);
+                p.EncodeByte((byte) result);
 
                 if (result == LoginResultCode.Success)
                 {
@@ -127,12 +127,12 @@ namespace Edelstein.Service.Login.Handlers
 
                     character.EncodeStats(p);
                     character.EncodeLook(p);
-                    p.Encode<bool>(false);
-                    p.Encode<bool>(false);
+                    p.EncodeBool(false);
+                    p.EncodeBool(false);
                 }
                 else
                 {
-                    p.Encode<int>(0);
+                    p.EncodeInt(0);
                 }
 
                 await adapter.SendPacket(p);
@@ -141,8 +141,8 @@ namespace Edelstein.Service.Login.Handlers
             {
                 using var p = new Packet(SendPacketOperations.CreateNewCharacterResult);
 
-                p.Encode<byte>((byte) LoginResultCode.DBFail);
-                p.Encode<int>(0);
+                p.EncodeByte((byte) LoginResultCode.DBFail);
+                p.EncodeInt(0);
 
                 await adapter.SendPacket(p);
             }

@@ -19,7 +19,7 @@ namespace Edelstein.Core.Gameplay.Inventories.Operations
 
         protected override void EncodeData(IPacket packet)
         {
-            packet.Encode<int>(_exp);
+            packet.EncodeInt(_exp);
         }
     }
 }

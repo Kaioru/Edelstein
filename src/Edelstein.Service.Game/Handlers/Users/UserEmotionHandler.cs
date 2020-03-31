@@ -14,17 +14,17 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            var emotion = packet.Decode<int>();
-            var duration = packet.Decode<int>();
-            var byItemOption = packet.Decode<bool>();
+            var emotion = packet.DecodeInt();
+            var duration = packet.DecodeInt();
+            var byItemOption = packet.DecodeBool();
 
             // TODO: item option checks
 
             using var p = new Packet(SendPacketOperations.UserEmotion);
-            p.Encode<int>(user.ID);
-            p.Encode<int>(emotion);
-            p.Encode<int>(duration);
-            p.Encode<bool>(byItemOption);
+            p.EncodeInt(user.ID);
+            p.EncodeInt(emotion);
+            p.EncodeInt(duration);
+            p.EncodeBool(byItemOption);
             await user.BroadcastPacket(p);
         }
     }

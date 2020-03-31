@@ -46,8 +46,8 @@ namespace Edelstein.Service.Game.Fields.Continent
                 {
                     using (var p = new Packet(SendPacketOperations.CONTIMOVE))
                     {
-                        p.Encode<byte>((byte) ContinentTarget.TargetStartShipMoveField);
-                        p.Encode<byte>((byte) ContinentTrigger.Start);
+                        p.EncodeByte((byte) ContinentTarget.TargetStartShipMoveField);
+                        p.EncodeByte((byte) ContinentTrigger.Start);
                         await StartShipMoveField.BroadcastPacket(p);
                     }
 
@@ -57,8 +57,8 @@ namespace Edelstein.Service.Game.Fields.Continent
                 {
                     using (var p = new Packet(SendPacketOperations.CONTIMOVE))
                     {
-                        p.Encode<byte>((byte) ContinentTarget.TargetEndShipMoveField);
-                        p.Encode<byte>((byte) ContinentTrigger.End);
+                        p.EncodeByte((byte) ContinentTarget.TargetEndShipMoveField);
+                        p.EncodeByte((byte) ContinentTrigger.End);
                         await EndShipMoveField.BroadcastPacket(p);
                     }
 
@@ -83,8 +83,8 @@ namespace Edelstein.Service.Game.Fields.Continent
 
                     using (var p = new Packet(SendPacketOperations.CONTIMOVE))
                     {
-                        p.Encode<byte>((byte) ContinentTarget.TargetMoveField);
-                        p.Encode<byte>((byte) ContinentTrigger.MobGen);
+                        p.EncodeByte((byte) ContinentTarget.TargetMoveField);
+                        p.EncodeByte((byte) ContinentTrigger.MobGen);
                         await MoveField.BroadcastPacket(p);
                     }
                 })
@@ -96,8 +96,8 @@ namespace Edelstein.Service.Game.Fields.Continent
 
                     using (var p = new Packet(SendPacketOperations.CONTIMOVE))
                     {
-                        p.Encode<byte>((byte) ContinentTarget.TargetMoveField);
-                        p.Encode<byte>((byte) ContinentTrigger.MobDestroy);
+                        p.EncodeByte((byte) ContinentTarget.TargetMoveField);
+                        p.EncodeByte((byte) ContinentTrigger.MobDestroy);
                         await MoveField.BroadcastPacket(p);
                     }
                 })

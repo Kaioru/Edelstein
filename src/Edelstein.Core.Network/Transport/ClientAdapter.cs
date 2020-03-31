@@ -22,13 +22,11 @@ namespace Edelstein.Network.Transport
             if (adapter != null) adapter.OnPacket(p);
             else
             {
-                var version = p.Decode<short>();
-                var patch = p.Decode<string>();
-
-                var seqSend = p.Decode<uint>();
-                var seqRecv = p.Decode<uint>();
-
-                var locale = p.Decode<byte>();
+                var version = p.DecodeShort();
+                var patch = p.DecodeString();
+                var seqSend = p.DecodeUInt();
+                var seqRecv = p.DecodeUInt();
+                var locale = p.DecodeByte();
 
                 if (version != _client.Version) return;
                 if (patch != _client.Patch) return;

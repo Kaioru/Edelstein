@@ -17,7 +17,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            var npc = user.GetWatchedObject<FieldNPC>(packet.Decode<int>());
+            var npc = user.GetWatchedObject<FieldNPC>(packet.DecodeInt());
             var script = npc.Template.Scripts.FirstOrDefault()?.Script;
 
             if (script == null) return;

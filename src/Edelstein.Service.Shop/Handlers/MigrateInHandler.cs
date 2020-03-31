@@ -17,15 +17,15 @@ namespace Edelstein.Service.Shop.Handlers
             IPacket packet
         )
         {
-            var characterID = packet.Decode<int>();
+            var characterID = packet.DecodeInt();
 
-            packet.Decode<long>(); // MachineID 1
-            packet.Decode<long>(); // MachineID 2
+            packet.DecodeLong(); // MachineID 1
+            packet.DecodeLong(); // MachineID 2
 
-            packet.Decode<bool>(); // isUserGM
-            packet.Decode<byte>(); // Unk
+            packet.DecodeBool(); // isUserGM
+            packet.DecodeByte(); // Unk
 
-            var clientKey = packet.Decode<long>();
+            var clientKey = packet.DecodeLong();
 
             try
             {
@@ -35,17 +35,17 @@ namespace Edelstein.Service.Shop.Handlers
 
                 adapter.Character.EncodeData(p);
 
-                p.Encode<bool>(true); // m_bCashShopAuthorized
-                p.Encode<string>(adapter.Account.Username); // m_sNexonClubID
+                p.EncodeBool(true); // m_bCashShopAuthorized
+                p.EncodeString(adapter.Account.Username); // m_sNexonClubID
 
                 var templates = adapter.Service.TemplateManager;
 
                 var notSales = templates.GetAll<NotSaleTemplate>().ToList();
-                p.Encode<int>(notSales.Count);
-                notSales.ForEach(n => p.Encode<int>(n.ID));
+                p.EncodeInt(notSales.Count);
+                notSales.ForEach(n => p.EncodeInt(n.ID));
 
                 var modifiedCommodities = templates.GetAll<ModifiedCommodityTemplate>().ToList();
-                p.Encode<short>((short) modifiedCommodities.Count);
+                p.EncodeShort((short) modifiedCommodities.Count);
                 modifiedCommodities.ForEach(m =>
                 {
                     var flag = 0;
@@ -70,68 +70,68 @@ namespace Edelstein.Service.Shop.Handlers
                     if (m.PbGift.HasValue) flag |= 0x8000;
                     if (m.PackageSN != null) flag |= 0x10000;
 
-                    p.Encode<int>(m.ID);
-                    p.Encode<int>(flag);
+                    p.EncodeInt(m.ID);
+                    p.EncodeInt(flag);
 
-                    if ((flag & 0x1) != 0) p.Encode<int>(m.ItemID.Value);
-                    if ((flag & 0x2) != 0) p.Encode<short>(m.Count.Value);
-                    if ((flag & 0x10) != 0) p.Encode<byte>(m.Priority.Value);
-                    if ((flag & 0x4) != 0) p.Encode<int>(m.Price.Value);
-                    if ((flag & 0x8) != 0) p.Encode<byte>(m.Bonus.Value);
-                    if ((flag & 0x20) != 0) p.Encode<short>(m.Period.Value);
-                    if ((flag & 0x20000) != 0) p.Encode<short>(m.ReqPOP.Value);
-                    if ((flag & 0x40000) != 0) p.Encode<short>(m.ReqLEV.Value);
-                    if ((flag & 0x40) != 0) p.Encode<int>(m.MaplePoint.Value);
-                    if ((flag & 0x80) != 0) p.Encode<int>(m.Meso.Value);
-                    if ((flag & 0x100) != 0) p.Encode<bool>(m.ForPremiumUser.Value);
-                    if ((flag & 0x200) != 0) p.Encode<byte>(m.Gender.Value);
-                    if ((flag & 0x400) != 0) p.Encode<bool>(m.OnSale.Value);
-                    if ((flag & 0x800) != 0) p.Encode<byte>(m.Class.Value);
-                    if ((flag & 0x1000) != 0) p.Encode<byte>(m.Limit.Value);
-                    if ((flag & 0x2000) != 0) p.Encode<short>(m.PbCash.Value);
-                    if ((flag & 0x4000) != 0) p.Encode<short>(m.PbPoint.Value);
-                    if ((flag & 0x8000) != 0) p.Encode<short>(m.PbGift.Value);
+                    if ((flag & 0x1) != 0) p.EncodeInt(m.ItemID.Value);
+                    if ((flag & 0x2) != 0) p.EncodeShort(m.Count.Value);
+                    if ((flag & 0x10) != 0) p.EncodeByte(m.Priority.Value);
+                    if ((flag & 0x4) != 0) p.EncodeInt(m.Price.Value);
+                    if ((flag & 0x8) != 0) p.EncodeByte(m.Bonus.Value);
+                    if ((flag & 0x20) != 0) p.EncodeShort(m.Period.Value);
+                    if ((flag & 0x20000) != 0) p.EncodeShort(m.ReqPOP.Value);
+                    if ((flag & 0x40000) != 0) p.EncodeShort(m.ReqLEV.Value);
+                    if ((flag & 0x40) != 0) p.EncodeInt(m.MaplePoint.Value);
+                    if ((flag & 0x80) != 0) p.EncodeInt(m.Meso.Value);
+                    if ((flag & 0x100) != 0) p.EncodeBool(m.ForPremiumUser.Value);
+                    if ((flag & 0x200) != 0) p.EncodeByte(m.Gender.Value);
+                    if ((flag & 0x400) != 0) p.EncodeBool(m.OnSale.Value);
+                    if ((flag & 0x800) != 0) p.EncodeByte(m.Class.Value);
+                    if ((flag & 0x1000) != 0) p.EncodeByte(m.Limit.Value);
+                    if ((flag & 0x2000) != 0) p.EncodeShort(m.PbCash.Value);
+                    if ((flag & 0x4000) != 0) p.EncodeShort(m.PbPoint.Value);
+                    if ((flag & 0x8000) != 0) p.EncodeShort(m.PbGift.Value);
                     if ((flag & 0x10000) == 0) return;
-                    p.Encode<byte>((byte) m.PackageSN.Length);
-                    m.PackageSN.ForEach(sn => p.Encode<int>(sn));
+                    p.EncodeByte((byte) m.PackageSN.Length);
+                    m.PackageSN.ForEach(sn => p.EncodeInt(sn));
                 });
 
                 var categoryDiscounts = templates.GetAll<CategoryDiscountTemplate>().ToList();
-                p.Encode<byte>((byte) categoryDiscounts.Count);
+                p.EncodeByte((byte) categoryDiscounts.Count);
                 categoryDiscounts.ForEach(d =>
                 {
-                    p.Encode<byte>(d.Category);
-                    p.Encode<byte>(d.CategorySub);
-                    p.Encode<byte>(d.DiscountRate);
+                    p.EncodeByte(d.Category);
+                    p.EncodeByte(d.CategorySub);
+                    p.EncodeByte(d.DiscountRate);
                 });
 
                 const int bestLimit = 90;
                 var best = templates.GetAll<BestTemplate>().ToList();
                 best.Take(bestLimit).ForEach(b =>
                 {
-                    p.Encode<int>(b.Category);
-                    p.Encode<int>(b.Gender);
-                    p.Encode<int>(b.CommoditySN);
+                    p.EncodeInt(b.Category);
+                    p.EncodeInt(b.Gender);
+                    p.EncodeInt(b.CommoditySN);
                 });
                 if (best.Count < bestLimit)
                 {
                     Enumerable.Repeat(0, bestLimit - best.Count).ForEach(i =>
                     {
-                        p.Encode<int>(0);
-                        p.Encode<int>(0);
-                        p.Encode<int>(0);
+                        p.EncodeInt(0);
+                        p.EncodeInt(0);
+                        p.EncodeInt(0);
                     });
                 }
 
                 // DecodeStock
-                p.Encode<short>(0);
+                p.EncodeShort(0);
                 // DecodeLimitGoods
-                p.Encode<short>(0);
+                p.EncodeShort(0);
                 // DecodeZeroGoods
-                p.Encode<short>(0);
+                p.EncodeShort(0);
 
-                p.Encode<bool>(false); // m_bEventOn
-                p.Encode<int>(0);
+                p.EncodeBool(false); // m_bEventOn
+                p.EncodeInt(0);
 
                 await adapter.SendPacket(p);
 

@@ -49,13 +49,13 @@ namespace Edelstein.Service.Game
 
                         using var p = new Packet(SendPacketOperations.PartyResult);
 
-                        p.Encode<byte>((byte) PartyResultType.CreateNewParty_Done);
-                        p.Encode<int>(msg.PartyID);
-                        p.Encode<int>(0); // TownPortal-TownID
-                        p.Encode<int>(0); // TownPortal-FieldID
-                        p.Encode<int>(0); // TownPortal-SkillID
-                        p.Encode<short>(0); // TownPortal-pos x?
-                        p.Encode<short>(0); // TownPortal-pos y?
+                        p.EncodeByte((byte) PartyResultType.CreateNewParty_Done);
+                        p.EncodeInt(msg.PartyID);
+                        p.EncodeInt(0); // TownPortal-TownID
+                        p.EncodeInt(0); // TownPortal-FieldID
+                        p.EncodeInt(0); // TownPortal-SkillID
+                        p.EncodeShort(0); // TownPortal-pos x?
+                        p.EncodeShort(0); // TownPortal-pos y?
 
                         await user.SendPacket(p);
                     }
@@ -94,9 +94,9 @@ namespace Edelstein.Service.Game
                     {
                         using var p = new Packet(SendPacketOperations.PartyResult);
 
-                        p.Encode<byte>((byte) PartyResultType.JoinParty_Done);
-                        p.Encode<int>(msg.PartyID);
-                        p.Encode<string>(member.CharacterName);
+                        p.EncodeByte((byte) PartyResultType.JoinParty_Done);
+                        p.EncodeInt(msg.PartyID);
+                        p.EncodeString(member.CharacterName);
                         u.Party.EncodeData(u.Service.State.ChannelID, p);
 
                         await u.SendPacket(p);
@@ -106,9 +106,9 @@ namespace Edelstein.Service.Game
                     {
                         using var p = new Packet(SendPacketOperations.UserHP);
 
-                        p.Encode<int>(user.ID);
-                        p.Encode<int>(user.Character.HP);
-                        p.Encode<int>(user.Character.MaxHP);
+                        p.EncodeInt(user.ID);
+                        p.EncodeInt(user.Character.HP);
+                        p.EncodeInt(user.Character.MaxHP);
 
                         await user.Field.BroadcastPacket(user, user.Party, p);
 
@@ -120,9 +120,9 @@ namespace Edelstein.Service.Game
                             {
                                 using var p = new Packet(SendPacketOperations.UserHP);
 
-                                p.Encode<int>(u.ID);
-                                p.Encode<int>(u.Character.HP);
-                                p.Encode<int>(u.Character.MaxHP);
+                                p.EncodeInt(u.ID);
+                                p.EncodeInt(u.Character.HP);
+                                p.EncodeInt(u.Character.MaxHP);
 
                                 await user.SendPacket(p);
                             }));
@@ -139,15 +139,15 @@ namespace Edelstein.Service.Game
                     {
                         using var p = new Packet(SendPacketOperations.PartyResult);
 
-                        p.Encode<byte>((byte) PartyResultType.WithdrawParty_Done);
-                        p.Encode<int>(msg.PartyID);
-                        p.Encode<int>(msg.PartyMemberID);
-                        p.Encode<bool>(!msg.Disband);
+                        p.EncodeByte((byte) PartyResultType.WithdrawParty_Done);
+                        p.EncodeInt(msg.PartyID);
+                        p.EncodeInt(msg.PartyMemberID);
+                        p.EncodeBool(!msg.Disband);
 
                         if (!msg.Disband)
                         {
-                            p.Encode<bool>(msg.Kick);
-                            p.Encode<string>(msg.CharacterName);
+                            p.EncodeBool(msg.Kick);
+                            p.EncodeString(msg.CharacterName);
                             u.Party.EncodeData(u.Service.State.ChannelID, p);
                         }
 
@@ -167,9 +167,9 @@ namespace Edelstein.Service.Game
                     {
                         using var p = new Packet(SendPacketOperations.PartyResult);
 
-                        p.Encode<byte>((byte) PartyResultType.ChangePartyBoss_Done);
-                        p.Encode<int>(msg.PartyMemberID);
-                        p.Encode<bool>(msg.Disconnect);
+                        p.EncodeByte((byte) PartyResultType.ChangePartyBoss_Done);
+                        p.EncodeInt(msg.PartyMemberID);
+                        p.EncodeBool(msg.Disconnect);
 
                         await u.SendPacket(p);
                     }));
@@ -188,8 +188,8 @@ namespace Edelstein.Service.Game
                     {
                         using var p = new Packet(SendPacketOperations.PartyResult);
 
-                        p.Encode<byte>((byte) PartyResultType.UserMigration);
-                        p.Encode<int>(msg.PartyID);
+                        p.EncodeByte((byte) PartyResultType.UserMigration);
+                        p.EncodeInt(msg.PartyID);
                         u.Party.EncodeData(service.State.ChannelID, p);
 
                         await u.SendPacket(p);
@@ -208,10 +208,10 @@ namespace Edelstein.Service.Game
                 {
                     using var p = new Packet(SendPacketOperations.PartyResult);
 
-                    p.Encode<byte>((byte) PartyResultType.ChangeLevelOrJob);
-                    p.Encode<int>(msg.PartyMemberID);
-                    p.Encode<int>(msg.Level);
-                    p.Encode<int>(msg.Job);
+                    p.EncodeByte((byte) PartyResultType.ChangeLevelOrJob);
+                    p.EncodeInt(msg.PartyMemberID);
+                    p.EncodeInt(msg.Level);
+                    p.EncodeInt(msg.Job);
 
                     await u.SendPacket(p);
                 }));

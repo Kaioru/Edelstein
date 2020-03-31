@@ -21,16 +21,16 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
 
         public override void DecodeData(IPacket packet)
         {
-            _position = packet.Decode<Point>();
-            _vPosition = packet.Decode<Point>();
+            _position = packet.DecodePoint();
+            _vPosition = packet.DecodePoint();
 
             base.DecodeData(packet);
         }
 
         public override void EncodeData(IPacket packet)
         {
-            packet.Encode<Point>(_position);
-            packet.Encode<Point>(_vPosition);
+            packet.EncodePoint(_position);
+            packet.EncodePoint(_vPosition);
 
             base.EncodeData(packet);
         }

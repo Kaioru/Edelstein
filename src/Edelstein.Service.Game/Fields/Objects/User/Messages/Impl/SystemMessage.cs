@@ -14,7 +14,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Messages.Impl
 
         protected override void EncodeData(IPacket packet)
         {
-            packet.Encode<string>(_text);
+            packet.EncodeString(_text);
         }
     }
 }

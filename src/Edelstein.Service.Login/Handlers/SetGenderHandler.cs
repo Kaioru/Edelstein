@@ -13,8 +13,8 @@ namespace Edelstein.Service.Login.Handlers
             IPacket packet
         )
         {
-            var cancel = !packet.Decode<bool>();
-            var gender = (byte) (packet.Decode<bool>() ? 1 : 0);
+            var cancel = !packet.DecodeBool();
+            var gender = (byte) (packet.DecodeBool() ? 1 : 0);
 
             if (adapter.Account == null) return;
             if (adapter.Account.Gender != null) return;
@@ -23,8 +23,8 @@ namespace Edelstein.Service.Login.Handlers
 
             adapter.Account.Gender = gender;
 
-            p.Encode<byte>(gender);
-            p.Encode<bool>(true);
+            p.EncodeByte(gender);
+            p.EncodeBool(true);
             await adapter.SendPacket(p);
         }
     }

@@ -23,10 +23,10 @@ namespace Edelstein.Service.Login.Handlers
             IPacket packet
         )
         {
-            var spw = packet.Decode<string>();
-            var characterID = packet.Decode<int>();
-            packet.Decode<string>(); // sMacAddress
-            packet.Decode<string>(); // sMacAddressWithHDDSerial
+            var spw = packet.DecodeString();
+            var characterID = packet.DecodeInt();
+            packet.DecodeString(); // sMacAddress
+            packet.DecodeString(); // sMacAddressWithHDDSerial
 
             try
             {
@@ -62,8 +62,8 @@ namespace Edelstein.Service.Login.Handlers
                 {
                     using var p = new Packet(SendPacketOperations.EnableSPWResult);
 
-                    p.Encode<bool>(false);
-                    p.Encode<byte>((byte) result);
+                    p.EncodeBool(false);
+                    p.EncodeByte((byte) result);
 
                     await adapter.SendPacket(p);
                     return;
@@ -76,7 +76,7 @@ namespace Edelstein.Service.Login.Handlers
             {
                 using var p = new Packet(SendPacketOperations.CheckSPWResult);
 
-                p.Encode<byte>((byte) LoginResultCode.Unknown);
+                p.EncodeByte((byte) LoginResultCode.Unknown);
 
                 await adapter.SendPacket(p);
             }

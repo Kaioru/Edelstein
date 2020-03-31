@@ -29,9 +29,9 @@ namespace Edelstein.Service.Game
                         .Select(async u =>
                         {
                             using var p = new Packet(SendPacketOperations.GroupMessage);
-                            p.Encode<byte>((byte) msg.Type);
-                            p.Encode<string>(msg.Name);
-                            p.Encode<string>(msg.Text);
+                            p.EncodeByte((byte) msg.Type);
+                            p.EncodeString(msg.Name);
+                            p.EncodeString(msg.Text);
                             await u.SendPacket(p);
                         })
                     );
@@ -51,8 +51,8 @@ namespace Edelstein.Service.Game
 
                     using var p = new Packet(SendPacketOperations.MemoResult);
 
-                    p.Encode<byte>((byte) MemoResultType.Load);
-                    p.Encode<byte>(1);
+                    p.EncodeByte((byte) MemoResultType.Load);
+                    p.EncodeByte(1);
                     memo.EncodeData(p);
 
                     await user.SendPacket(p);

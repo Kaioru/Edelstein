@@ -213,8 +213,8 @@ namespace Edelstein.Service.Game.Fields
                     if (!user.IsInstantiated)
                     {
                         using var p = new Packet(SendPacketOperations.PartyResult);
-                        p.Encode<byte>((byte) PartyResultType.LoadParty_Done);
-                        p.Encode<int>(user.Party.ID);
+                        p.EncodeByte((byte) PartyResultType.LoadParty_Done);
+                        p.EncodeInt(user.Party.ID);
 
                         await user.Party.OnUpdateUserMigration(
                             user.Character.ID,
@@ -246,8 +246,8 @@ namespace Edelstein.Service.Game.Fields
                     );
 
                     using var p = new Packet(SendPacketOperations.GuildResult);
-                    p.Encode<byte>((byte) GuildResultType.LoadGuild_Done);
-                    p.Encode<bool>(true);
+                    p.EncodeByte((byte) GuildResultType.LoadGuild_Done);
+                    p.EncodeBool(true);
                     user.Guild.EncodeData(p);
                     await user.SendPacket(p);
 

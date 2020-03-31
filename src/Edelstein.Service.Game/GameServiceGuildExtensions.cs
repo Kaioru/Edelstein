@@ -51,15 +51,15 @@ namespace Edelstein.Service.Game
                     {
                         using var p1 = new Packet(SendPacketOperations.GuildResult);
 
-                        p1.Encode<byte>((byte) GuildResultType.CreateNewGuild_Done);
+                        p1.EncodeByte((byte) GuildResultType.CreateNewGuild_Done);
                         u.Guild.EncodeData(p1);
 
                         await u.SendPacket(p1);
 
                         using var p2 = new Packet(SendPacketOperations.UserGuildNameChanged);
 
-                        p2.Encode<int>(u.ID);
-                        p2.Encode<string>(u.Guild.Name);
+                        p2.EncodeInt(u.ID);
+                        p2.EncodeString(u.Guild.Name);
 
                         await u.Field.BroadcastPacket(u, p2);
                     }));
@@ -100,9 +100,9 @@ namespace Edelstein.Service.Game
 
                             using var p = new Packet(SendPacketOperations.GuildResult);
 
-                            p.Encode<byte>((byte) GuildResultType.JoinGuild_Done);
-                            p.Encode<int>(msg.GuildID);
-                            p.Encode<int>(msg.GuildMemberID);
+                            p.EncodeByte((byte) GuildResultType.JoinGuild_Done);
+                            p.EncodeInt(msg.GuildID);
+                            p.EncodeInt(msg.GuildMemberID);
 
                             if (u.ID != msg.GuildMemberID)
                                 member.EncodeData(p);
@@ -113,8 +113,8 @@ namespace Edelstein.Service.Game
                     {
                         using var p = new Packet(SendPacketOperations.UserGuildNameChanged);
 
-                        p.Encode<int>(user.ID);
-                        p.Encode<string>(user.Guild.Name);
+                        p.EncodeInt(user.ID);
+                        p.EncodeString(user.Guild.Name);
 
                         await user.Field.BroadcastPacket(user, p);
                     }
@@ -132,18 +132,18 @@ namespace Edelstein.Service.Game
 
                         if (msg.Disband)
                         {
-                            p.Encode<byte>((byte) GuildResultType.RemoveGuild_Done);
-                            p.Encode<int>(msg.GuildID);
+                            p.EncodeByte((byte) GuildResultType.RemoveGuild_Done);
+                            p.EncodeInt(msg.GuildID);
                         }
                         else
                         {
-                            p.Encode<byte>((byte) (msg.Kick
+                            p.EncodeByte((byte) (msg.Kick
                                     ? GuildResultType.KickGuild_Done
                                     : GuildResultType.WithdrawGuild_Done)
                             );
-                            p.Encode<int>(msg.GuildID);
-                            p.Encode<int>(msg.GuildMemberID);
-                            p.Encode<string>(msg.CharacterName);
+                            p.EncodeInt(msg.GuildID);
+                            p.EncodeInt(msg.GuildMemberID);
+                            p.EncodeString(msg.CharacterName);
                         }
 
                         await u.SendPacket(p);
@@ -155,8 +155,8 @@ namespace Edelstein.Service.Game
 
                         using var p = new Packet(SendPacketOperations.UserGuildNameChanged);
 
-                        p.Encode<int>(user.ID);
-                        p.Encode<string>("");
+                        p.EncodeInt(user.ID);
+                        p.EncodeString("");
 
                         await user.Field.BroadcastPacket(user, p);
                     }
@@ -177,10 +177,10 @@ namespace Edelstein.Service.Game
 
                         using var p = new Packet(SendPacketOperations.GuildResult);
 
-                        p.Encode<byte>((byte) GuildResultType.NotifyLoginOrLogout);
-                        p.Encode<int>(msg.GuildID);
-                        p.Encode<int>(msg.GuildMemberID);
-                        p.Encode<bool>(msg.Online);
+                        p.EncodeByte((byte) GuildResultType.NotifyLoginOrLogout);
+                        p.EncodeInt(msg.GuildID);
+                        p.EncodeInt(msg.GuildMemberID);
+                        p.EncodeBool(msg.Online);
 
                         await u.SendPacket(p);
                     }));
@@ -198,11 +198,11 @@ namespace Edelstein.Service.Game
                 {
                     using var p = new Packet(SendPacketOperations.GuildResult);
 
-                    p.Encode<byte>((byte) GuildResultType.ChangeLevelOrJob);
-                    p.Encode<int>(msg.GuildID);
-                    p.Encode<int>(msg.GuildMemberID);
-                    p.Encode<int>(msg.Level);
-                    p.Encode<int>(msg.Job);
+                    p.EncodeByte((byte) GuildResultType.ChangeLevelOrJob);
+                    p.EncodeInt(msg.GuildID);
+                    p.EncodeInt(msg.GuildMemberID);
+                    p.EncodeInt(msg.Level);
+                    p.EncodeInt(msg.Job);
 
                     await u.SendPacket(p);
                 }));
@@ -218,11 +218,11 @@ namespace Edelstein.Service.Game
                 {
                     using var p = new Packet(SendPacketOperations.GuildResult);
 
-                    p.Encode<byte>((byte) GuildResultType.SetGradeName_Done);
-                    p.Encode<int>(msg.GuildID);
+                    p.EncodeByte((byte) GuildResultType.SetGradeName_Done);
+                    p.EncodeInt(msg.GuildID);
 
                     foreach (var name in msg.GradeName)
-                        p.Encode<string>(name);
+                        p.EncodeString(name);
 
                     await u.SendPacket(p);
                 }));
@@ -239,10 +239,10 @@ namespace Edelstein.Service.Game
                 {
                     using var p = new Packet(SendPacketOperations.GuildResult);
 
-                    p.Encode<byte>((byte) GuildResultType.SetMemberGrade_Done);
-                    p.Encode<int>(msg.GuildID);
-                    p.Encode<int>(msg.GuildMemberID);
-                    p.Encode<byte>(msg.Grade);
+                    p.EncodeByte((byte) GuildResultType.SetMemberGrade_Done);
+                    p.EncodeInt(msg.GuildID);
+                    p.EncodeInt(msg.GuildMemberID);
+                    p.EncodeByte(msg.Grade);
 
                     await u.SendPacket(p);
                 }));
@@ -261,22 +261,22 @@ namespace Edelstein.Service.Game
                 {
                     using var p1 = new Packet(SendPacketOperations.GuildResult);
 
-                    p1.Encode<byte>((byte) GuildResultType.SetMark_Done);
-                    p1.Encode<int>(msg.GuildID);
-                    p1.Encode<short>(msg.MarkBg);
-                    p1.Encode<byte>(msg.MarkBgColor);
-                    p1.Encode<short>(msg.Mark);
-                    p1.Encode<byte>(msg.MarkColor);
+                    p1.EncodeByte((byte) GuildResultType.SetMark_Done);
+                    p1.EncodeInt(msg.GuildID);
+                    p1.EncodeShort(msg.MarkBg);
+                    p1.EncodeByte(msg.MarkBgColor);
+                    p1.EncodeShort(msg.Mark);
+                    p1.EncodeByte(msg.MarkColor);
 
                     await u.SendPacket(p1);
 
                     using var p2 = new Packet(SendPacketOperations.UserGuildMarkChanged);
 
-                    p2.Encode<int>(u.ID);
-                    p2.Encode<short>(msg.MarkBg);
-                    p2.Encode<byte>(msg.MarkBgColor);
-                    p2.Encode<short>(msg.Mark);
-                    p2.Encode<byte>(msg.MarkColor);
+                    p2.EncodeInt(u.ID);
+                    p2.EncodeShort(msg.MarkBg);
+                    p2.EncodeByte(msg.MarkBgColor);
+                    p2.EncodeShort(msg.Mark);
+                    p2.EncodeByte(msg.MarkColor);
 
                     await u.Field.BroadcastPacket(u, p2);
                 }));
@@ -292,9 +292,9 @@ namespace Edelstein.Service.Game
                 {
                     using var p = new Packet(SendPacketOperations.GuildResult);
 
-                    p.Encode<byte>((byte) GuildResultType.SetNotice_Done);
-                    p.Encode<int>(msg.GuildID);
-                    p.Encode<string>(msg.Notice);
+                    p.EncodeByte((byte) GuildResultType.SetNotice_Done);
+                    p.EncodeInt(msg.GuildID);
+                    p.EncodeString(msg.Notice);
 
                     await u.SendPacket(p);
                 }));

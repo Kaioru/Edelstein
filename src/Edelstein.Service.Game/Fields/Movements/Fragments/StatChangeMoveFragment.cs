@@ -16,9 +16,9 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
         }
 
         public override void DecodeData(IPacket packet)
-            => _stat = packet.Decode<bool>();
+            => _stat = packet.DecodeBool();
 
         public override void EncodeData(IPacket packet)
-            => packet.Encode<bool>(_stat);
+            => packet.EncodeBool(_stat);
     }
 }

@@ -16,8 +16,8 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Messages.Impl
 
         protected override void EncodeData(IPacket packet)
         {
-            packet.Encode<short>(_job);
-            packet.Encode<byte>(_sp);
+            packet.EncodeShort(_job);
+            packet.EncodeByte(_sp);
         }
     }
 }

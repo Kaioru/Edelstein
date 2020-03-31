@@ -19,7 +19,7 @@ namespace Edelstein.Service.Game.Fields.Movements
 
         public void Encode(IPacket packet)
         {
-            packet.Encode<byte>((byte) Attribute);
+            packet.EncodeByte((byte) Attribute);
             EncodeData(packet);
         }
 

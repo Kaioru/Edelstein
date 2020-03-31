@@ -18,18 +18,18 @@ namespace Edelstein.Service.Game.Handlers.Users
         {
             if (user.ConversationContext == null) return;
 
-            var type = (ConversationRequestType) packet.Decode<byte>();
+            var type = (ConversationRequestType) packet.DecodeByte();
 
             if (type == ConversationRequestType.AskQuiz ||
                 type == ConversationRequestType.AskSpeedQuiz)
             {
                 await user.ConversationContext.Respond(
-                    new ConversationResponse<string>(type, packet.Decode<string>())
+                    new ConversationResponse<string>(type, packet.DecodeString())
                 );
                 return;
             }
 
-            var answer = packet.Decode<byte>();
+            var answer = packet.DecodeByte();
 
             if (
                 type != ConversationRequestType.Say &&
@@ -50,20 +50,20 @@ namespace Edelstein.Service.Game.Handlers.Users
                 case ConversationRequestType.AskText:
                 case ConversationRequestType.AskBoxText:
                     await user.ConversationContext.Respond(
-                        new ConversationResponse<string>(type, packet.Decode<string>())
+                        new ConversationResponse<string>(type, packet.DecodeString())
                     );
                     break;
                 case ConversationRequestType.AskNumber:
                 case ConversationRequestType.AskMenu:
                 case ConversationRequestType.AskSlideMenu:
                     await user.ConversationContext.Respond(
-                        new ConversationResponse<int>(type, packet.Decode<int>())
+                        new ConversationResponse<int>(type, packet.DecodeInt())
                     );
                     break;
                 case ConversationRequestType.AskAvatar:
                 case ConversationRequestType.AskMemberShopAvatar:
                     await user.ConversationContext.Respond(
-                        new ConversationResponse<byte>(type, packet.Decode<byte>())
+                        new ConversationResponse<byte>(type, packet.DecodeByte())
                     );
                     break;
                 case ConversationRequestType.AskYesNo:

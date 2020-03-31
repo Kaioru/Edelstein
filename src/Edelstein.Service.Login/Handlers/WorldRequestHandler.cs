@@ -22,13 +22,13 @@ namespace Edelstein.Service.Login.Handlers
             {
                 using var p = new Packet(SendPacketOperations.WorldInformation);
 
-                p.Encode<byte>(w.ID);
-                p.Encode<string>(w.Name);
-                p.Encode<byte>(w.State);
-                p.Encode<string>(w.EventDesc);
-                p.Encode<short>(w.EventEXP);
-                p.Encode<short>(w.EventDrop);
-                p.Encode<bool>(w.BlockCharCreation);
+                p.EncodeByte(w.ID);
+                p.EncodeString(w.Name);
+                p.EncodeByte(w.State);
+                p.EncodeString(w.EventDesc);
+                p.EncodeShort(w.EventEXP);
+                p.EncodeShort(w.EventDrop);
+                p.EncodeBool(w.BlockCharCreation);
 
                 var services = (await adapter.Service.GetPeers())
                     .Select(n => n.State)
@@ -37,33 +37,33 @@ namespace Edelstein.Service.Login.Handlers
                     .OrderBy(s => s.ChannelID)
                     .ToImmutableList();
 
-                p.Encode<byte>((byte) services.Count);
+                p.EncodeByte((byte) services.Count);
                 foreach (var s in services)
                 {
                     var userNo = await adapter.Service.SocketCountCache
                         .GetAsync<int>(s.Name);
 
-                    p.Encode<string>(s.Name);
-                    p.Encode<int>(userNo.HasValue ? userNo.Value : 0);
-                    p.Encode<byte>(w.ID);
-                    p.Encode<byte>(s.ChannelID);
-                    p.Encode<bool>(false); // TODO: AdultChannel
+                    p.EncodeString(s.Name);
+                    p.EncodeInt(userNo.HasValue ? userNo.Value : 0);
+                    p.EncodeByte(w.ID);
+                    p.EncodeByte(s.ChannelID);
+                    p.EncodeBool(false); // TODO: AdultChannel
                 }
 
-                p.Encode<short>(0); // TODO: Balloon
+                p.EncodeShort(0); // TODO: Balloon
                 await adapter.SendPacket(p);
             }
 
             using (var p = new Packet(SendPacketOperations.WorldInformation))
             {
-                p.Encode<byte>(0xFF);
+                p.EncodeByte(0xFF);
                 await adapter.SendPacket(p);
             }
 
             if (adapter.Account.LatestConnectedWorld == null) return;
             using (var p = new Packet(SendPacketOperations.LatestConnectedWorld))
             {
-                p.Encode<int>(adapter.Account.LatestConnectedWorld ?? 0);
+                p.EncodeInt(adapter.Account.LatestConnectedWorld ?? 0);
                 await adapter.SendPacket(p);
             }
         }

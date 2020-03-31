@@ -21,7 +21,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            var type = (MemoRequestType) packet.Decode<byte>();
+            var type = (MemoRequestType) packet.DecodeByte();
 
             switch (type)
             {

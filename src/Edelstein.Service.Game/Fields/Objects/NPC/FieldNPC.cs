@@ -24,32 +24,32 @@ namespace Edelstein.Service.Game.Fields.Objects.NPC
         public override IPacket GetEnterFieldPacket()
         {
             using var p = new Packet(SendPacketOperations.NpcEnterField);
-            p.Encode<int>(ID);
-            p.Encode<int>(Template.ID);
+            p.EncodeInt(ID);
+            p.EncodeInt(Template.ID);
 
-            p.Encode<Point>(Position);
-            p.Encode<byte>(MoveAction);
-            p.Encode<short>(Foothold);
+            p.EncodePoint(Position);
+            p.EncodeByte(MoveAction);
+            p.EncodeShort(Foothold);
 
-            p.Encode<short>((short) RX0);
-            p.Encode<short>((short) RX1);
+            p.EncodeShort((short) RX0);
+            p.EncodeShort((short) RX1);
 
-            p.Encode<bool>(true); // bEnabled
+            p.EncodeBool(true); // bEnabled
             return p;
         }
 
         public override IPacket GetLeaveFieldPacket()
         {
             using var p = new Packet(SendPacketOperations.NpcLeaveField);
-            p.Encode<int>(ID);
+            p.EncodeInt(ID);
             return p;
         }
 
         protected override IPacket GetChangeControllerPacket(bool setAsController)
         {
             using var p = new Packet(SendPacketOperations.NpcChangeController);
-            p.Encode<bool>(setAsController);
-            p.Encode<int>(ID);
+            p.EncodeBool(setAsController);
+            p.EncodeInt(ID);
             return p;
         }
     }

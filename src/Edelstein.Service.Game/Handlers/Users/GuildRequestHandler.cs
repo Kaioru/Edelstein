@@ -21,21 +21,21 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            var type = (GuildRequestType) packet.Decode<byte>();
+            var type = (GuildRequestType) packet.DecodeByte();
 
             switch (type)
             {
                 case GuildRequestType.LoadGuild:
                 {
                     using var p = new Packet(SendPacketOperations.GuildResult);
-                    p.Encode<byte>((byte) GuildResultType.LoadGuild_Done);
+                    p.EncodeByte((byte) GuildResultType.LoadGuild_Done);
 
                     if (user.Guild != null)
                     {
-                        p.Encode<bool>(true);
+                        p.EncodeBool(true);
                         user.Guild.EncodeData(p);
                     }
-                    else p.Encode<bool>(false);
+                    else p.EncodeBool(false);
 
                     await user.SendPacket(p);
                     break;
@@ -55,7 +55,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     catch
                     {
                         using var p = new Packet(SendPacketOperations.GuildResult);
-                        p.Encode<byte>((byte) GuildResultType.WithdrawGuild_Unknown);
+                        p.EncodeByte((byte) GuildResultType.WithdrawGuild_Unknown);
                         await user.SendPacket(p);
                     }
 
@@ -66,7 +66,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     if (user.Guild == null) return;
 
                     var result = GuildResultType.KickGuild_Done;
-                    var target = packet.Decode<int>();
+                    var target = packet.DecodeInt();
 
                     try
                     {
@@ -88,7 +88,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     }
 
                     using var p = new Packet(SendPacketOperations.GuildResult);
-                    p.Encode<byte>((byte) result);
+                    p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;
                 }
@@ -99,11 +99,11 @@ namespace Edelstein.Service.Game.Handlers.Users
                     var result = GuildResultType.SetGradeName_Done;
                     var name = new[]
                     {
-                        packet.Decode<string>(),
-                        packet.Decode<string>(),
-                        packet.Decode<string>(),
-                        packet.Decode<string>(),
-                        packet.Decode<string>()
+                        packet.DecodeString(),
+                        packet.DecodeString(),
+                        packet.DecodeString(),
+                        packet.DecodeString(),
+                        packet.DecodeString()
                     };
 
                     try
@@ -124,7 +124,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     }
 
                     using var p = new Packet(SendPacketOperations.GuildResult);
-                    p.Encode<byte>((byte) result);
+                    p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;
                 }
@@ -133,8 +133,8 @@ namespace Edelstein.Service.Game.Handlers.Users
                     if (user.Guild == null) return;
 
                     var result = GuildResultType.SetMemberGrade_Done;
-                    var target = packet.Decode<int>();
-                    var grade = packet.Decode<byte>();
+                    var target = packet.DecodeInt();
+                    var grade = packet.DecodeByte();
 
                     try
                     {
@@ -157,7 +157,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     }
 
                     using var p = new Packet(SendPacketOperations.GuildResult);
-                    p.Encode<byte>((byte) result);
+                    p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;
                 }
@@ -165,7 +165,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                 {
                     if (user.Guild == null) return;
 
-                    var notice = packet.Decode<string>();
+                    var notice = packet.DecodeString();
 
                     try
                     {

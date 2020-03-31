@@ -13,9 +13,9 @@ namespace Edelstein.Service.Game.Handlers.Users
             IPacket packet
         )
         {
-            packet.Decode<byte>();
+            packet.DecodeByte();
 
-            var fieldID = packet.Decode<int>();
+            var fieldID = packet.DecodeInt();
             
             // TODO: proper checks
 
@@ -27,7 +27,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                 return;
             }
 
-            var portalName = packet.Decode<string>();
+            var portalName = packet.DecodeString();
             var portal = user.Field.GetPortal(portalName);
 
             await portal.Enter(user);

@@ -19,9 +19,9 @@ namespace Edelstein.Core.Gameplay.Inventories.Operations
 
         public void Encode(IPacket packet)
         {
-            packet.Encode<byte>((byte) Type);
-            packet.Encode<byte>((byte) _inventory);
-            packet.Encode<short>(Slot);
+            packet.EncodeByte((byte) Type);
+            packet.EncodeByte((byte) _inventory);
+            packet.EncodeShort(Slot);
 
             EncodeData(packet);
         }

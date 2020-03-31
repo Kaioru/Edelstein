@@ -25,24 +25,24 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
 
         public override void DecodeData(IPacket packet)
         {
-            _position = packet.Decode<Point>();
-            _vPosition = packet.Decode<Point>();
-            _foothold = packet.Decode<short>();
+            _position = packet.DecodePoint();
+            _vPosition = packet.DecodePoint();
+            _foothold = packet.DecodeShort();
             if (Attribute == MoveFragmentAttribute.FallDown)
-                _fallStartFoothold = packet.Decode<short>();
-            _offset = packet.Decode<Point>();
+                _fallStartFoothold = packet.DecodeShort();
+            _offset = packet.DecodePoint();
 
             base.DecodeData(packet);
         }
 
         public override void EncodeData(IPacket packet)
         {
-            packet.Encode<Point>(_position);
-            packet.Encode<Point>(_vPosition);
-            packet.Encode<short>(_foothold);
+            packet.EncodePoint(_position);
+            packet.EncodePoint(_vPosition);
+            packet.EncodeShort(_foothold);
             if (Attribute == MoveFragmentAttribute.FallDown)
-                packet.Encode<short>(_fallStartFoothold);
-            packet.Encode<Point>(_offset);
+                packet.EncodeShort(_fallStartFoothold);
+            packet.EncodePoint(_offset);
 
             base.EncodeData(packet);
         }

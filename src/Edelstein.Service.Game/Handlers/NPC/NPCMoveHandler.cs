@@ -13,9 +13,9 @@ namespace Edelstein.Service.Game.Handlers.NPC
         {
             using var p = new Packet(SendPacketOperations.NpcMove);
 
-            p.Encode<int>(npc.ID);
-            p.Encode<byte>(packet.Decode<byte>()); // TODO: validate acts
-            p.Encode<byte>(packet.Decode<byte>());
+            p.EncodeInt(npc.ID);
+            p.EncodeByte(packet.DecodeByte()); // TODO: validate acts
+            p.EncodeByte(packet.DecodeByte());
 
             if (npc.Template.Move)
             {

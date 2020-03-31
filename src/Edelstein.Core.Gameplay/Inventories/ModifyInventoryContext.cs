@@ -283,7 +283,7 @@ namespace Edelstein.Core.Gameplay.Inventories
 
         public void Encode(IPacket packet)
         {
-            packet.Encode<byte>((byte) Operations.Count);
+            packet.EncodeByte((byte) Operations.Count);
             Operations.ForEach(o => o.Encode(packet));
         }
 

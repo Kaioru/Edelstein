@@ -14,16 +14,16 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
 
         public override void DecodeData(IPacket packet)
         {
-            _vPosition = packet.Decode<Point>();
-            _fallStartFoothold = packet.Decode<short>();
+            _vPosition = packet.DecodePoint();
+            _fallStartFoothold = packet.DecodeShort();
 
             base.DecodeData(packet);
         }
 
         public override void EncodeData(IPacket packet)
         {
-            packet.Encode<Point>(_vPosition);
-            packet.Encode<short>(_fallStartFoothold);
+            packet.EncodePoint(_vPosition);
+            packet.EncodeShort(_fallStartFoothold);
 
             base.EncodeData(packet);
         }

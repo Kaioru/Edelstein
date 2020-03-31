@@ -64,7 +64,7 @@ namespace Edelstein.Core.Gameplay.Inventories
         {
             var operations = _inventories.Values.SelectMany(v => v.Operations).ToList();
 
-            packet.Encode<byte>((byte) operations.Count);
+            packet.EncodeByte((byte) operations.Count);
             operations.ForEach(o => o.Encode(packet));
         }
     }
