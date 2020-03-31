@@ -1,8 +1,6 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Social.Guild;
-using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;

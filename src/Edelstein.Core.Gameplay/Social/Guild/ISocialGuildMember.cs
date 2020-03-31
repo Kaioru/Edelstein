@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 
 namespace Edelstein.Core.Gameplay.Social.Guild

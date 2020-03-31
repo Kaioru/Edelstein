@@ -1,4 +1,3 @@
-using System;
 using Edelstein.Network.Packets;
 
 namespace Edelstein.Core.Gameplay.Social.Memo

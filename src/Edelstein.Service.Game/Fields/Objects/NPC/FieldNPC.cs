@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using Edelstein.Core.Templates.NPC;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;

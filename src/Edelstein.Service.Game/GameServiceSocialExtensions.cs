@@ -7,7 +7,6 @@ using Edelstein.Core.Gameplay.Social.Memo.Events;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects;
-using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game
 {
