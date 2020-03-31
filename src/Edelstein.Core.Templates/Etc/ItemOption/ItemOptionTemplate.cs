@@ -8,7 +8,7 @@ namespace Edelstein.Core.Templates.Etc.ItemOption
     public class ItemOptionTemplate : IDataTemplate
     {
         public int ID { get; }
-        
+
         public short ReqLevel { get; private set; }
         public int OptionType { get; private set; }
         public IDictionary<int, ItemOptionLevelTemplate> LevelData { get; }

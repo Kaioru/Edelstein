@@ -7,7 +7,7 @@ namespace Edelstein.Entities.Inventories
         public ItemTrunk()
         {
         }
-        
+
         public ItemTrunk(short slotMax) : base(slotMax)
         {
         }

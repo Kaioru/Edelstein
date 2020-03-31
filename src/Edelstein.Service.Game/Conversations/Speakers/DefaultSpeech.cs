@@ -4,7 +4,7 @@ namespace Edelstein.Service.Game.Conversations.Speakers
     {
         public IConversationSpeaker Speaker { get; }
         public string Text { get; }
-        
+
         public DefaultSpeech(IConversationSpeaker speaker, string text)
         {
             Speaker = speaker;

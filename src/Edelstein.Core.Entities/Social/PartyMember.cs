@@ -6,7 +6,7 @@ namespace Edelstein.Entities.Social
     {
         public int ID { get; set; }
         public int PartyID { get; set; }
-        
+
         public int CharacterID { get; set; }
         public string CharacterName { get; set; }
         public int Job { get; set; }

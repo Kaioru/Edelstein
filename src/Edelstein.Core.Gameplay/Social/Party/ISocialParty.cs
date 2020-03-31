@@ -10,7 +10,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
 
         int BossCharacterID { get; }
         ICollection<ISocialPartyMember> Members { get; }
-        
+
         Task Join(Character character);
         Task Disband();
         Task Withdraw(ISocialPartyMember member);

@@ -21,6 +21,7 @@ namespace Edelstein.Entities.Inventories.Items
                    DateExpire == b.DateExpire;
         }
 
-        public override int GetHashCode() => HashCode.Combine(TemplateID, MaxNumber, Attribute, Title, CashItemSN, DateExpire);
+        public override int GetHashCode() =>
+            HashCode.Combine(TemplateID, MaxNumber, Attribute, Title, CashItemSN, DateExpire);
     }
 }

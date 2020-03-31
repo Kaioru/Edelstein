@@ -16,7 +16,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             packet.DecodeByte();
 
             var fieldID = packet.DecodeInt();
-            
+
             // TODO: proper checks
 
             if (fieldID != -1)

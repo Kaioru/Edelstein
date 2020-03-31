@@ -15,7 +15,7 @@ namespace Edelstein.Core.Scripting
 
         void Deregister(string key);
         void Deregister<T>(T obj);
-        
+
         Task<dynamic> Run();
     }
 }

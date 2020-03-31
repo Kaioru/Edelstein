@@ -11,7 +11,8 @@ namespace Edelstein.Core.Gameplay.Social.Guild.Events
         public Entities.Social.Guild Guild { get; }
         public ICollection<GuildMember> GuildMembers { get; }
 
-        public GuildJoinEvent(int guildID, int guildMemberID, Entities.Social.Guild guild, ICollection<GuildMember> guildMembers)
+        public GuildJoinEvent(int guildID, int guildMemberID, Entities.Social.Guild guild,
+            ICollection<GuildMember> guildMembers)
         {
             GuildID = guildID;
             GuildMemberID = guildMemberID;

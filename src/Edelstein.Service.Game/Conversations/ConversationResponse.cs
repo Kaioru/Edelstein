@@ -4,7 +4,7 @@ namespace Edelstein.Service.Game.Conversations
     {
         public ConversationRequestType Type { get; }
         public T Value { get; }
-        
+
         public ConversationResponse(ConversationRequestType type, T value)
         {
             Type = type;

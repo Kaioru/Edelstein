@@ -22,7 +22,7 @@ namespace Edelstein.Database.Utils
 
         public IDataQuery<T> Where(Expression<Func<T, bool>> predicate)
             => new EnumerableDataQuery<T>(_enumerable.Where(predicate.Compile()));
-        
+
         public IDataQueryResult<T> Limit(int limit)
             => new EnumerableDataQuery<T>(_enumerable.Take(limit));
 

@@ -12,7 +12,8 @@ namespace Edelstein.Service.Game.Commands.Util
 
         private readonly Action<FieldUser, DefaultCommandContext> _action;
 
-        public ActionCommand(Parser parser, string name, string description, Action<FieldUser, DefaultCommandContext> action) : base(parser)
+        public ActionCommand(Parser parser, string name, string description,
+            Action<FieldUser, DefaultCommandContext> action) : base(parser)
         {
             Name = name;
             Description = description;

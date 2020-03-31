@@ -19,7 +19,7 @@ namespace Edelstein.Service.Game.Handlers.Users
         )
         {
             packet.DecodeInt();
-            
+
             var type = (GroupMessageType) packet.DecodeByte();
             var recipients = new int[packet.DecodeByte()];
 

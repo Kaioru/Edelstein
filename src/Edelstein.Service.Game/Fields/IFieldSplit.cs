@@ -12,8 +12,10 @@ namespace Edelstein.Service.Game.Fields
 
         int Row { get; }
         int Col { get; }
-        
-        Task Enter(IFieldObj obj, IFieldSplit from = null, Func<IPacket> getEnterPacket = null, Func<IPacket> getLeavePacket = null);
+
+        Task Enter(IFieldObj obj, IFieldSplit from = null, Func<IPacket> getEnterPacket = null,
+            Func<IPacket> getLeavePacket = null);
+
         Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket = null);
 
         Task EnterQuietly(IFieldObj obj);
@@ -21,7 +23,7 @@ namespace Edelstein.Service.Game.Fields
 
         Task Watch(IFieldUser user);
         Task Unwatch(IFieldUser user);
-        
+
         IEnumerable<IFieldUser> GetWatchers();
 
         Task BroadcastPacket(IPacket packet);

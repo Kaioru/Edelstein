@@ -7,7 +7,7 @@ namespace Edelstein.Core.Gameplay.Social.Party.Events
     {
         public int PartyID { get; }
         public int PartyMemberID { get; }
-        
+
         public Entities.Social.Party Party { get; }
         public ICollection<PartyMember> PartyMembers { get; }
 

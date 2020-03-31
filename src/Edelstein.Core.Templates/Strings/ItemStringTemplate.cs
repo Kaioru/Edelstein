@@ -6,7 +6,7 @@ namespace Edelstein.Core.Templates.Strings
     {
         public int ID { get; }
         public string Name { get; }
-        
+
         public ItemStringTemplate(int id, IDataProperty property)
         {
             ID = id;

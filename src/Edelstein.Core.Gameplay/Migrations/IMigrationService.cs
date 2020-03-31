@@ -16,7 +16,7 @@ namespace Edelstein.Core.Gameplay.Migrations
 
         Task ProcessConnect(IMigrationSocketAdapter adapter);
         Task ProcessDisconnect(IMigrationSocketAdapter adapter);
-        
+
         Task ProcessMigrateTo(IMigrationSocketAdapter adapter, IServerNodeState nodeState);
         Task ProcessMigrateFrom(IMigrationSocketAdapter adapter, int characterID, long clientKey);
 

@@ -11,7 +11,7 @@ namespace Edelstein.Core.Gameplay.Constants
             var type = templateID / 10000;
             return type == 207 || type == 233;
         }
-        
+
         public static bool IsTreatSingly(int templateID)
         {
             var type = templateID / 1000000;

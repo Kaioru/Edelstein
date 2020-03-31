@@ -4,7 +4,7 @@ namespace Edelstein.Core.Gameplay.Social.Party.Events
     {
         public int PartyID { get; }
         public int PartyMemberID { get; }
-        
+
         public bool Disconnect { get; }
 
         public PartyChangeBossEvent(int partyID, int partyMemberID, bool disconnect)

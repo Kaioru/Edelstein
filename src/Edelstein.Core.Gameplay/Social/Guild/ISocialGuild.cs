@@ -23,7 +23,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         public string Notice { get; }
         public int Point { get; }
         public byte Level { get; }
-        
+
         Task Join(Character character);
         Task Disband();
         Task Withdraw(ISocialGuildMember member);
@@ -37,7 +37,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
         Task UpdateSetMemberGrade(int characterID, byte grade);
         Task UpdateSetMark(short markBg, byte markBgColor, short mark, byte markColor);
         Task UpdateSetNotice(string notice);
-        
+
         Task OnUpdateJoin(ISocialGuildMember member);
         Task OnUpdateWithdraw(int characterID);
         Task OnUpdateNotifyLoginOrLogout(int characterID, bool online);

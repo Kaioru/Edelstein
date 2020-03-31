@@ -15,7 +15,7 @@ namespace Edelstein.Service.Game.Conversations.Requests
         {
             _text = text;
         }
-        
+
         public override bool Validate(IConversationResponse<bool> response)
             => true;
 

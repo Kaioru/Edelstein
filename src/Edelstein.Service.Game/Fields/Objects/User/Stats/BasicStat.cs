@@ -210,7 +210,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats
 
             MaxHP += (int) (MaxHP * (MaxHPr / 100d));
             MaxMP += (int) (MaxMP * (MaxMPr / 100d));
-            
+
             var forced = _user.ForcedStat;
 
             if (forced.STR.HasValue) STR = forced.STR.Value;

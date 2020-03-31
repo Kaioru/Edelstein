@@ -4,7 +4,7 @@ namespace Edelstein.Core.Gameplay.Social.Party.Events
     {
         public int PartyID { get; }
         public int PartyMemberID { get; }
-        
+
         public bool Disband { get; }
         public bool Kick { get; }
         public string CharacterName { get; }

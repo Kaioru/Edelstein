@@ -4,7 +4,7 @@ namespace Edelstein.Core.Distributed
     {
         string Host { get; }
         int Port { get; }
-        
+
         short Version { get; }
         string Patch { get; }
         byte Locale { get; }
