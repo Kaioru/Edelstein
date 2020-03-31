@@ -46,23 +46,23 @@ namespace Edelstein.Provider
         }
 
         public T Get<T>(int id) where T : IDataTemplate
-            => Collections.ContainsKey(typeof(T))
-                ? (T) Collections[typeof(T)].Get(id)
+            => Collections.TryGetValue(typeof(T), out var collection)
+                ? (T) collection.Get(id)
                 : default;
 
         public IEnumerable<T> GetAll<T>() where T : IDataTemplate
-            => Collections.ContainsKey(typeof(T))
-                ? Collections[typeof(T)].GetAll().OfType<T>()
+            => Collections.TryGetValue(typeof(T), out var collection)
+                ? collection.GetAll().OfType<T>()
                 : new List<T>();
 
         public async Task<T> GetAsync<T>(int id) where T : IDataTemplate
-            => Collections.ContainsKey(typeof(T))
-                ? (T) await Collections[typeof(T)].GetAsync(id)
+            => Collections.TryGetValue(typeof(T), out var collection)
+                ? (T) await collection.GetAsync(id)
                 : default;
 
         public async Task<IEnumerable<T>> GetAllAsync<T>() where T : IDataTemplate
-            => Collections.ContainsKey(typeof(T))
-                ? (await Collections[typeof(T)].GetAllAsync()).OfType<T>()
+            => Collections.TryGetValue(typeof(T), out var collection)
+                ? (await collection.GetAllAsync()).OfType<T>()
                 : new List<T>();
     }
 }

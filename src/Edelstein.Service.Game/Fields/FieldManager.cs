@@ -31,16 +31,19 @@ namespace Edelstein.Service.Game.Fields
         {
             lock (this)
             {
-                if (_fields.ContainsKey(id)) return _fields[id];
+                _fields.TryGetValue(id, out var field);
 
-                var template = _templateManager.Get<FieldTemplate>(id);
+                if (field == null)
+                {
+                    var template = _templateManager.Get<FieldTemplate>(id);
 
-                if (template == null) return null;
+                    if (template == null) return null;
 
-                var field = new Field(template, _templateManager);
-                _fields[id] = field;
+                    field = new Field(template, _templateManager);
+                    _fields[id] = field;
+                }
 
-                return _fields[id];
+                return field;
             }
         }
 

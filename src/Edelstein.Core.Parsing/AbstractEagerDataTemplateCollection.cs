@@ -12,7 +12,7 @@ namespace Edelstein.Provider
             => _templates = new Dictionary<int, IDataTemplate>();
 
         public IDataTemplate Get(int id)
-            => _templates.ContainsKey(id) ? _templates[id] : null;
+            => _templates.TryGetValue(id, out var template) ? template : null;
 
         public IEnumerable<IDataTemplate> GetAll()
             => _templates.Values;

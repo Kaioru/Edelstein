@@ -143,9 +143,15 @@ namespace Edelstein.Service.Game.Fields
         {
             lock (this)
             {
-                if (!_pools.ContainsKey(type))
-                    _pools[type] = new FieldPool();
-                return _pools[type];
+                _pools.TryGetValue(type, out var pool);
+
+                if (pool == null)
+                {
+                    pool = new FieldPool();
+                    _pools[type] = pool;
+                }
+
+                return pool;
             }
         }
 

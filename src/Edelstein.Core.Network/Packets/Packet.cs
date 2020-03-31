@@ -26,10 +26,10 @@ namespace Edelstein.Network.Packets
         public IPacket Encode<T>(T value)
         {
             var type = typeof(T);
-            if (value == null) value = default(T);
-            if (!PacketMethods.EncodeMethods.ContainsKey(type))
-                throw new NotSupportedException();
-            PacketMethods.EncodeMethods[type](_buffer, value);
+            if (value == null) value = default;
+            PacketMethods.EncodeMethods.TryGetValue(type, out var method);
+            if (method == null) throw new NotSupportedException();
+            method(_buffer, value);
             return this;
         }
 
@@ -44,9 +44,9 @@ namespace Edelstein.Network.Packets
         public T Decode<T>()
         {
             var type = typeof(T);
-            if (PacketMethods.DecodeMethods.ContainsKey(type))
-                return (T) PacketMethods.DecodeMethods[type](_buffer);
-            throw new NotSupportedException();
+            PacketMethods.DecodeMethods.TryGetValue(type, out var method);
+            if (method == null) throw new NotSupportedException();
+            return (T) method(_buffer);
         }
 
         public IEnumerable<byte> DecodeFixedLength(int length)

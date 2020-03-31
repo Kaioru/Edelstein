@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,20 +19,22 @@ namespace Edelstein.Provider
 
         public async Task<IDataTemplate> GetAsync(int id)
         {
-            if (_templates.ContainsKey(id)) return _templates[id];
+            _templates.TryGetValue(id, out var template);
 
             try
             {
-                var template = await Load(id);
-
-                _templates[id] = template;
-                return template;
+                if (template == null)
+                {
+                    template = await Load(id);
+                    _templates[id] = template;
+                }
             }
             catch
             {
-                _templates[id] = null;
-                return null;
+                // ignored
             }
+
+            return template;
         }
 
         public Task<IEnumerable<IDataTemplate>> GetAllAsync()

@@ -14,9 +14,15 @@ namespace Edelstein.Core.Utils.Messaging
 
         public IMessageBus Build(string topic)
         {
-            if (!_busses.ContainsKey(topic))
-                _busses[topic] = Create(topic);
-            return _busses[topic];
+            _busses.TryGetValue(topic, out var bus);
+
+            if (bus == null)
+            {
+                bus = Create(topic);
+                _busses[topic] = bus;
+            }
+
+            return bus;
         }
 
         protected abstract IMessageBus Create(string topic);

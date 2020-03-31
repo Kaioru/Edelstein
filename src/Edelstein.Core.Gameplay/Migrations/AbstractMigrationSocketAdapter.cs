@@ -81,13 +81,14 @@ namespace Edelstein.Core.Gameplay.Migrations
         {
             var operation = (RecvPacketOperations) packet.Decode<short>();
 
-            if (!_service.Handlers.ContainsKey(operation))
+            _service.Handlers.TryGetValue(operation, out var handler);
+
+            if (handler == null)
             {
                 Logger.Warn($"Unhandled packet operation {operation}");
                 return;
             }
 
-            var handler = _service.Handlers[operation];
             var context = new PacketHandlerContext(operation, packet, this);
 
             try
