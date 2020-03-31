@@ -29,6 +29,9 @@ namespace Edelstein.Database.LiteDB
         public void Delete<T>(T entity) where T : class, IDataEntity
             => _repository.Delete<T>(entity.ID);
 
+        public void Delete<T>(int id) where T : class, IDataEntity
+            => _repository.Delete<T>(id);
+
         public Task<T> RetrieveAsync<T>(int id) where T : class, IDataEntity
             => Task.FromResult(Retrieve<T>(id));
 
@@ -40,6 +43,9 @@ namespace Edelstein.Database.LiteDB
 
         public Task DeleteAsync<T>(T entity) where T : class, IDataEntity
             => Task.Run(() => Delete(entity));
+
+        public Task DeleteAsync<T>(int id) where T : class, IDataEntity
+            => Task.Run(() => Delete<T>(id));
 
         public void Dispose()
         {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Edelstein.Core.Gameplay.Social.Messages
+namespace Edelstein.Core.Gameplay.Social
 {
     public class GroupMessageEvent
     {

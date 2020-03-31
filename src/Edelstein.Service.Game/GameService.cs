@@ -5,6 +5,7 @@ using CommandLine;
 using Edelstein.Core.Distributed.States;
 using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Core.Gameplay.Social.Guild;
+using Edelstein.Core.Gameplay.Social.Memo;
 using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Scripting;
 using Edelstein.Core.Utils;
@@ -37,6 +38,7 @@ namespace Edelstein.Service.Game
         public FieldManager FieldManager { get; }
         public ContinentManager ContinentManager { get; }
 
+        public ISocialMemoManager MemoManager { get; }
         public ISocialPartyManager PartyManager { get; }
         public ISocialGuildManager GuildManager { get; }
 
@@ -62,6 +64,12 @@ namespace Edelstein.Service.Game
             FieldManager = new FieldManager(templateManager);
             ContinentManager = new ContinentManager(templateManager, FieldManager);
 
+            MemoManager = new SocialMemoManager(
+                this,
+                dataStore,
+                lockProvider,
+                cache
+            );
             PartyManager = new SocialPartyManager(
                 state.Value.ChannelID,
                 this,
@@ -94,6 +102,7 @@ namespace Edelstein.Service.Game
             Handlers[RecvPacketOperations.GroupMessage] = new GroupMessageHandler();
             Handlers[RecvPacketOperations.PartyRequest] = new PartyRequestHandler();
             Handlers[RecvPacketOperations.GuildRequest] = new GuildRequestHandler();
+            Handlers[RecvPacketOperations.MemoRequest] = new MemoRequestHandler();
 
             Handlers[RecvPacketOperations.NpcMove] = new NPCMoveHandler();
 

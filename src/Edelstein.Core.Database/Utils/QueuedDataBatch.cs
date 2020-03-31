@@ -27,6 +27,9 @@ namespace Edelstein.Database.Utils
         public void Delete<T>(T entity) where T : class, IDataEntity
             => _queue.Enqueue(s => s.Delete(entity));
 
+        public void Delete<T>(int id) where T : class, IDataEntity
+            => _queue.Enqueue(s => s.Delete<T>(id));
+
         public Task<T> RetrieveAsync<T>(int id) where T : class, IDataEntity
             => _session.RetrieveAsync<T>(id);
 
@@ -45,6 +48,12 @@ namespace Edelstein.Database.Utils
         public Task DeleteAsync<T>(T entity) where T : class, IDataEntity
         {
             Delete<T>(entity);
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteAsync<T>(int id) where T : class, IDataEntity
+        {
+            Delete<T>(id);
             return Task.CompletedTask;
         }
 

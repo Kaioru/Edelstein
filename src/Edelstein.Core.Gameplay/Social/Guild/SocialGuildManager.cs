@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Core.Gameplay.Social.Guild.Events;
-using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Database;
 using Edelstein.Entities.Characters;

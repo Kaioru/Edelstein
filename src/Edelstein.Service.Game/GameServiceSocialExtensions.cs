@@ -1,10 +1,13 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Edelstein.Core.Gameplay.Social.Messages;
+using Edelstein.Core.Gameplay.Social;
+using Edelstein.Core.Gameplay.Social.Memo;
+using Edelstein.Core.Gameplay.Social.Memo.Events;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects;
+using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game
 {
@@ -32,6 +35,27 @@ namespace Edelstein.Service.Game
                             await u.SendPacket(p);
                         })
                     );
+                }, cancellationToken);
+            await service.Bus.SubscribeAsync<MemoReceiveEvent>(
+                async (msg, token) =>
+                {
+                    var user = service.FieldManager
+                        .GetAll()
+                        .SelectMany(f => f.GetObjects<IFieldUser>())
+                        .FirstOrDefault(u => u.Character.ID == msg.CharacterID);
+                    var memo = new SocialMemo(service.MemoManager, msg.Memo);
+
+                    if (user == null) return;
+
+                    user.Memos[memo.ID] = memo;
+
+                    using var p = new Packet(SendPacketOperations.MemoResult);
+
+                    p.Encode<byte>((byte) MemoResultType.Load);
+                    p.Encode<byte>(1);
+                    memo.EncodeData(p);
+
+                    await user.SendPacket(p);
                 }, cancellationToken);
         }
     }

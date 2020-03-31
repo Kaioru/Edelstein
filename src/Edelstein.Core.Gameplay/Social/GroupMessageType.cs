@@ -1,4 +1,4 @@
-namespace Edelstein.Core.Gameplay.Social.Messages
+namespace Edelstein.Core.Gameplay.Social
 {
     public enum GroupMessageType
     {

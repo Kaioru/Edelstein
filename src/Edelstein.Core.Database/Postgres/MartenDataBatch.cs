@@ -22,6 +22,9 @@ namespace Edelstein.Database.Postgres
         public void Delete<T>(T entity) where T : class, IDataEntity
             => _session.Delete<T>(entity);
 
+        public void Delete<T>(int id) where T : class, IDataEntity
+            => _session.Delete<T>(id);
+
         public Task<T> RetrieveAsync<T>(int id) where T : class, IDataEntity
             => _session.LoadAsync<T>(id);
 
@@ -34,6 +37,8 @@ namespace Edelstein.Database.Postgres
         public Task DeleteAsync<T>(T entity) where T : class, IDataEntity
             => Task.Run(() => Delete<T>(entity));
 
+        public Task DeleteAsync<T>(int id) where T : class, IDataEntity
+            => Task.Run(() => Delete<T>(id));
 
         public void Dispose()
             => _session?.Dispose();

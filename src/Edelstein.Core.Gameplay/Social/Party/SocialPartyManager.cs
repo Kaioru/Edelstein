@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Gameplay.Migrations;
-using Edelstein.Core.Gameplay.Social.Messages;
 using Edelstein.Core.Gameplay.Social.Party.Events;
 using Edelstein.Database;
 using Edelstein.Entities.Characters;
@@ -111,7 +110,6 @@ namespace Edelstein.Core.Gameplay.Social.Party
                 .Where(p => targets.Contains(p.State.Name))
                 .Select(p => p.SendMessage<T>(message)));
         }
-
 
         private async Task ProcessAfterLeaveProcess(Entities.Social.Party party)
         {

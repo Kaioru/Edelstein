@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using Baseline;
 using Edelstein.Core.Gameplay.Extensions.Packets;
 using Edelstein.Core.Gameplay.Social.Guild;
+using Edelstein.Core.Gameplay.Social.Memo;
 using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities;
@@ -36,7 +38,8 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public ForcedStat ForcedStat { get; }
 
         public IConversationContext? ConversationContext { get; set; }
-        
+
+        public IDictionary<int, ISocialMemo> Memos { get; }
         public ISocialParty? Party { get; set; }
         public ISocialGuild? Guild { get; set; }
 
@@ -48,6 +51,8 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
             BasicStat = new BasicStat(this);
             ForcedStat = new ForcedStat(this);
+
+            Memos = new ConcurrentDictionary<int, ISocialMemo>();
         }
 
         public Task SendPacket(IPacket packet)
