@@ -50,7 +50,7 @@ namespace Edelstein.Service.Login.Handlers
 
                 var isDuplicatedID = store
                     .Query<Character>()
-                    .Where(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                    .Where(c => c.Name == name)
                     .ToImmutableList()
                     .Any();
 
