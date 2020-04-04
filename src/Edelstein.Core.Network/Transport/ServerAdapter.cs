@@ -24,7 +24,7 @@ namespace Edelstein.Network.Transport
             );
             var adapter = _server.AdapterFactory.Build(socket);
 
-            using (var p = new Packet())
+            using (var p = new OutPacket())
             {
                 p.EncodeShort(_server.Version);
                 p.EncodeString(_server.Patch);
@@ -57,7 +57,7 @@ namespace Edelstein.Network.Transport
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             var adapter = context.Channel.GetAttribute(AbstractSocketAdapter.Key).Get();
-            adapter?.OnPacket((IPacket) message);
+            adapter?.OnPacket((IPacketDecoder) message);
         }
 
         public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)

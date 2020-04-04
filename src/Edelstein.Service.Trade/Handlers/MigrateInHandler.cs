@@ -11,7 +11,7 @@ namespace Edelstein.Service.Trade.Handlers
         protected override async Task Handle(
             TradeServiceAdapter adapter,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             var characterID = packet.DecodeInt();
@@ -28,7 +28,7 @@ namespace Edelstein.Service.Trade.Handlers
             {
                 await adapter.TryMigrateFrom(characterID, clientKey);
 
-                using var p = new Packet(SendPacketOperations.SetITC);
+                using var p = new OutPacket(SendPacketOperations.SetITC);
 
                 adapter.Character.EncodeData(p);
 

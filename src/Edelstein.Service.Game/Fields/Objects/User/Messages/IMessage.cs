@@ -5,6 +5,6 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Messages
     public interface IMessage
     {
         MessageType Type { get; }
-        void Encode(IPacket packet);
+        void Encode(IPacketEncoder packet);
     }
 }

@@ -13,7 +13,7 @@ namespace Edelstein.Service.Game.Fields.Movements
         private Point _position;
         private Point _vPosition;
 
-        public MovePath(IPacket packet)
+        public MovePath(IPacketDecoder packet)
         {
             _fragments = new List<IMoveFragment>();
             Decode(packet);
@@ -32,7 +32,7 @@ namespace Edelstein.Service.Game.Fields.Movements
             return context;
         }
 
-        public void Decode(IPacket packet)
+        public void Decode(IPacketDecoder packet)
         {
             _position = packet.DecodePoint();
             _vPosition = packet.DecodePoint();
@@ -98,7 +98,7 @@ namespace Edelstein.Service.Game.Fields.Movements
             }
         }
 
-        public void Encode(IPacket packet)
+        public void Encode(IPacketEncoder packet)
         {
             packet.EncodePoint(_position);
             packet.EncodePoint(_vPosition);

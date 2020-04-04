@@ -281,7 +281,7 @@ namespace Edelstein.Core.Gameplay.Inventories
             Update(_inventory.Items.First(i => i.Value == slot).Key);
         }
 
-        public void Encode(IPacket packet)
+        public void Encode(IPacketEncoder packet)
         {
             packet.EncodeByte((byte) Operations.Count);
             Operations.ForEach(o => o.Encode(packet));

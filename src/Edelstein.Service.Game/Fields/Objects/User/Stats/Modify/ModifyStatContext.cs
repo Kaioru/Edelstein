@@ -256,7 +256,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
         public ModifyStatContext(Character character)
             => _character = character;
 
-        public void Encode(IPacket packet)
+        public void Encode(IPacketEncoder packet)
         {
             packet.EncodeInt((int) Flag);
 

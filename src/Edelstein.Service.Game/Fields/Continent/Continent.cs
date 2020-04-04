@@ -44,7 +44,7 @@ namespace Edelstein.Service.Game.Fields.Continent
                 .Configure(ContinentState.Move)
                 .OnEntryFromAsync(ContinentTrigger.Start, async () =>
                 {
-                    using (var p = new Packet(SendPacketOperations.CONTIMOVE))
+                    using (var p = new OutPacket(SendPacketOperations.CONTIMOVE))
                     {
                         p.EncodeByte((byte) ContinentTarget.TargetStartShipMoveField);
                         p.EncodeByte((byte) ContinentTrigger.Start);
@@ -55,7 +55,7 @@ namespace Edelstein.Service.Game.Fields.Continent
                 })
                 .OnExitAsync(async () =>
                 {
-                    using (var p = new Packet(SendPacketOperations.CONTIMOVE))
+                    using (var p = new OutPacket(SendPacketOperations.CONTIMOVE))
                     {
                         p.EncodeByte((byte) ContinentTarget.TargetEndShipMoveField);
                         p.EncodeByte((byte) ContinentTrigger.End);
@@ -81,7 +81,7 @@ namespace Edelstein.Service.Game.Fields.Continent
 
                     // TODO: Mobspawns
 
-                    using (var p = new Packet(SendPacketOperations.CONTIMOVE))
+                    using (var p = new OutPacket(SendPacketOperations.CONTIMOVE))
                     {
                         p.EncodeByte((byte) ContinentTarget.TargetMoveField);
                         p.EncodeByte((byte) ContinentTrigger.MobGen);
@@ -94,7 +94,7 @@ namespace Edelstein.Service.Game.Fields.Continent
 
                     // TODO: Mobspawns
 
-                    using (var p = new Packet(SendPacketOperations.CONTIMOVE))
+                    using (var p = new OutPacket(SendPacketOperations.CONTIMOVE))
                     {
                         p.EncodeByte((byte) ContinentTarget.TargetMoveField);
                         p.EncodeByte((byte) ContinentTrigger.MobDestroy);

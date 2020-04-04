@@ -8,11 +8,11 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
         private Point _vPosition;
         private short _fallStartFoothold;
 
-        public StartFallDownMoveFragment(MoveFragmentAttribute attribute, IPacket packet) : base(attribute, packet)
+        public StartFallDownMoveFragment(MoveFragmentAttribute attribute, IPacketDecoder packet) : base(attribute, packet)
         {
         }
 
-        public override void DecodeData(IPacket packet)
+        public override void DecodeData(IPacketDecoder packet)
         {
             _vPosition = packet.DecodePoint();
             _fallStartFoothold = packet.DecodeShort();
@@ -20,7 +20,7 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
             base.DecodeData(packet);
         }
 
-        public override void EncodeData(IPacket packet)
+        public override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodePoint(_vPosition);
             packet.EncodeShort(_fallStartFoothold);

@@ -10,7 +10,7 @@ namespace Edelstein.Service.Login.Handlers
         protected override async Task Handle(
             LoginServiceAdapter adapter,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             var cancel = !packet.DecodeBool();
@@ -19,7 +19,7 @@ namespace Edelstein.Service.Login.Handlers
             if (adapter.Account == null) return;
             if (adapter.Account.Gender != null) return;
 
-            using var p = new Packet(SendPacketOperations.SetAccountResult);
+            using var p = new OutPacket(SendPacketOperations.SetAccountResult);
 
             adapter.Account.Gender = gender;
 

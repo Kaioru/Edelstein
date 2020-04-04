@@ -16,7 +16,7 @@ namespace Edelstein.Service.Game.Handlers.Users
         protected override async Task Handle(
             FieldUser user,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             var type = (GuildRequestType) packet.DecodeByte();
@@ -25,7 +25,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             {
                 case GuildRequestType.LoadGuild:
                 {
-                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    using var p = new OutPacket(SendPacketOperations.GuildResult);
                     p.EncodeByte((byte) GuildResultType.LoadGuild_Done);
 
                     if (user.Guild != null)
@@ -52,7 +52,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     }
                     catch
                     {
-                        using var p = new Packet(SendPacketOperations.GuildResult);
+                        using var p = new OutPacket(SendPacketOperations.GuildResult);
                         p.EncodeByte((byte) GuildResultType.WithdrawGuild_Unknown);
                         await user.SendPacket(p);
                     }
@@ -85,7 +85,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                         result = GuildResultType.KickGuild_Unknown;
                     }
 
-                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    using var p = new OutPacket(SendPacketOperations.GuildResult);
                     p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;
@@ -121,7 +121,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                         result = GuildResultType.CheckGuildName_Unknown;
                     }
 
-                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    using var p = new OutPacket(SendPacketOperations.GuildResult);
                     p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;
@@ -154,7 +154,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                         result = GuildResultType.SetMemberGrade_Unknown;
                     }
 
-                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    using var p = new OutPacket(SendPacketOperations.GuildResult);
                     p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;

@@ -14,7 +14,7 @@ namespace Edelstein.Service.Game.Handlers.Users
         protected override async Task Handle(
             FieldUser user,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             try
@@ -41,7 +41,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             }
             catch
             {
-                using var p = new Packet(SendPacketOperations.TransferChannelReqIgnored);
+                using var p = new OutPacket(SendPacketOperations.TransferChannelReqIgnored);
                 p.EncodeByte(0x2);
                 await user.SendPacket(p);
             }

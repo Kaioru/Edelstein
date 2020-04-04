@@ -17,7 +17,7 @@ namespace Edelstein.Core.Gameplay.Inventories.Operations
             Slot = slot;
         }
 
-        public void Encode(IPacket packet)
+        public void Encode(IPacketEncoder packet)
         {
             packet.EncodeByte((byte) Type);
             packet.EncodeByte((byte) _inventory);
@@ -26,7 +26,7 @@ namespace Edelstein.Core.Gameplay.Inventories.Operations
             EncodeData(packet);
         }
 
-        protected virtual void EncodeData(IPacket packet)
+        protected virtual void EncodeData(IPacketEncoder packet)
         {
         }
     }

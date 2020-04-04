@@ -16,7 +16,7 @@ namespace Edelstein.Service.Game.Handlers.Users
         protected override async Task Handle(
             FieldUser user,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             var type = (PartyRequestType) packet.DecodeByte();
@@ -25,7 +25,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             {
                 case PartyRequestType.LoadParty:
                 {
-                    using var p = new Packet(SendPacketOperations.PartyResult);
+                    using var p = new OutPacket(SendPacketOperations.PartyResult);
 
                     p.EncodeByte((byte) PartyResultType.LoadParty_Done);
                     p.EncodeInt(user.Party.ID);
@@ -55,7 +55,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                         result = PartyResultType.CreateNewParty_Unknown;
                     }
 
-                    using var p = new Packet(SendPacketOperations.PartyResult);
+                    using var p = new OutPacket(SendPacketOperations.PartyResult);
                     p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;
@@ -75,7 +75,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                     }
                     catch
                     {
-                        using var p = new Packet(SendPacketOperations.PartyResult);
+                        using var p = new OutPacket(SendPacketOperations.PartyResult);
                         p.EncodeByte((byte) PartyResultType.WithdrawParty_Unknown);
                         await user.SendPacket(p);
                     }
@@ -106,7 +106,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                         result = PartyResultType.KickParty_Unknown;
                     }
 
-                    using var p = new Packet(SendPacketOperations.PartyResult);
+                    using var p = new OutPacket(SendPacketOperations.PartyResult);
                     p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;
@@ -140,7 +140,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                         result = PartyResultType.ChangePartyBoss_Unknown;
                     }
 
-                    using var p = new Packet(SendPacketOperations.PartyResult);
+                    using var p = new OutPacket(SendPacketOperations.PartyResult);
                     p.EncodeByte((byte) result);
                     await user.SendPacket(p);
                     break;

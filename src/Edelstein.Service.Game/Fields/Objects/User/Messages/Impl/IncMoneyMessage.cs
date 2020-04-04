@@ -12,7 +12,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Messages.Impl
             _money = money;
         }
 
-        protected override void EncodeData(IPacket packet)
+        protected override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodeInt(_money);
         }

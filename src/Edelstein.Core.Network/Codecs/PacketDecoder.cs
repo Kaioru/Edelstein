@@ -67,7 +67,7 @@ namespace Edelstein.Network.Codecs
                             socket.SeqRecv = IGCipher.InnoHash(seqRecv, 4, 0);
                         }
 
-                        output.Add(new Packet(Unpooled.CopiedBuffer(buffer)));
+                        output.Add(new InPacket(buffer));
                         return;
                 }
             }

@@ -17,7 +17,7 @@ namespace Edelstein.Core.Gameplay.Inventories.Operations
             _exp = exp;
         }
 
-        protected override void EncodeData(IPacket packet)
+        protected override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodeInt(_exp);
         }

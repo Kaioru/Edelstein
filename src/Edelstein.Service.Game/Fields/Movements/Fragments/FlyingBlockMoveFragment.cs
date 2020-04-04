@@ -8,7 +8,7 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
         private Point _position;
         private Point _vPosition;
 
-        public FlyingBlockMoveFragment(MoveFragmentAttribute attribute, IPacket packet) : base(attribute, packet)
+        public FlyingBlockMoveFragment(MoveFragmentAttribute attribute, IPacketDecoder packet) : base(attribute, packet)
         {
         }
 
@@ -19,7 +19,7 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
             context.Position = _position;
         }
 
-        public override void DecodeData(IPacket packet)
+        public override void DecodeData(IPacketDecoder packet)
         {
             _position = packet.DecodePoint();
             _vPosition = packet.DecodePoint();
@@ -27,7 +27,7 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
             base.DecodeData(packet);
         }
 
-        public override void EncodeData(IPacket packet)
+        public override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodePoint(_position);
             packet.EncodePoint(_vPosition);

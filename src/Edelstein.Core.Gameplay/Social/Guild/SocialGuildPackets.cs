@@ -6,7 +6,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
 {
     public static class SocialGuildPackets
     {
-        public static void EncodeData(this ISocialGuild guild, IPacket p)
+        public static void EncodeData(this ISocialGuild guild, IPacketEncoder p)
         {
             p.EncodeInt(guild.ID);
             p.EncodeString(guild.Name);
@@ -37,7 +37,7 @@ namespace Edelstein.Core.Gameplay.Social.Guild
             p.EncodeShort(0); // SkillRecord
         }
 
-        public static void EncodeData(this ISocialGuildMember member, IPacket p)
+        public static void EncodeData(this ISocialGuildMember member, IPacketEncoder p)
         {
             p.EncodeString(member.CharacterName, 13);
             p.EncodeInt(member.Inactive ? -1 : member.Job);

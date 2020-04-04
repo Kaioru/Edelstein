@@ -27,7 +27,7 @@ namespace Edelstein.Service.Game
                     await Task.WhenAll(users
                         .Select(async u =>
                         {
-                            using var p = new Packet(SendPacketOperations.GroupMessage);
+                            using var p = new OutPacket(SendPacketOperations.GroupMessage);
                             p.EncodeByte((byte) msg.Type);
                             p.EncodeString(msg.Name);
                             p.EncodeString(msg.Text);
@@ -48,7 +48,7 @@ namespace Edelstein.Service.Game
 
                     user.Memos[memo.ID] = memo;
 
-                    using var p = new Packet(SendPacketOperations.MemoResult);
+                    using var p = new OutPacket(SendPacketOperations.MemoResult);
 
                     p.EncodeByte((byte) MemoResultType.Load);
                     p.EncodeByte(1);

@@ -7,7 +7,7 @@ namespace Edelstein.Service.Game.Fields.Movements
         MoveFragmentAttribute Attribute { get; }
 
         void Apply(IMoveContext context);
-        void Decode(IPacket packet);
-        void Encode(IPacket packet);
+        void Decode(IPacketDecoder packet);
+        void Encode(IPacketEncoder packet);
     }
 }

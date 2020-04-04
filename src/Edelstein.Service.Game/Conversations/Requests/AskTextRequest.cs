@@ -29,7 +29,7 @@ namespace Edelstein.Service.Game.Conversations.Requests
             => response.Value.Length >= _lenMin &&
                response.Value.Length <= _lenMax;
 
-        public override void EncodeData(IPacket packet)
+        public override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodeString(_text);
             packet.EncodeString(_def);

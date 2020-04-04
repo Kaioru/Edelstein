@@ -77,7 +77,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public override IPacket GetEnterFieldPacket()
         {
-            using var p = new Packet(SendPacketOperations.UserEnterField);
+            using var p = new OutPacket(SendPacketOperations.UserEnterField);
 
             p.EncodeInt(ID);
 
@@ -138,7 +138,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public override IPacket GetLeaveFieldPacket()
         {
-            using var p = new Packet(SendPacketOperations.UserLeaveField);
+            using var p = new OutPacket(SendPacketOperations.UserLeaveField);
 
             p.EncodeInt(ID);
 
@@ -147,7 +147,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public IPacket GetSetFieldPacket()
         {
-            using var p = new Packet(SendPacketOperations.SetField);
+            using var p = new OutPacket(SendPacketOperations.SetField);
 
             p.EncodeShort(0); // ClientOpt
 

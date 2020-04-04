@@ -25,7 +25,7 @@ namespace Edelstein.Service.Game.Conversations.Requests
         public override bool Validate(IConversationResponse<byte> response)
             => true;
 
-        public override void EncodeData(IPacket packet)
+        public override void EncodeData(IPacketEncoder packet)
         {
             if (Speaker.Type.HasFlag(ConversationSpeakerType.NPCReplacedByNPC))
                 packet.EncodeInt(Speaker.TemplateID);

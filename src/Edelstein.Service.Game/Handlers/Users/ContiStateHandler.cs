@@ -12,7 +12,7 @@ namespace Edelstein.Service.Game.Handlers.Users
         protected override async Task Handle(
             FieldUser user,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             var continent = user.Service.ContinentManager.All()
@@ -23,7 +23,7 @@ namespace Edelstein.Service.Game.Handlers.Users
 
             if (continent == null) return;
 
-            using var p = new Packet(SendPacketOperations.CONTISTATE);
+            using var p = new OutPacket(SendPacketOperations.CONTISTATE);
             p.EncodeByte((byte) continent.State);
             p.EncodeBool(continent.EventDoing);
             await user.SendPacket(p);

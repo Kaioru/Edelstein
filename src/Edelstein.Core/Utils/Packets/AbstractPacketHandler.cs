@@ -9,6 +9,6 @@ namespace Edelstein.Core.Utils.Packets
         public Task Handle(IPacketHandlerContext ctx)
             => Handle(ctx.Adapter as TAdapter, ctx.Operation, ctx.Packet);
 
-        protected abstract Task Handle(TAdapter adapter, RecvPacketOperations operation, IPacket packet);
+        protected abstract Task Handle(TAdapter adapter, RecvPacketOperations operation, IPacketDecoder packet);
     }
 }

@@ -29,7 +29,7 @@ namespace Edelstein.Service.Game.Conversations.Requests
             => response.Value >= _min &&
                response.Value <= _max;
 
-        public override void EncodeData(IPacket packet)
+        public override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodeString(_text);
             packet.EncodeInt(_def);

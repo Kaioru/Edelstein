@@ -60,7 +60,7 @@ namespace Edelstein.Core.Gameplay.Inventories
         public void Update(ItemSlot item)
             => _inventories[(ItemInventoryType) (item.TemplateID / 1000000)].Update(item);
 
-        public void Encode(IPacket packet)
+        public void Encode(IPacketEncoder packet)
         {
             var operations = _inventories.Values.SelectMany(v => v.Operations).ToList();
 

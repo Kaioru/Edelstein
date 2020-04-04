@@ -31,7 +31,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Messages.Impl
         public int PartyEXPRingEXP { get; set; }
         public int CakePieEventBonus { get; set; }
 
-        protected override void EncodeData(IPacket packet)
+        protected override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodeBool(IsLastHit);
             packet.EncodeInt(EXP);

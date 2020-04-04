@@ -47,14 +47,14 @@ namespace Edelstein.Service.Game
                     ));
                     await Task.WhenAll(users.Select(async u =>
                     {
-                        using var p1 = new Packet(SendPacketOperations.GuildResult);
+                        using var p1 = new OutPacket(SendPacketOperations.GuildResult);
 
                         p1.EncodeByte((byte) GuildResultType.CreateNewGuild_Done);
                         u.Guild.EncodeData(p1);
 
                         await u.SendPacket(p1);
 
-                        using var p2 = new Packet(SendPacketOperations.UserGuildNameChanged);
+                        using var p2 = new OutPacket(SendPacketOperations.UserGuildNameChanged);
 
                         p2.EncodeInt(u.ID);
                         p2.EncodeString(u.Guild.Name);
@@ -96,7 +96,7 @@ namespace Edelstein.Service.Game
 
                             if (u != user) await u.Guild.OnUpdateJoin(member);
 
-                            using var p = new Packet(SendPacketOperations.GuildResult);
+                            using var p = new OutPacket(SendPacketOperations.GuildResult);
 
                             p.EncodeByte((byte) GuildResultType.JoinGuild_Done);
                             p.EncodeInt(msg.GuildID);
@@ -109,7 +109,7 @@ namespace Edelstein.Service.Game
                         }));
                     if (user != null)
                     {
-                        using var p = new Packet(SendPacketOperations.UserGuildNameChanged);
+                        using var p = new OutPacket(SendPacketOperations.UserGuildNameChanged);
 
                         p.EncodeInt(user.ID);
                         p.EncodeString(user.Guild.Name);
@@ -126,7 +126,7 @@ namespace Edelstein.Service.Game
                     await Task.WhenAll(users.Select(u => u.Guild.OnUpdateWithdraw(msg.GuildMemberID)));
                     await Task.WhenAll(users.Select(async u =>
                     {
-                        using var p = new Packet(SendPacketOperations.GuildResult);
+                        using var p = new OutPacket(SendPacketOperations.GuildResult);
 
                         if (msg.Disband)
                         {
@@ -151,7 +151,7 @@ namespace Edelstein.Service.Game
                     {
                         user.Guild = null;
 
-                        using var p = new Packet(SendPacketOperations.UserGuildNameChanged);
+                        using var p = new OutPacket(SendPacketOperations.UserGuildNameChanged);
 
                         p.EncodeInt(user.ID);
                         p.EncodeString("");
@@ -173,7 +173,7 @@ namespace Edelstein.Service.Game
                             msg.Online
                         );
 
-                        using var p = new Packet(SendPacketOperations.GuildResult);
+                        using var p = new OutPacket(SendPacketOperations.GuildResult);
 
                         p.EncodeByte((byte) GuildResultType.NotifyLoginOrLogout);
                         p.EncodeInt(msg.GuildID);
@@ -194,7 +194,7 @@ namespace Edelstein.Service.Game
                 )));
                 await Task.WhenAll(users.Select(async u =>
                 {
-                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    using var p = new OutPacket(SendPacketOperations.GuildResult);
 
                     p.EncodeByte((byte) GuildResultType.ChangeLevelOrJob);
                     p.EncodeInt(msg.GuildID);
@@ -214,7 +214,7 @@ namespace Edelstein.Service.Game
                 )));
                 await Task.WhenAll(users.Select(async u =>
                 {
-                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    using var p = new OutPacket(SendPacketOperations.GuildResult);
 
                     p.EncodeByte((byte) GuildResultType.SetGradeName_Done);
                     p.EncodeInt(msg.GuildID);
@@ -235,7 +235,7 @@ namespace Edelstein.Service.Game
                 )));
                 await Task.WhenAll(users.Select(async u =>
                 {
-                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    using var p = new OutPacket(SendPacketOperations.GuildResult);
 
                     p.EncodeByte((byte) GuildResultType.SetMemberGrade_Done);
                     p.EncodeInt(msg.GuildID);
@@ -257,7 +257,7 @@ namespace Edelstein.Service.Game
                 )));
                 await Task.WhenAll(users.Select(async u =>
                 {
-                    using var p1 = new Packet(SendPacketOperations.GuildResult);
+                    using var p1 = new OutPacket(SendPacketOperations.GuildResult);
 
                     p1.EncodeByte((byte) GuildResultType.SetMark_Done);
                     p1.EncodeInt(msg.GuildID);
@@ -268,7 +268,7 @@ namespace Edelstein.Service.Game
 
                     await u.SendPacket(p1);
 
-                    using var p2 = new Packet(SendPacketOperations.UserGuildMarkChanged);
+                    using var p2 = new OutPacket(SendPacketOperations.UserGuildMarkChanged);
 
                     p2.EncodeInt(u.ID);
                     p2.EncodeShort(msg.MarkBg);
@@ -288,7 +288,7 @@ namespace Edelstein.Service.Game
                 )));
                 await Task.WhenAll(users.Select(async u =>
                 {
-                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    using var p = new OutPacket(SendPacketOperations.GuildResult);
 
                     p.EncodeByte((byte) GuildResultType.SetNotice_Done);
                     p.EncodeInt(msg.GuildID);

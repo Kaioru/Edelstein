@@ -18,9 +18,7 @@ namespace Edelstein.Network.Codecs
         {
             var socket = context.Channel.GetAttribute(Socket.Key).Get();
             var dataLen = (short) message.Length;
-            var buffer = new byte[dataLen];
-
-            Array.Copy(message.Buffer, buffer, dataLen);
+            var buffer = message.Buffer;
 
             if (socket != null)
             {

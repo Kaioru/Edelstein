@@ -6,7 +6,7 @@ namespace Edelstein.Core.Gameplay.Social.Party
 {
     public static class SocialPartyPackets
     {
-        public static void EncodeData(this ISocialParty party, int channelID, IPacket p)
+        public static void EncodeData(this ISocialParty party, int channelID, IPacketEncoder p)
         {
             var members = party.Members.ToArray();
 

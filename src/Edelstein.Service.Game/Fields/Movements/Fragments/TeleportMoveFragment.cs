@@ -8,7 +8,7 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
         private Point _position;
         private short _foothold;
 
-        public TeleportMoveFragment(MoveFragmentAttribute attribute, IPacket packet) : base(attribute, packet)
+        public TeleportMoveFragment(MoveFragmentAttribute attribute, IPacketDecoder packet) : base(attribute, packet)
         {
         }
 
@@ -20,7 +20,7 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
             context.Foothold = _foothold;
         }
 
-        public override void DecodeData(IPacket packet)
+        public override void DecodeData(IPacketDecoder packet)
         {
             _position = packet.DecodePoint();
             _foothold = packet.DecodeShort();
@@ -28,7 +28,7 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
             base.DecodeData(packet);
         }
 
-        public override void EncodeData(IPacket packet)
+        public override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodePoint(_position);
             packet.EncodeShort(_foothold);

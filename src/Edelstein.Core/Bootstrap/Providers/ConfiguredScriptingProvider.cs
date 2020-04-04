@@ -19,6 +19,9 @@ namespace Edelstein.Core.Bootstrap.Providers
 
             switch (type)
             {
+                case ScriptingProviderType.Lua:
+                    new LuaScriptingProvider(section["Path"]).Provide(context, collection);
+                    break;
                 case ScriptingProviderType.Python:
                     new PythonScriptingProvider(section["Path"]).Provide(context, collection);
                     break;

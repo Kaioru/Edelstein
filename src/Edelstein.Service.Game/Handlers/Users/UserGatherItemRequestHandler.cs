@@ -13,7 +13,7 @@ namespace Edelstein.Service.Game.Handlers.Users
         protected override async Task Handle(
             FieldUser user,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             packet.DecodeInt();
@@ -31,7 +31,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                 inventoryCopy.ForEach(kv => i.Set(position++, kv.Value));
             }, true);
 
-            using var p = new Packet(SendPacketOperations.GatherItemResult);
+            using var p = new OutPacket(SendPacketOperations.GatherItemResult);
             p.EncodeBool(false);
             p.EncodeByte((byte) inventoryType);
             await user.SendPacket(p);
