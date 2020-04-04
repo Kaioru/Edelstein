@@ -32,8 +32,11 @@ namespace Edelstein.Core.Distributed
             {
                 Remotes.TryGetValue(message.State.Name, out var remote);
 
-                if (remote != null && remote.Expire < DateTime.UtcNow)
-                    Logger.Debug($"Reconnected peer service, {message.State.Name} to {State.Name}");
+                if (remote != null)
+                {
+                    if (remote.Expire < DateTime.UtcNow)
+                        Logger.Debug($"Reconnected peer service, {message.State.Name} to {State.Name}");
+                }
                 else Logger.Debug($"Connected peer service, {message.State.Name} to {State.Name}");
 
                 Remotes[message.State.Name] = new CachedNodeRemote(
