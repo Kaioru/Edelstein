@@ -63,7 +63,7 @@ namespace Edelstein.Core.Gameplay.Migrations
 
         public virtual IPacket GetMigrationPacket(IServerNodeState to)
         {
-            using var p = new Packet(SendPacketOperations.MigrateCommand);
+            using var p = new OutPacket(SendPacketOperations.MigrateCommand);
 
             p.EncodeBool(true);
 
@@ -77,7 +77,7 @@ namespace Edelstein.Core.Gameplay.Migrations
             return p;
         }
 
-        public override async Task OnPacket(IPacket packet)
+        public override async Task OnPacket(IPacketDecoder packet)
         {
             var operation = (RecvPacketOperations) packet.DecodeShort();
 

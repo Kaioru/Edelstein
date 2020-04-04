@@ -6,7 +6,7 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
     {
         private bool _stat;
 
-        public StatChangeMoveFragment(MoveFragmentAttribute attribute, IPacket packet) : base(attribute, packet)
+        public StatChangeMoveFragment(MoveFragmentAttribute attribute, IPacketDecoder packet) : base(attribute, packet)
         {
         }
 
@@ -15,10 +15,10 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
             // Do nothing
         }
 
-        public override void DecodeData(IPacket packet)
+        public override void DecodeData(IPacketDecoder packet)
             => _stat = packet.DecodeBool();
 
-        public override void EncodeData(IPacket packet)
+        public override void EncodeData(IPacketEncoder packet)
             => packet.EncodeBool(_stat);
     }
 }

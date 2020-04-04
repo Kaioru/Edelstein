@@ -6,7 +6,7 @@ namespace Edelstein.Core.Utils.Packets
     public interface IPacketHandlerContext
     {
         RecvPacketOperations Operation { get; }
-        IPacket Packet { get; }
+        IPacketDecoder Packet { get; }
 
         ISocketAdapter Adapter { get; }
     }

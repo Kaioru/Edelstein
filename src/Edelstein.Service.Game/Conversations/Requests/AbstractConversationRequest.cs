@@ -11,7 +11,7 @@ namespace Edelstein.Service.Game.Conversations.Requests
         protected AbstractConversationRequest(IConversationSpeaker speaker)
             => Speaker = speaker;
 
-        public void Encode(IPacket packet)
+        public void Encode(IPacketEncoder packet)
         {
             packet.EncodeByte(0); // SpeakerTypeID
             packet.EncodeInt(Speaker.TemplateID);
@@ -21,7 +21,7 @@ namespace Edelstein.Service.Game.Conversations.Requests
             EncodeData(packet);
         }
 
-        public abstract void EncodeData(IPacket packet);
+        public abstract void EncodeData(IPacketEncoder packet);
         public abstract bool Validate(IConversationResponse<T> response);
     }
 }

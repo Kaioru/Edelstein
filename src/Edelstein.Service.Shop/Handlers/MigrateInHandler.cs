@@ -14,7 +14,7 @@ namespace Edelstein.Service.Shop.Handlers
         protected override async Task Handle(
             ShopServiceAdapter adapter,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             var characterID = packet.DecodeInt();
@@ -31,7 +31,7 @@ namespace Edelstein.Service.Shop.Handlers
             {
                 await adapter.TryMigrateFrom(characterID, clientKey);
 
-                using var p = new Packet(SendPacketOperations.SetCashShop);
+                using var p = new OutPacket(SendPacketOperations.SetCashShop);
 
                 adapter.Character.EncodeData(p);
 

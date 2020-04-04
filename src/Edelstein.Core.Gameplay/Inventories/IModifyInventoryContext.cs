@@ -29,6 +29,6 @@ namespace Edelstein.Core.Gameplay.Inventories
         void Update(short slot);
         void Update(ItemSlot item);
 
-        void Encode(IPacket packet);
+        void Encode(IPacketEncoder packet);
     }
 }

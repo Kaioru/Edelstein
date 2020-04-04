@@ -6,12 +6,12 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Messages
     {
         public abstract MessageType Type { get; }
 
-        public void Encode(IPacket packet)
+        public void Encode(IPacketEncoder packet)
         {
             packet.EncodeByte((byte) Type);
             EncodeData(packet);
         }
 
-        protected abstract void EncodeData(IPacket packet);
+        protected abstract void EncodeData(IPacketEncoder packet);
     }
 }

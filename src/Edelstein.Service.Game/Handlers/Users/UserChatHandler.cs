@@ -14,7 +14,7 @@ namespace Edelstein.Service.Game.Handlers.Users
         protected override async Task Handle(
             FieldUser user,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             packet.DecodeInt();
@@ -28,7 +28,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                 return;
             }
 
-            using var p1 = new Packet(SendPacketOperations.UserChat);
+            using var p1 = new OutPacket(SendPacketOperations.UserChat);
 
             p1.EncodeInt(user.ID);
             p1.EncodeBool(false);
@@ -39,7 +39,7 @@ namespace Edelstein.Service.Game.Handlers.Users
 
             if (onlyBalloon) return;
 
-            using var p2 = new Packet(SendPacketOperations.UserChatNLCPQ);
+            using var p2 = new OutPacket(SendPacketOperations.UserChatNLCPQ);
 
             p2.EncodeInt(user.ID);
             p2.EncodeBool(false);

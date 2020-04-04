@@ -22,7 +22,7 @@ namespace Edelstein.Service.Game.Fields.Objects.NPC
 
         public override IPacket GetEnterFieldPacket()
         {
-            using var p = new Packet(SendPacketOperations.NpcEnterField);
+            using var p = new OutPacket(SendPacketOperations.NpcEnterField);
             p.EncodeInt(ID);
             p.EncodeInt(Template.ID);
 
@@ -39,14 +39,14 @@ namespace Edelstein.Service.Game.Fields.Objects.NPC
 
         public override IPacket GetLeaveFieldPacket()
         {
-            using var p = new Packet(SendPacketOperations.NpcLeaveField);
+            using var p = new OutPacket(SendPacketOperations.NpcLeaveField);
             p.EncodeInt(ID);
             return p;
         }
 
         protected override IPacket GetChangeControllerPacket(bool setAsController)
         {
-            using var p = new Packet(SendPacketOperations.NpcChangeController);
+            using var p = new OutPacket(SendPacketOperations.NpcChangeController);
             p.EncodeBool(setAsController);
             p.EncodeInt(ID);
             return p;

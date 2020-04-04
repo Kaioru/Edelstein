@@ -6,7 +6,7 @@ namespace Edelstein.Core.Gameplay.Extensions.Packets
 {
     public static class ItemPackets
     {
-        public static void Encode(this ItemSlot i, IPacket p)
+        public static void Encode(this ItemSlot i, IPacketEncoder p)
         {
             switch (i)
             {
@@ -22,7 +22,7 @@ namespace Edelstein.Core.Gameplay.Extensions.Packets
             }
         }
 
-        public static void EncodeBase(this ItemSlot i, IPacket p)
+        public static void EncodeBase(this ItemSlot i, IPacketEncoder p)
         {
             p.EncodeInt(i.TemplateID);
             p.EncodeBool(i.CashItemSN.HasValue);
@@ -30,7 +30,7 @@ namespace Edelstein.Core.Gameplay.Extensions.Packets
             p.EncodeDateTime(i.DateExpire ?? ItemConstants.Permanent);
         }
 
-        private static void Encode(this ItemSlotEquip i, IPacket p)
+        private static void Encode(this ItemSlotEquip i, IPacketEncoder p)
         {
             p.EncodeByte(1);
 
@@ -79,7 +79,7 @@ namespace Edelstein.Core.Gameplay.Extensions.Packets
             p.EncodeInt(0);
         }
 
-        public static void Encode(this ItemSlotBundle i, IPacket p)
+        public static void Encode(this ItemSlotBundle i, IPacketEncoder p)
         {
             p.EncodeByte(2);
 
@@ -93,7 +93,7 @@ namespace Edelstein.Core.Gameplay.Extensions.Packets
                 p.EncodeLong(0);
         }
 
-        public static void Encode(this ItemSlotPet i, IPacket p)
+        public static void Encode(this ItemSlotPet i, IPacketEncoder p)
         {
             p.EncodeByte(3);
 

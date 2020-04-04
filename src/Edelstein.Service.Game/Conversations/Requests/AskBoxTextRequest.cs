@@ -28,7 +28,7 @@ namespace Edelstein.Service.Game.Conversations.Requests
         public override bool Validate(IConversationResponse<string> response)
             => true;
 
-        public override void EncodeData(IPacket packet)
+        public override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodeString(_text);
             packet.EncodeString(_def);

@@ -47,7 +47,7 @@ namespace Edelstein.Service.Game
                             msg.PartyMembers
                         );
 
-                        using var p = new Packet(SendPacketOperations.PartyResult);
+                        using var p = new OutPacket(SendPacketOperations.PartyResult);
 
                         p.EncodeByte((byte) PartyResultType.CreateNewParty_Done);
                         p.EncodeInt(msg.PartyID);
@@ -92,7 +92,7 @@ namespace Edelstein.Service.Game
                         ))));
                     await Task.WhenAll(users.Select(async u =>
                     {
-                        using var p = new Packet(SendPacketOperations.PartyResult);
+                        using var p = new OutPacket(SendPacketOperations.PartyResult);
 
                         p.EncodeByte((byte) PartyResultType.JoinParty_Done);
                         p.EncodeInt(msg.PartyID);
@@ -104,7 +104,7 @@ namespace Edelstein.Service.Game
 
                     if (user != null)
                     {
-                        using var p = new Packet(SendPacketOperations.UserHP);
+                        using var p = new OutPacket(SendPacketOperations.UserHP);
 
                         p.EncodeInt(user.ID);
                         p.EncodeInt(user.Character.HP);
@@ -118,7 +118,7 @@ namespace Edelstein.Service.Game
                             .Where(u => u != user)
                             .Select(async u =>
                             {
-                                using var p = new Packet(SendPacketOperations.UserHP);
+                                using var p = new OutPacket(SendPacketOperations.UserHP);
 
                                 p.EncodeInt(u.ID);
                                 p.EncodeInt(u.Character.HP);
@@ -137,7 +137,7 @@ namespace Edelstein.Service.Game
                     await Task.WhenAll(users.Select(u => u.Party.OnUpdateWithdraw(msg.PartyMemberID)));
                     await Task.WhenAll(users.Select(async u =>
                     {
-                        using var p = new Packet(SendPacketOperations.PartyResult);
+                        using var p = new OutPacket(SendPacketOperations.PartyResult);
 
                         p.EncodeByte((byte) PartyResultType.WithdrawParty_Done);
                         p.EncodeInt(msg.PartyID);
@@ -165,7 +165,7 @@ namespace Edelstein.Service.Game
                     await Task.WhenAll(users.Select(u => u.Party.OnUpdateBoss(msg.PartyMemberID)));
                     await Task.WhenAll(users.Select(async u =>
                     {
-                        using var p = new Packet(SendPacketOperations.PartyResult);
+                        using var p = new OutPacket(SendPacketOperations.PartyResult);
 
                         p.EncodeByte((byte) PartyResultType.ChangePartyBoss_Done);
                         p.EncodeInt(msg.PartyMemberID);
@@ -186,7 +186,7 @@ namespace Edelstein.Service.Game
                     )));
                     await Task.WhenAll(users.Select(async u =>
                     {
-                        using var p = new Packet(SendPacketOperations.PartyResult);
+                        using var p = new OutPacket(SendPacketOperations.PartyResult);
 
                         p.EncodeByte((byte) PartyResultType.UserMigration);
                         p.EncodeInt(msg.PartyID);
@@ -206,7 +206,7 @@ namespace Edelstein.Service.Game
                 )));
                 await Task.WhenAll(users.Select(async u =>
                 {
-                    using var p = new Packet(SendPacketOperations.PartyResult);
+                    using var p = new OutPacket(SendPacketOperations.PartyResult);
 
                     p.EncodeByte((byte) PartyResultType.ChangeLevelOrJob);
                     p.EncodeInt(msg.PartyMemberID);

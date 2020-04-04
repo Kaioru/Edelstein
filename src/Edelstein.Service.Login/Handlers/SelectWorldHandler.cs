@@ -18,7 +18,7 @@ namespace Edelstein.Service.Login.Handlers
         protected override async Task Handle(
             LoginServiceAdapter adapter,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             packet.DecodeByte();
@@ -30,7 +30,7 @@ namespace Edelstein.Service.Login.Handlers
 
             try
             {
-                using var p = new Packet(SendPacketOperations.SelectWorldResult);
+                using var p = new OutPacket(SendPacketOperations.SelectWorldResult);
                 using var store = adapter.Service.DataStore.StartSession();
                 var result = LoginResultCode.Success;
 
@@ -97,7 +97,7 @@ namespace Edelstein.Service.Login.Handlers
             }
             catch
             {
-                using var p = new Packet(SendPacketOperations.SelectWorldResult);
+                using var p = new OutPacket(SendPacketOperations.SelectWorldResult);
 
                 p.EncodeByte((byte) LoginResultCode.DBFail);
 

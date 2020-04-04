@@ -13,7 +13,7 @@ namespace Edelstein.Network
         protected AbstractSocketAdapter(ISocket socket)
             => Socket = socket;
 
-        public abstract Task OnPacket(IPacket packet);
+        public abstract Task OnPacket(IPacketDecoder packet);
         public abstract Task OnException(Exception exception);
         public abstract Task OnUpdate();
         public abstract Task OnDisconnect();

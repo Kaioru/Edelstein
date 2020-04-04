@@ -9,7 +9,7 @@ namespace Edelstein.Service.Game.Handlers.NPC
 {
     public abstract class AbstractFieldNPCHandler : AbstractFieldUserHandler
     {
-        protected override Task Handle(FieldUser user, RecvPacketOperations operation, IPacket packet)
+        protected override Task Handle(FieldUser user, RecvPacketOperations operation, IPacketDecoder packet)
         {
             var npc = user.Field.GetControlledObject<FieldNPC>(user, packet.DecodeInt());
             return npc == null
@@ -17,6 +17,6 @@ namespace Edelstein.Service.Game.Handlers.NPC
                 : Handle(npc, operation, packet);
         }
 
-        protected abstract Task Handle(FieldNPC npc, RecvPacketOperations operation, IPacket packet);
+        protected abstract Task Handle(FieldNPC npc, RecvPacketOperations operation, IPacketDecoder packet);
     }
 }

@@ -7,6 +7,6 @@ namespace Edelstein.Service.Game.Conversations
         ConversationRequestType Type { get; }
 
         bool Validate(IConversationResponse<T> response);
-        void Encode(IPacket packet);
+        void Encode(IPacketEncoder packet);
     }
 }

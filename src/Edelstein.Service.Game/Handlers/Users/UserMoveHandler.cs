@@ -12,7 +12,7 @@ namespace Edelstein.Service.Game.Handlers.Users
         protected override async Task Handle(
             FieldUser user,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             packet.DecodeLong();
@@ -24,7 +24,7 @@ namespace Edelstein.Service.Game.Handlers.Users
 
             var path = new MovePath(packet);
 
-            using var p = new Packet(SendPacketOperations.UserMove);
+            using var p = new OutPacket(SendPacketOperations.UserMove);
 
             p.EncodeInt(user.ID);
             path.Encode(p);

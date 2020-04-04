@@ -4,7 +4,7 @@ namespace Edelstein.Core.Gameplay.Social.Memo
 {
     public static class SocialMemoPackets
     {
-        public static void EncodeData(this ISocialMemo memo, IPacket p)
+        public static void EncodeData(this ISocialMemo memo, IPacketEncoder p)
         {
             p.EncodeInt(memo.ID);
             p.EncodeString(memo.Sender);

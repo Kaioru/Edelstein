@@ -10,7 +10,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User.Messages.Impl.Drops
         public int Money { get; set; }
         public short PremiumIPMesoBonus { get; set; }
 
-        protected override void EncodeData(IPacket packet)
+        protected override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodeByte(1);
 

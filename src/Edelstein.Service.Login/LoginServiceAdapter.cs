@@ -22,7 +22,7 @@ namespace Edelstein.Service.Login
 
         public override IPacket GetMigrationPacket(IServerNodeState to)
         {
-            using var p = new Packet(SendPacketOperations.SelectCharacterResult);
+            using var p = new OutPacket(SendPacketOperations.SelectCharacterResult);
 
             p.EncodeByte(0);
             p.EncodeByte(0);

@@ -17,7 +17,7 @@ namespace Edelstein.Network.Transport
         {
             var adapter = context.Channel.GetAttribute(AbstractSocketAdapter.Key).Get();
 
-            var p = (IPacket) message;
+            var p = (IPacketDecoder) message;
 
             if (adapter != null) adapter.OnPacket(p);
             else

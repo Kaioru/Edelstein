@@ -32,7 +32,7 @@ namespace Edelstein.Service.Game.Conversations.Requests
         public override bool Validate(IConversationResponse<int> response)
             => _options.ContainsKey(response.Value);
 
-        public override void EncodeData(IPacket packet)
+        public override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodeInt(_type);
             packet.EncodeInt(_selected);

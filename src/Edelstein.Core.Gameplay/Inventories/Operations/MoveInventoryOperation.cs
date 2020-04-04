@@ -17,7 +17,7 @@ namespace Edelstein.Core.Gameplay.Inventories.Operations
             ToSlot = toSlot;
         }
 
-        protected override void EncodeData(IPacket packet)
+        protected override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodeShort(ToSlot);
         }

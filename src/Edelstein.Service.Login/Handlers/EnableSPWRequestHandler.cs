@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed.States;
@@ -20,7 +21,7 @@ namespace Edelstein.Service.Login.Handlers
         protected override async Task Handle(
             LoginServiceAdapter adapter,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             packet.DecodeBool(); // ?
@@ -66,7 +67,7 @@ namespace Edelstein.Service.Login.Handlers
 
                 if (result != LoginResultCode.Success)
                 {
-                    using var p = new Packet(SendPacketOperations.EnableSPWResult);
+                    using var p = new OutPacket(SendPacketOperations.EnableSPWResult);
 
                     p.EncodeBool(false);
                     p.EncodeByte((byte) result);
@@ -81,7 +82,7 @@ namespace Edelstein.Service.Login.Handlers
             }
             catch
             {
-                using var p = new Packet(SendPacketOperations.EnableSPWResult);
+                using var p = new OutPacket(SendPacketOperations.EnableSPWResult);
 
                 p.EncodeBool(false);
                 p.EncodeByte((byte) LoginResultCode.Unknown);

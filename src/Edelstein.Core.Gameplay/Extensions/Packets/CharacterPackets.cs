@@ -12,7 +12,7 @@ namespace Edelstein.Core.Gameplay.Extensions.Packets
 {
     public static class CharacterPackets
     {
-        public static void EncodeData(this Character c, IPacket p, DbChar flags = DbChar.All)
+        public static void EncodeData(this Character c, IPacketEncoder p, DbChar flags = DbChar.All)
         {
             p.EncodeLong((long) flags);
             p.EncodeByte(0);
@@ -183,7 +183,7 @@ namespace Edelstein.Core.Gameplay.Extensions.Packets
             }
         }
 
-        public static void EncodeStats(this Character c, IPacket p)
+        public static void EncodeStats(this Character c, IPacketEncoder p)
         {
             p.EncodeInt(c.ID);
             p.EncodeString(c.Name, 13);
@@ -222,7 +222,7 @@ namespace Edelstein.Core.Gameplay.Extensions.Packets
             p.EncodeShort(c.SubJob);
         }
 
-        public static void EncodeLook(this Character c, IPacket p)
+        public static void EncodeLook(this Character c, IPacketEncoder p)
         {
             p.EncodeByte(c.Gender);
             p.EncodeByte(c.Skin);
@@ -269,7 +269,7 @@ namespace Edelstein.Core.Gameplay.Extensions.Packets
                 p.EncodeInt(0);
         }
 
-        public static void EncodeExtendSP(this Character c, IPacket p)
+        public static void EncodeExtendSP(this Character c, IPacketEncoder p)
         {
             p.EncodeByte((byte) c.ExtendSP.Count);
             c.ExtendSP.ForEach(kv =>

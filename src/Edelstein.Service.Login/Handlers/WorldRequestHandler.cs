@@ -13,14 +13,14 @@ namespace Edelstein.Service.Login.Handlers
         protected override async Task Handle(
             LoginServiceAdapter adapter,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             if (adapter.Account == null) return;
 
             foreach (var w in adapter.Service.State.Worlds.OrderBy(w => w.ID))
             {
-                using var p = new Packet(SendPacketOperations.WorldInformation);
+                using var p = new OutPacket(SendPacketOperations.WorldInformation);
 
                 p.EncodeByte(w.ID);
                 p.EncodeString(w.Name);
@@ -54,14 +54,14 @@ namespace Edelstein.Service.Login.Handlers
                 await adapter.SendPacket(p);
             }
 
-            using (var p = new Packet(SendPacketOperations.WorldInformation))
+            using (var p = new OutPacket(SendPacketOperations.WorldInformation))
             {
                 p.EncodeByte(0xFF);
                 await adapter.SendPacket(p);
             }
 
             if (adapter.Account.LatestConnectedWorld == null) return;
-            using (var p = new Packet(SendPacketOperations.LatestConnectedWorld))
+            using (var p = new OutPacket(SendPacketOperations.LatestConnectedWorld))
             {
                 p.EncodeInt(adapter.Account.LatestConnectedWorld ?? 0);
                 await adapter.SendPacket(p);

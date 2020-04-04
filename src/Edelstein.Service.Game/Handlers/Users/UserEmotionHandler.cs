@@ -11,7 +11,7 @@ namespace Edelstein.Service.Game.Handlers.Users
         protected override async Task Handle(
             FieldUser user,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             var emotion = packet.DecodeInt();
@@ -20,7 +20,7 @@ namespace Edelstein.Service.Game.Handlers.Users
 
             // TODO: item option checks
 
-            using var p = new Packet(SendPacketOperations.UserEmotion);
+            using var p = new OutPacket(SendPacketOperations.UserEmotion);
             p.EncodeInt(user.ID);
             p.EncodeInt(emotion);
             p.EncodeInt(duration);

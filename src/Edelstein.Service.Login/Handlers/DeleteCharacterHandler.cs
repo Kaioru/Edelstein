@@ -13,14 +13,14 @@ namespace Edelstein.Service.Login.Handlers
         protected override async Task Handle(
             LoginServiceAdapter adapter,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             var spw = packet.DecodeString();
             var characterID = packet.DecodeInt();
             try
             {
-                using var p = new Packet(SendPacketOperations.DeleteCharacterResult);
+                using var p = new OutPacket(SendPacketOperations.DeleteCharacterResult);
                 using var store = adapter.Service.DataStore.StartSession();
                 var character = store.Query<Character>()
                     .Where(c =>
@@ -58,7 +58,7 @@ namespace Edelstein.Service.Login.Handlers
             catch
 
             {
-                using var p = new Packet(SendPacketOperations.DeleteCharacterResult);
+                using var p = new OutPacket(SendPacketOperations.DeleteCharacterResult);
 
                 p.EncodeInt(characterID);
                 p.EncodeByte((byte) LoginResultCode.Unknown);

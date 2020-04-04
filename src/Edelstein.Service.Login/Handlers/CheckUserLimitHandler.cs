@@ -14,7 +14,7 @@ namespace Edelstein.Service.Login.Handlers
         protected override async Task Handle(
             LoginServiceAdapter adapter,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             var worldID = packet.DecodeByte();
@@ -44,7 +44,7 @@ namespace Edelstein.Service.Login.Handlers
             capacity = Math.Min(1, capacity);
             capacity = Math.Max(0, capacity);
 
-            using var p = new Packet(SendPacketOperations.CheckUserLimitResult);
+            using var p = new OutPacket(SendPacketOperations.CheckUserLimitResult);
 
             p.EncodeByte(
                 (byte) (capacity >= 1

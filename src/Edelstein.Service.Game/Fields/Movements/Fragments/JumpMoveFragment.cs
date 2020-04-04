@@ -7,18 +7,18 @@ namespace Edelstein.Service.Game.Fields.Movements.Fragments
     {
         private Point _vPosition;
 
-        public JumpMoveFragment(MoveFragmentAttribute attribute, IPacket packet) : base(attribute, packet)
+        public JumpMoveFragment(MoveFragmentAttribute attribute, IPacketDecoder packet) : base(attribute, packet)
         {
         }
 
-        public override void DecodeData(IPacket packet)
+        public override void DecodeData(IPacketDecoder packet)
         {
             _vPosition = packet.DecodePoint();
 
             base.DecodeData(packet);
         }
 
-        public override void EncodeData(IPacket packet)
+        public override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodePoint(_vPosition);
 

@@ -212,7 +212,7 @@ namespace Edelstein.Service.Game.Fields
                 {
                     if (!user.IsInstantiated)
                     {
-                        using var p = new Packet(SendPacketOperations.PartyResult);
+                        using var p = new OutPacket(SendPacketOperations.PartyResult);
                         p.EncodeByte((byte) PartyResultType.LoadParty_Done);
                         p.EncodeInt(user.Party.ID);
 
@@ -245,7 +245,7 @@ namespace Edelstein.Service.Game.Fields
                         true
                     );
 
-                    using var p = new Packet(SendPacketOperations.GuildResult);
+                    using var p = new OutPacket(SendPacketOperations.GuildResult);
                     p.EncodeByte((byte) GuildResultType.LoadGuild_Done);
                     p.EncodeBool(true);
                     user.Guild.EncodeData(p);

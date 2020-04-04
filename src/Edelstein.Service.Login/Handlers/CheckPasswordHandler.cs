@@ -17,7 +17,7 @@ namespace Edelstein.Service.Login.Handlers
         protected override async Task Handle(
             LoginServiceAdapter adapter,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             var password = packet.DecodeString();
@@ -44,7 +44,7 @@ namespace Edelstein.Service.Login.Handlers
 
             if (authLock == null)
             {
-                using var p = new Packet(SendPacketOperations.CheckPasswordResult);
+                using var p = new OutPacket(SendPacketOperations.CheckPasswordResult);
 
                 p.EncodeByte((byte) LoginResultCode.Timeout);
                 p.EncodeByte(0);
@@ -56,7 +56,7 @@ namespace Edelstein.Service.Login.Handlers
 
             try
             {
-                using var p = new Packet(SendPacketOperations.CheckPasswordResult);
+                using var p = new OutPacket(SendPacketOperations.CheckPasswordResult);
                 using var store = adapter.Service.DataStore.StartSession();
 
                 var result = LoginResultCode.Success;

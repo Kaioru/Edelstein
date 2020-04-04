@@ -12,7 +12,7 @@ namespace Edelstein.Service.Trade.Handlers
         protected override async Task Handle(
             TradeServiceAdapter adapter,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             try

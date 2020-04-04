@@ -74,7 +74,7 @@ namespace Edelstein.Service.Game.Fields
 
                 if (user.Party != null)
                 {
-                    using var p = new Packet(SendPacketOperations.UserHP);
+                    using var p = new OutPacket(SendPacketOperations.UserHP);
 
                     p.EncodeInt(user.ID);
                     p.EncodeInt(user.Character.HP);
@@ -121,7 +121,7 @@ namespace Edelstein.Service.Game.Fields
                     .Where(u => u != user)
                     .Select(async u =>
                     {
-                        using var p = new Packet(SendPacketOperations.UserHP);
+                        using var p = new OutPacket(SendPacketOperations.UserHP);
 
                         p.EncodeInt(u.ID);
                         p.EncodeInt(u.Character.HP);

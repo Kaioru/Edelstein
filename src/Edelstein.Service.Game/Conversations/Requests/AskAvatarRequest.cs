@@ -23,7 +23,7 @@ namespace Edelstein.Service.Game.Conversations.Requests
         public override bool Validate(IConversationResponse<byte> response)
             => response.Value <= _styles.Length;
 
-        public override void EncodeData(IPacket packet)
+        public override void EncodeData(IPacketEncoder packet)
         {
             packet.EncodeString(_text);
             packet.EncodeByte((byte) _styles.Length);

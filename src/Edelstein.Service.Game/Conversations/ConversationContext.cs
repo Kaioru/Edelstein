@@ -29,7 +29,7 @@ namespace Edelstein.Service.Game.Conversations
 
         public async Task<T> Request<T>(IConversationRequest<T> request)
         {
-            using (var p = new Packet(SendPacketOperations.ScriptMessage))
+            using (var p = new OutPacket(SendPacketOperations.ScriptMessage))
             {
                 request.Encode(p);
                 await Socket.SendPacket(p);

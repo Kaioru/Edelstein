@@ -6,7 +6,7 @@ namespace Edelstein.Network
 {
     public interface ISocketAdapter
     {
-        Task OnPacket(IPacket packet);
+        Task OnPacket(IPacketDecoder packet);
         Task OnException(Exception exception);
         Task OnUpdate();
         Task OnDisconnect();

@@ -185,7 +185,7 @@ namespace Edelstein.Core.Gameplay.Migrations
             {
                 adapter.LastSentHeartbeatDate = now;
 
-                using var p = new Packet(SendPacketOperations.AliveReq);
+                using var p = new OutPacket(SendPacketOperations.AliveReq);
                 await adapter.SendPacket(p);
             }
         }

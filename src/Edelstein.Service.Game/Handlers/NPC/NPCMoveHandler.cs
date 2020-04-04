@@ -9,9 +9,9 @@ namespace Edelstein.Service.Game.Handlers.NPC
 {
     public class NPCMoveHandler : AbstractFieldNPCHandler
     {
-        protected override async Task Handle(FieldNPC npc, RecvPacketOperations operation, IPacket packet)
+        protected override async Task Handle(FieldNPC npc, RecvPacketOperations operation, IPacketDecoder packet)
         {
-            using var p = new Packet(SendPacketOperations.NpcMove);
+            using var p = new OutPacket(SendPacketOperations.NpcMove);
 
             p.EncodeInt(npc.ID);
             p.EncodeByte(packet.DecodeByte()); // TODO: validate acts

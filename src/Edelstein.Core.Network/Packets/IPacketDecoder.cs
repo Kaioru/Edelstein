@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Edelstein.Network.Packets
 {
-    public interface IPacketRead
+    public interface IPacketDecoder
     {
         byte DecodeByte();
         bool DecodeBool();

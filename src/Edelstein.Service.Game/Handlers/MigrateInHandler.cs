@@ -13,7 +13,7 @@ namespace Edelstein.Service.Game.Handlers
         protected override async Task Handle(
             GameServiceAdapter adapter,
             RecvPacketOperations operation,
-            IPacket packet
+            IPacketDecoder packet
         )
         {
             var characterID = packet.DecodeInt();
@@ -46,7 +46,7 @@ namespace Edelstein.Service.Game.Handlers
                 await field.Enter(fieldUser);
 
                 if (fieldUser.Memos.Count > 0)
-                    using (var p = new Packet(SendPacketOperations.MemoResult))
+                    using (var p = new OutPacket(SendPacketOperations.MemoResult))
                     {
                         var memos = fieldUser.Memos.Values;
 

@@ -1,8 +1,6 @@
-using System;
-
 namespace Edelstein.Network.Packets
 {
-    public interface IPacket : IPacketRead, IPacketWrite, IDisposable
+    public interface IPacket
     {
         byte[] Buffer { get; }
         int Length { get; }

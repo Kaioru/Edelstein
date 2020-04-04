@@ -31,7 +31,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public static async Task UpdateAvatar(this FieldUser user)
         {
-            using var p = new Packet(SendPacketOperations.UserAvatarModified);
+            using var p = new OutPacket(SendPacketOperations.UserAvatarModified);
 
             p.EncodeInt(user.ID);
             p.EncodeByte(0x1); // Flag
@@ -52,7 +52,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public static Task Message(this FieldUser user, IMessage message)
         {
-            using var p = new Packet(SendPacketOperations.Message);
+            using var p = new OutPacket(SendPacketOperations.Message);
             message.Encode(p);
             return user.SendPacket(p);
         }
@@ -151,7 +151,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
             if (!user.IsInstantiated) return;
 
-            using (var p = new Packet(SendPacketOperations.StatChanged))
+            using (var p = new OutPacket(SendPacketOperations.StatChanged))
             {
                 p.EncodeBool(exclRequest);
                 context.Encode(p);
@@ -192,7 +192,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 context.Flag.HasFlag(ModifyStatType.MaxHP)
             )
             {
-                using var p = new Packet(SendPacketOperations.UserHP);
+                using var p = new OutPacket(SendPacketOperations.UserHP);
 
                 p.EncodeInt(user.ID);
                 p.EncodeInt(user.Character.HP);
@@ -214,7 +214,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
             if (!user.IsInstantiated) return;
 
-            using var p = new Packet(SendPacketOperations.ForcedStatSet);
+            using var p = new OutPacket(SendPacketOperations.ForcedStatSet);
             context.Encode(p);
             await user.SendPacket(p);
         }
@@ -228,7 +228,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
             var context = new ModifyInventoriesContext(user.Character.Inventories);
 
             action?.Invoke(context);
-            using (var p = new Packet(SendPacketOperations.InventoryOperation))
+            using (var p = new OutPacket(SendPacketOperations.InventoryOperation))
             {
                 p.EncodeBool(exclRequest);
                 context.Encode(p);
