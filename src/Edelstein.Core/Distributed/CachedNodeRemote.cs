@@ -5,8 +5,8 @@ namespace Edelstein.Core.Distributed
 {
     public class CachedNodeRemote : AbstractCachedNode, INodeRemote
     {
-        public INodeState State { get; }
-        public DateTime Expire { get; }
+        public INodeState State { get; set; }
+        public DateTime Expire { get; set; }
 
         public CachedNodeRemote(
             INodeState state,
