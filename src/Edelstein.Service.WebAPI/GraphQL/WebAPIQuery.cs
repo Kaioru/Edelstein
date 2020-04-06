@@ -15,7 +15,7 @@ namespace Edelstein.Service.WebAPI.GraphQL
         public WebAPIQuery(WebAPIService service)
         {
             Field<AccountType>(
-                "account",
+                "currentAccount",
                 resolve: ctx =>
                 {
                     var accountID = ((WebAPIContext) ctx.UserContext).AccountID;
