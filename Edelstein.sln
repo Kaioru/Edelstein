@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Service.Shop", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Service.Trade", "src\Edelstein.Service.Trade\Edelstein.Service.Trade.csproj", "{C24AC7B6-C5BF-4980-9C62-C349179593AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Service.WebAPI", "src\Edelstein.Service.WebAPI\Edelstein.Service.WebAPI.csproj", "{7FAB0649-2393-4FA7-990E-49F12485475E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,7 @@ Global
 		{2DCD7927-DC60-4EA7-B7D1-FC7CF55CFC62} = {C47FC9BD-F5B2-4DEB-989C-7CC7A6F76D30}
 		{80949D08-8447-4584-A992-6359A735B6E6} = {C47FC9BD-F5B2-4DEB-989C-7CC7A6F76D30}
 		{C24AC7B6-C5BF-4980-9C62-C349179593AF} = {C47FC9BD-F5B2-4DEB-989C-7CC7A6F76D30}
+		{7FAB0649-2393-4FA7-990E-49F12485475E} = {C47FC9BD-F5B2-4DEB-989C-7CC7A6F76D30}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C45F9C3A-B614-4423-BE4A-618511663009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -215,5 +218,17 @@ Global
 		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Release|x64.Build.0 = Release|Any CPU
 		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Release|x86.ActiveCfg = Release|Any CPU
 		{C24AC7B6-C5BF-4980-9C62-C349179593AF}.Release|x86.Build.0 = Release|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Debug|x64.Build.0 = Debug|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Debug|x86.Build.0 = Debug|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Release|x64.ActiveCfg = Release|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Release|x64.Build.0 = Release|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Release|x86.ActiveCfg = Release|Any CPU
+		{7FAB0649-2393-4FA7-990E-49F12485475E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
