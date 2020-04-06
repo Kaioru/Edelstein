@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
 using Edelstein.Core.Bootstrap.Providers.Templates;
 using Edelstein.Core.Distributed.States;
+using Edelstein.Core.Gameplay.Migrations.States;
 
 namespace Edelstein.Service.Trade
 {
@@ -15,7 +16,7 @@ namespace Edelstein.Service.Trade
                 .WithConfiguredDatabase()
                 .WithConfiguredParsing()
                 .WithProvider(new DataTemplateProvider(DataTemplateType.Trade))
-                .WithConfig<TradeServiceState>("Service")
+                .WithConfig<TradeNodeState>("Service")
                 .WithService<TradeService>()
                 .Build()
                 .StartAsync();

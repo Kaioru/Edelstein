@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Core.Distributed.States;
 using Edelstein.Core.Gameplay.Migrations;
+using Edelstein.Core.Gameplay.Migrations.States;
 using Edelstein.Core.Gameplay.Social.Guild;
 using Edelstein.Core.Gameplay.Social.Memo;
 using Edelstein.Core.Gameplay.Social.Party;
@@ -28,7 +29,7 @@ using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Game
 {
-    public class GameService : AbstractMigrationService<GameServiceState>, ITickBehavior
+    public class GameService : AbstractMigrationService<GameNodeState>, ITickBehavior
     {
         private readonly ITicker _ticker;
 
@@ -43,7 +44,7 @@ namespace Edelstein.Service.Game
         public ISocialGuildManager GuildManager { get; }
 
         public GameService(
-            IOptions<GameServiceState> state,
+            IOptions<GameNodeState> state,
             IDataStore dataStore,
             ICacheClient cache,
             IMessageBusFactory busFactory,

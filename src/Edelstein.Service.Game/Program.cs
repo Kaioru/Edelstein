@@ -2,6 +2,7 @@
 using Edelstein.Core.Bootstrap;
 using Edelstein.Core.Bootstrap.Providers.Templates;
 using Edelstein.Core.Distributed.States;
+using Edelstein.Core.Gameplay.Migrations.States;
 
 namespace Edelstein.Service.Game
 {
@@ -16,7 +17,7 @@ namespace Edelstein.Service.Game
                 .WithConfiguredParsing()
                 .WithConfiguredScripting()
                 .WithProvider(new DataTemplateProvider(DataTemplateType.Game))
-                .WithConfig<GameServiceState>("Service")
+                .WithConfig<GameNodeState>("Service")
                 .WithService<GameService>()
                 .Build()
                 .StartAsync();

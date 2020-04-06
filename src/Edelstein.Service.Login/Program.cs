@@ -2,6 +2,7 @@
 using Edelstein.Core.Bootstrap;
 using Edelstein.Core.Bootstrap.Providers.Templates;
 using Edelstein.Core.Distributed.States;
+using Edelstein.Core.Gameplay.Migrations.States;
 
 namespace Edelstein.Service.Login
 {
@@ -15,7 +16,7 @@ namespace Edelstein.Service.Login
                 .WithConfiguredDatabase()
                 .WithConfiguredParsing()
                 .WithProvider(new DataTemplateProvider(DataTemplateType.Login))
-                .WithConfig<LoginServiceState>("Service")
+                .WithConfig<LoginNodeState>("Service")
                 .WithService<LoginService>()
                 .Build()
                 .StartAsync();

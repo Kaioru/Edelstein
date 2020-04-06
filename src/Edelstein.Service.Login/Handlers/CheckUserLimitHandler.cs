@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed.States;
+using Edelstein.Core.Gameplay.Migrations.States;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
@@ -23,7 +24,7 @@ namespace Edelstein.Service.Login.Handlers
 
             var services = (await adapter.Service.GetPeers())
                 .Select(n => n.State)
-                .OfType<GameServiceState>()
+                .OfType<GameNodeState>()
                 .Where(s => s.Worlds.Contains(worldID))
                 .ToImmutableList();
             var tasks = services

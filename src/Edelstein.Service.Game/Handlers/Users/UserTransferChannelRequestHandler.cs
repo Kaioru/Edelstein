@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed.States;
+using Edelstein.Core.Gameplay.Migrations.States;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
@@ -25,7 +26,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             {
                 var service = (await user.Service.GetPeers())
                     .Select(n => n.State)
-                    .OfType<GameServiceState>()
+                    .OfType<GameNodeState>()
                     .Where(s => s.Worlds.Contains(user.AccountWorld.WorldID))
                     .OrderBy(s => s.ChannelID)
                     .ToImmutableList()[channelID];

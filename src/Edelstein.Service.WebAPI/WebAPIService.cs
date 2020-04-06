@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Edelstein.Core.Distributed.States;
 using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Core.Services;
 using Edelstein.Core.Utils.Messaging;
@@ -16,7 +17,7 @@ using Serilog;
 
 namespace Edelstein.Service.WebAPI
 {
-    public class WebAPIService : NodeService<WebAPIState>
+    public class WebAPIService : NodeService<DefaultNodeState>
     {
         public WebAPIConfig Config { get; }
         public IDataStore DataStore { get; }
@@ -27,7 +28,7 @@ namespace Edelstein.Service.WebAPI
         public IHost WebHost { get; set; }
 
         public WebAPIService(
-            IOptions<WebAPIState> state,
+            IOptions<DefaultNodeState> state,
             IOptions<WebAPIConfig> config,
             IMessageBusFactory busFactory,
             IDataStore dataStore,

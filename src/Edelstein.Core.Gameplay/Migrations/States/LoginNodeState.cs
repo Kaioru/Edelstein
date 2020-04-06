@@ -1,11 +1,15 @@
 using System.Collections.Generic;
+using Edelstein.Core.Distributed.States;
 
-namespace Edelstein.Core.Distributed.States
+namespace Edelstein.Core.Gameplay.Migrations.States
 {
-    public class LoginServiceState : ServerServiceState
+    public class LoginNodeState : DefaultServerNodeState
     {
         public bool AutoRegister { get; set; } = false;
         public ICollection<LoginServiceWorldState> Worlds { get; set; }
+
+        public LoginNodeState()
+            => Scope = "Login";
 
         public class LoginServiceWorldState
         {

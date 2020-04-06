@@ -14,7 +14,7 @@ namespace Edelstein.Service.WebAPI
                 .WithConfiguredCaching()
                 .WithConfiguredDatabase()
                 .WithConfiguredParsing()
-                .WithConfig<WebAPIState>("Service")
+                .WithConfig<DefaultNodeState>("Service")
                 .WithConfig<WebAPIConfig>("Config")
                 .WithService<WebAPIService>()
                 .Build()

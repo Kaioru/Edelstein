@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Edelstein.Core.Distributed.States;
 
-namespace Edelstein.Core.Distributed.States
+namespace Edelstein.Core.Gameplay.Migrations.States
 {
-    public class TradeServiceState : ServerServiceState
+    public class TradeNodeState : DefaultServerNodeState
     {
         public ICollection<byte> Worlds { get; set; }
 
@@ -11,5 +12,8 @@ namespace Edelstein.Core.Distributed.States
         public int CommissionBase { get; set; }
         public int AuctionDurationMin { get; set; }
         public int AuctionDurationMax { get; set; }
+
+        public TradeNodeState()
+            => Scope = "Trade";
     }
 }

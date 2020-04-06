@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed.States;
+using Edelstein.Core.Gameplay.Migrations.States;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
@@ -19,7 +20,7 @@ namespace Edelstein.Service.Shop.Handlers
             {
                 var service = (await adapter.Service.GetPeers())
                     .Select(p => p.State)
-                    .OfType<GameServiceState>()
+                    .OfType<GameNodeState>()
                     .First(s => s.Name == adapter.LastConnectedService);
 
                 await adapter.TryMigrateTo(service);
