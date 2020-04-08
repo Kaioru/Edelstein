@@ -10,6 +10,7 @@ using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Templates.Fields.Life;
 using Edelstein.Core.Templates.Mob;
 using Edelstein.Core.Templates.NPC;
+using Edelstein.Core.Templates.Reactor;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Provider;
@@ -75,12 +76,17 @@ namespace Edelstein.Service.Game.Fields
                         });
                         break;
                     case FieldLifeType.Monster:
-                        _generators.Add(new FieldGeneratorMob(l, manager.Get<MobTemplate>(l.TemplateID)));
+                        _generators.Add(
+                            new FieldGeneratorMob(l, manager.Get<MobTemplate>(l.TemplateID))
+                        );
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             });
+            template.Reactors.ForEach(l =>
+                _generators.Add(new FieldGeneratorReactor(l, manager.Get<ReactorTemplate>(l.TemplateID)))
+            );
         }
 
         public IFieldObj GetObject(int id)
@@ -290,6 +296,8 @@ namespace Edelstein.Service.Game.Fields
                 disposable.Dispose();
             if (obj is IFieldUser user)
                 Array.Fill(user.Watching, null);
+            if (obj is IFieldGeneratorObj generated && generated.Generator != null)
+                await generated.Generator.Reset(generated);
 
             await pool.Leave(obj);
             await obj.UpdateFieldSplit(getLeavePacket: getLeavePacket);

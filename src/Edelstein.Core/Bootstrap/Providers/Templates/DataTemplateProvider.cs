@@ -9,6 +9,7 @@ using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Templates.Items;
 using Edelstein.Core.Templates.Mob;
 using Edelstein.Core.Templates.NPC;
+using Edelstein.Core.Templates.Reactor;
 using Edelstein.Core.Templates.Server.Continent;
 using Edelstein.Core.Templates.Server.Shop;
 using Edelstein.Core.Templates.Strings;
@@ -57,6 +58,11 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
                             Tuple.Create<Type, IDataTemplateCollection>(
                                 typeof(MobTemplate),
                                 new MobTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.Reactor] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(ReactorTemplate),
+                                new ReactorTemplateCollection(directory)
                             ),
                         [DataTemplateType.ItemOption] =
                             Tuple.Create<Type, IDataTemplateCollection>(

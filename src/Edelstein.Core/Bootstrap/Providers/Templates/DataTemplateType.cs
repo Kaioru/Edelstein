@@ -14,6 +14,7 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
         Field = 0x4,
         NPC = 0x8,
         Mob = 0x8000,
+        Reactor = 0x10000,
         ItemOption = 0x10,
         SetItemInfo = 0x20,
 
@@ -36,6 +37,7 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
                Field |
                NPC |
                Mob |
+               Reactor |
                ItemOption |
                SetItemInfo |
                Continent |
