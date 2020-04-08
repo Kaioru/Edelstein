@@ -7,6 +7,7 @@ using Edelstein.Core.Templates.Etc.MakeCharInfo;
 using Edelstein.Core.Templates.Etc.SetItemInfo;
 using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Templates.Items;
+using Edelstein.Core.Templates.Mob;
 using Edelstein.Core.Templates.NPC;
 using Edelstein.Core.Templates.Server.Continent;
 using Edelstein.Core.Templates.Server.Shop;
@@ -51,6 +52,11 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
                             Tuple.Create<Type, IDataTemplateCollection>(
                                 typeof(NPCTemplate),
                                 new NPCTemplateCollection(directory)
+                            ),
+                        [DataTemplateType.Mob] =
+                            Tuple.Create<Type, IDataTemplateCollection>(
+                                typeof(MobTemplate),
+                                new MobTemplateCollection(directory)
                             ),
                         [DataTemplateType.ItemOption] =
                             Tuple.Create<Type, IDataTemplateCollection>(

@@ -8,12 +8,16 @@ using Edelstein.Core.Gameplay.Social.Guild;
 using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Templates.Fields.Life;
+using Edelstein.Core.Templates.Mob;
 using Edelstein.Core.Templates.NPC;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Provider;
+using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Objects;
+using Edelstein.Service.Game.Fields.Objects.Mob;
 using Edelstein.Service.Game.Fields.Objects.NPC;
+using Edelstein.Service.Game.Fields.Objects.User;
 using MoreLinq;
 
 namespace Edelstein.Service.Game.Fields
@@ -28,6 +32,9 @@ namespace Edelstein.Service.Game.Fields
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
         private readonly IDictionary<string, IFieldPortal> _portals;
         private readonly IFieldSplit[,] _splits;
+        private readonly ICollection<IFieldGenerator> _generators;
+
+        private DateTime LastGenObjTime { get; set; }
 
         public FieldTemplate Template { get; }
 
@@ -50,6 +57,8 @@ namespace Edelstein.Service.Game.Fields
             for (var row = 0; row < splitRowCount; row++)
                 _splits[col, row] = new FieldSplit(col, row);
 
+            _generators = new List<IFieldGenerator>();
+
             Template = template;
 
             template.Life.ForEach(l =>
@@ -66,6 +75,7 @@ namespace Edelstein.Service.Game.Fields
                         });
                         break;
                     case FieldLifeType.Monster:
+                        _generators.Add(new FieldGeneratorMob(l, manager.Get<MobTemplate>(l.TemplateID)));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -306,7 +316,48 @@ namespace Edelstein.Service.Game.Fields
                 .Where(u => u?.Guild.ID == guild.ID)
                 .Select(u => u.SendPacket(packet)));
 
-        public Task TryTick()
-            => Task.CompletedTask;
+        public async Task TryTick()
+        {
+            if (!GetObjects<IFieldUser>().Any())
+                return;
+
+            var now = DateTime.UtcNow;
+
+            if ((now - LastGenObjTime).TotalSeconds >= 7)
+            {
+                LastGenObjTime = DateTime.UtcNow;
+
+                var availableGenerators = _generators
+                    .Where(g => g.Available(this))
+                    .ToImmutableList();
+                var mobGenerators = availableGenerators
+                    .OfType<FieldGeneratorMob>()
+                    .ToImmutableList();
+                var otherGenerators = availableGenerators
+                    .Except(mobGenerators)
+                    .ToImmutableList();
+
+                var userCount = GetObjects<FieldUser>().Count();
+                var mobCount = GetObjects<FieldMob>().Count();
+                var mobCapacity = Template.MobCapacityMin;
+
+                if (userCount > Template.MobCapacityMin / 2)
+                    mobCapacity += (Template.MobCapacityMax - Template.MobCapacityMin) *
+                                   (2 * userCount - Template.MobCapacityMin) /
+                                   (3 * Template.MobCapacityMin);
+
+                mobCapacity = Math.Min(mobCapacity, Template.MobCapacityMax);
+
+                var mobGenCount = mobCapacity - mobCount;
+
+                await Task.WhenAll(
+                    mobGenerators
+                        .Shuffle()
+                        .Take(mobGenCount)
+                        .Select(g => g.Generate(this))
+                );
+                await Task.WhenAll(otherGenerators.Select(g => g.Generate(this)));
+            }
+        }
     }
 }

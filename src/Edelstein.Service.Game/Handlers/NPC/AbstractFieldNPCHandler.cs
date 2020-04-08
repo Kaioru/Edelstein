@@ -14,9 +14,9 @@ namespace Edelstein.Service.Game.Handlers.NPC
             var npc = user.Field.GetControlledObject<FieldNPC>(user, packet.DecodeInt());
             return npc == null
                 ? Task.CompletedTask
-                : Handle(npc, operation, packet);
+                : Handle(user, npc, operation, packet);
         }
 
-        protected abstract Task Handle(FieldNPC npc, RecvPacketOperations operation, IPacketDecoder packet);
+        protected abstract Task Handle(FieldUser user, FieldNPC npc, RecvPacketOperations operation, IPacketDecoder packet);
     }
 }

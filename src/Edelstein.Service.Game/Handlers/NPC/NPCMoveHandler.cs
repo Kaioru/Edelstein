@@ -4,12 +4,18 @@ using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Movements;
 using Edelstein.Service.Game.Fields.Objects.NPC;
+using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Handlers.NPC
 {
     public class NPCMoveHandler : AbstractFieldNPCHandler
     {
-        protected override async Task Handle(FieldNPC npc, RecvPacketOperations operation, IPacketDecoder packet)
+        protected override async Task Handle(
+            FieldUser user,
+            FieldNPC npc,
+            RecvPacketOperations operation,
+            IPacketDecoder packet
+        )
         {
             using var p = new OutPacket(SendPacketOperations.NpcMove);
 

@@ -13,6 +13,7 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
 
         Field = 0x4,
         NPC = 0x8,
+        Mob = 0x8000,
         ItemOption = 0x10,
         SetItemInfo = 0x20,
 
@@ -34,6 +35,7 @@ namespace Edelstein.Core.Bootstrap.Providers.Templates
         Game = Item |
                Field |
                NPC |
+               Mob |
                ItemOption |
                SetItemInfo |
                Continent |

@@ -21,6 +21,7 @@ using Edelstein.Service.Game.Conversations.Scripted;
 using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Fields.Continent;
 using Edelstein.Service.Game.Handlers;
+using Edelstein.Service.Game.Handlers.Mob;
 using Edelstein.Service.Game.Handlers.NPC;
 using Edelstein.Service.Game.Handlers.Users;
 using Foundatio.Caching;
@@ -104,6 +105,8 @@ namespace Edelstein.Service.Game
             Handlers[RecvPacketOperations.PartyRequest] = new PartyRequestHandler();
             Handlers[RecvPacketOperations.GuildRequest] = new GuildRequestHandler();
             Handlers[RecvPacketOperations.MemoRequest] = new MemoRequestHandler();
+
+            Handlers[RecvPacketOperations.MobMove] = new MobMoveHandler();
 
             Handlers[RecvPacketOperations.NpcMove] = new NPCMoveHandler();
 
