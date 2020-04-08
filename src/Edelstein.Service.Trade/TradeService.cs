@@ -1,5 +1,6 @@
 using Edelstein.Core.Distributed.States;
 using Edelstein.Core.Gameplay.Migrations;
+using Edelstein.Core.Gameplay.Migrations.States;
 using Edelstein.Core.Gameplay.Social.Guild;
 using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Utils;
@@ -14,14 +15,14 @@ using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Trade
 {
-    public class TradeService : AbstractMigrationService<TradeServiceState>
+    public class TradeService : AbstractMigrationService<TradeNodeState>
     {
         public IDataTemplateManager TemplateManager { get; }
         public ISocialPartyManager PartyManager { get; }
         public ISocialGuildManager GuildManager { get; }
 
         public TradeService(
-            IOptions<TradeServiceState> state,
+            IOptions<TradeNodeState> state,
             IDataStore dataStore,
             ICacheClient cache,
             IMessageBusFactory busFactory,

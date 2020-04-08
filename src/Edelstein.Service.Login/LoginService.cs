@@ -1,5 +1,6 @@
 using Edelstein.Core.Distributed.States;
 using Edelstein.Core.Gameplay.Migrations;
+using Edelstein.Core.Gameplay.Migrations.States;
 using Edelstein.Core.Gameplay.Social.Guild;
 using Edelstein.Core.Gameplay.Social.Party;
 using Edelstein.Core.Utils;
@@ -14,7 +15,7 @@ using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Login
 {
-    public class LoginService : AbstractMigrationService<LoginServiceState>
+    public class LoginService : AbstractMigrationService<LoginNodeState>
     {
         public const string AuthLockKey = "lock:auth";
         public const string CreateCharLockKey = "lock:createChar";
@@ -25,7 +26,7 @@ namespace Edelstein.Service.Login
         public ISocialGuildManager GuildManager { get; }
 
         public LoginService(
-            IOptions<LoginServiceState> state,
+            IOptions<LoginNodeState> state,
             IDataStore dataStore,
             ICacheClient cache,
             IMessageBusFactory busFactory,

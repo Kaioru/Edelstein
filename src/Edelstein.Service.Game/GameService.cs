@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CommandLine;
 using Edelstein.Core.Distributed.States;
 using Edelstein.Core.Gameplay.Migrations;
+using Edelstein.Core.Gameplay.Migrations.States;
 using Edelstein.Core.Gameplay.Social.Guild;
 using Edelstein.Core.Gameplay.Social.Memo;
 using Edelstein.Core.Gameplay.Social.Party;
@@ -20,6 +21,7 @@ using Edelstein.Service.Game.Conversations.Scripted;
 using Edelstein.Service.Game.Fields;
 using Edelstein.Service.Game.Fields.Continent;
 using Edelstein.Service.Game.Handlers;
+using Edelstein.Service.Game.Handlers.Mob;
 using Edelstein.Service.Game.Handlers.NPC;
 using Edelstein.Service.Game.Handlers.Users;
 using Foundatio.Caching;
@@ -28,7 +30,7 @@ using Microsoft.Extensions.Options;
 
 namespace Edelstein.Service.Game
 {
-    public class GameService : AbstractMigrationService<GameServiceState>, ITickBehavior
+    public class GameService : AbstractMigrationService<GameNodeState>, ITickBehavior
     {
         private readonly ITicker _ticker;
 
@@ -43,7 +45,7 @@ namespace Edelstein.Service.Game
         public ISocialGuildManager GuildManager { get; }
 
         public GameService(
-            IOptions<GameServiceState> state,
+            IOptions<GameNodeState> state,
             IDataStore dataStore,
             ICacheClient cache,
             IMessageBusFactory busFactory,
@@ -103,6 +105,8 @@ namespace Edelstein.Service.Game
             Handlers[RecvPacketOperations.PartyRequest] = new PartyRequestHandler();
             Handlers[RecvPacketOperations.GuildRequest] = new GuildRequestHandler();
             Handlers[RecvPacketOperations.MemoRequest] = new MemoRequestHandler();
+
+            Handlers[RecvPacketOperations.MobMove] = new MobMoveHandler();
 
             Handlers[RecvPacketOperations.NpcMove] = new NPCMoveHandler();
 

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
 using Edelstein.Core.Bootstrap.Providers.Templates;
 using Edelstein.Core.Distributed.States;
+using Edelstein.Core.Gameplay.Migrations.States;
 
 namespace Edelstein.Service.Shop
 {
@@ -15,7 +16,7 @@ namespace Edelstein.Service.Shop
                 .WithConfiguredDatabase()
                 .WithConfiguredParsing()
                 .WithProvider(new DataTemplateProvider(DataTemplateType.Shop))
-                .WithConfig<ShopServiceState>("Service")
+                .WithConfig<ShopNodeState>("Service")
                 .WithService<ShopService>()
                 .Build()
                 .StartAsync();

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed.States;
+using Edelstein.Core.Gameplay.Migrations.States;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities;
@@ -42,7 +43,7 @@ namespace Edelstein.Service.Login.Handlers
                         .First();
                     adapter.SelectedNode = (await adapter.Service.GetPeers())
                         .Select(n => n.State)
-                        .OfType<GameServiceState>()
+                        .OfType<GameNodeState>()
                         .First(s => s.Worlds.Contains(adapter.AccountWorld.WorldID));
 
                     if (adapter.Service.State.Worlds.All(w => w.ID != adapter.AccountWorld.WorldID))

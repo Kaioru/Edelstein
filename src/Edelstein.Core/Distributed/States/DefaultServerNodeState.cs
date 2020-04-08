@@ -1,8 +1,9 @@
 namespace Edelstein.Core.Distributed.States
 {
-    public class ServerServiceState : IServerNodeState
+    public class DefaultServerNodeState : IServerNodeState
     {
         public string Name { get; set; }
+        public string Scope { get; set; }
         public string Host { get; set; }
         public int Port { get; set; }
 
