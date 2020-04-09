@@ -88,14 +88,14 @@ namespace Edelstein.Service.Game.Handlers.Users
             // TODO: filter optionType
 
             target.Grade = (byte) grade;
-            target.Option1 = (short) (maxOptions.Shuffle().FirstOrDefault()?.ID ?? 0);
+            target.Option1 = (short) (maxOptions.Shuffle(random).FirstOrDefault()?.ID ?? 0);
             target.Option2 = random.Next(100) <= 4
-                ? (short) (maxOptions.Shuffle().FirstOrDefault()?.ID ?? 0)
-                : (short) (minOptions.Shuffle().FirstOrDefault()?.ID ?? 0);
+                ? (short) (maxOptions.Shuffle(random).FirstOrDefault()?.ID ?? 0)
+                : (short) (minOptions.Shuffle(random).FirstOrDefault()?.ID ?? 0);
             if (target.Option3 > 0)
                 target.Option3 = random.Next(100) <= 4
-                    ? (short) (maxOptions.Shuffle().FirstOrDefault()?.ID ?? 0)
-                    : (short) (minOptions.Shuffle().FirstOrDefault()?.ID ?? 0);
+                    ? (short) (maxOptions.Shuffle(random).FirstOrDefault()?.ID ?? 0)
+                    : (short) (minOptions.Shuffle(random).FirstOrDefault()?.ID ?? 0);
 
             target.Option1 = (short) -target.Option1;
             target.Option2 = (short) -target.Option2;
