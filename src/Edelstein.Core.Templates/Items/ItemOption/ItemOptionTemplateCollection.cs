@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Provider;
 
-namespace Edelstein.Core.Templates.Etc.ItemOption
+namespace Edelstein.Core.Templates.Items.ItemOption
 {
     public class ItemOptionTemplateCollection : AbstractEagerDataTemplateCollection
     {
