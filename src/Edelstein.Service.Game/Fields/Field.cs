@@ -331,27 +331,31 @@ namespace Edelstein.Service.Game.Fields
                     .Except(mobGenerators)
                     .ToImmutableList();
 
-                var userCount = GetObjects<FieldUser>().Count();
-                var mobCount = GetObjects<FieldMob>().Count();
-                var mobCapacity = Template.MobCapacityMin;
+                await Task.WhenAll(otherGenerators.Select(g => g.Generate(this)));
 
-                if (userCount > Template.MobCapacityMin / 2)
-                    mobCapacity += (Template.MobCapacityMax - Template.MobCapacityMin) *
-                                   (2 * userCount - Template.MobCapacityMin) /
-                                   (3 * Template.MobCapacityMin);
+                if (mobGenerators.Any())
+                {
+                    var userCount = GetObjects<FieldUser>().Count();
+                    var mobCount = GetObjects<FieldMob>().Count();
+                    var mobCapacity = Template.MobCapacityMin;
 
-                mobCapacity = Math.Min(mobCapacity, Template.MobCapacityMax);
+                    if (userCount > Template.MobCapacityMin / 2)
+                        mobCapacity += (Template.MobCapacityMax - Template.MobCapacityMin) *
+                                       (2 * userCount - Template.MobCapacityMin) /
+                                       (3 * Template.MobCapacityMin);
+                    mobCapacity = Math.Min(mobCapacity, Template.MobCapacityMax);
 
-                var mobGenCount = mobCapacity - mobCount;
+                    var mobGenCount = mobCapacity - mobCount;
 
-                if (mobGenCount > 0)
+                    if (mobGenCount == 0) return;
+
                     await Task.WhenAll(
                         mobGenerators
                             .Shuffle()
                             .Take(mobGenCount)
                             .Select(g => g.Generate(this))
                     );
-                await Task.WhenAll(otherGenerators.Select(g => g.Generate(this)));
+                }
             }
         }
     }
