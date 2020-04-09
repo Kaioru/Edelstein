@@ -98,6 +98,8 @@ namespace Edelstein.Service.Game
             Handlers[RecvPacketOperations.UserGatherItemRequest] = new UserGatherItemRequestHandler();
             Handlers[RecvPacketOperations.UserSortItemRequest] = new UserSortItemRequestHandler();
             Handlers[RecvPacketOperations.UserChangeSlotPositionRequest] = new UserChangeSlotPositionRequestHandler();
+            Handlers[RecvPacketOperations.UserConsumeCashItemUseRequest] = new UserConsumeCashItemUseRequestHandler();
+            Handlers[RecvPacketOperations.UserItemReleaseRequest] = new UserItemReleaseRequestHandler();
             Handlers[RecvPacketOperations.UserCharacterInfoRequest] = new UserCharacterInfoRequestHandler();
             Handlers[RecvPacketOperations.UserMigrateToITCRequest] = new UserMigrateToITCRequestHandler();
 

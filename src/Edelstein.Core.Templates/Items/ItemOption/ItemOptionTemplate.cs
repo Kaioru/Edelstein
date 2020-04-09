@@ -18,7 +18,7 @@ namespace Edelstein.Core.Templates.Items.ItemOption
         {
             ID = id;
 
-            Grade = (ItemOptionGrade) (id / 100000);
+            Grade = (ItemOptionGrade) (id / 10000);
 
             property.Resolve("info")?.ResolveAll(i =>
             {
