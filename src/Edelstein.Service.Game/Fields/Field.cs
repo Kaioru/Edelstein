@@ -312,11 +312,10 @@ namespace Edelstein.Service.Game.Fields
 
         public async Task TryTick()
         {
-            if (!GetObjects<IFieldUser>().Any())
-                return;
-
             var now = DateTime.UtcNow;
+            var userCount = GetObjects<FieldUser>().Count();
 
+            if (userCount == 0) return;
             if ((now - LastGenObjTime).TotalSeconds >= 7)
             {
                 LastGenObjTime = DateTime.UtcNow;
@@ -335,7 +334,6 @@ namespace Edelstein.Service.Game.Fields
 
                 if (mobGenerators.Any())
                 {
-                    var userCount = GetObjects<FieldUser>().Count();
                     var mobCount = GetObjects<FieldMob>().Count();
                     var mobCapacity = Template.MobCapacityMin;
 
