@@ -255,7 +255,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
         public static async Task UnreleaseItemOption(
             this FieldUser user,
             ItemSlotEquip equip,
-            ItemOptionGrade grade,
+            ItemOptionGrade? grade = null,
             ItemOptionUnreleaseType type = ItemOptionUnreleaseType.Basic
         )
         {
@@ -263,6 +263,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 return;
 
             var random = new Random();
+
+            grade ??= (ItemOptionGrade) (equip.Grade - 4);
+            grade = (ItemOptionGrade) Math.Min(Math.Max((int) grade, 1), 3);
 
             if (grade == ItemOptionGrade.Rare && random.Next(100) <= 12 ||
                 grade == ItemOptionGrade.Epic && random.Next(100) <= 4)

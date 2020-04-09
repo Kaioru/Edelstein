@@ -21,6 +21,7 @@
       <PackageReference Include="CommandLineParser" Version="2.7.82" />
       <PackageReference Include="DotNet.Glob" Version="3.0.9" />
       <PackageReference Include="LibLog" Version="5.0.8" />
+      <PackageReference Include="morelinq" Version="3.3.2" />
       <PackageReference Include="Stateless" Version="5.0.0" />
     </ItemGroup>
 

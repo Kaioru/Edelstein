@@ -59,7 +59,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                 return false;
             }
 
-            await user.UnreleaseItemOption(target, (ItemOptionGrade) (target.Grade - 4));
+            await user.UnreleaseItemOption(target);
 
             using var p2 = new OutPacket(SendPacketOperations.UserItemUnreleaseEffect);
 
