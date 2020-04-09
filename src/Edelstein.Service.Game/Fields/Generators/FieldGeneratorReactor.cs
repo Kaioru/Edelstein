@@ -19,8 +19,7 @@ namespace Edelstein.Service.Game.Fields.Generators
         }
 
         public override bool Available(IField field, bool reset = false)
-            => reset ||
-               Generated.Count == 0 &&
+            => Generated.Count == 0 &&
                DateTime.UtcNow >= RegenAfter;
 
         public override async Task Generate(IField field)

@@ -63,27 +63,13 @@ namespace Edelstein.Service.Game.Fields
             Template = template;
 
             template.Life.ForEach(l =>
-            {
-                switch (l.Type)
+                _generators.Add(l.Type switch
                 {
-                    case FieldLifeType.NPC:
-                        Enter(new FieldNPC(manager.Get<NPCTemplate>(l.TemplateID), l.Left)
-                        {
-                            Position = l.Position,
-                            Foothold = (short) l.FH,
-                            RX0 = l.RX0,
-                            RX1 = l.RX1
-                        });
-                        break;
-                    case FieldLifeType.Monster:
-                        _generators.Add(
-                            new FieldGeneratorMob(l, manager.Get<MobTemplate>(l.TemplateID))
-                        );
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            });
+                    FieldLifeType.NPC => new FieldGeneratorNPC(l, manager.Get<NPCTemplate>(l.TemplateID)),
+                    FieldLifeType.Monster => new FieldGeneratorMob(l, manager.Get<MobTemplate>(l.TemplateID)),
+                    _ => throw new ArgumentOutOfRangeException()
+                })
+            );
             template.Reactors.ForEach(l =>
                 _generators.Add(new FieldGeneratorReactor(l, manager.Get<ReactorTemplate>(l.TemplateID)))
             );
@@ -358,12 +344,13 @@ namespace Edelstein.Service.Game.Fields
 
                 var mobGenCount = mobCapacity - mobCount;
 
-                await Task.WhenAll(
-                    mobGenerators
-                        .Shuffle()
-                        .Take(mobGenCount)
-                        .Select(g => g.Generate(this))
-                );
+                if (mobGenCount > 0)
+                    await Task.WhenAll(
+                        mobGenerators
+                            .Shuffle()
+                            .Take(mobGenCount)
+                            .Select(g => g.Generate(this))
+                    );
                 await Task.WhenAll(otherGenerators.Select(g => g.Generate(this)));
             }
         }
