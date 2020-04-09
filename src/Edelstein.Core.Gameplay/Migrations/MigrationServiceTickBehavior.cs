@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils.Ticks;
@@ -11,7 +12,7 @@ namespace Edelstein.Core.Gameplay.Migrations
         public MigrationServiceTickBehavior(IMigrationService service)
             => _service = service;
 
-        public async Task TryTick()
+        public async Task TryTick(DateTime now)
             => await Task.WhenAll(_service.Sockets.Values.Select(s => s.TrySendHeartbeat()));
     }
 }

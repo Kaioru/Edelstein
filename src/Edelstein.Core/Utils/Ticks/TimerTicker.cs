@@ -17,7 +17,7 @@ namespace Edelstein.Core.Utils.Ticks
                 Interval = time.TotalMilliseconds,
                 AutoReset = true
             };
-            _timer.Elapsed += async (sender, args) => await _behavior.TryTick();
+            _timer.Elapsed += async (sender, args) => await _behavior.TryTick(DateTime.UtcNow);
         }
 
         public void Start()
@@ -27,6 +27,6 @@ namespace Edelstein.Core.Utils.Ticks
             => _timer.Stop();
 
         public Task ForceTick()
-            => _behavior.TryTick();
+            => _behavior.TryTick(DateTime.UtcNow);
     }
 }

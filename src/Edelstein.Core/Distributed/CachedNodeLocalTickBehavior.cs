@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Utils.Ticks;
 using Foundatio.Messaging;
@@ -16,7 +17,7 @@ namespace Edelstein.Core.Distributed
             _bus = bus;
         }
 
-        public async Task TryTick()
+        public async Task TryTick(DateTime now)
         {
             await _bus.PublishAsync(new CachedNodeHeartbeatMessage
             {

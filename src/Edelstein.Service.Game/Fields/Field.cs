@@ -310,9 +310,8 @@ namespace Edelstein.Service.Game.Fields
                 .Where(u => u?.Guild.ID == guild.ID)
                 .Select(u => u.SendPacket(packet)));
 
-        public async Task TryTick()
+        public async Task TryTick(DateTime now)
         {
-            var now = DateTime.UtcNow;
             var userCount = GetObjects<FieldUser>().Count();
 
             if (userCount == 0) return;

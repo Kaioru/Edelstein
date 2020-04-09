@@ -159,10 +159,8 @@ namespace Edelstein.Service.Game.Fields.Continent
                 .Select(u => to.Enter(u, 0)));
         }
 
-        public async Task TryTick()
+        public async Task TryTick(DateTime now)
         {
-            var now = DateTime.UtcNow;
-
             if (_stateMachine.IsInState(ContinentState.Dormant))
             {
                 if (now > NextBoarding)

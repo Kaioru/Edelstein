@@ -125,10 +125,10 @@ namespace Edelstein.Service.Game
         public override ISocketAdapter Build(ISocket socket)
             => new GameServiceAdapter(socket, this);
 
-        public async Task TryTick()
+        public async Task TryTick(DateTime now)
         {
-            await FieldManager.TryTick();
-            await ContinentManager.TryTick();
+            await FieldManager.TryTick(now);
+            await ContinentManager.TryTick(now);
         }
     }
 }
