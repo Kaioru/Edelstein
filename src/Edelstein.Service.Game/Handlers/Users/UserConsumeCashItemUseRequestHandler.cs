@@ -49,7 +49,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             var targetItem = user.Character.Inventories[ItemInventoryType.Equip][targetSlot];
 
             if (!(targetItem is ItemSlotEquip target)) return false;
-            if (target.Grade <= 0) return false;
+            if (target.Grade < 5) return false;
             if (user.Character.AvailableSlotsFor(ItemInventoryType.Consume) == 0)
             {
                 using var p = new OutPacket(SendPacketOperations.UserItemUnreleaseEffect);
