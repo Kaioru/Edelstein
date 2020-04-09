@@ -26,7 +26,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             {
                 await user.ModifyInventory(i =>
                 {
-                    var item = user.Character.Inventories[type].Items[from];
+                    var item = user.Character.Inventories[type][from];
 
                     if (!ItemConstants.IsTreatSingly(item.TemplateID))
                     {

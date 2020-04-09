@@ -46,7 +46,7 @@ namespace Edelstein.Service.Game.Handlers.Users
         private async Task<bool> UseMiracleCube(FieldUser user, IPacketDecoder packet)
         {
             var targetSlot = packet.DecodeShort();
-            var targetItem = user.Character.Inventories[ItemInventoryType.Equip].Items[targetSlot];
+            var targetItem = user.Character.Inventories[ItemInventoryType.Equip][targetSlot];
             var template = user.Service.TemplateManager.Get<ItemTemplate>(targetItem.TemplateID);
 
             if (!(targetItem is ItemSlotEquip target)) return false;

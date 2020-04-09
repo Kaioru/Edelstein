@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Edelstein.Core.Templates.Items;
 using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities.Inventories;
@@ -22,7 +21,7 @@ namespace Edelstein.Service.Game.Handlers.Users
 
             var releaseType = packet.DecodeShort();
             var targetSlot = packet.DecodeShort();
-            var targetItem = user.Character.Inventories[ItemInventoryType.Equip].Items[targetSlot];
+            var targetItem = user.Character.Inventories[ItemInventoryType.Equip][targetSlot];
 
             if (!(targetItem is ItemSlotEquip target)) return;
 

@@ -7,6 +7,7 @@ namespace Edelstein.Entities.Inventories
     {
         public short SlotMax { get; set; }
         public IDictionary<short, ItemSlot> Items { get; set; }
+        public ItemSlot this[in short slot] => Items[slot];
 
         public ItemInventory()
         {
