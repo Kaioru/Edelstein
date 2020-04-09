@@ -25,12 +25,7 @@ namespace Edelstein.Service.Game.Handlers.Users
 
             if (!(targetItem is ItemSlotEquip target)) return;
 
-            // TODO: magnifying type checking, meso checks, removal of item and mesos
-
-            target.Grade = (byte) (target.Grade + 4);
-            target.Option1 = Math.Abs(target.Option1);
-            target.Option2 = Math.Abs(target.Option2);
-            target.Option3 = Math.Abs(target.Option3);
+            await user.ReleaseItemOption(target);
 
             using var p = new OutPacket(SendPacketOperations.UserItemReleaseEffect);
 
@@ -38,7 +33,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             p.EncodeShort(targetSlot);
 
             await user.SendPacket(p);
-            await user.ModifyInventory(i => i.Update(target), true);
+            await user.ModifyInventory(exclRequest: true);
         }
     }
 }

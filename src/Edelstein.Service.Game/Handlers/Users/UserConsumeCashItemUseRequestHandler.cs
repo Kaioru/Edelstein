@@ -47,10 +47,8 @@ namespace Edelstein.Service.Game.Handlers.Users
         {
             var targetSlot = packet.DecodeShort();
             var targetItem = user.Character.Inventories[ItemInventoryType.Equip][targetSlot];
-            var template = user.Service.TemplateManager.Get<ItemTemplate>(targetItem.TemplateID);
 
             if (!(targetItem is ItemSlotEquip target)) return false;
-            if (!(template is ItemEquipTemplate targetTemplate)) return false;
             if (target.Grade <= 0) return false;
             if (user.Character.AvailableSlotsFor(ItemInventoryType.Consume) == 0)
             {
@@ -61,45 +59,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                 return false;
             }
 
-            var random = new Random();
-            var grade = (ItemOptionGrade) (target.Grade - 4);
-
-            if (grade == ItemOptionGrade.Rare && random.Next(100) <= 12 ||
-                grade == ItemOptionGrade.Epic && random.Next(100) <= 4)
-                grade++;
-
-            var gradeMax = grade;
-            var gradeMin = grade - 1;
-
-            gradeMax = (ItemOptionGrade) Math.Min(Math.Max((int) gradeMax, 1), 3);
-            gradeMin = (ItemOptionGrade) Math.Min(Math.Max((int) gradeMin, 0), 2);
-
-            var options = user.Service.TemplateManager
-                .GetAll<ItemOptionTemplate>()
-                .Where(o => targetTemplate.ReqLevel >= o.ReqLevel)
-                .ToImmutableList();
-            var maxOptions = options
-                .Where(o => o.Grade == gradeMax)
-                .ToImmutableList();
-            var minOptions = options
-                .Where(o => o.Grade == gradeMin)
-                .ToImmutableList();
-
-            // TODO: filter optionType
-
-            target.Grade = (byte) grade;
-            target.Option1 = (short) (maxOptions.Shuffle(random).FirstOrDefault()?.ID ?? 0);
-            target.Option2 = random.Next(100) <= 4
-                ? (short) (maxOptions.Shuffle(random).FirstOrDefault()?.ID ?? 0)
-                : (short) (minOptions.Shuffle(random).FirstOrDefault()?.ID ?? 0);
-            if (target.Option3 > 0)
-                target.Option3 = random.Next(100) <= 4
-                    ? (short) (maxOptions.Shuffle(random).FirstOrDefault()?.ID ?? 0)
-                    : (short) (minOptions.Shuffle(random).FirstOrDefault()?.ID ?? 0);
-
-            target.Option1 = (short) -target.Option1;
-            target.Option2 = (short) -target.Option2;
-            target.Option3 = (short) -target.Option3;
+            await user.UnreleaseItemOption(target, (ItemOptionGrade) (target.Grade - 4));
 
             using var p2 = new OutPacket(SendPacketOperations.UserItemUnreleaseEffect);
 
@@ -107,11 +67,7 @@ namespace Edelstein.Service.Game.Handlers.Users
             p2.EncodeBool(true);
 
             await user.SendPacket(p2);
-            await user.ModifyInventory(i =>
-            {
-                i.Add(user.Service.TemplateManager.Get<ItemTemplate>(2430112));
-                i.Update(target);
-            });
+            await user.ModifyInventory(i => i.Add(user.Service.TemplateManager.Get<ItemTemplate>(2430112)));
             return true;
         }
     }
