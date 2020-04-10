@@ -295,9 +295,11 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
             equip.Grade = (byte) grade;
             equip.Option1 = (short) (optionsPrimary.Shuffle(random).FirstOrDefault()?.ID ?? 0);
-            equip.Option2 = random.Next(100) <= 4
-                ? (short) (optionsPrimary.Shuffle(random).FirstOrDefault()?.ID ?? 0)
-                : (short) (optionsSecondary.Shuffle(random).FirstOrDefault()?.ID ?? 0);
+            if (equip.Option2 > 0 ||
+                type == ItemOptionUnreleaseType.Premium && random.Next(100) <= 12)
+                equip.Option2 = random.Next(100) <= 6
+                    ? (short) (optionsPrimary.Shuffle(random).FirstOrDefault()?.ID ?? 0)
+                    : (short) (optionsSecondary.Shuffle(random).FirstOrDefault()?.ID ?? 0);
             if (equip.Option3 > 0 ||
                 type == ItemOptionUnreleaseType.Premium && random.Next(100) <= 4)
                 equip.Option3 = random.Next(100) <= 4
