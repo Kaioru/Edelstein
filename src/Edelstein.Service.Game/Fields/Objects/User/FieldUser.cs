@@ -44,7 +44,7 @@ namespace Edelstein.Service.Game.Fields.Objects.User
 
         public FieldUser(GameServiceAdapter socketAdapter)
         {
-            ID = Character.ID;
+            ID = socketAdapter.Character.ID;
 
             Adapter = socketAdapter;
             Watching = new IFieldSplit[9];
