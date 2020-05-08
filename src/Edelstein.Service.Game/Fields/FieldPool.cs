@@ -19,13 +19,15 @@ namespace Edelstein.Service.Game.Fields
         {
             lock (this)
             {
-                if (obj is IFieldUser user) obj.ID = user.Character.ID;
-                else obj.ID = _runningObjectID++;
+                if (!(obj is IFieldUser user))
+                {
+                    obj.ID = _runningObjectID++;
 
-                if (_runningObjectID > int.MaxValue - 1)
-                    _runningObjectID = 1;
+                    if (_runningObjectID > int.MaxValue - 1)
+                        _runningObjectID = 1;
 
-                _objects[obj.ID] = obj;
+                    _objects[obj.ID] = obj;
+                }
                 return Task.CompletedTask;
             }
         }

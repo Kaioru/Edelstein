@@ -197,7 +197,6 @@ namespace Edelstein.Service.Game.Fields
                     : Template.Portals.Values
                         .First(p => p.Type == FieldPortalType.StartPoint);
 
-                user.ID = user.Character.ID;
                 user.Character.FieldID = Template.ID;
                 user.Position = portal.Position;
                 user.Foothold = (short) (portal.Type != FieldPortalType.StartPoint
