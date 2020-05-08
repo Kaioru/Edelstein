@@ -8,7 +8,7 @@ namespace Edelstein.Service.Game.Fields.Movements
         Jump = 0x3,
         Alert = 0x4,
         Prone = 0x5,
-        Fly = 0x6,
+        Fly1 = 0x6,
         Ladder = 0x7,
         Rope = 0x8,
         Dead = 0x9,
@@ -19,6 +19,10 @@ namespace Edelstein.Service.Game.Fields.Movements
         Rest1 = 0xE,
         Hang = 0xF,
         Chase = 0x10,
-        No = 0x11
+        Fly2 = 0x11,
+        Fly2_Move = 0x12,
+        Dash2 = 0x13,
+        RocketBooster = 0x14,
+        TeslaCoilTriangle = 0x15
     }
 }
