@@ -9,4 +9,10 @@
       <ProjectReference Include="..\Edelstein.Core.Gameplay\Edelstein.Core.Gameplay.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="*.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

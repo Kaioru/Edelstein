@@ -10,4 +10,10 @@
       <ProjectReference Include="..\Edelstein.Core.Network\Edelstein.Core.Network.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="*.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
