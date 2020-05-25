@@ -1,11 +1,16 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Baseline;
 using Edelstein.Core.Gameplay.Extensions.Packets;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Core.Gameplay.Inventories.Operations;
+using Edelstein.Core.Templates.Items;
+using Edelstein.Core.Templates.Items.ItemOption;
 using Edelstein.Core.Utils.Packets;
+using Edelstein.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
@@ -14,6 +19,7 @@ using Edelstein.Service.Game.Fields.Objects.User.Messages;
 using Edelstein.Service.Game.Fields.Objects.User.Messages.Impl;
 using Edelstein.Service.Game.Fields.Objects.User.Stats.Modify;
 using Edelstein.Service.Game.Logging;
+using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Fields.Objects.User
 {
@@ -244,6 +250,77 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 await user.UpdateStats();
                 await user.UpdateAvatar();
             }
+        }
+
+        public static async Task UnreleaseItemOption(
+            this FieldUser user,
+            ItemSlotEquip equip,
+            ItemOptionGrade? grade = null,
+            ItemOptionUnreleaseType type = ItemOptionUnreleaseType.Basic
+        )
+        {
+            if (!(user.Service.TemplateManager.Get<ItemTemplate>(equip.TemplateID) is ItemEquipTemplate template))
+                return;
+
+            var random = new Random();
+
+            if (!grade.HasValue)
+            {
+                grade = (ItemOptionGrade) (equip.Grade - 4);
+                grade = (ItemOptionGrade) Math.Min(Math.Max((int) grade, 1), 3);
+
+                if (grade == ItemOptionGrade.Rare && random.Next(100) <= 12 ||
+                    grade == ItemOptionGrade.Epic && random.Next(100) <= 4)
+                    grade++;
+            }
+
+            var gradeMax = grade;
+            var gradeMin = grade - 1;
+
+            gradeMax = (ItemOptionGrade) Math.Min(Math.Max((int) gradeMax, 1), 3);
+            gradeMin = (ItemOptionGrade) Math.Min(Math.Max((int) gradeMin, 0), 2);
+
+            var optionsAll = user.Service.TemplateManager
+                .GetAll<ItemOptionTemplate>()
+                .Where(o => template.ReqLevel >= o.ReqLevel)
+                // TODO: proper optionType checks
+                .Where(o => o.Type == ItemOptionType.AnyEquip)
+                .ToImmutableList();
+            var optionsPrimary = optionsAll
+                .Where(o => o.Grade == gradeMax)
+                .ToImmutableList();
+            var optionsSecondary = optionsAll
+                .Where(o => o.Grade == gradeMin)
+                .ToImmutableList();
+
+            equip.Grade = (byte) grade;
+            equip.Option1 = (short) (optionsPrimary.Shuffle(random).FirstOrDefault()?.ID ?? 0);
+            if (equip.Option2 > 0 ||
+                type == ItemOptionUnreleaseType.Premium && random.Next(100) <= 12)
+                equip.Option2 = random.Next(100) <= 6
+                    ? (short) (optionsPrimary.Shuffle(random).FirstOrDefault()?.ID ?? 0)
+                    : (short) (optionsSecondary.Shuffle(random).FirstOrDefault()?.ID ?? 0);
+            if (equip.Option3 > 0 ||
+                type == ItemOptionUnreleaseType.Premium && random.Next(100) <= 4)
+                equip.Option3 = random.Next(100) <= 4
+                    ? (short) (optionsPrimary.Shuffle(random).FirstOrDefault()?.ID ?? 0)
+                    : (short) (optionsSecondary.Shuffle(random).FirstOrDefault()?.ID ?? 0);
+
+            equip.Option1 = (short) -equip.Option1;
+            equip.Option2 = (short) -equip.Option2;
+            equip.Option3 = (short) -equip.Option3;
+
+            await user.ModifyInventory(i => i.Update(equip));
+        }
+
+        public static async Task ReleaseItemOption(this FieldUser user, ItemSlotEquip equip)
+        {
+            equip.Grade = (byte) (equip.Grade + 4);
+            equip.Option1 = Math.Abs(equip.Option1);
+            equip.Option2 = Math.Abs(equip.Option2);
+            equip.Option3 = Math.Abs(equip.Option3);
+
+            await user.ModifyInventory(i => i.Update(equip));
         }
     }
 }

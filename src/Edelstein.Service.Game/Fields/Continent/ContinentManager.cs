@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -26,9 +27,7 @@ namespace Edelstein.Service.Game.Fields.Continent
         public Continent Get(int id)
             => _continents.FirstOrDefault(c => c.Template.ID == id);
 
-        public async Task TryTick()
-        {
-            await Task.WhenAll(_continents.Select(c => c.TryTick()));
-        }
+        public Task TryTick(DateTime now)
+            => Task.WhenAll(_continents.Select(c => c.TryTick(now)));
     }
 }

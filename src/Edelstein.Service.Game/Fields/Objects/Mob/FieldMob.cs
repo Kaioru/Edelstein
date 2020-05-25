@@ -25,7 +25,7 @@ namespace Edelstein.Service.Game.Fields.Objects.Mob
                 Convert.ToByte(left) & 1 |
                 2 * (byte) (Template.MoveAbility switch
                     {
-                        MoveAbilityType.Fly => MoveActionType.Fly,
+                        MoveAbilityType.Fly => MoveActionType.Fly1,
                         MoveAbilityType.Stop => MoveActionType.Stand,
                         _ => MoveActionType.Move,
                     }

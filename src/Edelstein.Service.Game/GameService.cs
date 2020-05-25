@@ -98,6 +98,8 @@ namespace Edelstein.Service.Game
             Handlers[RecvPacketOperations.UserGatherItemRequest] = new UserGatherItemRequestHandler();
             Handlers[RecvPacketOperations.UserSortItemRequest] = new UserSortItemRequestHandler();
             Handlers[RecvPacketOperations.UserChangeSlotPositionRequest] = new UserChangeSlotPositionRequestHandler();
+            Handlers[RecvPacketOperations.UserConsumeCashItemUseRequest] = new UserConsumeCashItemUseRequestHandler();
+            Handlers[RecvPacketOperations.UserItemReleaseRequest] = new UserItemReleaseRequestHandler();
             Handlers[RecvPacketOperations.UserCharacterInfoRequest] = new UserCharacterInfoRequestHandler();
             Handlers[RecvPacketOperations.UserMigrateToITCRequest] = new UserMigrateToITCRequestHandler();
 
@@ -125,10 +127,10 @@ namespace Edelstein.Service.Game
         public override ISocketAdapter Build(ISocket socket)
             => new GameServiceAdapter(socket, this);
 
-        public async Task TryTick()
+        public async Task TryTick(DateTime now)
         {
-            await FieldManager.TryTick();
-            await ContinentManager.TryTick();
+            await FieldManager.TryTick(now);
+            await ContinentManager.TryTick(now);
         }
     }
 }

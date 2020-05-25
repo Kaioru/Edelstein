@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace Edelstein.Core.Utils.Ticks
             Task.Run(async () =>
             {
                 while (!_cts.IsCancellationRequested)
-                    await _behavior.TryTick();
+                    await _behavior.TryTick(DateTime.UtcNow);
             }, _cts.Token);
         }
 
@@ -27,6 +28,6 @@ namespace Edelstein.Core.Utils.Ticks
             => _cts.Cancel();
 
         public Task ForceTick()
-            => _behavior.TryTick();
+            => _behavior.TryTick(DateTime.UtcNow);
     }
 }

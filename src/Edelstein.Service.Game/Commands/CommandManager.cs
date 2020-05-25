@@ -17,6 +17,7 @@ namespace Edelstein.Service.Game.Commands
         {
             Commands.Add(new StatCommand(parser));
             Commands.Add(new ItemCommand(parser));
+            Commands.Add(new ItemPotentialCommand(parser));
             Commands.Add(new FieldCommand(parser));
             Commands.Add(new ContinentCommand(parser));
             Commands.Add(new PartyCommand(parser));

@@ -2,17 +2,20 @@ using System;
 using Edelstein.Core.Templates.NPC;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
+using Edelstein.Service.Game.Fields.Generators;
 
 namespace Edelstein.Service.Game.Fields.Objects.NPC
 {
-    public class FieldNPC : AbstractFieldControlledLife
+    public class FieldNPC : AbstractFieldControlledLife, IFieldGeneratorObj
     {
         public override FieldObjType Type => FieldObjType.NPC;
 
         public NPCTemplate Template { get; }
+        public IFieldGenerator Generator { get; set; }
 
         public int RX0 { get; set; }
         public int RX1 { get; set; }
+        public bool Enabled { get; set; }
 
         public FieldNPC(NPCTemplate template, bool left = true)
         {
@@ -33,7 +36,7 @@ namespace Edelstein.Service.Game.Fields.Objects.NPC
             p.EncodeShort((short) RX0);
             p.EncodeShort((short) RX1);
 
-            p.EncodeBool(true); // bEnabled
+            p.EncodeBool(!Enabled);
             return p;
         }
 

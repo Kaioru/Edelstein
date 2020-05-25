@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace Edelstein.Service.Game.Fields
             }
         }
 
-        public Task TryTick()
-            => Task.WhenAll(_fields.Values.Select(f => f.TryTick()));
+        public Task TryTick(DateTime now)
+            => Task.WhenAll(_fields.Values.Select(f => f.TryTick(now)));
     }
 }

@@ -63,27 +63,13 @@ namespace Edelstein.Service.Game.Fields
             Template = template;
 
             template.Life.ForEach(l =>
-            {
-                switch (l.Type)
+                _generators.Add(l.Type switch
                 {
-                    case FieldLifeType.NPC:
-                        Enter(new FieldNPC(manager.Get<NPCTemplate>(l.TemplateID), l.Left)
-                        {
-                            Position = l.Position,
-                            Foothold = (short) l.FH,
-                            RX0 = l.RX0,
-                            RX1 = l.RX1
-                        });
-                        break;
-                    case FieldLifeType.Monster:
-                        _generators.Add(
-                            new FieldGeneratorMob(l, manager.Get<MobTemplate>(l.TemplateID))
-                        );
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            });
+                    FieldLifeType.NPC => new FieldGeneratorNPC(l, manager.Get<NPCTemplate>(l.TemplateID)),
+                    FieldLifeType.Monster => new FieldGeneratorMob(l, manager.Get<MobTemplate>(l.TemplateID)),
+                    _ => throw new ArgumentOutOfRangeException()
+                })
+            );
             template.Reactors.ForEach(l =>
                 _generators.Add(new FieldGeneratorReactor(l, manager.Get<ReactorTemplate>(l.TemplateID)))
             );
@@ -211,7 +197,6 @@ namespace Edelstein.Service.Game.Fields
                     : Template.Portals.Values
                         .First(p => p.Type == FieldPortalType.StartPoint);
 
-                user.ID = user.Character.ID;
                 user.Character.FieldID = Template.ID;
                 user.Position = portal.Position;
                 user.Foothold = (short) (portal.Type != FieldPortalType.StartPoint
@@ -324,13 +309,11 @@ namespace Edelstein.Service.Game.Fields
                 .Where(u => u?.Guild.ID == guild.ID)
                 .Select(u => u.SendPacket(packet)));
 
-        public async Task TryTick()
+        public async Task TryTick(DateTime now)
         {
-            if (!GetObjects<IFieldUser>().Any())
-                return;
+            var userCount = GetObjects<FieldUser>().Count();
 
-            var now = DateTime.UtcNow;
-
+            if (userCount == 0) return;
             if ((now - LastGenObjTime).TotalSeconds >= 7)
             {
                 LastGenObjTime = DateTime.UtcNow;
@@ -345,26 +328,30 @@ namespace Edelstein.Service.Game.Fields
                     .Except(mobGenerators)
                     .ToImmutableList();
 
-                var userCount = GetObjects<FieldUser>().Count();
-                var mobCount = GetObjects<FieldMob>().Count();
-                var mobCapacity = Template.MobCapacityMin;
-
-                if (userCount > Template.MobCapacityMin / 2)
-                    mobCapacity += (Template.MobCapacityMax - Template.MobCapacityMin) *
-                                   (2 * userCount - Template.MobCapacityMin) /
-                                   (3 * Template.MobCapacityMin);
-
-                mobCapacity = Math.Min(mobCapacity, Template.MobCapacityMax);
-
-                var mobGenCount = mobCapacity - mobCount;
-
-                await Task.WhenAll(
-                    mobGenerators
-                        .Shuffle()
-                        .Take(mobGenCount)
-                        .Select(g => g.Generate(this))
-                );
                 await Task.WhenAll(otherGenerators.Select(g => g.Generate(this)));
+
+                if (mobGenerators.Any())
+                {
+                    var mobCount = GetObjects<FieldMob>().Count();
+                    var mobCapacity = Template.MobCapacityMin;
+
+                    if (userCount > Template.MobCapacityMin / 2)
+                        mobCapacity += (Template.MobCapacityMax - Template.MobCapacityMin) *
+                                       (2 * userCount - Template.MobCapacityMin) /
+                                       (3 * Template.MobCapacityMin);
+                    mobCapacity = Math.Min(mobCapacity, Template.MobCapacityMax);
+
+                    var mobGenCount = mobCapacity - mobCount;
+
+                    if (mobGenCount == 0) return;
+
+                    await Task.WhenAll(
+                        mobGenerators
+                            .Shuffle()
+                            .Take(mobGenCount)
+                            .Select(g => g.Generate(this))
+                    );
+                }
             }
         }
     }
