@@ -1,4 +1,3 @@
-using System;
 using Edelstein.Service.WebAPI.GraphQL;
 using Edelstein.Service.WebAPI.GraphQL.Context;
 using GraphQL.Server;

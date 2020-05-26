@@ -6,7 +6,6 @@ using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Entities;
 using Edelstein.Entities.Characters;
 using GraphQL.Types;
-using Microsoft.Scripting.Utils;
 
 namespace Edelstein.Service.WebAPI.GraphQL.Types.Game
 {

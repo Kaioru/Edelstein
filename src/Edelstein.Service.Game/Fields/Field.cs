@@ -17,7 +17,6 @@ using Edelstein.Provider;
 using Edelstein.Service.Game.Fields.Generators;
 using Edelstein.Service.Game.Fields.Objects;
 using Edelstein.Service.Game.Fields.Objects.Mob;
-using Edelstein.Service.Game.Fields.Objects.NPC;
 using Edelstein.Service.Game.Fields.Objects.User;
 using MoreLinq;
 

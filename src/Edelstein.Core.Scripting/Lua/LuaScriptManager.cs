@@ -1,6 +1,5 @@
 using System.IO;
 using System.Threading.Tasks;
-using Edelstein.Core.Scripting.Python;
 using MoonSharp.Interpreter;
 using MoonSharp.Interpreter.Interop;
 using MoonSharp.Interpreter.Loaders;

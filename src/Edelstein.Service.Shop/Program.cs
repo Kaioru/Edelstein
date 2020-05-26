@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
 using Edelstein.Core.Bootstrap.Providers.Templates;
-using Edelstein.Core.Distributed.States;
 using Edelstein.Core.Gameplay.Migrations.States;
 
 namespace Edelstein.Service.Shop

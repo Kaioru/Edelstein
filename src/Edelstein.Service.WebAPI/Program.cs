@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Edelstein.Core.Bootstrap;
-using Edelstein.Core.Bootstrap.Providers.Templates;
 using Edelstein.Core.Distributed.States;
 
 namespace Edelstein.Service.WebAPI
