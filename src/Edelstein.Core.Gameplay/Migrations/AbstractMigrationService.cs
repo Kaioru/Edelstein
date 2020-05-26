@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Gameplay.Logging;
 using Edelstein.Core.Services;
-using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Core.Utils.Ticks;

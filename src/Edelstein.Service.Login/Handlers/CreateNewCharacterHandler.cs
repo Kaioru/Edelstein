@@ -8,7 +8,6 @@ using Edelstein.Core.Gameplay.Extensions.Packets;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Core.Templates.Etc.MakeCharInfo;
 using Edelstein.Core.Templates.Items;
-using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities.Characters;
 using Edelstein.Network.Packets;

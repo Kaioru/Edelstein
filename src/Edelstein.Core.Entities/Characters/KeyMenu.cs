@@ -1,4 +1,4 @@
-namespace Edelstein.Database.Entities.Characters
+namespace Edelstein.Entities.Characters
 {
     public enum KeyMenu
     {

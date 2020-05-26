@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using DotNetty.Common.Utilities;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Gameplay.Logging;
-using Edelstein.Core.Utils;
 using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities;
 using Edelstein.Entities.Characters;

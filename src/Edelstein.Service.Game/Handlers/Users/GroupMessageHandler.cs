@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Social;
-using Edelstein.Core.Utils;
+using Edelstein.Core.Utils.Packets;
 using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.User;
 using Edelstein.Service.Game.Logging;

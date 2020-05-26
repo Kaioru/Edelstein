@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Edelstein.Database;
-using Edelstein.Database.Entities.Characters;
 using Edelstein.Entities.Inventories;
 
 namespace Edelstein.Entities.Characters

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Constants;
-using Edelstein.Core.Utils;
+using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities.Inventories;
 using Edelstein.Entities.Inventories.Items;
 using Edelstein.Network.Packets;
@@ -33,7 +33,7 @@ namespace Edelstein.Service.Game.Handlers.Users
                         if (!(item is ItemSlotBundle bundle)) return;
                         if (bundle.Number < number) return;
 
-                        item = i[type].Take(from, number);
+                        i[type].Take(@from, number);
                     }
                     else i[type].Remove(from);
 

@@ -1,4 +1,4 @@
-namespace Edelstein.Core.Utils
+namespace Edelstein.Core.Utils.Packets
 {
     public enum RecvPacketOperations
     {

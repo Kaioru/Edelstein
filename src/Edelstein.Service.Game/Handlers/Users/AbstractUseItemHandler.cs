@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Edelstein.Core.Templates.Items;
-using Edelstein.Core.Utils;
+using Edelstein.Core.Utils.Packets;
 using Edelstein.Entities.Inventories;
 using Edelstein.Entities.Inventories.Items;
 using Edelstein.Network.Packets;

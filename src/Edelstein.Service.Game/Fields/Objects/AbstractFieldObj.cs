@@ -19,10 +19,6 @@ namespace Edelstein.Service.Game.Fields.Objects
 
         public Point Position { get; set; }
 
-        protected AbstractFieldObj()
-        {
-        }
-
         public async Task UpdateFieldSplit(
             Func<IPacket> getEnterPacket = null,
             Func<IPacket> getLeavePacket = null
