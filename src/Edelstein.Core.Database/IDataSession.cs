@@ -1,6 +1,5 @@
 using System;
 
-
 namespace Edelstein.Core.Database
 {
     public interface IDataSession : IDataAction, IDisposable
