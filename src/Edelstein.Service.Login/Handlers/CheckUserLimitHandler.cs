@@ -25,7 +25,6 @@ namespace Edelstein.Service.Login.Handlers
                 .OfType<GameNodeState>()
                 .Where(s => s.Worlds.Contains(worldID))
                 .ToImmutableList();
-
             var tasks = services
                 .Select(async s => await adapter.Service.SocketCountCache.GetAsync<int>(s.Name))
                 .ToImmutableList();
@@ -36,26 +35,17 @@ namespace Edelstein.Service.Login.Handlers
                 .Select(c => c.Result)
                 .Select(r => r.HasValue ? r.Value : 0)
                 .Sum();
-
             var userLimit = adapter.Service.State.Worlds
                 .First(w => w.ID == worldID)
                 .UserLimit;
 
             var capacity = (double) userNo / Math.Max(1, userLimit);
-
             capacity = Math.Min(1, capacity);
             capacity = Math.Max(0, capacity);
 
             using var p = new OutPacket(SendPacketOperations.CheckUserLimitResult);
 
-            p.EncodeByte(
-                (byte) (capacity >= 1
-                    ? 2
-                    : capacity >= 0.75
-                        ? 1
-                        : 0)
-            );
-
+            p.EncodeByte((byte) (capacity >= 1 ? 2 : capacity >= 0.75 ? 1 : 0));
             p.EncodeByte(0); // TODO: bPopulateLevel
 
             await adapter.SendPacket(p);
