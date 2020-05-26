@@ -1,9 +1,9 @@
 using System;
+using Edelstein.Core.Entities.Characters;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Gameplay.Extensions;
 using Edelstein.Core.Gameplay.Extensions.Packets;
-using Edelstein.Entities.Characters;
-using Edelstein.Network.Packets;
+using Edelstein.Core.Network.Packets;
 
 namespace Edelstein.Service.Game.Fields.Objects.User.Stats.Modify
 {

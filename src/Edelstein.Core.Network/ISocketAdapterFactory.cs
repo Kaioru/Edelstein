@@ -1,4 +1,4 @@
-namespace Edelstein.Network
+namespace Edelstein.Core.Network
 {
     public interface ISocketAdapterFactory
     {

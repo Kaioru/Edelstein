@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 
-namespace Edelstein.Network.Packets
+namespace Edelstein.Core.Network.Packets
 {
     public interface IPacketEncoder
     {

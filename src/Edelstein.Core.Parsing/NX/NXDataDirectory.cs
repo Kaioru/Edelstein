@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Duey;
 
-namespace Edelstein.Provider.NX
+namespace Edelstein.Core.Provider.NX
 {
     public class NXDataDirectory : IDataDirectory
     {

@@ -1,6 +1,6 @@
-using Edelstein.Database;
+using Edelstein.Core.Database;
 
-namespace Edelstein.Entities
+namespace Edelstein.Core.Entities
 {
     public class Account : IDataEntity
     {

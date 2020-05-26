@@ -1,7 +1,7 @@
 using System;
 using Edelstein.Core.Distributed;
+using Edelstein.Core.Entities.Characters;
 using Edelstein.Core.Gameplay;
-using Edelstein.Entities.Characters;
 using GraphQL.Types;
 
 namespace Edelstein.Service.WebAPI.GraphQL.Types.Game

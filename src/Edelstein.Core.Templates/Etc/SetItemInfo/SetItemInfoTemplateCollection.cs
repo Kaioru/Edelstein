@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Provider;
+using Edelstein.Core.Provider;
 
 namespace Edelstein.Core.Templates.Etc.SetItemInfo
 {

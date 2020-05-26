@@ -3,8 +3,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Migrations.States;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Network.Packets;
 
 namespace Edelstein.Service.Login.Handlers
 {
@@ -25,6 +25,7 @@ namespace Edelstein.Service.Login.Handlers
                 .OfType<GameNodeState>()
                 .Where(s => s.Worlds.Contains(worldID))
                 .ToImmutableList();
+
             var tasks = services
                 .Select(async s => await adapter.Service.SocketCountCache.GetAsync<int>(s.Name))
                 .ToImmutableList();
@@ -35,9 +36,11 @@ namespace Edelstein.Service.Login.Handlers
                 .Select(c => c.Result)
                 .Select(r => r.HasValue ? r.Value : 0)
                 .Sum();
+
             var userLimit = adapter.Service.State.Worlds
                 .First(w => w.ID == worldID)
                 .UserLimit;
+
             var capacity = (double) userNo / Math.Max(1, userLimit);
 
             capacity = Math.Min(1, capacity);
@@ -52,6 +55,7 @@ namespace Edelstein.Service.Login.Handlers
                         ? 1
                         : 0)
             );
+
             p.EncodeByte(0); // TODO: bPopulateLevel
 
             await adapter.SendPacket(p);

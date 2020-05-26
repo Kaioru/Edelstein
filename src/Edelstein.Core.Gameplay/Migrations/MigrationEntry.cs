@@ -1,6 +1,6 @@
 using Edelstein.Core.Distributed;
-using Edelstein.Entities;
-using Edelstein.Entities.Characters;
+using Edelstein.Core.Entities;
+using Edelstein.Core.Entities.Characters;
 
 namespace Edelstein.Core.Gameplay.Migrations
 {

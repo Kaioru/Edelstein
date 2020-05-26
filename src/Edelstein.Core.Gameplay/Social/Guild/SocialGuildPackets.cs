@@ -1,5 +1,5 @@
 using System.Collections.Immutable;
-using Edelstein.Network.Packets;
+using Edelstein.Core.Network.Packets;
 using MoreLinq;
 
 namespace Edelstein.Core.Gameplay.Social.Guild

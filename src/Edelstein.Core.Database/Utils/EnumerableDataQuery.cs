@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Edelstein.Database.Utils
+namespace Edelstein.Core.Database.Utils
 {
     public class EnumerableDataQuery<T> : IDataQuery<T>
         where T : class, IDataEntity

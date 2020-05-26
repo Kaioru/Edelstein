@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Edelstein.Entities.Inventories.Cash
+namespace Edelstein.Core.Entities.Inventories.Cash
 {
     public class ItemLocker
     {

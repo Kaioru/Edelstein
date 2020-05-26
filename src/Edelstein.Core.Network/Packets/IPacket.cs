@@ -1,4 +1,4 @@
-namespace Edelstein.Network.Packets
+namespace Edelstein.Core.Network.Packets
 {
     public interface IPacket
     {

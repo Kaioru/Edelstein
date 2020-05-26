@@ -1,4 +1,4 @@
-using Edelstein.Entities.Inventories;
+using Edelstein.Core.Entities.Inventories;
 
 namespace Edelstein.Core.Gameplay.Inventories.Operations
 {

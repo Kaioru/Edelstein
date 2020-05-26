@@ -4,8 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Social.Guild;
 using Edelstein.Core.Gameplay.Social.Guild.Events;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects;
 
 namespace Edelstein.Service.Game

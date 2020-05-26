@@ -1,7 +1,7 @@
 using System;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Templates.NPC;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Generators;
 
 namespace Edelstein.Service.Game.Fields.Objects.NPC

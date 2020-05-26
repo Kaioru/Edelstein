@@ -1,4 +1,4 @@
-namespace Edelstein.Network.Codecs
+namespace Edelstein.Core.Network.Codecs
 {
     public enum PacketState
     {

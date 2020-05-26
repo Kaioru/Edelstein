@@ -1,4 +1,4 @@
-namespace Edelstein.Provider
+namespace Edelstein.Core.Provider
 {
     public interface IDataTemplate
     {

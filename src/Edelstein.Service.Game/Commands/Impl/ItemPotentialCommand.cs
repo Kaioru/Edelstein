@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
-using Edelstein.Entities.Inventories;
-using Edelstein.Entities.Inventories.Items;
+using Edelstein.Core.Entities.Inventories;
+using Edelstein.Core.Entities.Inventories.Items;
 using Edelstein.Service.Game.Fields.Objects.User;
 using Microsoft.Scripting.Utils;
 

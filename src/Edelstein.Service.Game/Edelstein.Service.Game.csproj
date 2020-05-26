@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
@@ -18,11 +18,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CommandLineParser" Version="2.7.82" />
+      <PackageReference Include="CommandLineParser" Version="2.8.0" />
       <PackageReference Include="DotNet.Glob" Version="3.0.9" />
       <PackageReference Include="LibLog" Version="5.0.8" />
       <PackageReference Include="morelinq" Version="3.3.2" />
-      <PackageReference Include="Stateless" Version="5.0.0" />
+      <PackageReference Include="Stateless" Version="5.1.2" />
     </ItemGroup>
 
 </Project>

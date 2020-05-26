@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MoreLinq;
 
-namespace Edelstein.Provider
+namespace Edelstein.Core.Provider
 {
     public abstract class AbstractEagerDataTemplateCollection : IDataTemplateCollection
     {

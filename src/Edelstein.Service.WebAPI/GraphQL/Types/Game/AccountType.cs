@@ -2,9 +2,9 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Edelstein.Core.Distributed;
+using Edelstein.Core.Entities;
+using Edelstein.Core.Entities.Characters;
 using Edelstein.Core.Gameplay.Migrations;
-using Edelstein.Entities;
-using Edelstein.Entities.Characters;
 using GraphQL.Types;
 
 namespace Edelstein.Service.WebAPI.GraphQL.Types.Game

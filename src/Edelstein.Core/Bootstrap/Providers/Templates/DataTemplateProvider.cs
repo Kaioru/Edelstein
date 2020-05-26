@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Provider;
 using Edelstein.Core.Templates.Etc.MakeCharInfo;
 using Edelstein.Core.Templates.Etc.SetItemInfo;
 using Edelstein.Core.Templates.Fields;
@@ -13,7 +14,6 @@ using Edelstein.Core.Templates.Reactor;
 using Edelstein.Core.Templates.Server.Continent;
 using Edelstein.Core.Templates.Server.Shop;
 using Edelstein.Core.Templates.Strings;
-using Edelstein.Provider;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 

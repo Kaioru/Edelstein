@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using DotNetty.Common.Utilities;
 using DotNetty.Transport.Channels;
-using Edelstein.Network.Packets;
+using Edelstein.Core.Network.Packets;
 
-namespace Edelstein.Network
+namespace Edelstein.Core.Network
 {
     public class Socket : ISocket
     {

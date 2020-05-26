@@ -1,4 +1,4 @@
-using Edelstein.Provider;
+using Edelstein.Core.Provider;
 
 namespace Edelstein.Core.Templates.Mob
 {

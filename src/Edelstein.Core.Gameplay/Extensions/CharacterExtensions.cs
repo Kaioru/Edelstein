@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using Edelstein.Entities.Characters;
-using Edelstein.Entities.Inventories;
-using Edelstein.Entities.Inventories.Items;
+using Edelstein.Core.Entities.Characters;
+using Edelstein.Core.Entities.Inventories;
+using Edelstein.Core.Entities.Inventories.Items;
 
 namespace Edelstein.Core.Gameplay.Extensions
 {

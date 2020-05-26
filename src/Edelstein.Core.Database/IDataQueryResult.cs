@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Edelstein.Database
+namespace Edelstein.Core.Database
 {
     public interface IDataQueryResult<T>
         where T : class, IDataEntity

@@ -1,7 +1,7 @@
 using System;
-using Edelstein.Entities.Inventories.Items;
+using Edelstein.Core.Entities.Inventories.Items;
 
-namespace Edelstein.Entities.Inventories.Cash
+namespace Edelstein.Core.Entities.Inventories.Cash
 {
     public class ItemLockerSlot
     {

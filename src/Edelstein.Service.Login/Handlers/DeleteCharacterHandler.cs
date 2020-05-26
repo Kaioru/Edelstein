@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Entities.Characters;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Entities.Characters;
-using Edelstein.Network.Packets;
 using Edelstein.Service.Login.Types;
 
 namespace Edelstein.Service.Login.Handlers

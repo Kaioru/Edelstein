@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using Edelstein.Database.Utils;
+using Edelstein.Core.Database.Utils;
 using Marten;
 
-namespace Edelstein.Database.Postgres
+namespace Edelstein.Core.Database.Postgres
 {
     public class MartenDataSession : IDataSession
     {

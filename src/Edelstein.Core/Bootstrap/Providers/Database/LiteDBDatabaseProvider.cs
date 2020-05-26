@@ -1,5 +1,5 @@
-using Edelstein.Database;
-using Edelstein.Database.LiteDB;
+using Edelstein.Core.Database;
+using Edelstein.Core.Database.LiteDB;
 using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

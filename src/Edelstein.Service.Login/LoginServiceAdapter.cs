@@ -1,9 +1,9 @@
 using System.Net;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Gameplay.Migrations;
+using Edelstein.Core.Network;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Network;
-using Edelstein.Network.Packets;
 
 namespace Edelstein.Service.Login
 {

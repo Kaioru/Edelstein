@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edelstein.Core.Entities.Inventories;
+using Edelstein.Core.Entities.Inventories.Items;
 using Edelstein.Core.Gameplay.Constants;
 using Edelstein.Core.Gameplay.Inventories.Operations;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Templates.Items;
-using Edelstein.Entities.Inventories;
-using Edelstein.Entities.Inventories.Items;
-using Edelstein.Network.Packets;
 using MoreLinq;
 
 namespace Edelstein.Core.Gameplay.Inventories

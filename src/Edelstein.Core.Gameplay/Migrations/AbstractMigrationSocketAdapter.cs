@@ -3,12 +3,12 @@ using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Common.Utilities;
 using Edelstein.Core.Distributed;
+using Edelstein.Core.Entities;
+using Edelstein.Core.Entities.Characters;
 using Edelstein.Core.Gameplay.Logging;
+using Edelstein.Core.Network;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Entities;
-using Edelstein.Entities.Characters;
-using Edelstein.Network;
-using Edelstein.Network.Packets;
 
 namespace Edelstein.Core.Gameplay.Migrations
 {
@@ -93,7 +93,7 @@ namespace Edelstein.Core.Gameplay.Migrations
             try
             {
                 await handler.Handle(context);
-                Logger.Trace($"Handled packet operation {operation}");
+                Logger.Warn($"Handled packet operation {operation}");
             }
             catch (Exception e)
             {

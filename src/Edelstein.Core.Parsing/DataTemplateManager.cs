@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Provider.Logging;
+using Edelstein.Core.Provider.Logging;
 
-namespace Edelstein.Provider
+namespace Edelstein.Core.Provider
 {
     public class DataTemplateManager : IDataTemplateManager
     {

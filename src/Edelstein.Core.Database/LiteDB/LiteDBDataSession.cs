@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using Edelstein.Database.Utils;
+using Edelstein.Core.Database.Utils;
 using LiteDB;
 
-namespace Edelstein.Database.LiteDB
+namespace Edelstein.Core.Database.LiteDB
 {
     public class LiteDBDataSession : IDataSession
     {

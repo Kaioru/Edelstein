@@ -1,4 +1,4 @@
-namespace Edelstein.Entities.Inventories
+namespace Edelstein.Core.Entities.Inventories
 {
     public class ItemTrunk : ItemInventory
     {

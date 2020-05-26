@@ -1,8 +1,8 @@
-using Edelstein.Database;
-using Edelstein.Entities.Inventories;
-using Edelstein.Entities.Inventories.Cash;
+using Edelstein.Core.Database;
+using Edelstein.Core.Entities.Inventories;
+using Edelstein.Core.Entities.Inventories.Cash;
 
-namespace Edelstein.Entities
+namespace Edelstein.Core.Entities
 {
     public class AccountWorld : IDataEntity
     {

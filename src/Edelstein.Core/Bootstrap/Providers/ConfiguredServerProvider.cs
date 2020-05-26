@@ -1,6 +1,6 @@
 using System;
-using Edelstein.Network;
-using Edelstein.Network.Transport;
+using Edelstein.Core.Network;
+using Edelstein.Core.Network.Transport;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 

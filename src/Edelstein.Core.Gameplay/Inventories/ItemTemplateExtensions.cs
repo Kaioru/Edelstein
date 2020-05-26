@@ -1,8 +1,8 @@
 using System;
+using Edelstein.Core.Entities.Inventories.Items;
 using Edelstein.Core.Gameplay.Utils;
 using Edelstein.Core.Templates.Items;
 using Edelstein.Core.Templates.Items.Cash;
-using Edelstein.Entities.Inventories.Items;
 
 namespace Edelstein.Core.Gameplay.Inventories
 {

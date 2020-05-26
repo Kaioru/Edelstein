@@ -1,9 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Edelstein.Core.Entities;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Entities;
-using Edelstein.Network.Packets;
 using Edelstein.Service.Login.Logging;
 using Edelstein.Service.Login.Types;
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Edelstein.Entities.Inventories.Items;
+using Edelstein.Core.Entities.Inventories.Items;
 
-namespace Edelstein.Entities.Inventories
+namespace Edelstein.Core.Entities.Inventories
 {
     public class ItemInventory
     {

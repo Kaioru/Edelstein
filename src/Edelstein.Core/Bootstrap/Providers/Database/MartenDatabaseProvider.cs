@@ -1,8 +1,8 @@
-using Edelstein.Database.Postgres;
+using Edelstein.Core.Database.Postgres;
 using Marten;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using IDataStore = Edelstein.Database.IDataStore;
+using IDataStore = Edelstein.Core.Database.IDataStore;
 
 namespace Edelstein.Core.Bootstrap.Providers.Database
 {

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edelstein.Core.Entities.Characters;
+using Edelstein.Core.Entities.Inventories;
+using Edelstein.Core.Entities.Inventories.Items;
 using Edelstein.Core.Gameplay.Constants;
-using Edelstein.Entities.Characters;
-using Edelstein.Entities.Inventories;
-using Edelstein.Entities.Inventories.Items;
-using Edelstein.Network.Packets;
+using Edelstein.Core.Network.Packets;
 using MoreLinq;
 
 namespace Edelstein.Core.Gameplay.Extensions.Packets

@@ -1,6 +1,6 @@
 using System;
 
-namespace Edelstein.Entities.Characters
+namespace Edelstein.Core.Entities.Characters
 {
     public class SkillRecord
     {

@@ -1,4 +1,4 @@
-using Edelstein.Network.Packets;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Service.Game.Conversations.Speakers;
 using MoreLinq;
 

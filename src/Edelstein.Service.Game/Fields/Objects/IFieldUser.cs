@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Edelstein.Core.Entities.Characters;
 using Edelstein.Core.Gameplay.Social.Guild;
 using Edelstein.Core.Gameplay.Social.Memo;
 using Edelstein.Core.Gameplay.Social.Party;
-using Edelstein.Entities.Characters;
-using Edelstein.Network.Packets;
+using Edelstein.Core.Network.Packets;
 
 namespace Edelstein.Service.Game.Fields.Objects
 {

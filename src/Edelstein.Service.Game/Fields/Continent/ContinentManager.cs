@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Provider;
 using Edelstein.Core.Templates.Server.Continent;
 using Edelstein.Core.Utils.Ticks;
-using Edelstein.Provider;
 
 namespace Edelstein.Service.Game.Fields.Continent
 {

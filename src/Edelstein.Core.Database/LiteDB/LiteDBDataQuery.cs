@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Linq.Expressions;
 using LiteDB;
 
-namespace Edelstein.Database.LiteDB
+namespace Edelstein.Core.Database.LiteDB
 {
     public class LiteDBDataQuery<T> : IDataQuery<T>
         where T : class, IDataEntity

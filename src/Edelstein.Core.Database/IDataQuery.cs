@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Edelstein.Database
+namespace Edelstein.Core.Database
 {
     public interface IDataQuery<T> : IDataQueryResult<T>
         where T : class, IDataEntity

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Edelstein.Entities.Social;
+using Edelstein.Core.Entities.Social;
 
 namespace Edelstein.Core.Gameplay.Social.Guild.Events
 {

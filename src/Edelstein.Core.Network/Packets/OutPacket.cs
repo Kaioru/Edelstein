@@ -3,7 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 
-namespace Edelstein.Network.Packets
+namespace Edelstein.Core.Network.Packets
 {
     public class OutPacket : IPacket, IPacketEncoder, IDisposable
     {

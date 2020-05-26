@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Provider;
 using Edelstein.Core.Templates.Items.Cash;
-using Edelstein.Provider;
 
 namespace Edelstein.Core.Templates.Items
 {

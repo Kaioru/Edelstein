@@ -1,5 +1,5 @@
-using Edelstein.Provider;
-using Edelstein.Provider.NX;
+using Edelstein.Core.Provider;
+using Edelstein.Core.Provider.NX;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 

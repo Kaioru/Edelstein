@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Edelstein.Network.Packets;
+using Edelstein.Core.Network.Packets;
 
-namespace Edelstein.Network
+namespace Edelstein.Core.Network
 {
     public interface ISocketAdapter
     {

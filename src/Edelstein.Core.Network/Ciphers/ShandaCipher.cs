@@ -1,6 +1,6 @@
 using System;
 
-namespace Edelstein.Network.Ciphers
+namespace Edelstein.Core.Network.Ciphers
 {
     public static class ShandaCipher
     {

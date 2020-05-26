@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Edelstein.Core.Database;
 using Edelstein.Core.Distributed;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Database;
 
 namespace Edelstein.Core.Gameplay.Migrations
 {

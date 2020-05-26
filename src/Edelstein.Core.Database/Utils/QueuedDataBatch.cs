@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Edelstein.Database.Utils
+namespace Edelstein.Core.Database.Utils
 {
     public class QueuedDataBatch : IDataBatch
     {

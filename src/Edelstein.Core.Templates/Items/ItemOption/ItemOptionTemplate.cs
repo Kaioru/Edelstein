@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Edelstein.Provider;
+using Edelstein.Core.Provider;
 
 namespace Edelstein.Core.Templates.Items.ItemOption
 {

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Network.Packets;
 
 namespace Edelstein.Service.Login.Handlers
 {

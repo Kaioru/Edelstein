@@ -1,5 +1,5 @@
-using Edelstein.Entities;
-using Edelstein.Entities.Characters;
+using Edelstein.Core.Entities;
+using Edelstein.Core.Entities.Characters;
 using GraphQL.Types;
 
 namespace Edelstein.Service.WebAPI.GraphQL.Types.Game

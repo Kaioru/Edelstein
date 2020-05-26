@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
-using Edelstein.Entities;
-using Edelstein.Entities.Characters;
-using Edelstein.Network;
-using Edelstein.Network.Packets;
+using Edelstein.Core.Entities;
+using Edelstein.Core.Entities.Characters;
+using Edelstein.Core.Network;
+using Edelstein.Core.Network.Packets;
 
 namespace Edelstein.Core.Gameplay.Migrations
 {

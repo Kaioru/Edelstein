@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 using Edelstein.Core.Distributed;
-using Edelstein.Entities;
+using Edelstein.Core.Entities;
 using Edelstein.Service.WebAPI.GraphQL.Context;
 using Edelstein.Service.WebAPI.GraphQL.Types;
 using Edelstein.Service.WebAPI.GraphQL.Types.Game;

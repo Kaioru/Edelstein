@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers.Field;
 using Edelstein.Service.Game.Fields.Objects.NPC;

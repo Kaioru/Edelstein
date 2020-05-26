@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Marten;
 
-namespace Edelstein.Database.Postgres
+namespace Edelstein.Core.Database.Postgres
 {
     public class MartenDataStore : IDataStore
     {

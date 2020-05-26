@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Entities.Characters;
-using Edelstein.Entities.Social;
+using Edelstein.Core.Entities.Characters;
+using Edelstein.Core.Entities.Social;
 
 namespace Edelstein.Core.Gameplay.Social.Party
 {

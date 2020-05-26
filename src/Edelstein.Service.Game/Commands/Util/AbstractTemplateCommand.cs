@@ -2,8 +2,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
 using DotNet.Globbing;
+using Edelstein.Core.Provider;
 using Edelstein.Core.Templates;
-using Edelstein.Provider;
 using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Commands.Util

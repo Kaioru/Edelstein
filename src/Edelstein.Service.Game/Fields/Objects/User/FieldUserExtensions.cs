@@ -3,14 +3,14 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Baseline;
+using Edelstein.Core.Entities.Inventories.Items;
 using Edelstein.Core.Gameplay.Extensions.Packets;
 using Edelstein.Core.Gameplay.Inventories;
 using Edelstein.Core.Gameplay.Inventories.Operations;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Templates.Items;
 using Edelstein.Core.Templates.Items.ItemOption;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Entities.Inventories.Items;
-using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Conversations;
 using Edelstein.Service.Game.Conversations.Speakers;
 using Edelstein.Service.Game.Conversations.Util;
@@ -166,14 +166,13 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                 await user.SendPacket(p);
             }
 
-            if (
-                context.Flag.HasFlag(ModifyStatType.Skin) ||
+            if (context.Flag.HasFlag(ModifyStatType.Skin) ||
                 context.Flag.HasFlag(ModifyStatType.Face) ||
-                context.Flag.HasFlag(ModifyStatType.Hair)
-            ) await user.UpdateAvatar();
+                context.Flag.HasFlag(ModifyStatType.Hair)) 
+                await user.UpdateAvatar();
 
             if (context.Flag.HasFlag(ModifyStatType.Level) ||
-                context.Flag.HasFlag(ModifyStatType.Job))
+                context.Flag.HasFlag(ModifyStatType.Job)) 
             {
                 if (user.Party != null)
                     await user.Party
@@ -191,11 +190,9 @@ namespace Edelstein.Service.Game.Fields.Objects.User
                         );
             }
 
-            if (
-                user.Party != null &&
-                context.Flag.HasFlag(ModifyStatType.HP) ||
-                context.Flag.HasFlag(ModifyStatType.MaxHP)
-            )
+            if (user.Party != null && 
+                (context.Flag.HasFlag(ModifyStatType.HP) ||
+                 context.Flag.HasFlag(ModifyStatType.MaxHP)))
             {
                 using var p = new OutPacket(SendPacketOperations.UserHP);
 

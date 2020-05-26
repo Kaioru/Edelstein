@@ -2,8 +2,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Migrations.States;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Network.Packets;
 
 namespace Edelstein.Service.Login.Handlers
 {

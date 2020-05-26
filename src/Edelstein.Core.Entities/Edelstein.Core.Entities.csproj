@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
-        <RootNamespace>Edelstein.Entities</RootNamespace>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>Edelstein.Core.Entities</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

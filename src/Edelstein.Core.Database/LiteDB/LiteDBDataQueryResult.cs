@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using LiteDB;
 
-namespace Edelstein.Database.LiteDB
+namespace Edelstein.Core.Database.LiteDB
 {
     public class LiteDBDataQueryResult<T> : IDataQueryResult<T>
         where T : class, IDataEntity

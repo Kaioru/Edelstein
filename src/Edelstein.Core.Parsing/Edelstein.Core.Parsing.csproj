@@ -1,13 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
-        <RootNamespace>Edelstein.Provider</RootNamespace>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>Edelstein.Core.Provider</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Duey" Version="1.0.0" />
-      <PackageReference Include="LibLog" Version="5.0.8" />
+      <PackageReference Include="LibLog" Version="5.0.8">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="morelinq" Version="3.3.2" />
     </ItemGroup>
 

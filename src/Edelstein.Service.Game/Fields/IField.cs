@@ -3,9 +3,9 @@ using System.Drawing;
 using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Social.Guild;
 using Edelstein.Core.Gameplay.Social.Party;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Utils.Ticks;
-using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects;
 
 namespace Edelstein.Service.Game.Fields

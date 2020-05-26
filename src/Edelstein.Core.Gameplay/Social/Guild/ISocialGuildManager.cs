@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
+using Edelstein.Core.Entities.Characters;
 using Edelstein.Core.Gameplay.Social.Party;
-using Edelstein.Entities.Characters;
 
 namespace Edelstein.Core.Gameplay.Social.Guild
 {

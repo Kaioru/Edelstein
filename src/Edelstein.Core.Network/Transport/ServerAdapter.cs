@@ -1,10 +1,10 @@
 using System;
 using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Channels;
-using Edelstein.Network.Logging;
-using Edelstein.Network.Packets;
+using Edelstein.Core.Network.Logging;
+using Edelstein.Core.Network.Packets;
 
-namespace Edelstein.Network.Transport
+namespace Edelstein.Core.Network.Transport
 {
     public class ServerAdapter : ChannelHandlerAdapter
     {

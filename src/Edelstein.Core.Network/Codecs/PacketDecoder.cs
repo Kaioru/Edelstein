@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
-using Edelstein.Network.Ciphers;
-using Edelstein.Network.Packets;
+using Edelstein.Core.Network.Ciphers;
+using Edelstein.Core.Network.Packets;
 
-namespace Edelstein.Network.Codecs
+namespace Edelstein.Core.Network.Codecs
 {
     public class PacketDecoder : ReplayingDecoder<PacketState>
     {

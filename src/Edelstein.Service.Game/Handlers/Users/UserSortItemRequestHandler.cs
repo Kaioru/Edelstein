@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Entities.Inventories;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Entities.Inventories;
-using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.User;
 
 namespace Edelstein.Service.Game.Handlers.Users

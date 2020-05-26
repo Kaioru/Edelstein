@@ -1,6 +1,6 @@
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Templates.Reactor;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Generators;
 
 namespace Edelstein.Service.Game.Fields.Objects.Reactor

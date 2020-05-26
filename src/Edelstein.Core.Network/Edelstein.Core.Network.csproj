@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>8</LangVersion>
         <Nullable>enable</Nullable>
-        <RootNamespace>Edelstein.Network</RootNamespace>
+        <RootNamespace>Edelstein.Core.Network</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,7 +13,10 @@
       <PackageReference Include="DotNetty.Codecs" Version="0.6.0" />
       <PackageReference Include="DotNetty.Common" Version="0.6.0" />
       <PackageReference Include="DotNetty.Handlers" Version="0.6.0" />
-      <PackageReference Include="LibLog" Version="5.0.6" />
+      <PackageReference Include="LibLog" Version="5.0.8">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
     <ItemGroup>

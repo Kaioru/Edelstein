@@ -1,15 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
-    <ItemGroup>
+  <ItemGroup>
       <PackageReference Include="Foundatio" Version="8.1.2126" />
       <PackageReference Include="Foundatio.JsonNet" Version="8.1.2126" />
       <PackageReference Include="Foundatio.Redis" Version="8.1.1662" />
-      <PackageReference Include="LibLog" Version="5.0.8" />
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.0" />
+      <PackageReference Include="LibLog" Version="5.0.8">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.4" />
       <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     </ItemGroup>

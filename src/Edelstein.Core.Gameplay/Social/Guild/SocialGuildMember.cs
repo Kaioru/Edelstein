@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Edelstein.Entities.Social;
+using Edelstein.Core.Entities.Social;
 
 namespace Edelstein.Core.Gameplay.Social.Guild
 {

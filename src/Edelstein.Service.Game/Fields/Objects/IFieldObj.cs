@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
-using Edelstein.Network.Packets;
+using Edelstein.Core.Network.Packets;
 
 namespace Edelstein.Service.Game.Fields.Objects
 {

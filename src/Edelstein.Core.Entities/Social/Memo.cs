@@ -1,7 +1,7 @@
 using System;
-using Edelstein.Database;
+using Edelstein.Core.Database;
 
-namespace Edelstein.Entities.Social
+namespace Edelstein.Core.Entities.Social
 {
     public class Memo : IDataEntity
     {

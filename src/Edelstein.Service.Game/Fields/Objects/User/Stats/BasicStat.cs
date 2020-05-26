@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Entities.Inventories;
+using Edelstein.Core.Entities.Inventories.Items;
+using Edelstein.Core.Provider;
 using Edelstein.Core.Templates.Etc.SetItemInfo;
 using Edelstein.Core.Templates.Items;
 using Edelstein.Core.Templates.Items.ItemOption;
-using Edelstein.Entities.Inventories;
-using Edelstein.Entities.Inventories.Items;
-using Edelstein.Provider;
 using MoreLinq.Extensions;
 
 namespace Edelstein.Service.Game.Fields.Objects.User.Stats

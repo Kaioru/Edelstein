@@ -4,11 +4,11 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Edelstein.Core.Database;
 using Edelstein.Core.Distributed;
+using Edelstein.Core.Entities.Characters;
 using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Core.Gameplay.Social.Memo.Events;
-using Edelstein.Database;
-using Edelstein.Entities.Characters;
 using Foundatio.Caching;
 using Foundatio.Lock;
 

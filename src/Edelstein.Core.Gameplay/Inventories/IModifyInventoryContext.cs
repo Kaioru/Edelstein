@@ -1,6 +1,6 @@
+using Edelstein.Core.Entities.Inventories.Items;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Templates.Items;
-using Edelstein.Entities.Inventories.Items;
-using Edelstein.Network.Packets;
 
 namespace Edelstein.Core.Gameplay.Inventories
 {

@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Core.Gameplay.Social.Guild;
 using Edelstein.Core.Gameplay.Social.Party;
-using Edelstein.Network;
+using Edelstein.Core.Network;
 
 namespace Edelstein.Service.Trade
 {

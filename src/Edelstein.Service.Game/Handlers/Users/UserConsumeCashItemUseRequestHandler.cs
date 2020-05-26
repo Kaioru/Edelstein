@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
+using Edelstein.Core.Entities.Inventories;
+using Edelstein.Core.Entities.Inventories.Items;
 using Edelstein.Core.Gameplay.Extensions;
+using Edelstein.Core.Network.Packets;
 using Edelstein.Core.Templates.Items;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Entities.Inventories;
-using Edelstein.Entities.Inventories.Items;
-using Edelstein.Network.Packets;
 using Edelstein.Service.Game.Fields.Objects.User;
 using Edelstein.Service.Game.Logging;
 

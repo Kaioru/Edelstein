@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Edelstein.Database
+namespace Edelstein.Core.Database
 {
     public interface IDataBatch : IDataAction, IDisposable
     {

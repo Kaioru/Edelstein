@@ -3,9 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Core.Provider;
 using Edelstein.Core.Templates.Fields;
 using Edelstein.Core.Utils.Ticks;
-using Edelstein.Provider;
 
 namespace Edelstein.Service.Game.Fields
 {

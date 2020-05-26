@@ -1,12 +1,12 @@
+using Edelstein.Core.Database;
 using Edelstein.Core.Gameplay.Migrations;
 using Edelstein.Core.Gameplay.Migrations.States;
 using Edelstein.Core.Gameplay.Social.Guild;
 using Edelstein.Core.Gameplay.Social.Party;
+using Edelstein.Core.Network;
+using Edelstein.Core.Provider;
 using Edelstein.Core.Utils.Messaging;
 using Edelstein.Core.Utils.Packets;
-using Edelstein.Database;
-using Edelstein.Network;
-using Edelstein.Provider;
 using Edelstein.Service.Trade.Handlers;
 using Foundatio.Caching;
 using Foundatio.Lock;

@@ -1,9 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Core.Distributed;
+using Edelstein.Core.Network;
+using Edelstein.Core.Network.Transport;
 using Edelstein.Core.Utils.Messaging;
-using Edelstein.Network;
-using Edelstein.Network.Transport;
 
 namespace Edelstein.Core.Services
 {

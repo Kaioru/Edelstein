@@ -1,5 +1,5 @@
 using System.Drawing;
-using Edelstein.Network.Packets;
+using Edelstein.Core.Network.Packets;
 
 namespace Edelstein.Service.Game.Fields.Movements.Fragments
 {

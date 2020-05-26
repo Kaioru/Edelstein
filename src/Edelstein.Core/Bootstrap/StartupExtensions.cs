@@ -1,5 +1,5 @@
 using Edelstein.Core.Bootstrap.Providers;
-using Edelstein.Network;
+using Edelstein.Core.Network;
 
 namespace Edelstein.Core.Bootstrap
 {

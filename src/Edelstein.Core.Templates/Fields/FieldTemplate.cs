@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Drawing;
 using System.Linq;
+using Edelstein.Core.Provider;
 using Edelstein.Core.Templates.Fields.Life;
-using Edelstein.Provider;
 using MoreLinq;
 
 namespace Edelstein.Core.Templates.Fields

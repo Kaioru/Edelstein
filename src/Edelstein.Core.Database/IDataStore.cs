@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 
-namespace Edelstein.Database
+
+namespace Edelstein.Core.Database
 {
     public interface IDataStore
     {

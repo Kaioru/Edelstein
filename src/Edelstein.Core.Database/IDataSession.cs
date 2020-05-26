@@ -1,6 +1,7 @@
 using System;
 
-namespace Edelstein.Database
+
+namespace Edelstein.Core.Database
 {
     public interface IDataSession : IDataAction, IDisposable
     {

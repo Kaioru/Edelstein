@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace Edelstein.Network.Ciphers
+namespace Edelstein.Core.Network.Ciphers
 {
     public static class AESCipher
     {

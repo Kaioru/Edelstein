@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
-using Edelstein.Network.Codecs;
-using Edelstein.Network.Logging;
+using Edelstein.Core.Network.Codecs;
+using Edelstein.Core.Network.Logging;
 
-namespace Edelstein.Network.Transport
+namespace Edelstein.Core.Network.Transport
 {
     public class Client
     {

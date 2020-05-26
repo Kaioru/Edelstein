@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Edelstein.Provider
+namespace Edelstein.Core.Provider
 {
     public interface IDataTemplateManager
     {
