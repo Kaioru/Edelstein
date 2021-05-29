@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Inventories\" />
+    <Folder Include="Inventories\Modify\" />
+    <Folder Include="Inventories\Templates\" />
+  </ItemGroup>
+</Project>
