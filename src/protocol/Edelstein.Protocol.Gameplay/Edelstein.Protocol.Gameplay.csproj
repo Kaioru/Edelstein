@@ -6,10 +6,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Inventories\" />
     <Folder Include="Inventories\Modify\" />
     <Folder Include="Inventories\Templates\" />
+    <Folder Include="Stages\" />
   </ItemGroup>
 </Project>
