@@ -5,7 +5,7 @@ using Edelstein.Protocol.Interop.Contracts;
 namespace Edelstein.Protocol.Interop
 {
     [ServiceContract]
-    public interface IServerService
+    public interface IDispatchService
     {
         [OperationContract] Task<DispatchResponse> Dispatch(DispatchRequest request);
         [OperationContract] Task<DispatchResponse> DispatchToAlliance(DispatchToAllianceRequest request);
