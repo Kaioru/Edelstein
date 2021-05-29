@@ -21,12 +21,20 @@ enum ServiceRegistryResult {
    FAILED = 1;
 }
 
-message ServiceRegistryRequest {
+message ServiceRegistryResponse {
+    ServiceRegistryResult result = 1;
+}
+
+message RegisterServerRequest {
     ServerObject server = 1;
 }
 
-message ServiceRegistryResponse {
-    ServiceRegistryResult result = 1;
+message DeregisterServerRequest {
+    string name = 1;
+}
+
+message UpdateServerRequest {
+    ServerObject server = 1;
 }
 
 message DescribeServerRequest {
