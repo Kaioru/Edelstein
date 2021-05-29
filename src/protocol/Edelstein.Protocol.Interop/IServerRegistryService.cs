@@ -7,9 +7,9 @@ namespace Edelstein.Protocol.Interop
     [ServiceContract]
     public interface IServerRegistryService
     {
-        [OperationContract] Task<ServiceRegistryResponse> RegisterServer(ServiceRegistryRequest request);
-        [OperationContract] Task<ServiceRegistryResponse> DeregisterServer(ServiceRegistryRequest request);
-        [OperationContract] Task<ServiceRegistryResponse> UpdateServer(ServiceRegistryRequest request);
+        [OperationContract] Task<ServiceRegistryResponse> RegisterServer(RegisterServerRequest request);
+        [OperationContract] Task<ServiceRegistryResponse> DeregisterServer(DeregisterServerRequest request);
+        [OperationContract] Task<ServiceRegistryResponse> UpdateServer(UpdateServerRequest request);
         [OperationContract] Task<DescribeServerResponse> DescribeServer(DescribeServerRequest request);
         [OperationContract] Task<DescribeServersResponse> DescribeServers(DescribeServersRequest request);
 
