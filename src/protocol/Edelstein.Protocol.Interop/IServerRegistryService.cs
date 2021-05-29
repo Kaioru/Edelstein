@@ -15,6 +15,7 @@ namespace Edelstein.Protocol.Interop
 
         [OperationContract] Task<DispatchResponse> Dispatch(DispatchRequest request);
         [OperationContract] Task<DispatchResponse> DispatchToServer(DispatchToServerRequest request);
+        [OperationContract] Task<DispatchResponse> DispatchToServers(DispatchToServersRequest request);
         [OperationContract] Task<DispatchResponse> DispatchToAlliance(DispatchToAllianceRequest request);
         [OperationContract] Task<DispatchResponse> DispatchToGuild(DispatchToGuildRequest request);
         [OperationContract] Task<DispatchResponse> DispatchToParty(DispatchToPartyRequest request);
