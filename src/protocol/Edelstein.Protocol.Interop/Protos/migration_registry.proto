@@ -1,0 +1,39 @@
+﻿syntax = "proto3";
+
+package edelstein.protocol.interop.contracts;
+
+message MigrationObject {
+    int32 character = 1;
+    int64 key = 2;
+
+    string fromServer = 3;
+    string toServer = 4;
+}
+
+enum MigrationRegistryResult {
+    OK = 0;
+    FAILED = 1;
+}
+
+message MigrationRegistryResponse {
+    MigrationRegistryResult result = 1;
+}
+
+message RegisterMigrationRequest {
+    MigrationObject migration = 1;
+}
+
+message DeregisterMigrationRequest {
+    int32 character = 1;
+}
+
+message ClaimMigrationRequest {
+    int32 character = 1;
+    int64 key = 2;
+    string server = 3;
+}
+
+message ClaimMigrationResponse {
+    MigrationRegistryResult result = 1;
+    MigrationObject migration = 2;
+}

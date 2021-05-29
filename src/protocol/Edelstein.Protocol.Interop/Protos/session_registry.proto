@@ -1,0 +1,44 @@
+﻿syntax = "proto3";
+
+package edelstein.protocol.interop.contracts;
+
+enum SessionState {
+    OFFLINE = 0;
+    LOGGING_IN = 1;
+    LOGGED_IN = 2;
+    MIGRATING = 3;
+}
+
+message SessionObject {
+    int32 account = 1;
+
+    optional int32 character = 2;
+    optional string server = 3;
+    optional SessionState state = 4;
+}
+
+enum SessionRegistryResult {
+    OK = 0;
+    FAILED = 1;
+}
+
+message UpdateSessionRequest {
+    SessionObject session = 1;
+}
+
+message UpdateSessionResult {
+    SessionRegistryResult result = 1;
+}
+
+message DescribeSessionByAccountRequest {
+    int32 account = 1;
+}
+
+message DescribeSessionByCharacterRequest {
+    int32 character = 1;
+}
+
+message DescribeSessionResult {
+    SessionRegistryResult result = 1;
+    SessionObject session = 2;
+}

@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+package edelstein.protocol.interop.contracts;
+
+enum AuthenticateResult {
+    OK = 0;
+    INVALID_USERNAME = 1;
+    INVALID_PASSWORD = 2;
+}
+
+message AuthenticateRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message AuthenticateResponse {
+    AuthenticateResult result = 1;
+    int32 account = 2;
+}

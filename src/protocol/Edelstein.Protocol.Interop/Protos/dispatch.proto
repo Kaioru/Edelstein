@@ -1,0 +1,41 @@
+﻿syntax = "proto3";
+
+package edelstein.protocol.interop.contracts;
+
+enum DispatchResult {
+    OK = 0;
+    FAILED = 1;
+}
+
+message DispatchRequest {
+    bytes packet = 1;
+}
+
+message DispatchToServerRequest {
+    string name = 1;
+    bytes packet = 2;
+}
+
+message DispatchToAllianceRequest {
+    int32 alliance = 1;
+    bytes packet = 2;
+}
+
+message DispatchToGuildRequest {
+    int32 guild = 1;
+    bytes packet = 2;
+}
+
+message DispatchToPartyRequest {
+    int32 party = 1;
+    bytes packet = 2;
+}
+
+message DispatchToCharacterRequest {
+    int32 character = 1;
+    bytes packet = 2;
+}
+
+message DispatchResponse {
+    DispatchResult result = 1;
+}
