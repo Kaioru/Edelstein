@@ -6,7 +6,7 @@ namespace Edelstein.Protocol.Network.Session
 {
     public interface ISession : IPacketDispatcher
     {
-        string ID { get; }
+        string SessionID { get; }
 
         ISocket Socket { get; init; }
 

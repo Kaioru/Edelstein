@@ -13,7 +13,7 @@ namespace Tinystein
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        public string ID => Socket.ID;
+        public string SessionID => Socket.ID;
         public ISocket Socket { get; init; }
 
         public TinysteinSession(ISocket socket)

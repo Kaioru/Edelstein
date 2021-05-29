@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Objects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
+  </ItemGroup>
+</Project>

@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Util", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Gameplay", "src\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj", "{543C1839-5803-4268-A0E4-EDE6CD483A6A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Gameplay.Stages.Game", "src\protocol\Edelstein.Protocol.Gameplay.Stages.Game\Edelstein.Protocol.Gameplay.Stages.Game.csproj", "{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,18 @@ Global
 		{543C1839-5803-4268-A0E4-EDE6CD483A6A}.Release|x64.Build.0 = Release|Any CPU
 		{543C1839-5803-4268-A0E4-EDE6CD483A6A}.Release|x86.ActiveCfg = Release|Any CPU
 		{543C1839-5803-4268-A0E4-EDE6CD483A6A}.Release|x86.Build.0 = Release|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Debug|x64.Build.0 = Debug|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Debug|x86.Build.0 = Debug|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Release|x64.ActiveCfg = Release|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Release|x64.Build.0 = Release|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Release|x86.ActiveCfg = Release|Any CPU
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1AD35F79-0AD1-40C4-B62D-ABBF561D882B} = {4D3AFB07-9FA4-4978-B999-BF2E8617901C}
@@ -119,5 +133,6 @@ Global
 		{7829D5B8-787F-472B-82BB-4991E1E53F6E} = {1AD35F79-0AD1-40C4-B62D-ABBF561D882B}
 		{7647DD81-4DBC-4A67-81D6-2894F3197A7C} = {1AD35F79-0AD1-40C4-B62D-ABBF561D882B}
 		{543C1839-5803-4268-A0E4-EDE6CD483A6A} = {1AD35F79-0AD1-40C4-B62D-ABBF561D882B}
+		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880} = {1AD35F79-0AD1-40C4-B62D-ABBF561D882B}
 	EndGlobalSection
 EndGlobal
