@@ -27,7 +27,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Gameplay
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Parser", "src\protocol\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj", "{76DA8A88-28A9-4D29-AB7A-88D3F175F63D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Parser.Duey", "src\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Parser.Duey\Edelstein.Common.Parser.Duey.csproj", "{E22AD517-F884-4F2F-9EB8-74406B073F2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Parser.Duey", "src\common\Edelstein.Common.Parser.Duey\Edelstein.Common.Parser.Duey.csproj", "{E22AD517-F884-4F2F-9EB8-74406B073F2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Parser.reWZ", "src\common\Edelstein.Common.Parser.reWZ\Edelstein.Common.Parser.reWZ.csproj", "{77225C01-B99D-4C7D-897E-18D8F9BA6020}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -150,6 +152,18 @@ Global
 		{E22AD517-F884-4F2F-9EB8-74406B073F2D}.Release|x64.Build.0 = Release|Any CPU
 		{E22AD517-F884-4F2F-9EB8-74406B073F2D}.Release|x86.ActiveCfg = Release|Any CPU
 		{E22AD517-F884-4F2F-9EB8-74406B073F2D}.Release|x86.Build.0 = Release|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Debug|x64.Build.0 = Debug|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Debug|x86.Build.0 = Debug|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Release|x64.ActiveCfg = Release|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Release|x64.Build.0 = Release|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Release|x86.ActiveCfg = Release|Any CPU
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1AD35F79-0AD1-40C4-B62D-ABBF561D882B} = {4D3AFB07-9FA4-4978-B999-BF2E8617901C}
@@ -164,5 +178,6 @@ Global
 		{6C2434C1-04AE-4AF6-89D5-A3724E5FE880} = {1AD35F79-0AD1-40C4-B62D-ABBF561D882B}
 		{76DA8A88-28A9-4D29-AB7A-88D3F175F63D} = {1AD35F79-0AD1-40C4-B62D-ABBF561D882B}
 		{E22AD517-F884-4F2F-9EB8-74406B073F2D} = {2276DE48-1BFD-4DB9-B18B-07075E2A34B6}
+		{77225C01-B99D-4C7D-897E-18D8F9BA6020} = {2276DE48-1BFD-4DB9-B18B-07075E2A34B6}
 	EndGlobalSection
 EndGlobal
