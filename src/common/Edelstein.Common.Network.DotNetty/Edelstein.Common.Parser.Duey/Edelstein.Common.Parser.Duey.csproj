@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\protocol\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Duey" Version="1.0.0" />
+  </ItemGroup>
+</Project>
