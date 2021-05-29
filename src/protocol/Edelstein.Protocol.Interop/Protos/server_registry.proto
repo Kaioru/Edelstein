@@ -1,0 +1,46 @@
+﻿syntax = "proto3";
+
+package edelstein.protocol.interop.contracts;
+
+message ServerObject {
+    string name = 1;
+
+    ServerConnectionObject serverConnection = 2;
+    ServerConnectionObject interopConnection = 3;
+
+    map<string, string> tags = 4;
+}
+
+message ServerConnectionObject {
+    string host = 1;
+    int32 port = 2;
+}
+
+enum ServiceRegistryResult {
+   OK = 0;
+   FAILED = 1;
+}
+
+message ServiceRegistryRequest {
+    ServerObject server = 1;
+}
+
+message ServiceRegistryResponse {
+    ServiceRegistryResult result = 1;
+}
+
+message DescribeServerRequest {
+    string name = 1;
+}
+
+message DescribeServerResponse {
+    ServerObject server = 1;
+}
+
+message DescribeServersRequest {
+    map<string, string> tags = 1;
+}
+
+message DescribeServersResponse {
+    repeated ServerObject servers = 1;
+}
