@@ -13,5 +13,7 @@
     <Folder Include="Inventories\Modify\" />
     <Folder Include="Inventories\Templates\" />
     <Folder Include="Stages\" />
+    <Folder Include="Stats\" />
+    <Folder Include="Stats\Modify\" />
   </ItemGroup>
 </Project>

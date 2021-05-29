@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Edelstein.Protocol.Gameplay.Inventories.Templates;
+using Edelstein.Protocol.Network;
 
 namespace Edelstein.Protocol.Gameplay.Inventories.Modify
 {
@@ -25,5 +26,6 @@ namespace Edelstein.Protocol.Gameplay.Inventories.Modify
         void Update(AbstractItemSlot item);
 
         IEnumerable<IModifyInventoryOperation> History();
+        void Encode(IPacketWriter writer);
     }
 }
