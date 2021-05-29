@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\auth.proto" />
     <Protobuf Include="Protos\dispatch.proto" />
     <Protobuf Include="Protos\migration_registry.proto" />
     <Protobuf Include="Protos\server_registry.proto" />
