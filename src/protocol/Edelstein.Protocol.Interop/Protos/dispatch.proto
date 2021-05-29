@@ -16,6 +16,11 @@ message DispatchToServerRequest {
     bytes packet = 2;
 }
 
+message DispatchToServersRequest {
+    map<string, string> tags = 1;
+    bytes packet = 2;
+}
+
 message DispatchToAllianceRequest {
     int32 alliance = 1;
     bytes packet = 2;
