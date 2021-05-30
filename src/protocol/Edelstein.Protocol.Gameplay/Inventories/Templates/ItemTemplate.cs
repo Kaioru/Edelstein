@@ -1,8 +1,8 @@
-﻿using Edelstein.Protocol.Util.Repositories;
+﻿using Edelstein.Protocol.Gameplay.Templating;
 
 namespace Edelstein.Protocol.Gameplay.Inventories.Templates
 {
-    public record ItemTemplate : IRepositoryEntry<int>
+    public record ItemTemplate : ITemplate<int>
     {
         public int ID { get; init; }
 
