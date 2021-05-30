@@ -15,5 +15,6 @@
     <Folder Include="Stages\" />
     <Folder Include="Stats\" />
     <Folder Include="Stats\Modify\" />
+    <Folder Include="Templating\" />
   </ItemGroup>
 </Project>
