@@ -6,11 +6,13 @@ namespace Edelstein.Protocol.Gameplay.Space
     {
         Rect2D Bounds { get; }
 
-        IPhysicalSpawnPoint2D GetSpawnPoint(int id);
-        IPhysicalSpawnPoint2D GetSpawnPointClosestTo(Point2D point);
+        IPhysicalPoint2D GetPortal(int id);
+        IPhysicalPoint2D GetPortalClosestTo(Point2D point);
 
-        IPhysicalFoothold2D GetFoothold(int id);
-        IPhysicalFoothold2D GetFootholdClosestTo(Point2D point);
-        IPhysicalFoothold2D GetFootholdUnderneath(Point2D point);
+        IPhysicalPoint2D GetStartPointClosestTo(Point2D point);
+
+        IPhysicalLine2D GetFoothold(int id);
+        IPhysicalLine2D GetFootholdClosestTo(Point2D point);
+        IPhysicalLine2D GetFootholdUnderneath(Point2D point);
     }
 }
