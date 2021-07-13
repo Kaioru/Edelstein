@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Numerics;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Space;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
@@ -11,8 +11,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
     {
         //FieldTemplate Template { get; init; }
 
-        IFieldSplit GetSplit(Vector2 position);
-        IFieldSplit[] GetEnclosingSplits(Vector2 position);
+        IFieldSplit GetSplit(Point2D position);
+        IFieldSplit[] GetEnclosingSplits(Point2D position);
         IFieldSplit[] GetEnclosingSplits(IFieldSplit split);
 
         IFieldPool GetPool(FieldObjType type);
