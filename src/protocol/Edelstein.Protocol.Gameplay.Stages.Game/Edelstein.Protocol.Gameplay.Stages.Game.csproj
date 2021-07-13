@@ -6,9 +6,13 @@
 
   <ItemGroup>
     <Folder Include="Objects\" />
+    <Folder Include="Templates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Templates\" />
   </ItemGroup>
 </Project>

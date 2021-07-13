@@ -3,7 +3,7 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Space
 {
-    public interface IPhysicalFoothold2D : IRepositoryEntry<int>
+    public interface IPhysicalLine2D : IRepositoryEntry<int>
     {
         Line2D Line { get; }
     }
