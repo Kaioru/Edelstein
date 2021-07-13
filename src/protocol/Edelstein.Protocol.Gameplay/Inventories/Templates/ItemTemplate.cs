@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Inventories.Templates
 {
-    public record ItemTemplate : ITemplate<int>
+    public record ItemTemplate : ITemplate
     {
         public int ID { get; init; }
 

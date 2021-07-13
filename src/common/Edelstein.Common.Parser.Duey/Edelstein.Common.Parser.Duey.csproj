@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\protocol\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj" />
+    <PackageReference Include="Duey" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Duey" Version="1.0.0" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj" />
   </ItemGroup>
 </Project>
