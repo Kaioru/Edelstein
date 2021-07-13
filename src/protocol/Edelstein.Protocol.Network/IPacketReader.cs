@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Network
 {
@@ -23,7 +24,8 @@ namespace Edelstein.Protocol.Network
         string ReadString(short? length = null);
         byte[] ReadBytes(short length);
 
-        Vector2 ReadVector2();
+        Point2D ReadPoint2D();
+
         DateTime ReadDateTime();
     }
 }

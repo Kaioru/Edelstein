@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Text;
 using System;
+using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Network
 {
@@ -96,7 +97,7 @@ namespace Edelstein.Protocol.Network
             return this;
         }
 
-        public IPacketWriter WriteVector2(Vector2 value)
+        public IPacketWriter WritePoint2D(Point2D value)
         {
             WriteShort((short)value.X);
             WriteShort((short)value.Y);

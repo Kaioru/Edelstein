@@ -7,5 +7,9 @@
   <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Ticks\" />
+    <Folder Include="Spatial\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Spatial\" />
   </ItemGroup>
 </Project>
