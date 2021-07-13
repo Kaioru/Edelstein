@@ -2,6 +2,7 @@
 using System.IO;
 using System.Numerics;
 using System.Text;
+using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Network
 {
@@ -39,7 +40,8 @@ namespace Edelstein.Protocol.Network
         public string ReadString(short? length = null) => StringEncoding.GetString(_reader.ReadBytes(length ?? ReadShort()));
         public byte[] ReadBytes(short length) => _reader.ReadBytes(length);
 
-        public Vector2 ReadVector2() => new(ReadShort(), ReadShort());
+        public Point2D ReadPoint2D() => new(ReadShort(), ReadShort());
+
         public DateTime ReadDateTime() => DateTime.FromFileTimeUtc(ReadLong());
     }
 }

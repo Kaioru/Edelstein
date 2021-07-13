@@ -15,4 +15,7 @@
     <Folder Include="Session\" />
     <Folder Include="Ciphers\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
+  </ItemGroup>
 </Project>
