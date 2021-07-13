@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Numerics;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects
 {
@@ -14,7 +14,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects
         IField Field { get; set; }
         IFieldSplit FieldSplit { get; set; }
 
-        Vector2 Position { get; set; }
+        Point2D Position { get; set; }
 
         Task UpdateFieldSplit(
             Func<IPacket> getEnterPacket = null,
