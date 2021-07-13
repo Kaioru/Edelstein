@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Edelstein.Protocol.Gameplay.Inventories
 {
     public class ItemSlotBundle : AbstractItemSlot

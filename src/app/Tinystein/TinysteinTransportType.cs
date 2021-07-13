@@ -1,5 +1,4 @@
-﻿using System;
-namespace Tinystein
+﻿namespace Tinystein
 {
     public enum TinysteinTransportType
     {
