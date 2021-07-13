@@ -2,11 +2,12 @@
 using System.Numerics;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
+using Edelstein.Protocol.Gameplay.Stages.Game.Space;
 using Edelstein.Protocol.Network;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
-    public interface IField : IFieldPool, IStage<IField, IFieldObjUser>
+    public interface IField : IFieldPool, IStage<IField, IFieldObjUser>, IPhysicalSpace2D
     {
         //FieldTemplate Template { get; init; }
 
