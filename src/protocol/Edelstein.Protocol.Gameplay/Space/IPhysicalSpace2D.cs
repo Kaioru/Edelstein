@@ -1,6 +1,6 @@
 ﻿using Edelstein.Protocol.Util.Spatial;
 
-namespace Edelstein.Protocol.Gameplay.Stages.Game.Space
+namespace Edelstein.Protocol.Gameplay.Space
 {
     public interface IPhysicalSpace2D
     {

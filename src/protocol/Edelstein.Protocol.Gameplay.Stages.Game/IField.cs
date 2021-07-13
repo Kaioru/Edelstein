@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Numerics;
 using System.Threading.Tasks;
+using Edelstein.Protocol.Gameplay.Space;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
-using Edelstein.Protocol.Gameplay.Stages.Game.Space;
 using Edelstein.Protocol.Network;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
