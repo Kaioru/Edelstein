@@ -16,5 +16,9 @@
     <Folder Include="Stats\" />
     <Folder Include="Stats\Modify\" />
     <Folder Include="Templating\" />
+    <Folder Include="Space\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Space\" />
   </ItemGroup>
 </Project>

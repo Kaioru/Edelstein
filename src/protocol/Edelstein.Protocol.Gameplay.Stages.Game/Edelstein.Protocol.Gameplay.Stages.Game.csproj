@@ -6,13 +6,9 @@
 
   <ItemGroup>
     <Folder Include="Objects\" />
-    <Folder Include="Space\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Space\" />
   </ItemGroup>
 </Project>
