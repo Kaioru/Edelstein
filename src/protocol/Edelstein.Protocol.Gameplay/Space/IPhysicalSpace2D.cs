@@ -8,7 +8,6 @@ namespace Edelstein.Protocol.Gameplay.Space
 
         IPhysicalPoint2D GetPortal(int id);
         IPhysicalPoint2D GetPortalClosestTo(Point2D point);
-
         IPhysicalPoint2D GetStartPointClosestTo(Point2D point);
 
         IPhysicalLine2D GetFoothold(int id);
