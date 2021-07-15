@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Space;
+﻿using Edelstein.Protocol.Gameplay.Spatial;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Util.Spatial;
 
