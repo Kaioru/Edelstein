@@ -17,8 +17,10 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Templates
         public string ScriptFirstUserEnter { get; init; }
         public string ScriptUserEnter { get; init; }
 
-        public IDictionary<int, FieldFootholdTemplate> Footholds { get; }
         public IDictionary<int, FieldPortalTemplate> Portals { get; }
+        public IDictionary<int, FieldFootholdTemplate> Footholds { get; }
+        public IDictionary<int, FieldLadderOrRopeTemplate> LadderOrRopes { get; }
+
         //public ICollection<FieldLifeTemplate> Life { get; }
         //public ICollection<FieldReactorTemplate> Reactors { get; }
 
