@@ -2,9 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay
 {
-    public interface ICharacterRepository
-        : IRepositoryReader<int, CharacterEntity>
-        , IRepositoryWriter<int, CharacterEntity>
+    public interface ICharacterRepository : IRepository<int, CharacterEntity>
     {
     }
 }
