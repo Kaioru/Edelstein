@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Gameplay.Space;
+using Edelstein.Protocol.Gameplay.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Network;

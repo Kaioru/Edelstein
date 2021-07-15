@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Edelstein.Protocol.Util.Spatial;
 
-namespace Edelstein.Protocol.Gameplay.Space
+namespace Edelstein.Protocol.Gameplay.Spatial
 {
     public interface IPhysicalSpace2D
     {
