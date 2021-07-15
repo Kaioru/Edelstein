@@ -18,5 +18,8 @@ namespace Edelstein.Protocol.Gameplay.Spatial
         IPhysicalLine2D GetFootholdClosestTo(Point2D point);
         IPhysicalLine2D GetFootholdUnderneath(Point2D point);
         IEnumerable<IPhysicalLine2D> GetFootholds();
+
+        IPhysicalLine2D GetLadderOrRope(int id);
+        IEnumerable<IPhysicalLine2D> GetLadderOrRopes();
     }
 }

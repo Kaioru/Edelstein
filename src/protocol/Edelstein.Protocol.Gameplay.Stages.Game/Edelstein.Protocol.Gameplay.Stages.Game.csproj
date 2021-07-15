@@ -7,6 +7,7 @@
   <ItemGroup>
     <Folder Include="Objects\" />
     <Folder Include="Templates\" />
+    <Folder Include="FieldSets\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
@@ -14,5 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Templates\" />
+    <None Remove="FieldSets\" />
   </ItemGroup>
 </Project>
