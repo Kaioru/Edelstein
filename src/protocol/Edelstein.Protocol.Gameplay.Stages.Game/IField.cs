@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Spatial;
+using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Network;
@@ -12,6 +13,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
     public interface IField : IFieldPool, IStage<IField, IFieldObjUser>, IPhysicalSpace2D, IRepositoryEntry<int>
     {
         IGameStage GameStage { get; }
+        IFieldSet FieldSet { get; }
 
         FieldTemplate Template { get; init; }
 
