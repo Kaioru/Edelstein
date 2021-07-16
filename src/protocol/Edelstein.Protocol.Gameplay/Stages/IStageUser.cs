@@ -8,8 +8,8 @@ namespace Edelstein.Protocol.Gameplay.Stages
         where TUser : IStageUser<TStage, TUser>
     {
         Account Account { get; init; }
-        AccountWorld AccountWorld { get; init; }
-        Character Character { get; init; }
+        AccountWorld AccountWorld { get; }
+        Character Character { get; }
 
         TStage Stage { get; set; }
     }
