@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Marten" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Marten" Version="3.13.4" />
+  </ItemGroup>
+</Project>
