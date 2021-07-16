@@ -3,7 +3,7 @@
 package edelstein.protocol.interop.contracts;
 
 message ServerObject {
-    string name = 1;
+    string id = 1;
 
     ServerConnectionObject serverConnection = 2;
     ServerConnectionObject interopConnection = 3;
@@ -30,7 +30,7 @@ message RegisterServerRequest {
 }
 
 message DeregisterServerRequest {
-    string name = 1;
+    string id = 1;
 }
 
 message UpdateServerRequest {
@@ -38,7 +38,7 @@ message UpdateServerRequest {
 }
 
 message DescribeServerRequest {
-    string name = 1;
+    string id = 1;
 }
 
 message DescribeServerResponse {
