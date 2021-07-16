@@ -4,6 +4,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects
 {
     public interface IFieldObjUser : IFieldObj, IStageUser<IField, IFieldObjUser>
     {
+        IGameStageUser GameStageUser { get; }
+
         bool IsInstantiated { get; set; }
 
         IFieldSplit[] Watching { get; }

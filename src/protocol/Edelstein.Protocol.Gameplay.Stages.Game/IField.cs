@@ -11,6 +11,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
     public interface IField : IFieldPool, IStage<IField, IFieldObjUser>, IPhysicalSpace2D, IRepositoryEntry<int>
     {
+        IGameStage GameStage { get; }
+
         FieldTemplate Template { get; init; }
 
         IFieldSplit GetSplit(Point2D position);
