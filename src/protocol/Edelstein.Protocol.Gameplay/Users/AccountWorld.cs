@@ -1,9 +1,9 @@
-﻿using Edelstein.Protocol.Gameplay.Inventories;
+﻿using Edelstein.Protocol.Gameplay.Users.Inventories;
 using Edelstein.Protocol.Util.Repositories;
 
-namespace Edelstein.Protocol.Gameplay
+namespace Edelstein.Protocol.Gameplay.Users
 {
-    public class AccountWorldEntity : IRepositoryEntry<int>
+    public class AccountWorld : IRepositoryEntry<int>
     {
         public int ID { get; init; }
         public int AccountID { get; init; }
@@ -14,7 +14,7 @@ namespace Edelstein.Protocol.Gameplay
         public ItemLocker Locker { get; set; }
         public ItemTrunk Trunk { get; set; }
 
-        public AccountWorldEntity()
+        public AccountWorld()
         {
             SlotCount = 3;
             Locker = new ItemLocker(999);

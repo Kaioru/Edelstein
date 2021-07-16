@@ -9,16 +9,15 @@
     <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Inventories\" />
-    <Folder Include="Inventories\Modify\" />
-    <Folder Include="Inventories\Templates\" />
+    <Folder Include="Users\Inventories\" />
     <Folder Include="Stages\" />
-    <Folder Include="Stats\" />
-    <Folder Include="Stats\Modify\" />
+    <Folder Include="Users\Stats\" />
     <Folder Include="Templating\" />
     <Folder Include="Spatial\" />
+    <Folder Include="Users\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Space\" />
+    <None Remove="Users\" />
   </ItemGroup>
 </Project>

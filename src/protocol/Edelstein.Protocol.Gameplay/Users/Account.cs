@@ -1,8 +1,8 @@
 ﻿using Edelstein.Protocol.Util.Repositories;
 
-namespace Edelstein.Protocol.Gameplay
+namespace Edelstein.Protocol.Gameplay.Users
 {
-    public class AccountEntity : IRepositoryEntry<int>
+    public class Account : IRepositoryEntry<int>
     {
         public int ID { get; init; }
 

@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Network.Session;
+﻿using Edelstein.Protocol.Gameplay.Users;
+using Edelstein.Protocol.Network.Session;
 
 namespace Edelstein.Protocol.Gameplay.Stages
 {
@@ -6,9 +7,9 @@ namespace Edelstein.Protocol.Gameplay.Stages
         where TStage : IStage<TStage, TUser>
         where TUser : IStageUser<TStage, TUser>
     {
-        AccountEntity Account { get; init; }
-        AccountWorldEntity AccountWorld { get; init; }
-        CharacterEntity CharacterEntity { get; init; }
+        Account Account { get; init; }
+        AccountWorld AccountWorld { get; init; }
+        Character Character { get; init; }
 
         TStage Stage { get; set; }
     }

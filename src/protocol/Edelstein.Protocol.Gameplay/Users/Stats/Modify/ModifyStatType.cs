@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Edelstein.Protocol.Gameplay.Stats.Modify
+namespace Edelstein.Protocol.Gameplay.Users.Stats.Modify
 {
     [Flags]
     public enum ModifyStatType

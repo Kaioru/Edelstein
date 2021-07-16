@@ -1,6 +1,6 @@
 ﻿using Edelstein.Protocol.Network;
 
-namespace Edelstein.Protocol.Gameplay.Stats.Modify
+namespace Edelstein.Protocol.Gameplay.Users.Stats.Modify
 {
     public interface IModifyStatContext
     {
