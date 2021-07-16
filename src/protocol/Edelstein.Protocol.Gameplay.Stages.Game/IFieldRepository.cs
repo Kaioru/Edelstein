@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
-    public interface IFieldRepository : ILocalRepository<int, IField>
+    public interface IFieldRepository : ILocalRepositoryReader<int, IField>
     {
     }
 }

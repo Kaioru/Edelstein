@@ -5,7 +5,7 @@ namespace Edelstein.Protocol.Gameplay.Templating
 {
     public interface ITemplateRepository<
         TEntry
-    > : ILocalRepository<int, TEntry>
+    > : ILocalRepositoryReader<int, TEntry>
         where TEntry : class, ITemplate
     {
         Task Populate();
