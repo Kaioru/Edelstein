@@ -4,13 +4,13 @@ using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Interop;
-using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
-    public interface IGameStage : IStage<IGameStage, IGameStageUser>, IRepositoryEntry<int>
+    public interface IGameStage : IMigrateableStage<IGameStage, IGameStageUser>
     {
         int WorldID { get; }
+        int ChannelID { get; }
 
         IServerRegistryService ServerRegistryService { get; }
         ISessionRegistryService SessionRegistry { get; }
