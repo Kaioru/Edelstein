@@ -46,30 +46,6 @@ namespace Edelstein.Common.Datastore.Marten
             return Task.CompletedTask;
         }
 
-        public async Task<IEnumerable<T>> Retrieve<T>(IEnumerable<int> id) where T : class, IDataDocument
-            => await _session.LoadManyAsync<T>(id);
-
-        public Task Insert<T>(IEnumerable<T> entity) where T : class, IDataDocument
-        {
-            _session.Insert(entity);
-            return Task.CompletedTask;
-        }
-
-        public Task Update<T>(IEnumerable<T> entity) where T : class, IDataDocument
-        {
-            _session.Update(entity);
-            return Task.CompletedTask;
-        }
-
-        public Task Delete<T>(IEnumerable<T> entity) where T : class, IDataDocument
-        {
-            _session.Delete(entity);
-            return Task.CompletedTask;
-        }
-
-        public Task Delete<T>(IEnumerable<int> id) where T : class, IDataDocument
-            => Task.WhenAll(id.Select(i => Delete<T>(i)));
-
         public Task Discard()
         {
             _session.Dispose();
