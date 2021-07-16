@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Edelstein.Protocol.Gameplay.Inventories
+namespace Edelstein.Protocol.Gameplay.Users.Inventories
 {
     public abstract class AbstractItemSlot
     {

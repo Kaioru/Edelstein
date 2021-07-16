@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay.Inventories.Modify
+﻿namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
 {
     public enum ModifyInventoryOperations
     {

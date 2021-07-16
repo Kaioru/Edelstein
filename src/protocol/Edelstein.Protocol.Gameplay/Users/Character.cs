@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Edelstein.Protocol.Gameplay.Inventories;
+using Edelstein.Protocol.Gameplay.Users.Inventories;
 using Edelstein.Protocol.Util.Repositories;
 
-namespace Edelstein.Protocol.Gameplay
+namespace Edelstein.Protocol.Gameplay.Users
 {
-    public class CharacterEntity : IRepositoryEntry<int>
+    public class Character : IRepositoryEntry<int>
     {
         public int ID { get; init; }
         public int AccountWorldID { get; init; }
@@ -57,7 +57,7 @@ namespace Edelstein.Protocol.Gameplay
 
         public int[] WishList { get; }
 
-        public CharacterEntity()
+        public Character()
         {
             Level = 1;
             STR = 4;

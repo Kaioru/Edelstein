@@ -1,7 +1,7 @@
 ﻿using System;
 using Edelstein.Protocol.Network;
 
-namespace Edelstein.Protocol.Gameplay.Inventories.Modify
+namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
 {
     public interface IModifyInventoryOperation
     {
