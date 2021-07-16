@@ -1,8 +1,10 @@
-﻿using Edelstein.Protocol.Util.Repositories;
+﻿using System.Threading.Tasks;
+using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.FieldSets
 {
     public interface IFieldSetRepository : ILocalRepository<string, IFieldSet>
     {
+        Task<IFieldSet> RetrieveByField(int field);
     }
 }
