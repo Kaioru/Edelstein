@@ -6,7 +6,7 @@ using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Login
 { 
-    public interface ILoginStage : IStage<ILoginStage, ILoginStageUser>, IRepositoryEntry<int>
+    public interface ILoginStage : IMigrateableStage<ILoginStage, ILoginStageUser>, IRepositoryEntry<int>
     {
         IServerRegistryService ServerRegistryService { get; }
         ISessionRegistryService SessionRegistry { get; }

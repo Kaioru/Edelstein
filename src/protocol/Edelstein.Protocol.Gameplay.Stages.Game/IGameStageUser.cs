@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
-    public interface IGameStageUser : IStageUser<IGameStage, IGameStageUser>
+    public interface IGameStageUser : IMigrateableStageUser<IGameStage, IGameStageUser>
     {
         IField Field { get; }
         IFieldObjUser FieldUser { get; }
