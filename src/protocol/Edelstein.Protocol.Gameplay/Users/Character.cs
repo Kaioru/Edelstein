@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Edelstein.Protocol.Datastore;
 using Edelstein.Protocol.Gameplay.Users.Inventories;
-using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Users
 {
-    public class Character : IRepositoryEntry<int>
+    public class Character : IDataDocument
     {
         public int ID { get; init; }
         public int AccountWorldID { get; init; }
@@ -56,6 +57,9 @@ namespace Edelstein.Protocol.Gameplay.Users
         //public IDictionary<short, DateTime> QuestComplete { get; set; }
 
         public int[] WishList { get; }
+
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
 
         public Character()
         {

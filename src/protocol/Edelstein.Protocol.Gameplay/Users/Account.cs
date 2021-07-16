@@ -1,8 +1,9 @@
-﻿using Edelstein.Protocol.Util.Repositories;
+﻿using System;
+using Edelstein.Protocol.Datastore;
 
 namespace Edelstein.Protocol.Gameplay.Users
 {
-    public class Account : IRepositoryEntry<int>
+    public class Account : IDataDocument
     {
         public int ID { get; init; }
 
@@ -14,5 +15,8 @@ namespace Edelstein.Protocol.Gameplay.Users
         public byte? Gender { get; set; }
 
         public byte? LatestConnectedWorld { get; set; }
+
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
     }
 }

@@ -1,9 +1,10 @@
-﻿using Edelstein.Protocol.Gameplay.Users.Inventories;
-using Edelstein.Protocol.Util.Repositories;
+﻿using System;
+using Edelstein.Protocol.Datastore;
+using Edelstein.Protocol.Gameplay.Users.Inventories;
 
 namespace Edelstein.Protocol.Gameplay.Users
 {
-    public class AccountWorld : IRepositoryEntry<int>
+    public class AccountWorld : IDataDocument
     {
         public int ID { get; init; }
         public int AccountID { get; init; }
@@ -13,6 +14,9 @@ namespace Edelstein.Protocol.Gameplay.Users
 
         public ItemLocker Locker { get; set; }
         public ItemTrunk Trunk { get; set; }
+
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
 
         public AccountWorld()
         {
