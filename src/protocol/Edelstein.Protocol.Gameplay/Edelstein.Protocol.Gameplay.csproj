@@ -17,9 +17,11 @@
     <Folder Include="Templating\" />
     <Folder Include="Spatial\" />
     <Folder Include="Users\" />
+    <Folder Include="Stages\Handling\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Space\" />
     <None Remove="Users\" />
+    <None Remove="Stages\Handling\" />
   </ItemGroup>
 </Project>
