@@ -7,9 +7,9 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Continent
 {
     public interface IContiMove : IFieldPool, IRepositoryEntry<int>
     {
-        ContiMoveState State { get; }
-
         string Info { get; }
+
+        ContiMoveState State { get; }
 
         DateTime NextBoarding { get; }
         DateTime NextEvent { get; }
