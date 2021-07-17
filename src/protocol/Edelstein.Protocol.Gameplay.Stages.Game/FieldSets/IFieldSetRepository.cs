@@ -5,6 +5,6 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.FieldSets
 {
     public interface IFieldSetRepository : ILocalRepositoryReader<string, IFieldSet>
     {
-        Task<IFieldSet> RetrieveByField(int field);
+        Task<IFieldSet> RetrieveByField(IField field);
     }
 }

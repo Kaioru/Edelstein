@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
+using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
@@ -25,5 +26,6 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
 
         IFieldRepository FieldRepository { get; }
         IFieldSetRepository FieldSetRepository { get; }
+        IContiMoveRepository ContiMoveRepository { get; }
     }
 }
