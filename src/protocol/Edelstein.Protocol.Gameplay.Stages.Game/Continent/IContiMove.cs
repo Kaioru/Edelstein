@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Gameplay.Stages.Game.Continent.Templates;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Repositories;
 
@@ -8,8 +7,6 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Continent
 {
     public interface IContiMove : IPacketDispatcher, IRepositoryEntry<int>
     {
-        ContiMoveTemplate Template { get; }
-
         ContiMoveState State { get; }
 
         DateTime NextBoarding { get; }
