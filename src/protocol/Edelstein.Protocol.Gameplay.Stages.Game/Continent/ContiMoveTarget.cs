@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Continent
 {
-    public class ContiMoveTarget : byte
+    public enum ContiMoveTarget : byte
     {
         TargetStartField = 0x7,
         TargetStartShipMoveField = 0x8,
