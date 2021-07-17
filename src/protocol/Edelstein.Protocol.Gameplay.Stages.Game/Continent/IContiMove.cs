@@ -9,6 +9,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Continent
     {
         ContiMoveState State { get; }
 
+        string Info { get; }
+
         DateTime NextBoarding { get; }
         DateTime NextEvent { get; }
         bool IsEventActive { get; }
