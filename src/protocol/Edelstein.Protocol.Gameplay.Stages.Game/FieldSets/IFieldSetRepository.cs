@@ -3,7 +3,7 @@ using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.FieldSets
 {
-    public interface IFieldSetRepository : ILocalRepositoryReader<string, IFieldSet>
+    public interface IFieldSetRepository : ILocalRepository<string, IFieldSet>
     {
         Task<IFieldSet> RetrieveByField(IField field);
     }

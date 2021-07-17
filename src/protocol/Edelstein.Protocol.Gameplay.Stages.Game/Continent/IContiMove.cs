@@ -5,7 +5,7 @@ using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Continent
 {
-    public interface IContiMove : IPacketDispatcher, IRepositoryEntry<int>
+    public interface IContiMove : IFieldPool, IRepositoryEntry<int>
     {
         ContiMoveState State { get; }
 
