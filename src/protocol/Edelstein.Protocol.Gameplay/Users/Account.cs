@@ -3,7 +3,7 @@ using Edelstein.Protocol.Datastore;
 
 namespace Edelstein.Protocol.Gameplay.Users
 {
-    public class Account : IDataDocument
+    public record Account : IDataDocument
     {
         public int ID { get; init; }
 
