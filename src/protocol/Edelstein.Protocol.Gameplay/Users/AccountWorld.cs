@@ -4,7 +4,7 @@ using Edelstein.Protocol.Gameplay.Users.Inventories;
 
 namespace Edelstein.Protocol.Gameplay.Users
 {
-    public class AccountWorld : IDataDocument
+    public record AccountWorld : IDataDocument
     {
         public int ID { get; init; }
         public int AccountID { get; init; }
