@@ -11,6 +11,9 @@ namespace Edelstein.Common.Scripting.NLua
         public LuaScriptState(Lua luaState)
             => _state = luaState;
 
+        public void Register(string key, object value)
+            => _state[key] = value;
+
         public Task<object> Call(string name, params object[] args)
         {
             var function = _state[name] as LuaFunction;
