@@ -1,12 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Edelstein.Protocol.Scripting
 {
-    public interface IScriptState
+    public interface IScriptState : IDisposable
     {
-        void Register(string key, object value);
-        void Deregister(string key);
-
         Task<object> Evaluate(string source);
         Task<object> Call(string name, params object[] args);
     }

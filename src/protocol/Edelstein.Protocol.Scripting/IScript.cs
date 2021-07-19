@@ -2,8 +2,9 @@
 
 namespace Edelstein.Protocol.Scripting
 {
-    public interface IScript : IScriptState
+    public interface IScript
     {
-        Task<IScriptState> Run();
+        Task<object> Evaluate(IScriptScope scope);
+        Task<IScriptState> Run(IScriptScope scope);
     }
 }
