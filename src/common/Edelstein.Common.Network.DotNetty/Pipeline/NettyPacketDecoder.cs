@@ -34,57 +34,52 @@ namespace Edelstein.Common.Network.DotNetty.Pipeline
         {
             var socket = context.Channel.GetAttribute(NettyAttributes.SocketKey).Get();
 
-            try
+            switch (State)
             {
-                switch (State)
-                {
-                    case NettyPacketState.DecodingHeader:
-                        if (socket != null)
+                case NettyPacketState.DecodingHeader:
+                    if (socket != null)
+                    {
+                        var sequence = input.ReadShortLE();
+                        var length = input.ReadShortLE();
+
+                        if (socket.EncryptData) length ^= sequence;
+
+                        _sequence = sequence;
+                        _length = length;
+                    }
+                    else _length = input.ReadShortLE();
+
+                    Checkpoint(NettyPacketState.DecodingPayload);
+                    return;
+                case NettyPacketState.DecodingPayload:
+                    if (input.ReadableBytes < _length) RequestReplay();
+
+                    var buffer = new byte[_length];
+
+                    input.ReadBytes(buffer);
+                    Checkpoint(NettyPacketState.DecodingHeader);
+
+                    if (_length < 0x2) return;
+
+                    if (socket != null)
+                    {
+                        var seqRecv = socket.SeqRecv;
+                        var version = (short)(seqRecv >> 16) ^ _sequence;
+
+                        if (!(version == -(_transport.Version + 1) ||
+                              version == _transport.Version)) return;
+
+                        if (socket.EncryptData)
                         {
-                            var sequence = input.ReadShortLE();
-                            var length = input.ReadShortLE();
-
-                            if (socket.EncryptData) length ^= sequence;
-
-                            _sequence = sequence;
-                            _length = length;
-                        }
-                        else _length = input.ReadShortLE();
-
-                        Checkpoint(NettyPacketState.DecodingPayload);
-                        return;
-                    case NettyPacketState.DecodingPayload:
-                        var buffer = new byte[_length];
-
-                        input.ReadBytes(buffer);
-                        Checkpoint(NettyPacketState.DecodingHeader);
-
-                        if (_length < 0x2) return;
-
-                        if (socket != null)
-                        {
-                            var seqRecv = socket.SeqRecv;
-                            var version = (short)(seqRecv >> 16) ^ _sequence;
-
-                            if (!(version == -(_transport.Version + 1) ||
-                                  version == _transport.Version)) return;
-
-                            if (socket.EncryptData)
-                            {
-                                _aesCipher.Transform(buffer, seqRecv);
-                                ShandaCipher.DecryptTransform(buffer);
-                            }
-
-                            socket.SeqRecv = _igCipher.Hash(seqRecv, 4, 0);
+                            _aesCipher.Transform(buffer, seqRecv);
+                            ShandaCipher.DecryptTransform(buffer);
                         }
 
-                        output.Add(new UnstructuredIncomingPacket(buffer));
-                        return;
-                }
-            }
-            catch (IndexOutOfRangeException)
-            {
-                RequestReplay();
+                        socket.SeqRecv = _igCipher.Hash(seqRecv, 4, 0);
+                    }
+
+                    output.Add(new UnstructuredIncomingPacket(buffer));
+                    return;
             }
         }
     }
