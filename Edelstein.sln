@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Datastore.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Datastore.LiteDB", "src\common\Edelstein.Common.Datastore.LiteDB\Edelstein.Common.Datastore.LiteDB.csproj", "{C6756AD7-DF47-49BB-BEF5-D0D688C24E91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Scripting", "src\protocol\Edelstein.Protocol.Scripting\Edelstein.Protocol.Scripting.csproj", "{F6CFDE89-A40D-42B2-9C57-2104F066BC80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -220,6 +222,18 @@ Global
 		{C6756AD7-DF47-49BB-BEF5-D0D688C24E91}.Release|x64.Build.0 = Release|Any CPU
 		{C6756AD7-DF47-49BB-BEF5-D0D688C24E91}.Release|x86.ActiveCfg = Release|Any CPU
 		{C6756AD7-DF47-49BB-BEF5-D0D688C24E91}.Release|x86.Build.0 = Release|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Debug|x64.Build.0 = Debug|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Debug|x86.Build.0 = Debug|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Release|x64.ActiveCfg = Release|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Release|x64.Build.0 = Release|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Release|x86.ActiveCfg = Release|Any CPU
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1AD35F79-0AD1-40C4-B62D-ABBF561D882B} = {4D3AFB07-9FA4-4978-B999-BF2E8617901C}
@@ -239,5 +253,6 @@ Global
 		{C46E61A5-D96C-4803-9100-A73385D920FA} = {1AD35F79-0AD1-40C4-B62D-ABBF561D882B}
 		{958348AF-2743-43FD-BF61-AA714B5855BA} = {2276DE48-1BFD-4DB9-B18B-07075E2A34B6}
 		{C6756AD7-DF47-49BB-BEF5-D0D688C24E91} = {2276DE48-1BFD-4DB9-B18B-07075E2A34B6}
+		{F6CFDE89-A40D-42B2-9C57-2104F066BC80} = {1AD35F79-0AD1-40C4-B62D-ABBF561D882B}
 	EndGlobalSection
 EndGlobal
