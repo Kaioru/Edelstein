@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Numerics;
 using System.Text;
 using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Network
 {
-    public class UnstructuredIncomingPacket : IPacket, IPacketReader
+    public class UnstructuredIncomingPacket : IPacketReader
     {
         private static readonly Encoding StringEncoding = Encoding.ASCII;
 
