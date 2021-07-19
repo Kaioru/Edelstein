@@ -13,7 +13,7 @@ namespace Edelstein.Common.Scripting.NLua
         public Task<object> EvaluateFromFile(string path, IDictionary<string, object> globals = null)
             => new LuaScript(File.ReadAllText(path)).Evaluate(globals);
 
-        public Task<IScript> Create(string source)
+        public Task<IScript> Create(string source = "")
             => Task.FromResult<IScript>(new LuaScript(source));
 
         public Task<IScript> CreateFromFile(string path)
