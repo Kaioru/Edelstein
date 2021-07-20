@@ -5,12 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Caching\Edelstein.Protocol.Caching.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Serializer\" />
+    <None Remove="Microsoft.Extensions.Caching.Abstractions" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Serializer\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Caching\Edelstein.Protocol.Caching.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />
   </ItemGroup>
 </Project>
