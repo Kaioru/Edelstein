@@ -51,7 +51,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Interop", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Caching", "src\protocol\Edelstein.Protocol.Caching\Edelstein.Protocol.Caching.csproj", "{D0A7429D-83B7-45F1-80A2-85A68E154D7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Caching", "src\common\Edelstein.Common.Caching.Serializer.Json\Edelstein.Common.Caching.csproj", "{16192D9D-E69C-4BC9-BA30-BB1CA2680620}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Caching", "src\common\Edelstein.Common.Caching\Edelstein.Common.Caching.csproj", "{16192D9D-E69C-4BC9-BA30-BB1CA2680620}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
