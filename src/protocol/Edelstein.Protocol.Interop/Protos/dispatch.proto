@@ -43,4 +43,5 @@ message DispatchToCharacterRequest {
 
 message DispatchResponse {
     DispatchResult result = 1;
+    int32 reach = 2;
 }
