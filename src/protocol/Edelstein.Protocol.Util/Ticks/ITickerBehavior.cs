@@ -4,6 +4,6 @@ namespace Edelstein.Protocol.Util.Ticks
 {
     public interface ITickerBehavior
     {
-        Task Tick();
+        Task OnTick();
     }
 }
