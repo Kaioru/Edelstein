@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Caching
+﻿namespace Edelstein.Protocol.Util.Caching
 {
     public interface ICacheFactory
     {

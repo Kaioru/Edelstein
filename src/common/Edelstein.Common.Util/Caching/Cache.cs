@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Edelstein.Common.Caching.Serializer;
-using Edelstein.Protocol.Caching;
-using Edelstein.Protocol.Caching.Serializer;
+using Edelstein.Common.Util.Caching.Serializer;
+using Edelstein.Protocol.Util.Caching;
+using Edelstein.Protocol.Util.Caching.Serializer;
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace Edelstein.Common.Caching
+namespace Edelstein.Common.Util.Caching
 {
     public class Cache : ICache
     {

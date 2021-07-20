@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Caching;
+using Edelstein.Protocol.Util.Caching;
 using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Common.Util.Repositories
