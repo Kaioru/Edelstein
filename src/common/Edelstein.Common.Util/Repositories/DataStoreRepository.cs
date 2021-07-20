@@ -14,7 +14,10 @@ namespace Edelstein.Common.Util.Repositories
             => Store = store;
 
         public Task<TEntry> Retrieve(int key)
-            => Store.StartSession().Retrieve<TEntry>(key);
+        {
+            using var session = Store.StartSession();
+            return session.Retrieve<TEntry>(key);
+        }
 
         public async Task<IEnumerable<TEntry>> Retrieve(IEnumerable<int> keys)
         {
@@ -24,7 +27,10 @@ namespace Edelstein.Common.Util.Repositories
         }
 
         public Task Insert(TEntry entry)
-            => Store.StartSession().Insert(entry);
+        {
+            using var session = Store.StartSession();
+            return session.Insert(entry);
+        }
 
         public async Task Insert(IEnumerable<TEntry> entries)
         {
@@ -35,7 +41,10 @@ namespace Edelstein.Common.Util.Repositories
         }
 
         public Task Update(TEntry entry)
-            => Store.StartSession().Update(entry);
+        {
+            using var session = Store.StartSession();
+            return session.Update(entry);
+        }
 
         public async Task Update(IEnumerable<TEntry> entries)
         {
@@ -46,10 +55,16 @@ namespace Edelstein.Common.Util.Repositories
         }
 
         public Task Delete(int key)
-            => Store.StartSession().Delete<TEntry>(key);
+        {
+            using var session = Store.StartSession();
+            return session.Delete<TEntry>(key);
+        }
 
         public Task Delete(TEntry entry)
-            => Store.StartSession().Delete(entry);
+        {
+            using var session = Store.StartSession();
+            return session.Delete(entry);
+        }
 
         public async Task Delete(IEnumerable<int> keys)
         {

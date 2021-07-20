@@ -10,9 +10,12 @@ namespace Edelstein.Common.Gameplay.Users
         public AccountWorldRepository(IDataStore store) : base(store) { }
 
         public Task<AccountWorld> RetrieveByAccountAndWorld(int account, int world)
-            => Store.StartSession()
-                    .Query<AccountWorld>()
-                    .Where(a => a.AccountID == account && a.WorldID == world)
-                    .FirstOrDefault();
+        {
+            using var session = Store.StartSession();
+            return session
+                .Query<AccountWorld>()
+                .Where(a => a.AccountID == account && a.WorldID == world)
+                .FirstOrDefault();
+        }
     }
 }

@@ -10,9 +10,12 @@ namespace Edelstein.Common.Gameplay.Users
         public AccountRepository(IDataStore store) : base(store) { }
 
         public Task<Account> RetrieveByUsername(string username)
-            => Store.StartSession()
-                    .Query<Account>()
-                    .Where(a => a.Username == username)
-                    .FirstOrDefault();
+        {
+            using var session = Store.StartSession();
+            return session
+                .Query<Account>()
+                .Where(a => a.Username == username)
+                .FirstOrDefault();
+        }
     }
 }
