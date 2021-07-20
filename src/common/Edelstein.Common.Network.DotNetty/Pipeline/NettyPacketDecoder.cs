@@ -52,7 +52,11 @@ namespace Edelstein.Common.Network.DotNetty.Pipeline
                     Checkpoint(NettyPacketState.DecodingPayload);
                     return;
                 case NettyPacketState.DecodingPayload:
-                    if (input.ReadableBytes < _length) RequestReplay();
+                    if (input.ReadableBytes < _length)
+                    {
+                        RequestReplay();
+                        return;
+                    }
 
                     var buffer = new byte[_length];
 
