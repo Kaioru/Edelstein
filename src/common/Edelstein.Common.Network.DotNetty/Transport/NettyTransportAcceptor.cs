@@ -11,6 +11,8 @@ using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Ciphers;
 using Edelstein.Protocol.Network.Session;
 using Edelstein.Protocol.Network.Transport;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Edelstein.Common.Network.DotNetty.Transport
 {
@@ -27,11 +29,14 @@ namespace Edelstein.Common.Network.DotNetty.Transport
         private IEventLoopGroup BossGroup { get; set; }
         private IEventLoopGroup WorkerGroup { get; set; }
 
+        private readonly ILogger<ITransportAcceptor> _logger;
+
         public NettyTransportAcceptor(
             ISessionInitializer initializer,
             short version,
             string patch,
-            byte locale
+            byte locale,
+            ILogger<ITransportAcceptor> logger = null
         )
         {
             Sessions = new Dictionary<string, ISession>();
@@ -39,6 +44,8 @@ namespace Edelstein.Common.Network.DotNetty.Transport
             Version = version;
             Patch = patch;
             Locale = locale;
+
+            _logger = logger ?? NullLogger<ITransportAcceptor>.Instance;
         }
 
         public async Task Accept(string host, int port)
@@ -62,6 +69,8 @@ namespace Edelstein.Common.Network.DotNetty.Transport
                     );
                 }))
                 .BindAsync(port);
+
+            _logger.LogInformation($"Socket acceptor bound on {host}:{port}");
         }
 
         public Task Dispatch(IPacket packet)
