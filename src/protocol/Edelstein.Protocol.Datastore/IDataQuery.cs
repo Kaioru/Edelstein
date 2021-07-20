@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Edelstein.Protocol.Datastore
 {
@@ -14,11 +15,11 @@ namespace Edelstein.Protocol.Datastore
         IDataQuery<T> Limit(int limit);
         IDataQuery<T> Skip(int offset);
 
-        T First();
-        T FirstOrDefault();
+        Task<T> First();
+        Task<T> FirstOrDefault();
 
-        IEnumerable<T> All();
+        Task<IEnumerable<T>> All();
 
-        int Count();
+        Task<int> Count();
     }
 }
