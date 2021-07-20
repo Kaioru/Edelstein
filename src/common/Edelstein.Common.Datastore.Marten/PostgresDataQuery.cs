@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Edelstein.Protocol.Datastore;
 
 namespace Edelstein.Common.Datastore.Marten
@@ -26,15 +27,15 @@ namespace Edelstein.Common.Datastore.Marten
         public IDataQuery<T> Skip(int offset)
             => new PostgresDataQuery<T>(_enumerable.Skip(offset));
 
-        public T First()
-            => _enumerable.First();
-        public T FirstOrDefault()
-            => _enumerable.FirstOrDefault();
+        public Task<T> First()
+            => Task.FromResult(_enumerable.First());
+        public Task<T> FirstOrDefault()
+            => Task.FromResult(_enumerable.FirstOrDefault());
 
-        public IEnumerable<T> All()
-            => _enumerable.ToList();
+        public Task<IEnumerable<T>> All()
+            => Task.FromResult<IEnumerable<T>>(_enumerable.ToList());
 
-        public int Count()
-            => _enumerable.Count();
+        public Task<int> Count()
+            => Task.FromResult(_enumerable.Count());
     }
 }

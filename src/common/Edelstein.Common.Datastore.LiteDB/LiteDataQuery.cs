@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Edelstein.Protocol.Datastore;
 using LiteDB;
 
@@ -26,15 +27,16 @@ namespace Edelstein.Common.Datastore.LiteDB
         public IDataQuery<T> Skip(int offset)
             => new LiteDataQueryResult<T>(_queryable, _queryable.Skip(offset));
 
-        public T First()
-            => _queryable.First();
-        public T FirstOrDefault()
-            => _queryable.FirstOrDefault();
+        public Task<T> First()
+            => Task.FromResult(_queryable.First());
 
-        public IEnumerable<T> All()
-            => _queryable.ToList();
+        public Task<T> FirstOrDefault()
+            => Task.FromResult(_queryable.FirstOrDefault());
 
-        public int Count()
-            => _queryable.Count();
+        public Task<IEnumerable<T>> All()
+            => Task.FromResult<IEnumerable<T>>(_queryable.ToList());
+
+        public Task<int> Count()
+            => Task.FromResult(_queryable.Count());
     }
 }

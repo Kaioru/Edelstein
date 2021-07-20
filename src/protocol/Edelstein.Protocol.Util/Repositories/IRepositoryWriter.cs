@@ -8,8 +8,8 @@ namespace Edelstein.Protocol.Util.Repositories
         TEntry
     > where TEntry : class, IRepositoryEntry<TKey>
     {
-        Task<TEntry> Insert(TEntry entry);
-        Task<IEnumerable<TEntry>> Insert(IEnumerable<TEntry> entries);
+        Task Insert(TEntry entry);
+        Task Insert(IEnumerable<TEntry> entries);
 
         Task Update(TEntry entry);
         Task Update(IEnumerable<TEntry> entries);

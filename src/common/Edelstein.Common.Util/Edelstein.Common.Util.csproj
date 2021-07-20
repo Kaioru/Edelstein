@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Repository\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj" />
+  </ItemGroup>
+</Project>
