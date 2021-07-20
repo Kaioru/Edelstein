@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Edelstein.Common.Util.Caching;
 using Edelstein.Common.Util.Repositories;
 using Edelstein.Protocol.Datastore;
@@ -23,5 +25,14 @@ namespace Edelstein.Common.Gameplay.Users
             CacheDuration
         )
         => _store = store;
+
+        public Task<IEnumerable<Character>> RetrieveAllByAccountWorld(int accountworld)
+        {
+            using var session = _store.StartSession();
+            return session
+                .Query<Character>()
+                .Where(c => c.AccountWorldID == accountworld)
+                .All();
+        }
     }
 }
