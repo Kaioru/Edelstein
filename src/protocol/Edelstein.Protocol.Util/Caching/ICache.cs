@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Edelstein.Protocol.Caching
+namespace Edelstein.Protocol.Util.Caching
 {
     public interface ICache
     {

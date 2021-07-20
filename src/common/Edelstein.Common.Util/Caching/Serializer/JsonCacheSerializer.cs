@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Caching.Serializer;
+using Edelstein.Protocol.Util.Caching.Serializer;
 
-namespace Edelstein.Common.Caching.Serializer
+namespace Edelstein.Common.Util.Caching.Serializer
 {
     public class JsonCacheSerializer : ICacheSerializer
     {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Edelstein.Protocol.Caching.Serializer
+namespace Edelstein.Protocol.Util.Caching.Serializer
 {
     public interface ICacheSerializer
     {

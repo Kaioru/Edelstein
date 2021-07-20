@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Caching;
+using Edelstein.Protocol.Util.Caching;
 
-namespace Edelstein.Common.Caching
+namespace Edelstein.Common.Util.Caching
 {
     public class ScopedCache : ICache
     {
