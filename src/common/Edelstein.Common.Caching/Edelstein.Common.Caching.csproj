@@ -5,14 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Repository\" />
+    <None Remove="Serializer\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repositories\" />
+    <Folder Include="Serializer\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Caching\Edelstein.Protocol.Caching.csproj" />
   </ItemGroup>
 </Project>
