@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Serializer\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Serializer\" />
+  </ItemGroup>
+</Project>
