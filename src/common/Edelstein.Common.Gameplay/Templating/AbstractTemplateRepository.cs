@@ -30,10 +30,11 @@ namespace Edelstein.Common.Gameplay.Templating
         public Task OnTick()
         {
             var now = DateTime.UtcNow;
-            var expired = Entries.Values.Where(e => now > e.DateExpire).ToList();
+            var expired = Entries.Values
+                .Where(e => e.HasTemplate && now > e.DateExpire)
+                .ToList();
 
-            foreach (var e in expired)
-                Entries.Remove(e.ID);
+            foreach (var e in expired) e.Reset();
             return Task.CompletedTask;
         }
     }
