@@ -9,6 +9,7 @@
     <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Interop\Edelstein.Protocol.Interop.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Users\Inventories\" />

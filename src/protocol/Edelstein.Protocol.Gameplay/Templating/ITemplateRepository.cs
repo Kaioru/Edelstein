@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Edelstein.Protocol.Util.Repositories;
+﻿using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Templating
 {
@@ -8,6 +7,5 @@ namespace Edelstein.Protocol.Gameplay.Templating
     > : ILocalRepositoryReader<int, TEntry>
         where TEntry : class, ITemplate
     {
-        Task Populate();
     }
 }

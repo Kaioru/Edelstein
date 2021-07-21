@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Protocol.Parser;
 
 namespace Edelstein.Protocol.Gameplay.Users.Inventories.Templates
 {
@@ -23,5 +24,26 @@ namespace Edelstein.Protocol.Gameplay.Users.Inventories.Templates
         public bool AccountSharable { get; init; }
 
         public bool Cash { get; init; }
+
+        public ItemTemplate(int id, IDataProperty info)
+        {
+            ID = id;
+
+            SellPrice = info.Resolve<int>("price") ?? 0;
+            TimeLimited = info.Resolve<bool>("timeLimited") ?? false;
+
+            // TODO: replace
+
+            Quest = info.Resolve<bool>("quest") ?? false;
+            PartyQuest = info.Resolve<bool>("pquest") ?? false;
+            Only = info.Resolve<bool>("only") ?? false;
+            TradeBlock = info.Resolve<bool>("tradeBlock") ?? false;
+            NotSale = info.Resolve<bool>("notSale") ?? false;
+            BigSize = info.Resolve<bool>("bigSize") ?? false;
+            ExpireOnLogout = info.Resolve<bool>("expireOnLogout") ?? false;
+            AccountSharable = info.Resolve<bool>("accountSharable") ?? false;
+
+            Cash = info.Resolve<bool>("cash") ?? false;
+        }
     }
 }
