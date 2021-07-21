@@ -21,5 +21,9 @@
     <None Remove="FieldSets\" />
     <None Remove="Conversations\" />
     <None Remove="Contimove\" />
+    <None Remove="morelinq" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="morelinq" Version="3.3.2" />
   </ItemGroup>
 </Project>
