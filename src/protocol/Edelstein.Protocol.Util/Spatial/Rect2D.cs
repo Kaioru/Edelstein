@@ -5,7 +5,7 @@
         public Point2D LeftTop { get; }
         public Point2D RightBottom { get; }
 
-        public Size2D Size => new(RightBottom.X - LeftTop.X, RightBottom.Y - LeftTop.Y);
+        public Size2D Size => new(RightBottom.Y - LeftTop.Y, RightBottom.X - LeftTop.X);
 
         public Rect2D(Point2D leftTop, Point2D rightBottom)
         {

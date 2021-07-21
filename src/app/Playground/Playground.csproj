@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Serilog" />
+    <None Remove="Serilog.Extensions.Logging" />
+    <None Remove="Serilog.Sinks.Console" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Login\Edelstein.Protocol.Gameplay.Stages.Login.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Game\Edelstein.Protocol.Gameplay.Stages.Game.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Parser.Duey\Edelstein.Common.Parser.Duey.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gamplay.Stages.Game\Edelstein.Common.Gamplay.Stages.Game.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
+  </ItemGroup>
+</Project>
