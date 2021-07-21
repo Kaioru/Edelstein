@@ -30,6 +30,8 @@ namespace Edelstein.Common.Gameplay.Templating
         public DateTime DateLoaded { get; private set; }
         public DateTime DateExpire { get; private set; }
 
+        public bool HasTemplate => _template != null;
+
         private TTemplate _template;
 
         protected AbstractTemplateRepositoryEntry(int id, TimeSpan duration)
