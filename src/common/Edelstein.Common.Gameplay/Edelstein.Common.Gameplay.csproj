@@ -6,12 +6,25 @@
 
   <ItemGroup>
     <None Remove="Users\" />
+    <None Remove="Templating\" />
+    <None Remove="Users\Inventories\" />
+    <None Remove="Users\Inventories\Templates\" />
+    <None Remove="morelinq" />
+    <None Remove="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Users\" />
+    <Folder Include="Templating\" />
+    <Folder Include="Users\Inventories\" />
+    <Folder Include="Users\Inventories\Templates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="morelinq" Version="3.3.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
   </ItemGroup>
 </Project>

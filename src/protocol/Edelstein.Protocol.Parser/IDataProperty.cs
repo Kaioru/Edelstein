@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Edelstein.Protocol.Parser
 {
-    public interface IDataProperty
+    public interface IDataProperty : IDataDirectory
     {
         IDataProperty Parent { get; }
 
