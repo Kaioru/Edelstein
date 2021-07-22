@@ -14,7 +14,6 @@ namespace Edelstein.Protocol.Network.Session
         Task OnException(Exception exception);
         Task OnDisconnect();
 
-        Task Update();
         Task Disconnect();
     }
 }
