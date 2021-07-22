@@ -12,12 +12,16 @@
     <None Remove="morelinq" />
     <None Remove="Microsoft.Extensions.Logging.Abstractions" />
     <None Remove="Microsoft.Extensions.Caching.Memory" />
+    <None Remove="Handling\" />
+    <None Remove="Stages\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Users\" />
     <Folder Include="Templating\" />
     <Folder Include="Users\Inventories\" />
     <Folder Include="Users\Inventories\Templates\" />
+    <Folder Include="Handling\" />
+    <Folder Include="Stages\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />
