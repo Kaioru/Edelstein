@@ -2,13 +2,13 @@
 {
     public struct Size2D
     {
-        public int Height { get; }
         public int Width { get; }
+        public int Height { get; }
 
-        public Size2D(int height, int width)
+        public Size2D(int width, int height)
         {
-            Height = height;
             Width = width;
+            Height = height;
         }
     }
 }

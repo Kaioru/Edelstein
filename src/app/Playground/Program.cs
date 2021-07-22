@@ -27,7 +27,7 @@ namespace Playground
 
             var fieldTemplate = fieldTemplates.Retrieve(310000000).Result;
 
-            Console.WriteLine($"Edelstein is {fieldTemplate.Bounds.Size.Height}x{fieldTemplate.Bounds.Size.Width} big");
+            Console.WriteLine($"Edelstein is {fieldTemplate.Bounds.Size.Width}x{fieldTemplate.Bounds.Size.Height} big");
             Console.WriteLine($"Took {stopwatch.Elapsed} to retrieve");
         }
     }
