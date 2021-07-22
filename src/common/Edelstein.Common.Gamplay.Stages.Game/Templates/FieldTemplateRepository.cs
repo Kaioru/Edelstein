@@ -10,14 +10,14 @@ using MoreLinq;
 
 namespace Edelstein.Common.Gamplay.Stages.Game.Templates
 {
-    public class FieldTemplateRepository : AbstractTemplateRepository<FieldTemplate>
+    public class FieldTemplateRepository : TemplateRepository<FieldTemplate>
     {
         private readonly static TimeSpan CacheDuration = TimeSpan.FromHours(1);
 
         public FieldTemplateRepository(
             IDataDirectoryCollection collection,
             ILogger<FieldTemplateRepository> logger = null
-        )
+        ) : base(CacheDuration)
         {
             logger ??= new NullLogger<FieldTemplateRepository>();
 
@@ -32,9 +32,8 @@ namespace Edelstein.Common.Gamplay.Stages.Game.Templates
                 .Select(n =>
                 {
                     var id = Convert.ToInt32(n.Name.Split(".")[0]);
-                    return new TemplateRepositoryEntry<FieldTemplate>(
+                    return new TemplateProvider<FieldTemplate>(
                         id,
-                        CacheDuration,
                         () => new FieldTemplate(
                             id,
                             n.Resolve("foothold").ResolveAll(),
@@ -45,9 +44,9 @@ namespace Edelstein.Common.Gamplay.Stages.Game.Templates
                     );
                 })
                 .DistinctBy(t => t.ID)
-                .ForEach(t => Entries.Add(t.ID, t));
+                .ForEach(t => Register(t));
 
-            logger.LogInformation($"Loaded {Entries.Count} field templates in {stopwatch.Elapsed}");
+            logger.LogInformation($"Loaded {Count} field templates in {stopwatch.Elapsed}");
 
             stopwatch.Stop();
         }

@@ -11,18 +11,18 @@ using MoreLinq;
 
 namespace Edelstein.Common.Gameplay.Users.Inventories.Templates
 {
-    public class ItemTemplateRepository : AbstractTemplateRepository<ItemTemplate>
+    public class ItemTemplateRepository : TemplateRepository<ItemTemplate>
     {
         private readonly static TimeSpan CacheDuration = TimeSpan.FromHours(1);
 
         public ItemTemplateRepository(
             IDataDirectoryCollection collection,
             ILogger<ItemTemplateRepository> logger = null
-        )
+        ) : base(CacheDuration)
         {
             logger ??= new NullLogger<ItemTemplateRepository>();
 
-            var results = new List<AbstractTemplateRepositoryEntry<ItemTemplate>>();
+            var results = new List<TemplateProvider<ItemTemplate>>();
             var dirCharacter = collection.Resolve("Character").ResolveAll();
             var dirItem = collection.Resolve("Item").ResolveAll();
 
@@ -59,9 +59,8 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Templates
                 .Select(n =>
                 {
                     var id = Convert.ToInt32(n.Name.Split(".")[0]);
-                    return new TemplateRepositoryEntry<ItemTemplate>(
+                    return new TemplateProvider<ItemTemplate>(
                         id,
-                        CacheDuration,
                         () => new ItemEquipTemplate(id, n.Resolve("info").ResolveAll())
                     );
                 })
@@ -78,9 +77,8 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Templates
                 .Select(n =>
                 {
                     var id = Convert.ToInt32(n.Name);
-                    return new TemplateRepositoryEntry<ItemTemplate>(
+                    return new TemplateProvider<ItemTemplate>(
                         id,
-                        CacheDuration,
                         () => new ItemBundleTemplate(id, n.Resolve("info").ResolveAll())
                     );
                 })
@@ -96,9 +94,8 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Templates
                 .Select(n =>
                 {
                     var id = Convert.ToInt32(n.Name.Split(".")[0]);
-                    return new TemplateRepositoryEntry<ItemTemplate>(
+                    return new TemplateProvider<ItemTemplate>(
                         id,
-                        CacheDuration,
                         () => new ItemPetTemplate(id, n.Resolve("info").ResolveAll())
                     );
                 })
@@ -111,7 +108,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Templates
 
             results
                 .DistinctBy(t => t.ID)
-                .ForEach(t => Entries.Add(t.ID, t));
+                .ForEach(t => Register(t));
         }
     }
 }
