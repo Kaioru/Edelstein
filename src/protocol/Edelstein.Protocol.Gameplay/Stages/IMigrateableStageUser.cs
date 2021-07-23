@@ -8,6 +8,9 @@ namespace Edelstein.Protocol.Gameplay.Stages
         where TStage : IMigrateableStage<TStage, TUser>
         where TUser : IMigrateableStageUser<TStage, TUser>
     {
-        Task MigrateTo(ServerObject server);
+        Task<bool> MigrateIn(int character, long key);
+
+        Task<bool> MigrateTo(string server);
+        Task<bool> MigrateTo(ServerObject server);
     }
 }
