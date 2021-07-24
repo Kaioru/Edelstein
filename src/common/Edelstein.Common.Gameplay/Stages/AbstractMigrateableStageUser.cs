@@ -22,6 +22,14 @@ namespace Edelstein.Common.Gameplay.Stages
             await Stage.AccountRepository.Update(Account);
             await Stage.AccountWorldRepository.Update(AccountWorld);
             await Stage.CharacterRepository.Update(Character);
+
+            var session = new SessionObject
+            {
+                Account = Account.ID,
+                State = SessionState.Offline
+            };
+
+            await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
         }
 
         public override async Task OnDisconnect()
@@ -47,6 +55,16 @@ namespace Edelstein.Common.Gameplay.Stages
             Account = await Stage.AccountRepository.Retrieve(AccountWorld.AccountID);
 
             Key = claim.Migration.Key;
+
+            var session = new SessionObject
+            {
+                Account = Account.ID,
+                Character = Character.ID,
+                Server = Stage.ID,
+                State = SessionState.LoggedIn
+            };
+
+            await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
             return true;
         }
 
@@ -77,11 +95,21 @@ namespace Edelstein.Common.Gameplay.Stages
 
             if (request.Result != MigrationRegistryResult.Ok) return false;
 
+            IsMigrating = true;
+
+            var session = new SessionObject
+            {
+                Account = Account.ID,
+                Character = Character.ID,
+                Server = Stage.ID,
+                State = SessionState.Migrating
+            };
+
+            await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
+
             var endpoint = new IPEndPoint(IPAddress.Parse(server.ServerConnection.Host), server.ServerConnection.Port);
             var address = endpoint.Address.MapToIPv4().GetAddressBytes();
             var port = endpoint.Port;
-
-            IsMigrating = true;
 
             await Update();
             await Dispatch(GetMigratePacket(address, (short)port));
