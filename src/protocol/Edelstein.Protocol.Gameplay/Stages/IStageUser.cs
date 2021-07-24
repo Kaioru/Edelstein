@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Users;
+﻿using System.Threading.Tasks;
+using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Network.Session;
 
 namespace Edelstein.Protocol.Gameplay.Stages
@@ -12,5 +13,7 @@ namespace Edelstein.Protocol.Gameplay.Stages
         Character Character { get; set; }
 
         TStage Stage { get; set; }
+
+        Task Update();
     }
 }
