@@ -24,10 +24,11 @@ namespace Edelstein.Common.Gameplay.Stages
         public AbstractStageUser(ISocket socket)
             => Socket = socket;
 
-        public Task OnPacket(IPacketReader packet) => Stage.Processor.Process((TUser)this, packet);
-        public abstract Task OnException(Exception exception);
-        public abstract Task OnDisconnect();
+        public virtual Task OnPacket(IPacketReader packet) => Stage.Processor.Process((TUser)this, packet);
+        public virtual Task OnException(Exception exception) => Disconnect();
+        public virtual Task OnDisconnect() => Stage?.Leave((TUser)this);
 
+        public abstract Task Update();
         public Task Disconnect() => Socket.Disconnect();
         public Task Dispatch(IPacket packet) => Socket.Dispatch(packet);
         public Task Dispatch(IEnumerable<IPacket> packets) => Socket.Dispatch(packets);
