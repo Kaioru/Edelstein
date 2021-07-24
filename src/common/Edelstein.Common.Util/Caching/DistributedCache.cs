@@ -7,12 +7,12 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace Edelstein.Common.Util.Caching
 {
-    public class Cache : ICache
+    public class DistributedCache : ICache
     {
         private readonly IDistributedCache _cache;
         private readonly ICacheSerializer _serializer;
 
-        public Cache(IDistributedCache cache, ICacheSerializer serializer = null)
+        public DistributedCache(IDistributedCache cache, ICacheSerializer serializer = null)
         {
             _cache = cache;
             _serializer = serializer ?? new JsonCacheSerializer();
@@ -46,7 +46,12 @@ namespace Edelstein.Common.Util.Caching
         public async Task Set<T>(string key, T value, DateTime date)
             => await Set(key, await _serializer.Serialize(value), date);
 
-        public Task Refresh(string key) => _cache.RefreshAsync(key);
+        public async Task Refresh(string key, TimeSpan duration)
+            => await Set(key, await _cache.GetAsync(key), duration);
+
+        public async Task Refresh(string key, DateTime date)
+            => await Set(key, await _cache.GetAsync(key), date);
+
         public Task Remove(string key) => _cache.RemoveAsync(key);
     }
 }

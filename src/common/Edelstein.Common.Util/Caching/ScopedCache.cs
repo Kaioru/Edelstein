@@ -23,7 +23,9 @@ namespace Edelstein.Common.Util.Caching
         public Task Set<T>(string key, T value, TimeSpan duration) => _cache.Set($"{_scope}:{key}", value, duration);
         public Task Set<T>(string key, T value, DateTime date) => _cache.Set($"{_scope}:{key}", value, date);
 
-        public Task Refresh(string key) => _cache.Refresh($"{_scope}:{key}");
+        public Task Refresh(string key, TimeSpan duration) => _cache.Refresh($"{_scope}:{key}", duration);
+        public Task Refresh(string key, DateTime date) => _cache.Refresh($"{_scope}:{key}", date);
+
         public Task Remove(string key) => _cache.Remove($"{_scope}:{key}");
     }
 }

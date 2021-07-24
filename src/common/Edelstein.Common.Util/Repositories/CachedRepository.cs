@@ -25,7 +25,7 @@ namespace Edelstein.Common.Util.Repositories
             var cached = await Cache.Get<TEntry>(key.ToString());
             if (cached != null)
             {
-                _ = Cache.Refresh(key.ToString());
+                _ = Cache.Refresh(key.ToString(), Duration);
                 return cached;
             }
             var result = await Repository.Retrieve(key);
