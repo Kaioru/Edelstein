@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Edelstein.Common.Gameplay.Handling;
+﻿using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Interop;

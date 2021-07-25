@@ -14,6 +14,7 @@
     <None Remove="Microsoft.Extensions.Caching.Memory" />
     <None Remove="Handling\" />
     <None Remove="Stages\" />
+    <None Remove="Stages\Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Users\" />
@@ -22,6 +23,7 @@
     <Folder Include="Users\Inventories\Templates\" />
     <Folder Include="Handling\" />
     <Folder Include="Stages\" />
+    <Folder Include="Stages\Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />

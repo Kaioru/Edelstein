@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Stages;
@@ -12,30 +13,45 @@ namespace Edelstein.Common.Gameplay.Stages
         where TStage : AbstractMigrateableStage<TStage, TUser>
         where TUser : AbstractMigrateableStageUser<TStage, TUser>
     {
+        public static TimeSpan SessionDisconnectDuration = TimeSpan.FromMinutes(1);
+        public static TimeSpan SessionUpdateDuration = TimeSpan.FromSeconds(30);
+
         public long Key { get; set; }
-        public bool IsMigrating { get; set; }
+        protected bool IsMigrating { get; set; }
+        protected bool IsLoggingIn { get; set; }
+
+        private DateTime LastSentHeartbeatDate { get; set; }
+        private DateTime LastRecvHeartbeatDate { get; set; }
 
         protected AbstractMigrateableStageUser(ISocket socket) : base(socket) { }
 
         public override async Task Update()
         {
-            await Stage.AccountRepository.Update(Account);
-            await Stage.AccountWorldRepository.Update(AccountWorld);
-            await Stage.CharacterRepository.Update(Character);
-
-            var session = new SessionObject
-            {
-                Account = Account.ID,
-                State = SessionState.Offline
-            };
-
-            await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
+            if (Account != null)
+                await Stage.AccountRepository.Update(Account);
+            if (AccountWorld != null)
+                await Stage.AccountWorldRepository.Update(AccountWorld);
+            if (Character != null)
+                await Stage.CharacterRepository.Update(Character);
         }
 
         public override async Task OnDisconnect()
         {
             if (!IsMigrating)
+            {
                 await Update();
+
+                if (Account != null)
+                {
+                    var session = new SessionObject
+                    {
+                        Account = Account.ID,
+                        State = SessionState.Offline
+                    };
+
+                    await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
+                }
+            }
             await base.OnDisconnect();
         }
 
@@ -126,5 +142,40 @@ namespace Edelstein.Common.Gameplay.Stages
             packet.WriteShort(port);
             return packet;
         }
+
+        public async Task TrySendAliveReq()
+        {
+            if ((DateTime.UtcNow - LastRecvHeartbeatDate) >= SessionDisconnectDuration)
+            {
+                await Disconnect();
+                return;
+            }
+
+            if ((DateTime.UtcNow - LastSentHeartbeatDate) >= SessionUpdateDuration)
+            {
+                LastSentHeartbeatDate = DateTime.UtcNow;
+                await Dispatch(GetAliveReqPacket());
+            }
+        }
+
+        public async Task TryRecvAliveAck()
+        {
+            LastRecvHeartbeatDate = DateTime.UtcNow;
+
+            if (Account == null) return;
+
+            var session = new SessionObject
+            {
+                Account = Account.ID,
+                Character = Character.ID,
+                Server = Stage.ID,
+                State = IsLoggingIn ? SessionState.LoggingIn : SessionState.LoggedIn
+            };
+
+            await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
+        }
+
+        protected virtual IPacket GetAliveReqPacket()
+           => new UnstructuredOutgoingPacket(PacketSendOperations.AliveReq);
     }
 }
