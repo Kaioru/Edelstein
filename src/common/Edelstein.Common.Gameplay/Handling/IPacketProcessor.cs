@@ -8,6 +8,9 @@ namespace Edelstein.Common.Gameplay.Handling
         where TStage : IStage<TStage, TUser>
         where TUser : IStageUser<TStage, TUser>
     {
+        void Register(IPacketHandler<TStage, TUser> handler);
+        void Deregister(IPacketHandler<TStage, TUser> handler);
+
         Task Process(TUser user, IPacketReader packet);
     }
 }

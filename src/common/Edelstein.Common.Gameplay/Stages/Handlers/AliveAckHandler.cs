@@ -10,6 +10,9 @@ namespace Edelstein.Common.Gameplay.Stages.Handlers
     {
         public override short Operation => (short)PacketRecvOperations.AliveAck;
 
+        public override Task<bool> Check(TUser user)
+            => Task.FromResult(!user.IsMigrating);
+
         public override Task Handle(TUser user, IPacketReader packet)
             => user.TrySendAliveReq();
     }

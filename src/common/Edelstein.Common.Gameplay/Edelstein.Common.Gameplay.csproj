@@ -15,6 +15,7 @@
     <None Remove="Handling\" />
     <None Remove="Stages\" />
     <None Remove="Stages\Handlers\" />
+    <None Remove="Stages\Behaviors\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Users\" />
@@ -24,6 +25,7 @@
     <Folder Include="Handling\" />
     <Folder Include="Stages\" />
     <Folder Include="Stages\Handlers\" />
+    <Folder Include="Stages\Behaviors\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />
