@@ -12,5 +12,8 @@ namespace Edelstein.Protocol.Gameplay.Stages
 
         Task<bool> MigrateTo(string server);
         Task<bool> MigrateTo(ServerObject server);
+
+        Task TrySendAliveReq();
+        Task TryRecvAliveAck();
     }
 }
