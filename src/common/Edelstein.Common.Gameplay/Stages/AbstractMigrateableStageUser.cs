@@ -17,8 +17,8 @@ namespace Edelstein.Common.Gameplay.Stages
         public static TimeSpan SessionUpdateDuration = TimeSpan.FromSeconds(30);
 
         public long Key { get; set; }
-        protected bool IsMigrating { get; set; }
-        protected bool IsLoggingIn { get; set; }
+        public bool IsMigrating { get; set; }
+        public bool IsLoggingIn { get; set; }
 
         private DateTime LastSentHeartbeatDate { get; set; }
         private DateTime LastRecvHeartbeatDate { get; set; }

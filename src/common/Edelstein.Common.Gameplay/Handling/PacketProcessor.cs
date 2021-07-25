@@ -30,6 +30,17 @@ namespace Edelstein.Common.Gameplay.Handling
             _logger = logger ?? new NullLogger<PacketProcessor<TStage, TUser>>();
         }
 
+        public void Register(IPacketHandler<TStage, TUser> handler)
+        {
+            if (!_handlers.ContainsKey(handler.Operation))
+                _handlers[handler.Operation] = handler;
+        }
+
+        public void Deregister(IPacketHandler<TStage, TUser> handler)
+        {
+            _handlers.Remove(handler.Operation);
+        }
+
         public async Task Process(TUser user, IPacketReader packet)
         {
             var operation = packet.ReadShort();
