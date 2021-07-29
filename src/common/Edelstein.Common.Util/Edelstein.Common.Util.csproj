@@ -10,11 +10,13 @@
     <None Remove="Caching\Serializer\" />
     <None Remove="Microsoft.Extensions.Caching.Abstractions" />
     <None Remove="Microsoft.Extensions.Caching.Memory" />
+    <None Remove="Ticks\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Caching\" />
     <Folder Include="Caching\Serializer\" />
+    <Folder Include="Ticks\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj" />
