@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace Edelstein.Protocol.Util.Ticks
 {
-    public interface ITickerManager : ITicker
+    public interface ITickerManager : ITickerBehavior
     {
-        Task<ITickerManagerEntry> Schedule(ITickerBehavior behavior, TimeSpan frequency);
-        Task<ITickerManagerEntry> Schedule(ITickerBehavior behavior, TimeSpan frequency, TimeSpan delay);
-        Task<ITickerManagerEntry> Execute(ITickerBehavior behavior);
+        ITickerManagerEntry Schedule(ITickerBehavior behavior);
+        ITickerManagerEntry Schedule(ITickerBehavior behavior, TimeSpan frequency);
+        ITickerManagerEntry Schedule(ITickerBehavior behavior, TimeSpan frequency, TimeSpan delay);
+
+        ITickerManagerEntry Execute(ITickerBehavior behavior);
+        ITickerManagerEntry Execute(ITickerBehavior behavior, TimeSpan delay);
+        ITickerManagerEntry Execute(ITickerBehavior behavior, DateTime date);
     }
 }

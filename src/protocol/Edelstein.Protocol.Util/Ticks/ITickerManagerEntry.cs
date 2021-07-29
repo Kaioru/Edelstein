@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace Edelstein.Protocol.Util.Ticks
 {
-    public interface ITickerManagerEntry
+    public interface ITickerManagerEntry : ITickerBehavior
     {
-        ITickerBehavior Behavior { get; }
-
         DateTime LastTick { get; }
         DateTime NextTick { get; }
+
+        bool IsCancelled { get; }
 
         Task Cancel();
     }
