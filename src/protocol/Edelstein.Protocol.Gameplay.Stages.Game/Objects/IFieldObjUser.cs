@@ -7,7 +7,7 @@ using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects
 {
-    public interface IFieldObjUser : IFieldObj, IStageUser<IField, IFieldObjUser>
+    public interface IFieldObjUser : IFieldLife, IStageUser<IField, IFieldObjUser>
     {
         bool IsInstantiated { get; set; }
 
