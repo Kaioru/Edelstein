@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using Edelstein.Common.Gamplay.Stages.Game.Templates;
+using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Common.Parser.Duey;
 using Edelstein.Common.Util.Ticks;
 using Edelstein.Protocol.Util.Ticks;
