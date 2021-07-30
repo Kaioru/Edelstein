@@ -7,7 +7,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 {
     public class GameStageUser : AbstractMigrateableStageUser<GameStage, GameStageUser, GameStageConfig>, IGameStageUser<GameStage, GameStageUser>
     {
-        public IField Field { get; set; }
+        public IField Field => FieldUser.Field;
         public IFieldObjUser FieldUser { get; set; }
 
         public GameStageUser(ISocket socket) : base(socket) { }
