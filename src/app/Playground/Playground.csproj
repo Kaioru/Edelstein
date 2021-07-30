@@ -16,8 +16,6 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Login\Edelstein.Protocol.Gameplay.Stages.Login.csproj" />
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Game\Edelstein.Protocol.Gameplay.Stages.Game.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Parser.Duey\Edelstein.Common.Parser.Duey.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Gamplay.Stages.Game\Edelstein.Common.Gamplay.Stages.Game.csproj" />

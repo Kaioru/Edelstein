@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using MoreLinq;
 
-namespace Edelstein.Common.Gamplay.Stages.Game.Templates
+namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
     public class FieldTemplateRepository : TemplateRepository<FieldTemplate>
     {
