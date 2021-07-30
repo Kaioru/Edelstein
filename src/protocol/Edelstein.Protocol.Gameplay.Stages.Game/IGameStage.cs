@@ -6,7 +6,9 @@ using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
-    public interface IGameStage : IMigrateableStage<IGameStage, IGameStageUser>
+    public interface IGameStage<TStage, TUser> : IMigrateableStage<TStage, TUser>
+        where TStage : IGameStage<TStage, TUser>
+        where TUser : IGameStageUser<TStage, TUser>
     {
         int WorldID { get; }
         int ChannelID { get; }
