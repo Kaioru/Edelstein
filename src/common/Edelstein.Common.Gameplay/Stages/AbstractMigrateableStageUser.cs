@@ -9,9 +9,10 @@ using Edelstein.Protocol.Network.Transport;
 
 namespace Edelstein.Common.Gameplay.Stages
 {
-    public abstract class AbstractMigrateableStageUser<TStage, TUser> : AbstractStageUser<TStage, TUser>, IMigrateableStageUser<TStage, TUser>
-        where TStage : AbstractMigrateableStage<TStage, TUser>
-        where TUser : AbstractMigrateableStageUser<TStage, TUser>
+    public abstract class AbstractMigrateableStageUser<TStage, TUser, TConfig> : AbstractStageUser<TStage, TUser>, IMigrateableStageUser<TStage, TUser>
+        where TStage : AbstractMigrateableStage<TStage, TUser, TConfig>
+        where TUser : AbstractMigrateableStageUser<TStage, TUser, TConfig>
+        where TConfig : MigrateableStageConfig
     {
         public static TimeSpan SessionDisconnectDuration = TimeSpan.FromMinutes(1);
         public static TimeSpan SessionUpdateDuration = TimeSpan.FromSeconds(30);

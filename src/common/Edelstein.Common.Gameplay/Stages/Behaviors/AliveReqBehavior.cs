@@ -5,9 +5,10 @@ using Edelstein.Protocol.Util.Ticks;
 
 namespace Edelstein.Common.Gameplay.Stages.Behaviors
 {
-    public class AliveReqBehavior<TStage, TUser> : ITickerBehavior
-        where TStage : AbstractMigrateableStage<TStage, TUser>
-        where TUser : AbstractMigrateableStageUser<TStage, TUser>
+    public class AliveReqBehavior<TStage, TUser, TConfig> : ITickerBehavior
+        where TStage : AbstractMigrateableStage<TStage, TUser, TConfig>
+        where TUser : AbstractMigrateableStageUser<TStage, TUser, TConfig>
+        where TConfig : MigrateableStageConfig
     {
         private readonly TStage _stage;
 

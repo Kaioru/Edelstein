@@ -4,9 +4,10 @@ using Edelstein.Protocol.Network;
 
 namespace Edelstein.Common.Gameplay.Stages.Handlers
 {
-    public class MigrateInHandler<TStage, TUser> : AbstractPacketHandler<TStage, TUser>
-        where TStage : AbstractMigrateableStage<TStage, TUser>
-        where TUser : AbstractMigrateableStageUser<TStage, TUser>
+    public class MigrateInHandler<TStage, TUser, TConfig> : AbstractPacketHandler<TStage, TUser>
+        where TStage : AbstractMigrateableStage<TStage, TUser, TConfig>
+        where TUser : AbstractMigrateableStageUser<TStage, TUser, TConfig>
+        where TConfig : MigrateableStageConfig
     {
         private readonly TStage _stage;
 

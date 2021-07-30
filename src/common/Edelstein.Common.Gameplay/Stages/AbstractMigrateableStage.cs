@@ -9,13 +9,15 @@ using Edelstein.Protocol.Util.Ticks;
 
 namespace Edelstein.Common.Gameplay.Stages
 {
-    public abstract class AbstractMigrateableStage<TStage, TUser> : AbstractStage<TStage, TUser>, IMigrateableStage<TStage, TUser>
-        where TStage : AbstractMigrateableStage<TStage, TUser>
-        where TUser : AbstractMigrateableStageUser<TStage, TUser>
+    public abstract class AbstractMigrateableStage<TStage, TUser, TConfig> : AbstractStage<TStage, TUser>, IMigrateableStage<TStage, TUser>
+        where TStage : AbstractMigrateableStage<TStage, TUser, TConfig>
+        where TUser : AbstractMigrateableStageUser<TStage, TUser, TConfig>
+        where TConfig : MigrateableStageConfig
     {
-        public static TimeSpan AliveBehaviorFreq = TimeSpan.FromSeconds(1);
+        private static TimeSpan AliveBehaviorFreq = TimeSpan.FromSeconds(1);
 
-        public abstract string ID { get; }
+        public TConfig Config { get; init; }
+        public string ID => Config.ID;
 
         public IServerRegistryService ServerRegistryService { get; init; }
         public ISessionRegistryService SessionRegistry { get; init; }
@@ -26,6 +28,7 @@ namespace Edelstein.Common.Gameplay.Stages
         public ICharacterRepository CharacterRepository { get; init; }
 
         protected AbstractMigrateableStage(
+            TConfig config,
             IServerRegistryService serverRegistryService,
             ISessionRegistryService sessionRegistry,
             IMigrationRegistryService migrationRegistryService,
@@ -36,6 +39,7 @@ namespace Edelstein.Common.Gameplay.Stages
             IPacketProcessor<TStage, TUser> processor
         ) : base(processor)
         {
+            Config = config;
             ServerRegistryService = serverRegistryService;
             SessionRegistry = sessionRegistry;
             MigrationRegistryService = migrationRegistryService;
@@ -43,9 +47,9 @@ namespace Edelstein.Common.Gameplay.Stages
             AccountWorldRepository = accountWorldRepository;
             CharacterRepository = characterRepository;
 
-            timerManager.Schedule(new AliveReqBehavior<TStage, TUser>((TStage)this), AliveBehaviorFreq);
-            processor.Register(new AliveAckHandler<TStage, TUser>());
-            processor.Register(new MigrateInHandler<TStage, TUser>((TStage)this));
+            timerManager.Schedule(new AliveReqBehavior<TStage, TUser, TConfig>((TStage)this), AliveBehaviorFreq);
+            processor.Register(new AliveAckHandler<TStage, TUser, TConfig>());
+            processor.Register(new MigrateInHandler<TStage, TUser, TConfig>((TStage)this));
         }
     }
 }
