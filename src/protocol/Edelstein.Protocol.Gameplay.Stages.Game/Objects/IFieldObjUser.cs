@@ -7,8 +7,13 @@ using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects
 {
-    public interface IFieldObjUser : IFieldObj, IStageUser<IField, IFieldObjUser>
+    public interface IFieldObjUser<TStage, TUser> : IFieldObj, IStageUser<IField<TStage, TUser>, IFieldObjUser<TStage, TUser>>
+        where TStage : IGameStage<TStage, TUser>
+        where TUser : IGameStageUser<TStage, TUser>
     {
+        TStage GameStage { get; }
+        TUser GameStageUser { get; }
+
         bool IsInstantiated { get; set; }
 
         IFieldSplit[] Watching { get; }
