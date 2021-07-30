@@ -10,11 +10,11 @@ namespace Edelstein.Common.Util.Ticks
 {
     public class Ticker : ITicker
     {
-        private CancellationTokenSource _source;
-        private Stopwatch _stopwatch;
-        private ITickerBehavior _behavior;
-        private int _refreshRate;
-        private ILogger<ITicker> _logger;
+        private readonly CancellationTokenSource _source;
+        private readonly Stopwatch _stopwatch;
+        private readonly ITickerBehavior _behavior;
+        private readonly int _refreshRate;
+        private readonly ILogger<ITicker> _logger;
 
         public Ticker(
             ITickerBehavior behavior,
