@@ -6,9 +6,9 @@ namespace Edelstein.Common.Util.Ticks
 {
     public class TickerManagerEntry : ITickerManagerEntry
     {
-        private ITickerBehavior _behavior;
-        private TimeSpan _frequency;
-        private bool _executeOnce;
+        private readonly ITickerBehavior _behavior;
+        private readonly TimeSpan _frequency;
+        private readonly bool _executeOnce;
 
         public DateTime LastTick { get; set; }
         public DateTime NextTick { get; set; }
