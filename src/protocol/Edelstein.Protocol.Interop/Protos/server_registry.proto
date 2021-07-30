@@ -17,8 +17,8 @@ message ServerConnectionObject {
 }
 
 enum ServiceRegistryResult {
-   OK = 0;
-   FAILED = 1;
+    OK = 0;
+    FAILED = 1;
 }
 
 message ServiceRegistryResponse {
