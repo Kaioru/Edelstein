@@ -9,12 +9,8 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
-    public interface IField<TStage, TUser> : IFieldPool, IStage<IField<TStage, TUser>, IFieldObjUser<TStage, TUser>>, IPhysicalSpace2D, IRepositoryEntry<int>
-        where TStage : IGameStage<TStage, TUser>
-        where TUser : IGameStageUser<TStage, TUser>
+    public interface IField : IFieldPool, IStage<IField, IFieldObjUser>, IPhysicalSpace2D, IRepositoryEntry<int>
     {
-        TStage GameStage { get; }
-
         FieldTemplate Template { get; }
 
         IFieldSplit GetSplit(Point2D position);
@@ -23,8 +19,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
 
         IFieldPool GetPool(FieldObjType type);
 
-        Task Enter(IFieldObjUser<TStage, TUser> user, byte portal, Func<IPacket> getEnterPacket = null);
-        Task Enter(IFieldObjUser<TStage, TUser> user, string portal, Func<IPacket> getEnterPacket = null);
+        Task Enter(IFieldObjUser user, byte portal, Func<IPacket> getEnterPacket = null);
+        Task Enter(IFieldObjUser user, string portal, Func<IPacket> getEnterPacket = null);
 
         Task Enter(IFieldObj obj, Func<IPacket> getEnterPacket = null);
         Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket = null);
