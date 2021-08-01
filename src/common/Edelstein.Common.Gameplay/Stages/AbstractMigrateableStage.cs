@@ -14,7 +14,7 @@ namespace Edelstein.Common.Gameplay.Stages
         where TUser : AbstractMigrateableStageUser<TStage, TUser, TConfig>
         where TConfig : MigrateableStageConfig
     {
-        private static TimeSpan AliveBehaviorFreq = TimeSpan.FromSeconds(1);
+        private static readonly TimeSpan AliveBehaviorFreq = TimeSpan.FromSeconds(1);
 
         public TConfig Config { get; init; }
         public string ID => Config.ID;
