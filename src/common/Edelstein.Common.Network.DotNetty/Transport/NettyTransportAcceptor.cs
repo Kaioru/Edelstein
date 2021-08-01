@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using DotNetty.Handlers.Timeout;
@@ -39,6 +40,8 @@ namespace Edelstein.Common.Network.DotNetty.Transport
             ILogger<ITransportAcceptor> logger = null
         )
         {
+            Debug.Assert(initializer != null);
+
             Sessions = new Dictionary<string, ISession>();
             SessionInitializer = initializer;
             Version = version;
@@ -50,6 +53,8 @@ namespace Edelstein.Common.Network.DotNetty.Transport
 
         public async Task Accept(string host, int port)
         {
+            Debug.Assert(host != null);
+
             var aesCipher = new AESCipher();
             var igCipher = new IGCipher();
 

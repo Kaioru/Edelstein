@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Network.DotNetty.Transport;
 using Edelstein.Protocol.Network;
@@ -12,6 +13,8 @@ namespace Edelstein.Common.Network.DotNetty.Pipeline
 
         public NettyTransportAcceptorHandler(ITransportAcceptor acceptor)
         {
+            Debug.Assert(acceptor != null);
+
             _acceptor = acceptor;
         }
 

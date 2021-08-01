@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Transport.Bootstrapping;
@@ -36,6 +37,8 @@ namespace Edelstein.Common.Network.DotNetty.Transport
             ILogger<ITransportConnector> logger = null
         )
         {
+            Debug.Assert(initializer != null);
+
             SessionInitializer = initializer;
             Version = version;
             Patch = patch;
@@ -46,6 +49,8 @@ namespace Edelstein.Common.Network.DotNetty.Transport
 
         public async Task Connect(string host, int port)
         {
+            Debug.Assert(host != null);
+
             var aesCipher = new AESCipher();
             var igCipher = new IGCipher();
 
