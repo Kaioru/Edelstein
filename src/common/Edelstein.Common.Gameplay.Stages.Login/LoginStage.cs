@@ -25,6 +25,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login
             IPacketProcessor<LoginStage, LoginStageUser> processor,
             ITemplateRepository<ItemTemplate> itemTemplates
         ) : base(
+            ServerStageType.Login,
             options.Value,
             serverRegistryService,
             sessionRegistry,

@@ -20,8 +20,10 @@ namespace Edelstein.Common.Gameplay.Stages
         where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
         where TConfig : ServerStageConfig
     {
+        private static readonly TimeSpan ServerUpdateFreq = TimeSpan.FromMinutes(1);
         private static readonly TimeSpan AliveBehaviorFreq = TimeSpan.FromSeconds(1);
 
+        public ServerStageType Type { get; init; }
         public TConfig Config { get; init; }
         public string ID => Config.ID;
 
@@ -37,6 +39,7 @@ namespace Edelstein.Common.Gameplay.Stages
         private readonly Task _dispatchSubscriptionTask;
 
         protected AbstractServerStage(
+            ServerStageType type,
             TConfig config,
             IServerRegistryService serverRegistryService,
             ISessionRegistryService sessionRegistry,
@@ -48,6 +51,7 @@ namespace Edelstein.Common.Gameplay.Stages
             IPacketProcessor<TStage, TUser> processor
         ) : base(processor)
         {
+            Type = type;
             Config = config;
             ServerRegistryService = serverRegistryService;
             SessionRegistry = sessionRegistry;
@@ -65,6 +69,7 @@ namespace Edelstein.Common.Gameplay.Stages
                 ) await OnNotifyDispatch(dispatch);
             }, _tokenSource.Token);
 
+            timerManager.Schedule(new ServerUpdateBehavior<TStage, TUser, TConfig>((TStage)this), ServerUpdateFreq, TimeSpan.Zero);
             timerManager.Schedule(new AliveReqBehavior<TStage, TUser, TConfig>((TStage)this), AliveBehaviorFreq);
             processor.Register(new AliveAckHandler<TStage, TUser, TConfig>());
             processor.Register(new MigrateInHandler<TStage, TUser, TConfig>((TStage)this));
