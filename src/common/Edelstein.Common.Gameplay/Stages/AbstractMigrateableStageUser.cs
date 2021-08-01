@@ -14,8 +14,8 @@ namespace Edelstein.Common.Gameplay.Stages
         where TUser : AbstractMigrateableStageUser<TStage, TUser, TConfig>
         where TConfig : MigrateableStageConfig
     {
-        public static TimeSpan SessionDisconnectDuration = TimeSpan.FromMinutes(1);
-        public static TimeSpan SessionUpdateDuration = TimeSpan.FromSeconds(30);
+        private static TimeSpan SessionDisconnectDuration = TimeSpan.FromMinutes(1);
+        private static TimeSpan SessionUpdateDuration = TimeSpan.FromSeconds(30);
 
         public long Key { get; set; }
         public bool IsMigrating { get; set; }
