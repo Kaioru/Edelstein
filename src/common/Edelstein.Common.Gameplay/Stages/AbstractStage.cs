@@ -12,22 +12,26 @@ namespace Edelstein.Common.Gameplay.Stages
         where TStage : AbstractStage<TStage, TUser>
         where TUser : AbstractStageUser<TStage, TUser>
     {
-        private readonly ICollection<TUser> _users;
-
+        private readonly IDictionary<int, TUser> _users;
         public IPacketProcessor<TStage, TUser> Processor { get; init; }
-        public ICollection<TUser> Users => _users.ToImmutableList();
 
         public AbstractStage(IPacketProcessor<TStage, TUser> processor)
         {
             Processor = processor;
-            _users = new List<TUser>();
+            _users = new Dictionary<int, TUser>();
         }
+
+        public TUser GetUser(int id)
+            => _users.ContainsKey(id) ? _users[id] : null;
+
+        public IEnumerable<TUser> GetUsers()
+            => _users.Values.ToImmutableList();
 
         public Task Enter(TUser user)
         {
             user.Stage?.Leave(user);
             user.Stage = (TStage)this;
-            _users.Add(user);
+            _users.Add(user.Character.ID, user);
 
             return Task.CompletedTask;
         }
@@ -35,15 +39,15 @@ namespace Edelstein.Common.Gameplay.Stages
         public Task Leave(TUser user)
         {
             user.Stage = default;
-            _users.Remove(user);
+            _users.Remove(user.Character.ID);
 
             return Task.CompletedTask;
         }
 
         public Task Dispatch(IPacket packet)
-            => Task.WhenAll(_users.Select(user => user.Dispatch(packet)));
+            => Task.WhenAll(_users.Values.Select(user => user.Dispatch(packet)));
 
         public Task Dispatch(IEnumerable<IPacket> packets)
-            => Task.WhenAll(_users.Select(user => user.Dispatch(packets)));
+            => Task.WhenAll(_users.Values.Select(user => user.Dispatch(packets)));
     }
 }
