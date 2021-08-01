@@ -27,6 +27,7 @@ namespace Edelstein.Common.Scripting.NLua
 
             if (globals != null)
                 foreach (var entry in globals) state[entry.Key] = entry.Value;
+            state.LoadCLRPackage();
             state.DoString(_source);
 
             return Task.FromResult<IScriptState>(new LuaScriptState(state));
