@@ -40,6 +40,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             IFieldSetRepository fieldSetRepository,
             IContiMoveRepository contiMoveRepository
         ) : base(
+            ServerStageType.Game,
             options.Value,
             serverRegistryService,
             sessionRegistry,

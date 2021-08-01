@@ -4,11 +4,8 @@ package edelstein.protocol.interop.contracts;
 
 message ServerObject {
     string id = 1;
-
     ServerConnectionObject serverConnection = 2;
-    ServerConnectionObject interopConnection = 3;
-
-    map<string, string> tags = 4;
+    map<string, string> tags = 3;
 }
 
 message ServerConnectionObject {
