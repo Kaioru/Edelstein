@@ -17,8 +17,6 @@ namespace Edelstein.Common.Gameplay.Stages
         public Character Character { get; set; }
 
         public TStage Stage { get; set; }
-
-        public string SessionID => Socket.ID;
         public ISocket Socket { get; init; }
 
         public AbstractStageUser(ISocket socket)

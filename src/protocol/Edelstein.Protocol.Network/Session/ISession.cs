@@ -6,8 +6,6 @@ namespace Edelstein.Protocol.Network.Session
 {
     public interface ISession : IPacketDispatcher
     {
-        string SessionID { get; }
-
         ISocket Socket { get; init; }
 
         Task OnPacket(IPacketReader packet);
