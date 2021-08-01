@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Behaviors;
 using Edelstein.Common.Gameplay.Stages.Handlers;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Interop;
+using Edelstein.Protocol.Interop.Contracts;
+using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Ticks;
 
 namespace Edelstein.Common.Gameplay.Stages
@@ -27,6 +33,9 @@ namespace Edelstein.Common.Gameplay.Stages
         public IAccountWorldRepository AccountWorldRepository { get; init; }
         public ICharacterRepository CharacterRepository { get; init; }
 
+        private readonly CancellationTokenSource _tokenSource;
+        private readonly Task _dispatchSubscriptionTask;
+
         protected AbstractMigrateableStage(
             TConfig config,
             IServerRegistryService serverRegistryService,
@@ -47,9 +56,40 @@ namespace Edelstein.Common.Gameplay.Stages
             AccountWorldRepository = accountWorldRepository;
             CharacterRepository = characterRepository;
 
+            _tokenSource = new CancellationTokenSource();
+            _dispatchSubscriptionTask = Task.Run(async () =>
+            {
+                await foreach (var dispatch in ServerRegistryService
+                    .SubscribeDispatch(new DispatchSubscription { Server = ID })
+                    .WithCancellation(_tokenSource.Token)
+                ) await OnNotifyDispatch(dispatch);
+            }, _tokenSource.Token);
+
             timerManager.Schedule(new AliveReqBehavior<TStage, TUser, TConfig>((TStage)this), AliveBehaviorFreq);
             processor.Register(new AliveAckHandler<TStage, TUser, TConfig>());
             processor.Register(new MigrateInHandler<TStage, TUser, TConfig>((TStage)this));
+        }
+
+        private Task OnNotifyDispatch(DispatchObject dispatch)
+        {
+            var targets = new List<TUser>();
+            var packet = new UnstructuredOutgoingPacket();
+
+            packet.WriteBytes(dispatch.Packet.ToByteArray());
+
+            if (
+                dispatch.HasAlliance ||
+                dispatch.HasGuild ||
+                dispatch.HasParty ||
+                dispatch.HasCharacter
+            )
+            {
+                if (dispatch.HasCharacter && GetUser(dispatch.Character) != null)
+                    targets.Add(GetUser(dispatch.Character));
+            }
+            else targets.AddRange(GetUsers());
+
+            return Task.WhenAll(targets.Select(t => t.Dispatch(packet)));
         }
     }
 }
