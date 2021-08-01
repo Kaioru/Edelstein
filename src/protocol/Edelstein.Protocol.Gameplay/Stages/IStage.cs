@@ -8,7 +8,8 @@ namespace Edelstein.Protocol.Gameplay.Stages
         where TStage : IStage<TStage, TUser>
         where TUser : IStageUser<TStage, TUser>
     {
-        ICollection<TUser> Users { get; }
+        TUser GetUser(int id);
+        IEnumerable<TUser> GetUsers();
 
         Task Enter(TUser user);
         Task Leave(TUser user);
