@@ -12,7 +12,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
     public class FieldTemplateRepository : TemplateRepository<FieldTemplate>
     {
-        private readonly static TimeSpan CacheDuration = TimeSpan.FromHours(1);
+        private static readonly TimeSpan CacheDuration = TimeSpan.FromHours(1);
 
         public FieldTemplateRepository(
             IDataDirectoryCollection collection,

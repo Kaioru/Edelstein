@@ -13,7 +13,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Templates
 {
     public class ItemTemplateRepository : TemplateRepository<ItemTemplate>
     {
-        private readonly static TimeSpan CacheDuration = TimeSpan.FromHours(1);
+        private static readonly TimeSpan CacheDuration = TimeSpan.FromHours(1);
 
         public ItemTemplateRepository(
             IDataDirectoryCollection collection,
