@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
@@ -25,6 +26,10 @@ namespace Edelstein.Common.Network.DotNetty.Pipeline
             IGCipher igCipher
         ) : base(NettyPacketState.DecodingHeader)
         {
+            Debug.Assert(transport != null);
+            Debug.Assert(aesCipher != null);
+            Debug.Assert(igCipher != null);
+
             _transport = transport;
             _aesCipher = aesCipher;
             _igCipher = igCipher;
