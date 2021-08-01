@@ -20,7 +20,7 @@ namespace Edelstein.Common.Interop
         public SessionRegistryService(ICache cache)
         {
             _sessionAccountCache = new ScopedCache(SessionAccountScope, cache);
-            _sessionAccountCache = new ScopedCache(SessionCharacterScope, cache);
+            _sessionCharacterCache = new ScopedCache(SessionCharacterScope, cache);
         }
 
         public async Task<UpdateSessionResult> UpdateSession(UpdateSessionRequest request)

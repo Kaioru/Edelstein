@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
-    public interface IGameStageUser<TStage, TUser> : IMigrateableStageUser<TStage, TUser>
+    public interface IGameStageUser<TStage, TUser> : IServerStageUser<TStage, TUser>
         where TStage : IGameStage<TStage, TUser>
         where TUser : IGameStageUser<TStage, TUser>
     {

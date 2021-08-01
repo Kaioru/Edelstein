@@ -5,9 +5,9 @@ using Edelstein.Protocol.Network;
 namespace Edelstein.Common.Gameplay.Stages.Handlers
 {
     public class AliveAckHandler<TStage, TUser, TConfig> : AbstractPacketHandler<TStage, TUser>
-        where TStage : AbstractMigrateableStage<TStage, TUser, TConfig>
-        where TUser : AbstractMigrateableStageUser<TStage, TUser, TConfig>
-        where TConfig : MigrateableStageConfig
+        where TStage : AbstractServerStage<TStage, TUser, TConfig>
+        where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
+        where TConfig : ServerStageConfig
     {
         public override short Operation => (short)PacketRecvOperations.AliveAck;
 

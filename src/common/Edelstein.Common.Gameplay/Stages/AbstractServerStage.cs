@@ -15,10 +15,10 @@ using Edelstein.Protocol.Util.Ticks;
 
 namespace Edelstein.Common.Gameplay.Stages
 {
-    public abstract class AbstractMigrateableStage<TStage, TUser, TConfig> : AbstractStage<TStage, TUser>, IMigrateableStage<TStage, TUser>
-        where TStage : AbstractMigrateableStage<TStage, TUser, TConfig>
-        where TUser : AbstractMigrateableStageUser<TStage, TUser, TConfig>
-        where TConfig : MigrateableStageConfig
+    public abstract class AbstractServerStage<TStage, TUser, TConfig> : AbstractStage<TStage, TUser>, IServerStage<TStage, TUser>
+        where TStage : AbstractServerStage<TStage, TUser, TConfig>
+        where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
+        where TConfig : ServerStageConfig
     {
         private static readonly TimeSpan AliveBehaviorFreq = TimeSpan.FromSeconds(1);
 
@@ -36,7 +36,7 @@ namespace Edelstein.Common.Gameplay.Stages
         private readonly CancellationTokenSource _tokenSource;
         private readonly Task _dispatchSubscriptionTask;
 
-        protected AbstractMigrateableStage(
+        protected AbstractServerStage(
             TConfig config,
             IServerRegistryService serverRegistryService,
             ISessionRegistryService sessionRegistry,

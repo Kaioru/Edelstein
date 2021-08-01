@@ -5,7 +5,7 @@ using Edelstein.Protocol.Network.Transport;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
-    public class GameStageUser : AbstractMigrateableStageUser<GameStage, GameStageUser, GameStageConfig>, IGameStageUser<GameStage, GameStageUser>
+    public class GameStageUser : AbstractServerStageUser<GameStage, GameStageUser, GameStageConfig>, IGameStageUser<GameStage, GameStageUser>
     {
         public IField Field => FieldUser.Field;
         public IFieldObjUser FieldUser { get; set; }

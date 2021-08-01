@@ -9,10 +9,10 @@ using Edelstein.Protocol.Network.Transport;
 
 namespace Edelstein.Common.Gameplay.Stages
 {
-    public abstract class AbstractMigrateableStageUser<TStage, TUser, TConfig> : AbstractStageUser<TStage, TUser>, IMigrateableStageUser<TStage, TUser>
-        where TStage : AbstractMigrateableStage<TStage, TUser, TConfig>
-        where TUser : AbstractMigrateableStageUser<TStage, TUser, TConfig>
-        where TConfig : MigrateableStageConfig
+    public abstract class AbstractServerStageUser<TStage, TUser, TConfig> : AbstractStageUser<TStage, TUser>, IServerStageUser<TStage, TUser>
+        where TStage : AbstractServerStage<TStage, TUser, TConfig>
+        where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
+        where TConfig : ServerStageConfig
     {
         private static readonly TimeSpan SessionDisconnectDuration = TimeSpan.FromMinutes(1);
         private static readonly TimeSpan SessionUpdateDuration = TimeSpan.FromSeconds(30);
@@ -24,7 +24,7 @@ namespace Edelstein.Common.Gameplay.Stages
         private DateTime LastSentHeartbeatDate { get; set; }
         private DateTime LastRecvHeartbeatDate { get; set; }
 
-        protected AbstractMigrateableStageUser(ISocket socket) : base(socket) { }
+        protected AbstractServerStageUser(ISocket socket) : base(socket) { }
 
         public override async Task Update()
         {

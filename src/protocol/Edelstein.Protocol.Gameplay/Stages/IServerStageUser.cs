@@ -3,9 +3,9 @@ using Edelstein.Protocol.Interop.Contracts;
 
 namespace Edelstein.Protocol.Gameplay.Stages
 {
-    public interface IMigrateableStageUser<TStage, TUser> : IStageUser<TStage, TUser>
-        where TStage : IMigrateableStage<TStage, TUser>
-        where TUser : IMigrateableStageUser<TStage, TUser>
+    public interface IServerStageUser<TStage, TUser> : IStageUser<TStage, TUser>
+        where TStage : IServerStage<TStage, TUser>
+        where TUser : IServerStageUser<TStage, TUser>
     {
         Task<bool> MigrateIn(int character, long key);
 

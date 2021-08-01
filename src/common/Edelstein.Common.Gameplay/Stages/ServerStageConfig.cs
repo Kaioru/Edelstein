@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Common.Gameplay.Stages
 {
-    public record MigrateableStageConfig
+    public record ServerStageConfig
     {
         public string ID { get; init; }
 
