@@ -43,5 +43,17 @@ message DispatchToCharacterRequest {
 
 message DispatchResponse {
     DispatchResult result = 1;
-    int32 reach = 2;
+}
+
+message DispatchSubscription {
+    string server = 1;
+}
+
+message DispatchObject {
+    bytes packet = 1;
+
+    optional int32 alliance = 2;
+    optional int32 guild = 3;
+    optional int32 party = 4;
+    optional int32 character = 5;
 }
