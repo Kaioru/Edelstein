@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Interop;
 using Edelstein.Protocol.Interop.Contracts;
@@ -20,5 +21,7 @@ namespace Edelstein.Common.Interop
         public Task<DispatchResponse> DispatchToGuild(DispatchToGuildRequest request) { throw new NotImplementedException(); }
         public Task<DispatchResponse> DispatchToParty(DispatchToPartyRequest request) { throw new NotImplementedException(); }
         public Task<DispatchResponse> DispatchToCharacter(DispatchToCharacterRequest request) { throw new NotImplementedException(); }
+
+        public IAsyncEnumerable<DispatchObject> SubscribeDispatch(DispatchSubscription request) { throw new NotImplementedException(); }
     }
 }

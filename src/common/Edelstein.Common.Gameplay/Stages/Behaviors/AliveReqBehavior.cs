@@ -6,9 +6,9 @@ using Edelstein.Protocol.Util.Ticks;
 namespace Edelstein.Common.Gameplay.Stages.Behaviors
 {
     public class AliveReqBehavior<TStage, TUser, TConfig> : ITickerBehavior
-        where TStage : AbstractMigrateableStage<TStage, TUser, TConfig>
-        where TUser : AbstractMigrateableStageUser<TStage, TUser, TConfig>
-        where TConfig : MigrateableStageConfig
+        where TStage : AbstractServerStage<TStage, TUser, TConfig>
+        where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
+        where TConfig : ServerStageConfig
     {
         private readonly TStage _stage;
 
@@ -16,6 +16,6 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
             => _stage = stage;
 
         public Task OnTick(DateTime now)
-            => Task.WhenAll(_stage.Users.Select(u => u.TrySendAliveReq()));
+            => Task.WhenAll(_stage.GetUsers().Select(u => u.TrySendAliveReq()));
     }
 }

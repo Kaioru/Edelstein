@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace Edelstein.Common.Gameplay.Stages.Login
 {
-    public class LoginStage : AbstractMigrateableStage<LoginStage, LoginStageUser, LoginStageConfig>, ILoginStage<LoginStage, LoginStageUser>
+    public class LoginStage : AbstractServerStage<LoginStage, LoginStageUser, LoginStageConfig>, ILoginStage<LoginStage, LoginStageUser>
     {
         public ITemplateRepository<ItemTemplate> ItemTemplates { get; set; }
 

@@ -6,7 +6,7 @@ using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
-    public interface IGameStage<TStage, TUser> : IMigrateableStage<TStage, TUser>
+    public interface IGameStage<TStage, TUser> : IServerStage<TStage, TUser>
         where TStage : IGameStage<TStage, TUser>
         where TUser : IGameStageUser<TStage, TUser>
     {

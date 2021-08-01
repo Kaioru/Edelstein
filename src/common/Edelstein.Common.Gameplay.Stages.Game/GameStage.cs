@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
-    public class GameStage : AbstractMigrateableStage<GameStage, GameStageUser, GameStageConfig>, IGameStage<GameStage, GameStageUser>
+    public class GameStage : AbstractServerStage<GameStage, GameStageUser, GameStageConfig>, IGameStage<GameStage, GameStageUser>
     {
         public int WorldID => Config.WorldID;
         public int ChannelID => Config.ChannelID;

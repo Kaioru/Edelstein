@@ -4,9 +4,9 @@ using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Stages
 {
-    public interface IMigrateableStage<TStage, TUser> : IStage<TStage, TUser>, IRepositoryEntry<string>
-        where TStage : IMigrateableStage<TStage, TUser>
-        where TUser : IMigrateableStageUser<TStage, TUser>
+    public interface IServerStage<TStage, TUser> : IStage<TStage, TUser>, IRepositoryEntry<string>
+        where TStage : IServerStage<TStage, TUser>
+        where TUser : IServerStageUser<TStage, TUser>
     {
         IServerRegistryService ServerRegistryService { get; }
         ISessionRegistryService SessionRegistry { get; }
