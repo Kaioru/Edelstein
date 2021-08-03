@@ -12,7 +12,7 @@ message DispatchRequest {
 }
 
 message DispatchToServerRequest {
-    string name = 1;
+    string server = 1;
     bytes packet = 2;
 }
 
