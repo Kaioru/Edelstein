@@ -9,4 +9,10 @@
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="System.Threading.Channels" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Threading.Channels" Version="5.0.0" />
+  </ItemGroup>
 </Project>
