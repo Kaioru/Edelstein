@@ -35,8 +35,7 @@ namespace Edelstein.Common.Gameplay.Stages
         public IAccountWorldRepository AccountWorldRepository { get; init; }
         public ICharacterRepository CharacterRepository { get; init; }
 
-        private readonly CancellationTokenSource _tokenSource;
-        private readonly Task _dispatchSubscriptionTask;
+        public Task DispatchSubscriptionTask { get; set; }
 
         protected AbstractServerStage(
             ServerStageType type,
@@ -60,22 +59,13 @@ namespace Edelstein.Common.Gameplay.Stages
             AccountWorldRepository = accountWorldRepository;
             CharacterRepository = characterRepository;
 
-            _tokenSource = new CancellationTokenSource();
-            _dispatchSubscriptionTask = Task.Run(async () =>
-            {
-                await foreach (var dispatch in ServerRegistryService
-                    .SubscribeDispatch(new DispatchSubscription { Server = ID })
-                    .WithCancellation(_tokenSource.Token)
-                ) await OnNotifyDispatch(dispatch);
-            }, _tokenSource.Token);
-
             timerManager.Schedule(new ServerUpdateBehavior<TStage, TUser, TConfig>((TStage)this), ServerUpdateFreq, TimeSpan.Zero);
             timerManager.Schedule(new AliveReqBehavior<TStage, TUser, TConfig>((TStage)this), AliveBehaviorFreq);
             processor.Register(new AliveAckHandler<TStage, TUser, TConfig>());
             processor.Register(new MigrateInHandler<TStage, TUser, TConfig>((TStage)this));
         }
 
-        private Task OnNotifyDispatch(DispatchObject dispatch)
+        public Task OnNotifyDispatch(DispatchObject dispatch)
         {
             var targets = new List<TUser>();
             var packet = new UnstructuredOutgoingPacket();
