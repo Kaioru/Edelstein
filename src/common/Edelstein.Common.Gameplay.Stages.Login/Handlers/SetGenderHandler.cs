@@ -14,8 +14,11 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
         public override Task Handle(LoginStageUser user, IPacketReader packet)
         {
-            // TODO
-            throw new NotImplementedException();
+            var cancel = !packet.ReadBool();
+            var gender = (byte)(packet.ReadBool() ? 1 : 0);
+
+            if (cancel) user.Stage.Leave(user);
+            // TODO;
         }
     }
 }
