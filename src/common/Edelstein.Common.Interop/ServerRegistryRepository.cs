@@ -10,6 +10,8 @@ namespace Edelstein.Common.Interop
 
         public override async Task<ServerRegistryEntry> Retrieve(string key)
         {
+            if (await base.Retrieve(key) == null) return null;
+
             var now = DateTime.UtcNow;
             var result = await base.Retrieve(key);
 

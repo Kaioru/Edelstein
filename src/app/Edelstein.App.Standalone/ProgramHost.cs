@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Common.Datastore.LiteDB;
 using Edelstein.Common.Gameplay.Handling;
-using Edelstein.Common.Gameplay.Stages.Game;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates;
