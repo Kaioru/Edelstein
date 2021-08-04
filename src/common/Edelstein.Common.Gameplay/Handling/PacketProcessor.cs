@@ -14,7 +14,7 @@ namespace Edelstein.Common.Gameplay.Handling
         where TStage : IStage<TStage, TUser>
         where TUser : IStageUser<TStage, TUser>
     {
-        private readonly ILogger<PacketProcessor<TStage, TUser>> _logger;
+        private readonly ILogger _logger;
         private readonly IDictionary<short, IPacketHandler<TStage, TUser>> _handlers;
 
         public PacketProcessor(

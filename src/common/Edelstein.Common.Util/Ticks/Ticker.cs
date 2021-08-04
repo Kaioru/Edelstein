@@ -14,7 +14,7 @@ namespace Edelstein.Common.Util.Ticks
         private readonly Stopwatch _stopwatch;
         private readonly ITickerBehavior _behavior;
         private readonly int _refreshRate;
-        private readonly ILogger<ITicker> _logger;
+        private readonly ILogger _logger;
 
         public Ticker(
             ITickerBehavior behavior,
