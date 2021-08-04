@@ -24,7 +24,7 @@ namespace Edelstein.Common.Gameplay.Stages
         private DateTime LastSentHeartbeatDate { get; set; }
         private DateTime LastRecvHeartbeatDate { get; set; }
 
-        protected AbstractServerStageUser(ISocket socket) : base(socket) { }
+        protected AbstractServerStageUser(ISocket socket, IPacketProcessor<TStage, TUser> processor) : base(socket, processor) { }
 
         public override async Task Update()
         {

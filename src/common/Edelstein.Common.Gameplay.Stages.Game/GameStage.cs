@@ -25,7 +25,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public IContiMoveRepository ContiMoveRepository { get; }
 
         public GameStage(
-            IOptions<GameStageConfig> options,
+            GameStageConfig config,
             IServerRegistryService serverRegistryService,
             ISessionRegistryService sessionRegistry,
             IMigrationRegistryService migrationRegistryService,
@@ -41,7 +41,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             IContiMoveRepository contiMoveRepository
         ) : base(
             ServerStageType.Game,
-            options.Value,
+            config,
             serverRegistryService,
             sessionRegistry,
             migrationRegistryService,
