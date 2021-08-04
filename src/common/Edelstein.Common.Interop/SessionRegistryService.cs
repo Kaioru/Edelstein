@@ -12,7 +12,7 @@ namespace Edelstein.Common.Interop
         private static readonly string SessionScope = "sessions";
         private static readonly string SessionAccountScope = $"{SessionScope}:account";
         private static readonly string SessionCharacterScope = $"{SessionScope}:character";
-        private static readonly TimeSpan SessionTimeoutDuration = TimeSpan.FromMinutes(1);
+        private static readonly TimeSpan SessionTimeoutDuration = TimeSpan.FromMinutes(2);
 
         private readonly ICache _sessionAccountCache;
         private readonly ICache _sessionCharacterCache;

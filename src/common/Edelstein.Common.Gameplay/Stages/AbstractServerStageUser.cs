@@ -148,20 +148,24 @@ namespace Edelstein.Common.Gameplay.Stages
 
         public async Task TrySendAliveReq()
         {
-            if (IsInitialized && (DateTime.UtcNow - LastRecvHeartbeatDate) >= SessionDisconnectDuration)
+            var now = DateTime.UtcNow;
+
+            if (!IsInitialized)
             {
+                LastRecvHeartbeatDate = now;
+                LastSentHeartbeatDate = now;
+                IsInitialized = true;
+            }
+
+            if ((now - LastRecvHeartbeatDate) >= SessionDisconnectDuration)
+            {
+                Console.WriteLine("BYEBYE");
                 await Disconnect();
                 return;
             }
 
-            if ((DateTime.UtcNow - LastSentHeartbeatDate) >= SessionUpdateDuration)
+            if ((now - LastSentHeartbeatDate) >= SessionUpdateDuration)
             {
-                if (!IsInitialized)
-                {
-                    LastRecvHeartbeatDate = DateTime.UtcNow;
-                    IsInitialized = true;
-                }
-
                 LastSentHeartbeatDate = DateTime.UtcNow;
                 await Dispatch(GetAliveReqPacket());
             }
@@ -169,17 +173,20 @@ namespace Edelstein.Common.Gameplay.Stages
 
         public async Task TryRecvAliveAck()
         {
-            LastRecvHeartbeatDate = DateTime.UtcNow;
-
             if (Account == null) return;
+            if ((DateTime.UtcNow - LastRecvHeartbeatDate) < SessionUpdateDuration) return;
+
+            LastRecvHeartbeatDate = DateTime.UtcNow;
 
             var session = new SessionObject
             {
                 Account = Account.ID,
-                Character = Character.ID,
                 Server = Stage.ID,
                 State = IsLoggingIn ? SessionState.LoggingIn : SessionState.LoggedIn
             };
+
+            if (Character != null)
+                session.Character = Character.ID;
 
             await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
         }
