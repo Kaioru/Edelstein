@@ -15,6 +15,6 @@ namespace Edelstein.Common.Gameplay.Stages.Handlers
             => Task.FromResult(!user.IsMigrating);
 
         public override Task Handle(TUser user, IPacketReader packet)
-            => user.TrySendAliveReq();
+            => user.TryRecvAliveAck();
     }
 }

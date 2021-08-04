@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Handling;
+﻿using System;
+using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Network.Transport;
 

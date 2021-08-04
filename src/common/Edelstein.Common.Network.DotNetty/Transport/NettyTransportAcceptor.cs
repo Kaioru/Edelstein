@@ -67,7 +67,7 @@ namespace Edelstein.Common.Network.DotNetty.Transport
                 .ChildHandler(new ActionChannelInitializer<IChannel>(ch =>
                 {
                     ch.Pipeline.AddLast(
-                        new ReadTimeoutHandler(TimeSpan.FromMinutes(1)),
+                        new ReadTimeoutHandler(TimeSpan.FromMinutes(2)),
                         new NettyPacketDecoder(this, aesCipher, igCipher),
                         new NettyTransportAcceptorHandler(this),
                         new NettyPacketEncoder(this, aesCipher, igCipher)
