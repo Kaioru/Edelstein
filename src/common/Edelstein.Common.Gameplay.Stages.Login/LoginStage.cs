@@ -14,7 +14,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login
         public ITemplateRepository<ItemTemplate> ItemTemplates { get; set; }
 
         public LoginStage(
-            IOptions<LoginStageConfig> options,
+            LoginStageConfig config,
             IServerRegistryService serverRegistryService,
             ISessionRegistryService sessionRegistry,
             IMigrationRegistryService migrationRegistryService,
@@ -26,7 +26,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login
             ITemplateRepository<ItemTemplate> itemTemplates
         ) : base(
             ServerStageType.Login,
-            options.Value,
+            config,
             serverRegistryService,
             sessionRegistry,
             migrationRegistryService,

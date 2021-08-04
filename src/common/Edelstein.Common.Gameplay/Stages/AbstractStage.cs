@@ -2,7 +2,6 @@
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Network;
 
@@ -13,11 +12,9 @@ namespace Edelstein.Common.Gameplay.Stages
         where TUser : AbstractStageUser<TStage, TUser>
     {
         private readonly IDictionary<int, TUser> _users;
-        public IPacketProcessor<TStage, TUser> Processor { get; init; }
 
-        public AbstractStage(IPacketProcessor<TStage, TUser> processor)
+        public AbstractStage()
         {
-            Processor = processor;
             _users = new Dictionary<int, TUser>();
         }
 

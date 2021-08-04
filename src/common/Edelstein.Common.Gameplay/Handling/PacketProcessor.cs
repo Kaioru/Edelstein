@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Network;
@@ -23,7 +24,7 @@ namespace Edelstein.Common.Gameplay.Handling
         {
             _handlers = handlers
                 .DistinctBy(h => h.Operation)
-                .ToImmutableDictionary(
+                .ToDictionary(
                     h => h.Operation,
                     h => h
                 );
@@ -47,7 +48,7 @@ namespace Edelstein.Common.Gameplay.Handling
 
             if (!_handlers.ContainsKey(operation))
             {
-                _logger.LogWarning($"Unhandled packet operation 0x{operation:X}");
+                _logger.LogWarning($"Unhandled packet operation 0x{operation:X} ({Enum.GetName((PacketRecvOperations)operation)})");
                 return;
             }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Network;
@@ -12,6 +13,8 @@ namespace Edelstein.Common.Gameplay.Stages
         where TStage : AbstractStage<TStage, TUser>
         where TUser : AbstractStageUser<TStage, TUser>
     {
+        private IPacketProcessor<TStage, TUser> _processor;
+
         public Account Account { get; set; }
         public AccountWorld AccountWorld { get; set; }
         public Character Character { get; set; }
@@ -19,10 +22,13 @@ namespace Edelstein.Common.Gameplay.Stages
         public TStage Stage { get; set; }
         public ISocket Socket { get; init; }
 
-        public AbstractStageUser(ISocket socket)
-            => Socket = socket;
+        public AbstractStageUser(ISocket socket, IPacketProcessor<TStage, TUser> processor)
+        {
+            Socket = socket;
+            _processor = processor;
+        }
 
-        public virtual Task OnPacket(IPacketReader packet) => Stage.Processor.Process((TUser)this, packet);
+        public virtual Task OnPacket(IPacketReader packet) => _processor.Process((TUser)this, packet);
         public virtual Task OnException(Exception exception) => Disconnect();
         public virtual Task OnDisconnect() => Stage?.Leave((TUser)this);
 

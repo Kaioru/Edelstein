@@ -48,7 +48,7 @@ namespace Edelstein.Common.Gameplay.Stages
             ICharacterRepository characterRepository,
             ITickerManager timerManager,
             IPacketProcessor<TStage, TUser> processor
-        ) : base(processor)
+        ) : base()
         {
             Type = type;
             Config = config;
