@@ -10,15 +10,27 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
         public override short Operation => (short)PacketRecvOperations.SetGender;
 
         public override Task<bool> Check(LoginStageUser user)
-            => Task.FromResult(user.Stage != null && user.Account != null);
+            => Task.FromResult(user.Stage != null && user.Account?.Gender == null);
 
-        public override Task Handle(LoginStageUser user, IPacketReader packet)
+        public override async Task Handle(LoginStageUser user, IPacketReader packet)
         {
             var cancel = !packet.ReadBool();
-            var gender = (byte)(packet.ReadBool() ? 1 : 0);
 
-            if (cancel) user.Stage.Leave(user);
-            // TODO;
+            if (cancel)
+            {
+                await user.Disconnect();
+                return;
+            }
+
+            var gender = (byte)(packet.ReadBool() ? 1 : 0);
+            var response = new UnstructuredOutgoingPacket(PacketSendOperations.SetAccountResult);
+
+            user.Account.Gender = gender;
+
+            response.WriteByte(gender);
+            response.WriteBool(true);
+
+            await user.Dispatch(response);
         }
     }
 }
