@@ -59,7 +59,7 @@ namespace Edelstein.Common.Gameplay.Handling
                 if (await handler.Check(user))
                 {
                     await handler.Handle(user, packet);
-                    _logger.LogDebug($"Handled {typeof(TStage).Name} packet operation 0x{operation:X} ({Enum.GetName((PacketRecvOperations)operation)}) with remaining {packet.Available} bytes");
+                    _logger.LogDebug($"Handled {typeof(TStage).Name} packet operation 0x{operation:X} ({Enum.GetName((PacketRecvOperations)operation)}) with {packet.Available} available bytes");
                 }
             }
             catch (Exception e)
