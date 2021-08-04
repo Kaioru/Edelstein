@@ -7,6 +7,7 @@ using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Common.Gameplay.Stages.Login;
+using Edelstein.Common.Gameplay.Stages.Login.Handlers;
 using Edelstein.Common.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Common.Interop;
@@ -15,6 +16,7 @@ using Edelstein.Common.Parser.Duey;
 using Edelstein.Common.Util.Caching;
 using Edelstein.Common.Util.Ticks;
 using Edelstein.Protocol.Datastore;
+using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
@@ -79,13 +81,10 @@ namespace Edelstein.App.Standalone
 
                 loginCollection.AddLogging(logging => logging.AddSerilog());
 
-                // TODO: packet processors
-
                 loginCollection.AddSingleton<
                     IPacketProcessor<LoginStage, LoginStageUser>,
                     PacketProcessor<LoginStage, LoginStageUser>
                 >();
-
                 loginCollection.AddSingleton(p => new LoginStage(
                     loginConfig,
                     provider.GetService<IServerRegistryService>(),
@@ -96,6 +95,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ICharacterRepository>(),
                     provider.GetService<ITickerManager>(),
                     p.GetService<IPacketProcessor<LoginStage, LoginStageUser>>(),
+                    p.GetService<ILogger<IStage<LoginStage, LoginStageUser>>>(),
                     provider.GetService<ITemplateRepository<ItemTemplate>>()
                 ));
                 loginCollection.AddSingleton<ISessionInitializer, LoginSessionInitializer>();
@@ -120,8 +120,6 @@ namespace Edelstein.App.Standalone
                 var gameCollection = new ServiceCollection();
 
                 gameCollection.AddLogging(logging => logging.AddSerilog());
-
-                // TODO: packet processors
 
                 gameCollection.AddSingleton<
                     IPacketProcessor<GameStage, GameStageUser>,

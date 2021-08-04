@@ -21,16 +21,16 @@ namespace Edelstein.Common.Datastore.LiteDB
             => Task.FromResult(_repository.SingleById<T>(id));
 
         public Task Insert<T>(T entity) where T : class, IDataDocument
-            => Task.Run(() => Insert(entity));
+            => Task.Run(() => _repository.Insert(entity));
 
         public Task Update<T>(T entity) where T : class, IDataDocument
-            => Task.Run(() => Update(entity));
+            => Task.Run(() => _repository.Update(entity));
 
         public Task Delete<T>(T entity) where T : class, IDataDocument
-            => Task.Run(() => Delete(entity));
+            => Task.Run(() => _repository.Delete<T>(entity.ID));
 
         public Task Delete<T>(int id) where T : class, IDataDocument
-            => Task.Run(() => Delete<T>(id));
+            => Task.Run(() => _repository.Delete<T>(id));
 
         public void Dispose() { }
     }

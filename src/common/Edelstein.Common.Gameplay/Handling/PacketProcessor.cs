@@ -54,8 +54,19 @@ namespace Edelstein.Common.Gameplay.Handling
 
             var handler = _handlers[operation];
 
-            if (await handler.Check(user))
-                await handler.Handle(user, packet);
+            try
+            {
+                if (await handler.Check(user))
+                {
+                    await handler.Handle(user, packet);
+                    _logger.LogDebug($"Handled {typeof(TStage).Name} packet operation 0x{operation:X} ({Enum.GetName((PacketRecvOperations)operation)}) with remaining {packet.Available} bytes");
+                }
+            }
+            catch (Exception e)
+            {
+                await user.OnException(e);
+                _logger.LogError($"Caught exception when handling {typeof(TStage).Name} packet operation 0x{operation:X} ({Enum.GetName((PacketRecvOperations)operation)})", e);
+            }
         }
     }
 }

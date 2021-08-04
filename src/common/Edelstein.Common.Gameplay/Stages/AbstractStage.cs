@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,20 +25,19 @@ namespace Edelstein.Common.Gameplay.Stages
         public IEnumerable<TUser> GetUsers()
             => _users.Values.ToImmutableList();
 
-        public Task Enter(TUser user)
+        public virtual Task Enter(TUser user)
         {
             user.Stage?.Leave(user);
             user.Stage = (TStage)this;
-            _users.Add(user.Character.ID, user);
+            _users.Add(user.ID, user);
 
             return Task.CompletedTask;
         }
 
-        public Task Leave(TUser user)
+        public virtual Task Leave(TUser user)
         {
+            _users.Remove(user.ID);
             user.Stage = default;
-            _users.Remove(user.Character.ID);
-
             return Task.CompletedTask;
         }
 
