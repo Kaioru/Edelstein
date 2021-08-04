@@ -30,7 +30,7 @@ namespace Edelstein.Common.Network.DotNetty.Transport
         private IEventLoopGroup BossGroup { get; set; }
         private IEventLoopGroup WorkerGroup { get; set; }
 
-        private readonly ILogger<ITransportAcceptor> _logger;
+        private readonly ILogger _logger;
 
         public NettyTransportAcceptor(
             ISessionInitializer initializer,

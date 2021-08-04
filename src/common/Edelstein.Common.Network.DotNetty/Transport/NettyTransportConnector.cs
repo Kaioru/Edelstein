@@ -27,7 +27,7 @@ namespace Edelstein.Common.Network.DotNetty.Transport
         private IChannel Channel { get; set; }
         private IEventLoopGroup WorkerGroup { get; set; }
 
-        private readonly ILogger<ITransportConnector> _logger;
+        private readonly ILogger _logger;
 
         public NettyTransportConnector(
             ISessionInitializer initializer,

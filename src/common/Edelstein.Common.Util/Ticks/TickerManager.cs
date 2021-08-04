@@ -13,12 +13,12 @@ namespace Edelstein.Common.Util.Ticks
     {
         private readonly ITicker _ticker;
         private readonly ICollection<ITickerManagerEntry> _entries;
-        private readonly ILogger<ITicker> _logger;
+        private readonly ILogger _logger;
 
-        public TickerManager(int refreshRate = 4, ILogger<ITicker> logger = null)
+        public TickerManager(int refreshRate = 2, ILogger<ITicker> logger = null)
         {
             _logger = logger ?? new NullLogger<ITicker>();
-            _ticker = new Ticker(this, refreshRate, _logger);
+            _ticker = new Ticker(this, refreshRate, logger);
             _entries = new List<ITickerManagerEntry>();
 
             _ticker.Start();
