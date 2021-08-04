@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Util.Ticks;
+using MoreLinq;
 
 namespace Edelstein.Common.Gameplay.Stages.Behaviors
 {
@@ -33,6 +34,7 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
                     p => p.Name.ToString(),
                     p => p.GetValue(config).ToString()
                 );
+
             var server = new ServerObject
             {
                 Id = _stage.ID,

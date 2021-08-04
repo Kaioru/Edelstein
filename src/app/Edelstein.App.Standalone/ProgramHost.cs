@@ -67,7 +67,7 @@ namespace Edelstein.App.Standalone
 
             var provider = collection.BuildServiceProvider();
 
-            await Task.WhenAll(_config.LoginStages.Select(async c =>
+            await Task.WhenAll(_config.LoginStages.Select(async loginConfig =>
             {
                 var loginCollection = new ServiceCollection();
 
@@ -80,7 +80,7 @@ namespace Edelstein.App.Standalone
                     PacketProcessor<LoginStage, LoginStageUser>
                 >();
                 loginCollection.AddSingleton(p => new LoginStage(
-                    p.GetService<LoginStageConfig>(),
+                    loginConfig,
                     provider.GetService<IServerRegistryService>(),
                     provider.GetService<ISessionRegistryService>(),
                     provider.GetService<IMigrationRegistryService>(),
@@ -106,7 +106,7 @@ namespace Edelstein.App.Standalone
                 loginProvider.GetService<LoginStage>();
 
                 _acceptors.Add(acceptor);
-                await acceptor.Accept(c.Host, c.Port);
+                await acceptor.Accept(loginConfig.Host, loginConfig.Port);
             }));
         }
 
