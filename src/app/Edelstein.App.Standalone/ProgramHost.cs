@@ -27,47 +27,31 @@ using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace Edelstein.App.Standalone
 {
     public class ProgramHost : IHostedService
     {
+        private readonly ProgramConfig _config;
         private readonly ICollection<ITransportAcceptor> _acceptors;
 
-        public ProgramHost()
+        public ProgramHost(IOptions<ProgramConfig> options)
         {
+            _config = options.Value;
             _acceptors = new List<ITransportAcceptor>();
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            var config = new ProgramConfig
-            {
-                LoginStages = new List<LoginStageConfig>(),
-                GameStages = new List<GameStageConfig>(),
-                Version = 95,
-                Patch = "1",
-                Locale = 8,
-                Database = "edelstein.db",
-                DataPath = "data"
-            };
-
-            // TODO: proper configs
-            config.LoginStages.Add(new LoginStageConfig
-            {
-                ID = "Login-1",
-                ServerHost = "192.168.1.250",
-                ServerPort = 8484
-            });
-
             var collection = new ServiceCollection();
 
             collection.AddLogging(logging => logging.AddSerilog());
 
             collection.AddSingleton<ICache>(p => new LocalCache());
-            collection.AddSingleton<IDataStore>(p => new LiteDataStore(new LiteRepository(config.Database)));
-            collection.AddSingleton<IDataDirectoryCollection>(p => new NXDataDirectoryCollection(config.DataPath));
+            collection.AddSingleton<IDataStore>(p => new LiteDataStore(new LiteRepository(_config.Database)));
+            collection.AddSingleton<IDataDirectoryCollection>(p => new NXDataDirectoryCollection(_config.DataPath));
 
             collection.AddSingleton<IServerRegistryService, ServerRegistryService>();
             collection.AddSingleton<ISessionRegistryService, SessionRegistryService>();
@@ -83,7 +67,7 @@ namespace Edelstein.App.Standalone
 
             var provider = collection.BuildServiceProvider();
 
-            await Task.WhenAll(config.LoginStages.Select(async c =>
+            await Task.WhenAll(_config.LoginStages.Select(async c =>
             {
                 var loginCollection = new ServiceCollection();
 
@@ -110,9 +94,9 @@ namespace Edelstein.App.Standalone
                 loginCollection.AddSingleton<ISessionInitializer, LoginSessionInitializer>();
                 loginCollection.AddSingleton<ITransportAcceptor>(p => new NettyTransportAcceptor(
                     p.GetService<ISessionInitializer>(),
-                    config.Version,
-                    config.Patch,
-                    config.Locale,
+                    _config.Version,
+                    _config.Patch,
+                    _config.Locale,
                     provider.GetService<ILogger<ITransportAcceptor>>()
                 ));
 
@@ -122,7 +106,7 @@ namespace Edelstein.App.Standalone
                 loginProvider.GetService<LoginStage>();
 
                 _acceptors.Add(acceptor);
-                await acceptor.Accept(c.ServerHost, c.ServerPort);
+                await acceptor.Accept(c.Host, c.Port);
             }));
         }
 

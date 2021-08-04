@@ -4,7 +4,7 @@
     {
         public string ID { get; init; }
 
-        public string ServerHost { get; init; }
-        public short ServerPort { get; init; }
+        public string Host { get; init; }
+        public short Port { get; init; }
     }
 }

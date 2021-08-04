@@ -9,11 +9,11 @@ namespace Edelstein.App.Standalone
         public ICollection<LoginStageConfig> LoginStages { get; init; }
         public ICollection<GameStageConfig> GameStages { get; init; }
 
-        public short Version { get; init; }
-        public string Patch { get; init; }
-        public byte Locale { get; init; }
+        public short Version { get; init; } = 95;
+        public string Patch { get; init; } = "1";
+        public byte Locale { get; init; } = 8;
 
-        public string Database { get; init; }
-        public string DataPath { get; init; }
+        public string Database { get; init; } = "edelstein.db";
+        public string DataPath { get; init; } = "data";
     }
 }

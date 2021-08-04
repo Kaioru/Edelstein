@@ -38,8 +38,8 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
                 Id = _stage.ID,
                 ServerConnection = new ServerConnectionObject
                 {
-                    Host = config.ServerHost,
-                    Port = config.ServerPort
+                    Host = config.Host,
+                    Port = config.Port
                 }
             };
 
