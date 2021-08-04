@@ -48,7 +48,7 @@ namespace Edelstein.Common.Gameplay.Handling
 
             if (!_handlers.ContainsKey(operation))
             {
-                _logger.LogWarning($"Unhandled packet operation 0x{operation:X} ({Enum.GetName((PacketRecvOperations)operation)})");
+                _logger.LogWarning($"Unhandled {typeof(TStage).Name} packet operation 0x{operation:X} ({Enum.GetName((PacketRecvOperations)operation)})");
                 return;
             }
 
