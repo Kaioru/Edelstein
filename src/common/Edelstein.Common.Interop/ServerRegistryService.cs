@@ -9,72 +9,76 @@ namespace Edelstein.Common.Interop
 {
     public class ServerRegistryService : IServerRegistryService
     {
-        private readonly IDictionary<string, ServerRegistryEntry> _entries;
+        private readonly ServerRegistryRepository _repository;
         private readonly ISessionRegistryService _sessionRegistryService;
+        // TODO: Messaging to ensure synchronization across machines
 
         public ServerRegistryService(ISessionRegistryService sessionRegistryService)
         {
-            _entries = new Dictionary<string, ServerRegistryEntry>();
+            _repository = new ServerRegistryRepository();
             _sessionRegistryService = sessionRegistryService;
         }
 
-        public Task<ServiceRegistryResponse> RegisterServer(RegisterServerRequest request)
+        public async Task<ServiceRegistryResponse> RegisterServer(RegisterServerRequest request)
         {
             var response = new ServiceRegistryResponse { Result = ServiceRegistryResult.Ok };
 
-            if (!_entries.ContainsKey(request.Server.Id))
-                _entries[request.Server.Id] = new ServerRegistryEntry(request.Server, DateTime.UtcNow);
+            if (await _repository.Retrieve(request.Server.Id) == null)
+                await _repository.Insert(new ServerRegistryEntry(request.Server, DateTime.UtcNow));
             else response.Result = ServiceRegistryResult.Failed;
 
-            return Task.FromResult(response);
+            return response;
         }
 
-        public Task<ServiceRegistryResponse> DeregisterServer(DeregisterServerRequest request)
+        public async Task<ServiceRegistryResponse> DeregisterServer(DeregisterServerRequest request)
         {
             var response = new ServiceRegistryResponse { Result = ServiceRegistryResult.Ok };
 
-            if (_entries.ContainsKey(request.Id))
-                _entries.Remove(request.Id);
+            if (await _repository.Retrieve(request.Id) != null)
+                await _repository.Delete(request.Id);
             else response.Result = ServiceRegistryResult.Failed;
 
-            return Task.FromResult(response);
+            return response;
         }
 
-        public Task<ServiceRegistryResponse> UpdateServer(UpdateServerRequest request)
+        public async Task<ServiceRegistryResponse> UpdateServer(UpdateServerRequest request)
         {
             var response = new ServiceRegistryResponse { Result = ServiceRegistryResult.Ok };
+            var entry = await _repository.Retrieve(request.Server.Id);
 
-            if (_entries.ContainsKey(request.Server.Id))
+            if (entry != null)
             {
-                _entries[request.Server.Id].Server = request.Server;
-                _entries[request.Server.Id].LastUpdate = DateTime.UtcNow;
+                entry.Server = request.Server;
+                entry.LastUpdate = DateTime.UtcNow;
+                await _repository.Update(entry);
             }
             else response.Result = ServiceRegistryResult.Failed;
 
-            return Task.FromResult(response);
+            return response;
         }
 
-        public Task<DescribeServerResponse> DescribeServer(DescribeServerRequest request)
+        public async Task<DescribeServerResponse> DescribeServer(DescribeServerRequest request)
         {
             var response = new DescribeServerResponse { Result = ServiceRegistryResult.Ok };
+            var entry = await _repository.Retrieve(request.Id);
 
-            if (_entries.ContainsKey(request.Id)) response.Server = _entries[request.Id].Server;
+            if (entry != null) response.Server = entry.Server;
             else response.Result = ServiceRegistryResult.Failed;
 
-            return Task.FromResult(response);
+            return response;
         }
 
-        public Task<DescribeServersResponse> DescribeServers(DescribeServersRequest request)
+        public async Task<DescribeServersResponse> DescribeServers(DescribeServersRequest request)
         {
             var response = new DescribeServersResponse { Result = ServiceRegistryResult.Ok };
-            var servers = _entries.Values
+            var servers = (await _repository.RetrieveAll())
                 .Where(e => request.Tags.All(t => e.Server.Tags.ContainsKey(t.Key) && e.Server.Tags[t.Key] == t.Value))
                 .Select(e => e.Server)
                 .ToList();
 
             response.Servers.AddRange(servers);
 
-            return Task.FromResult(response);
+            return response;
         }
 
         public async Task<DispatchResponse> Dispatch(DispatchRequest request)
@@ -82,7 +86,7 @@ namespace Edelstein.Common.Interop
             var response = new DispatchResponse { Result = DispatchResult.Ok };
             var dispatch = new DispatchObject { Packet = request.Packet };
 
-            await Task.WhenAll(_entries.Values.Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
+            await Task.WhenAll((await _repository.RetrieveAll()).Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
 
             return response;
         }
@@ -91,9 +95,10 @@ namespace Edelstein.Common.Interop
         {
             var response = new DispatchResponse { Result = DispatchResult.Ok };
             var dispatch = new DispatchObject { Packet = request.Packet };
+            var entry = await _repository.Retrieve(request.Server);
 
-            if (_entries.ContainsKey(request.Server))
-                await _entries[request.Server].Dispatch.Writer.WriteAsync(dispatch);
+            if (entry != null)
+                await entry.Dispatch.Writer.WriteAsync(dispatch);
             else response.Result = DispatchResult.Failed;
 
             return response;
@@ -102,7 +107,7 @@ namespace Edelstein.Common.Interop
         {
             var response = new DispatchResponse { Result = DispatchResult.Ok };
             var dispatch = new DispatchObject { Packet = request.Packet };
-            var targets = _entries.Values
+            var targets = (await _repository.RetrieveAll())
                 .Where(e => request.Tags.All(t => e.Server.Tags.ContainsKey(t.Key) && e.Server.Tags[t.Key] == t.Value))
                 .ToList();
 
@@ -118,7 +123,7 @@ namespace Edelstein.Common.Interop
             var response = new DispatchResponse { Result = DispatchResult.Ok };
             var dispatch = new DispatchObject { Packet = request.Packet, Alliance = request.Alliance };
 
-            await Task.WhenAll(_entries.Values.Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
+            await Task.WhenAll((await _repository.RetrieveAll()).Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
 
             return response;
         }
@@ -128,7 +133,7 @@ namespace Edelstein.Common.Interop
             var response = new DispatchResponse() { Result = DispatchResult.Ok };
             var dispatch = new DispatchObject() { Packet = request.Packet, Guild = request.Guild };
 
-            await Task.WhenAll(_entries.Values.Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
+            await Task.WhenAll((await _repository.RetrieveAll()).Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
 
             return response;
         }
@@ -138,7 +143,7 @@ namespace Edelstein.Common.Interop
             var response = new DispatchResponse() { Result = DispatchResult.Ok };
             var dispatch = new DispatchObject() { Packet = request.Packet, Party = request.Party };
 
-            await Task.WhenAll(_entries.Values.Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
+            await Task.WhenAll((await _repository.RetrieveAll()).Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
 
             return response;
         }
@@ -152,8 +157,9 @@ namespace Edelstein.Common.Interop
             if (description.Result == SessionRegistryResult.Ok)
             {
                 var server = description.Session.Server;
+                var entry = await _repository.Retrieve(server);
 
-                if (_entries.ContainsKey(server)) await _entries[server].Dispatch.Writer.WriteAsync(dispatch);
+                if (entry != null) await entry.Dispatch.Writer.WriteAsync(dispatch);
                 else response.Result = DispatchResult.Failed;
             }
             else response.Result = DispatchResult.Failed;
@@ -163,9 +169,11 @@ namespace Edelstein.Common.Interop
 
         public async IAsyncEnumerable<DispatchObject> SubscribeDispatch(DispatchSubscription request)
         {
-            if (_entries.ContainsKey(request.Server))
+            var entry = await _repository.Retrieve(request.Server);
+
+            if (entry != null)
             {
-                await foreach (var dispatch in _entries[request.Server].Dispatch.Reader.ReadAllAsync())
+                await foreach (var dispatch in entry.Dispatch.Reader.ReadAllAsync())
                     yield return dispatch;
             }
 

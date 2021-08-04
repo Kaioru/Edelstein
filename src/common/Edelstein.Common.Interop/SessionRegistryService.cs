@@ -34,6 +34,7 @@ namespace Edelstein.Common.Interop
 
             return new UpdateSessionResult { Result = SessionRegistryResult.Ok };
         }
+
         public async Task<DescribeSessionResult> DescribeSessionByAccount(DescribeSessionByAccountRequest request)
         {
             var account = request.Account;
