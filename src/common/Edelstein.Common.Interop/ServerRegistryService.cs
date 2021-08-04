@@ -4,19 +4,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Interop;
 using Edelstein.Protocol.Interop.Contracts;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Edelstein.Common.Interop
 {
     public class ServerRegistryService : IServerRegistryService
     {
+        private readonly ILogger _logger;
         private readonly ServerRegistryRepository _repository;
         private readonly ISessionRegistryService _sessionRegistryService;
         // TODO: Messaging to ensure synchronization across machines
 
-        public ServerRegistryService(ISessionRegistryService sessionRegistryService)
+        public ServerRegistryService(
+            ISessionRegistryService sessionRegistryService,
+            ILogger<ServerRegistryService> logger = null
+        )
         {
             _repository = new ServerRegistryRepository();
             _sessionRegistryService = sessionRegistryService;
+            _logger = logger ?? new NullLogger<ServerRegistryService>();
         }
 
         public async Task<ServiceRegistryResponse> RegisterServer(RegisterServerRequest request)
@@ -24,7 +31,10 @@ namespace Edelstein.Common.Interop
             var response = new ServiceRegistryResponse { Result = ServiceRegistryResult.Ok };
 
             if (await _repository.Retrieve(request.Server.Id) == null)
+            {
                 await _repository.Insert(new ServerRegistryEntry(request.Server, DateTime.UtcNow));
+                _logger.LogInformation($"Registered server {request.Server.Id} to the registry");
+            }
             else response.Result = ServiceRegistryResult.Failed;
 
             return response;
@@ -35,7 +45,10 @@ namespace Edelstein.Common.Interop
             var response = new ServiceRegistryResponse { Result = ServiceRegistryResult.Ok };
 
             if (await _repository.Retrieve(request.Id) != null)
+            {
                 await _repository.Delete(request.Id);
+                _logger.LogInformation($"Deregistered server {request.Id} from the registry");
+            }
             else response.Result = ServiceRegistryResult.Failed;
 
             return response;
