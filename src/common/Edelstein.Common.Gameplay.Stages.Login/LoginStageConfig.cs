@@ -2,5 +2,6 @@
 {
     public record LoginStageConfig : ServerStageConfig
     {
+        public bool AutoRegister { get; init; } = false;
     }
 }

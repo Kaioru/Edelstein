@@ -18,6 +18,8 @@ namespace Edelstein.Common.Gameplay.Stages
         private static readonly TimeSpan SessionUpdateDuration = TimeSpan.FromSeconds(30);
 
         public long Key { get; set; }
+
+        public bool IsInitialized { get; set; }
         public bool IsMigrating { get; set; }
         public bool IsLoggingIn { get; set; }
 
@@ -146,7 +148,7 @@ namespace Edelstein.Common.Gameplay.Stages
 
         public async Task TrySendAliveReq()
         {
-            if ((DateTime.UtcNow - LastRecvHeartbeatDate) >= SessionDisconnectDuration)
+            if (IsInitialized && (DateTime.UtcNow - LastRecvHeartbeatDate) >= SessionDisconnectDuration)
             {
                 await Disconnect();
                 return;
@@ -154,6 +156,12 @@ namespace Edelstein.Common.Gameplay.Stages
 
             if ((DateTime.UtcNow - LastSentHeartbeatDate) >= SessionUpdateDuration)
             {
+                if (!IsInitialized)
+                {
+                    LastRecvHeartbeatDate = DateTime.UtcNow;
+                    IsInitialized = true;
+                }
+
                 LastSentHeartbeatDate = DateTime.UtcNow;
                 await Dispatch(GetAliveReqPacket());
             }

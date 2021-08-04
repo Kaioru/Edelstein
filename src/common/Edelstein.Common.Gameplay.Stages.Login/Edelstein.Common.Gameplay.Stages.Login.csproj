@@ -8,4 +8,16 @@
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Login\Edelstein.Protocol.Gameplay.Stages.Login.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Handlers\" />
+    <None Remove="Types\" />
+    <None Remove="BCrypt.Net-Next" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Handlers\" />
+    <Folder Include="Types\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+  </ItemGroup>
 </Project>

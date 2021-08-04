@@ -15,6 +15,8 @@ namespace Edelstein.Common.Gameplay.Stages
     {
         private IPacketProcessor<TStage, TUser> _processor;
 
+        public virtual int ID => Character.ID;
+
         public Account Account { get; set; }
         public AccountWorld AccountWorld { get; set; }
         public Character Character { get; set; }
