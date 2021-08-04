@@ -65,7 +65,7 @@ namespace Edelstein.Common.Gameplay.Handling
             catch (Exception e)
             {
                 await user.OnException(e);
-                _logger.LogError($"Caught exception when handling {typeof(TStage).Name} packet operation 0x{operation:X} ({Enum.GetName((PacketRecvOperations)operation)})", e);
+                _logger.LogError(e, $"Caught exception when handling {typeof(TStage).Name} packet operation 0x{operation:X} ({Enum.GetName((PacketRecvOperations)operation)})");
             }
         }
     }
