@@ -13,7 +13,7 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
         where TConfig : ServerStageConfig
     {
         private readonly TStage _stage;
-        private readonly CancellationTokenSource _tokenSource;
+        private CancellationTokenSource _tokenSource;
         private bool _isInitialized = false;
         private bool _isDisconnected = false;
 
@@ -55,11 +55,16 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
                 else return;
             }
 
-            var tokenSource = new CancellationTokenSource();
             var response = await _stage.ServerRegistryService.RegisterServer(new RegisterServerRequest { Server = server });
 
             if (response.Result == ServiceRegistryResult.Ok)
             {
+                if (_isInitialized || _isDisconnected)
+                {
+                    _tokenSource.Cancel();
+                    _tokenSource = new CancellationTokenSource();
+                }
+
                 _stage.DispatchSubscriptionTask = Task.Run(async () =>
                 {
                     await foreach (var dispatch in _stage.ServerRegistryService
