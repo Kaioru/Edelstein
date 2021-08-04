@@ -6,9 +6,9 @@ namespace Edelstein.Common.Interop
 {
     public class ServerRegistryEntry : IDisposable
     {
-        public ServerObject Server { get; }
+        public ServerObject Server { get; set; }
+        public DateTime LastUpdate { get; set; }
         public Channel<DispatchObject> Dispatch { get; }
-        public DateTime LastUpdate { get; }
 
         public ServerRegistryEntry(ServerObject server, DateTime lastUpdate)
         {

@@ -18,16 +18,69 @@ namespace Edelstein.Common.Interop
             _sessionRegistryService = sessionRegistryService;
         }
 
-        public Task<ServiceRegistryResponse> RegisterServer(RegisterServerRequest request) { throw new NotImplementedException(); }
-        public Task<ServiceRegistryResponse> DeregisterServer(DeregisterServerRequest request) { throw new NotImplementedException(); }
-        public Task<ServiceRegistryResponse> UpdateServer(UpdateServerRequest request) { throw new NotImplementedException(); }
-        public Task<DescribeServerResponse> DescribeServer(DescribeServerRequest request) { throw new NotImplementedException(); }
-        public Task<DescribeServersResponse> DescribeServers(DescribeServersRequest request) { throw new NotImplementedException(); }
+        public Task<ServiceRegistryResponse> RegisterServer(RegisterServerRequest request)
+        {
+            var response = new ServiceRegistryResponse { Result = ServiceRegistryResult.Ok };
+
+            if (!_entries.ContainsKey(request.Server.Id))
+                _entries[request.Server.Id] = new ServerRegistryEntry(request.Server, DateTime.UtcNow);
+            else response.Result = ServiceRegistryResult.Failed;
+
+            return Task.FromResult(response);
+        }
+
+        public Task<ServiceRegistryResponse> DeregisterServer(DeregisterServerRequest request)
+        {
+            var response = new ServiceRegistryResponse { Result = ServiceRegistryResult.Ok };
+
+            if (_entries.ContainsKey(request.Id))
+                _entries.Remove(request.Id);
+            else response.Result = ServiceRegistryResult.Failed;
+
+            return Task.FromResult(response);
+        }
+
+        public Task<ServiceRegistryResponse> UpdateServer(UpdateServerRequest request)
+        {
+            var response = new ServiceRegistryResponse { Result = ServiceRegistryResult.Ok };
+
+            if (_entries.ContainsKey(request.Server.Id))
+            {
+                _entries[request.Server.Id].Server = request.Server;
+                _entries[request.Server.Id].LastUpdate = DateTime.UtcNow;
+            }
+            else response.Result = ServiceRegistryResult.Failed;
+
+            return Task.FromResult(response);
+        }
+
+        public Task<DescribeServerResponse> DescribeServer(DescribeServerRequest request)
+        {
+            var response = new DescribeServerResponse { Result = ServiceRegistryResult.Ok };
+
+            if (_entries.ContainsKey(request.Id)) response.Server = _entries[request.Id].Server;
+            else response.Result = ServiceRegistryResult.Failed;
+
+            return Task.FromResult(response);
+        }
+
+        public Task<DescribeServersResponse> DescribeServers(DescribeServersRequest request)
+        {
+            var response = new DescribeServersResponse { Result = ServiceRegistryResult.Ok };
+            var servers = _entries.Values
+                .Where(e => request.Tags.All(t => e.Server.Tags.ContainsKey(t.Key) && e.Server.Tags[t.Key] == t.Value))
+                .Select(e => e.Server)
+                .ToList();
+
+            response.Servers.AddRange(servers);
+
+            return Task.FromResult(response);
+        }
 
         public async Task<DispatchResponse> Dispatch(DispatchRequest request)
         {
-            var response = new DispatchResponse() { Result = DispatchResult.Ok };
-            var dispatch = new DispatchObject() { Packet = request.Packet };
+            var response = new DispatchResponse { Result = DispatchResult.Ok };
+            var dispatch = new DispatchObject { Packet = request.Packet };
 
             await Task.WhenAll(_entries.Values.Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
 
@@ -36,8 +89,8 @@ namespace Edelstein.Common.Interop
 
         public async Task<DispatchResponse> DispatchToServer(DispatchToServerRequest request)
         {
-            var response = new DispatchResponse() { Result = DispatchResult.Ok };
-            var dispatch = new DispatchObject() { Packet = request.Packet };
+            var response = new DispatchResponse { Result = DispatchResult.Ok };
+            var dispatch = new DispatchObject { Packet = request.Packet };
 
             if (_entries.ContainsKey(request.Server))
                 await _entries[request.Server].Dispatch.Writer.WriteAsync(dispatch);
@@ -47,8 +100,8 @@ namespace Edelstein.Common.Interop
         }
         public async Task<DispatchResponse> DispatchToServers(DispatchToServersRequest request)
         {
-            var response = new DispatchResponse() { Result = DispatchResult.Ok };
-            var dispatch = new DispatchObject() { Packet = request.Packet };
+            var response = new DispatchResponse { Result = DispatchResult.Ok };
+            var dispatch = new DispatchObject { Packet = request.Packet };
             var targets = _entries.Values
                 .Where(e => request.Tags.All(t => e.Server.Tags.ContainsKey(t.Key) && e.Server.Tags[t.Key] == t.Value))
                 .ToList();
@@ -62,8 +115,8 @@ namespace Edelstein.Common.Interop
 
         public async Task<DispatchResponse> DispatchToAlliance(DispatchToAllianceRequest request)
         {
-            var response = new DispatchResponse() { Result = DispatchResult.Ok };
-            var dispatch = new DispatchObject() { Packet = request.Packet, Alliance = request.Alliance };
+            var response = new DispatchResponse { Result = DispatchResult.Ok };
+            var dispatch = new DispatchObject { Packet = request.Packet, Alliance = request.Alliance };
 
             await Task.WhenAll(_entries.Values.Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
 

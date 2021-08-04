@@ -39,7 +39,8 @@ message DescribeServerRequest {
 }
 
 message DescribeServerResponse {
-    ServerObject server = 1;
+    ServiceRegistryResult result = 1;
+    optional ServerObject server = 2;
 }
 
 message DescribeServersRequest {
@@ -47,5 +48,6 @@ message DescribeServersRequest {
 }
 
 message DescribeServersResponse {
-    repeated ServerObject servers = 1;
+    ServiceRegistryResult result = 1;
+    repeated ServerObject servers = 2;
 }
