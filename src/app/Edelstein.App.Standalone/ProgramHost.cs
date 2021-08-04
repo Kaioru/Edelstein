@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Common.Datastore.LiteDB;
 using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Stages.Game;
+using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates;
@@ -13,6 +15,10 @@ using Edelstein.Common.Parser.Duey;
 using Edelstein.Common.Util.Caching;
 using Edelstein.Common.Util.Ticks;
 using Edelstein.Protocol.Datastore;
+using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
+using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
+using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
@@ -63,6 +69,7 @@ namespace Edelstein.App.Standalone
             collection.AddSingleton<ITickerManager, TickerManager>();
 
             collection.AddSingleton<ITemplateRepository<ItemTemplate>, ItemTemplateRepository>();
+            collection.AddSingleton<ITemplateRepository<FieldTemplate>, FieldTemplateRepository>();
 
             var provider = collection.BuildServiceProvider();
 
@@ -78,6 +85,7 @@ namespace Edelstein.App.Standalone
                     IPacketProcessor<LoginStage, LoginStageUser>,
                     PacketProcessor<LoginStage, LoginStageUser>
                 >();
+
                 loginCollection.AddSingleton(p => new LoginStage(
                     loginConfig,
                     provider.GetService<IServerRegistryService>(),
@@ -106,6 +114,54 @@ namespace Edelstein.App.Standalone
 
                 _acceptors.Add(acceptor);
                 await acceptor.Accept(loginConfig.Host, loginConfig.Port);
+            }));
+            await Task.WhenAll(_config.GameStages.Select(async gameConfig =>
+            {
+                var gameCollection = new ServiceCollection();
+
+                gameCollection.AddLogging(logging => logging.AddSerilog());
+
+                // TODO: packet processors
+
+                gameCollection.AddSingleton<
+                    IPacketProcessor<GameStage, GameStageUser>,
+                    PacketProcessor<GameStage, GameStageUser>
+                >();
+
+                // TODO: fields
+
+                gameCollection.AddSingleton(p => new GameStage(
+                    gameConfig,
+                    provider.GetService<IServerRegistryService>(),
+                    provider.GetService<ISessionRegistryService>(),
+                    provider.GetService<IMigrationRegistryService>(),
+                    provider.GetService<IAccountRepository>(),
+                    provider.GetService<IAccountWorldRepository>(),
+                    provider.GetService<ICharacterRepository>(),
+                    provider.GetService<ITickerManager>(),
+                    p.GetService<IPacketProcessor<GameStage, GameStageUser>>(),
+                    provider.GetService<ITemplateRepository<ItemTemplate>>(),
+                    provider.GetService<ITemplateRepository<FieldTemplate>>(),
+                    p.GetService<IFieldRepository>(),
+                    p.GetService<IFieldSetRepository>(),
+                    p.GetService<IContiMoveRepository>()
+                ));
+                gameCollection.AddSingleton<ISessionInitializer, GameSessionInitializer>();
+                gameCollection.AddSingleton<ITransportAcceptor>(p => new NettyTransportAcceptor(
+                    p.GetService<ISessionInitializer>(),
+                    _config.Version,
+                    _config.Patch,
+                    _config.Locale,
+                    provider.GetService<ILogger<ITransportAcceptor>>()
+                ));
+
+                var gameProvider = gameCollection.BuildServiceProvider();
+                var acceptor = gameProvider.GetService<ITransportAcceptor>();
+
+                gameProvider.GetService<GameStage>();
+
+                _acceptors.Add(acceptor);
+                await acceptor.Accept(gameConfig.Host, gameConfig.Port);
             }));
         }
 
