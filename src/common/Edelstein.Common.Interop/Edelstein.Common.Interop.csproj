@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Interop\Edelstein.Protocol.Interop.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="System.Threading.Channels" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Threading.Channels" Version="5.0.0" />
+  </ItemGroup>
+</Project>

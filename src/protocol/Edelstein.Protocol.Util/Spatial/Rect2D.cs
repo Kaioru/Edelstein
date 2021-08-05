@@ -2,13 +2,15 @@
 {
     public struct Rect2D
     {
-        public Point2D Position { get; }
-        public Size2D Size { get; }
+        public Point2D LeftTop { get; }
+        public Point2D RightBottom { get; }
 
-        public Rect2D(Point2D position, Size2D size)
+        public Size2D Size => new(RightBottom.X - LeftTop.X, RightBottom.Y - LeftTop.Y);
+
+        public Rect2D(Point2D leftTop, Point2D rightBottom)
         {
-            Position = position;
-            Size = size;
+            LeftTop = leftTop;
+            RightBottom = rightBottom;
         }
     }
 }

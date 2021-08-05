@@ -8,13 +8,17 @@
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SpanNetty.Codecs" Version="0.7.2012.2221" />
-    <PackageReference Include="SpanNetty.Common" Version="0.7.2012.2221" />
-    <PackageReference Include="SpanNetty.Handlers" Version="0.7.2012.2221" />
-    <PackageReference Include="SpanNetty.Transport" Version="0.7.2012.2221" />
+    <PackageReference Include="DotNetty.Common" Version="0.6.0" />
+    <PackageReference Include="DotNetty.Codecs" Version="0.6.0" />
+    <PackageReference Include="DotNetty.Transport" Version="0.6.0" />
+    <PackageReference Include="DotNetty.Handlers" Version="0.6.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Transport\" />
     <Folder Include="Pipeline\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 </Project>

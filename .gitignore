@@ -2,6 +2,7 @@
 **/*.aes
 **/*.db
 **/*.json
+**/*.nx
 !**/*.example.json
 !**/appsettings.json
 

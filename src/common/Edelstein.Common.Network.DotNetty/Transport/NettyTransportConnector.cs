@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Transport.Bootstrapping;
@@ -9,6 +11,8 @@ using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Ciphers;
 using Edelstein.Protocol.Network.Session;
 using Edelstein.Protocol.Network.Transport;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Edelstein.Common.Network.DotNetty.Transport
 {
@@ -24,21 +28,30 @@ namespace Edelstein.Common.Network.DotNetty.Transport
         private IChannel Channel { get; set; }
         private IEventLoopGroup WorkerGroup { get; set; }
 
+        private readonly ILogger _logger;
+
         public NettyTransportConnector(
             ISessionInitializer initializer,
             short version,
             string patch,
-            byte locale
+            byte locale,
+            ILogger<ITransportConnector> logger = null
         )
         {
+            Debug.Assert(initializer != null);
+
             SessionInitializer = initializer;
             Version = version;
             Patch = patch;
             Locale = locale;
+
+            _logger = logger ?? NullLogger<ITransportConnector>.Instance;
         }
 
         public async Task Connect(string host, int port)
         {
+            Debug.Assert(host != null);
+
             var aesCipher = new AESCipher();
             var igCipher = new IGCipher();
 
@@ -56,6 +69,8 @@ namespace Edelstein.Common.Network.DotNetty.Transport
                     );
                 }))
                 .ConnectAsync(IPAddress.Parse(host), port);
+
+            _logger.LogInformation($"Socket connector bound on {host}:{port}");
         }
 
         public Task Dispatch(IPacket packet)

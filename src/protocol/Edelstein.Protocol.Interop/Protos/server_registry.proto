@@ -3,12 +3,9 @@
 package edelstein.protocol.interop.contracts;
 
 message ServerObject {
-    string name = 1;
-
+    string id = 1;
     ServerConnectionObject serverConnection = 2;
-    ServerConnectionObject interopConnection = 3;
-
-    map<string, string> tags = 4;
+    map<string, string> tags = 3;
 }
 
 message ServerConnectionObject {
@@ -17,8 +14,8 @@ message ServerConnectionObject {
 }
 
 enum ServiceRegistryResult {
-   OK = 0;
-   FAILED = 1;
+    OK = 0;
+    FAILED = 1;
 }
 
 message ServiceRegistryResponse {
@@ -30,7 +27,7 @@ message RegisterServerRequest {
 }
 
 message DeregisterServerRequest {
-    string name = 1;
+    string id = 1;
 }
 
 message UpdateServerRequest {
@@ -38,11 +35,12 @@ message UpdateServerRequest {
 }
 
 message DescribeServerRequest {
-    string name = 1;
+    string id = 1;
 }
 
 message DescribeServerResponse {
-    ServerObject server = 1;
+    ServiceRegistryResult result = 1;
+    optional ServerObject server = 2;
 }
 
 message DescribeServersRequest {
@@ -50,5 +48,6 @@ message DescribeServersRequest {
 }
 
 message DescribeServersResponse {
-    repeated ServerObject servers = 1;
+    ServiceRegistryResult result = 1;
+    repeated ServerObject servers = 2;
 }
