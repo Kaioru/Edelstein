@@ -9,11 +9,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
         public override short Operation => (short)PacketRecvOperations.CheckUserLimit;
 
         public override Task<bool> Check(LoginStageUser user)
-            => Task.FromResult(
-                user.Stage != null &&
-                user.Account != null &&
-                user.AccountWorld == null
-            );
+            => Task.FromResult(user.State == LoginState.SelectWorld);
 
         public override async Task Handle(LoginStageUser user, IPacketReader packet)
         {
