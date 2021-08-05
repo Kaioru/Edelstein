@@ -62,13 +62,14 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
                 await user.Dispatch(response);
             }
 
-            var endOfResponse = new UnstructuredOutgoingPacket(PacketSendOperations.WorldInformation)
-                .WriteByte(0xFF);
-            var latestWorldPacket = new UnstructuredOutgoingPacket(PacketSendOperations.LatestConnectedWorld)
-                .WriteInt(user.Account.LatestConnectedWorld ?? 0);
-
-            await user.Dispatch(endOfResponse);
-            await user.Dispatch(latestWorldPacket);
+            await user.Dispatch(
+                new UnstructuredOutgoingPacket(PacketSendOperations.WorldInformation)
+                    .WriteByte(0xFF)
+            );
+            await user.Dispatch(
+                new UnstructuredOutgoingPacket(PacketSendOperations.LatestConnectedWorld)
+                    .WriteInt(user.Account.LatestConnectedWorld ?? 0)
+            );
         }
     }
 }
