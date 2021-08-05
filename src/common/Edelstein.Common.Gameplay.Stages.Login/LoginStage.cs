@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Login.Handlers;
+using Edelstein.Common.Gameplay.Stages.Login.Templates;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Templating;
@@ -15,6 +16,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login
 {
     public class LoginStage : AbstractServerStage<LoginStage, LoginStageUser, LoginStageConfig>, ILoginStage<LoginStage, LoginStageUser>
     {
+        public ITemplateRepository<WorldTemplate> WorldTemplates { get; set; }
         public ITemplateRepository<ItemTemplate> ItemTemplates { get; set; }
         public ILogger Logger { get; init; }
 
@@ -29,6 +31,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login
             ITickerManager timerManager,
             IPacketProcessor<LoginStage, LoginStageUser> processor,
             ILogger<IStage<LoginStage, LoginStageUser>> logger,
+            ITemplateRepository<WorldTemplate> worldTemplates,
             ITemplateRepository<ItemTemplate> itemTemplates
         ) : base(
             ServerStageType.Login,
@@ -44,6 +47,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login
         )
         {
             Logger = logger;
+            WorldTemplates = worldTemplates;
             ItemTemplates = itemTemplates;
 
             processor.Register(new CheckPasswordHandler(this));
