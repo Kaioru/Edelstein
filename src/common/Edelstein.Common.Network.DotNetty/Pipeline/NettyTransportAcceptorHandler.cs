@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Network.DotNetty.Transport;
 using Edelstein.Protocol.Network;
@@ -12,6 +13,8 @@ namespace Edelstein.Common.Network.DotNetty.Pipeline
 
         public NettyTransportAcceptorHandler(ITransportAcceptor acceptor)
         {
+            Debug.Assert(acceptor != null);
+
             _acceptor = acceptor;
         }
 
@@ -37,7 +40,7 @@ namespace Edelstein.Common.Network.DotNetty.Pipeline
             context.Channel.GetAttribute(NettyAttributes.SocketKey).Set(newSocket);
             context.Channel.GetAttribute(NettyAttributes.SessionKey).Set(newSession);
 
-            lock (_acceptor) _acceptor.Sessions.Add(newSession.SessionID, newSession);
+            lock (_acceptor) _acceptor.Sessions.Add(newSession.Socket.ID, newSession);
         }
 
         public override void ChannelInactive(IChannelHandlerContext context)
@@ -47,7 +50,7 @@ namespace Edelstein.Common.Network.DotNetty.Pipeline
             session?.OnDisconnect();
             base.ChannelInactive(context);
 
-            lock (_acceptor) _acceptor.Sessions.Remove(session.SessionID);
+            lock (_acceptor) _acceptor.Sessions.Remove(session.Socket.ID);
         }
 
         public override void ChannelRead(IChannelHandlerContext context, object message)

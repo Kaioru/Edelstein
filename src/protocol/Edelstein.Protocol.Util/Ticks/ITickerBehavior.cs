@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Edelstein.Protocol.Util.Ticks
 {
     public interface ITickerBehavior
     {
-        Task Tick();
+        Task OnTick(DateTime now);
     }
 }

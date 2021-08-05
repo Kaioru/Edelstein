@@ -1,4 +1,6 @@
-﻿using DotNetty.Buffers;
+﻿using System;
+using System.Diagnostics;
+using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
 using Edelstein.Protocol.Network;
@@ -20,6 +22,10 @@ namespace Edelstein.Common.Network.DotNetty.Pipeline
             IGCipher igCipher
         )
         {
+            Debug.Assert(transport != null);
+            Debug.Assert(aesCipher != null);
+            Debug.Assert(igCipher != null);
+
             _transport = transport;
             _aesCipher = aesCipher;
             _igCipher = igCipher;

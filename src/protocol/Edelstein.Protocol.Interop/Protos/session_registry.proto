@@ -11,10 +11,10 @@ enum SessionState {
 
 message SessionObject {
     int32 account = 1;
-
     optional int32 character = 2;
-    optional string server = 3;
-    optional SessionState state = 4;
+
+    string server = 3;
+    SessionState state = 4;
 }
 
 enum SessionRegistryResult {

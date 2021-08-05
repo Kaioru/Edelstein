@@ -7,18 +7,20 @@
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Interop\Edelstein.Protocol.Interop.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Inventories\" />
-    <Folder Include="Inventories\Modify\" />
-    <Folder Include="Inventories\Templates\" />
+    <Folder Include="Users\Inventories\" />
     <Folder Include="Stages\" />
-    <Folder Include="Stats\" />
-    <Folder Include="Stats\Modify\" />
+    <Folder Include="Users\Stats\" />
     <Folder Include="Templating\" />
-    <Folder Include="Space\" />
+    <Folder Include="Spatial\" />
+    <Folder Include="Users\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Space\" />
+    <None Remove="Users\" />
   </ItemGroup>
 </Project>

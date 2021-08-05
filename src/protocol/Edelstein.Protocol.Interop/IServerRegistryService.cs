@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System.Collections.Generic;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Interop.Contracts;
 
@@ -20,5 +21,7 @@ namespace Edelstein.Protocol.Interop
         [OperationContract] Task<DispatchResponse> DispatchToGuild(DispatchToGuildRequest request);
         [OperationContract] Task<DispatchResponse> DispatchToParty(DispatchToPartyRequest request);
         [OperationContract] Task<DispatchResponse> DispatchToCharacter(DispatchToCharacterRequest request);
+
+        [OperationContract] IAsyncEnumerable<DispatchObject> SubscribeDispatch(DispatchSubscription request);
     }
 }

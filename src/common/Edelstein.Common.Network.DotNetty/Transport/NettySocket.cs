@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
@@ -23,6 +24,8 @@ namespace Edelstein.Common.Network.DotNetty.Transport
             bool encryptData = true
         )
         {
+            Debug.Assert(channel != null);
+
             _channel = channel;
 
             SeqSend = seqSend;

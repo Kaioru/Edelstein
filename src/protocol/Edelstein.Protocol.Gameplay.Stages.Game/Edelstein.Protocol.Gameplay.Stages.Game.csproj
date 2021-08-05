@@ -6,9 +6,26 @@
 
   <ItemGroup>
     <Folder Include="Objects\" />
+    <Folder Include="Templates\" />
+    <Folder Include="FieldSets\" />
+    <Folder Include="Conversations\" />
+    <Folder Include="Continent\" />
+    <Folder Include="Movements\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Interop\Edelstein.Protocol.Interop.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Templates\" />
+    <None Remove="FieldSets\" />
+    <None Remove="Conversations\" />
+    <None Remove="Contimove\" />
+    <None Remove="morelinq" />
+    <None Remove="Movements\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="morelinq" Version="3.3.2" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Network.DotNetty.Transport;
 using Edelstein.Protocol.Network;
@@ -12,22 +13,24 @@ namespace Edelstein.Common.Network.DotNetty.Pipeline
 
         public NettyTransportConnectorHandler(ITransportConnector connector)
         {
+            Debug.Assert(connector != null);
+
             _connector = connector;
         }
 
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             var session = context.Channel.GetAttribute(NettyAttributes.SessionKey).Get();
-            var handshake = (IPacketReader)message;
+            var packet = (IPacketReader)message;
 
-            if (session != null) session.OnPacket(handshake);
+            if (session != null) session.OnPacket(packet);
             else
             {
-                var version = handshake.ReadShort();
-                var patch = handshake.ReadString();
-                var seqSend = handshake.ReadUInt();
-                var seqRecv = handshake.ReadUInt();
-                var locale = handshake.ReadByte();
+                var version = packet.ReadShort();
+                var patch = packet.ReadString();
+                var seqSend = packet.ReadUInt();
+                var seqRecv = packet.ReadUInt();
+                var locale = packet.ReadByte();
 
                 if (version != _connector.Version) return;
                 if (patch != _connector.Patch) return;
