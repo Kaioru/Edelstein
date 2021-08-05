@@ -51,7 +51,9 @@ namespace Edelstein.Common.Gameplay.Stages.Login
             ItemTemplates = itemTemplates;
 
             processor.Register(new CheckPasswordHandler(this));
+            processor.Register(new CheckUserLimitHandler());
             processor.Register(new SetGenderHandler());
+            processor.Register(new WorldRequestHandler());
         }
 
         public override async Task Enter(LoginStageUser user)
