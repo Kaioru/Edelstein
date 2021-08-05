@@ -12,10 +12,12 @@
     <None Remove="Handlers\" />
     <None Remove="Types\" />
     <None Remove="BCrypt.Net-Next" />
+    <None Remove="Templates\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Handlers\" />
     <Folder Include="Types\" />
+    <Folder Include="Templates\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />

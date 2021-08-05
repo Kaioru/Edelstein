@@ -8,6 +8,7 @@ using Edelstein.Common.Gameplay.Stages.Game;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Handlers;
+using Edelstein.Common.Gameplay.Stages.Login.Templates;
 using Edelstein.Common.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Common.Interop;
@@ -70,6 +71,7 @@ namespace Edelstein.App.Standalone
 
             collection.AddSingleton<ITickerManager, TickerManager>();
 
+            collection.AddSingleton<ITemplateRepository<WorldTemplate>, WorldTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ItemTemplate>, ItemTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<FieldTemplate>, FieldTemplateRepository>();
 
@@ -96,6 +98,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ITickerManager>(),
                     p.GetService<IPacketProcessor<LoginStage, LoginStageUser>>(),
                     p.GetService<ILogger<IStage<LoginStage, LoginStageUser>>>(),
+                    provider.GetService<ITemplateRepository<WorldTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemTemplate>>()
                 ));
                 loginCollection.AddSingleton<ISessionInitializer, LoginSessionInitializer>();
