@@ -9,7 +9,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
         public override short Operation => (short)PacketRecvOperations.SetGender;
 
         public override Task<bool> Check(LoginStageUser user)
-            => Task.FromResult(user.Stage != null && user.Account?.Gender == null);
+            => Task.FromResult(user.State == LoginState.SelectGender);
 
         public override async Task Handle(LoginStageUser user, IPacketReader packet)
         {
@@ -24,6 +24,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
             var gender = (byte)(packet.ReadBool() ? 1 : 0);
             var response = new UnstructuredOutgoingPacket(PacketSendOperations.SetAccountResult);
 
+            user.State = LoginState.SelectWorld;
             user.Account.Gender = gender;
 
             response.WriteByte(gender);

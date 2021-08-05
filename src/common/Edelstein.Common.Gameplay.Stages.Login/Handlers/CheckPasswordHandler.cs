@@ -18,7 +18,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
             => _stage = stage;
 
         public override Task<bool> Check(LoginStageUser user)
-            => Task.FromResult(user.Stage == null && user.Account == null);
+            => Task.FromResult(user.State == LoginState.LoggedOut);
 
         public override async Task Handle(LoginStageUser user, IPacketReader packet)
         {
@@ -84,6 +84,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
                 response.WriteLong(user.Key);
 
+                user.State = account.Gender == null ? LoginState.SelectGender : LoginState.SelectWorld;
                 user.Account = account;
 
                 await _stage.Enter(user);
