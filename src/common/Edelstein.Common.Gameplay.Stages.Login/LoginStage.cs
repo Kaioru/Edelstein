@@ -57,6 +57,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login
             processor.Register(new SetGenderHandler());
             processor.Register(new WorldRequestHandler());
             processor.Register(new LogoutWorldHandler());
+            processor.Register(new CheckDuplicatedIDHandler());
         }
 
         public override async Task Enter(LoginStageUser user)
