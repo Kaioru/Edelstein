@@ -12,11 +12,12 @@ namespace Edelstein.Protocol.Gameplay.Users.Inventories
         {
             return obj is ItemSlotBundle b &&
                    TemplateID == b.TemplateID &&
+                   CashItemSN == b.CashItemSN &&
                    Attribute == b.Attribute &&
                    Title == b.Title &&
                    DateExpire == b.DateExpire;
         }
 
-        public override int GetHashCode() => HashCode.Combine(TemplateID, Attribute, Title, DateExpire);
+        public override int GetHashCode() => HashCode.Combine(TemplateID, CashItemSN, Attribute, Title, DateExpire);
     }
 }

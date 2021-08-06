@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
-using Edelstein.Protocol.Network;
 
 namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
 {
     public interface IModifyInventoryContext
     {
+        IEnumerable<IModifyInventoryOperation> History { get; }
+
         void Add(AbstractItemSlot item);
         void Add(int templateID, short quantity = 1);
         void Add(ItemTemplate template, short quantity = 1); // TODO: item variation
@@ -28,8 +29,5 @@ namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
 
         void Update(short slot);
         void Update(AbstractItemSlot item);
-
-        IEnumerable<IModifyInventoryOperation> History();
-        void Encode(IPacketWriter writer);
     }
 }

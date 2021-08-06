@@ -14,6 +14,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
         public override async Task Handle(LoginStageUser user, IPacketReader packet)
         {
             _ = packet.ReadByte(); // WorldID
+            _ = packet.ReadByte(); // Unknown1
 
             var response = new UnstructuredOutgoingPacket(PacketSendOperations.CheckUserLimitResult);
 
