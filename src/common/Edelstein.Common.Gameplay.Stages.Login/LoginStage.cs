@@ -60,6 +60,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login
             processor.Register(new CheckDuplicatedIDHandler());
             processor.Register(new CreateNewCharacterHandler());
             processor.Register(new EnableSPWRequestHandler(false));
+            processor.Register(new CheckSPWRequestHandler(false));
         }
 
         public override async Task Enter(LoginStageUser user)
