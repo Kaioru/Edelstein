@@ -24,11 +24,17 @@ namespace Edelstein.Common.Gameplay.Stages.Handlers
             var backupBufferSize = packet.ReadShort();
             var backupBuffer = packet.ReadBytes(backupBufferSize);
 
+            var backupPacket = new UnstructuredIncomingPacket(backupBuffer);
+            var seqSend = backupPacket.ReadUInt();
+            var operation = backupPacket.ReadShort();
+            var payload = backupPacket.ReadBytes((short)backupPacket.Available);
+
             _stage.Logger.LogError(
                 $"Client (Account ID: {user?.Account?.ID.ToString() ?? "(none)"}, Character ID: {user?.Character?.ID.ToString() ?? "(none)"}) " +
                 $"exited with error code: {errorCode} (call type: {callType}) " +
+                $"from operation 0x{operation:X} ({Enum.GetName((PacketSendOperations)operation)}) " +
                 (_stage.Logger.IsEnabled(LogLevel.Debug)
-                    ? $"with packet buffer of: {BitConverter.ToString(backupBuffer).Replace("-", " ")}"
+                    ? $"with payload: {BitConverter.ToString(payload).Replace("-", " ")} (SeqSend: {seqSend})"
                     : ""));
             return Task.CompletedTask;
         }
