@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Network;
@@ -23,7 +24,8 @@ namespace Edelstein.Common.Gameplay.Stages.Handlers
         public override async Task Handle(TUser user, IPacketReader packet)
         {
             var character = packet.ReadInt();
-            var key = 0;
+            _ = packet.ReadBytes(18); // Unknown
+            var key = packet.ReadLong();
 
             var claim = await _stage.MigrationRegistryService.Claim(new ClaimMigrationRequest
             {

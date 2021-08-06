@@ -26,7 +26,15 @@ namespace Edelstein.Common.Gameplay.Stages
         private DateTime LastSentHeartbeatDate { get; set; }
         private DateTime LastRecvHeartbeatDate { get; set; }
 
-        protected AbstractServerStageUser(ISocket socket, IPacketProcessor<TStage, TUser> processor) : base(socket, processor) { }
+        protected AbstractServerStageUser(ISocket socket, IPacketProcessor<TStage, TUser> processor) : base(socket, processor)
+        {
+            var bytes = new byte[8];
+            var random = new Random();
+
+            random.NextBytes(bytes);
+
+            Key = BitConverter.ToInt64(bytes, 0);
+        }
 
         public override async Task Update()
         {
@@ -116,7 +124,6 @@ namespace Edelstein.Common.Gameplay.Stages
 
             if ((now - LastRecvHeartbeatDate) >= SessionDisconnectDuration)
             {
-                Console.WriteLine("BYEBYE");
                 await Disconnect();
                 return;
             }
