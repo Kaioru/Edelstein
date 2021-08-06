@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Network;
 
@@ -19,8 +20,11 @@ namespace Edelstein.Common.Gameplay.Stages.Handlers
             var backupBuffer = packet.ReadBytes((short)(backupBufferSize - 4));
             var sendSeq = packet.ReadUInt();
 
-            // TODO: handle this
+            var backupPacket = new UnstructuredIncomingPacket(backupBuffer);
+            var operation = backupPacket.ReadShort();
 
+            // TODO: handle this properly
+            // $"Client exited with error code: {errorCode}, backup packet buffer operation 0x{operation:X} ({Enum.GetName((PacketSendOperations)operation)})");
             return Task.CompletedTask;
         }
     }
