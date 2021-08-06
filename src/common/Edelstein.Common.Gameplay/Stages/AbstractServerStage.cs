@@ -62,6 +62,7 @@ namespace Edelstein.Common.Gameplay.Stages
             timerManager.Schedule(new AliveReqBehavior<TStage, TUser, TConfig>((TStage)this), AliveBehaviorFreq);
             processor.Register(new AliveAckHandler<TStage, TUser, TConfig>());
             processor.Register(new MigrateInHandler<TStage, TUser, TConfig>((TStage)this));
+            processor.Register(new ClientDumpLogHandler<TStage, TUser, TConfig>());
         }
 
         public override async Task Enter(TUser user)
