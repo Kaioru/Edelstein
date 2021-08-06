@@ -69,7 +69,7 @@ namespace Edelstein.Common.Gameplay.Stages
             var session = new SessionObject
             {
                 Server = ID,
-                State = SessionState.LoggingIn
+                State = user.IsLoggingIn ? SessionState.LoggingIn : SessionState.LoggedIn
             };
 
             if (user.Account != null) session.Account = user.Account.ID;
@@ -81,8 +81,10 @@ namespace Edelstein.Common.Gameplay.Stages
 
         public override async Task Leave(TUser user)
         {
+            Console.WriteLine("OWO!");
             if (user.Account != null && !user.IsMigrating)
             {
+                Console.WriteLine("OWO2!");
                 var session = new SessionObject
                 {
                     Account = user.Account.ID,
