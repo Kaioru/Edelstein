@@ -46,7 +46,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
             if (result != LoginResultCode.Success)
             {
-                var response = new UnstructuredOutgoingPacket(PacketSendOperations.EnableSPWResult);
+                var response = new UnstructuredOutgoingPacket(PacketSendOperations.CheckSPWResult);
 
                 response.WriteBool(false);
                 response.WriteByte((byte)result);
