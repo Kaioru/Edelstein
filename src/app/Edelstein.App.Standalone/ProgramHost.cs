@@ -89,6 +89,7 @@ namespace Edelstein.App.Standalone
                 >();
                 loginCollection.AddSingleton(p => new LoginStage(
                     loginConfig,
+                    p.GetService<ILogger<IStage<LoginStage, LoginStageUser>>>(),
                     provider.GetService<IServerRegistryService>(),
                     provider.GetService<ISessionRegistryService>(),
                     provider.GetService<IMigrationRegistryService>(),
@@ -97,7 +98,6 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ICharacterRepository>(),
                     provider.GetService<ITickerManager>(),
                     p.GetService<IPacketProcessor<LoginStage, LoginStageUser>>(),
-                    p.GetService<ILogger<IStage<LoginStage, LoginStageUser>>>(),
                     provider.GetService<ITemplateRepository<WorldTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemTemplate>>()
                 ));
@@ -133,6 +133,7 @@ namespace Edelstein.App.Standalone
 
                 gameCollection.AddSingleton(p => new GameStage(
                     gameConfig,
+                    p.GetService<ILogger<IStage<GameStage, GameStageUser>>>(),
                     provider.GetService<IServerRegistryService>(),
                     provider.GetService<ISessionRegistryService>(),
                     provider.GetService<IMigrationRegistryService>(),

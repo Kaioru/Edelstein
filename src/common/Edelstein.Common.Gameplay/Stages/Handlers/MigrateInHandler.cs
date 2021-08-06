@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Network;
@@ -11,9 +10,8 @@ namespace Edelstein.Common.Gameplay.Stages.Handlers
         where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
         where TConfig : ServerStageConfig
     {
-        private readonly TStage _stage;
-
         public override short Operation => (short)PacketRecvOperations.MigrateIn;
+        private readonly TStage _stage;
 
         public MigrateInHandler(TStage stage)
             => _stage = stage;

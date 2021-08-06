@@ -20,7 +20,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
         {
             var log = packet.ReadString();
 
-            _stage.Logger.LogWarning($"Received exception log from client: {log}");
+            _stage.Logger.LogDebug($"Received exception log from client: {log}");
             return Task.CompletedTask;
         }
     }
