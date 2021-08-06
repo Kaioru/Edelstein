@@ -27,9 +27,9 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Modify
             );
         }
 
-        public void Set(BodyPart part, ItemSlotEquip equip) => this[ItemInventoryType.Equip].Set((short)part, equip);
-        public void Set(BodyPart part, int templateID) => this[ItemInventoryType.Equip].Set((short)part, templateID);
-        public void Set(BodyPart part, ItemEquipTemplate template) => this[ItemInventoryType.Equip].Set((short)part, template);
+        public void Set(BodyPart part, ItemSlotEquip equip) => this[ItemInventoryType.Equip].Set((short)-(short)part, equip);
+        public void Set(BodyPart part, int templateID) => this[ItemInventoryType.Equip].Set((short)-(short)part, templateID);
+        public void Set(BodyPart part, ItemEquipTemplate template) => this[ItemInventoryType.Equip].Set((short)-(short)part, template);
 
         public void Add(AbstractItemSlot item) => this[(ItemInventoryType)(item.TemplateID / 1_000_000)].Add(item);
         public void Add(int templateID, short quantity = 1) => this[(ItemInventoryType)(templateID / 1_000_000)].Add(templateID, quantity);
