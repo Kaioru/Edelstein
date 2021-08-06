@@ -16,10 +16,10 @@ namespace Edelstein.Common.Gameplay.Stages.Login
     {
         public ITemplateRepository<WorldTemplate> WorldTemplates { get; set; }
         public ITemplateRepository<ItemTemplate> ItemTemplates { get; set; }
-        public ILogger Logger { get; init; }
 
         public LoginStage(
             LoginStageConfig config,
+            ILogger<IStage<LoginStage, LoginStageUser>> logger,
             IServerRegistryService serverRegistryService,
             ISessionRegistryService sessionRegistry,
             IMigrationRegistryService migrationRegistryService,
@@ -28,12 +28,12 @@ namespace Edelstein.Common.Gameplay.Stages.Login
             ICharacterRepository characterRepository,
             ITickerManager timerManager,
             IPacketProcessor<LoginStage, LoginStageUser> processor,
-            ILogger<IStage<LoginStage, LoginStageUser>> logger,
             ITemplateRepository<WorldTemplate> worldTemplates,
             ITemplateRepository<ItemTemplate> itemTemplates
         ) : base(
             ServerStageType.Login,
             config,
+            logger,
             serverRegistryService,
             sessionRegistry,
             migrationRegistryService,

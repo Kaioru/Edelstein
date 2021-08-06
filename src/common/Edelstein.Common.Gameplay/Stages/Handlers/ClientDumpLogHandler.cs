@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Network;
+using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Stages.Handlers
 {
@@ -11,20 +12,24 @@ namespace Edelstein.Common.Gameplay.Stages.Handlers
         where TConfig : ServerStageConfig
     {
         public override short Operation => (short)PacketRecvOperations.ClientDumpLog;
+        private readonly TStage _stage;
+
+        public ClientDumpLogHandler(TStage stage)
+            => _stage = stage;
 
         public override Task Handle(TUser user, IPacketReader packet)
         {
             var callType = packet.ReadShort(); // 1 - CInPacket::Decode, 2 - ZTLException, 3 - CMSException
             var errorCode = packet.ReadInt();
             var backupBufferSize = packet.ReadShort();
-            var backupBuffer = packet.ReadBytes((short)(backupBufferSize - 4));
-            var sendSeq = packet.ReadUInt();
+            var backupBuffer = packet.ReadBytes(backupBufferSize);
 
-            var backupPacket = new UnstructuredIncomingPacket(backupBuffer);
-            var operation = backupPacket.ReadShort();
-
-            // TODO: handle this properly
-            // $"Client exited with error code: {errorCode}, backup packet buffer operation 0x{operation:X} ({Enum.GetName((PacketSendOperations)operation)})");
+            _stage.Logger.LogError(
+                $"Client (Account ID: {user?.Account?.ID.ToString() ?? "(none)"}, Character ID: {user?.Character?.ID.ToString() ?? "(none)"}) " +
+                $"exited with error code: {errorCode} (call type: {callType}) " +
+                (_stage.Logger.IsEnabled(LogLevel.Debug)
+                    ? $"with packet buffer of: {BitConverter.ToString(backupBuffer).Replace("-", " ")}"
+                    : ""));
             return Task.CompletedTask;
         }
     }

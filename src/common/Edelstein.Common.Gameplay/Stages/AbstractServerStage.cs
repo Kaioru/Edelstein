@@ -11,6 +11,7 @@ using Edelstein.Protocol.Interop;
 using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Ticks;
+using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Stages
 {
@@ -26,6 +27,8 @@ namespace Edelstein.Common.Gameplay.Stages
         public TConfig Config { get; init; }
         public string ID => Config.ID;
 
+        public ILogger Logger { get; init; }
+
         public IServerRegistryService ServerRegistryService { get; init; }
         public ISessionRegistryService SessionRegistry { get; init; }
         public IMigrationRegistryService MigrationRegistryService { get; init; }
@@ -39,6 +42,7 @@ namespace Edelstein.Common.Gameplay.Stages
         protected AbstractServerStage(
             ServerStageType type,
             TConfig config,
+            ILogger<IStage<TStage, TUser>> logger,
             IServerRegistryService serverRegistryService,
             ISessionRegistryService sessionRegistry,
             IMigrationRegistryService migrationRegistryService,
@@ -51,6 +55,7 @@ namespace Edelstein.Common.Gameplay.Stages
         {
             Type = type;
             Config = config;
+            Logger = logger;
             ServerRegistryService = serverRegistryService;
             SessionRegistry = sessionRegistry;
             MigrationRegistryService = migrationRegistryService;
@@ -62,7 +67,7 @@ namespace Edelstein.Common.Gameplay.Stages
             timerManager.Schedule(new AliveReqBehavior<TStage, TUser, TConfig>((TStage)this), AliveBehaviorFreq);
             processor.Register(new AliveAckHandler<TStage, TUser, TConfig>());
             processor.Register(new MigrateInHandler<TStage, TUser, TConfig>((TStage)this));
-            processor.Register(new ClientDumpLogHandler<TStage, TUser, TConfig>());
+            processor.Register(new ClientDumpLogHandler<TStage, TUser, TConfig>((TStage)this));
         }
 
         public override async Task Enter(TUser user)
