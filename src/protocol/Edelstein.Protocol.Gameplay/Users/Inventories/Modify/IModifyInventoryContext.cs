@@ -14,6 +14,10 @@ namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
         void Set(short slot, int templateID, short quantity = 1);
         void Set(short slot, ItemTemplate template, short quantity = 1);
 
+        void Set(BodyPart part, ItemSlotEquip equip);
+        void Set(BodyPart part, int templateID);
+        void Set(BodyPart part, ItemEquipTemplate template);
+
         void Remove(short slot);
         void Remove(short slot, short count);
         void Remove(int templateID, short count);
@@ -30,6 +34,5 @@ namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
         void Update(AbstractItemSlot item);
 
         IEnumerable<IModifyInventoryOperation> History();
-        void Encode(IPacketWriter writer);
     }
 }
