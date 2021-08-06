@@ -36,7 +36,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
                 var channelServerRequest = new DescribeServersRequest();
 
-                channelServerRequest.Tags.Add("Type", "Game");
+                channelServerRequest.Tags.Add("Type", Enum.GetName(ServerStageType.Game));
                 channelServerRequest.Tags.Add("WorldID", world.ID.ToString());
 
                 var channelServers = (await user.Stage.ServerRegistryService.DescribeServers(channelServerRequest)).Servers
