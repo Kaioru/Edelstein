@@ -60,7 +60,6 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
                 user.AccountWorld = accountWorld;
                 user.SelectedWorldID = Convert.ToByte(gameServer.Tags["WorldID"]);
                 user.SelectedChannelID = Convert.ToByte(gameServer.Tags["ChannelID"]);
-                user.Account.LatestConnectedWorld = worldID;
 
                 var characters = (await user.Stage.CharacterRepository.RetrieveAllByAccountWorld(accountWorld.ID)).ToList();
 
