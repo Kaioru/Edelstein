@@ -64,6 +64,36 @@ namespace Edelstein.Common.Gameplay.Stages
             processor.Register(new MigrateInHandler<TStage, TUser, TConfig>((TStage)this));
         }
 
+        public override async Task Enter(TUser user)
+        {
+            var session = new SessionObject
+            {
+                Server = ID,
+                State = SessionState.LoggingIn
+            };
+
+            if (user.Account != null) session.Account = user.Account.ID;
+            if (user.Character != null) session.Character = user.Character.ID;
+
+            await SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
+            await base.Enter(user);
+        }
+
+        public override async Task Leave(TUser user)
+        {
+            if (user.Account != null && !user.IsMigrating)
+            {
+                var session = new SessionObject
+                {
+                    Account = user.Account.ID,
+                    State = SessionState.Offline
+                };
+
+                await SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
+            }
+            await base.Leave(user);
+        }
+
         public Task OnNotifyDispatch(DispatchObject dispatch)
         {
             var targets = new List<TUser>();

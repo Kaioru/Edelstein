@@ -40,52 +40,8 @@ namespace Edelstein.Common.Gameplay.Stages
 
         public override async Task OnDisconnect()
         {
-            if (!IsMigrating)
-            {
-                await Update();
-
-                if (Account != null)
-                {
-                    var session = new SessionObject
-                    {
-                        Account = Account.ID,
-                        State = SessionState.Offline
-                    };
-
-                    await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
-                }
-            }
-
+            if (!IsMigrating) await Update();
             await base.OnDisconnect();
-        }
-
-        public async Task<bool> MigrateIn(int character, long key)
-        {
-            var claim = await Stage.MigrationRegistryService.Claim(new ClaimMigrationRequest
-            {
-                Character = character,
-                Key = key,
-                Server = Stage.ID
-            });
-
-            if (claim.Result != MigrationRegistryResult.Ok) return false;
-
-            Character = await Stage.CharacterRepository.Retrieve(character);
-            AccountWorld = await Stage.AccountWorldRepository.Retrieve(Character.AccountWorldID);
-            Account = await Stage.AccountRepository.Retrieve(AccountWorld.AccountID);
-
-            Key = claim.Migration.Key;
-
-            var session = new SessionObject
-            {
-                Account = Account.ID,
-                Character = Character.ID,
-                Server = Stage.ID,
-                State = SessionState.LoggedIn
-            };
-
-            await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
-            return true;
         }
 
         public async Task<bool> MigrateTo(string server)

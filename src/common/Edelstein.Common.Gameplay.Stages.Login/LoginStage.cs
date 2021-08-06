@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Edelstein.Common.Gameplay.Handling;
+﻿using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Login.Handlers;
 using Edelstein.Common.Gameplay.Stages.Login.Templates;
 using Edelstein.Protocol.Gameplay.Stages;
@@ -8,7 +7,6 @@ using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Interop;
-using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
 
@@ -62,19 +60,6 @@ namespace Edelstein.Common.Gameplay.Stages.Login
             processor.Register(new DeleteCharacterHandler());
             processor.Register(new EnableSPWRequestHandler(false));
             processor.Register(new CheckSPWRequestHandler(false));
-        }
-
-        public override async Task Enter(LoginStageUser user)
-        {
-            var session = new SessionObject
-            {
-                Account = user.Account.ID,
-                Server = ID,
-                State = SessionState.LoggingIn
-            };
-
-            await SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
-            await base.Enter(user);
         }
     }
 }
