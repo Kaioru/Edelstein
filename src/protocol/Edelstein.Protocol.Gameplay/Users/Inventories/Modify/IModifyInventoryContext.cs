@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
-using Edelstein.Protocol.Network;
 
 namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
 {
     public interface IModifyInventoryContext
     {
+        IEnumerable<IModifyInventoryOperation> History { get; }
+
         void Add(AbstractItemSlot item);
         void Add(int templateID, short quantity = 1);
         void Add(ItemTemplate template, short quantity = 1); // TODO: item variation
@@ -13,10 +14,6 @@ namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
         void Set(short slot, AbstractItemSlot item);
         void Set(short slot, int templateID, short quantity = 1);
         void Set(short slot, ItemTemplate template, short quantity = 1);
-
-        void Set(BodyPart part, ItemSlotEquip equip);
-        void Set(BodyPart part, int templateID);
-        void Set(BodyPart part, ItemEquipTemplate template);
 
         void Remove(short slot);
         void Remove(short slot, short count);
@@ -32,7 +29,5 @@ namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
 
         void Update(short slot);
         void Update(AbstractItemSlot item);
-
-        IEnumerable<IModifyInventoryOperation> History();
     }
 }
