@@ -81,10 +81,8 @@ namespace Edelstein.Common.Gameplay.Stages
 
         public override async Task Leave(TUser user)
         {
-            Console.WriteLine("OWO!");
             if (user.Account != null && !user.IsMigrating)
             {
-                Console.WriteLine("OWO2!");
                 var session = new SessionObject
                 {
                     Account = user.Account.ID,
