@@ -59,6 +59,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
             user.Character = character;
             user.Account.SPW = BCrypt.Net.BCrypt.EnhancedHashPassword(spw);
+            user.Account.LatestConnectedWorld = user.SelectedWorldID;
             await user.MigrateTo(gameServer);
         }
     }
