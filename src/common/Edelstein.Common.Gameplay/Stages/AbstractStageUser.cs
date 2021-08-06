@@ -32,7 +32,12 @@ namespace Edelstein.Common.Gameplay.Stages
 
         public virtual Task OnPacket(IPacketReader packet) => _processor.Process((TUser)this, packet);
         public virtual Task OnException(Exception exception) => Disconnect();
-        public virtual Task OnDisconnect() => Stage?.Leave((TUser)this);
+
+        public virtual async Task OnDisconnect()
+        {
+            if (Stage != null)
+                await Stage.Leave((TUser)this);
+        }
 
         public abstract Task Update();
         public Task Disconnect() => Socket.Disconnect();
