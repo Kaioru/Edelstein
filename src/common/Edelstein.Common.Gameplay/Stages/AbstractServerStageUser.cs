@@ -55,6 +55,7 @@ namespace Edelstein.Common.Gameplay.Stages
                     await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
                 }
             }
+
             await base.OnDisconnect();
         }
 
