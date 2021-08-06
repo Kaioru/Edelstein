@@ -26,17 +26,17 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
             {
                 var response = new UnstructuredOutgoingPacket(PacketSendOperations.WorldInformation);
 
-                response.WriteByte((byte)world.ID);
-                response.WriteString(world.Name);
-                response.WriteByte(world.State);
-                response.WriteString(""); // WorldEventDesc
-                response.WriteShort(0); // WorldEventEXP_WSE, WorldSpecificEvent
-                response.WriteShort(0); // WorldEventDrop_WSE, WorldSpecificEvent
-                response.WriteBool(world.BlockCharCreation);
+                response.WriteByte((byte)world.ID);                // nWorldID
+                response.WriteString(world.Name);                  // sName
+                response.WriteByte(world.State);                   // nWorldState, 1 = Event, 2 = New, 3 = Hot
+                response.WriteString(world.WorldEventDescription); // sWorldEventDesc
+                response.WriteShort(world.WorldEventEXP);          // nWorldEventEXP_WSE, WorldSpecificEvent
+                response.WriteShort(world.WorldEventDrop);         // nWorldEventDrop_WSE, WorldSpecificEvent
+                response.WriteBool(world.BlockCharCreation);       // nBlockCharCreation 
 
                 var channelServerRequest = new DescribeServersRequest();
 
-                channelServerRequest.Tags.Add("Type", Enum.GetName(ServerStageType.Game));
+                channelServerRequest.Tags.Add("Type", "Game");
                 channelServerRequest.Tags.Add("WorldID", world.ID.ToString());
 
                 var channelServers = (await user.Stage.ServerRegistryService.DescribeServers(channelServerRequest)).Servers
@@ -47,14 +47,15 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
                 foreach (var channel in channelServers)
                 {
-                    response.WriteString(channel.Tags["ID"]);
-                    response.WriteInt(0); // TODO: UserNo
-                    response.WriteByte(Convert.ToByte(channel.Tags["WorldID"]));
-                    response.WriteByte(Convert.ToByte(channel.Tags["ChannelID"]));
-                    response.WriteBool(false); // TODO: AdultChannel
+                    response.WriteString(channel.Tags["ID"]);                      // sName
+                    response.WriteInt(0);                                          // TODO: nUserNo
+                    response.WriteByte(Convert.ToByte(channel.Tags["WorldID"]));   // nWorldID
+                    response.WriteByte(Convert.ToByte(channel.Tags["ChannelID"])); // nChannelID
+                    response.WriteBool(false);                                     // TODO: bAdultChannel
                 }
 
-                response.WriteShort(0); // TODO: Balloon
+                response.WriteShort(0); // TODO: m_nBalloonCount
+
                 await user.Dispatch(response);
             }
 

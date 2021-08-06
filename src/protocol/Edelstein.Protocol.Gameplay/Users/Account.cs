@@ -11,6 +11,10 @@ namespace Edelstein.Protocol.Gameplay.Users
         public string Password { get; set; }
         public string PIN { get; set; }
         public string SPW { get; set; }
+        public bool Banned { get; set; }
+        public byte BlockReason { get; set; }
+        public DateTime DateBlocked { get; set; }
+        public DateTime DateUnblocked { get; set; }
 
         public AccountGradeCode GradeCode { get; set; }
         public AccountSubGradeCode SubGradeCode { get; set; }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Protocol.Gameplay.Users;
@@ -25,11 +24,11 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
             var password = packet.ReadString();
             var username = packet.ReadString();
             _ = packet.ReadBytes(16); // MachineID
-            _ = packet.ReadInt(); // GameRoomClient
-            _ = packet.ReadByte(); // GameStartMode
-            _ = packet.ReadByte(); // Unknown1
-            _ = packet.ReadByte(); // Unknown2
-            _ = packet.ReadInt(); // PartnerCode
+            _ = packet.ReadInt();           // GameRoomClient
+            _ = packet.ReadByte();          // m_nGameStartMode
+            _ = packet.ReadByte();          // Unknown1
+            _ = packet.ReadByte();          // Unknown2
+            _ = packet.ReadInt();           // PartnerCode
 
             var result = LoginResultCode.Success;
             var account = await _stage.AccountRepository.RetrieveByUsername(username);
@@ -58,36 +57,45 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
                 if (session.Session.State != SessionState.Offline)
                     result = LoginResultCode.AlreadyConnected;
+
+                if (account.Banned)
+                    result = LoginResultCode.Blocked;
             }
 
             var response = new UnstructuredOutgoingPacket(PacketSendOperations.CheckPasswordResult);
 
-            response.WriteByte((byte)result);
-            response.WriteByte(0); // Unknown1
-            response.WriteInt(0); // Unknown2
+            response.WriteByte((byte)result); // nRet
+            response.WriteByte(0);            // nRegStatID
+            response.WriteInt(0);             // nUseDay
 
-            if (result == LoginResultCode.Success)
+            switch (result)
             {
-                response.WriteInt(account.ID); // pBlockReason
-                response.WriteByte(account.Gender ?? (byte)0xA);
-                response.WriteByte(0); // nGradeCode
-                response.WriteShort(0); // nSubGradeCode
-                response.WriteByte(0); // nCountryID
-                response.WriteString(account.Username); // sNexonClubID
-                response.WriteByte(0); // nPurchaseEXP
-                response.WriteByte(0); // ChatUnblockReason
-                response.WriteLong(0); // dtChatUnblockDate
-                response.WriteLong(0); // dtRegisterDate
-                response.WriteInt(4); // nNumOfCharacter
-                response.WriteByte(1); // v44
-                response.WriteByte(0); // sMsg
+                case LoginResultCode.Blocked:
+                    response.WriteByte(account.BlockReason);       // nBlockReason
+                    response.WriteDateTime(account.DateUnblocked); // dtUnblockDate
+                    break;
+                case LoginResultCode.Success:
+                    response.WriteInt(account.ID);             // dwAccountId
+                    response.WriteByte(account.Gender ?? 0xA); // nGender
+                    response.WriteByte(0);                     // nGradeCode
+                    response.WriteShort(0);                    // nSubGradeCode
+                    response.WriteByte(0);                     // nCountryID
+                    response.WriteString(account.Username);    // sNexonClubID
+                    response.WriteByte(0);                     // nPurchaseEXP
+                    response.WriteByte(0);                     // nChatUnblockReason
+                    response.WriteLong(0);                     // dtChatUnblockDate
+                    response.WriteLong(0);                     // dtRegisterDate
+                    response.WriteInt(4);                      // nNumOfCharacter
+                    response.WriteByte(1);                     // CP_WorldRequest or nGameStartMode -> CP_CheckPinCode
+                    response.WriteByte(0);                     // sMsg
 
-                response.WriteLong(user.Key);
+                    response.WriteLong(user.Key);
 
-                user.State = account.Gender == null ? LoginState.SelectGender : LoginState.SelectWorld;
-                user.Account = account;
+                    user.State = account.Gender == null ? LoginState.SelectGender : LoginState.SelectWorld;
+                    user.Account = account;
 
-                await _stage.Enter(user);
+                    await _stage.Enter(user);
+                    break;
             }
 
             await user.Dispatch(response);
