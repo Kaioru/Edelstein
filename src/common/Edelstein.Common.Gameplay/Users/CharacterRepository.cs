@@ -26,6 +26,15 @@ namespace Edelstein.Common.Gameplay.Users
         )
         => _store = store;
 
+        public async Task<bool> CheckExistsByName(string name)
+        {
+            using var session = _store.StartSession();
+            return (await session
+                .Query<Character>()
+                .Where(c => c.Name.ToLower() == name.ToLower())
+                .Count()) > 0;
+        }
+
         public Task<IEnumerable<Character>> RetrieveAllByAccountWorld(int accountworld)
         {
             using var session = _store.StartSession();
