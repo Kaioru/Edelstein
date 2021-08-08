@@ -5,8 +5,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects
 {
     public interface IFieldLife : IFieldObj
     {
-        MoveActionType Action { get; }
-        short Foothold { get; }
+        MoveActionType Action { get; set; }
+        short Foothold { get; set; }
 
         Task Move(IMovePath path);
     }
