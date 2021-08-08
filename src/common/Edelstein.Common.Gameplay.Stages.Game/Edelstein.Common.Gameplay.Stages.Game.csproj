@@ -6,9 +6,11 @@
 
   <ItemGroup>
     <None Remove="Templates\" />
+    <None Remove="Objects\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
+    <Folder Include="Objects\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />

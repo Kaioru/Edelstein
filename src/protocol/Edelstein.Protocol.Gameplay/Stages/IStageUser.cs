@@ -10,11 +10,11 @@ namespace Edelstein.Protocol.Gameplay.Stages
     {
         int ID { get; }
 
-        Account Account { get; set; }
-        AccountWorld AccountWorld { get; set; }
-        Character Character { get; set; }
+        Account Account { get; }
+        AccountWorld AccountWorld { get; }
+        Character Character { get; }
 
-        TStage Stage { get; set; }
+        TStage Stage { get; }
 
         Task Update();
     }
