@@ -6,7 +6,7 @@ namespace Edelstein.Protocol.Network.Session
 {
     public interface ISession : IPacketDispatcher
     {
-        ISocket Socket { get; init; }
+        ISocket Socket { get; }
 
         Task OnPacket(IPacketReader packet);
         Task OnException(Exception exception);

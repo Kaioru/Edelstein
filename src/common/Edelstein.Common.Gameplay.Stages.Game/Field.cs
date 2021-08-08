@@ -22,6 +22,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public int ID => Template.ID;
         public Rect2D Bounds => Template.Bounds;
 
+        public GameStage Stage { get; }
         public FieldTemplate Template { get; }
 
         private readonly object _objectLock;
@@ -29,8 +30,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         private readonly IFieldSplit[,] _splits;
 
         // TODO: Better physicalspace2d handling
-        public Field(FieldTemplate template)
+        public Field(GameStage stage, FieldTemplate template)
         {
+            Stage = stage;
             Template = template;
 
             _objectLock = new object();
