@@ -1,4 +1,6 @@
-﻿namespace Edelstein.Protocol.Util.Spatial
+﻿using System;
+
+namespace Edelstein.Protocol.Util.Spatial
 {
     public struct Point2D
     {
@@ -9,6 +11,14 @@
         {
             X = x;
             Y = y;
+        }
+
+        public double Distance(Point2D target)
+        {
+            int distX = target.X - X;
+            int distY = target.Y - Y;
+
+            return Math.Sqrt(distX * distX + distY * distY);
         }
     }
 }

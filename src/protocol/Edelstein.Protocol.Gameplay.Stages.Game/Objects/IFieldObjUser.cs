@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
+using Edelstein.Protocol.Network;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects
 {
@@ -22,6 +23,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects
         IEnumerable<T> GetWatchedObjects<T>() where T : IFieldObj;
 
         bool IsConversing { get; }
+
+        IPacket GetSetFieldPacket();
 
         Task<T> Prompt<T>(Func<
             IConversationSpeaker,
