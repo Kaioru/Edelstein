@@ -1,4 +1,6 @@
-﻿using Edelstein.Common.Gameplay.Handling;
+﻿using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
@@ -60,6 +62,18 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             FieldRepository = fieldRepository;
             FieldSetRepository = fieldSetRepository;
             ContiMoveRepository = contiMoveRepository;
+        }
+
+        public override async Task Enter(GameStageUser user)
+        {
+            var template = await FieldTemplates.Retrieve(user.Character.FieldID);
+            var field = new Field(this, template);
+            var fieldUser = new FieldObjUser(user);
+
+            user.FieldUser = fieldUser;
+
+            await field.Enter(fieldUser);
+            await base.Enter(user);
         }
     }
 
