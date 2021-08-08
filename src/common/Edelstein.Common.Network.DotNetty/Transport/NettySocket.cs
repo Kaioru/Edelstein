@@ -34,7 +34,6 @@ namespace Edelstein.Common.Network.DotNetty.Transport
         }
 
         public Task Dispatch(IPacket packet) => _channel.WriteAndFlushAsync(packet);
-        public Task Dispatch(IEnumerable<IPacket> packets) => Task.WhenAll(packets.Select(p => Dispatch(p)));
         public Task Disconnect() => _channel.DisconnectAsync();
 
     }

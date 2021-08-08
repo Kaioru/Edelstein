@@ -43,8 +43,5 @@ namespace Edelstein.Common.Gameplay.Stages
 
         public Task Dispatch(IPacket packet)
             => Task.WhenAll(_users.Values.Select(user => user.Dispatch(packet)));
-
-        public Task Dispatch(IEnumerable<IPacket> packets)
-            => Task.WhenAll(_users.Values.Select(user => user.Dispatch(packets)));
     }
 }

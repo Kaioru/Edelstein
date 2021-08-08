@@ -20,7 +20,6 @@ namespace Tinystein
             => Socket = socket;
 
         public Task Dispatch(IPacket packet) => Socket.Dispatch(packet);
-        public Task Dispatch(IEnumerable<IPacket> packets) => Socket.Dispatch(packets);
         public Task Update() => Task.CompletedTask;
         public Task Disconnect() => Socket.Disconnect();
 

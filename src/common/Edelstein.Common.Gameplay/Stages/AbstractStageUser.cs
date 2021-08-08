@@ -42,6 +42,5 @@ namespace Edelstein.Common.Gameplay.Stages
         public abstract Task Update();
         public Task Disconnect() => Socket.Disconnect();
         public Task Dispatch(IPacket packet) => Socket.Dispatch(packet);
-        public Task Dispatch(IEnumerable<IPacket> packets) => Socket.Dispatch(packets);
     }
 }
