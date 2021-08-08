@@ -81,9 +81,6 @@ namespace Edelstein.Common.Network.DotNetty.Transport
         public Task Dispatch(IPacket packet)
             => Task.WhenAll(Sessions.Values.Select(s => s.Dispatch(packet)));
 
-        public Task Dispatch(IEnumerable<IPacket> packets)
-            => Task.WhenAll(Sessions.Values.Select(s => s.Dispatch(packets)));
-
         public async Task Close()
         {
             await Task.WhenAll(Sessions.Values.Select(s => s.Disconnect()));

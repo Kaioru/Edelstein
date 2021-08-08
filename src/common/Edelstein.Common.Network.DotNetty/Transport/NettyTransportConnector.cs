@@ -75,9 +75,6 @@ namespace Edelstein.Common.Network.DotNetty.Transport
         public Task Dispatch(IPacket packet)
             => Session?.Dispatch(packet);
 
-        public Task Dispatch(IEnumerable<IPacket> packets)
-            => Session?.Dispatch(packets);
-
         public async Task Close()
         {
             if (Session != null) await Session.Disconnect();

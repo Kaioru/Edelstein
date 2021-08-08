@@ -9,7 +9,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects
     {
         FieldObjType Type { get; }
 
-        int ObjID { get; set; }
+        int ID { get; set; }
 
         IField Field { get; set; }
         IFieldSplit FieldSplit { get; set; }
