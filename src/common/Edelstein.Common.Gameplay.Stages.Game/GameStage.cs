@@ -72,8 +72,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             user.FieldUser = fieldUser;
 
-            await field.Enter(fieldUser);
             await base.Enter(user);
+            await field.Enter(fieldUser);
         }
     }
 

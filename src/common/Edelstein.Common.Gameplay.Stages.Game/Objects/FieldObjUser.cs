@@ -56,7 +56,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects
             packet.WriteShort(0); // ClientOpt
 
             packet.WriteInt(GameStage.ChannelID);
-            packet.WriteInt(AccountWorld.WorldID);
+            packet.WriteInt(GameStage.WorldID);
 
             packet.WriteBool(true); // sNotifierMessage._m_pStr
             packet.WriteBool(!IsInstantiated);
