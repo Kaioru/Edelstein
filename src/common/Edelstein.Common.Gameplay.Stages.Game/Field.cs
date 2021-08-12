@@ -38,10 +38,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             _objectLock = new object();
             _pools = new Dictionary<FieldObjType, IFieldPool>();
 
-            var splitColCount = (template.Bounds.Size.Width + (ScreenWidthOffset - 1)) / ScreenWidthOffset;
             var splitRowCount = (template.Bounds.Size.Height + (ScreenHeightOffset - 1)) / ScreenHeightOffset;
+            var splitColCount = (template.Bounds.Size.Width + (ScreenWidthOffset - 1)) / ScreenWidthOffset;
 
-            _splits = new IFieldSplit[splitColCount, splitRowCount];
+            _splits = new IFieldSplit[splitRowCount, splitColCount];
 
             for (var row = 0; row < splitRowCount; row++)
                 for (var col = 0; col < splitColCount; col++)
