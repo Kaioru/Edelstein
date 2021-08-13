@@ -191,7 +191,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
                 user.Character.FieldID = Template.ID;
                 user.Position = portal.Position;
-                user.Foothold = (short)GetFootholdUnderneath(portal.Position).ID;
+                user.Foothold = GetFootholdUnderneath(portal.Position);
 
                 await user.Dispatch(user.GetSetFieldPacket());
 

@@ -7,10 +7,16 @@
   <ItemGroup>
     <None Remove="Templates\" />
     <None Remove="Objects\" />
+    <None Remove="Movements\" />
+    <None Remove="Movements\Fragments\" />
+    <None Remove="Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
     <Folder Include="Objects\" />
+    <Folder Include="Movements\" />
+    <Folder Include="Movements\Fragments\" />
+    <Folder Include="Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
