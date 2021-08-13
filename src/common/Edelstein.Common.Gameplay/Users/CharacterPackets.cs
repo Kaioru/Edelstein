@@ -247,7 +247,7 @@ namespace Edelstein.Common.Gameplay.Users
 
         public static void WriteCharacterExtendSP(this IPacketWriter p, Character c)
         {
-            p.WriteByte((byte)c.ExtendSP.Count);,
+            p.WriteByte((byte)c.ExtendSP.Count);
             c.ExtendSP.ForEach(kv =>
             {
                 p.WriteByte(kv.Key);
