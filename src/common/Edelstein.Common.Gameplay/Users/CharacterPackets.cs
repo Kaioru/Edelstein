@@ -184,7 +184,7 @@ namespace Edelstein.Common.Gameplay.Users
 
             p.WriteShort(c.AP);
             if (c.Job / 1000 == 3 || c.Job / 100 == 22 || c.Job == 2001) // TODO: constants?
-                c.WriteExtendSP(p);
+                p.WriteCharacterExtendSP(c);
             else
                 p.WriteShort(c.SP);
 
@@ -245,9 +245,9 @@ namespace Edelstein.Common.Gameplay.Users
                 p.WriteInt(0);
         }
 
-        private static void WriteExtendSP(this Character c, IPacketWriter p)
+        public static void WriteCharacterExtendSP(this IPacketWriter p, Character c)
         {
-            p.WriteByte((byte)c.ExtendSP.Count);
+            p.WriteByte((byte)c.ExtendSP.Count);,
             c.ExtendSP.ForEach(kv =>
             {
                 p.WriteByte(kv.Key);
