@@ -12,6 +12,7 @@
     <Folder Include="Continent\" />
     <Folder Include="Movements\" />
     <Folder Include="Objects\User\" />
+    <Folder Include="Objects\User\Stats\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
@@ -26,6 +27,7 @@
     <None Remove="morelinq" />
     <None Remove="Movements\" />
     <None Remove="Objects\User\" />
+    <None Remove="Objects\User\Stats\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.3.2" />
