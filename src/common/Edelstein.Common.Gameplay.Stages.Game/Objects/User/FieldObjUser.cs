@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Common.Gameplay.Users;
+using Edelstein.Common.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
@@ -184,7 +185,25 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public Task Converse(IConversation conversation) { throw new NotImplementedException(); }
         public Task EndConversation() { throw new NotImplementedException(); }
 
-        public Task ModifyStats(Action<IModifyStatContext> action, bool exclRequest = false) { throw new NotImplementedException(); }
+        public async Task ModifyStats(Action<IModifyStatContext> action, bool exclRequest = false)
+        {
+            var context = new ModifyStatContext(Character);
+
+            action?.Invoke(context);
+            await CalculateStats();
+
+            if (!IsInstantiated) return;
+
+            var statPacket = new UnstructuredOutgoingPacket(PacketSendOperations.StatChanged);
+
+            statPacket.WriteBool(exclRequest);
+            statPacket.Write(context);
+            statPacket.WriteBool(false);
+            statPacket.WriteBool(false);
+
+            await Dispatch(statPacket);
+        }
+
         public Task ModifyInventory(Action<IModifyMultiInventoryContext> action, bool exclRequest = false) { throw new NotImplementedException(); }
 
         public Task Dispatch(IPacket packet) => GameStageUser.Dispatch(packet);

@@ -41,7 +41,5 @@ namespace Edelstein.Protocol.Gameplay.Users.Stats.Modify
         void IncExtendSP(byte jobLevel, byte point);
 
         void LevelUp();
-
-        void Encode(IPacketWriter writer);
     }
 }

@@ -18,6 +18,8 @@
     <None Remove="Stages\Behaviors\" />
     <None Remove="Users\Inventories\Modify\" />
     <None Remove="Users\Inventories\Modify\Operations\" />
+    <None Remove="Users\Stats\" />
+    <None Remove="Users\Stats\Modify\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Users\" />
@@ -30,6 +32,8 @@
     <Folder Include="Stages\Behaviors\" />
     <Folder Include="Users\Inventories\Modify\" />
     <Folder Include="Users\Inventories\Modify\Operations\" />
+    <Folder Include="Users\Stats\" />
+    <Folder Include="Users\Stats\Modify\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />
