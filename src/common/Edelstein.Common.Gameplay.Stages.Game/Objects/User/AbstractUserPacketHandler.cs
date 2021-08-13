@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User

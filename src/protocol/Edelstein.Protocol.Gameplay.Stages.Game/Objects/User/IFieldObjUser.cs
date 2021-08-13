@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
-using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Network;
 
-namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects
+namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
 {
     public interface IFieldObjUser : IFieldLife, IStageUser<IField, IFieldObjUser>, IPacketDispatcher
     {

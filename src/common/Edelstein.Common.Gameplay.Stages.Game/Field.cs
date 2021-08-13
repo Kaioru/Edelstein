@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Spatial;

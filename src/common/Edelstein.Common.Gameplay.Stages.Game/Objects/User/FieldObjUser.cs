@@ -6,6 +6,7 @@ using Edelstein.Common.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
