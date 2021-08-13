@@ -4,9 +4,9 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
 {
     public interface ICalculatedRates
     {
-        public int Exp { get; }
-        public int Reward { get; }
-        public int Money { get; }
+        int Exp { get; }
+        int Reward { get; }
+        int Money { get; }
 
         Task Calculate();
     }

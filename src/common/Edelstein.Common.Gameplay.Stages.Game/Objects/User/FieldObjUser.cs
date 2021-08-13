@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Common.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
@@ -45,8 +46,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             Watching = new List<IFieldSplit>();
             Controlling = new List<IFieldControlledObj>();
 
-            CalculateRates();
-            CalculateStats();
+            Rates = new CalculatedRates(this);
+            Stats = new CalculatedStats(this);
+
+            _ = CalculateStats();
         }
 
         public Task OnPacket(IPacketReader packet) => GameStageUser.OnPacket(packet);
@@ -158,8 +161,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public override IPacket GetLeaveFieldPacket()
             => new UnstructuredOutgoingPacket(PacketSendOperations.UserLeaveField).WriteInt(ID);
 
-        public Task CalculateRates() { throw new NotImplementedException(); }
-        public Task CalculateStats() { throw new NotImplementedException(); }
+        public async Task CalculateStats() {
+            await Rates.Calculate();
+            await Stats.Calculate();
+
+            if (Character.HP > Stats.MaxHP) await ModifyStats(s => s.HP = Stats.MaxHP);
+            if (Character.HP > Stats.MaxMP) await ModifyStats(s => s.HP = Stats.MaxMP);
+        }
 
         public Task<T> Prompt<T>(Func<
             IConversationSpeaker,
