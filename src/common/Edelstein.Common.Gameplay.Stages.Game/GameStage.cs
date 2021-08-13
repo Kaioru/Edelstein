@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Stages.Game.Handlers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
@@ -62,6 +63,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             FieldRepository = fieldRepository;
             FieldSetRepository = fieldSetRepository;
             ContiMoveRepository = contiMoveRepository;
+
+            processor.Register(new UserMoveHandler());
         }
 
         public override async Task Enter(GameStageUser user)
