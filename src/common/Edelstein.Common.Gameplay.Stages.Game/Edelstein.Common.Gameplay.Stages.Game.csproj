@@ -12,6 +12,7 @@
     <None Remove="Handlers\" />
     <None Remove="Objects\User\" />
     <None Remove="Objects\User\Handlers\" />
+    <None Remove="Objects\User\Stats\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -21,6 +22,7 @@
     <Folder Include="Handlers\" />
     <Folder Include="Objects\User\" />
     <Folder Include="Objects\User\Handlers\" />
+    <Folder Include="Objects\User\Stats\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />

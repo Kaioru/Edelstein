@@ -1,42 +1,41 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
 {
     public interface ICalculatedStats
     {
-        public int STR { get; }
-        public int DEX { get; }
-        public int INT { get; }
-        public int LUK { get; }
+        int STR { get; }
+        int DEX { get; }
+        int INT { get; }
+        int LUK { get; }
 
-        public int MaxHP { get; }
-        public int MaxMP { get; }
+        int MaxHP { get; }
+        int MaxMP { get; }
 
-        public int PAD { get; }
-        public int PDD { get; }
-        public int MAD { get; }
-        public int MDD { get; }
-        public int ACC { get; }
-        public int EVA { get; }
-        public int Craft { get; }
-        public int Speed { get; }
-        public int Jump { get; }
+        int PAD { get; }
+        int PDD { get; }
+        int MAD { get; }
+        int MDD { get; }
+        int ACC { get; }
+        int EVA { get; }
+        int Craft { get; }
+        int Speed { get; }
+        int Jump { get; }
 
-        public int STRr { get; }
-        public int DEXr { get; }
-        public int INTr { get; }
-        public int LUKr { get; }
+        int STRr { get; }
+        int DEXr { get; }
+        int INTr { get; }
+        int LUKr { get; }
 
-        public int MaxHPr { get; }
-        public int MaxMPr { get; }
+        int MaxHPr { get; }
+        int MaxMPr { get; }
 
-        public int PADr { get; }
-        public int PDDr { get; }
-        public int MADr { get; }
-        public int MDDr { get; }
-        public int ACCr { get; }
-        public int EVAr { get; }
+        int PADr { get; }
+        int PDDr { get; }
+        int MADr { get; }
+        int MDDr { get; }
+        int ACCr { get; }
+        int EVAr { get; }
 
         Task Calculate();
     }
