@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Common.Gameplay.Users;
+using Edelstein.Common.Gameplay.Users.Inventories.Modify;
+using Edelstein.Common.Gameplay.Users.Inventories.Modify.Operations;
 using Edelstein.Common.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
@@ -50,7 +53,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             Rates = new CalculatedRates(this);
             Stats = new CalculatedStats(this);
 
-            _ = CalculateStats();
+            _ = UpdateStats();
         }
 
         public Task OnPacket(IPacketReader packet) => GameStageUser.OnPacket(packet);
@@ -162,12 +165,29 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public override IPacket GetLeaveFieldPacket()
             => new UnstructuredOutgoingPacket(PacketSendOperations.UserLeaveField).WriteInt(ID);
 
-        public async Task CalculateStats() {
+        public async Task UpdateStats()
+        {
             await Rates.Calculate();
             await Stats.Calculate();
 
             if (Character.HP > Stats.MaxHP) await ModifyStats(s => s.HP = Stats.MaxHP);
             if (Character.HP > Stats.MaxMP) await ModifyStats(s => s.HP = Stats.MaxMP);
+        }
+
+        public async Task UpdateAvatar()
+        {
+            var avatarPacket = new UnstructuredOutgoingPacket(PacketSendOperations.UserAvatarModified);
+
+            avatarPacket.WriteInt(ID);
+            avatarPacket.WriteByte(0x1); // Flag
+            avatarPacket.WriteCharacterLook(Character);
+
+            avatarPacket.WriteBool(false);
+            avatarPacket.WriteBool(false);
+            avatarPacket.WriteBool(false);
+            avatarPacket.WriteInt(0);
+
+            await FieldSplit.Dispatch(this, avatarPacket);
         }
 
         public Task<T> Prompt<T>(Func<
@@ -190,7 +210,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             var context = new ModifyStatContext(Character);
 
             action?.Invoke(context);
-            await CalculateStats();
+            await UpdateStats();
 
             if (!IsInstantiated) return;
 
@@ -204,7 +224,29 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             await Dispatch(statPacket);
         }
 
-        public Task ModifyInventory(Action<IModifyMultiInventoryContext> action, bool exclRequest = false) { throw new NotImplementedException(); }
+        public async Task ModifyInventory(Action<IModifyMultiInventoryContext> action, bool exclRequest = false)
+        {
+            var context = new ModifyMultiInventoryContext(Character.Inventories, GameStage.ItemTemplates);
+
+            action?.Invoke(context);
+
+            var inventoryPacket = new UnstructuredOutgoingPacket(PacketSendOperations.InventoryOperation);
+
+            inventoryPacket.WriteBool(exclRequest);
+            inventoryPacket.Write(context);
+            inventoryPacket.WriteBool(false);
+
+            await Dispatch(inventoryPacket);
+
+            if (
+                context.History.Any(o => o.Slot < 0) ||
+                context.History.OfType<MoveModifyInventoryOperation>().Any(o => o.ToSlot < 0)
+            )
+            {
+                await UpdateStats();
+                await UpdateAvatar();
+            }
+        }
 
         public Task Dispatch(IPacket packet) => GameStageUser.Dispatch(packet);
     }

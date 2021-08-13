@@ -8,11 +8,12 @@ using Edelstein.Protocol.Gameplay.Users.Inventories;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Network.Utils;
 using MoreLinq;
 
 namespace Edelstein.Common.Gameplay.Users.Inventories.Modify
 {
-    public class ModifyInventoryContext : IModifyInventoryContext
+    public class ModifyInventoryContext : IModifyInventoryContext, IPacketWritable
     {
         public IEnumerable<IModifyInventoryOperation> History => _history.ToImmutableList();
 
@@ -291,7 +292,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Modify
         private void UpdateQuantity(short slot, short quantity)
             => _history.Enqueue(new UpdateQuantityModifyInventoryOperation(_type, slot, quantity));
 
-        public void WriteData(IPacketWriter writer)
+        public void WriteToPacket(IPacketWriter writer)
         {
             writer.WriteByte((byte)_history.Count);
             _history.ForEach(o => writer.Write(o));
