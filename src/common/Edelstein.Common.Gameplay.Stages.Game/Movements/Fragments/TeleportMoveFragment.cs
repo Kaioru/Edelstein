@@ -23,7 +23,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments
             path.FootholdID = _footholdID;
         }
 
-        public override void ReadData(IPacketReader reader)
+        protected override void ReadData(IPacketReader reader)
         {
             _position = reader.ReadPoint2D();
             _footholdID = reader.ReadShort();
@@ -31,7 +31,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments
             base.ReadData(reader);
         }
 
-        public override void WriteData(IPacketWriter writer)
+        protected override void WriteData(IPacketWriter writer)
         {
             writer.WritePoint2D(_position);
             writer.WriteShort(_footholdID);

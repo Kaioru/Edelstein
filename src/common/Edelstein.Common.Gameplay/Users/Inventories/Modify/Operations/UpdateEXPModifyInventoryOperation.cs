@@ -21,7 +21,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Modify.Operations
             EXP = exp;
         }
 
-        public override void WriteData(IPacketWriter writer)
+        protected override void WriteData(IPacketWriter writer)
             => writer.WriteInt(EXP);
     }
 }

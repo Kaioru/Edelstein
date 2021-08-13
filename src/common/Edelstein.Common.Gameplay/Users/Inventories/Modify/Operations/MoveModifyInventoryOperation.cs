@@ -21,7 +21,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Modify.Operations
             ToSlot = toSlot;
         }
 
-        public override void WriteData(IPacketWriter writer)
+        protected override void WriteData(IPacketWriter writer)
             => writer.WriteShort(ToSlot);
     }
 }

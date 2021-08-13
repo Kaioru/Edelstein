@@ -21,13 +21,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Handlers
             _ = packet.ReadInt();
             _ = packet.ReadInt();
 
-            var path = new MovePath();
+            var path = packet.Read(new MovePath());
             var response = new UnstructuredOutgoingPacket(PacketSendOperations.UserMove);
 
-            path.ReadData(packet);
-
             response.WriteInt(user.ID);
-            path.WriteData(response);
+            response.Write(path);
 
             await user.FieldUser.Move(path);
             await user.FieldUser.FieldSplit.Dispatch(user.FieldUser, response);

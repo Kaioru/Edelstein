@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using Edelstein.Protocol.Network.Utils;
 using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Network
@@ -42,5 +43,7 @@ namespace Edelstein.Protocol.Network
         public Point2D ReadPoint2D() => new(ReadShort(), ReadShort());
 
         public DateTime ReadDateTime() => DateTime.FromFileTimeUtc(ReadLong());
+
+        public T Read<T>(T readable) where T : IPacketReadable { readable.ReadFromPacket(this); return readable; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Text;
 using System;
 using Edelstein.Protocol.Util.Spatial;
+using Edelstein.Protocol.Network.Utils;
 
 namespace Edelstein.Protocol.Network
 {
@@ -108,5 +109,7 @@ namespace Edelstein.Protocol.Network
             WriteLong(value.ToFileTimeUtc());
             return this;
         }
+
+        public IPacketWriter Write(IPacketWritable writable) { writable.WriteToPacket(this); return this; }
     }
 }

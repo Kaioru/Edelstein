@@ -2,12 +2,13 @@
 using Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments;
 using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Network.Utils;
 using Edelstein.Protocol.Util.Spatial;
 using MoreLinq;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements
 {
-    public class MovePath : IMovePath
+    public class MovePath : IMovePath, IPacketReadable, IPacketWritable
     {
         private readonly ICollection<AbstractMoveFragment> _fragments;
         private Point2D _position;
@@ -22,7 +23,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Movements
             _fragments = new List<AbstractMoveFragment>();
         }
 
-        public void ReadData(IPacketReader reader) {
+        public void ReadFromPacket(IPacketReader reader)
+        {
             _position = reader.ReadPoint2D();
             _vPosition = reader.ReadPoint2D();
 
@@ -89,13 +91,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Movements
             _fragments.ForEach(f => f.Apply(this));
         }
 
-        public void WriteData(IPacketWriter writer) {
-
+        public void WriteToPacket(IPacketWriter writer)
+        {
             writer.WritePoint2D(_position);
             writer.WritePoint2D(_vPosition);
 
             writer.WriteByte((byte)_fragments.Count);
-            _fragments.ForEach(f => f.WriteBase(writer));
+            _fragments.ForEach(f => writer.Write(f));
         }
     }
 }

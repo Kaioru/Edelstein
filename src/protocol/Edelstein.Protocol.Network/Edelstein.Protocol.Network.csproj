@@ -14,8 +14,12 @@
     <Folder Include="Transport\" />
     <Folder Include="Session\" />
     <Folder Include="Ciphers\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Utils\" />
   </ItemGroup>
 </Project>

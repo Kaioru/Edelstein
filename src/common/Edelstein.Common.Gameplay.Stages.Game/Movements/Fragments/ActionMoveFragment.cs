@@ -20,13 +20,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments
             path.Action = _moveAction;
         }
 
-        public override void ReadData(IPacketReader reader)
+        protected override void ReadData(IPacketReader reader)
         {
             _moveAction = (MoveActionType)reader.ReadByte();
             _elapse = reader.ReadShort();
         }
 
-        public override void WriteData(IPacketWriter writer)
+        protected override void WriteData(IPacketWriter writer)
         {
             writer.WriteByte((byte)_moveAction);
             writer.WriteShort(_elapse);
