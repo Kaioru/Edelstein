@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Network;
@@ -17,6 +18,9 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
 
         ICollection<IFieldSplit> Watching { get; }
         ICollection<IFieldControlledObj> Controlling { get; }
+
+        ICalculatedRates Rates { get; }
+        ICalculatedStats Stats { get; }
 
         IPacket GetSetFieldPacket();
 

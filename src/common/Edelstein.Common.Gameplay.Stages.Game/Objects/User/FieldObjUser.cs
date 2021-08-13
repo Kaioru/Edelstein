@@ -7,6 +7,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
@@ -35,11 +36,17 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public ICollection<IFieldSplit> Watching { get; }
         public ICollection<IFieldControlledObj> Controlling { get; }
 
+        public ICalculatedRates Rates { get; }
+        public ICalculatedStats Stats { get; }
+
         public FieldObjUser(GameStageUser user)
         {
             GameStageUser = user;
             Watching = new List<IFieldSplit>();
             Controlling = new List<IFieldControlledObj>();
+
+            CalculateRates();
+            CalculateStats();
         }
 
         public Task OnPacket(IPacketReader packet) => GameStageUser.OnPacket(packet);
@@ -150,6 +157,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
         public override IPacket GetLeaveFieldPacket()
             => new UnstructuredOutgoingPacket(PacketSendOperations.UserLeaveField).WriteInt(ID);
+
+        public Task CalculateRates() { throw new NotImplementedException(); }
+        public Task CalculateStats() { throw new NotImplementedException(); }
 
         public Task<T> Prompt<T>(Func<
             IConversationSpeaker,
