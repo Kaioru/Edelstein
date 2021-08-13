@@ -49,7 +49,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Modify
                 .ToList();
 
             writer.WriteByte((byte)history.Count);
-            history.ForEach(o => o.WriteData(writer));
+            history.ForEach(o => writer.Write(o));
         }
     }
 }

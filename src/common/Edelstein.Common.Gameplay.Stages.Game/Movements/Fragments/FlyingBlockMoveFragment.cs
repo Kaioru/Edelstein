@@ -23,7 +23,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments
             path.Position = _position;
         }
 
-        public override void ReadData(IPacketReader reader)
+        protected override void ReadData(IPacketReader reader)
         {
             _position = reader.ReadPoint2D();
             _vPosition = reader.ReadPoint2D();
@@ -31,7 +31,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments
             base.ReadData(reader);
         }
 
-        public override void WriteData(IPacketWriter writer)
+        protected override void WriteData(IPacketWriter writer)
         {
             writer.WritePoint2D(_position);
             writer.WritePoint2D(_vPosition);

@@ -13,12 +13,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments
         {
         }
 
-        public override void ReadData(IPacketReader reader)
+        protected override void ReadData(IPacketReader reader)
         {
             _stat = reader.ReadBool();
         }
 
-        public override void WriteData(IPacketWriter writer)
+        protected override void WriteData(IPacketWriter writer)
         {
             writer.WriteBool(_stat);
         }

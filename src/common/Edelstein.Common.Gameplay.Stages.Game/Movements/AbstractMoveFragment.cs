@@ -1,26 +1,37 @@
 ﻿using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Network.Utils;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements
 {
-    public abstract class AbstractMoveFragment
+    public abstract class AbstractMoveFragment : IPacketReadable, IPacketWritable
     {
         public MoveFragmentAttribute Attribute { get; }
 
         protected AbstractMoveFragment(MoveFragmentAttribute attribute, IPacketReader reader)
         {
             Attribute = attribute;
-            ReadData(reader);
+            ReadFromPacket(reader);
         }
 
         public virtual void Apply(MovePath path) { }
 
-        public void WriteBase(IPacketWriter writer)
+        public void ReadFromPacket(IPacketReader reader)
         {
-            writer.WriteByte((byte)Attribute);
+            ReadData(reader);
+        }
+
+        public void WriteToPacket(IPacketWriter writer)
+        {
+            WriteBase(writer);
             WriteData(writer);
         }
 
-        public abstract void ReadData(IPacketReader reader);
-        public abstract void WriteData(IPacketWriter writer);
+        protected void WriteBase(IPacketWriter writer)
+        {
+            writer.WriteByte((byte)Attribute);
+        }
+
+        protected abstract void ReadData(IPacketReader reader);
+        protected abstract void WriteData(IPacketWriter writer);
     }
 }

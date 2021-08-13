@@ -294,7 +294,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Modify
         public void WriteData(IPacketWriter writer)
         {
             writer.WriteByte((byte)_history.Count);
-            _history.ForEach(o => o.WriteData(writer));
+            _history.ForEach(o => writer.Write(o));
         }
     }
 }

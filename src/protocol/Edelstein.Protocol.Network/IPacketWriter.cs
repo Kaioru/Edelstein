@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Numerics;
+using Edelstein.Protocol.Network.Utils;
 using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Network
@@ -26,5 +26,7 @@ namespace Edelstein.Protocol.Network
         IPacketWriter WritePoint2D(Point2D value);
 
         IPacketWriter WriteDateTime(DateTime value);
+
+        IPacketWriter Write(IPacketWritable writable);
     }
 }
