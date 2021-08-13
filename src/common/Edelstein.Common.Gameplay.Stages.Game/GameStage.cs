@@ -28,6 +28,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public IFieldSetRepository FieldSetRepository { get; }
         public IContiMoveRepository ContiMoveRepository { get; }
 
+        private readonly FieldTemplate template;
+        private readonly IField field;
+
         public GameStage(
             GameStageConfig config,
             ILogger<IStage<GameStage, GameStageUser>> logger,
@@ -65,18 +68,31 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ContiMoveRepository = contiMoveRepository;
 
             processor.Register(new UserMoveHandler());
+
+            template = FieldTemplates.Retrieve(310000000).Result;
+            field = new Field(this, template);
         }
 
         public override async Task Enter(GameStageUser user)
         {
+            /*
             var template = await FieldTemplates.Retrieve(user.Character.FieldID);
             var field = new Field(this, template);
+            */
             var fieldUser = new FieldObjUser(user);
 
             user.FieldUser = fieldUser;
 
             await base.Enter(user);
             await field.Enter(fieldUser);
+        }
+
+        public override async Task Leave(GameStageUser user)
+        {
+            if (user.Field != null)
+                await user.Field.Leave(user.FieldUser);
+
+            await base.Leave(user);
         }
     }
 
