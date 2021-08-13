@@ -14,6 +14,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Movements
 
         public virtual void Apply(MovePath path) { }
 
+        public void WriteBase(IPacketWriter writer)
+        {
+            writer.WriteByte((byte)Attribute);
+            WriteData(writer);
+        }
+
         public abstract void ReadData(IPacketReader reader);
         public abstract void WriteData(IPacketWriter writer);
     }

@@ -95,7 +95,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Movements
             writer.WritePoint2D(_vPosition);
 
             writer.WriteByte((byte)_fragments.Count);
-            _fragments.ForEach(f => f.WriteData(writer));
+            _fragments.ForEach(f => f.WriteBase(writer));
         }
     }
 }

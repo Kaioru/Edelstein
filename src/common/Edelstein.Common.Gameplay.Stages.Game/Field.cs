@@ -188,10 +188,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             if (obj is IFieldObjUser user)
             {
                 var portal = GetPortal(user.Character.FieldPortal) ?? GetStartPointClosestTo(user.Position);
+                var isStartPoint = GetStartPoint(portal.ID) != null;
 
                 user.Character.FieldID = Template.ID;
                 user.Position = portal.Position;
-                user.Foothold = GetFootholdUnderneath(portal.Position);
+                user.Foothold = isStartPoint ? null : GetFootholdUnderneath(portal.Position);
 
                 await user.Dispatch(user.GetSetFieldPacket());
 

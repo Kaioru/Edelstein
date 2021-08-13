@@ -119,7 +119,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects
 
             packet.WritePoint2D(Position);
             packet.WriteByte((byte)Action);
-            packet.WriteShort((short)Foothold.ID);
+            packet.WriteShort((short)(Foothold?.ID ?? 0));
             packet.WriteByte(0);
 
             packet.WriteBool(false);

@@ -33,7 +33,12 @@ namespace Edelstein.Common.Network.DotNetty.Transport
             EncryptData = encryptData;
         }
 
-        public Task Dispatch(IPacket packet) => _channel.WriteAndFlushAsync(packet);
+        public async Task Dispatch(IPacket packet)
+        {
+            if (_channel.IsWritable)
+                await _channel.WriteAndFlushAsync(packet);
+        }
+
         public Task Disconnect() => _channel.DisconnectAsync();
 
     }
