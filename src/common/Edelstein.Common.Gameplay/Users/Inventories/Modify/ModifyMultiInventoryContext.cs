@@ -5,11 +5,12 @@ using Edelstein.Protocol.Gameplay.Users.Inventories;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Network.Utils;
 using MoreLinq;
 
 namespace Edelstein.Common.Gameplay.Users.Inventories.Modify
 {
-    public class ModifyMultiInventoryContext : IModifyMultiInventoryContext
+    public class ModifyMultiInventoryContext : IModifyMultiInventoryContext, IPacketWritable
     {
         public IModifyInventoryContext this[ItemInventoryType key] => _contexts[key];
         public IEnumerable<IModifyInventoryOperation> History => _contexts.Values.SelectMany(v => v.History).ToList();
@@ -41,7 +42,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Modify
 
         public void Update(AbstractItemSlot item) => this[(ItemInventoryType)(item.TemplateID / 1_000_000)].Update(item);
 
-        public void WriteData(IPacketWriter writer)
+        public void WriteToPacket(IPacketWriter writer)
         {
             var history = History
                 .OfType<AbstractModifyInventoryOperation>()
