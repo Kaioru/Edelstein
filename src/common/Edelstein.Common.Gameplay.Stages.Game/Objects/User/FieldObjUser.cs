@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Users;
-using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
@@ -13,7 +12,7 @@ using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transport;
 
-namespace Edelstein.Common.Gameplay.Stages.Game.Objects
+namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 {
     public class FieldObjUser : AbstractFieldLife, IFieldObjUser
     {

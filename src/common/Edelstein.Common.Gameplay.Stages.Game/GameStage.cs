@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
-using Edelstein.Common.Gameplay.Stages.Game.Handlers;
-using Edelstein.Common.Gameplay.Stages.Game.Objects;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;

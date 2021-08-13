@@ -10,6 +10,8 @@
     <None Remove="Movements\" />
     <None Remove="Movements\Fragments\" />
     <None Remove="Handlers\" />
+    <None Remove="Objects\User\" />
+    <None Remove="Objects\User\Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -17,6 +19,8 @@
     <Folder Include="Movements\" />
     <Folder Include="Movements\Fragments\" />
     <Folder Include="Handlers\" />
+    <Folder Include="Objects\User\" />
+    <Folder Include="Objects\User\Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
