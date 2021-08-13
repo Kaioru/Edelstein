@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
