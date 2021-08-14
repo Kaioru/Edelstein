@@ -53,6 +53,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login
             processor.Register(new SelectWorldHandler());
             processor.Register(new CheckUserLimitHandler());
             processor.Register(new SetGenderHandler());
+            processor.Register(new CheckPinCodeHandler());
             processor.Register(new WorldRequestHandler());
             processor.Register(new LogoutWorldHandler());
             processor.Register(new CheckDuplicatedIDHandler());

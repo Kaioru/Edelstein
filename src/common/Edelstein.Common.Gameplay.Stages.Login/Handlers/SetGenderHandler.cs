@@ -24,7 +24,6 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
             var gender = (byte)(packet.ReadBool() ? 1 : 0);
             var response = new UnstructuredOutgoingPacket(PacketSendOperations.SetAccountResult);
 
-            user.State = LoginState.SelectWorld;
             user.Account.Gender = gender;
 
             response.WriteByte(gender);
