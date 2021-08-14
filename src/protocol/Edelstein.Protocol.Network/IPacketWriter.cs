@@ -28,6 +28,5 @@ namespace Edelstein.Protocol.Network
         IPacketWriter WriteDateTime(DateTime value);
 
         IPacketWriter Write(IPacketWritable writable);
-        IPacket WriteByte(Protocol.Gameplay.Users.Inventories.ItemInventoryType type);
     }
 }
