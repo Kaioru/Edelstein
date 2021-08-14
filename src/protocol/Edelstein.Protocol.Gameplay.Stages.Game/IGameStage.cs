@@ -3,6 +3,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
+using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
@@ -14,6 +15,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
         int ChannelID { get; }
 
         ITemplateRepository<ItemTemplate> ItemTemplates { get; }
+        ITemplateRepository<ItemOptionTemplate> ItemOptionTemplates { get; }
         ITemplateRepository<FieldTemplate> FieldTemplates { get; }
 
         IFieldRepository FieldRepository { get; }
