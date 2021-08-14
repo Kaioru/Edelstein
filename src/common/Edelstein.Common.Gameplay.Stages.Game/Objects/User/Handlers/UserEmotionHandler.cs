@@ -14,16 +14,18 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
         {
             var emotion = packet.ReadInt();
             var duration = packet.ReadInt();
-            var byItem = packet.ReadBool();
+            var byItemOption = packet.ReadBool();
+
+            // TODO item option check
 
             var emotionPacket = new UnstructuredOutgoingPacket(PacketSendOperations.UserEmotion);
 
             emotionPacket.WriteInt(user.ID);
             emotionPacket.WriteInt(emotion);
             emotionPacket.WriteInt(duration);
-            emotionPacket.WriteBool(byItem);
+            emotionPacket.WriteBool(byItemOption);
 
-            await user.FieldSplit.Dispatch(emotionPacket);
+            await user.FieldSplit.Dispatch(user, emotionPacket);
         }
     }
 }
