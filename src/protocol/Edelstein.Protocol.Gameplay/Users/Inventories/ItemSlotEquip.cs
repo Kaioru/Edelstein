@@ -27,7 +27,7 @@
         public byte LevelUpType { get; set; }
         public byte Level { get; set; }
         public int EXP { get; set; }
-        public int Durability { get; set; }
+        public int Durability { get; set; } = 100;
 
         public int IUC { get; set; }
 
