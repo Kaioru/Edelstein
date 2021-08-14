@@ -8,15 +8,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 {
     public abstract class AbstractUserPacketHandler : AbstractPacketHandler<GameStage, GameStageUser>
     {
-        public override short Operation => throw new System.NotImplementedException();
-
         public override async Task<bool> Check(GameStageUser user)
-            => user.Field != null && user.FieldUser != null && await Check(user.FieldUser);
+            => user.Field != null && user.FieldUser != null && await Check(user, user.FieldUser);
 
         public override Task Handle(GameStageUser user, IPacketReader packet)
-            => Handle(user.FieldUser, packet);
+            => Handle(user, user.FieldUser, packet);
 
-        protected virtual Task<bool> Check(IFieldObjUser user) => Task.FromResult(true);
-        protected abstract Task Handle(IFieldObjUser user, IPacketReader packet);
+        protected virtual Task<bool> Check(GameStageUser stageUser, IFieldObjUser user) => Task.FromResult(true);
+        protected abstract Task Handle(GameStageUser stageUser, IFieldObjUser user, IPacketReader packet);
     }
 }

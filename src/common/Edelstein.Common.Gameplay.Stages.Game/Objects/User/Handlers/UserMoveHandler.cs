@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game.Movements;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
 
@@ -11,7 +10,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
     {
         public override short Operation => (short)PacketRecvOperations.UserMove;
 
-        protected override async Task Handle(IFieldObjUser user, IPacketReader packet)
+        protected override async Task Handle(
+            GameStageUser stageUser,
+            IFieldObjUser user,
+            IPacketReader packet
+        )
         {
             _ = packet.ReadLong();
             _ = packet.ReadByte();

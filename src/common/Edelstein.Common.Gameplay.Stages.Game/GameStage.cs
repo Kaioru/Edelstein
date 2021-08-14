@@ -75,6 +75,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             FieldSetRepository = fieldSetRepository;
             ContiMoveRepository = contiMoveRepository;
 
+            processor.Register(new UserTransferChannelRequestHandler());
             processor.Register(new UserMoveHandler());
 
             template = FieldTemplates.Retrieve(310000000).Result;
