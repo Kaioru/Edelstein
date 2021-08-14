@@ -77,6 +77,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             processor.Register(new UserTransferChannelRequestHandler());
             processor.Register(new UserMoveHandler());
+            processor.Register(new UserGatherItemRequestHandler());
+            processor.Register(new UserSortItemRequestHandler());
+            processor.Register(new UserChangeSlotPositionRequestHandler());
 
             template = FieldTemplates.Retrieve(310000000).Result;
             field = new Field(this, template);

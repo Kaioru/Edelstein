@@ -297,5 +297,28 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Modify
             writer.WriteByte((byte)_history.Count);
             _history.ForEach(o => writer.Write(o));
         }
+
+        public void Gather()
+        {
+            var inventoryCopy = _inventory.Items
+                   .Where(kv => kv.Key > 0)
+                   .OrderBy(kv => kv.Key)
+                   .ToList();
+            short position = 1;
+
+            inventoryCopy.ForEach(kv => Remove(kv.Value));
+            inventoryCopy.ForEach(kv => Set(position++, kv.Value));
+        }
+
+        public void Sort()
+        {
+            var inventoryCopy = _inventory.Items
+                   .Where(kv => kv.Key > 0)
+                   .OrderBy(kv => kv.Value.TemplateID)
+                   .ToList();
+
+            inventoryCopy.ForEach(kv => Remove(kv.Value));
+            inventoryCopy.ForEach(kv => Add(kv.Value));
+        }
     }
 }

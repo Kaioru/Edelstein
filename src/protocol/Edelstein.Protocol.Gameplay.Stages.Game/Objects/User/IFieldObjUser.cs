@@ -37,7 +37,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
         Task Converse(IConversation conversation);
         Task EndConversation();
 
-        Task ModifyStats(Action<IModifyStatContext> action, bool exclRequest = false);
-        Task ModifyInventory(Action<IModifyMultiInventoryContext> action, bool exclRequest = false);
+        Task ModifyStats(Action<IModifyStatContext> action = null, bool exclRequest = false);
+        Task ModifyInventory(Action<IModifyMultiInventoryContext> action = null, bool exclRequest = false);
     }
 }
