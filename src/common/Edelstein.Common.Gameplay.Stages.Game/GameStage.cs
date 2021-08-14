@@ -84,6 +84,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
         public override async Task Enter(GameStageUser user)
         {
+            await base.Enter(user);
+
             /*
             var template = await FieldTemplates.Retrieve(user.Character.FieldID);
             var field = new Field(this, template);
@@ -91,8 +93,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             var fieldUser = new FieldObjUser(user);
 
             user.FieldUser = fieldUser;
-
-            await base.Enter(user);
             await field.Enter(fieldUser);
         }
 
