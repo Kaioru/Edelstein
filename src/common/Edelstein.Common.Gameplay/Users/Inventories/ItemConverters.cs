@@ -34,7 +34,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories
                 EVA = t.IncEVA,
                 Craft = t.IncCraft,
                 Speed = t.IncSpeed,
-                Jump = t.IncJump,
+                Jump = t.IncJump
             };
 
         public static ItemSlotBundle ToItemSlotBundle(this ItemBundleTemplate t, short number = 1)
