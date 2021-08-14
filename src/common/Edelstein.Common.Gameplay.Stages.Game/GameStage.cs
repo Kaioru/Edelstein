@@ -77,6 +77,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             processor.Register(new UserTransferChannelRequestHandler());
             processor.Register(new UserMoveHandler());
+            processor.Register(new UserEmotionHandler());
             processor.Register(new UserChatHandler());
             processor.Register(new UserGatherItemRequestHandler());
             processor.Register(new UserSortItemRequestHandler());
