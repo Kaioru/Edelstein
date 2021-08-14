@@ -210,7 +210,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public Task Converse(IConversation conversation) { throw new NotImplementedException(); }
         public Task EndConversation() { throw new NotImplementedException(); }
 
-        public async Task ModifyStats(Action<IModifyStatContext> action, bool exclRequest = false)
+        public async Task ModifyStats(Action<IModifyStatContext> action = null, bool exclRequest = false)
         {
             var context = new ModifyStatContext(Character);
 
@@ -229,7 +229,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             await Dispatch(statPacket);
         }
 
-        public async Task ModifyInventory(Action<IModifyMultiInventoryContext> action, bool exclRequest = false)
+        public async Task ModifyInventory(Action<IModifyMultiInventoryContext> action = null, bool exclRequest = false)
         {
             var context = new ModifyMultiInventoryContext(Character.Inventories, GameStage.ItemTemplates);
 

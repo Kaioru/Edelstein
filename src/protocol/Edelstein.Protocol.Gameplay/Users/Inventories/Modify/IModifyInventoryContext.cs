@@ -29,5 +29,8 @@ namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
 
         void Update(short slot);
         void Update(AbstractItemSlot item);
+
+        void Gather();
+        void Sort();
     }
 }

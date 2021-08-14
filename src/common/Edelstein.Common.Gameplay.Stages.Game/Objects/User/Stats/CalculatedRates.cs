@@ -17,9 +17,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
 
         public Task Calculate()
         {
-            Exp = 0;
-            Reward = 0;
-            Money = 0;
+            Exp = 100;
+            Reward = 100;
+            Money = 100;
 
             return Task.CompletedTask;
         }
