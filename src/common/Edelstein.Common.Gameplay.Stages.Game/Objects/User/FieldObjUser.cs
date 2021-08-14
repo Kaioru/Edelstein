@@ -51,7 +51,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             Controlling = new List<IFieldControlledObj>();
 
             Rates = new CalculatedRates(this);
-            Stats = new CalculatedStats(this);
+            Stats = new CalculatedStats(
+                this,
+                GameStage.ItemTemplates,
+                GameStage.ItemOptionTemplates,
+                GameStage.ItemSetTemplates
+            );
 
             _ = UpdateStats();
         }
