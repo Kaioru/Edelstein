@@ -13,6 +13,8 @@
     <Folder Include="Movements\" />
     <Folder Include="Objects\User\" />
     <Folder Include="Objects\User\Stats\" />
+    <Folder Include="Objects\NPC\" />
+    <Folder Include="Objects\NPC\Templates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
@@ -28,6 +30,8 @@
     <None Remove="Movements\" />
     <None Remove="Objects\User\" />
     <None Remove="Objects\User\Stats\" />
+    <None Remove="Objects\NPC\" />
+    <None Remove="Objects\NPC\Templates\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.3.2" />

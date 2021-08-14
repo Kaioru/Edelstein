@@ -6,6 +6,7 @@ using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
@@ -26,7 +27,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public ITemplateRepository<ItemTemplate> ItemTemplates { get; }
         public ITemplateRepository<ItemOptionTemplate> ItemOptionTemplates { get; }
         public ITemplateRepository<ItemSetTemplate> ItemSetTemplates { get; }
+
         public ITemplateRepository<FieldTemplate> FieldTemplates { get; }
+
+        public ITemplateRepository<NPCTemplate> NPCTemplates { get; }
 
         public IFieldRepository FieldRepository { get; }
         public IFieldSetRepository FieldSetRepository { get; }
@@ -50,6 +54,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ITemplateRepository<ItemOptionTemplate> itemOptionTemplates,
             ITemplateRepository<ItemSetTemplate> itemSetTemplates,
             ITemplateRepository<FieldTemplate> fieldTemplates,
+            ITemplateRepository<NPCTemplate> npcTemplates,
             IFieldRepository fieldRepository,
             IFieldSetRepository fieldSetRepository,
             IContiMoveRepository contiMoveRepository
@@ -74,6 +79,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             FieldRepository = fieldRepository;
             FieldSetRepository = fieldSetRepository;
             ContiMoveRepository = contiMoveRepository;
+            NPCTemplates = npcTemplates;
 
             processor.Register(new UserTransferChannelRequestHandler());
             processor.Register(new UserMoveHandler());

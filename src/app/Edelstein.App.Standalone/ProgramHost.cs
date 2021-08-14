@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Edelstein.Common.Datastore.LiteDB;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Handlers;
@@ -21,6 +22,7 @@ using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
@@ -78,6 +80,7 @@ namespace Edelstein.App.Standalone
             collection.AddSingleton<ITemplateRepository<ItemOptionTemplate>, ItemOptionTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ItemSetTemplate>, ItemSetTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<FieldTemplate>, FieldTemplateRepository>();
+            collection.AddSingleton<ITemplateRepository<NPCTemplate>, NPCTemplateRepository>();
 
             var provider = collection.BuildServiceProvider();
 
@@ -150,6 +153,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ITemplateRepository<ItemOptionTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemSetTemplate>>(),
                     provider.GetService<ITemplateRepository<FieldTemplate>>(),
+                    provider.GetService<ITemplateRepository<NPCTemplate>>(),
                     p.GetService<IFieldRepository>(),
                     p.GetService<IFieldSetRepository>(),
                     p.GetService<IContiMoveRepository>()
