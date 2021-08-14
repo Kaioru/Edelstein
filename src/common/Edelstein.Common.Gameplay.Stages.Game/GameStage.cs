@@ -10,6 +10,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
+using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options;
 using Edelstein.Protocol.Interop;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
@@ -22,6 +23,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public int ChannelID => Config.ChannelID;
 
         public ITemplateRepository<ItemTemplate> ItemTemplates { get; }
+        public ITemplateRepository<ItemOptionTemplate> ItemOptionTemplates { get; }
         public ITemplateRepository<FieldTemplate> FieldTemplates { get; }
 
         public IFieldRepository FieldRepository { get; }
@@ -43,6 +45,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ITickerManager timerManager,
             IPacketProcessor<GameStage, GameStageUser> processor,
             ITemplateRepository<ItemTemplate> itemTemplates,
+            ITemplateRepository<ItemOptionTemplate> itemOptionTemplates,
             ITemplateRepository<FieldTemplate> fieldTemplates,
             IFieldRepository fieldRepository,
             IFieldSetRepository fieldSetRepository,
@@ -62,6 +65,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         )
         {
             ItemTemplates = itemTemplates;
+            ItemOptionTemplates = itemOptionTemplates;
             FieldTemplates = fieldTemplates;
             FieldRepository = fieldRepository;
             FieldSetRepository = fieldSetRepository;
