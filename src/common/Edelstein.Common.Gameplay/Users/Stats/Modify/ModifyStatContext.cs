@@ -196,9 +196,23 @@ namespace Edelstein.Common.Gameplay.Users.Stats.Modify
             get => _character.EXP;
             set
             {
-                // TODO: level up logic, max exp
+                if (_character.Level >= EXPTable.CharacterEXP.Length - 1)
+                {
+                    if (_character.EXP > 0) value = 0;
+                    else return;
+                }
+
                 Flag |= ModifyStatType.EXP;
                 _character.EXP = value;
+
+                if (EXP < EXPTable.CharacterEXP[_character.Level]) return;
+
+                _character.EXP = Math.Max(0, Math.Min(
+                    EXPTable.CharacterEXP[_character.Level] - 1,
+                    _character.EXP - EXPTable.CharacterEXP[_character.Level - 1]
+                ));
+
+                LevelUp();
             }
         }
 

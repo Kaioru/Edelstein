@@ -9,7 +9,6 @@
     <None Remove="Objects\" />
     <None Remove="Movements\" />
     <None Remove="Movements\Fragments\" />
-    <None Remove="Handlers\" />
     <None Remove="Objects\User\" />
     <None Remove="Objects\User\Handlers\" />
     <None Remove="Objects\User\Stats\" />
@@ -19,7 +18,6 @@
     <Folder Include="Objects\" />
     <Folder Include="Movements\" />
     <Folder Include="Movements\Fragments\" />
-    <Folder Include="Handlers\" />
     <Folder Include="Objects\User\" />
     <Folder Include="Objects\User\Handlers\" />
     <Folder Include="Objects\User\Stats\" />
