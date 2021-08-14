@@ -4,6 +4,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options;
+using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
@@ -16,6 +17,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
 
         ITemplateRepository<ItemTemplate> ItemTemplates { get; }
         ITemplateRepository<ItemOptionTemplate> ItemOptionTemplates { get; }
+        ITemplateRepository<ItemSetTemplate> ItemSetTemplates { get; }
         ITemplateRepository<FieldTemplate> FieldTemplates { get; }
 
         IFieldRepository FieldRepository { get; }

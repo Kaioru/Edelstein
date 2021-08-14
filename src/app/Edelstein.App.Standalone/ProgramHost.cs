@@ -26,6 +26,7 @@ using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options;
+using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
 using Edelstein.Protocol.Interop;
 using Edelstein.Protocol.Network.Session;
 using Edelstein.Protocol.Network.Transport;
@@ -75,6 +76,7 @@ namespace Edelstein.App.Standalone
             collection.AddSingleton<ITemplateRepository<WorldTemplate>, WorldTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ItemTemplate>, ItemTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ItemOptionTemplate>, ItemOptionTemplateRepository>();
+            collection.AddSingleton<ITemplateRepository<ItemSetTemplate>, ItemSetTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<FieldTemplate>, FieldTemplateRepository>();
 
             var provider = collection.BuildServiceProvider();
@@ -146,6 +148,7 @@ namespace Edelstein.App.Standalone
                     p.GetService<IPacketProcessor<GameStage, GameStageUser>>(),
                     provider.GetService<ITemplateRepository<ItemTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemOptionTemplate>>(),
+                    provider.GetService<ITemplateRepository<ItemSetTemplate>>(),
                     provider.GetService<ITemplateRepository<FieldTemplate>>(),
                     p.GetService<IFieldRepository>(),
                     p.GetService<IFieldSetRepository>(),
