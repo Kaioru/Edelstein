@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Users.Inventories;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories;
@@ -183,10 +184,8 @@ namespace Edelstein.Common.Gameplay.Users
             p.WriteInt(c.MaxMP);
 
             p.WriteShort(c.AP);
-            if (c.Job / 1000 == 3 || c.Job / 100 == 22 || c.Job == 2001) // TODO: constants?
-                p.WriteCharacterExtendSP(c);
-            else
-                p.WriteShort(c.SP);
+            if (GameConstants.IsExtendSPJob(c.Job)) p.WriteCharacterExtendSP(c);
+            else p.WriteShort(c.SP);
 
             p.WriteInt(c.EXP);
             p.WriteShort(c.POP);

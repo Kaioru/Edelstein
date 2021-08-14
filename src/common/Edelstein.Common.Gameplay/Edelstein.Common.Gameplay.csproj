@@ -20,6 +20,8 @@
     <None Remove="Users\Inventories\Modify\Operations\" />
     <None Remove="Users\Stats\" />
     <None Remove="Users\Stats\Modify\" />
+    <None Remove="Constants\" />
+    <None Remove="Constants\Types\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Users\" />
@@ -34,6 +36,8 @@
     <Folder Include="Users\Inventories\Modify\Operations\" />
     <Folder Include="Users\Stats\" />
     <Folder Include="Users\Stats\Modify\" />
+    <Folder Include="Constants\" />
+    <Folder Include="Constants\Types\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />
