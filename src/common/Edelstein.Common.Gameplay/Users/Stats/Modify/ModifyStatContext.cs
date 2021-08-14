@@ -1,4 +1,5 @@
 ﻿using System;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Network;
@@ -265,7 +266,34 @@ namespace Edelstein.Common.Gameplay.Users.Stats.Modify
             if (MP < MaxMP) MP = MaxMP;
 
             if (Level <= 10) return;
-            // TODO: SP Handling
+            if (GameConstants.IsExtendSPJob(Job))
+            {
+                byte jobLevel = 0;
+
+                if (GameConstants.IsEvanJob(Job))
+                {
+                    if (Level <= 200) jobLevel = 10;
+                    if (Level <= 160) jobLevel = 9;
+                    if (Level <= 120) jobLevel = 8;
+                    if (Level <= 100) jobLevel = 7;
+                    if (Level <= 80) jobLevel = 6;
+                    if (Level <= 60) jobLevel = 5;
+                    if (Level <= 50) jobLevel = 4;
+                    if (Level <= 40) jobLevel = 3;
+                    if (Level <= 30) jobLevel = 2;
+                    if (Level <= 20) jobLevel = 1;
+                }
+                else
+                {
+                    if (Level <= 200) jobLevel = 4;
+                    if (Level <= 120) jobLevel = 3;
+                    if (Level <= 70) jobLevel = 2;
+                    if (Level <= 30) jobLevel = 1;
+                }
+
+                if (jobLevel > 0) IncExtendSP(jobLevel, 3);
+            }
+            else SP += 3;
 
             AP += 5;
         }
@@ -297,9 +325,8 @@ namespace Edelstein.Common.Gameplay.Users.Stats.Modify
             if ((Flag & ModifyStatType.AP) != 0) writer.WriteShort(AP);
             if ((Flag & ModifyStatType.SP) != 0)
             {
-                if (_character.Job / 1000 == 3 || _character.Job / 100 == 22 || _character.Job == 2001) // TODO: constants
-                    writer.WriteShort(SP);
-                else writer.WriteCharacterExtendSP(_character);
+                if (GameConstants.IsExtendSPJob(Job)) writer.WriteCharacterExtendSP(_character);
+                else writer.WriteShort(SP);
             }
 
             if ((Flag & ModifyStatType.EXP) != 0) writer.WriteInt(EXP);
