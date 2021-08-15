@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
@@ -10,10 +11,12 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Spatial;
+using Edelstein.Protocol.Util.Ticks;
+using MoreLinq;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
-    public class Field : IField
+    public class Field : IField, ITickerBehavior
     {
         private const int ScreenWidth = 1024;
         private const int ScreenHeight = 768;
@@ -29,6 +32,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         private readonly object _objectLock;
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
         private readonly IFieldSplit[,] _splits;
+
+        private readonly ICollection<IFieldGenerator> _generators;
 
         // TODO: Better physicalspace2d handling
         public Field(GameStage stage, FieldTemplate template)
@@ -47,6 +52,26 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             for (var row = 0; row < splitRowCount; row++)
                 for (var col = 0; col < splitColCount; col++)
                     _splits[row, col] = new FieldSplit(row, col);
+
+            _generators = new List<IFieldGenerator>();
+
+            template.Life.ForEach(l =>
+                 _generators.Add(l.Type switch
+                 {
+                     FieldLifeType.NPC => new FieldNPCGenerator(l, Stage.NPCTemplates.Retrieve(l.TemplateID).Result),
+                     FieldLifeType.Monster => new FieldMobGenerator(),
+                     _ => throw new NotImplementedException()
+                 })
+             ); ;
+        }
+
+        public async Task OnTick(DateTime now)
+        {
+            await Task.WhenAll(
+                _generators
+                    .Where(g => g.Check(this))
+                    .Select(g => g.Generate(this))
+            );
         }
 
         public IPhysicalPoint2D GetPortal(int id)
@@ -180,7 +205,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public Task Enter(IFieldObj obj) => Enter(obj, null);
         public Task Leave(IFieldObj obj) => Leave(obj, null);
 
-        public async Task Enter(IFieldObj obj, Func<IPacket> getEnterPacket = null) {
+        public async Task Enter(IFieldObj obj, Func<IPacket> getEnterPacket = null)
+        {
             var pool = GetPool(obj.Type);
 
             obj.Field?.Leave(obj);
@@ -204,7 +230,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             await obj.UpdateFieldSplit(getEnterPacket);
         }
 
-        public async Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket = null) {
+        public async Task Leave(IFieldObj obj, Func<IPacket> getLeavePacket = null)
+        {
             var pool = GetPool(obj.Type);
 
             obj.Field = null;
