@@ -26,7 +26,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Handlers
             response.WriteByte(packet.ReadByte());
 
             if (controlled.Template.Move)
-                await controlled.Move(packet.Read(new MovePath()));
+            {
+                var path = packet.Read(new MovePath());
+
+                response.Write(path);
+                await controlled.Move(path);
+            }
+
             await controlled.FieldSplit.Dispatch(response);
         }
     }
