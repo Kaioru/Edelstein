@@ -13,10 +13,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC
     public class FieldObjNPC : AbstractFieldControlledLife, IFieldObjNPC
     {
         public override FieldObjType Type => FieldObjType.NPC;
+
         public NPCTemplate Template { get; }
+
         public int RX0 { get; set; }
         public int RX1 { get; set; }
-        public bool IsDisabled { get; set; }
 
         public FieldObjNPC(NPCTemplate template, bool left = true)
         {
@@ -33,12 +34,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC
 
             packet.WritePoint2D(Position);
             packet.WriteByte((byte)Action);
-            packet.WriteShort((short)Foothold.ID);
+            packet.WriteShort((short)(Foothold?.ID ?? 0));
 
             packet.WriteShort((short)RX0);
             packet.WriteShort((short)RX1);
 
-            packet.WriteBool(IsDisabled); // enabled
+            packet.WriteBool(true); // enabled
             return packet;
         }
 
@@ -59,6 +60,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC
             return packet;
         }
 
-        public Task Talk(IFieldObjUser user) { throw new System.NotImplementedException(); }
+        public Task Talk(IFieldObjUser user) { throw new NotImplementedException(); }
     }
 }

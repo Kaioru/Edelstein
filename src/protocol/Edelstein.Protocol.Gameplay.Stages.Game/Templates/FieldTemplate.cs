@@ -26,7 +26,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Templates
         public IDictionary<int, FieldFootholdTemplate> Footholds { get; }
         public IDictionary<int, FieldLadderOrRopeTemplate> LadderOrRopes { get; }
 
-        //public ICollection<FieldLifeTemplate> Life { get; }
+        public ICollection<FieldLifeTemplate> Life { get; }
         //public ICollection<FieldReactorTemplate> Reactors { get; }
 
         public double MobRate { get; init; }
@@ -37,7 +37,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Templates
             int id,
             IDataProperty foothold,
             IDataProperty portal,
-            IDataDirectory ladderRope,
+            IDataProperty ladderRope,
+            IDataProperty life,
             IDataProperty info
         )
         {
@@ -75,6 +76,10 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Templates
                     t => t.Item1,
                     t => t.Item2
                 );
+
+            Life = life.Children
+                .Select(p => new FieldLifeTemplate(Convert.ToInt32(p.Name), p.ResolveAll()))
+                .ToImmutableList();
 
             Limit = (FieldOpt)(info.Resolve<int>("fieldLimit") ?? 0);
 
