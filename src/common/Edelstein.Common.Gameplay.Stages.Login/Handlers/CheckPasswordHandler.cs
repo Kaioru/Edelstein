@@ -67,10 +67,10 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
             if (result == LoginResultCode.Success)
             {
-                response.WriteInt(account.ID); // pBlockReason
-                response.WriteByte(account.Gender ?? (byte)0xA);
-                response.WriteByte(0); // nGradeCode
-                response.WriteShort(0); // nSubGradeCode
+                response.WriteInt(account.ID);
+                response.WriteByte(account.Gender ?? 0xA);
+                response.WriteByte((byte)account.GradeCode);
+                response.WriteShort((short)account.SubGradeCode);
                 response.WriteByte(0); // nCountryID
                 response.WriteString(account.Username); // sNexonClubID
                 response.WriteByte(0); // nPurchaseEXP
