@@ -18,14 +18,14 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
 
             // TODO item option check
 
-            var emotionPacket = new UnstructuredOutgoingPacket(PacketSendOperations.UserEmotion);
+            var response = new UnstructuredOutgoingPacket(PacketSendOperations.UserEmotion);
 
-            emotionPacket.WriteInt(user.ID);
-            emotionPacket.WriteInt(emotion);
-            emotionPacket.WriteInt(duration);
-            emotionPacket.WriteBool(byItemOption);
+            response.WriteInt(user.ID);
+            response.WriteInt(emotion);
+            response.WriteInt(duration);
+            response.WriteBool(byItemOption);
 
-            await user.FieldSplit.Dispatch(user, emotionPacket);
+            await user.FieldSplit.Dispatch(user, response);
         }
     }
 }

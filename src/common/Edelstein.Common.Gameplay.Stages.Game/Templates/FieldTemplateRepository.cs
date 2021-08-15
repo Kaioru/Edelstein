@@ -39,6 +39,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Templates
                             n.Resolve("foothold").ResolveAll(),
                             n.Resolve("portal").ResolveAll(),
                             n.Resolve("ladderRope").ResolveAll(),
+                            n.Resolve("life").ResolveAll(),
                             n.Resolve("info").ResolveAll()
                         )
                     );

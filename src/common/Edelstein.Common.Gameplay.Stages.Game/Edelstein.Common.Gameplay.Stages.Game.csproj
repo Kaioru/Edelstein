@@ -14,6 +14,7 @@
     <None Remove="Objects\User\Stats\" />
     <None Remove="Objects\NPC\" />
     <None Remove="Objects\NPC\Templates\" />
+    <None Remove="Objects\NPC\Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -25,6 +26,7 @@
     <Folder Include="Objects\User\Stats\" />
     <Folder Include="Objects\NPC\" />
     <Folder Include="Objects\NPC\Templates\" />
+    <Folder Include="Objects\NPC\Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />

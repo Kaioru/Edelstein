@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Handlers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
 using Edelstein.Protocol.Gameplay.Stages;
@@ -16,6 +18,7 @@ using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
 using Edelstein.Protocol.Interop;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
+using MoreLinq;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -89,8 +92,25 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             processor.Register(new UserSortItemRequestHandler());
             processor.Register(new UserChangeSlotPositionRequestHandler());
 
+            processor.Register(new NPCMoveHandler());
+
             template = FieldTemplates.Retrieve(310000000).Result;
             field = new Field(this, template);
+
+            template.Life.ForEach(l => {
+                if (l.Type != FieldLifeType.NPC) return;
+
+                var npcTemplate = NPCTemplates.Retrieve(l.TemplateID).Result;
+                var npc = new FieldObjNPC(npcTemplate, l.Left)
+                {
+                    Position = l.Position,
+                    Foothold = field.GetFoothold(l.FH),
+                    RX0 = l.RX0,
+                    RX1 = l.RX1
+                };
+
+                field.Enter(npc);
+            });
         }
 
         public override async Task Enter(GameStageUser user)
