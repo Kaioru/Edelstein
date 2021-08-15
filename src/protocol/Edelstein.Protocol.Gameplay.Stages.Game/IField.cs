@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Spatial;
+using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
@@ -13,6 +15,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
     public interface IField : IFieldPool, IStage<IField, IFieldObjUser>, IPhysicalSpace2D, IRepositoryEntry<int>
     {
         FieldTemplate Template { get; }
+
+        ICollection<IFieldGenerator> Generators { get; }
 
         IFieldSplit GetSplit(Point2D position);
         IFieldSplit[] GetEnclosingSplits(Point2D position);

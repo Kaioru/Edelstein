@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Gameplay.Stages.Game;
 
-namespace Edelstein.Common.Gameplay.Stages.Game.Generators
+namespace Edelstein.Protocol.Gameplay.Stages.Game.Generators
 {
     public interface IFieldGenerator
     {
