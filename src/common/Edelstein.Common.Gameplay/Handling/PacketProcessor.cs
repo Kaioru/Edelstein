@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Network;
 using Microsoft.Extensions.Logging;
@@ -59,6 +60,10 @@ namespace Edelstein.Common.Gameplay.Handling
                 if (await handler.Check(user))
                 {
                     await handler.Handle(user, packet);
+
+                    if (ServerConstants.IsIgnoredLoggingPacket(operation) && !_logger.IsEnabled(LogLevel.Trace))
+                        return;
+
                     _logger.LogDebug($"Handled {typeof(TStage).Name} packet operation 0x{operation:X} ({Enum.GetName((PacketRecvOperations)operation)}) with {packet.Available} available bytes");
                 }
             }
