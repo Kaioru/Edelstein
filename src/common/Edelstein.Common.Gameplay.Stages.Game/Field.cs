@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
@@ -33,7 +34,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
         private readonly IFieldSplit[,] _splits;
 
-        private readonly ICollection<IFieldGenerator> _generators;
+        public ICollection<IFieldGenerator> Generators { get; }
 
         // TODO: Better physicalspace2d handling
         public Field(GameStage stage, FieldTemplate template)
@@ -53,10 +54,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                 for (var col = 0; col < splitColCount; col++)
                     _splits[row, col] = new FieldSplit(row, col);
 
-            _generators = new List<IFieldGenerator>();
+            Generators = new List<IFieldGenerator>();
 
             template.Life.ForEach(l =>
-                 _generators.Add(l.Type switch
+                 Generators.Add(l.Type switch
                  {
                      FieldLifeType.NPC => new FieldNPCGenerator(l, Stage.NPCTemplates.Retrieve(l.TemplateID).Result),
                      FieldLifeType.Monster => new FieldMobGenerator(),
@@ -68,7 +69,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public async Task OnTick(DateTime now)
         {
             await Task.WhenAll(
-                _generators
+                Generators
                     .Where(g => g.Check(now, this))
                     .Select(g => g.Generate(this))
             );

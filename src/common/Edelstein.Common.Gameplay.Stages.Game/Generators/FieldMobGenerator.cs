@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Generators
 {
