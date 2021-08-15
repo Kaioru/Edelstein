@@ -136,8 +136,6 @@ namespace Edelstein.App.Standalone
                     PacketProcessor<GameStage, GameStageUser>
                 >();
 
-                // TODO: fields
-
                 gameCollection.AddSingleton(p => new GameStage(
                     gameConfig,
                     p.GetService<ILogger<IStage<GameStage, GameStageUser>>>(),
@@ -153,10 +151,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ITemplateRepository<ItemOptionTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemSetTemplate>>(),
                     provider.GetService<ITemplateRepository<FieldTemplate>>(),
-                    provider.GetService<ITemplateRepository<NPCTemplate>>(),
-                    p.GetService<IFieldRepository>(),
-                    p.GetService<IFieldSetRepository>(),
-                    p.GetService<IContiMoveRepository>()
+                    provider.GetService<ITemplateRepository<NPCTemplate>>()
                 ));
                 gameCollection.AddSingleton<ISessionInitializer, GameSessionInitializer>();
                 gameCollection.AddSingleton<ITransportAcceptor>(p => new NettyTransportAcceptor(
