@@ -69,8 +69,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         {
             await Task.WhenAll(
                 _generators
-                    .Where(g => g.Check(this))
+                    .Where(g => g.Check(now, this))
                     .Select(g => g.Generate(this))
+            );
+            await Task.WhenAll(
+                GetObjects()
+                    .OfType<ITickerBehavior>()
+                    .Select(o => o.OnTick(now))
             );
         }
 

@@ -1,5 +1,6 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
@@ -18,7 +19,9 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
         ITemplateRepository<ItemTemplate> ItemTemplates { get; }
         ITemplateRepository<ItemOptionTemplate> ItemOptionTemplates { get; }
         ITemplateRepository<ItemSetTemplate> ItemSetTemplates { get; }
+
         ITemplateRepository<FieldTemplate> FieldTemplates { get; }
+        ITemplateRepository<NPCTemplate> NPCTemplates { get; }
 
         IFieldRepository FieldRepository { get; }
         IFieldSetRepository FieldSetRepository { get; }

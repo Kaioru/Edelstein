@@ -49,7 +49,7 @@ namespace Edelstein.Common.Gameplay.Stages
             IAccountRepository accountRepository,
             IAccountWorldRepository accountWorldRepository,
             ICharacterRepository characterRepository,
-            ITickerManager timerManager,
+            ITickerManager tickerManager,
             IPacketProcessor<TStage, TUser> processor
         ) : base()
         {
@@ -63,8 +63,8 @@ namespace Edelstein.Common.Gameplay.Stages
             AccountWorldRepository = accountWorldRepository;
             CharacterRepository = characterRepository;
 
-            timerManager.Schedule(new ServerUpdateBehavior<TStage, TUser, TConfig>((TStage)this), ServerUpdateFreq, TimeSpan.Zero);
-            timerManager.Schedule(new AliveReqBehavior<TStage, TUser, TConfig>((TStage)this), AliveBehaviorFreq);
+            tickerManager.Schedule(new ServerUpdateBehavior<TStage, TUser, TConfig>((TStage)this), ServerUpdateFreq, TimeSpan.Zero);
+            tickerManager.Schedule(new AliveReqBehavior<TStage, TUser, TConfig>((TStage)this), AliveBehaviorFreq);
             processor.Register(new AliveAckHandler<TStage, TUser, TConfig>());
             processor.Register(new MigrateInHandler<TStage, TUser, TConfig>((TStage)this));
             processor.Register(new ClientDumpLogHandler<TStage, TUser, TConfig>((TStage)this));

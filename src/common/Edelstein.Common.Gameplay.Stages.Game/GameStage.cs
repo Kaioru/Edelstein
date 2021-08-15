@@ -30,15 +30,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public ITemplateRepository<ItemSetTemplate> ItemSetTemplates { get; }
 
         public ITemplateRepository<FieldTemplate> FieldTemplates { get; }
-
         public ITemplateRepository<NPCTemplate> NPCTemplates { get; }
 
         public IFieldRepository FieldRepository { get; }
         public IFieldSetRepository FieldSetRepository { get; }
         public IContiMoveRepository ContiMoveRepository { get; }
-
-        private readonly FieldTemplate template;
-        private readonly IField field;
 
         public GameStage(
             GameStageConfig config,
@@ -49,16 +45,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             IAccountRepository accountRepository,
             IAccountWorldRepository accountWorldRepository,
             ICharacterRepository characterRepository,
-            ITickerManager timerManager,
+            ITickerManager tickerManager,
             IPacketProcessor<GameStage, GameStageUser> processor,
             ITemplateRepository<ItemTemplate> itemTemplates,
             ITemplateRepository<ItemOptionTemplate> itemOptionTemplates,
             ITemplateRepository<ItemSetTemplate> itemSetTemplates,
             ITemplateRepository<FieldTemplate> fieldTemplates,
-            ITemplateRepository<NPCTemplate> npcTemplates,
-            IFieldRepository fieldRepository,
-            IFieldSetRepository fieldSetRepository,
-            IContiMoveRepository contiMoveRepository
+            ITemplateRepository<NPCTemplate> npcTemplates
         ) : base(
             ServerStageType.Game,
             config,
@@ -69,7 +62,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             accountRepository,
             accountWorldRepository,
             characterRepository,
-            timerManager,
+            tickerManager,
             processor
         )
         {
@@ -77,10 +70,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ItemOptionTemplates = itemOptionTemplates;
             ItemSetTemplates = itemSetTemplates;
             FieldTemplates = fieldTemplates;
-            FieldRepository = fieldRepository;
-            FieldSetRepository = fieldSetRepository;
-            ContiMoveRepository = contiMoveRepository;
             NPCTemplates = npcTemplates;
+
+            FieldRepository = new FieldRepository(this, FieldTemplates, tickerManager);
+            FieldSetRepository = null; // TODO;
+            ContiMoveRepository = null;
 
             processor.Register(new UserTransferChannelRequestHandler());
             processor.Register(new UserMoveHandler());
@@ -91,19 +85,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             processor.Register(new UserChangeSlotPositionRequestHandler());
 
             processor.Register(new NPCMoveHandler());
-
-            template = FieldTemplates.Retrieve(310000000).Result;
-            field = new Field(this, template);
         }
 
         public override async Task Enter(GameStageUser user)
         {
             await base.Enter(user);
 
-            /*
-            var template = await FieldTemplates.Retrieve(user.Character.FieldID);
-            var field = new Field(this, template);
-            */
+            var field = await FieldRepository.Retrieve(user.Character.FieldID);
             var fieldUser = new FieldObjUser(user);
 
             user.FieldUser = fieldUser;
