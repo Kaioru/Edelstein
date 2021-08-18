@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Common.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Modify;
@@ -12,6 +13,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
@@ -193,6 +195,17 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             avatarPacket.WriteInt(0);
 
             await FieldSplit.Dispatch(this, avatarPacket);
+        }
+
+        public Task Message(string message)
+            => Message(new SystemMessage(message));
+
+        public async Task Message(IMessage message)
+        {
+            var response = new UnstructuredOutgoingPacket(PacketSendOperations.Message);
+
+            response.Write(message);
+            await Dispatch(response);
         }
 
         public Task<T> Prompt<T>(Func<

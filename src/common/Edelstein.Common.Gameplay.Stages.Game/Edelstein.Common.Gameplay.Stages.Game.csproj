@@ -16,6 +16,7 @@
     <None Remove="Objects\NPC\Templates\" />
     <None Remove="Objects\NPC\Handlers\" />
     <None Remove="Generators\" />
+    <None Remove="Objects\User\Messages\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -29,6 +30,7 @@
     <Folder Include="Objects\NPC\Templates\" />
     <Folder Include="Objects\NPC\Handlers\" />
     <Folder Include="Generators\" />
+    <Folder Include="Objects\User\Messages\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
