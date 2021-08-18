@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Edelstein.Common.Datastore.LiteDB;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game;
+using Edelstein.Common.Gameplay.Stages.Game.Commands;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Common.Gameplay.Stages.Login;
@@ -20,6 +21,7 @@ using Edelstein.Common.Util.Ticks;
 using Edelstein.Protocol.Datastore;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
@@ -135,6 +137,7 @@ namespace Edelstein.App.Standalone
                     IPacketProcessor<GameStage, GameStageUser>,
                     PacketProcessor<GameStage, GameStageUser>
                 >();
+                gameCollection.AddSingleton<ICommandProcessor, CommandProcessor>();
 
                 gameCollection.AddSingleton(p => new GameStage(
                     gameConfig,
@@ -147,6 +150,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ICharacterRepository>(),
                     provider.GetService<ITickerManager>(),
                     p.GetService<IPacketProcessor<GameStage, GameStageUser>>(),
+                    p.GetService<ICommandProcessor>(),
                     provider.GetService<ITemplateRepository<ItemTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemOptionTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemSetTemplate>>(),

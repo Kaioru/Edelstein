@@ -17,6 +17,9 @@
     <None Remove="Objects\NPC\Handlers\" />
     <None Remove="Generators\" />
     <None Remove="Objects\User\Messages\" />
+    <None Remove="Commands\" />
+    <None Remove="PowerArgs" />
+    <None Remove="Commands\Common\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -31,9 +34,14 @@
     <Folder Include="Objects\NPC\Handlers\" />
     <Folder Include="Generators\" />
     <Folder Include="Objects\User\Messages\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Commands\Common\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Game\Edelstein.Protocol.Gameplay.Stages.Game.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="PowerArgs" Version="3.6.0" />
   </ItemGroup>
 </Project>

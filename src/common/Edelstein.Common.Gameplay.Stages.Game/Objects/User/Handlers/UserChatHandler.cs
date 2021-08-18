@@ -17,6 +17,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
             var message = packet.ReadString();
             var onlyBalloon = packet.ReadBool();
 
+            if (message.StartsWith("!") || message.StartsWith("@")) // TODO: config?
+            {
+                await stageUser.Stage.CommandProcessor.Process(user, message.Substring(1));
+                return;
+            }
+
             var chatPacket1 = new UnstructuredOutgoingPacket(PacketSendOperations.UserChat);
 
             chatPacket1.WriteInt(user.ID);

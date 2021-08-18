@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
+using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
@@ -15,6 +16,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
     {
         int WorldID { get; }
         int ChannelID { get; }
+
+        ICommandProcessor CommandProcessor { get; }
 
         ITemplateRepository<ItemTemplate> ItemTemplates { get; }
         ITemplateRepository<ItemOptionTemplate> ItemOptionTemplates { get; }
