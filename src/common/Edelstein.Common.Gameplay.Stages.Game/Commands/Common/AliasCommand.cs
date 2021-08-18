@@ -7,7 +7,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Common
 {
     public class AliasCommand : AbstractCommand
     {
-        public override string Name => "alias";
+        public override string Name => "Alias";
         public override string Description => "Shows all available command aliases";
 
         private readonly ICommandProcessor _processor;
@@ -16,7 +16,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Common
         {
             _processor = processor;
 
-            Aliases.Add("aliases");
+            Aliases.Add("Aliases");
         }
 
         public override async Task Execute(IFieldObjUser user, string[] args)
