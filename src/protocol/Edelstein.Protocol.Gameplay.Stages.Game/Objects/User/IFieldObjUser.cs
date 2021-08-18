@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
@@ -23,6 +24,9 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
         ICalculatedStats Stats { get; }
 
         IPacket GetSetFieldPacket();
+
+        Task Message(string message);
+        Task Message(IMessage message);
 
         Task<T> Prompt<T>(Func<
             IConversationSpeaker,

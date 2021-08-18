@@ -16,6 +16,7 @@
     <Folder Include="Objects\NPC\" />
     <Folder Include="Objects\NPC\Templates\" />
     <Folder Include="Generators\" />
+    <Folder Include="Objects\User\Messages\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
@@ -34,6 +35,7 @@
     <None Remove="Objects\NPC\" />
     <None Remove="Objects\NPC\Templates\" />
     <None Remove="Generators\" />
+    <None Remove="Objects\User\Messages\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.3.2" />
