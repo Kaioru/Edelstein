@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Stages.Game.Commands.Admin;
 using Edelstein.Common.Gameplay.Stages.Game.Commands.Common;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Handlers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
@@ -95,6 +96,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             commandProcessor.Register(new HelpCommand(commandProcessor));
             commandProcessor.Register(new AliasCommand(commandProcessor));
             commandProcessor.Register(new DebugCommand());
+
+            commandProcessor.Register(new StatCommand());
         }
 
         public override async Task Enter(GameStageUser user)

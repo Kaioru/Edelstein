@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
@@ -10,6 +12,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands
     {
         public override async Task Execute(IFieldObjUser user, string[] args)
         {
+            var def = new CommandLineArgumentsDefinition(typeof(TArgs)) { ExeName = Name };
+
             try
             {
                 var parsed = Args.Parse<TArgs>(args);
@@ -18,8 +22,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands
             }
             catch (ArgException e)
             {
-                var def = new CommandLineArgumentsDefinition(typeof(TArgs)) { ExeName = Name };
-
                 await user.Message(e.Message);
                 await user.Message($"Usage: {def.UsageSummary}");
             }
