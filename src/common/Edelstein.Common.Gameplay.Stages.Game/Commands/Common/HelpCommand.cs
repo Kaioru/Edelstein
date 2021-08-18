@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Common
 {
     public class HelpCommand : AbstractCommand
     {
-        public override string Name => "help";
+        public override string Name => "Help";
         public override string Description => "Shows all available commands";
 
         private readonly ICommandProcessor _processor;
@@ -17,7 +17,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Common
         {
             _processor = processor;
 
-            Aliases.Add("commands");
+            Aliases.Add("Commands");
             Aliases.Add("?");
         }
 

@@ -18,12 +18,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Admin
 
     public class StatCommand : AbstractCommand<StatCommandArgs>
     {
-        public override string Name => "stat";
+        public override string Name => "Stat";
         public override string Description => "Sets the character stat to the desired value";
 
         public StatCommand()
         {
-            Aliases.Add("set");
+            Aliases.Add("Set");
         }
 
         public override async Task Execute(IFieldObjUser user, StatCommandArgs args)

@@ -12,7 +12,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Common
 
     public class DebugCommand : AbstractCommand<DebugCommandArgs>
     {
-        public override string Name => "debug";
+        public override string Name => "Debug";
         public override string Description => "A testing debug command";
 
         public override async Task Execute(IFieldObjUser user, DebugCommandArgs args)
