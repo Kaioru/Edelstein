@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Stages.Game.Commands.Common;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Handlers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
@@ -24,6 +26,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
     {
         public int WorldID => Config.WorldID;
         public int ChannelID => Config.ChannelID;
+
+        public ICommandProcessor CommandProcessor { get; }
 
         public ITemplateRepository<ItemTemplate> ItemTemplates { get; }
         public ITemplateRepository<ItemOptionTemplate> ItemOptionTemplates { get; }
@@ -46,7 +50,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             IAccountWorldRepository accountWorldRepository,
             ICharacterRepository characterRepository,
             ITickerManager tickerManager,
-            IPacketProcessor<GameStage, GameStageUser> processor,
+            IPacketProcessor<GameStage, GameStageUser> packetProcessor,
+            ICommandProcessor commandProcessor,
             ITemplateRepository<ItemTemplate> itemTemplates,
             ITemplateRepository<ItemOptionTemplate> itemOptionTemplates,
             ITemplateRepository<ItemSetTemplate> itemSetTemplates,
@@ -63,9 +68,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             accountWorldRepository,
             characterRepository,
             tickerManager,
-            processor
+            packetProcessor
         )
         {
+            CommandProcessor = commandProcessor;
             ItemTemplates = itemTemplates;
             ItemOptionTemplates = itemOptionTemplates;
             ItemSetTemplates = itemSetTemplates;
@@ -76,15 +82,19 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             FieldSetRepository = null; // TODO;
             ContiMoveRepository = null;
 
-            processor.Register(new UserTransferChannelRequestHandler());
-            processor.Register(new UserMoveHandler());
-            processor.Register(new UserEmotionHandler());
-            processor.Register(new UserChatHandler());
-            processor.Register(new UserGatherItemRequestHandler());
-            processor.Register(new UserSortItemRequestHandler());
-            processor.Register(new UserChangeSlotPositionRequestHandler());
+            packetProcessor.Register(new UserTransferChannelRequestHandler());
+            packetProcessor.Register(new UserMoveHandler());
+            packetProcessor.Register(new UserEmotionHandler());
+            packetProcessor.Register(new UserChatHandler());
+            packetProcessor.Register(new UserGatherItemRequestHandler());
+            packetProcessor.Register(new UserSortItemRequestHandler());
+            packetProcessor.Register(new UserChangeSlotPositionRequestHandler());
 
-            processor.Register(new NPCMoveHandler());
+            packetProcessor.Register(new NPCMoveHandler());
+
+            commandProcessor.Register(new HelpCommand(commandProcessor));
+            commandProcessor.Register(new AliasCommand(commandProcessor));
+            commandProcessor.Register(new DebugCommand());
         }
 
         public override async Task Enter(GameStageUser user)
