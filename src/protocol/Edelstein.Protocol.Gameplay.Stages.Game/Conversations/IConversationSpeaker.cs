@@ -4,11 +4,16 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Conversations
 {
     public interface IConversationSpeaker
     {
+        IConversationContext Context { get; }
+
+        int TemplateID { get; }
+        ConversationSpeakerFlags Flags { get; }
+
         byte Say(string text = "", bool prev = false, bool next = true);
         bool AskYesNo(string text = "");
         bool AskAccept(string text = "");
         string AskText(string text = "", string def = "", short lenMin = 0, short lenMax = short.MaxValue);
-        string AskBoxText(string text = "", string def = "", short cols = 24, short rows = 4);
+        string AskBoxText(string text = "", string def = "", short rows = 4, short cols = 24);
         int AskNumber(string text = "", int def = 0, int min = int.MinValue, int max = int.MaxValue);
         int AskMenu(string text, IDictionary<int, string> options);
         byte AskAvatar(string text, int[] styles);
