@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 using PowerArgs;
@@ -37,8 +38,17 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Admin
                         target.AskAvatar("Is this style okay?", new[] { args.Value })
                     );
                     break;
+                case ModifyStatType.SP:
+                    if (GameConstants.IsExtendSPJob(user.Character.Job))
+                    {
+                        var jobLevel = await user.Prompt(s => s.AskNumber("Which job level would you like to set?", min: 0, max: 10));
+
+                        await user.ModifyStats(s => s.SetExtendSP((byte)jobLevel, (byte)args.Value));
+                        await user.Message($"Successfully set extend SP (job level: {jobLevel}) to {args.Value}");
+                        return;
+                    }
+                    break;
             }
-            // TODO: extendsp
             // TODO: pet
 
             await user.ModifyStats(s =>
