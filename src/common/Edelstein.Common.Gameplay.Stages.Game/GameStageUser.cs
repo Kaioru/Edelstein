@@ -20,6 +20,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             {
                 Character.FieldID = Field.Template.FieldReturn ?? Field.ID;
                 Character.FieldPortal = (byte)Field.GetStartPointClosestTo(FieldUser.Position).ID;
+
+                await FieldUser.EndConversation();
             }
 
             await base.OnDisconnect();
