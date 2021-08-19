@@ -2,13 +2,8 @@
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 {
-    public class WorldInfoRequestHandler : MirroredPacketHandler<LoginStage, LoginStageUser>
+    public class WorldInfoRequestHandler : WorldRequestHandler
     {
-        public WorldInfoRequestHandler() : base(
-            (short)PacketRecvOperations.WorldInfoRequest,
-            new WorldRequestHandler()
-        )
-        {
-        }
+        public override short Operation => (short)PacketRecvOperations.WorldInfoRequest;
     }
 }
