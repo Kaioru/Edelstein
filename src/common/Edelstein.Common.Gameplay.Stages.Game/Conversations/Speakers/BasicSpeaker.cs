@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Stages.Game.Conversations.Requests;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 

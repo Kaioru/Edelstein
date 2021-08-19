@@ -233,7 +233,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                 context,
                 new BasicSpeaker(context),
                 new BasicSpeaker(context, flags: ConversationSpeakerFlags.NPCReplacedByUser),
-                (self, target) => {
+                (self, target) =>
+                {
                     result = function.Invoke(self, target);
                     error = false;
                 }
@@ -248,24 +249,22 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
         public async Task Converse(IConversation conversation)
         {
-            if (IsConversing) throw new InvalidOperationException("Already having a conversation");
+            if (IsConversing) return;
 
             ConversationContext = conversation.Context;
 
-            await Task.Run(() => conversation.Start())
-                .ContinueWith(async t =>
+            await Task.Run(async () =>
+            {
+                try
                 {
-                    if (t.IsFaulted)
-                    {
-                        var exception = t.Exception?.Flatten().InnerException;
-
-                        if (exception is not TaskCanceledException)
-                            GameStage.Logger.LogError(exception, "Caught exception when executing conversation");
-                    }
-
+                    await conversation.Start();
+                }
+                finally
+                {
                     await EndConversation();
                     await ModifyStats(exclRequest: true);
-                });
+                }
+            });
         }
 
         public Task EndConversation()

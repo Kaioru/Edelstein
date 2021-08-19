@@ -6,7 +6,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Conversations.Requests
 {
     public class SayConversationRequest : AbstractConversationRequest<byte>
     {
-        public override ConversationRequestType Type => throw new NotImplementedException();
+        public override ConversationRequestType Type => ConversationRequestType.Say;
         public string Text { get; }
         public bool IsPrevEnabled { get; }
         public bool IsNextEnabled { get; }

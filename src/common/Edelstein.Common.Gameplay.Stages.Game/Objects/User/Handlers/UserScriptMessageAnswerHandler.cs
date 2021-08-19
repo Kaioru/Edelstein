@@ -41,7 +41,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
                  type == ConversationRequestType.AskAccept) && answer == byte.MaxValue
             )
             {
-                user.ConversationContext.Dispose();
+                await user.EndConversation();
                 return;
             }
 
