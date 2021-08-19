@@ -21,6 +21,9 @@
     <None Remove="PowerArgs" />
     <None Remove="Commands\Common\" />
     <None Remove="Commands\Admin\" />
+    <None Remove="Conversations\" />
+    <None Remove="Conversations\Speakers\" />
+    <None Remove="Conversations\Requests\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -38,6 +41,9 @@
     <Folder Include="Commands\" />
     <Folder Include="Commands\Common\" />
     <Folder Include="Commands\Admin\" />
+    <Folder Include="Conversations\" />
+    <Folder Include="Conversations\Speakers\" />
+    <Folder Include="Conversations\Requests\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Stages.Game.Conversations;
+using Edelstein.Common.Gameplay.Stages.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Common.Gameplay.Users;
@@ -20,6 +22,7 @@ using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transport;
+using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 {
@@ -38,7 +41,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public ISocket Socket => GameStageUser.Socket;
 
         public bool IsInstantiated { get; set; }
-        public bool IsConversing { get; }
+        public bool IsConversing => ConversationContext != null;
+
+        public IConversationContext ConversationContext { get; set; }
 
         public ICollection<IFieldSplit> Watching { get; }
         public ICollection<IFieldControlledObj> Controlling { get; }
@@ -212,16 +217,66 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             IConversationSpeaker,
             T
         > function)
-        { throw new NotImplementedException(); }
-        public Task<T> Prompt<T>(Func<
+            => Prompt((self, target) => function.Invoke(target));
+
+        public async Task<T> Prompt<T>(Func<
             IConversationSpeaker,
             IConversationSpeaker,
             T
         > function)
-        { throw new NotImplementedException(); }
+        {
+            var result = default(T);
+            var error = true;
 
-        public Task Converse(IConversation conversation) { throw new NotImplementedException(); }
-        public Task EndConversation() { throw new NotImplementedException(); }
+            var context = new ConversationContext(this);
+            var conversation = new BasicConversation(
+                context,
+                new BasicSpeaker(context),
+                new BasicSpeaker(context, flags: ConversationSpeakerFlags.NPCReplacedByUser),
+                (self, target) => {
+                    result = function.Invoke(self, target);
+                    error = false;
+                }
+            );
+
+            await Converse(conversation);
+
+            if (error) throw new TaskCanceledException();
+
+            return result;
+        }
+
+        public async Task Converse(IConversation conversation)
+        {
+            if (IsConversing) throw new InvalidOperationException("Already having a conversation");
+
+            ConversationContext = conversation.Context;
+
+            await Task.Run(() => conversation.Start())
+                .ContinueWith(async t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        var exception = t.Exception?.Flatten().InnerException;
+
+                        if (exception is not TaskCanceledException)
+                            GameStage.Logger.LogError(exception, "Caught exception when executing conversation");
+                    }
+
+                    await EndConversation();
+                    await ModifyStats(exclRequest: true);
+                });
+        }
+
+        public Task EndConversation()
+        {
+            if (IsConversing)
+            {
+                ConversationContext.Dispose();
+                ConversationContext = null;
+            }
+            return Task.CompletedTask;
+        }
 
         public async Task ModifyStats(Action<IModifyStatContext> action = null, bool exclRequest = false)
         {

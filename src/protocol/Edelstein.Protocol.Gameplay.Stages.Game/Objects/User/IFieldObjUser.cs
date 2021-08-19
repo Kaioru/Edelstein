@@ -17,6 +17,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
         bool IsInstantiated { get; set; }
         bool IsConversing { get; }
 
+        IConversationContext ConversationContext { get; }
+
         ICollection<IFieldSplit> Watching { get; }
         ICollection<IFieldControlledObj> Controlling { get; }
 
@@ -32,7 +34,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
             IConversationSpeaker,
             T
         > function);
-        Task<T> Prompt<T>(Func<
+        Task<T?> Prompt<T>(Func<
             IConversationSpeaker,
             IConversationSpeaker,
             T
