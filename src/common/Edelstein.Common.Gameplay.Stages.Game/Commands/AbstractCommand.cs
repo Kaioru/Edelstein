@@ -25,6 +25,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands
                 await user.Message(e.Message);
                 await user.Message($"Usage: {def.UsageSummary}");
             }
+            catch (Exception e)
+            {
+                await user.Message(e.Message);
+            }
         }
 
         public abstract Task Execute(IFieldObjUser user, TArgs args);

@@ -28,7 +28,16 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Admin
 
         public override async Task Execute(IFieldObjUser user, StatCommandArgs args)
         {
-            // TODO: avatar preview
+            switch (args.Type)
+            {
+                case ModifyStatType.Skin:
+                case ModifyStatType.Face:
+                case ModifyStatType.Hair:
+                    await user.Prompt(target =>
+                        target.AskAvatar("Is this style okay?", new[] { args.Value })
+                    );
+                    break;
+            }
             // TODO: extendsp
             // TODO: pet
 

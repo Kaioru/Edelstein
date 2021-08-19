@@ -51,6 +51,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Conversations
         {
             _tokenSource.Cancel();
             _tokenSource.Dispose();
+
+            _channel.Writer.Complete();
         }
     }
 }
