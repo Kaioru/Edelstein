@@ -16,6 +16,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Social;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
@@ -50,6 +51,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
         public ICalculatedRates Rates { get; }
         public ICalculatedStats Stats { get; }
+
+        public IGuildInfo Guild { get; set; }
+        public IPartyInfo Party { get; set; }
 
         public FieldObjUser(GameStageUser user)
         {
@@ -121,12 +125,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             packet.WriteByte(Character.Level);
             packet.WriteString(Character.Name);
 
-            // Guild
-            packet.WriteString("");
-            packet.WriteShort(0);
-            packet.WriteByte(0);
-            packet.WriteShort(0);
-            packet.WriteByte(0);
+            packet.WriteString(Guild?.Name ?? "");
+            packet.WriteShort(Guild?.MarkBg ?? 0);
+            packet.WriteByte(Guild?.MarkBgColor ?? 0);
+            packet.WriteShort(Guild?.Mark ?? 0);
+            packet.WriteByte(Guild?.MarkColor ?? 0);
 
             packet.WriteLong(0);
             packet.WriteLong(0);
