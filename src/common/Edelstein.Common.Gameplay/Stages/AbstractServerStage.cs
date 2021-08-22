@@ -107,17 +107,15 @@ namespace Edelstein.Common.Gameplay.Stages
 
             packet.WriteBytes(dispatch.Packet.ToByteArray());
 
-            if (
-                dispatch.HasAlliance ||
-                dispatch.HasGuild ||
-                dispatch.HasParty ||
-                dispatch.HasCharacter
-            )
+            switch (dispatch.Type)
             {
-                if (dispatch.HasCharacter && GetUser(dispatch.Character) != null)
-                    targets.Add(GetUser(dispatch.Character));
+                case DispatchType.Broadcast:
+                    targets.AddRange(GetUsers());
+                    break;
+                case DispatchType.Multicast:
+                    targets.AddRange(GetUsers().Where(u => dispatch.Targets.Contains(u.ID)).ToList());
+                    break;
             }
-            else targets.AddRange(GetUsers());
 
             return Task.WhenAll(targets.Select(t => t.Dispatch(packet)));
         }

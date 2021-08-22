@@ -7,6 +7,11 @@ enum DispatchResult {
     FAILED = 1;
 }
 
+enum DispatchType {
+    BROADCAST = 0;
+    MULTICAST = 1;
+}
+
 message DispatchRequest {
     bytes packet = 1;
 }
@@ -21,23 +26,13 @@ message DispatchToServersRequest {
     bytes packet = 2;
 }
 
-message DispatchToAllianceRequest {
-    int32 alliance = 1;
-    bytes packet = 2;
-}
-
-message DispatchToGuildRequest {
-    int32 guild = 1;
-    bytes packet = 2;
-}
-
-message DispatchToPartyRequest {
-    int32 party = 1;
-    bytes packet = 2;
-}
-
 message DispatchToCharacterRequest {
-    int32 character = 1;
+    int32 target = 1;
+    bytes packet = 2;
+}
+
+message DispatchToCharactersRequest {
+    repeated int32 targets = 1;
     bytes packet = 2;
 }
 
@@ -50,10 +45,8 @@ message DispatchSubscription {
 }
 
 message DispatchObject {
-    bytes packet = 1;
+    DispatchType type = 1;
+    repeated int32 targets = 2;
 
-    optional int32 alliance = 2;
-    optional int32 guild = 3;
-    optional int32 party = 4;
-    optional int32 character = 5;
+    bytes packet = 3;
 }

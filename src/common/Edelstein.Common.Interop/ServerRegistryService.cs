@@ -131,41 +131,13 @@ namespace Edelstein.Common.Interop
             return response;
         }
 
-        public async Task<DispatchResponse> DispatchToAlliance(DispatchToAllianceRequest request)
-        {
-            var response = new DispatchResponse { Result = DispatchResult.Ok };
-            var dispatch = new DispatchObject { Packet = request.Packet, Alliance = request.Alliance };
-
-            await Task.WhenAll((await _repository.RetrieveAll()).Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
-
-            return response;
-        }
-
-        public async Task<DispatchResponse> DispatchToGuild(DispatchToGuildRequest request)
-        {
-            var response = new DispatchResponse() { Result = DispatchResult.Ok };
-            var dispatch = new DispatchObject() { Packet = request.Packet, Guild = request.Guild };
-
-            await Task.WhenAll((await _repository.RetrieveAll()).Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
-
-            return response;
-        }
-
-        public async Task<DispatchResponse> DispatchToParty(DispatchToPartyRequest request)
-        {
-            var response = new DispatchResponse() { Result = DispatchResult.Ok };
-            var dispatch = new DispatchObject() { Packet = request.Packet, Party = request.Party };
-
-            await Task.WhenAll((await _repository.RetrieveAll()).Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
-
-            return response;
-        }
-
         public async Task<DispatchResponse> DispatchToCharacter(DispatchToCharacterRequest request)
         {
             var response = new DispatchResponse() { Result = DispatchResult.Ok };
-            var dispatch = new DispatchObject() { Packet = request.Packet, Character = request.Character };
-            var description = await _sessionRegistryService.DescribeSessionByCharacter(new DescribeSessionByCharacterRequest { Character = request.Character });
+            var dispatch = new DispatchObject() { Packet = request.Packet };
+            var description = await _sessionRegistryService.DescribeSessionByCharacter(new DescribeSessionByCharacterRequest { Character = request.Target });
+
+            dispatch.Targets.Add(request.Target);
 
             if (description.Result == SessionRegistryResult.Ok)
             {
@@ -176,6 +148,19 @@ namespace Edelstein.Common.Interop
                 else response.Result = DispatchResult.Failed;
             }
             else response.Result = DispatchResult.Failed;
+
+            return response;
+        }
+
+        public async Task<DispatchResponse> DispatchToCharacters(DispatchToCharactersRequest request)
+        {
+            var response = new DispatchResponse() { Result = DispatchResult.Ok };
+            var dispatch = new DispatchObject() { Packet = request.Packet };
+            var targets = (await _repository.RetrieveAll()).ToList();
+
+            dispatch.Targets.AddRange(request.Targets);
+
+            await Task.WhenAll(targets.Select(e => e.Dispatch.Writer.WriteAsync(dispatch).AsTask()));
 
             return response;
         }
