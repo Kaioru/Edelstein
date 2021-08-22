@@ -4,7 +4,7 @@ using Edelstein.Protocol.Datastore;
 
 namespace Edelstein.Protocol.Gameplay.Social.Parties
 {
-    public class Party : IParty, IDataDocument
+    public class PartyRecord : IParty, IDataDocument
     {
         public int ID { get; init; }
         public int BossCharacterID { get; set; }
@@ -14,7 +14,7 @@ namespace Edelstein.Protocol.Gameplay.Social.Parties
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
 
-        public Party()
+        public PartyRecord()
         {
             Members = new List<IPartyMember>();
         }

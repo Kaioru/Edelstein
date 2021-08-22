@@ -4,7 +4,7 @@ using Edelstein.Protocol.Datastore;
 
 namespace Edelstein.Protocol.Gameplay.Social.Guilds
 {
-    public record Guild : IGuild, IDataDocument
+    public record GuildRecord : IGuild, IDataDocument
     {
         public int ID { get; init; }
 
@@ -26,7 +26,7 @@ namespace Edelstein.Protocol.Gameplay.Social.Guilds
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
 
-        public Guild()
+        public GuildRecord()
         {
             Members = new List<IGuildMember>();
         }

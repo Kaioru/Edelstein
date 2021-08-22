@@ -3,8 +3,8 @@ using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Social.Parties
 {
-    public interface IPartyRepository : IRepository<int, IParty>
+    public interface IPartyRepository : IRepository<int, PartyRecord>
     {
-        Task<IParty> RetrieveByMember(int member);
+        Task<PartyRecord> RetrieveByMember(int member);
     }
 }

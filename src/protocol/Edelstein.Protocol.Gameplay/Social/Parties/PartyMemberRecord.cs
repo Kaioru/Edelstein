@@ -1,7 +1,6 @@
-﻿using System;
-namespace Edelstein.Protocol.Gameplay.Social.Parties
+﻿namespace Edelstein.Protocol.Gameplay.Social.Parties
 {
-    public class PartyMember : IPartyMember
+    public class PartyMemberRecord : IPartyMember
     {
         public int CharacterID { get; init; }
         public string CharacterName { get; set; }

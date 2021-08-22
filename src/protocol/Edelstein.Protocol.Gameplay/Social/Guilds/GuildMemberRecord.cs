@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Social.Guilds
 {
-    public class GuildMember : IGuildMember
+    public class GuildMemberRecord : IGuildMember
     {
         public int CharacterID { get; init; }
         public string CharacterName { get; set; }
