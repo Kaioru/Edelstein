@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Social
+namespace Edelstein.Protocol.Gameplay.Social.Guilds
 {
-    public interface IGuildInfo
+    public interface IGuild
     {
         int ID { get; }
 
@@ -11,7 +10,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Social
         string[] Grade { get; }
 
         int MaxMemberNum { get; }
-        ICollection<IGuildMemberInfo> Members { get; }
+        ICollection<IGuildMember> Members { get; }
 
         short MarkBg { get; }
         byte MarkBgColor { get; }

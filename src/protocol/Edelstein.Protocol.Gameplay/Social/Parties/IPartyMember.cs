@@ -1,6 +1,6 @@
-﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Social
+﻿namespace Edelstein.Protocol.Gameplay.Social.Parties
 {
-    public interface IPartyMemberInfo
+    public interface IPartyMember
     {
         int CharacterID { get; }
         string CharacterName { get; }
