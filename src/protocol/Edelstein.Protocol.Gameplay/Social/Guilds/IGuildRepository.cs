@@ -3,9 +3,9 @@ using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Social.Guilds
 {
-    public interface IGuildRepository : IRepository<int, IGuild>
+    public interface IGuildRepository : IRepository<int, GuildRecord>
     {
-        Task<IGuild> RetrieveByName(string name);
-        Task<IGuild> RetrieveByMember(int member);
+        Task<GuildRecord> RetrieveByName(string name);
+        Task<GuildRecord> RetrieveByMember(int member);
     }
 }

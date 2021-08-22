@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
+using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Social.Guilds
 {
-    public interface IGuild
+    public interface IGuild : IRepositoryEntry<int>
     {
-        int ID { get; }
-
         string Name { get; }
         string[] Grade { get; }
 
