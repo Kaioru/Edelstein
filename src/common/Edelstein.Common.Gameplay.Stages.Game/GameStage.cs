@@ -5,6 +5,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Commands.Common;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Handlers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
+using Edelstein.Protocol.Gameplay.Social.Guilds;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
@@ -107,6 +108,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             var field = await FieldRepository.Retrieve(user.Character.FieldID);
             var fieldUser = new FieldObjUser(user);
+
+            fieldUser.Guild = new GuildRecord() {
+                Name = "The Edelstein Team"
+            };
 
             user.FieldUser = fieldUser;
             await field.Enter(fieldUser);

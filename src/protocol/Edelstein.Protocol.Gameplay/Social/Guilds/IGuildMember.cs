@@ -11,6 +11,5 @@
         bool Online { get; }
 
         int Commitment { get; }
-        bool Inactive { get; }
     }
 }
