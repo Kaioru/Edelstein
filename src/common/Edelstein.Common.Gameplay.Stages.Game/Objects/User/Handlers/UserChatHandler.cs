@@ -26,7 +26,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
             var chatPacket1 = new UnstructuredOutgoingPacket(PacketSendOperations.UserChat);
 
             chatPacket1.WriteInt(user.ID);
-            chatPacket1.WriteBool(false); // TODO: gm chat
+            chatPacket1.WriteBool(user.Account.GradeCode > 0 || user.Account.SubGradeCode > 0); // TODO: proper gm chat checks
             chatPacket1.WriteString(message);
             chatPacket1.WriteBool(onlyBalloon);
 
@@ -37,7 +37,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
             var chatPacket2 = new UnstructuredOutgoingPacket(PacketSendOperations.UserChatNLCPQ);
 
             chatPacket2.WriteInt(user.ID);
-            chatPacket2.WriteBool(false); // TODO: gm chat
             chatPacket2.WriteString(message);
             chatPacket2.WriteBool(onlyBalloon);
             chatPacket2.WriteString(user.Character.Name);
