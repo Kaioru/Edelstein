@@ -9,6 +9,8 @@
     <Protobuf Include="Protos\migration_registry.proto" />
     <Protobuf Include="Protos\server_registry.proto" />
     <Protobuf Include="Protos\session_registry.proto" />
+    <Protobuf Include="Protos\Social\guild.proto" />
+    <Protobuf Include="Protos\Social\party.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,5 +24,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Protos\" />
+    <Folder Include="Protos\Social\" />
+    <Folder Include="Social\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Protos\Social\" />
+    <None Remove="Social\" />
   </ItemGroup>
 </Project>
