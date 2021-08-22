@@ -37,6 +37,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
             var chatPacket2 = new UnstructuredOutgoingPacket(PacketSendOperations.UserChatNLCPQ);
 
             chatPacket2.WriteInt(user.ID);
+            chatPacket2.WriteBool(user.Account.GradeCode > 0 || user.Account.SubGradeCode > 0); // TODO: proper gm chat checks
             chatPacket2.WriteString(message);
             chatPacket2.WriteBool(onlyBalloon);
             chatPacket2.WriteString(user.Character.Name);
