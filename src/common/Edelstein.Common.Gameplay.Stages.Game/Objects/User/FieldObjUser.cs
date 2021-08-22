@@ -11,12 +11,13 @@ using Edelstein.Common.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Modify;
 using Edelstein.Common.Gameplay.Users.Inventories.Modify.Operations;
 using Edelstein.Common.Gameplay.Users.Stats.Modify;
+using Edelstein.Protocol.Gameplay.Social.Guilds;
+using Edelstein.Protocol.Gameplay.Social.Parties;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Social;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
@@ -52,8 +53,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public ICalculatedRates Rates { get; }
         public ICalculatedStats Stats { get; }
 
-        public IGuildInfo Guild { get; set; }
-        public IPartyInfo Party { get; set; }
+        public IGuild Guild { get; set; }
+        public IParty Party { get; set; }
 
         public FieldObjUser(GameStageUser user)
         {

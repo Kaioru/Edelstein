@@ -20,11 +20,17 @@
     <Folder Include="Users\" />
     <Folder Include="Users\Inventories\Templates\Options\" />
     <Folder Include="Users\Inventories\Templates\Sets\" />
+    <Folder Include="Social\" />
+    <Folder Include="Social\Guilds\" />
+    <Folder Include="Social\Parties\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Space\" />
     <None Remove="Users\" />
     <None Remove="Users\Inventories\Templates\Options\" />
     <None Remove="Users\Inventories\Templates\Sets\" />
+    <None Remove="Social\" />
+    <None Remove="Social\Guild\" />
+    <None Remove="Social\Party\" />
   </ItemGroup>
 </Project>
