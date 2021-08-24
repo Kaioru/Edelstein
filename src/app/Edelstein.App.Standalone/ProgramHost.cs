@@ -9,21 +9,17 @@ using Edelstein.Common.Gameplay.Stages.Game.Commands;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Common.Gameplay.Stages.Login;
-using Edelstein.Common.Gameplay.Stages.Login.Handlers;
 using Edelstein.Common.Gameplay.Stages.Login.Templates;
 using Edelstein.Common.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates;
-using Edelstein.Common.Interop;
 using Edelstein.Common.Network.DotNetty.Transport;
 using Edelstein.Common.Parser.Duey;
+using Edelstein.Common.Services;
 using Edelstein.Common.Util.Caching;
 using Edelstein.Common.Util.Ticks;
 using Edelstein.Protocol.Datastore;
 using Edelstein.Protocol.Gameplay.Stages;
-using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
-using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
-using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
@@ -31,10 +27,10 @@ using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
-using Edelstein.Protocol.Interop;
 using Edelstein.Protocol.Network.Session;
 using Edelstein.Protocol.Network.Transport;
 using Edelstein.Protocol.Parser;
+using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Util.Caching;
 using Edelstein.Protocol.Util.Ticks;
 using LiteDB;
@@ -67,9 +63,9 @@ namespace Edelstein.App.Standalone
             collection.AddSingleton<IDataStore>(p => new LiteDataStore(new LiteRepository(_config.Database)));
             collection.AddSingleton<IDataDirectoryCollection>(p => new NXDataDirectoryCollection(_config.DataPath));
 
-            collection.AddSingleton<IServerRegistryService, ServerRegistryService>();
-            collection.AddSingleton<ISessionRegistryService, SessionRegistryService>();
-            collection.AddSingleton<IMigrationRegistryService, MigrationRegistryService>();
+            collection.AddSingleton<IServerRegistry, ServerRegistry>();
+            collection.AddSingleton<ISessionRegistry, SessionRegistry>();
+            collection.AddSingleton<IMigrationRegistry, MigrationRegistry>();
 
             collection.AddSingleton<IAccountRepository, AccountRepository>();
             collection.AddSingleton<IAccountWorldRepository, AccountWorldRepository>();
@@ -99,9 +95,9 @@ namespace Edelstein.App.Standalone
                 loginCollection.AddSingleton(p => new LoginStage(
                     loginConfig,
                     p.GetService<ILogger<IStage<LoginStage, LoginStageUser>>>(),
-                    provider.GetService<IServerRegistryService>(),
-                    provider.GetService<ISessionRegistryService>(),
-                    provider.GetService<IMigrationRegistryService>(),
+                    provider.GetService<IServerRegistry>(),
+                    provider.GetService<ISessionRegistry>(),
+                    provider.GetService<IMigrationRegistry>(),
                     provider.GetService<IAccountRepository>(),
                     provider.GetService<IAccountWorldRepository>(),
                     provider.GetService<ICharacterRepository>(),
@@ -142,9 +138,9 @@ namespace Edelstein.App.Standalone
                 gameCollection.AddSingleton(p => new GameStage(
                     gameConfig,
                     p.GetService<ILogger<IStage<GameStage, GameStageUser>>>(),
-                    provider.GetService<IServerRegistryService>(),
-                    provider.GetService<ISessionRegistryService>(),
-                    provider.GetService<IMigrationRegistryService>(),
+                    provider.GetService<IServerRegistry>(),
+                    provider.GetService<ISessionRegistry>(),
+                    provider.GetService<IMigrationRegistry>(),
                     provider.GetService<IAccountRepository>(),
                     provider.GetService<IAccountWorldRepository>(),
                     provider.GetService<ICharacterRepository>(),

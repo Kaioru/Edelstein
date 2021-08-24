@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
-using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Contracts;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 {
@@ -29,13 +29,13 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
             // TODO: ViewAllChar
 
             var result = LoginResultCode.Success;
-            var gameServerRequest = new DescribeServersRequest();
+            var gameServerRequest = new DescribeServerByMetadataRequest();
 
-            gameServerRequest.Tags.Add("Type", Enum.GetName(ServerStageType.Game));
-            gameServerRequest.Tags.Add("WorldID", user.SelectedWorldID.ToString());
-            gameServerRequest.Tags.Add("ChannelID", user.SelectedChannelID.ToString());
+            gameServerRequest.Metadata.Add("Type", Enum.GetName(ServerStageType.Game));
+            gameServerRequest.Metadata.Add("WorldID", user.SelectedWorldID.ToString());
+            gameServerRequest.Metadata.Add("ChannelID", user.SelectedChannelID.ToString());
 
-            var gameServers = (await user.Stage.ServerRegistryService.DescribeServers(gameServerRequest)).Servers;
+            var gameServers = (await user.Stage.ServerRegistry.DescribeByMetadata(gameServerRequest)).Servers;
             var gameServer = gameServers.FirstOrDefault();
 
             var character = await user.Stage.CharacterRepository.Retrieve(characterID);

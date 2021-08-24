@@ -7,8 +7,8 @@ using Edelstein.Common.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
-using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Contracts;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
@@ -42,13 +42,13 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
             if (world.BlockCharCreation) result = LoginResultCode.NotConnectableWorld;
 
-            var serverRequest = new DescribeServersRequest();
+            var serverRequest = new DescribeServerByMetadataRequest();
 
-            serverRequest.Tags.Add("Type", Enum.GetName(ServerStageType.Game));
-            serverRequest.Tags.Add("WorldID", user.SelectedWorldID.ToString());
-            serverRequest.Tags.Add("ChannelID", user.SelectedChannelID.ToString());
+            serverRequest.Metadata.Add("Type", Enum.GetName(ServerStageType.Game));
+            serverRequest.Metadata.Add("WorldID", user.SelectedWorldID.ToString());
+            serverRequest.Metadata.Add("ChannelID", user.SelectedChannelID.ToString());
 
-            var server = (await user.Stage.ServerRegistryService.DescribeServers(serverRequest)).Servers.FirstOrDefault();
+            var server = (await user.Stage.ServerRegistry.DescribeByMetadata(serverRequest)).Servers.FirstOrDefault();
 
             if (server == null) result = LoginResultCode.NotConnectableWorld;
 

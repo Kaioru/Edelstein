@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Edelstein.Protocol.Interop.Contracts;
+using Edelstein.Protocol.Services.Contracts;
 
 namespace Edelstein.Protocol.Gameplay.Stages
 {
@@ -8,7 +8,7 @@ namespace Edelstein.Protocol.Gameplay.Stages
         where TUser : IServerStageUser<TStage, TUser>
     {
         Task<bool> MigrateTo(string server);
-        Task<bool> MigrateTo(ServerObject server);
+        Task<bool> MigrateTo(ServerContract server);
 
         Task TrySendAliveReq();
         Task TryRecvAliveAck();

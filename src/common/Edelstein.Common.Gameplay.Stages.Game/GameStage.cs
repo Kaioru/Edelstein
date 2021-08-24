@@ -18,7 +18,7 @@ using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
-using Edelstein.Protocol.Interop;
+using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
 
@@ -45,9 +45,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public GameStage(
             GameStageConfig config,
             ILogger<IStage<GameStage, GameStageUser>> logger,
-            IServerRegistryService serverRegistryService,
-            ISessionRegistryService sessionRegistry,
-            IMigrationRegistryService migrationRegistryService,
+            IServerRegistry serverRegistry,
+            ISessionRegistry sessionRegistry,
+            IMigrationRegistry migrationRegistry,
             IAccountRepository accountRepository,
             IAccountWorldRepository accountWorldRepository,
             ICharacterRepository characterRepository,
@@ -63,9 +63,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ServerStageType.Game,
             config,
             logger,
-            serverRegistryService,
+            serverRegistry,
             sessionRegistry,
-            migrationRegistryService,
+            migrationRegistry,
             accountRepository,
             accountWorldRepository,
             characterRepository,
@@ -109,7 +109,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             var field = await FieldRepository.Retrieve(user.Character.FieldID);
             var fieldUser = new FieldObjUser(user);
 
-            fieldUser.Guild = new GuildRecord() {
+            fieldUser.Guild = new GuildRecord()
+            {
                 Name = "The Edelstein Team"
             };
 

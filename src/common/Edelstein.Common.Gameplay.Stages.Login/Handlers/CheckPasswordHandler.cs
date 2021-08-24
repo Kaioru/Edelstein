@@ -2,8 +2,8 @@
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Protocol.Gameplay.Users;
-using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Contracts;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
@@ -50,7 +50,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
             }
             else
             {
-                var session = await _stage.SessionRegistry.DescribeSessionByAccount(new DescribeSessionByAccountRequest { Account = account.ID });
+                var session = await _stage.SessionRegistry.DescribeByAccount(new DescribeSessionByAccountRequest { Account = account.ID });
 
                 if (!BCrypt.Net.BCrypt.EnhancedVerify(password, account.Password))
                     result = LoginResultCode.IncorrectPassword;

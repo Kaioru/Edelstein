@@ -1,5 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Users;
-using Edelstein.Protocol.Interop;
+using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Stages
@@ -8,9 +8,9 @@ namespace Edelstein.Protocol.Gameplay.Stages
         where TStage : IServerStage<TStage, TUser>
         where TUser : IServerStageUser<TStage, TUser>
     {
-        IServerRegistryService ServerRegistryService { get; }
-        ISessionRegistryService SessionRegistry { get; }
-        IMigrationRegistryService MigrationRegistryService { get; }
+        IServerRegistry ServerRegistry { get; }
+        ISessionRegistry SessionRegistry { get; }
+        IMigrationRegistry MigrationRegistry { get; }
 
         IAccountRepository AccountRepository { get; }
         IAccountWorldRepository AccountWorldRepository { get; }

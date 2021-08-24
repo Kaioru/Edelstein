@@ -43,6 +43,7 @@
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services\Edelstein.Protocol.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.3.2" />

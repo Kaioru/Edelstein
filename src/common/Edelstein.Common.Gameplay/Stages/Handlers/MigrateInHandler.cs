@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
-using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Contracts;
 
 namespace Edelstein.Common.Gameplay.Stages.Handlers
 {
@@ -25,10 +25,10 @@ namespace Edelstein.Common.Gameplay.Stages.Handlers
             _ = packet.ReadBytes(18); // Unknown
             var key = packet.ReadLong();
 
-            var claim = await _stage.MigrationRegistryService.Claim(new ClaimMigrationRequest
+            var claim = await _stage.MigrationRegistry.Claim(new ClaimMigrationRequest
             {
                 Character = character,
-                Key = key,
+                ClientKey = key,
                 Server = _stage.ID
             });
 
@@ -42,7 +42,7 @@ namespace Edelstein.Common.Gameplay.Stages.Handlers
             user.AccountWorld = await _stage.AccountWorldRepository.Retrieve(user.Character.AccountWorldID);
             user.Account = await _stage.AccountRepository.Retrieve(user.AccountWorld.AccountID);
 
-            user.Key = claim.Migration.Key;
+            user.Key = claim.Migration.ClientKey;
 
             await _stage.Enter(user);
         }
