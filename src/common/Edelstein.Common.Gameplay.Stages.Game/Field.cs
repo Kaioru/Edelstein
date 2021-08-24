@@ -63,7 +63,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                      FieldLifeType.Monster => new FieldMobGenerator(),
                      _ => throw new NotImplementedException()
                  })
-             ); ;
+             );
         }
 
         public async Task OnTick(DateTime now)
