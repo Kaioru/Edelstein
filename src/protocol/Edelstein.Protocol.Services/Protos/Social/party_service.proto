@@ -1,0 +1,50 @@
+﻿syntax = "proto3";
+
+package edelstein.protocol.services.contracts.social;
+
+enum PartyServiceResult {
+  PARTY_SERVICE_RESULT_UNSPECIFIED = 0;
+  PARTY_SERVICE_RESULT_OK = 1;
+  PARTY_SERVICE_RESULT_FAILED_UNKNOWN = 2;
+}
+
+message PartyContract {
+  int32 id = 1;
+  int32 boss_id = 2;
+  repeated PartyMemberContract members = 3;
+}
+
+message PartyMemberContract {
+  int32 id = 1;
+  string name = 2;
+  int32 job = 3;
+  int32 level = 4;
+  int32 channel = 5;
+  int32 field = 6;
+}
+
+message PartyLoadByIDRequest { int32 id = 1; }
+message PartyLoadByIDResponse {
+  PartyContract party = 2;
+}
+
+message PartyLoadByCharacterRequest { int32 character = 1; }
+message PartyLoadByCharacterResponse {
+  PartyContract party = 2;
+}
+
+message PartyCreateRequest { PartyMemberContract member = 1; }
+message PartyCreateResponse {
+  PartyServiceResult result = 1;
+  PartyContract party = 2;
+}
+
+message PartyWithdrawRequest { int32 character = 1; }
+message PartyWithdrawResponse { PartyServiceResult result = 1; }
+
+message PartyUpdateContract {
+  PartyContract party = 1;
+
+  repeated int32 joiningMembers = 2;
+  repeated int32 leavingMembers = 3;
+}
