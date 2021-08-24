@@ -152,9 +152,7 @@ namespace Edelstein.Common.Gameplay.Stages
             if (Character != null)
                 session.Character = Character.ID;
 
-            var result = IsLoggingIn
-                ? (await Stage.SessionRegistry.Start(new StartSessionRequest { Session = session })).Result
-                : (await Stage.SessionRegistry.Update(new UpdateSessionRequest { Session = session })).Result;
+            var result = (await Stage.SessionRegistry.Update(new UpdateSessionRequest { Session = session })).Result;
 
             if (result != SessionRegistryResult.Ok) await Disconnect();
         }
