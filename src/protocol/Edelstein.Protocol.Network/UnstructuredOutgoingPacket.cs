@@ -84,7 +84,7 @@ namespace Edelstein.Protocol.Network
             }
             else
             {
-                WriteShort((short)value.Length);
+                WriteShort((short)StringEncoding.GetByteCount(value));
                 WriteBytes(StringEncoding.GetBytes(value));
             }
 
