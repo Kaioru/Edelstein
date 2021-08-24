@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game.Commands.Admin;
 using Edelstein.Common.Gameplay.Stages.Game.Commands.Common;
@@ -18,7 +21,9 @@ using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
+using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Services;
+using Edelstein.Protocol.Services.Contracts;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
 
@@ -28,6 +33,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
     {
         public int WorldID => Config.WorldID;
         public int ChannelID => Config.ChannelID;
+
+        public IDispatchService DispatchService { get; }
 
         public ICommandProcessor CommandProcessor { get; }
 
@@ -48,6 +55,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             IServerRegistry serverRegistry,
             ISessionRegistry sessionRegistry,
             IMigrationRegistry migrationRegistry,
+            IDispatchService dispatchService,
             IAccountRepository accountRepository,
             IAccountWorldRepository accountWorldRepository,
             ICharacterRepository characterRepository,
@@ -73,6 +81,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             packetProcessor
         )
         {
+            DispatchService = dispatchService;
+
+            dispatchService
+                .Subscribe(new DispatchSubscription { Server = ID })
+                .ForEachAwaitAsync(OnDispatch);
+
             CommandProcessor = commandProcessor;
             ItemTemplates = itemTemplates;
             ItemOptionTemplates = itemOptionTemplates;
@@ -109,11 +123,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             var field = await FieldRepository.Retrieve(user.Character.FieldID);
             var fieldUser = new FieldObjUser(user);
 
-            fieldUser.Guild = new GuildRecord()
-            {
-                Name = "The Edelstein Team"
-            };
-
             user.FieldUser = fieldUser;
             await field.Enter(fieldUser);
         }
@@ -124,6 +133,23 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                 await user.Field.Leave(user.FieldUser);
 
             await base.Leave(user);
+        }
+
+        private async Task OnDispatch(DispatchContract contract)
+        {
+            var targets = GetUsers();
+            var packet = new UnstructuredOutgoingPacket();
+
+            packet.WriteBytes(contract.Data.ToArray());
+
+            if (contract.TargetCharacters.Count > 0)
+            {
+                targets = targets
+                    .Where(u => contract.TargetCharacters.Contains(u.ID))
+                    .ToList();
+            }
+
+            await Task.WhenAll(targets.Select(t => t.Dispatch(packet)));
         }
     }
 

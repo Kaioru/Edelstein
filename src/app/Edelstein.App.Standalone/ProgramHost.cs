@@ -32,6 +32,7 @@ using Edelstein.Protocol.Parser;
 using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Util.Ticks;
 using Foundatio.Caching;
+using Foundatio.Messaging;
 using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -59,12 +60,14 @@ namespace Edelstein.App.Standalone
             collection.AddLogging(logging => logging.AddSerilog());
 
             collection.AddSingleton<ICacheClient, InMemoryCacheClient>();
+            collection.AddSingleton<IMessageBus, InMemoryMessageBus>();
             collection.AddSingleton<IDataStore>(p => new LiteDataStore(new LiteRepository(_config.Database)));
             collection.AddSingleton<IDataDirectoryCollection>(p => new NXDataDirectoryCollection(_config.DataPath));
 
             collection.AddSingleton<IServerRegistry, ServerRegistry>();
             collection.AddSingleton<ISessionRegistry, SessionRegistry>();
             collection.AddSingleton<IMigrationRegistry, MigrationRegistry>();
+            collection.AddSingleton<IDispatchService, DispatchService>();
 
             collection.AddSingleton<IAccountRepository, AccountRepository>();
             collection.AddSingleton<IAccountWorldRepository, AccountWorldRepository>();
@@ -140,6 +143,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<IServerRegistry>(),
                     provider.GetService<ISessionRegistry>(),
                     provider.GetService<IMigrationRegistry>(),
+                    provider.GetService<IDispatchService>(),
                     provider.GetService<IAccountRepository>(),
                     provider.GetService<IAccountWorldRepository>(),
                     provider.GetService<ICharacterRepository>(),

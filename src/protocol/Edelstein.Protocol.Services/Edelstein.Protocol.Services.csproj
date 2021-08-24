@@ -8,6 +8,7 @@
     <Protobuf Include="Protos\server_registry.proto" />
     <Protobuf Include="Protos\session_registry.proto" />
     <Protobuf Include="Protos\migration_registry.proto" />
+    <Protobuf Include="Protos\dispatch_service.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,5 +19,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="protobuf-net.Grpc" Version="1.0.152" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="protobuf-net.Grpc" />
   </ItemGroup>
 </Project>

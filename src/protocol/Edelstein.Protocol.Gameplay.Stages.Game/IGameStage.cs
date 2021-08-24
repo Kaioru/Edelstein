@@ -7,6 +7,7 @@ using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
+using Edelstein.Protocol.Services;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
@@ -16,6 +17,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
     {
         int WorldID { get; }
         int ChannelID { get; }
+
+        IDispatchService DispatchService { get; }
 
         ICommandProcessor CommandProcessor { get; }
 

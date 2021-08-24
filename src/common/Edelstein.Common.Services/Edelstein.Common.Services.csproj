@@ -9,4 +9,7 @@
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="protobuf-net.Grpc" />
+  </ItemGroup>
 </Project>

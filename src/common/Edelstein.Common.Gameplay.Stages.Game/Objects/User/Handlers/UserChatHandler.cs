@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Contracts;
+using Google.Protobuf;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
 {
@@ -45,7 +47,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
             await Task.WhenAll(user.Field
                 .GetUsers()
                 .Except(user.FieldSplit.GetWatchers())
-                .Select(u => u.Dispatch(chatPacket2)));
+                .Select(u => u.Dispatch(chatPacket2))); */
         }
     }
 }

@@ -24,6 +24,7 @@
     <None Remove="Conversations\" />
     <None Remove="Conversations\Speakers\" />
     <None Remove="Conversations\Requests\" />
+    <None Remove="System.Linq.Async" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -51,5 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PowerArgs" Version="3.6.0" />
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
   </ItemGroup>
 </Project>
