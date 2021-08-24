@@ -11,8 +11,8 @@ namespace Edelstein.Protocol.Gameplay.Social.Parties
 
         public ICollection<IPartyMember> Members { get; }
 
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public DateTime DateDocumentCreated { get; set; }
+        public DateTime DateDocumentUpdated { get; set; }
 
         public PartyRecord()
         {

@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Behaviors;
 using Edelstein.Common.Gameplay.Stages.Handlers;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Users;
-using Edelstein.Protocol.Interop;
-using Edelstein.Protocol.Interop.Contracts;
-using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services;
+using Edelstein.Protocol.Services.Contracts;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
 
@@ -29,23 +26,21 @@ namespace Edelstein.Common.Gameplay.Stages
 
         public ILogger Logger { get; init; }
 
-        public IServerRegistryService ServerRegistryService { get; init; }
-        public ISessionRegistryService SessionRegistry { get; init; }
-        public IMigrationRegistryService MigrationRegistryService { get; init; }
+        public IServerRegistry ServerRegistry { get; init; }
+        public ISessionRegistry SessionRegistry { get; init; }
+        public IMigrationRegistry MigrationRegistry { get; init; }
 
         public IAccountRepository AccountRepository { get; init; }
         public IAccountWorldRepository AccountWorldRepository { get; init; }
         public ICharacterRepository CharacterRepository { get; init; }
 
-        public Task DispatchSubscriptionTask { get; set; }
-
         protected AbstractServerStage(
             ServerStageType type,
             TConfig config,
             ILogger<IStage<TStage, TUser>> logger,
-            IServerRegistryService serverRegistryService,
-            ISessionRegistryService sessionRegistry,
-            IMigrationRegistryService migrationRegistryService,
+            IServerRegistry serverRegistry,
+            ISessionRegistry sessionRegistry,
+            IMigrationRegistry migrationRegistry,
             IAccountRepository accountRepository,
             IAccountWorldRepository accountWorldRepository,
             ICharacterRepository characterRepository,
@@ -56,9 +51,9 @@ namespace Edelstein.Common.Gameplay.Stages
             Type = type;
             Config = config;
             Logger = logger;
-            ServerRegistryService = serverRegistryService;
+            ServerRegistry = serverRegistry;
             SessionRegistry = sessionRegistry;
-            MigrationRegistryService = migrationRegistryService;
+            MigrationRegistry = migrationRegistry;
             AccountRepository = accountRepository;
             AccountWorldRepository = accountWorldRepository;
             CharacterRepository = characterRepository;
@@ -72,16 +67,16 @@ namespace Edelstein.Common.Gameplay.Stages
 
         public override async Task Enter(TUser user)
         {
-            var session = new SessionObject
+            var session = new SessionContract
             {
                 Server = ID,
-                State = user.IsLoggingIn ? SessionState.LoggingIn : SessionState.LoggedIn
+                State = SessionState.LoggedIn
             };
 
             if (user.Account != null) session.Account = user.Account.ID;
             if (user.Character != null) session.Character = user.Character.ID;
 
-            await SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
+            await SessionRegistry.Update(new UpdateSessionRequest { Session = session });
             await base.Enter(user);
         }
 
@@ -89,35 +84,15 @@ namespace Edelstein.Common.Gameplay.Stages
         {
             if (user.Account != null && !user.IsMigrating)
             {
-                var session = new SessionObject
+                var session = new SessionContract
                 {
                     Account = user.Account.ID,
                     State = SessionState.Offline
                 };
 
-                await SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
+                await SessionRegistry.Update(new UpdateSessionRequest { Session = session });
             }
             await base.Leave(user);
-        }
-
-        public Task OnNotifyDispatch(DispatchObject dispatch)
-        {
-            var targets = new List<TUser>();
-            var packet = new UnstructuredOutgoingPacket();
-
-            packet.WriteBytes(dispatch.Packet.ToByteArray());
-
-            switch (dispatch.Type)
-            {
-                case DispatchType.Broadcast:
-                    targets.AddRange(GetUsers());
-                    break;
-                case DispatchType.Multicast:
-                    targets.AddRange(GetUsers().Where(u => dispatch.Targets.Contains(u.ID)).ToList());
-                    break;
-            }
-
-            return Task.WhenAll(targets.Select(t => t.Dispatch(packet)));
         }
     }
 }

@@ -6,7 +6,7 @@ using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
-using Edelstein.Protocol.Interop;
+using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
 
@@ -20,9 +20,9 @@ namespace Edelstein.Common.Gameplay.Stages.Login
         public LoginStage(
             LoginStageConfig config,
             ILogger<IStage<LoginStage, LoginStageUser>> logger,
-            IServerRegistryService serverRegistryService,
-            ISessionRegistryService sessionRegistry,
-            IMigrationRegistryService migrationRegistryService,
+            IServerRegistry serverRegistry,
+            ISessionRegistry sessionRegistry,
+            IMigrationRegistry migrationRegistry,
             IAccountRepository accountRepository,
             IAccountWorldRepository accountWorldRepository,
             ICharacterRepository characterRepository,
@@ -34,9 +34,9 @@ namespace Edelstein.Common.Gameplay.Stages.Login
             ServerStageType.Login,
             config,
             logger,
-            serverRegistryService,
+            serverRegistry,
             sessionRegistry,
-            migrationRegistryService,
+            migrationRegistry,
             accountRepository,
             accountWorldRepository,
             characterRepository,

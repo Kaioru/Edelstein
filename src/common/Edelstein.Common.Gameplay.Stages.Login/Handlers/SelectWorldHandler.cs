@@ -5,8 +5,8 @@ using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users;
-using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Contracts;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 {
@@ -27,13 +27,13 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
             var result = LoginResultCode.Success;
             var response = new UnstructuredOutgoingPacket(PacketSendOperations.SelectWorldResult);
 
-            var gameServerRequest = new DescribeServersRequest();
+            var gameServerRequest = new DescribeServerByMetadataRequest();
 
-            gameServerRequest.Tags.Add("Type", Enum.GetName(ServerStageType.Game));
-            gameServerRequest.Tags.Add("WorldID", worldID.ToString());
+            gameServerRequest.Metadata.Add("Type", Enum.GetName(ServerStageType.Game));
+            gameServerRequest.Metadata.Add("WorldID", worldID.ToString());
 
-            var gameServers = (await user.Stage.ServerRegistryService.DescribeServers(gameServerRequest)).Servers
-                .OrderBy(g => g.Tags["ChannelID"])
+            var gameServers = (await user.Stage.ServerRegistry.DescribeByMetadata(gameServerRequest)).Servers
+                .OrderBy(g => g.Metadata["ChannelID"])
                 .ToList();
 
             if (channelID > gameServers.Count) result = LoginResultCode.NotConnectableWorld;
@@ -58,8 +58,8 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
                 user.State = LoginState.SelectCharacter;
                 user.AccountWorld = accountWorld;
-                user.SelectedWorldID = Convert.ToByte(gameServer.Tags["WorldID"]);
-                user.SelectedChannelID = Convert.ToByte(gameServer.Tags["ChannelID"]);
+                user.SelectedWorldID = Convert.ToByte(gameServer.Metadata["WorldID"]);
+                user.SelectedChannelID = Convert.ToByte(gameServer.Metadata["ChannelID"]);
 
                 var characters = (await user.Stage.CharacterRepository.RetrieveAllByAccountWorld(accountWorld.ID)).ToList();
 

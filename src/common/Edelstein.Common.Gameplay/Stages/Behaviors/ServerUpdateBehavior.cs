@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Interop.Contracts;
+using Edelstein.Protocol.Services.Contracts;
 using Edelstein.Protocol.Util.Ticks;
 using MoreLinq;
 
@@ -14,14 +13,12 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
         where TConfig : ServerStageConfig
     {
         private readonly TStage _stage;
-        private CancellationTokenSource _tokenSource;
         private bool _isInitialized = false;
         private bool _isDisconnected = false;
 
         public ServerUpdateBehavior(TStage stage)
         {
             _stage = stage;
-            _tokenSource = new CancellationTokenSource();
         }
 
         public async Task OnTick(DateTime now)
@@ -35,45 +32,29 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
                     p => p.GetValue(config).ToString()
                 );
 
-            var server = new ServerObject
+            var server = new ServerContract
             {
                 Id = _stage.ID,
-                ServerConnection = new ServerConnectionObject
-                {
-                    Host = config.Host,
-                    Port = config.Port
-                }
+                Host = config.Host,
+                Port = config.Port
             };
 
-            server.Tags.Add("Type", Enum.GetName(_stage.Type));
-            server.Tags.Add(tags);
+            server.Metadata.Add("Type", Enum.GetName(_stage.Type));
+            server.Metadata.Add(tags);
 
             if (_isInitialized && !_isDisconnected)
             {
-                if ((await _stage.ServerRegistryService
-                        .UpdateServer(new UpdateServerRequest { Server = server }))
-                        .Result != ServiceRegistryResult.Ok)
+                if ((await _stage.ServerRegistry
+                        .Update(new UpdateServerRequest { Server = server }))
+                        .Result != ServerRegistryResult.Ok)
                     _isDisconnected = true;
                 else return;
             }
 
-            var response = await _stage.ServerRegistryService.RegisterServer(new RegisterServerRequest { Server = server });
+            var response = await _stage.ServerRegistry.Register(new RegisterServerRequest { Server = server });
 
-            if (response.Result == ServiceRegistryResult.Ok)
+            if (response.Result == ServerRegistryResult.Ok)
             {
-                if (_isInitialized || _isDisconnected)
-                {
-                    _tokenSource.Cancel();
-                    _tokenSource = new CancellationTokenSource();
-                }
-
-                _stage.DispatchSubscriptionTask = Task.Run(async () =>
-                {
-                    await foreach (var dispatch in _stage.ServerRegistryService
-                        .SubscribeDispatch(new DispatchSubscription { Server = _stage.ID })
-                        .WithCancellation(_tokenSource.Token)
-                    ) await _stage.OnNotifyDispatch(dispatch);
-                }, _tokenSource.Token);
                 _isInitialized = true;
                 _isDisconnected = false;
             }

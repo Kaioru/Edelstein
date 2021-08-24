@@ -15,8 +15,8 @@ namespace Edelstein.Protocol.Gameplay.Users
         public ItemLocker Locker { get; set; }
         public ItemTrunk Trunk { get; set; }
 
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public DateTime DateDocumentCreated { get; set; }
+        public DateTime DateDocumentUpdated { get; set; }
 
         public AccountWorld()
         {

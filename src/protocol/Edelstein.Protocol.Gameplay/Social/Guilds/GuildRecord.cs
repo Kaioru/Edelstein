@@ -23,8 +23,8 @@ namespace Edelstein.Protocol.Gameplay.Social.Guilds
         public int Point { get; set; }
         public byte Level { get; set; }
 
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public DateTime DateDocumentCreated { get; set; }
+        public DateTime DateDocumentUpdated { get; set; }
 
         public GuildRecord()
         {

@@ -5,7 +5,7 @@ namespace Edelstein.Protocol.Datastore
 {
     public interface IDataDocument : IRepositoryEntry<int>
     {
-        DateTime DateCreated { get; set; }
-        DateTime DateUpdated { get; set; }
+        DateTime DateDocumentCreated { get; set; }
+        DateTime DateDocumentUpdated { get; set; }
     }
 }

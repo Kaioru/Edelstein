@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Contracts;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
 {
@@ -22,13 +22,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
 
             // TODO checks, error handling
 
-            var gameServerRequest = new DescribeServersRequest();
+            var gameServerRequest = new DescribeServerByMetadataRequest();
 
-            gameServerRequest.Tags.Add("Type", Enum.GetName(ServerStageType.Game));
-            gameServerRequest.Tags.Add("WorldID", stageUser.Stage.WorldID.ToString());
+            gameServerRequest.Metadata.Add("Type", Enum.GetName(ServerStageType.Game));
+            gameServerRequest.Metadata.Add("WorldID", stageUser.Stage.WorldID.ToString());
 
-            var gameServers = (await stageUser.Stage.ServerRegistryService.DescribeServers(gameServerRequest)).Servers
-                .OrderBy(g => g.Tags["ChannelID"])
+            var gameServers = (await stageUser.Stage.ServerRegistry.DescribeByMetadata(gameServerRequest)).Servers
+                .OrderBy(g => g.Metadata["ChannelID"])
                 .ToList();
             var gameServer = gameServers[channelID];
 

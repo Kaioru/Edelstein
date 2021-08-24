@@ -3,9 +3,9 @@ using System.Net;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Stages;
-using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transport;
+using Edelstein.Protocol.Services.Contracts;
 
 namespace Edelstein.Common.Gameplay.Stages
 {
@@ -54,7 +54,7 @@ namespace Edelstein.Common.Gameplay.Stages
 
         public async Task<bool> MigrateTo(string server)
         {
-            var describe = await Stage.ServerRegistryService.DescribeServer(new DescribeServerRequest
+            var describe = await Stage.ServerRegistry.DescribeByID(new DescribeServerByIDRequest
             {
                 Id = server
             });
@@ -62,18 +62,18 @@ namespace Edelstein.Common.Gameplay.Stages
             return await MigrateTo(describe.Server);
         }
 
-        public async Task<bool> MigrateTo(ServerObject server)
+        public async Task<bool> MigrateTo(ServerContract server)
         {
             if (server == null) return false;
 
-            var request = await Stage.MigrationRegistryService.Register(new RegisterMigrationRequest
+            var request = await Stage.MigrationRegistry.Register(new RegisterMigrationRequest
             {
-                Migration = new MigrationObject
+                Migration = new MigrationContract
                 {
                     Character = Character.ID,
-                    Key = Key,
-                    FromServer = Stage.ID,
-                    ToServer = server.Id
+                    ClientKey = Key,
+                    ServerFrom = Stage.ID,
+                    ServerTo = server.Id
                 }
             });
 
@@ -81,7 +81,7 @@ namespace Edelstein.Common.Gameplay.Stages
 
             IsMigrating = true;
 
-            var session = new SessionObject
+            var session = new SessionContract
             {
                 Account = Account.ID,
                 Character = Character.ID,
@@ -89,9 +89,9 @@ namespace Edelstein.Common.Gameplay.Stages
                 State = SessionState.Migrating
             };
 
-            await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
+            await Stage.SessionRegistry.Update(new UpdateSessionRequest { Session = session });
 
-            var endpoint = new IPEndPoint(IPAddress.Parse(server.ServerConnection.Host), server.ServerConnection.Port);
+            var endpoint = new IPEndPoint(IPAddress.Parse(server.Host), server.Port);
             var address = endpoint.Address.MapToIPv4().GetAddressBytes();
             var port = endpoint.Port;
 
@@ -142,17 +142,17 @@ namespace Edelstein.Common.Gameplay.Stages
 
             LastRecvHeartbeatDate = DateTime.UtcNow;
 
-            var session = new SessionObject
+            var session = new SessionContract
             {
                 Account = Account.ID,
                 Server = Stage.ID,
-                State = IsLoggingIn ? SessionState.LoggingIn : SessionState.LoggedIn
+                State = SessionState.LoggedIn
             };
 
             if (Character != null)
                 session.Character = Character.ID;
 
-            await Stage.SessionRegistry.UpdateSession(new UpdateSessionRequest { Session = session });
+            await Stage.SessionRegistry.Update(new UpdateSessionRequest { Session = session });
         }
 
         protected virtual IPacket GetAliveReqPacket()

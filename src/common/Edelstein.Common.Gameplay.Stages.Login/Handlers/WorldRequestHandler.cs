@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
-using Edelstein.Protocol.Interop.Contracts;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Contracts;
+using MoreLinq;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 {
@@ -34,12 +35,12 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
                 response.WriteShort(0); // WorldEventDrop_WSE, WorldSpecificEvent
                 response.WriteBool(world.BlockCharCreation);
 
-                var channelServerRequest = new DescribeServersRequest();
+                var channelServerRequest = new DescribeServerByMetadataRequest();
 
-                channelServerRequest.Tags.Add("Type", Enum.GetName(ServerStageType.Game));
-                channelServerRequest.Tags.Add("WorldID", world.ID.ToString());
+                channelServerRequest.Metadata.Add("Type", Enum.GetName(ServerStageType.Game));
+                channelServerRequest.Metadata.Add("WorldID", world.ID.ToString());
 
-                var channelServers = (await user.Stage.ServerRegistryService.DescribeServers(channelServerRequest)).Servers
+                var channelServers = (await user.Stage.ServerRegistry.DescribeByMetadata(channelServerRequest)).Servers
                     .OrderBy(c => c.Id)
                     .ToList();
 
@@ -47,10 +48,10 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
                 foreach (var channel in channelServers)
                 {
-                    response.WriteString(channel.Tags["ID"]);
+                    response.WriteString(channel.Metadata["ID"]);
                     response.WriteInt(0); // TODO: UserNo
-                    response.WriteByte(Convert.ToByte(channel.Tags["WorldID"]));
-                    response.WriteByte(Convert.ToByte(channel.Tags["ChannelID"]));
+                    response.WriteByte(Convert.ToByte(channel.Metadata["WorldID"]));
+                    response.WriteByte(Convert.ToByte(channel.Metadata["ChannelID"]));
                     response.WriteBool(false); // TODO: AdultChannel
                 }
 
