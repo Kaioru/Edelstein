@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Common.Util.Caching;
 using Edelstein.Protocol.Gameplay.Templating;
-using Edelstein.Protocol.Util.Caching;
+using Foundatio.Caching;
 
 namespace Edelstein.Common.Gameplay.Templating
 {
     public class TemplateRepository<TEntry> : ITemplateRepository<TEntry> where TEntry : class, ITemplate
     {
-        private readonly ICache _cache;
+        private readonly ICacheClient _cache;
         private readonly IDictionary<int, TemplateProvider<TEntry>> _providers;
         private readonly TimeSpan _duration;
 
@@ -18,7 +17,7 @@ namespace Edelstein.Common.Gameplay.Templating
 
         public TemplateRepository(TimeSpan duration)
         {
-            _cache = new LocalCache();
+            _cache = new InMemoryCacheClient();
             _providers = new Dictionary<int, TemplateProvider<TEntry>>();
             _duration = duration;
         }
@@ -28,15 +27,22 @@ namespace Edelstein.Common.Gameplay.Templating
 
         public async Task<TEntry> Retrieve(int key)
         {
-            var entry = await _cache.Get<TEntry>(key.ToString());
-
-            if (entry == null && _providers.ContainsKey(key))
+            if (!await _cache.ExistsAsync(key.ToString()) && _providers.ContainsKey(key))
             {
                 var provider = _providers[key];
-                entry = await provider.Provide();
+                var template = await provider.Provide();
+
+                await _cache.SetAsync(key.ToString(), template);
             }
-            if (entry != null) await _cache.Refresh(key.ToString(), _duration);
-            return entry;
+
+            var entry = await _cache.GetAsync<TEntry>(key.ToString());
+
+            if (entry.HasValue)
+            {
+                await _cache.SetExpirationAsync(key.ToString(), _duration);
+                return entry.Value;
+            }
+            return null;
         }
 
         public async Task<IEnumerable<TEntry>> Retrieve(IEnumerable<int> keys)

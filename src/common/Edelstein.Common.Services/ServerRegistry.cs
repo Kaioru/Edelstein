@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Edelstein.Protocol.Datastore;
 using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Services.Contracts;
-using Edelstein.Protocol.Util.Caching;
+using Foundatio.Caching;
 
 namespace Edelstein.Common.Services
 {
@@ -13,7 +13,7 @@ namespace Edelstein.Common.Services
         private static readonly TimeSpan ServerRegistryTimeoutDuration = TimeSpan.FromMinutes(2);
         private readonly ServerRegistryRepository _repository;
 
-        public ServerRegistry(ICache cache, IDataStore store)
+        public ServerRegistry(ICacheClient cache, IDataStore store)
             => _repository = new ServerRegistryRepository(cache, store);
 
         public async Task<RegisterServerResponse> Register(RegisterServerRequest request)

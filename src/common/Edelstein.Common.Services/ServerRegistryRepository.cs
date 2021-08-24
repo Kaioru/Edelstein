@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Common.Util.Caching;
 using Edelstein.Common.Util.Repositories;
 using Edelstein.Protocol.Datastore;
-using Edelstein.Protocol.Util.Caching;
+using Foundatio.Caching;
 
 namespace Edelstein.Common.Services
 {
@@ -17,10 +15,10 @@ namespace Edelstein.Common.Services
         private readonly IDataStore _store;
 
         public ServerRegistryRepository(
-            ICache cache,
+            ICacheClient cache,
             IDataStore store
         ) : base(
-            new ScopedCache(CacheScope, cache),
+            new ScopedCacheClient(cache, CacheScope),
             new DataStoreRepository<ServerRegistryRecord>(store),
             CacheDuration
         )

@@ -15,7 +15,6 @@ using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Common.Network.DotNetty.Transport;
 using Edelstein.Common.Parser.Duey;
 using Edelstein.Common.Services;
-using Edelstein.Common.Util.Caching;
 using Edelstein.Common.Util.Ticks;
 using Edelstein.Protocol.Datastore;
 using Edelstein.Protocol.Gameplay.Stages;
@@ -31,8 +30,8 @@ using Edelstein.Protocol.Network.Session;
 using Edelstein.Protocol.Network.Transport;
 using Edelstein.Protocol.Parser;
 using Edelstein.Protocol.Services;
-using Edelstein.Protocol.Util.Caching;
 using Edelstein.Protocol.Util.Ticks;
+using Foundatio.Caching;
 using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -59,7 +58,7 @@ namespace Edelstein.App.Standalone
 
             collection.AddLogging(logging => logging.AddSerilog());
 
-            collection.AddSingleton<ICache>(p => new LocalCache());
+            collection.AddSingleton<ICacheClient, InMemoryCacheClient>();
             collection.AddSingleton<IDataStore>(p => new LiteDataStore(new LiteRepository(_config.Database)));
             collection.AddSingleton<IDataDirectoryCollection>(p => new NXDataDirectoryCollection(_config.DataPath));
 
