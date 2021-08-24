@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Edelstein.Common.Util.Caching;
 using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Services.Contracts;
-using Edelstein.Protocol.Util.Caching;
+using Foundatio.Caching;
 
 namespace Edelstein.Common.Services
 {
@@ -14,13 +13,13 @@ namespace Edelstein.Common.Services
         private static readonly string SessionCharacterScope = $"{SessionScope}:character";
         private static readonly TimeSpan SessionTimeoutDuration = TimeSpan.FromMinutes(2);
 
-        private readonly ICache _sessionAccountCache;
-        private readonly ICache _sessionCharacterCache;
+        private readonly ICacheClient _sessionAccountCache;
+        private readonly ICacheClient _sessionCharacterCache;
 
-        public SessionRegistry(ICache cache)
+        public SessionRegistry(ICacheClient cache)
         {
-            _sessionAccountCache = new ScopedCache(SessionAccountScope, cache);
-            _sessionCharacterCache = new ScopedCache(SessionCharacterScope, cache);
+            _sessionAccountCache = new ScopedCacheClient(cache, SessionAccountScope);
+            _sessionCharacterCache = new ScopedCacheClient(cache, SessionCharacterScope);
         }
 
         public async Task<UpdateSessionResponse> Update(UpdateSessionRequest request)
@@ -28,9 +27,9 @@ namespace Edelstein.Common.Services
             var session = request.Session;
             var timeout = DateTime.UtcNow.Add(SessionTimeoutDuration);
 
-            await _sessionAccountCache.Set(session.Account.ToString(), session, timeout);
+            await _sessionAccountCache.SetAsync(session.Account.ToString(), session, timeout);
             if (session.Character.HasValue)
-                await _sessionCharacterCache.Set(session.Character.Value.ToString(), session, timeout);
+                await _sessionCharacterCache.SetAsync(session.Character.Value.ToString(), session, timeout);
 
             return new UpdateSessionResponse { Result = SessionRegistryResult.Ok };
         }
@@ -38,12 +37,12 @@ namespace Edelstein.Common.Services
         public async Task<DescribeSessionByAccountResponse> DescribeByAccount(DescribeSessionByAccountRequest request)
         {
             var account = request.Account;
-            var session = await _sessionAccountCache.Get<SessionContract>(account.ToString());
+            var session = await _sessionAccountCache.GetAsync<SessionContract>(account.ToString());
 
             return new DescribeSessionByAccountResponse
             {
                 Result = SessionRegistryResult.Ok,
-                Session = session ?? new SessionContract
+                Session = session.HasValue ? session.Value : new SessionContract
                 {
                     Account = account,
                     State = SessionState.Offline
@@ -51,15 +50,16 @@ namespace Edelstein.Common.Services
             };
         }
 
-        public async Task<DescribeSessionByCharacterResponse> DescribeByCharacter(DescribeSessionByCharacterRequest request) {
+        public async Task<DescribeSessionByCharacterResponse> DescribeByCharacter(DescribeSessionByCharacterRequest request)
+        {
 
             var character = request.Character;
-            var session = await _sessionCharacterCache.Get<SessionContract>(character.ToString());
+            var session = await _sessionCharacterCache.GetAsync<SessionContract>(character.ToString());
 
             return new DescribeSessionByCharacterResponse
             {
                 Result = SessionRegistryResult.Ok,
-                Session = session ?? new SessionContract
+                Session = session.HasValue ? session.Value : new SessionContract
                 {
                     Character = character,
                     State = SessionState.Offline

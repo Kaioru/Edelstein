@@ -8,12 +8,8 @@
     <Folder Include="Repositories\" />
     <Folder Include="Ticks\" />
     <Folder Include="Spatial\" />
-    <Folder Include="Caching\" />
-    <Folder Include="Caching\Serializer\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Spatial\" />
-    <None Remove="Caching\" />
-    <None Remove="Caching\Serializer\" />
   </ItemGroup>
 </Project>

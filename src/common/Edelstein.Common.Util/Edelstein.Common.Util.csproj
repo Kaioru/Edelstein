@@ -6,16 +6,13 @@
 
   <ItemGroup>
     <None Remove="Repository\" />
-    <None Remove="Caching\" />
-    <None Remove="Caching\Serializer\" />
     <None Remove="Microsoft.Extensions.Caching.Abstractions" />
     <None Remove="Microsoft.Extensions.Caching.Memory" />
     <None Remove="Ticks\" />
+    <None Remove="Foundatio" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
-    <Folder Include="Caching\" />
-    <Folder Include="Caching\Serializer\" />
     <Folder Include="Ticks\" />
   </ItemGroup>
   <ItemGroup>
@@ -24,5 +21,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
+    <PackageReference Include="Foundatio" Version="10.2.1" />
   </ItemGroup>
 </Project>

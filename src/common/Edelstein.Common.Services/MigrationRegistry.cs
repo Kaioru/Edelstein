@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Edelstein.Common.Util.Caching;
 using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Services.Contracts;
-using Edelstein.Protocol.Util.Caching;
+using Foundatio.Caching;
 
 namespace Edelstein.Common.Services
 {
@@ -12,20 +11,20 @@ namespace Edelstein.Common.Services
         private static readonly string MigrationScope = "migrations";
         private static readonly TimeSpan MigrationTimeoutDuration = TimeSpan.FromMinutes(1);
 
-        private readonly ICache _cache;
+        private readonly ICacheClient _cache;
 
-        public MigrationRegistry(ICache cache)
-            => _cache = new ScopedCache(MigrationScope, cache);
+        public MigrationRegistry(ICacheClient cache)
+            => _cache = new ScopedCacheClient(cache, MigrationScope);
 
         public async Task<RegisterMigrationResponse> Register(RegisterMigrationRequest request)
         {
             var result = MigrationRegistryResult.Ok;
-            var existing = await _cache.Get<MigrationContract>(request.Migration.Character.ToString());
 
-            if (existing != null) result = MigrationRegistryResult.FailedAlreadyRegistered;
+            if (await _cache.ExistsAsync(request.Migration.Character.ToString()))
+                result = MigrationRegistryResult.FailedAlreadyRegistered;
 
             if (result == MigrationRegistryResult.Ok)
-                await _cache.Set(request.Migration.Character.ToString(), request.Migration, MigrationTimeoutDuration);
+                await _cache.SetAsync(request.Migration.Character.ToString(), request.Migration, MigrationTimeoutDuration);
 
             return new RegisterMigrationResponse { Result = result };
         }
@@ -33,12 +32,12 @@ namespace Edelstein.Common.Services
         public async Task<DeregisterMigrationResponse> Deregister(DeregisterMigrationRequest request)
         {
             var result = MigrationRegistryResult.Ok;
-            var existing = await _cache.Get<MigrationContract>(request.Character.ToString());
 
-            if (existing == null) result = MigrationRegistryResult.FailedNotRegistered;
+            if (!await _cache.ExistsAsync(request.Character.ToString()))
+                result = MigrationRegistryResult.FailedNotRegistered;
 
             if (result == MigrationRegistryResult.Ok)
-                await _cache.Remove(request.Character.ToString());
+                await _cache.RemoveAsync(request.Character.ToString());
 
             return new DeregisterMigrationResponse { Result = result };
         }
@@ -46,20 +45,23 @@ namespace Edelstein.Common.Services
         public async Task<ClaimMigrationResponse> Claim(ClaimMigrationRequest request)
         {
             var result = MigrationRegistryResult.Ok;
-            var existing = await _cache.Get<MigrationContract>(request.Character.ToString());
+            var existing = await _cache.GetAsync<MigrationContract>(request.Character.ToString());
 
-            if (existing == null) result = MigrationRegistryResult.FailedNotRegistered;
-            else if (request.Character != existing.Character) result = MigrationRegistryResult.FailedInvalidCharacter;
-            else if (request.ClientKey != existing.ClientKey) result = MigrationRegistryResult.FailedInvalidClientKey;
-            else if (request.Server != existing.ServerTo) result = MigrationRegistryResult.FailedInvalidServer;
+            if (!existing.HasValue) result = MigrationRegistryResult.FailedNotRegistered;
+            else
+            {
+                if (request.Character != existing.Value.Character) result = MigrationRegistryResult.FailedInvalidCharacter;
+                if (request.ClientKey != existing.Value.ClientKey) result = MigrationRegistryResult.FailedInvalidClientKey;
+                if (request.Server != existing.Value.ServerTo) result = MigrationRegistryResult.FailedInvalidServer;
+            }
 
             if (result == MigrationRegistryResult.Ok)
-                await _cache.Remove(request.Character.ToString());
+                await _cache.RemoveAsync(request.Character.ToString());
 
             return new ClaimMigrationResponse
             {
                 Result = result,
-                Migration = existing
+                Migration = existing.HasValue ? existing.Value : null
             };
         }
     }

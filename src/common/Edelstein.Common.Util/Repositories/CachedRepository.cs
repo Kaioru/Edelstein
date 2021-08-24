@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Util.Caching;
 using Edelstein.Protocol.Util.Repositories;
+using Foundatio.Caching;
 
 namespace Edelstein.Common.Util.Repositories
 {
     public class CachedRepository<TKey, TEntry> : IRepository<TKey, TEntry> where TEntry : class, IRepositoryEntry<TKey>
     {
-        protected ICache Cache { get; }
+        protected ICacheClient Cache { get; }
         protected IRepository<TKey, TEntry> Repository { get; }
         protected TimeSpan Duration { get; }
 
-        public CachedRepository(ICache cache, IRepository<TKey, TEntry> repository, TimeSpan duration)
+        public CachedRepository(ICacheClient cache, IRepository<TKey, TEntry> repository, TimeSpan duration)
         {
             Cache = cache;
             Repository = repository;
@@ -22,15 +22,15 @@ namespace Edelstein.Common.Util.Repositories
 
         public async Task<TEntry> Retrieve(TKey key)
         {
-            var cached = await Cache.Get<TEntry>(key.ToString());
-            if (cached != null)
+            var cached = await Cache.GetAsync<TEntry>(key.ToString());
+            if (cached.HasValue)
             {
-                _ = Cache.Refresh(key.ToString(), Duration);
-                return cached;
+                _ = Cache.SetExpirationAsync(key.ToString(), Duration);
+                return cached.Value;
             }
             var result = await Repository.Retrieve(key);
             if (result != null)
-                await Cache.Set(result.ID.ToString(), result, Duration);
+                await Cache.SetAsync(result.ID.ToString(), result, Duration);
             return result;
         }
 
@@ -41,7 +41,7 @@ namespace Edelstein.Common.Util.Repositories
         public async Task Insert(TEntry entry)
         {
             await Repository.Insert(entry);
-            await Cache.Set(entry.ID.ToString(), entry, Duration);
+            await Cache.SetAsync(entry.ID.ToString(), entry, Duration);
         }
 
         public Task Insert(IEnumerable<TEntry> entries)
@@ -50,7 +50,7 @@ namespace Edelstein.Common.Util.Repositories
         public async Task Update(TEntry entry)
         {
             await Repository.Update(entry);
-            await Cache.Set(entry.ID.ToString(), entry, Duration);
+            await Cache.SetAsync(entry.ID.ToString(), entry, Duration);
         }
 
         public Task Update(IEnumerable<TEntry> entries)
@@ -59,13 +59,13 @@ namespace Edelstein.Common.Util.Repositories
         public async Task Delete(TKey key)
         {
             await Repository.Delete(key);
-            await Cache.Remove(key.ToString());
+            await Cache.RemoveAsync(key.ToString());
         }
 
         public async Task Delete(TEntry entry)
         {
             await Repository.Delete(entry);
-            await Cache.Remove(entry.ID.ToString());
+            await Cache.RemoveAsync(entry.ID.ToString());
         }
 
         public Task Delete(IEnumerable<TKey> keys)
