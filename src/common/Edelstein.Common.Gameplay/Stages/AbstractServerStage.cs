@@ -76,7 +76,9 @@ namespace Edelstein.Common.Gameplay.Stages
             if (user.Account != null) session.Account = user.Account.ID;
             if (user.Character != null) session.Character = user.Character.ID;
 
-            var result = (await SessionRegistry.Update(new UpdateSessionRequest { Session = session })).Result;
+            var result = user.IsLoggingIn
+                ? (await SessionRegistry.Start(new StartSessionRequest { Session = session })).Result
+                : (await SessionRegistry.Update(new UpdateSessionRequest { Session = session })).Result;
 
             if (result != SessionRegistryResult.Ok)
             {

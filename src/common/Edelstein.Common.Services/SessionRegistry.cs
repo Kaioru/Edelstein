@@ -54,7 +54,7 @@ namespace Edelstein.Common.Services
 
                 await @lock.ReleaseAsync();
             }
-            catch (ThreadInterruptedException)
+            catch (Exception)
             {
                 result = SessionRegistryResult.FailedTimeout;
             }
@@ -80,14 +80,23 @@ namespace Edelstein.Common.Services
 
                 if (result == SessionRegistryResult.Ok)
                 {
-                    await _sessionAccountCache.SetAsync(session.Account.ToString(), session, timeout);
-                    if (session.Character.HasValue)
-                        await _sessionCharacterCache.SetAsync(session.Character.Value.ToString(), session, timeout);
+                    if (request.Session.State == SessionState.Offline)
+                    {
+                        await _sessionAccountCache.RemoveAsync(session.Account.ToString());
+                        if (session.Character.HasValue)
+                            await _sessionCharacterCache.RemoveAsync(session.Character.ToString());
+                    }
+                    else
+                    {
+                        await _sessionAccountCache.SetAsync(session.Account.ToString(), session, timeout);
+                        if (session.Character.HasValue)
+                            await _sessionCharacterCache.SetAsync(session.Character.Value.ToString(), session, timeout);
+                    }
                 }
 
                 await @lock.ReleaseAsync();
             }
-            catch (ThreadInterruptedException)
+            catch (Exception)
             {
                 result = SessionRegistryResult.FailedTimeout;
             }

@@ -13,7 +13,6 @@ namespace Edelstein.Common.Services
     {
         private static readonly string MigrationScope = "migrations";
         private static readonly string MigrationLockScope = $"{MigrationScope}:lock";
-        private static readonly string MigrationLockKey = "0";
         private static readonly TimeSpan MigrationTimeoutDuration = TimeSpan.FromMinutes(1);
         private static readonly TimeSpan MigrationLockTimeoutDuration = TimeSpan.FromSeconds(6);
 
@@ -35,7 +34,7 @@ namespace Edelstein.Common.Services
 
             try
             {
-                var @lock = await _locker.AcquireAsync(MigrationLockKey, cancellationToken: source.Token);
+                var @lock = await _locker.AcquireAsync(request.Migration.Character.ToString(), cancellationToken: source.Token);
 
                 if (await _cache.ExistsAsync(request.Migration.Character.ToString()))
                     result = MigrationRegistryResult.FailedAlreadyRegistered;
@@ -45,7 +44,7 @@ namespace Edelstein.Common.Services
 
                 await @lock.ReleaseAsync();
             }
-            catch (ThreadInterruptedException)
+            catch (Exception e)
             {
                 result = MigrationRegistryResult.FailedTimeout;
             }
@@ -62,7 +61,7 @@ namespace Edelstein.Common.Services
 
             try
             {
-                var @lock = await _locker.AcquireAsync(MigrationLockKey, cancellationToken: source.Token);
+                var @lock = await _locker.AcquireAsync(request.Character.ToString(), cancellationToken: source.Token);
 
                 if (!await _cache.ExistsAsync(request.Character.ToString()))
                     result = MigrationRegistryResult.FailedNotRegistered;
@@ -72,7 +71,7 @@ namespace Edelstein.Common.Services
 
                 await @lock.ReleaseAsync();
             }
-            catch (ThreadInterruptedException)
+            catch (Exception)
             {
                 result = MigrationRegistryResult.FailedTimeout;
             }
@@ -88,7 +87,7 @@ namespace Edelstein.Common.Services
 
             try
             {
-                var @lock = await _locker.AcquireAsync(MigrationLockKey, cancellationToken: source.Token);
+                var @lock = await _locker.AcquireAsync(request.Character.ToString(), cancellationToken: source.Token);
                 var result = MigrationRegistryResult.Ok;
                 var existing = await _cache.GetAsync<MigrationContract>(request.Character.ToString());
 
@@ -103,13 +102,15 @@ namespace Edelstein.Common.Services
                 if (result == MigrationRegistryResult.Ok)
                     await _cache.RemoveAsync(request.Character.ToString());
 
+                await @lock.ReleaseAsync();
+
                 return new ClaimMigrationResponse
                 {
                     Result = result,
                     Migration = existing.HasValue ? existing.Value : null
                 };
             }
-            catch (ThreadInterruptedException)
+            catch (Exception e)
             {
                 return new ClaimMigrationResponse { Result = MigrationRegistryResult.FailedTimeout };
             }
