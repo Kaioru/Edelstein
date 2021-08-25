@@ -7,6 +7,4 @@ namespace Edelstein.Common.Services
         ICollection<string> TargetServers,
         ICollection<int> TargetCharacters
     );
-
-    public class DispatchEvent2 { }
 }
