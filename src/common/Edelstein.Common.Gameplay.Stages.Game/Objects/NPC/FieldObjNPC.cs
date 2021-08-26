@@ -57,6 +57,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC
 
             packet.WriteBool(setAsController);
             packet.WriteInt(ID);
+            packet.WriteInt(Template.ID);
             return packet;
         }
 
