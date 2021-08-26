@@ -7,9 +7,9 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users.Inventories;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates.Options;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates.Sets;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
 {

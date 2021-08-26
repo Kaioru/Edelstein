@@ -1,7 +1,7 @@
 ﻿using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 
-namespace Edelstein.Protocol.Gameplay.Users.Inventories.Templates
+namespace Edelstein.Common.Gameplay.Users.Inventories.Templates
 {
     public record ItemTemplate : ITemplate
     {

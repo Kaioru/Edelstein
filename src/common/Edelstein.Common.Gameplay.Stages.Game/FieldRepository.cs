@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Util.Repositories;
 using Edelstein.Protocol.Gameplay.Stages.Game;
-using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
+using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Util.Ticks;
 

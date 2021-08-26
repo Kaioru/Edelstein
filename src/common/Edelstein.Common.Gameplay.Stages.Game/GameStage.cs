@@ -4,6 +4,7 @@ using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Social;
 using Edelstein.Common.Gameplay.Stages.Game.Commands.Admin;
 using Edelstein.Common.Gameplay.Stages.Game.Commands.Common;
+using Edelstein.Common.Gameplay.Stages.Game.Continent.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Handlers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
@@ -13,12 +14,12 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
-using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
+using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates.Options;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates.Sets;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Services.Contracts;
@@ -45,6 +46,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public ITemplateRepository<ItemSetTemplate> ItemSetTemplates { get; }
 
         public ITemplateRepository<FieldTemplate> FieldTemplates { get; }
+        public ITemplateRepository<ContiMoveTemplate> ContiMoveTemplates { get; }
         public ITemplateRepository<NPCTemplate> NPCTemplates { get; }
 
         public IFieldRepository FieldRepository { get; }
@@ -70,6 +72,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ITemplateRepository<ItemOptionTemplate> itemOptionTemplates,
             ITemplateRepository<ItemSetTemplate> itemSetTemplates,
             ITemplateRepository<FieldTemplate> fieldTemplates,
+            ITemplateRepository<ContiMoveTemplate> contiMoveTemplates,
             ITemplateRepository<NPCTemplate> npcTemplates
         ) : base(
             ServerStageType.Game,
@@ -104,6 +107,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ItemOptionTemplates = itemOptionTemplates;
             ItemSetTemplates = itemSetTemplates;
             FieldTemplates = fieldTemplates;
+            ContiMoveTemplates = contiMoveTemplates;
             NPCTemplates = npcTemplates;
 
             FieldRepository = new FieldRepository(this, FieldTemplates, tickerManager);

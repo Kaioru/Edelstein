@@ -5,7 +5,6 @@ using Edelstein.Protocol.Gameplay.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Repositories;
 using Edelstein.Protocol.Util.Spatial;
@@ -14,7 +13,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
     public interface IField : IFieldPool, IStage<IField, IFieldObjUser>, IPhysicalSpace2D, IRepositoryEntry<int>
     {
-        FieldTemplate Template { get; }
+        IFieldInfo Info { get; }
 
         ICollection<IFieldGenerator> Generators { get; }
 

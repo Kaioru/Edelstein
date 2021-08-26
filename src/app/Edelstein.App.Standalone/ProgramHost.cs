@@ -6,6 +6,7 @@ using Edelstein.Common.Datastore.LiteDB;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game;
 using Edelstein.Common.Gameplay.Stages.Game.Commands;
+using Edelstein.Common.Gameplay.Stages.Game.Continent.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Common.Gameplay.Stages.Login;
@@ -21,12 +22,12 @@ using Edelstein.Protocol.Datastore;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
-using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
+using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates.Options;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates.Sets;
 using Edelstein.Protocol.Network.Session;
 using Edelstein.Protocol.Network.Transport;
 using Edelstein.Protocol.Parser;
@@ -84,6 +85,7 @@ namespace Edelstein.App.Standalone
             collection.AddSingleton<ITemplateRepository<ItemOptionTemplate>, ItemOptionTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ItemSetTemplate>, ItemSetTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<FieldTemplate>, FieldTemplateRepository>();
+            collection.AddSingleton<ITemplateRepository<ContiMoveTemplate>, ContiMoveTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<NPCTemplate>, NPCTemplateRepository>();
 
             var provider = collection.BuildServiceProvider();
@@ -160,6 +162,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ITemplateRepository<ItemOptionTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemSetTemplate>>(),
                     provider.GetService<ITemplateRepository<FieldTemplate>>(),
+                    provider.GetService<ITemplateRepository<ContiMoveTemplate>>(),
                     provider.GetService<ITemplateRepository<NPCTemplate>>()
                 ));
                 gameCollection.AddSingleton<ISessionInitializer, GameSessionInitializer>();

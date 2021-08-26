@@ -6,7 +6,7 @@ using Edelstein.Common.Gameplay.Users.Inventories.Modify.Operations;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users.Inventories;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Utils;
 using MoreLinq;
@@ -86,7 +86,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Modify
         public void Add(int templateID, short quantity = 1)
             => Add(_templates.Retrieve(templateID).Result, quantity);
 
-        public void Add(ItemTemplate template, short quantity = 1)
+        private void Add(ItemTemplate template, short quantity = 1)
         {
             var item = template.ToItemSlot();
 
@@ -111,7 +111,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Modify
         public void Set(short slot, int templateID, short quantity = 1)
             => Set(slot, _templates.Retrieve(templateID).Result, quantity);
 
-        public void Set(short slot, ItemTemplate template, short quantity = 1)
+        private void Set(short slot, ItemTemplate template, short quantity = 1)
         {
 
             var item = template.ToItemSlot();

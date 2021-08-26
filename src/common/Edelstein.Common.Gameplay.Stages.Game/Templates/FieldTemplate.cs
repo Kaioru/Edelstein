@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 using Edelstein.Protocol.Util.Spatial;
 using MoreLinq;
 
-namespace Edelstein.Protocol.Gameplay.Stages.Game.Templates
+namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
-    public record FieldTemplate : ITemplate
+    public record FieldTemplate : ITemplate, IFieldInfo
     {
         public int ID { get; init; }
 

@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Objects\" />
-    <Folder Include="Templates\" />
     <Folder Include="FieldSets\" />
     <Folder Include="Conversations\" />
     <Folder Include="Continent\" />
@@ -25,7 +24,6 @@
     <ProjectReference Include="..\Edelstein.Protocol.Interop\Edelstein.Protocol.Interop.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Templates\" />
     <None Remove="FieldSets\" />
     <None Remove="Conversations\" />
     <None Remove="Contimove\" />

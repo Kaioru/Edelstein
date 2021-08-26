@@ -19,15 +19,11 @@
     <Folder Include="Templating\" />
     <Folder Include="Spatial\" />
     <Folder Include="Users\" />
-    <Folder Include="Users\Inventories\Templates\Options\" />
-    <Folder Include="Users\Inventories\Templates\Sets\" />
     <Folder Include="Social\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Space\" />
     <None Remove="Users\" />
-    <None Remove="Users\Inventories\Templates\Options\" />
-    <None Remove="Users\Inventories\Templates\Sets\" />
     <None Remove="Social\" />
     <None Remove="Social\Guild\" />
     <None Remove="Social\Party\" />

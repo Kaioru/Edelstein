@@ -5,7 +5,7 @@ using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
