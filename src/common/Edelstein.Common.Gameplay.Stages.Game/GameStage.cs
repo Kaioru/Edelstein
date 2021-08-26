@@ -141,6 +141,26 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             if (guildLoadResponse.Guild != null) fieldUser.Guild = new Guild(guildLoadResponse.Guild);
             if (partyLoadResponse.Party != null) fieldUser.Party = new Party(partyLoadResponse.Party);
 
+            if (fieldUser.Guild != null)
+            {
+                var guildPacket = new UnstructuredOutgoingPacket(PacketSendOperations.GuildResult);
+
+                guildPacket.WriteByte((byte)GuildResultCode.LoadGuild_Done);
+                guildPacket.WriteBool(true);
+                guildPacket.WriteGuildData(fieldUser.Guild);
+                await user.Dispatch(guildPacket);
+            }
+
+            if (fieldUser.Party != null)
+            {
+                var partyPacket = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
+
+                partyPacket.WriteByte((byte)PartyResultCode.LoadParty_Done);
+                partyPacket.WriteInt(fieldUser.Party.ID);
+                partyPacket.WritePartyData(fieldUser.Party, ChannelID);
+                await user.Dispatch(partyPacket);
+            }
+
             user.FieldUser = fieldUser;
 
             await field.Enter(fieldUser);
