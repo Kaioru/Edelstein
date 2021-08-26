@@ -36,7 +36,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Continent.Templates
                             n.ResolveAll(),
                             n.Resolve("field").ResolveAll(),
                             n.Resolve("scheduler").ResolveAll(),
-                            n.Resolve("genMob").ResolveAll(),
+                            n.Resolve("genMob")?.ResolveAll(),
                             n.Resolve("time").ResolveAll()
                         )
                     );
