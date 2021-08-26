@@ -57,7 +57,20 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC
 
             packet.WriteBool(setAsController);
             packet.WriteInt(ID);
-            packet.WriteInt(Template.ID);
+
+            if (setAsController)
+            {
+                // TODO: investigate why this triggers
+                packet.WriteInt(Template.ID);
+                packet.WritePoint2D(Position);
+                packet.WriteByte((byte)Action);
+                packet.WriteShort((short)(Foothold?.ID ?? 0));
+
+                packet.WriteShort((short)RX0);
+                packet.WriteShort((short)RX1);
+
+                packet.WriteBool(true);
+            }
             return packet;
         }
 
