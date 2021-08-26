@@ -21,14 +21,14 @@ namespace Edelstein.Common.Services
             var result = ServerRegistryResult.Ok;
             var record = await _repository.RetrieveByServerID(request.Server.Id);
 
-            if (record != null && DateTime.UtcNow < record.DateExpire)
+            if (record != null && DateTime.Now < record.DateExpire)
                 result = ServerRegistryResult.FailedAlreadyRegistered;
 
             if (result == ServerRegistryResult.Ok)
             {
                 var newRecord = new ServerRegistryRecord(request.Server)
                 {
-                    DateExpire = DateTime.UtcNow.Add(ServerRegistryTimeoutDuration)
+                    DateExpire = DateTime.Now.Add(ServerRegistryTimeoutDuration)
                 };
 
                 if (record != null)
@@ -57,12 +57,12 @@ namespace Edelstein.Common.Services
             var result = ServerRegistryResult.Ok;
             var record = await _repository.RetrieveByServerID(request.Server.Id);
 
-            if (record == null || DateTime.UtcNow > record.DateExpire) result = ServerRegistryResult.FailedNotRegistered;
+            if (record == null || DateTime.Now > record.DateExpire) result = ServerRegistryResult.FailedNotRegistered;
 
             if (result == ServerRegistryResult.Ok)
             {
                 record.FromContract(request.Server);
-                record.DateExpire = DateTime.UtcNow.Add(ServerRegistryTimeoutDuration);
+                record.DateExpire = DateTime.Now.Add(ServerRegistryTimeoutDuration);
 
                 await _repository.Update(record);
             }
@@ -75,7 +75,7 @@ namespace Edelstein.Common.Services
             var result = ServerRegistryResult.Ok;
             var record = await _repository.RetrieveByServerID(request.Id);
 
-            if (record == null || DateTime.UtcNow > record.DateExpire)
+            if (record == null || DateTime.Now > record.DateExpire)
             {
                 result = ServerRegistryResult.FailedNotRegistered;
                 record = null;
@@ -88,7 +88,7 @@ namespace Edelstein.Common.Services
         {
             var response = new DescribeServerByMetadataResponse();
             var records = await _repository.RetrieveAllByMetadata(request.Metadata);
-            var available = records.Where(r => DateTime.UtcNow < r.DateExpire).Select(r => r.ToContract()).ToList();
+            var available = records.Where(r => DateTime.Now < r.DateExpire).Select(r => r.ToContract()).ToList();
 
             response.Servers.Add(available);
 
