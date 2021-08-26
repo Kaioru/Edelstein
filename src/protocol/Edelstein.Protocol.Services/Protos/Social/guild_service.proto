@@ -36,11 +36,13 @@ message GuildMemberContract {
 
 message GuildLoadByIDRequest { int32 id = 1; }
 message GuildLoadByIDResponse {
+  GuildServiceResult result = 1;
   GuildContract guild = 2;
 }
 
 message GuildLoadByCharacterRequest { int32 character = 1; }
 message GuildLoadByCharacterResponse {
+  GuildServiceResult result = 1;
   GuildContract guild = 2;
 }
 
