@@ -21,9 +21,6 @@ namespace Edelstein.Common.Services
             var result = ServerRegistryResult.Ok;
             var record = await _repository.RetrieveByServerID(request.Server.Id);
 
-            Console.WriteLine(DateTime.UtcNow);
-            Console.WriteLine(record?.DateExpire.ToUniversalTime());
-
             if (record != null && DateTime.UtcNow < record.DateExpire.ToUniversalTime())
                 result = ServerRegistryResult.FailedAlreadyRegistered;
 

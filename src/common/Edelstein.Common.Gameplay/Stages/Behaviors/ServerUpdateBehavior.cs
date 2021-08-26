@@ -54,7 +54,11 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
             var response = await _stage.ServerRegistry.Register(new RegisterServerRequest { Server = server });
 
             if (response.Result == ServerRegistryResult.FailedAlreadyRegistered)
+            {
                 await _stage.ServerRegistry.Update(new UpdateServerRequest { Server = server });
+                _isInitialized = true;
+                _isDisconnected = false;
+            }
 
             if (response.Result == ServerRegistryResult.Ok)
             {
