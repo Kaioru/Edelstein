@@ -21,7 +21,7 @@ namespace Edelstein.Common.Services
             var result = ServerRegistryResult.Ok;
             var record = await _repository.RetrieveByServerID(request.Server.Id);
 
-            if (record != null && DateTime.UtcNow > record.DateExpire)
+            if (record != null && DateTime.UtcNow < record.DateExpire)
                 result = ServerRegistryResult.FailedAlreadyRegistered;
 
             if (result == ServerRegistryResult.Ok)
@@ -57,7 +57,7 @@ namespace Edelstein.Common.Services
             var result = ServerRegistryResult.Ok;
             var record = await _repository.RetrieveByServerID(request.Server.Id);
 
-            if (record == null && DateTime.UtcNow > record.DateExpire) result = ServerRegistryResult.FailedNotRegistered;
+            if (record == null || DateTime.UtcNow > record.DateExpire) result = ServerRegistryResult.FailedNotRegistered;
 
             if (result == ServerRegistryResult.Ok)
             {
@@ -75,7 +75,7 @@ namespace Edelstein.Common.Services
             var result = ServerRegistryResult.Ok;
             var record = await _repository.RetrieveByServerID(request.Id);
 
-            if (record == null && DateTime.UtcNow < record.DateExpire)
+            if (record == null || DateTime.UtcNow > record.DateExpire)
             {
                 result = ServerRegistryResult.FailedNotRegistered;
                 record = null;

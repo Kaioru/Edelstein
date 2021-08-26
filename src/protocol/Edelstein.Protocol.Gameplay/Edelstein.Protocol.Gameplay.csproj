@@ -22,8 +22,6 @@
     <Folder Include="Users\Inventories\Templates\Options\" />
     <Folder Include="Users\Inventories\Templates\Sets\" />
     <Folder Include="Social\" />
-    <Folder Include="Social\Guilds\" />
-    <Folder Include="Social\Parties\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Space\" />

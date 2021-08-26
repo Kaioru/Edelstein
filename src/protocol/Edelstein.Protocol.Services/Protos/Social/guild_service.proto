@@ -6,32 +6,35 @@ enum GuildServiceResult {
   GUILD_SERVICE_RESULT_UNSPECIFIED = 0;
   GUILD_SERVICE_RESULT_OK = 1;
   GUILD_SERVICE_RESULT_FAILED_UNKNOWN = 2;
+  GUILD_SERVICE_RESULT_FAILED_TIMEOUT = 3;
 }
 
 message GuildContract {
-  string name = 1;
-  repeated string grade = 2;
+  int32 id = 1;
+  string name = 2;
+  repeated string grade = 3;
 
-  int32 max_member_num = 3;
-  repeated GuildMemberContract members = 4;
+  int32 max_member_num = 4;
+  repeated GuildMemberContract members = 5;
 
-  int32 mark_bg = 5;
-  int32 mark_bg_color = 6;
-  int32 mark = 7;
-  int32 mark_color = 8;
+  int32 mark_bg = 6;
+  int32 mark_bg_color = 7;
+  int32 mark = 8;
+  int32 mark_color = 9;
 
-  string notice = 9;
-  int32 point = 10;
-  int32 level = 11;
+  string notice = 10;
+  int32 point = 11;
+  int32 level = 12;
 }
 
 message GuildMemberContract {
   int32 id = 1;
-  int32 name = 2;
+  string name = 2;
   int32 job = 3;
   int32 level = 4;
   int32 grade = 5;
   bool online = 6;
+  int32 commitment = 7;
 }
 
 message GuildLoadByIDRequest { int32 id = 1; }
@@ -48,7 +51,4 @@ message GuildLoadByCharacterResponse {
 
 message GuildUpdateContract {
   GuildContract guild = 1;
-
-  repeated int32 joiningMembers = 2;
-  repeated int32 leavingMembers = 3;
 }
