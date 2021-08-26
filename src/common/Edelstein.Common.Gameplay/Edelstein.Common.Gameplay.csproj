@@ -22,6 +22,7 @@
     <None Remove="Users\Stats\Modify\" />
     <None Remove="Constants\" />
     <None Remove="Constants\Types\" />
+    <None Remove="Social\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Users\" />
@@ -38,6 +39,7 @@
     <Folder Include="Users\Stats\Modify\" />
     <Folder Include="Constants\" />
     <Folder Include="Constants\Types\" />
+    <Folder Include="Social\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />

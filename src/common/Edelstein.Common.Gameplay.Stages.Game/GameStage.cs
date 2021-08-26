@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Social;
 using Edelstein.Common.Gameplay.Stages.Game.Commands.Admin;
 using Edelstein.Common.Gameplay.Stages.Game.Commands.Common;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Handlers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
-using Edelstein.Protocol.Gameplay.Social.Guilds;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
@@ -24,6 +22,8 @@ using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Services.Contracts;
+using Edelstein.Protocol.Services.Contracts.Social;
+using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
 
@@ -35,6 +35,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public int ChannelID => Config.ChannelID;
 
         public IDispatchService DispatchService { get; }
+        public IGuildService GuildService { get; }
+        public IPartyService PartyService { get; }
 
         public ICommandProcessor CommandProcessor { get; }
 
@@ -56,6 +58,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ISessionRegistry sessionRegistry,
             IMigrationRegistry migrationRegistry,
             IDispatchService dispatchService,
+            IGuildService guildService,
+            IPartyService partyService,
             IAccountRepository accountRepository,
             IAccountWorldRepository accountWorldRepository,
             ICharacterRepository characterRepository,
@@ -82,10 +86,18 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         )
         {
             DispatchService = dispatchService;
+            GuildService = guildService;
+            PartyService = partyService;
 
             dispatchService
                 .Subscribe(new DispatchSubscription { Server = ID })
                 .ForEachAwaitAsync(OnDispatch);
+            guildService
+                .Subscribe()
+                .ForEachAwaitAsync(OnGuildUpdate);
+            partyService
+                .Subscribe()
+                .ForEachAwaitAsync(OnPartyUpdate);
 
             CommandProcessor = commandProcessor;
             ItemTemplates = itemTemplates;
@@ -123,7 +135,14 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             var field = await FieldRepository.Retrieve(user.Character.FieldID);
             var fieldUser = new FieldObjUser(user);
 
+            var guildLoadResponse = await GuildService.LoadByCharacter(new GuildLoadByCharacterRequest { Character = user.Character.ID });
+            var partyLoadResponse = await PartyService.LoadByCharacter(new PartyLoadByCharacterRequest { Character = user.Character.ID });
+
+            if (guildLoadResponse.Guild != null) fieldUser.Guild = new Guild(guildLoadResponse.Guild);
+            if (partyLoadResponse.Party != null) fieldUser.Party = new Party(partyLoadResponse.Party);
+
             user.FieldUser = fieldUser;
+
             await field.Enter(fieldUser);
         }
 
@@ -151,6 +170,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             await Task.WhenAll(targets.Select(t => t.Dispatch(packet)));
         }
-    }
 
+        private async Task OnGuildUpdate(GuildUpdateContract contract)
+        {
+        }
+
+        private async Task OnPartyUpdate(PartyUpdateContract contract)
+        {
+        }
+    }
 }

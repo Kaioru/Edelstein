@@ -11,7 +11,7 @@ enum PartyServiceResult {
 
 message PartyContract {
   int32 id = 1;
-  int32 boss_id = 2;
+  int32 boss = 2;
   repeated PartyMemberContract members = 3;
 }
 
@@ -47,7 +47,4 @@ message PartyWithdrawResponse { PartyServiceResult result = 1; }
 
 message PartyUpdateContract {
   PartyContract party = 1;
-
-  repeated int32 joiningMembers = 2;
-  repeated int32 leavingMembers = 3;
 }

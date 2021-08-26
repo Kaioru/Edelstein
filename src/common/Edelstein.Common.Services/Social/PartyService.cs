@@ -37,9 +37,6 @@ namespace Edelstein.Common.Services.Social
             {
                 var contract = new PartyUpdateContract { Party = e.Party.ToContract() };
 
-                contract.JoiningMembers.Add(e.JoiningCharacters);
-                contract.LeavingMembers.Add(e.LeavingCharacters);
-
                 await Task.WhenAll(_dispatchers.Select(async d => await d.WriteAsync(contract)));
             });
         }
@@ -56,7 +53,10 @@ namespace Edelstein.Common.Services.Social
             {
                 var party = await _repository.Retrieve(request.Id);
                 await @lock.ReleaseAsync();
-                return new PartyLoadByIDResponse { Result = PartyServiceResult.Ok, Party = party.ToContract() };
+                return new PartyLoadByIDResponse {
+                    Result = PartyServiceResult.Ok,
+                    Party = party?.ToContract()
+                };
             }
 
             return new PartyLoadByIDResponse { Result = PartyServiceResult.FailedTimeout };
@@ -74,7 +74,10 @@ namespace Edelstein.Common.Services.Social
             {
                 var party = await _repository.RetrieveByMember(request.Character);
                 await @lock.ReleaseAsync();
-                return new PartyLoadByCharacterResponse { Result = PartyServiceResult.Ok, Party = party.ToContract() };
+                return new PartyLoadByCharacterResponse {
+                    Result = PartyServiceResult.Ok,
+                    Party = party?.ToContract()
+                };
             }
 
             return new PartyLoadByCharacterResponse { Result = PartyServiceResult.FailedTimeout };

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Edelstein.Protocol.Util.Repositories;
 
-namespace Edelstein.Protocol.Gameplay.Social.Guilds
+namespace Edelstein.Protocol.Gameplay.Social
 {
     public interface IGuild : IRepositoryEntry<int>
     {

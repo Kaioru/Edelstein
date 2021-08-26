@@ -10,7 +10,7 @@ namespace Edelstein.Common.Services.Social
     {
         public int ID { get; set; }
 
-        public int BossID { get; set; }
+        public int Boss { get; set; }
         public ICollection<PartyMemberRecord> Members { get; set; }
 
         public DateTime DateDocumentCreated { get; set; }
@@ -22,13 +22,13 @@ namespace Edelstein.Common.Services.Social
         public void FromContract(PartyContract contract)
         {
             ID = contract.Id;
-            BossID = contract.BossId;
+            Boss = contract.Boss;
             Members = contract.Members.Select(m => new PartyMemberRecord(m)).ToList();
         }
 
         public PartyContract ToContract()
         {
-            var contract = new PartyContract { Id = ID, BossId = BossID };
+            var contract = new PartyContract { Id = ID, Boss = Boss };
 
             contract.Members.Add(Members.Select(m => m.ToContract()).ToList());
 

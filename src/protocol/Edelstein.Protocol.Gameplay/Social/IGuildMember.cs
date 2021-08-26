@@ -1,9 +1,9 @@
-﻿namespace Edelstein.Protocol.Gameplay.Social.Guilds
+﻿namespace Edelstein.Protocol.Gameplay.Social
 {
     public interface IGuildMember
     {
-        int CharacterID { get; }
-        string CharacterName { get; }
+        int ID { get; }
+        string Name { get; }
 
         int Job { get; }
         int Level { get; }

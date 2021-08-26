@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using Edelstein.Protocol.Util.Repositories;
 
-namespace Edelstein.Protocol.Gameplay.Social.Parties
+namespace Edelstein.Protocol.Gameplay.Social
 {
     public interface IParty : IRepositoryEntry<int>
     {
-        int BossCharacterID { get; }
-
+        int Boss { get; }
         ICollection<IPartyMember> Members { get; }
     }
 }

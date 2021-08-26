@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Gameplay.Social.Guilds;
-using Edelstein.Protocol.Gameplay.Social.Parties;
+using Edelstein.Protocol.Gameplay.Social;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
@@ -29,10 +28,10 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
         ICalculatedStats Stats { get; }
 
         IGuild Guild { get; set; }
-        IGuildMember GuildMember => Guild?.Members.FirstOrDefault(m => m.CharacterID == ID);
+        IGuildMember GuildMember => Guild?.Members.FirstOrDefault(m => m.ID == ID);
 
         IParty Party { get; set; }
-        IPartyMember PartyMember => Party?.Members.FirstOrDefault(m => m.CharacterID == ID);
+        IPartyMember PartyMember => Party?.Members.FirstOrDefault(m => m.ID == ID);
 
         IPacket GetSetFieldPacket();
 
