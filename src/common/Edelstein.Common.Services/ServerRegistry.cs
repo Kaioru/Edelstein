@@ -61,7 +61,7 @@ namespace Edelstein.Common.Services
 
             if (result == ServerRegistryResult.Ok)
             {
-                record.Populate(request.Server);
+                record.FromContract(request.Server);
                 record.DateExpire = DateTime.UtcNow.Add(ServerRegistryTimeoutDuration);
 
                 await _repository.Update(record);
@@ -81,14 +81,14 @@ namespace Edelstein.Common.Services
                 record = null;
             }
 
-            return new DescribeServerByIDResponse { Result = result, Server = record?.AsContract() };
+            return new DescribeServerByIDResponse { Result = result, Server = record?.ToContract() };
         }
 
         public async Task<DescribeServerByMetadataResponse> DescribeByMetadata(DescribeServerByMetadataRequest request)
         {
             var response = new DescribeServerByMetadataResponse();
             var records = await _repository.RetrieveAllByMetadata(request.Metadata);
-            var available = records.Where(r => DateTime.UtcNow < r.DateExpire).Select(r => r.AsContract()).ToList();
+            var available = records.Where(r => DateTime.UtcNow < r.DateExpire).Select(r => r.ToContract()).ToList();
 
             response.Servers.Add(available);
 

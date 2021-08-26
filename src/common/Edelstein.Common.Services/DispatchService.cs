@@ -35,21 +35,13 @@ namespace Edelstein.Common.Services
 
         public async Task<DispatchResponse> Dispatch(DispatchRequest request)
         {
-            await _messenger.PublishAsync(new DispatchEvent(
-                Data: request.Data.ToArray(),
-                TargetServers: new List<string>(),
-                TargetCharacters: new List<int>()
-            ));
+            await _messenger.PublishAsync(new DispatchEvent { Data = request.Data.ToArray() });
             return new DispatchResponse { Result = DispatchServiceResult.Ok };
         }
 
         public async Task<DispatchToServersResponse> DispatchToServers(DispatchToServersRequest request)
         {
-            var @event = new DispatchEvent(
-                Data: request.Data.ToArray(),
-                TargetServers: new List<string>(),
-                TargetCharacters: new List<int>()
-            );
+            var @event = new DispatchEvent { Data = request.Data.ToArray() };
 
             foreach (var server in request.Servers)
                 @event.TargetServers.Add(server);
@@ -61,15 +53,12 @@ namespace Edelstein.Common.Services
         public async Task<DispatchToCharactersResponse> DispatchToCharacters(DispatchToCharactersRequest request)
         {
 
-            var @event = new DispatchEvent(
-                Data: request.Data.ToArray(),
-                TargetServers: new List<string>(),
-                TargetCharacters: new List<int>()
-            );
+            var @event = new DispatchEvent { Data = request.Data.ToArray() };
 
             foreach (var character in request.Characters)
                 @event.TargetCharacters.Add(character);
 
+            await _messenger.PublishAsync(@event);
             return new DispatchToCharactersResponse { Result = DispatchServiceResult.Ok };
         }
 

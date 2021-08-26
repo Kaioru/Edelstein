@@ -20,9 +20,9 @@ namespace Edelstein.Common.Services
         public DateTime DateDocumentUpdated { get; set; }
 
         public ServerRegistryRecord() { }
-        public ServerRegistryRecord(ServerContract server) => Populate(server);
+        public ServerRegistryRecord(ServerContract server) => FromContract(server);
 
-        public void Populate(ServerContract server)
+        public void FromContract(ServerContract server)
         {
             ServerID = server.Id;
             Host = server.Host;
@@ -30,7 +30,7 @@ namespace Edelstein.Common.Services
             Metadata = server.Metadata;
         }
 
-        public ServerContract AsContract()
+        public ServerContract ToContract()
         {
             var contract = new ServerContract
             {

@@ -26,7 +26,7 @@ namespace Edelstein.Common.Services
         {
             _sessionAccountCache = new ScopedCacheClient(cache, SessionAccountScope);
             _sessionCharacterCache = new ScopedCacheClient(cache, SessionCharacterScope);
-            _locker = new CacheLockProvider(new ScopedCacheClient(cache, SessionLockScope), messenger);
+            _locker = new ScopedLockProvider(new CacheLockProvider(cache, messenger), SessionLockScope);
         }
 
         public async Task<StartSessionResponse> Start(StartSessionRequest request)
@@ -36,10 +36,11 @@ namespace Edelstein.Common.Services
 
             source.CancelAfter(SessionLockTimeoutDuration);
 
-            try
+            var session = request.Session;
+            var @lock = await _locker.AcquireAsync(session.Account.ToString(), cancellationToken: source.Token);
+
+            if (@lock != null)
             {
-                var session = request.Session;
-                var @lock = await _locker.AcquireAsync(session.Account.ToString(), cancellationToken: source.Token);
                 var timeout = DateTime.UtcNow.Add(SessionTimeoutDuration);
 
                 if (await _sessionAccountCache.ExistsAsync(request.Session.Account.ToString()))
@@ -54,10 +55,7 @@ namespace Edelstein.Common.Services
 
                 await @lock.ReleaseAsync();
             }
-            catch (Exception)
-            {
-                result = SessionRegistryResult.FailedTimeout;
-            }
+            else result = SessionRegistryResult.FailedTimeout;
 
             return new StartSessionResponse { Result = result };
         }
@@ -69,10 +67,11 @@ namespace Edelstein.Common.Services
 
             source.CancelAfter(SessionLockTimeoutDuration);
 
-            try
+            var session = request.Session;
+            var @lock = await _locker.AcquireAsync(session.Account.ToString(), cancellationToken: source.Token);
+
+            if (@lock != null)
             {
-                var session = request.Session;
-                var @lock = await _locker.AcquireAsync(session.Account.ToString(), cancellationToken: source.Token);
                 var timeout = DateTime.UtcNow.Add(SessionTimeoutDuration);
 
                 if (!await _sessionAccountCache.ExistsAsync(request.Session.Account.ToString()))
@@ -96,10 +95,7 @@ namespace Edelstein.Common.Services
 
                 await @lock.ReleaseAsync();
             }
-            catch (Exception)
-            {
-                result = SessionRegistryResult.FailedTimeout;
-            }
+            else result = SessionRegistryResult.FailedTimeout;
 
             return new UpdateSessionResponse { Result = result };
         }
