@@ -19,7 +19,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             if (Character != null && Field != null && FieldUser != null)
             {
                 Character.FieldID = Field.Info.ForcedReturn ?? Field.ID;
-                Character.FieldPortal = (byte)Field.GetStartPointClosestTo(FieldUser.Position).ID;
+                Character.FieldPortal = (byte)(Field.Info.ForcedReturn.HasValue
+                    ? 0
+                    : Field.GetStartPointClosestTo(FieldUser.Position).ID
+                );
 
                 await FieldUser.EndConversation();
             }
