@@ -1,6 +1,6 @@
 ﻿using System;
 using Edelstein.Protocol.Gameplay.Users.Inventories;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 
 namespace Edelstein.Common.Gameplay.Users.Inventories
 {

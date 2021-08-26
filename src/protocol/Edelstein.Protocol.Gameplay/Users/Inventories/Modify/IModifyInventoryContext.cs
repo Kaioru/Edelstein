@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
 
 namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
 {
@@ -9,11 +8,9 @@ namespace Edelstein.Protocol.Gameplay.Users.Inventories.Modify
 
         void Add(AbstractItemSlot item);
         void Add(int templateID, short quantity = 1);
-        void Add(ItemTemplate template, short quantity = 1); // TODO: item variation
 
         void Set(short slot, AbstractItemSlot item);
         void Set(short slot, int templateID, short quantity = 1);
-        void Set(short slot, ItemTemplate template, short quantity = 1);
 
         void Remove(short slot);
         void Remove(short slot, short count);

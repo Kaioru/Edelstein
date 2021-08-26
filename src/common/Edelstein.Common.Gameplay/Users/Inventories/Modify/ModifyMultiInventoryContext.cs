@@ -3,7 +3,7 @@ using System.Linq;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users.Inventories;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Utils;
 using MoreLinq;
@@ -30,11 +30,9 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Modify
 
         public void Set(BodyPart part, ItemSlotEquip equip) => this[ItemInventoryType.Equip].Set((short)-(short)part, equip);
         public void Set(BodyPart part, int templateID) => this[ItemInventoryType.Equip].Set((short)-(short)part, templateID);
-        public void Set(BodyPart part, ItemEquipTemplate template) => this[ItemInventoryType.Equip].Set((short)-(short)part, template);
 
         public void Add(AbstractItemSlot item) => this[(ItemInventoryType)(item.TemplateID / 1_000_000)].Add(item);
         public void Add(int templateID, short quantity = 1) => this[(ItemInventoryType)(templateID / 1_000_000)].Add(templateID, quantity);
-        public void Add(ItemTemplate template, short quantity = 1) => this[(ItemInventoryType)(template.ID / 1_000_000)].Add(template, quantity);
 
         public void Remove(int templateID, short count) => this[(ItemInventoryType)(templateID / 1_000_000)].Remove(templateID, count);
         public void Remove(AbstractItemSlot item) => this[(ItemInventoryType)(item.TemplateID / 1_000_000)].Remove(item);

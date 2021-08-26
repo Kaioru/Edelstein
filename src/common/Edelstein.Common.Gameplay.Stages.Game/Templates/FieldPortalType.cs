@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Templates
+﻿namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
     public enum FieldPortalType
     {

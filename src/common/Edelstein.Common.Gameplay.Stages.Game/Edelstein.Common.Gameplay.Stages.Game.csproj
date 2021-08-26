@@ -25,6 +25,8 @@
     <None Remove="Conversations\Speakers\" />
     <None Remove="Conversations\Requests\" />
     <None Remove="System.Linq.Async" />
+    <None Remove="Continent\" />
+    <None Remove="Continent\Templates\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -45,6 +47,8 @@
     <Folder Include="Conversations\" />
     <Folder Include="Conversations\Speakers\" />
     <Folder Include="Conversations\Requests\" />
+    <Folder Include="Continent\" />
+    <Folder Include="Continent\Templates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />

@@ -4,7 +4,7 @@ using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 using Edelstein.Protocol.Util.Spatial;
 
-namespace Edelstein.Protocol.Gameplay.Stages.Game.Templates
+namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
     public record FieldPortalTemplate : IPhysicalPoint2D, ITemplate
     {

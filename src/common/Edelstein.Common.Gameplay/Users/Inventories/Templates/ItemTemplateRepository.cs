@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Edelstein.Common.Gameplay.Templating;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates;
+using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Parser;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;

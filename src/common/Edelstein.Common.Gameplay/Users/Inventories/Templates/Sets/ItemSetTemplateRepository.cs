@@ -2,13 +2,12 @@
 using System.Diagnostics;
 using System.Linq;
 using Edelstein.Common.Gameplay.Templating;
-using Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Sets;
 using Edelstein.Protocol.Parser;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using MoreLinq;
 
-namespace Edelstein.Common.Gameplay.Users.Inventories.Templates
+namespace Edelstein.Common.Gameplay.Users.Inventories.Templates.Sets
 {
     public class ItemSetTemplateRepository : TemplateRepository<ItemSetTemplate>
     {

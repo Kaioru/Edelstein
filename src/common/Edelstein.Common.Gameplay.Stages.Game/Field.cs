@@ -9,7 +9,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
+using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Spatial;
 using Edelstein.Protocol.Util.Ticks;
@@ -30,11 +30,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public GameStage Stage { get; }
         public FieldTemplate Template { get; }
 
+        public IFieldInfo Info => Template;
+        public ICollection<IFieldGenerator> Generators { get; }
+
         private readonly object _objectLock;
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
         private readonly IFieldSplit[,] _splits;
 
-        public ICollection<IFieldGenerator> Generators { get; }
 
         // TODO: Better physicalspace2d handling
         public Field(GameStage stage, FieldTemplate template)

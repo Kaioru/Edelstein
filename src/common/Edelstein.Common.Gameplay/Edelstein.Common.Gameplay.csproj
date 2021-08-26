@@ -23,6 +23,8 @@
     <None Remove="Constants\" />
     <None Remove="Constants\Types\" />
     <None Remove="Social\" />
+    <None Remove="Users\Inventories\Templates\Options\" />
+    <None Remove="Users\Inventories\Templates\Sets\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Users\" />
@@ -40,6 +42,8 @@
     <Folder Include="Constants\" />
     <Folder Include="Constants\Types\" />
     <Folder Include="Social\" />
+    <Folder Include="Users\Inventories\Templates\Options\" />
+    <Folder Include="Users\Inventories\Templates\Sets\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />

@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 
-namespace Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options
+namespace Edelstein.Common.Gameplay.Users.Inventories.Templates.Options
 {
     public record ItemOptionTemplate : ITemplate
     {

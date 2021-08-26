@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay.Users.Inventories.Templates.Options
+﻿namespace Edelstein.Common.Gameplay.Users.Inventories.Templates.Options
 {
     public enum ItemOptionType
     {
