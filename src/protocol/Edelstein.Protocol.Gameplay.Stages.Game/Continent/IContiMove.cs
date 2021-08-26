@@ -1,13 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Edelstein.Protocol.Network;
+﻿using System.Threading.Tasks;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Continent
 {
-    public interface IContiMove : IFieldPool, IRepositoryEntry<int>
+    public interface IContiMove : IRepositoryEntry<int>
     {
-        string Info { get; }
+        IContiMoveInfo Info { get; }
 
         ContiMoveState State { get; }
 
@@ -19,6 +18,6 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Continent
         IField EndShipMoveField { get; }
 
         Task Trigger(ContiMoveStateTrigger trigger);
-        Task Dispatch(ContiMoveTarget target, IPacket packet);
+        Task Enter(IFieldObjUser user);
     }
 }

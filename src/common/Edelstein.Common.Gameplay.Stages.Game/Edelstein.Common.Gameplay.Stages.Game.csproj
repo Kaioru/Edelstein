@@ -27,6 +27,7 @@
     <None Remove="System.Linq.Async" />
     <None Remove="Continent\" />
     <None Remove="Continent\Templates\" />
+    <None Remove="stateless" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -57,5 +58,6 @@
   <ItemGroup>
     <PackageReference Include="PowerArgs" Version="3.6.0" />
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+    <PackageReference Include="stateless" Version="5.11.0" />
   </ItemGroup>
 </Project>

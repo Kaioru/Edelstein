@@ -24,15 +24,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         private const int ScreenWidthOffset = ScreenWidth * 75 / 100;
         private const int ScreenHeightOffset = ScreenHeight * 75 / 100;
 
-        public int ID => Template.ID;
-        public Rect2D Bounds => Template.Bounds;
+        public int ID => _template.ID;
+        public Rect2D Bounds => _template.Bounds;
 
-        public GameStage Stage { get; }
-        public FieldTemplate Template { get; }
-
-        public IFieldInfo Info => Template;
+        public IFieldInfo Info => _template;
         public ICollection<IFieldGenerator> Generators { get; }
 
+        private readonly FieldTemplate _template;
         private readonly object _objectLock;
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
         private readonly IFieldSplit[,] _splits;
@@ -41,9 +39,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         // TODO: Better physicalspace2d handling
         public Field(GameStage stage, FieldTemplate template)
         {
-            Stage = stage;
-            Template = template;
-
+            _template = template;
             _objectLock = new object();
             _pools = new Dictionary<FieldObjType, IFieldPool>();
 
@@ -61,7 +57,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             template.Life.ForEach(l =>
                  Generators.Add(l.Type switch
                  {
-                     FieldLifeType.NPC => new FieldNPCGenerator(l, Stage.NPCTemplates.Retrieve(l.TemplateID).Result),
+                     FieldLifeType.NPC => new FieldNPCGenerator(l, stage.NPCTemplates.Retrieve(l.TemplateID).Result),
                      FieldLifeType.Monster => new FieldMobGenerator(),
                      _ => throw new NotImplementedException()
                  })
@@ -84,20 +80,20 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
         public IPhysicalPoint2D GetPortal(int id)
         {
-            if (Template.Portals.ContainsKey(id))
-                return Template.Portals[id];
+            if (_template.Portals.ContainsKey(id))
+                return _template.Portals[id];
             return null;
         }
 
-        public IEnumerable<IPhysicalPoint2D> GetPortals() => Template.Portals.Values.ToImmutableList();
+        public IEnumerable<IPhysicalPoint2D> GetPortals() => _template.Portals.Values.ToImmutableList();
 
         public IPhysicalPoint2D GetStartPoint(int id)
         {
-            if (Template.Portals
+            if (_template.Portals
                     .Where(kv => kv.Value.Type == FieldPortalType.StartPoint)
                     .ToImmutableDictionary()
                     .ContainsKey(id))
-                return Template.Portals[id];
+                return _template.Portals[id];
             return null;
         }
 
@@ -105,12 +101,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             => GetStartPoints().OrderBy(p => p.Position.Distance(point)).FirstOrDefault();
 
         public IEnumerable<IPhysicalPoint2D> GetStartPoints()
-            => Template.Portals.Values.Where(p => p.Type == FieldPortalType.StartPoint).ToImmutableList();
+            => _template.Portals.Values.Where(p => p.Type == FieldPortalType.StartPoint).ToImmutableList();
 
         public IPhysicalLine2D GetFoothold(int id)
         {
-            if (Template.Footholds.ContainsKey(id))
-                return Template.Footholds[id];
+            if (_template.Footholds.ContainsKey(id))
+                return _template.Footholds[id];
             return null;
         }
 
@@ -122,16 +118,16 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public IPhysicalLine2D GetFootholdUnderneath(Point2D point)
             => GetFootholdClosestTo(point);
 
-        public IEnumerable<IPhysicalLine2D> GetFootholds() => Template.Footholds.Values.ToImmutableList();
+        public IEnumerable<IPhysicalLine2D> GetFootholds() => _template.Footholds.Values.ToImmutableList();
 
         public IPhysicalLine2D GetLadderOrRope(int id)
         {
-            if (Template.LadderOrRopes.ContainsKey(id))
-                return Template.LadderOrRopes[id];
+            if (_template.LadderOrRopes.ContainsKey(id))
+                return _template.LadderOrRopes[id];
             return null;
         }
 
-        public IEnumerable<IPhysicalLine2D> GetLadderOrRopes() => Template.LadderOrRopes.Values.ToImmutableList();
+        public IEnumerable<IPhysicalLine2D> GetLadderOrRopes() => _template.LadderOrRopes.Values.ToImmutableList();
 
         private IFieldSplit GetSplit(int row, int col)
         {
@@ -144,8 +140,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
         public IFieldSplit GetSplit(Point2D position)
         {
-            var row = (position.Y - Template.Bounds.Top) / ScreenHeightOffset;
-            var col = (position.X - Template.Bounds.Left) / ScreenWidthOffset;
+            var row = (position.Y - _template.Bounds.Top) / ScreenHeightOffset;
+            var col = (position.X - _template.Bounds.Left) / ScreenWidthOffset;
 
             return GetSplit(row, col);
         }
@@ -204,7 +200,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
         public Task Enter(IFieldObjUser user, string portal, Func<IPacket> getEnterPacket = null)
         {
-            user.Character.FieldPortal = (byte)Template.Portals
+            user.Character.FieldPortal = (byte)_template.Portals
                 .FirstOrDefault(kv => kv.Value.Name.Equals(portal))
                 .Key;
             return Enter(user, getEnterPacket);
@@ -225,7 +221,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                 var portal = GetPortal(user.Character.FieldPortal) ?? GetStartPointClosestTo(user.Position);
                 var isStartPoint = GetStartPoint(portal.ID) != null;
 
-                user.Character.FieldID = Template.ID;
+                user.Character.FieldID = _template.ID;
                 user.Position = portal.Position;
                 user.Foothold = isStartPoint ? null : GetFootholdUnderneath(portal.Position);
 

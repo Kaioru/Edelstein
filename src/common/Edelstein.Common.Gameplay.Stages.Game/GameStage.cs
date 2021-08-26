@@ -27,6 +27,7 @@ using Edelstein.Protocol.Services.Contracts.Social;
 using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
+using Edelstein.Common.Gameplay.Stages.Game.Continent;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -112,7 +113,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             FieldRepository = new FieldRepository(this, FieldTemplates, tickerManager);
             FieldSetRepository = null; // TODO;
-            ContiMoveRepository = null;
+            ContiMoveRepository = new ContiMoveRepository(this, ContiMoveTemplates, FieldRepository, tickerManager);
 
             packetProcessor.Register(new UserTransferChannelRequestHandler());
             packetProcessor.Register(new UserMoveHandler());

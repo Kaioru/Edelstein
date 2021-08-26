@@ -1,10 +1,11 @@
-﻿using Edelstein.Protocol.Gameplay.Templating;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
+using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Continent.Templates
 {
-    public record ContiMoveTemplate : ITemplate
+    public record ContiMoveTemplate : ITemplate, IContiMoveInfo
     {
         public int ID { get; }
 
