@@ -131,6 +131,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             commandProcessor.Register(new DebugCommand());
 
             commandProcessor.Register(new StatCommand());
+            commandProcessor.Register(new ContiMoveCommand(ContiMoveRepository));
         }
 
         public override async Task Enter(GameStageUser user)
