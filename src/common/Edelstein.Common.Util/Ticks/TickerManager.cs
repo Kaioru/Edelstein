@@ -28,7 +28,13 @@ namespace Edelstein.Common.Util.Ticks
         {
             var behaviors = _entries.ToImmutableList();
 
-            await Task.WhenAll(behaviors.Select(async b => { if (!b.IsCancelled && now >= b.NextTick) await b.OnTick(now); }));
+            await Task.WhenAll(behaviors.Select(b =>
+                Task.Run(async () =>
+                {
+                    if (!b.IsCancelled && now >= b.NextTick)
+                        await b.OnTick(now);
+                })
+            ));
 
             foreach (var b in behaviors.Where(b => b.IsCancelled))
                 _entries.Remove(b);
