@@ -62,7 +62,7 @@ namespace Edelstein.Common.Services.Social
             => new()
             {
                 Id = ID,
-                Name = Name,
+                Name = Name ?? string.Empty,
                 Job = Job,
                 Level = Level,
                 Channel = Channel,

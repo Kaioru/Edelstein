@@ -28,7 +28,11 @@ namespace Edelstein.Common.Services.Social
         public DateTime DateDocumentCreated { get; set; }
         public DateTime DateDocumentUpdated { get; set; }
 
-        public GuildRecord() => Members = new List<GuildMemberRecord>();
+        public GuildRecord()
+        {
+            Grade = Array.Empty<string>();
+            Members = new List<GuildMemberRecord>();
+        }
         public GuildRecord(GuildContract contract) => FromContract(contract);
 
         public void FromContract(GuildContract contract)
@@ -52,13 +56,13 @@ namespace Edelstein.Common.Services.Social
             var contract = new GuildContract
             {
                 Id = ID,
-                Name = Name,
+                Name = Name ?? string.Empty,
                 MaxMemberNum = MaxMemberNum,
                 MarkBg = MarkBg,
                 MarkBgColor = MarkBgColor,
                 Mark = Mark,
                 MarkColor = MarkColor,
-                Notice = Notice,
+                Notice = Notice ?? string.Empty,
                 Point = Point,
                 Level = Level
             };
@@ -98,7 +102,7 @@ namespace Edelstein.Common.Services.Social
             => new()
             {
                 Id = ID,
-                Name = Name,
+                Name = Name ?? string.Empty,
                 Job = Job,
                 Level = Level,
                 Grade = Grade,
