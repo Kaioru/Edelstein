@@ -36,9 +36,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Continent
                 c.StartShipMoveField == field ||
                 c.WaitField == field ||
                 c.MoveField == field ||
-                c.CabinField == field ||
-                c.EndField == field ||
-                c.EndShipMoveField == field
+                c.CabinField == field
             );
 
         public async Task<IContiMove> RetrieveByName(string name)

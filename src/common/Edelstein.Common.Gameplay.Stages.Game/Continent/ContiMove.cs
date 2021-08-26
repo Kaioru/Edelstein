@@ -3,19 +3,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game.Continent.Templates;
-using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Stateless;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Continent
 {
-    public class ContiMove : Protocol.Gameplay.Stages.Game.Continent.IContiMove, ITickerBehavior
+    public class ContiMove : IContiMove, ITickerBehavior
     {
         private readonly GameStage _gameStage;
         private readonly ContiMoveTemplate _template;
