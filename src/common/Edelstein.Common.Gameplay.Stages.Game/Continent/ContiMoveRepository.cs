@@ -22,13 +22,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Continent
             ITickerManager tickerManager
         )
         {
-
             Task.WhenAll(templates.RetrieveAll().Result
                 .Select(t => new ContiMove(gameStage, t, fieldRepository))
                 .Select(c => Insert(c))
             ).Wait();
 
-            tickerManager.Schedule(this, TimeSpan.FromSeconds(1));
+            tickerManager.Schedule(this, TimeSpan.FromSeconds(30));
         }
 
         public async Task<IContiMove> RetrieveByField(IField field)
