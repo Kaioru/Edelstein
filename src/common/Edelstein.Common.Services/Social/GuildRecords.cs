@@ -7,7 +7,7 @@ using Edelstein.Protocol.Services.Contracts.Social;
 
 namespace Edelstein.Common.Services.Social
 {
-    public class GuildRecord : IDataDocument, IGuild
+    public record GuildRecord : IDataDocument, IGuild
     {
         public int ID { get; set; }
 
@@ -57,7 +57,7 @@ namespace Edelstein.Common.Services.Social
         }
     }
 
-    public class GuildMemberRecord : IGuildMember
+    public record GuildMemberRecord : IGuildMember
     {
         public int ID { get; set; }
         public string Name { get; set; }
