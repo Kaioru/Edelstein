@@ -28,6 +28,9 @@ using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
 using Edelstein.Common.Gameplay.Stages.Game.Continent;
+using System;
+using MoreLinq;
+using System.Collections.Immutable;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -124,6 +127,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             packetProcessor.Register(new UserSortItemRequestHandler());
             packetProcessor.Register(new UserChangeSlotPositionRequestHandler());
 
+            packetProcessor.Register(new PartyRequestHandler());
+
             packetProcessor.Register(new NPCMoveHandler());
 
             commandProcessor.Register(new HelpCommand(commandProcessor));
@@ -147,6 +152,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             if (guildLoadResponse.Guild != null) fieldUser.Guild = new Guild(guildLoadResponse.Guild);
             if (partyLoadResponse.Party != null) fieldUser.Party = new Party(partyLoadResponse.Party);
 
+            user.FieldUser = fieldUser;
+
+            await field.Enter(fieldUser);
+
             if (fieldUser.Guild != null)
             {
                 var guildPacket = new UnstructuredOutgoingPacket(PacketSendOperations.GuildResult);
@@ -166,10 +175,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                 partyPacket.WritePartyData(fieldUser.Party, ChannelID);
                 await user.Dispatch(partyPacket);
             }
-
-            user.FieldUser = fieldUser;
-
-            await field.Enter(fieldUser);
         }
 
         public override async Task Leave(GameStageUser user)
@@ -197,12 +202,36 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             await Task.WhenAll(targets.Select(t => t.Dispatch(packet)));
         }
 
-        private async Task OnGuildUpdate(GuildUpdateContract contract)
+        private Task OnGuildUpdate(GuildUpdateContract contract)
         {
+            var guild = new Guild(contract.Guild);
+            var memberIDs = guild.Members
+                .Select(m => m.ID)
+                .ToImmutableList();
+            var users = GetUsers()
+                .Where(u => u.FieldUser != null)
+                .Select(u => u.FieldUser)
+                .Where(u => u.Guild?.ID == guild.ID || memberIDs.Contains(u.ID))
+                .ToImmutableList();
+
+            users.ForEach(u => u.Guild = memberIDs.Contains(u.ID) ? guild : null);
+            return Task.CompletedTask;
         }
 
-        private async Task OnPartyUpdate(PartyUpdateContract contract)
+        private Task OnPartyUpdate(PartyUpdateContract contract)
         {
+            var party = new Party(contract.Party);
+            var memberIDs = party.Members
+                .Select(m => m.ID)
+                .ToImmutableList();
+            var users = GetUsers()
+                .Where(u => u.FieldUser != null)
+                .Select(u => u.FieldUser)
+                .Where(u => u.Party?.ID == party.ID || memberIDs.Contains(u.ID))
+                .ToImmutableList();
+
+            users.ForEach(u => u.Party = memberIDs.Contains(u.ID) ? party : null);
+            return Task.CompletedTask;
         }
     }
 }

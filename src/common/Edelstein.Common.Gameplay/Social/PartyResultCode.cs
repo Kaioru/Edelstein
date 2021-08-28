@@ -4,7 +4,7 @@
     {
         LoadParty_Done = 0x7,
         CreateNewParty_Done = 0x8,
-        CreateNewParty_AlreayJoined = 0x9,
+        CreateNewParty_AlreadyJoined = 0x9,
         CreateNewParty_Beginner = 0xA,
         CreateNewParty_Unknown = 0xB,
         WithdrawParty_Done = 0xC,
