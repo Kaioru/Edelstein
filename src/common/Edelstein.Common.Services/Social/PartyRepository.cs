@@ -28,21 +28,10 @@ namespace Edelstein.Common.Services.Social
         {
             using var session = _store.StartSession();
 
-            try
-            {
-                return await session
-                    .Query<PartyRecord>()
-                    .Where(p => p.Members.Any(m => m.ID == member))
-                    .FirstOrDefault();
-            }
-            catch (Exception)
-            {
-                return (await session
-                    .Query<PartyRecord>()
-                    .All())
-                    .Where(p => p.Members.Any(m => m.ID == member))
-                    .FirstOrDefault();
-            }
+            return await session
+                .Query<PartyRecord>()
+                .Where(p => p.Members.Any(m => m.ID == member))
+                .FirstOrDefault();
         }
     }
 }
