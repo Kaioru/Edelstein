@@ -24,11 +24,12 @@ namespace Edelstein.Common.Services.Social
         )
         => _store = store;
 
-        public Task<GuildRecord> RetrieveByMember(int member)
+        public async Task<GuildRecord> RetrieveByMember(int member)
         {
             using var session = _store.StartSession();
-            return session
+            return (await session
                 .Query<GuildRecord>()
+                .All())
                 .Where(p => p.Members.Where(m => m.ID == member).Any())
                 .FirstOrDefault();
         }

@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edelstein.Common.Gameplay.Social;
 using Edelstein.Protocol.Datastore;
+using Edelstein.Protocol.Gameplay.Social;
 using Edelstein.Protocol.Services.Contracts.Social;
 
 namespace Edelstein.Common.Services.Social
 {
-    public record PartyRecord : IDataDocument
+    public record PartyRecord : IDataDocument, IParty
     {
         public int ID { get; set; }
 
         public int Boss { get; set; }
         public ICollection<PartyMemberRecord> Members { get; set; }
+
+        ICollection<IPartyMember> IParty.Members => Members.ToList<IPartyMember>();
 
         public DateTime DateDocumentCreated { get; set; }
         public DateTime DateDocumentUpdated { get; set; }
@@ -25,18 +29,9 @@ namespace Edelstein.Common.Services.Social
             Boss = contract.Boss;
             Members = contract.Members.Select(m => new PartyMemberRecord(m)).ToList();
         }
-
-        public PartyContract ToContract()
-        {
-            var contract = new PartyContract { Id = ID, Boss = Boss };
-
-            contract.Members.Add(Members.Select(m => m.ToContract()).ToList());
-
-            return contract;
-        }
     }
 
-    public record PartyMemberRecord
+    public record PartyMemberRecord : IPartyMember
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -57,16 +52,28 @@ namespace Edelstein.Common.Services.Social
             Channel = contract.Channel;
             Field = contract.Field;
         }
+    }
 
-        public PartyMemberContract ToContract()
+    internal static class PartyContracts
+    {
+        public static PartyContract ToContract(this IParty party)
+        {
+            var contract = new PartyContract { Id = party.ID, Boss = party.Boss };
+
+            contract.Members.Add(party.Members.Select(m => m.ToContract()).ToList());
+
+            return contract;
+        }
+
+        public static PartyMemberContract ToContract(this IPartyMember member)
             => new()
             {
-                Id = ID,
-                Name = Name ?? string.Empty,
-                Job = Job,
-                Level = Level,
-                Channel = Channel,
-                Field = Field
+                Id = member.ID,
+                Name = member.Name ?? string.Empty,
+                Job = member.Job,
+                Level = member.Level,
+                Channel = member.Channel,
+                Field = member.Field
             };
     }
 }

@@ -24,20 +24,20 @@ namespace Edelstein.Common.Services.Social
         private readonly IMessageBus _messenger;
         private readonly ILockProvider _locker;
         private readonly GuildRepository _repository;
-        private readonly ICollection<ChannelWriter<GuildUpdateContract>> _dispatchers;
+        private readonly ICollection<ChannelWriter<GuildUpdateContract>> _channels;
 
         public GuildService(ICacheClient cache, IMessageBus messenger, IDataStore store)
         {
             _messenger = messenger;
             _locker = new ScopedLockProvider(new CacheLockProvider(cache, messenger), GuildLockScope);
             _repository = new GuildRepository(cache, store);
-            _dispatchers = new List<ChannelWriter<GuildUpdateContract>>();
+            _channels = new List<ChannelWriter<GuildUpdateContract>>();
 
             _ = _messenger.SubscribeAsync<GuildUpdateEvent>(async e =>
             {
                 var contract = new GuildUpdateContract { Guild = e.Guild.ToContract() };
 
-                await Task.WhenAll(_dispatchers.Select(async d => await d.WriteAsync(contract)));
+                await Task.WhenAll(_channels.Select(async d => await d.WriteAsync(contract)));
             });
         }
 
@@ -88,12 +88,12 @@ namespace Edelstein.Common.Services.Social
         {
             var channel = Channel.CreateBounded<GuildUpdateContract>(8);
 
-            _dispatchers.Add(channel);
+            _channels.Add(channel);
 
             await foreach (var dispatch in channel.Reader.ReadAllAsync(context.CancellationToken))
                 yield return dispatch;
 
-            _dispatchers.Remove(channel);
+            _channels.Remove(channel);
             channel.Writer.Complete();
         }
     }

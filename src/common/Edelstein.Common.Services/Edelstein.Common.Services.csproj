@@ -8,6 +8,8 @@
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services\Edelstein.Protocol.Services.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="protobuf-net.Grpc" />

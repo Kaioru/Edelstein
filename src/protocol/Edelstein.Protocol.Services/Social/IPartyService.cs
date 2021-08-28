@@ -12,7 +12,7 @@ namespace Edelstein.Protocol.Services.Social
         [OperationContract] Task<PartyLoadByIDResponse> LoadByID(PartyLoadByIDRequest request);
         [OperationContract] Task<PartyLoadByCharacterResponse> LoadByCharacter(PartyLoadByCharacterRequest request);
 
-        [OperationContract] Task<PartyCreateResponse> Create(PartyCreateResponse request);
+        [OperationContract] Task<PartyCreateResponse> Create(PartyCreateRequest request);
         [OperationContract] Task<PartyWithdrawResponse> Withdraw(PartyWithdrawRequest request);
 
         [OperationContract] IAsyncEnumerable<PartyUpdateContract> Subscribe(CallContext context = default);

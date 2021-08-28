@@ -1,5 +1,4 @@
-﻿using System;
-using Edelstein.Protocol.Gameplay.Social;
+﻿using Edelstein.Protocol.Gameplay.Social;
 using Edelstein.Protocol.Services.Contracts.Social;
 
 namespace Edelstein.Common.Gameplay.Social

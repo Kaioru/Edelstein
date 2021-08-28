@@ -7,7 +7,7 @@ namespace Edelstein.Common.Gameplay.Social
 {
     public static class PartyPackets
     {
-        public static void WritePartyData(this IPacketWriter writer, IParty p, int channelID)
+        public static void WritePartyData(this IPacketWriter writer, IParty p, int channelID = -1)
         {
             var members = p.Members.ToArray();
 
