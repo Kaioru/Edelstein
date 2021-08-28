@@ -15,7 +15,16 @@ namespace Edelstein.Common.Datastore.LiteDB
             => _queryable = queryable;
 
         public IDataQuery<T> Where(Expression<Func<T, bool>> predicate)
-            => new LiteDataQuery<T>(_queryable.Where(predicate));
+        {
+            try
+            {
+                return new LiteDataQuery<T>(_queryable.Where(predicate));
+            }
+            catch (LiteException)
+            {
+                return new EnumerableDataQuery<T>(_queryable.ToList()).Where(predicate);
+            }
+        }
 
         public IDataQuery<T> OrderBy<K>(Expression<Func<T, K>> keySelector)
             => new LiteDataQuery<T>(_queryable.OrderBy(keySelector));
