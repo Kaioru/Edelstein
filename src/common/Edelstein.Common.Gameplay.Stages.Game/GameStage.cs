@@ -40,6 +40,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public int ChannelID => Config.ChannelID;
 
         public IDispatchService DispatchService { get; }
+
+        public IInviteService InviteService { get; }
         public IGuildService GuildService { get; }
         public IPartyService PartyService { get; }
 
@@ -64,6 +66,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ISessionRegistry sessionRegistry,
             IMigrationRegistry migrationRegistry,
             IDispatchService dispatchService,
+            IInviteService inviteService,
             IGuildService guildService,
             IPartyService partyService,
             IAccountRepository accountRepository,
@@ -93,12 +96,15 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         )
         {
             DispatchService = dispatchService;
-            GuildService = guildService;
-            PartyService = partyService;
 
             dispatchService
                 .Subscribe(new DispatchSubscription { Server = ID })
                 .ForEachAwaitAsync(OnDispatch);
+
+            InviteService = inviteService;
+            GuildService = guildService;
+            PartyService = partyService;
+
             guildService
                 .Subscribe()
                 .ForEachAwaitAsync(OnGuildUpdate);
