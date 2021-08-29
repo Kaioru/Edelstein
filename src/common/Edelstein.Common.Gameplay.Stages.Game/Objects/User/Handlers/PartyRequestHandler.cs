@@ -115,6 +115,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
                             await user.Dispatch(createResponse);
                         }
 
+                        if (user?.Party?.Boss != user.ID) return;
+
                         var name = packet.ReadString();
                         var result = PartyResultCode.InviteParty_Sent;
                         var response = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
