@@ -9,6 +9,7 @@
     <Protobuf Include="Protos\session_registry.proto" />
     <Protobuf Include="Protos\migration_registry.proto" />
     <Protobuf Include="Protos\dispatch_service.proto" />
+    <Protobuf Include="Protos\Social\invite_service.proto" />
     <Protobuf Include="Protos\Social\guild_service.proto" />
     <Protobuf Include="Protos\Social\party_service.proto" />
   </ItemGroup>
