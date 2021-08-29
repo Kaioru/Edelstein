@@ -122,6 +122,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             FieldSetRepository = null; // TODO;
             ContiMoveRepository = new ContiMoveRepository(this, ContiMoveTemplates, FieldRepository, tickerManager);
 
+            packetProcessor.Register(new PartyRequestHandler());
+            packetProcessor.Register(new PartyResultHandler());
+
             packetProcessor.Register(new UserTransferChannelRequestHandler());
             packetProcessor.Register(new UserMoveHandler());
             packetProcessor.Register(new UserEmotionHandler());
@@ -130,9 +133,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             packetProcessor.Register(new UserGatherItemRequestHandler());
             packetProcessor.Register(new UserSortItemRequestHandler());
             packetProcessor.Register(new UserChangeSlotPositionRequestHandler());
-
-            packetProcessor.Register(new PartyRequestHandler());
-            packetProcessor.Register(new PartyResultHandler());
+            packetProcessor.Register(new UserCharacterInfoRequestHandler());
 
             packetProcessor.Register(new NPCMoveHandler());
 
