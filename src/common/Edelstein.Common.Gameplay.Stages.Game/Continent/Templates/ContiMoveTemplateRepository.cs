@@ -20,12 +20,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Continent.Templates
         {
             logger ??= new NullLogger<ContiMoveTemplateRepository>();
 
-            var dirMap = collection.Resolve("Server/Continent.img").ResolveAll();
+            var dir = collection.Resolve("Server/Continent.img").ResolveAll();
             var stopwatch = new Stopwatch();
 
             stopwatch.Start();
 
-            dirMap.Children
+            dir.Children
                 .Select(n =>
                 {
                     var id = Convert.ToInt32(n.Name);
