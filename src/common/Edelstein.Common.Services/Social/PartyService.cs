@@ -154,6 +154,7 @@ namespace Edelstein.Common.Services.Social
 
                 if (result == PartyServiceResult.Ok)
                 {
+                    var targets = party.Members.ToList();
                     var isDisband = request.Character == party.Boss;
 
                     if (isDisband)
@@ -167,7 +168,7 @@ namespace Edelstein.Common.Services.Social
                         await _repository.Update(party);
                     }
 
-                    await Task.WhenAll(party.Members.Select(async m =>
+                    await Task.WhenAll(targets.Select(async m =>
                     {
                         var packet = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
 
@@ -249,6 +250,50 @@ namespace Edelstein.Common.Services.Social
             return new PartyJoinResponse { Result = PartyServiceResult.FailedTimeout };
         }
 
+        public async Task<PartyChangeBossResponse> ChangeBoss(PartyChangeBossRequest request)
+        {
+            var source = new CancellationTokenSource();
+
+            source.CancelAfter(PartyLockTimeoutDuration);
+
+            var @lock = await _locker.AcquireAsync(PartyLockKey, cancellationToken: source.Token);
+
+            if (@lock != null)
+            {
+                var result = PartyServiceResult.Ok;
+                var party = await _repository.RetrieveByMember(request.Character);
+
+                if (party == null) result = PartyServiceResult.FailedNotInParty;
+                else if (party.Boss == request.Character) result = PartyServiceResult.FailedAlreadyBoss;
+
+                if (result == PartyServiceResult.Ok)
+                {
+                    var targets = party.Members.Select(m => m.ID).ToImmutableList();
+                    var packet = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
+
+                    party.Boss = request.Character;
+
+                    await _repository.Update(party);
+
+                    packet.WriteByte((byte)PartyResultCode.ChangePartyBoss_Done);
+                    packet.WriteInt(request.Character);
+                    packet.WriteBool(request.IsDisconnect);
+
+                    var dispatchRequest = new DispatchToCharactersRequest { Data = ByteString.CopyFrom(packet.Buffer) };
+
+                    dispatchRequest.Characters.Add(targets);
+
+                    await _dispatcher.DispatchToCharacters(dispatchRequest);
+                    await _messenger.PublishAsync(new PartyUpdateEvent { Party = party });
+                }
+
+                await @lock.ReleaseAsync();
+
+                return new PartyChangeBossResponse { Result = result };
+            }
+
+            return new PartyChangeBossResponse { Result = PartyServiceResult.FailedTimeout };
+        }
 
         public async Task<PartyUpdateChangeLevelOrJobResponse> UpdateChangeLevelOrJob(PartyUpdateChangeLevelOrJobRequest request)
         {
