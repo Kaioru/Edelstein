@@ -1,0 +1,2 @@
+# Edelstein [![Build](https://github.com/Kaioru/Edelstein/actions/workflows/build.yaml/badge.svg)](https://github.com/Kaioru/Edelstein/actions/workflows/build.yaml)
+A MapleStory Global v.95 server emulator written in C#.
