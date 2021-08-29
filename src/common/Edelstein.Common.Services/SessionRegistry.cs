@@ -15,7 +15,7 @@ namespace Edelstein.Common.Services
         private static readonly string SessionAccountScope = $"{SessionScope}:account";
         private static readonly string SessionCharacterScope = $"{SessionScope}:character";
         private static readonly string SessionLockScope = $"{SessionScope}:lock";
-        private static readonly TimeSpan SessionTimeoutDuration = TimeSpan.FromMinutes(2);
+        private static readonly TimeSpan SessionTimeoutDuration = TimeSpan.FromMinutes(4);
         private static readonly TimeSpan SessionLockTimeoutDuration = TimeSpan.FromSeconds(6);
 
         private readonly ICacheClient _sessionAccountCache;
