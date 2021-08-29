@@ -123,6 +123,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
                         var character = await stage.CharacterRepository.RetrieveByName(name);
 
                         if (character == null || user.Character.ID == character.ID) result = PartyResultCode.InviteParty_BlockedUser;
+                        if ((await service.LoadByCharacter(new PartyLoadByCharacterRequest { Character = character.ID })).Party != null) result = PartyResultCode.JoinParty_AlreadyJoined;
                         else
                         {
                             var serviceResponse = await stage.InviteService.Register(new InviteRegisterRequest

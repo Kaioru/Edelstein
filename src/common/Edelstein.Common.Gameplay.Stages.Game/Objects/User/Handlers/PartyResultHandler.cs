@@ -28,8 +28,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
                     break; // Do nothing
                 case PartyResultCode.InviteParty_Accepted:
                     {
-                        if (user.Party != null) return;
-
                         var serviceRequest = new InviteClaimRequest { Type = InviteType.Party, Invited = user.ID };
                         var serviceResponse = await stage.InviteService.Claim(serviceRequest);
 
