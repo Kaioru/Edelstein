@@ -136,6 +136,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             packetProcessor.Register(new NPCMoveHandler());
 
+            packetProcessor.Register(new ContiStateHandler());
+
             commandProcessor.Register(new HelpCommand(commandProcessor));
             commandProcessor.Register(new AliasCommand(commandProcessor));
             commandProcessor.Register(new DebugCommand());
