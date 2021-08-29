@@ -46,6 +46,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public ICommandProcessor CommandProcessor { get; }
 
         public ITemplateRepository<ItemTemplate> ItemTemplates { get; }
+        public ITemplateRepository<ItemStringTemplate> ItemStringTemplates { get; }
         public ITemplateRepository<ItemOptionTemplate> ItemOptionTemplates { get; }
         public ITemplateRepository<ItemSetTemplate> ItemSetTemplates { get; }
 
@@ -75,6 +76,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             IPacketProcessor<GameStage, GameStageUser> packetProcessor,
             ICommandProcessor commandProcessor,
             ITemplateRepository<ItemTemplate> itemTemplates,
+            ITemplateRepository<ItemStringTemplate> itemStringTemplates,
             ITemplateRepository<ItemOptionTemplate> itemOptionTemplates,
             ITemplateRepository<ItemSetTemplate> itemSetTemplates,
             ITemplateRepository<FieldTemplate> fieldTemplates,
@@ -114,6 +116,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             CommandProcessor = commandProcessor;
             ItemTemplates = itemTemplates;
+            ItemStringTemplates = itemStringTemplates;
             ItemOptionTemplates = itemOptionTemplates;
             ItemSetTemplates = itemSetTemplates;
             FieldTemplates = fieldTemplates;
@@ -149,6 +152,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             commandProcessor.Register(new DebugCommand());
 
             commandProcessor.Register(new StatCommand());
+            commandProcessor.Register(new ItemCommand(ItemStringTemplates, ItemTemplates));
             commandProcessor.Register(new FieldCommand(FieldRepository, FieldStringTemplates, FieldTemplates));
             commandProcessor.Register(new ContiMoveCommand(ContiMoveRepository));
         }
