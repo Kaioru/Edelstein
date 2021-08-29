@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Social;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
@@ -25,6 +26,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
             {
                 case PartyRequestCode.CreateNewParty:
                     {
+                        if (user.Party != null) return;
+
                         var result = PartyResultCode.CreateNewParty_Done;
                         var response = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
                         var contract = new PartyCreateRequest
@@ -61,9 +64,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
                     }
                 case PartyRequestCode.WithdrawParty:
                     {
+                        if (user.Party == null) return;
+
                         var result = PartyResultCode.WithdrawParty_Done;
                         var response = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
-                        var contract = new PartyWithdrawRequest { Character = user.ID };
+                        var contract = new PartyWithdrawRequest { Character = user.ID, IsKick = false };
                         var serviceResponse = await service.Withdraw(contract);
                         var serviceResult = serviceResponse.Result;
 
@@ -123,6 +128,56 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
 
                             response.WriteString(character.Name);
                         }
+
+                        await user.Dispatch(response);
+                        break;
+                    }
+                case PartyRequestCode.KickParty:
+                    {
+                        if (user.Party == null) return;
+                        if (user.Party.Boss != user.ID) return;
+
+                        var id = packet.ReadInt();
+
+                        if (!user.Party.Members.Any(m => m.ID == id)) return;
+                        if (id == user.ID) return;
+
+                        var result = PartyResultCode.WithdrawParty_Done;
+                        var response = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
+                        var contract = new PartyWithdrawRequest { Character = id, IsKick = true };
+                        var serviceResponse = await service.Withdraw(contract);
+                        var serviceResult = serviceResponse.Result;
+
+                        if (serviceResult == PartyServiceResult.FailedNotInParty) result = PartyResultCode.WithdrawParty_NotJoined;
+                        else if (serviceResult != PartyServiceResult.Ok) result = PartyResultCode.WithdrawParty_Unknown;
+
+                        response.WriteByte((byte)result);
+
+                        if (result == PartyResultCode.WithdrawParty_Done) return;
+
+                        await user.Dispatch(response);
+                        break;
+                    }
+                case PartyRequestCode.ChangePartyBoss:
+                    {
+                        if (user.Party == null || user.Party.Boss != user.ID) return;
+
+                        var id = packet.ReadInt();
+
+                        if (!user.Party.Members.Any(m => m.ID == id)) return;
+                        if (id == user.ID) return;
+
+                        var result = PartyResultCode.ChangePartyBoss_Done;
+                        var response = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
+                        var contract = new PartyChangeBossRequest { Character = id };
+                        var serviceResponse = await service.ChangeBoss(contract);
+                        var serviceResult = serviceResponse.Result;
+
+                        if (serviceResult != PartyServiceResult.Ok) result = PartyResultCode.WithdrawParty_Unknown;
+
+                        response.WriteByte((byte)result);
+
+                        if (result == PartyResultCode.ChangePartyBoss_Done) return;
 
                         await user.Dispatch(response);
                         break;
