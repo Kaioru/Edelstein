@@ -3,8 +3,10 @@ using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Social;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Contracts;
 using Edelstein.Protocol.Services.Contracts.Social;
 using Edelstein.Protocol.Util.Spatial;
+using Google.Protobuf;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
@@ -59,7 +61,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
                     }
                 case PartyRequestCode.WithdrawParty:
                     {
-                        var party = user.Party;
                         var result = PartyResultCode.WithdrawParty_Done;
                         var response = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
                         var contract = new PartyWithdrawRequest { Character = user.ID };
@@ -72,6 +73,56 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
                         response.WriteByte((byte)result);
 
                         if (result == PartyResultCode.WithdrawParty_Done) return;
+
+                        await user.Dispatch(response);
+                        break;
+                    }
+                case PartyRequestCode.InviteParty:
+                    {
+                        if (user.Party == null) return;
+
+                        var name = packet.ReadString();
+                        var result = PartyResultCode.InviteParty_Sent;
+                        var response = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
+                        var character = await stage.CharacterRepository.RetrieveByName(name);
+
+                        if (character == null || user.Character.ID == character.ID) result = PartyResultCode.InviteParty_BlockedUser;
+                        else
+                        {
+                            var serviceResponse = await stage.InviteService.Register(new InviteRegisterRequest
+                            {
+                                Invite = new InviteContract
+                                {
+                                    Type = InviteType.Party,
+                                    Invited = character.ID,
+                                    Inviter = user.ID
+                                }
+                            });
+
+                            if (serviceResponse.Result != InviteServiceResult.Ok) result = PartyResultCode.InviteParty_AlreadyInvited;
+                        }
+
+                        response.WriteByte((byte)result);
+
+                        if (result == PartyResultCode.InviteParty_Sent)
+                        {
+                            var invitation = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
+                            var invitationRequest = new DispatchToCharactersRequest();
+
+                            invitation.WriteByte((byte)PartyRequestCode.InviteParty);
+                            invitation.WriteInt(user.Character.ID);
+                            invitation.WriteString(user.Character.Name);
+                            invitation.WriteInt(user.Character.Level);
+                            invitation.WriteInt(user.Character.Job);
+                            invitation.WriteByte(0); // PartyOpt
+
+                            invitationRequest.Data = ByteString.CopyFrom(invitation.Buffer);
+                            invitationRequest.Characters.Add(character.ID);
+
+                            await stage.DispatchService.DispatchToCharacters(invitationRequest);
+
+                            response.WriteString(character.Name);
+                        }
 
                         await user.Dispatch(response);
                         break;

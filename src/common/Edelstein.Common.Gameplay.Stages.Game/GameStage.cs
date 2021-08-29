@@ -132,6 +132,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             packetProcessor.Register(new UserChangeSlotPositionRequestHandler());
 
             packetProcessor.Register(new PartyRequestHandler());
+            packetProcessor.Register(new PartyResultHandler());
 
             packetProcessor.Register(new NPCMoveHandler());
 
