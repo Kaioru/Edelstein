@@ -71,6 +71,8 @@ namespace Edelstein.App.Standalone
             collection.AddSingleton<ISessionRegistry, SessionRegistry>();
             collection.AddSingleton<IMigrationRegistry, MigrationRegistry>();
             collection.AddSingleton<IDispatchService, DispatchService>();
+
+            collection.AddSingleton<IInviteService, InviteService>();
             collection.AddSingleton<IGuildService, GuildService>();
             collection.AddSingleton<IPartyService, PartyService>();
 
@@ -150,6 +152,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ISessionRegistry>(),
                     provider.GetService<IMigrationRegistry>(),
                     provider.GetService<IDispatchService>(),
+                    provider.GetService<IInviteService>(),
                     provider.GetService<IGuildService>(),
                     provider.GetService<IPartyService>(),
                     provider.GetService<IAccountRepository>(),
