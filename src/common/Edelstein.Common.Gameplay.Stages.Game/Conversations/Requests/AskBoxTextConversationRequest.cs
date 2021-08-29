@@ -1,5 +1,4 @@
-﻿using System;
-using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Network;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Conversations.Requests

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
 

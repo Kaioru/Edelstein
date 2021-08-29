@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using Edelstein.Common.Gameplay.Templating;
-using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Parser;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;

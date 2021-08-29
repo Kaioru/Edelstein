@@ -3,13 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Stages.Game.Continent.Templates;
 using Edelstein.Common.Util.Repositories;
-using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Util.Ticks;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Continent
 {

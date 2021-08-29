@@ -7,7 +7,6 @@ using Edelstein.Protocol.Services.Social;
 using Foundatio.Caching;
 using Foundatio.Lock;
 using Foundatio.Messaging;
-using Google.Protobuf.Reflection;
 
 namespace Edelstein.Common.Services.Social
 {

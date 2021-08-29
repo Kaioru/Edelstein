@@ -1,5 +1,4 @@
-﻿using System;
-using Edelstein.Protocol.Network;
+﻿using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments

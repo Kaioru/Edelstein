@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Edelstein.Common.Gameplay.Social;
 using Edelstein.Protocol.Datastore;
 using Edelstein.Protocol.Gameplay.Social;
 using Edelstein.Protocol.Services.Contracts.Social;

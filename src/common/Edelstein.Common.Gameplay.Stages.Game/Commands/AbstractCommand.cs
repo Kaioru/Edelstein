@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
