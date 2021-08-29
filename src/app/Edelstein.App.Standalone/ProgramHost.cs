@@ -106,6 +106,8 @@ namespace Edelstein.App.Standalone
                     provider.GetService<IServerRegistry>(),
                     provider.GetService<ISessionRegistry>(),
                     provider.GetService<IMigrationRegistry>(),
+                    provider.GetService<IGuildService>(),
+                    provider.GetService<IPartyService>(),
                     provider.GetService<IAccountRepository>(),
                     provider.GetService<IAccountWorldRepository>(),
                     provider.GetService<ICharacterRepository>(),
