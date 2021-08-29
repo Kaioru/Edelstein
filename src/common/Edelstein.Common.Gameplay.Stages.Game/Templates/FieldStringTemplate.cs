@@ -5,10 +5,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
     public record FieldStringTemplate : ITemplate
     {
-        public int ID { get; set; }
+        public int ID { get; }
 
-        public string MapName { get; set; }
-        public string StreetName { get; set; }
+        public string MapName { get; }
+        public string StreetName { get; }
 
         public FieldStringTemplate(int id, IDataProperty property)
         {

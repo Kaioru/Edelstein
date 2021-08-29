@@ -49,6 +49,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e);
                     await user.Message(e.Message);
                 }
                 return true;

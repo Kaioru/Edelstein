@@ -82,6 +82,7 @@ namespace Edelstein.App.Standalone
 
             collection.AddSingleton<ITemplateRepository<WorldTemplate>, WorldTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ItemTemplate>, ItemTemplateRepository>();
+            collection.AddSingleton<ITemplateRepository<ItemStringTemplate>, ItemStringTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ItemOptionTemplate>, ItemOptionTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ItemSetTemplate>, ItemSetTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<FieldTemplate>, FieldTemplateRepository>();
@@ -163,6 +164,7 @@ namespace Edelstein.App.Standalone
                     p.GetService<IPacketProcessor<GameStage, GameStageUser>>(),
                     p.GetService<ICommandProcessor>(),
                     provider.GetService<ITemplateRepository<ItemTemplate>>(),
+                    provider.GetService<ITemplateRepository<ItemStringTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemOptionTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemSetTemplate>>(),
                     provider.GetService<ITemplateRepository<FieldTemplate>>(),
