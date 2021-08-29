@@ -171,12 +171,12 @@ namespace Edelstein.Common.Services.Social
                     {
                         var member = party.Members.FirstOrDefault(m => m.ID == request.Character);
 
+                        party.Members.Remove(member);
+                        await _repository.Update(party);
+
                         packet.WriteBool(request.IsKick);
                         packet.WriteString(member.Name);
                         packet.WritePartyData(party);
-
-                        party.Members.Remove(member);
-                        await _repository.Update(party);
                     }
 
                     var dispatchRequest = new DispatchToCharactersRequest { Data = ByteString.CopyFrom(packet.Buffer) };
@@ -194,6 +194,55 @@ namespace Edelstein.Common.Services.Social
 
             return new PartyWithdrawResponse { Result = PartyServiceResult.FailedTimeout };
         }
+
+        public async Task<PartyJoinResponse> Join(PartyJoinRequest request)
+        {
+            var source = new CancellationTokenSource();
+
+            source.CancelAfter(PartyLockTimeoutDuration);
+
+            var @lock = await _locker.AcquireAsync(PartyLockKey, cancellationToken: source.Token);
+
+            if (@lock != null)
+            {
+                var result = PartyServiceResult.Ok;
+                var party = await _repository.Retrieve(request.Party);
+
+                if (await _repository.RetrieveByMember(request.Member.Id) != null) result = PartyServiceResult.FailedAlreadyInParty;
+                if (party == null) result = PartyServiceResult.FailedNonExistentParty;
+                else if (party.Members.Any(m => m.ID == request.Member.Id)) result = PartyServiceResult.FailedAlreadyInParty;
+                else if (party.Members.Count >= 6) result = PartyServiceResult.FailedFullParty;
+
+                if (result == PartyServiceResult.Ok)
+                {
+                    var packet = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
+
+                    party.Members.Add(new PartyMemberRecord(request.Member));
+                    await _repository.Update(party);
+
+                    packet.WriteByte((byte)PartyResultCode.JoinParty_Done);
+                    packet.WriteInt(party.ID);
+                    packet.WriteString(request.Member.Name);
+                    packet.WritePartyData(party);
+
+                    var targets = party.Members.Select(m => m.ID).ToImmutableList();
+                    var dispatchRequest = new DispatchToCharactersRequest { Data = ByteString.CopyFrom(packet.Buffer) };
+
+                    dispatchRequest.Characters.Add(targets);
+
+                    await _dispatcher.DispatchToCharacters(dispatchRequest);
+                    await _messenger.PublishAsync(new PartyUpdateEvent { Party = party });
+                }
+
+                await @lock.ReleaseAsync();
+
+                return new PartyJoinResponse { Result = result, Party = party?.ToContract() };
+            }
+
+            return new PartyJoinResponse { Result = PartyServiceResult.FailedTimeout };
+        }
+
+
 
         public async IAsyncEnumerable<PartyUpdateContract> Subscribe(CallContext context = default)
         {

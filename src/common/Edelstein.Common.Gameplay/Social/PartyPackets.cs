@@ -7,7 +7,7 @@ namespace Edelstein.Common.Gameplay.Social
 {
     public static class PartyPackets
     {
-        public static void WritePartyData(this IPacketWriter writer, IParty p, int channelID = -1)
+        public static void WritePartyData(this IPacketWriter writer, IParty p)
         {
             var members = p.Members.ToArray();
 
@@ -27,12 +27,9 @@ namespace Edelstein.Common.Gameplay.Social
             writer.WriteInt(p.Boss);
 
             foreach (var member in members)
-                writer.WriteInt(member?.Channel == channelID
-                    ? member.Field
-                    : -1
-                );
+                writer.WriteInt(member?.Field ?? 0);
 
-            foreach (var member in members)
+            foreach (var _ in members)
             {
                 // TownPortal;
                 writer.WriteInt(0); // TownID
@@ -42,9 +39,9 @@ namespace Edelstein.Common.Gameplay.Social
                 writer.WriteLong(0); // FieldPortal Y
             }
 
-            foreach (var member in members)
+            foreach (var _ in members)
                 writer.WriteInt(0); // PQReward
-            foreach (var member in members)
+            foreach (var _ in members)
                 writer.WriteInt(0); // PQRewardType
 
             writer.WriteInt(0); // PQRewardMobTemplateID
