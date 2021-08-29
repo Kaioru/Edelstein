@@ -14,8 +14,8 @@ namespace Edelstein.Common.Gameplay.Stages
         where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
         where TConfig : ServerStageConfig
     {
-        private static readonly TimeSpan SessionDisconnectDuration = TimeSpan.FromMinutes(1);
-        private static readonly TimeSpan SessionUpdateDuration = TimeSpan.FromSeconds(30);
+        private static readonly TimeSpan SessionDisconnectDuration = TimeSpan.FromMinutes(3);
+        private static readonly TimeSpan SessionUpdateDuration = TimeSpan.FromMinutes(1);
 
         public long Key { get; set; }
 
