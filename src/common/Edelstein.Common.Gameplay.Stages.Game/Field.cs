@@ -14,6 +14,9 @@ using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Spatial;
 using Edelstein.Protocol.Util.Ticks;
 using MoreLinq;
+using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Social;
+using Edelstein.Protocol.Services.Contracts.Social;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -30,6 +33,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public IFieldInfo Info => _template;
         public ICollection<IFieldGenerator> Generators { get; }
 
+        private readonly GameStage _stage;
         private readonly FieldTemplate _template;
         private readonly object _objectLock;
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
@@ -39,6 +43,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         // TODO: Better physicalspace2d handling
         public Field(GameStage stage, FieldTemplate template)
         {
+            _stage = stage;
             _template = template;
             _objectLock = new object();
             _pools = new Dictionary<FieldObjType, IFieldPool>();
@@ -226,6 +231,44 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                 user.Foothold = isStartPoint ? null : GetFootholdUnderneath(portal.Position);
 
                 await user.Dispatch(user.GetSetFieldPacket());
+
+
+
+
+                if (user.Guild != null)
+                {
+                    if (!user.IsInstantiated)
+                    {
+                        var guildPacket = new UnstructuredOutgoingPacket(PacketSendOperations.GuildResult);
+
+                        guildPacket.WriteByte((byte)GuildResultCode.LoadGuild_Done);
+                        guildPacket.WriteBool(true);
+                        guildPacket.WriteGuildData(user.Guild);
+
+                        _ = user.Dispatch(guildPacket);
+                    }
+                }
+
+                if (user.Party != null)
+                {
+                    if (!user.IsInstantiated)
+                    {
+                        var partyPacket = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
+
+                        partyPacket.WriteByte((byte)PartyResultCode.LoadParty_Done);
+                        partyPacket.WriteInt(user.Party.ID);
+                        partyPacket.WritePartyData(user.Party, _stage.ChannelID);
+
+                        _ = user.Dispatch(partyPacket);
+                    }
+
+                    _ = _stage.PartyService.UpdateUserMigration(new PartyUpdateUserMigrationRequest
+                    {
+                        Character = user.ID,
+                        Channel = _stage.ChannelID,
+                        Field = ID
+                    });
+                }
 
                 if (!user.IsInstantiated) user.IsInstantiated = true;
             }

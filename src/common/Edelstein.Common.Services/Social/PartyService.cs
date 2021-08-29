@@ -148,19 +148,13 @@ namespace Edelstein.Common.Services.Social
             {
                 var result = PartyServiceResult.Ok;
                 var party = await _repository.RetrieveByMember(request.Character);
+                var member = party?.Members?.FirstOrDefault(m => m.ID == request.Character);
 
-                if (party == null) result = PartyServiceResult.FailedNotInParty;
+                if (party == null || member == null) result = PartyServiceResult.FailedNotInParty;
 
                 if (result == PartyServiceResult.Ok)
                 {
                     var isDisband = request.Character == party.Boss;
-                    var targets = party.Members.Select(m => m.ID).ToImmutableList();
-                    var packet = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
-
-                    packet.WriteByte((byte)PartyResultCode.WithdrawParty_Done);
-                    packet.WriteInt(party.ID);
-                    packet.WriteInt(request.Character);
-                    packet.WriteBool(!isDisband);
 
                     if (isDisband)
                     {
@@ -169,21 +163,32 @@ namespace Edelstein.Common.Services.Social
                     }
                     else
                     {
-                        var member = party.Members.FirstOrDefault(m => m.ID == request.Character);
-
                         party.Members.Remove(member);
                         await _repository.Update(party);
-
-                        packet.WriteBool(request.IsKick);
-                        packet.WriteString(member.Name);
-                        packet.WritePartyData(party);
                     }
 
-                    var dispatchRequest = new DispatchToCharactersRequest { Data = ByteString.CopyFrom(packet.Buffer) };
+                    await Task.WhenAll(party.Members.Select(async m =>
+                    {
+                        var packet = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
 
-                    dispatchRequest.Characters.Add(targets);
+                        packet.WriteByte((byte)PartyResultCode.WithdrawParty_Done);
+                        packet.WriteInt(party.ID);
+                        packet.WriteInt(request.Character);
+                        packet.WriteBool(!isDisband);
 
-                    await _dispatcher.DispatchToCharacters(dispatchRequest);
+                        if (!isDisband)
+                        {
+                            packet.WriteBool(request.IsKick);
+                            packet.WriteString(member.Name);
+                            packet.WritePartyData(party, m.Channel);
+                        }
+
+                        var dispatchRequest = new DispatchToCharactersRequest { Data = ByteString.CopyFrom(packet.Buffer) };
+
+                        dispatchRequest.Characters.Add(m.ID);
+
+                        await _dispatcher.DispatchToCharacters(dispatchRequest);
+                    }));
                     await _messenger.PublishAsync(new PartyUpdateEvent { Party = party });
                 }
 
@@ -215,22 +220,24 @@ namespace Edelstein.Common.Services.Social
 
                 if (result == PartyServiceResult.Ok)
                 {
-                    var packet = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
-
                     party.Members.Add(new PartyMemberRecord(request.Member));
+
                     await _repository.Update(party);
+                    await Task.WhenAll(party.Members.Select(async m =>
+                    {
+                        var packet = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
 
-                    packet.WriteByte((byte)PartyResultCode.JoinParty_Done);
-                    packet.WriteInt(party.ID);
-                    packet.WriteString(request.Member.Name);
-                    packet.WritePartyData(party);
+                        packet.WriteByte((byte)PartyResultCode.JoinParty_Done);
+                        packet.WriteInt(party.ID);
+                        packet.WriteString(request.Member.Name);
+                        packet.WritePartyData(party, m.Channel);
 
-                    var targets = party.Members.Select(m => m.ID).ToImmutableList();
-                    var dispatchRequest = new DispatchToCharactersRequest { Data = ByteString.CopyFrom(packet.Buffer) };
+                        var dispatchRequest = new DispatchToCharactersRequest { Data = ByteString.CopyFrom(packet.Buffer) };
 
-                    dispatchRequest.Characters.Add(targets);
+                        dispatchRequest.Characters.Add(m.ID);
 
-                    await _dispatcher.DispatchToCharacters(dispatchRequest);
+                        await _dispatcher.DispatchToCharacters(dispatchRequest);
+                    }));
                     await _messenger.PublishAsync(new PartyUpdateEvent { Party = party });
                 }
 
@@ -243,6 +250,99 @@ namespace Edelstein.Common.Services.Social
         }
 
 
+        public async Task<PartyUpdateChangeLevelOrJobResponse> UpdateChangeLevelOrJob(PartyUpdateChangeLevelOrJobRequest request)
+        {
+            var source = new CancellationTokenSource();
+
+            source.CancelAfter(PartyLockTimeoutDuration);
+
+            var @lock = await _locker.AcquireAsync(PartyLockKey, cancellationToken: source.Token);
+
+            if (@lock != null)
+            {
+                var result = PartyServiceResult.Ok;
+                var party = await _repository.RetrieveByMember(request.Character);
+                var member = party?.Members?.FirstOrDefault(m => m.ID == request.Character);
+
+                if (party == null || member == null) result = PartyServiceResult.FailedNotInParty;
+
+                if (result == PartyServiceResult.Ok)
+                {
+                    var targets = party.Members.Select(m => m.ID).ToImmutableList();
+                    var packet = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
+
+                    member.Level = request.Level;
+                    member.Job = request.Job;
+
+                    await _repository.Update(party);
+
+                    packet.WriteByte((byte)PartyResultCode.ChangeLevelOrJob);
+                    packet.WriteInt(member.ID);
+                    packet.WriteInt(member.Level);
+                    packet.WriteInt(member.Job);
+
+                    var dispatchRequest = new DispatchToCharactersRequest { Data = ByteString.CopyFrom(packet.Buffer) };
+
+                    dispatchRequest.Characters.Add(targets);
+
+                    await _dispatcher.DispatchToCharacters(dispatchRequest);
+                    await _messenger.PublishAsync(new PartyUpdateEvent { Party = party });
+                }
+
+                await @lock.ReleaseAsync();
+
+                return new PartyUpdateChangeLevelOrJobResponse { Result = result };
+            }
+
+            return new PartyUpdateChangeLevelOrJobResponse { Result = PartyServiceResult.FailedTimeout };
+        }
+
+        public async Task<PartyUpdateUserMigrationResponse> UpdateUserMigration(PartyUpdateUserMigrationRequest request)
+        {
+            var source = new CancellationTokenSource();
+
+            source.CancelAfter(PartyLockTimeoutDuration);
+
+            var @lock = await _locker.AcquireAsync(PartyLockKey, cancellationToken: source.Token);
+
+            if (@lock != null)
+            {
+                var result = PartyServiceResult.Ok;
+                var party = await _repository.RetrieveByMember(request.Character);
+                var member = party?.Members?.FirstOrDefault(m => m.ID == request.Character);
+
+                if (party == null || member == null) result = PartyServiceResult.FailedNotInParty;
+
+                if (result == PartyServiceResult.Ok)
+                {
+                    member.Channel = request.Channel;
+                    member.Field = request.Field;
+
+                    await _repository.Update(party);
+                    await Task.WhenAll(party.Members.Select(async m =>
+                    {
+                        var packet = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
+
+                        packet.WriteByte((byte)PartyResultCode.UserMigration);
+                        packet.WriteInt(party.ID);
+                        packet.WritePartyData(party, m.Channel);
+
+                        var dispatchRequest = new DispatchToCharactersRequest { Data = ByteString.CopyFrom(packet.Buffer) };
+
+                        dispatchRequest.Characters.Add(m.ID);
+
+                        await _dispatcher.DispatchToCharacters(dispatchRequest);
+                    }));
+                    await _messenger.PublishAsync(new PartyUpdateEvent { Party = party });
+                }
+
+                await @lock.ReleaseAsync();
+
+                return new PartyUpdateUserMigrationResponse { Result = result };
+            }
+
+            return new PartyUpdateUserMigrationResponse { Result = PartyServiceResult.FailedTimeout };
+        }
 
         public async IAsyncEnumerable<PartyUpdateContract> Subscribe(CallContext context = default)
         {

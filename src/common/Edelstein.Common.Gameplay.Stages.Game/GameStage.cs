@@ -160,26 +160,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             user.FieldUser = fieldUser;
 
             await field.Enter(fieldUser);
-
-            if (fieldUser.Guild != null)
-            {
-                var guildPacket = new UnstructuredOutgoingPacket(PacketSendOperations.GuildResult);
-
-                guildPacket.WriteByte((byte)GuildResultCode.LoadGuild_Done);
-                guildPacket.WriteBool(true);
-                guildPacket.WriteGuildData(fieldUser.Guild);
-                await user.Dispatch(guildPacket);
-            }
-
-            if (fieldUser.Party != null)
-            {
-                var partyPacket = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
-
-                partyPacket.WriteByte((byte)PartyResultCode.LoadParty_Done);
-                partyPacket.WriteInt(fieldUser.Party.ID);
-                partyPacket.WritePartyData(fieldUser.Party);
-                await user.Dispatch(partyPacket);
-            }
         }
 
         public override async Task Leave(GameStageUser user)

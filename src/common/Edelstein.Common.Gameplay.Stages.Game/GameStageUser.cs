@@ -19,7 +19,17 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             if (Character != null)
             {
                 if (!IsMigrating)
+                {
                     _ = Stage.InviteService.DeregisterAll(new InviteDeregisterAllRequest { Invited = ID });
+
+                    if (FieldUser?.Party != null)
+                        _ = Stage.PartyService.UpdateUserMigration(new PartyUpdateUserMigrationRequest
+                        {
+                            Character = ID,
+                            Channel = -2,
+                            Field = -1
+                        });
+                }
 
                 if (Field != null && FieldUser != null)
                 {
