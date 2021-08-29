@@ -16,6 +16,9 @@ namespace Edelstein.Protocol.Services.Social
         [OperationContract] Task<PartyWithdrawResponse> Withdraw(PartyWithdrawRequest request);
         [OperationContract] Task<PartyJoinResponse> Join(PartyJoinRequest request);
 
+        [OperationContract] Task<PartyUpdateChangeLevelOrJobResponse> UpdateChangeLevelOrJob(PartyUpdateChangeLevelOrJobRequest request);
+        [OperationContract] Task<PartyUpdateUserMigrationResponse> UpdateUserMigration(PartyUpdateUserMigrationRequest request);
+
         [OperationContract] IAsyncEnumerable<PartyUpdateContract> Subscribe(CallContext context = default);
     }
 }

@@ -23,6 +23,7 @@ using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transport;
+using Edelstein.Protocol.Services.Contracts.Social;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 {
@@ -296,6 +297,14 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             statPacket.WriteBool(false);
 
             await Dispatch(statPacket);
+
+            if (Party != null && (context.Flag.HasFlag(ModifyStatType.Job) || context.Flag.HasFlag(ModifyStatType.Level)))
+                _ = GameStage.PartyService.UpdateChangeLevelOrJob(new PartyUpdateChangeLevelOrJobRequest
+                {
+                    Character = ID,
+                    Level = context.Level,
+                    Job = context.Job
+                });
         }
 
         public async Task ModifyInventory(Action<IModifyMultiInventoryContext> action = null, bool exclRequest = false)

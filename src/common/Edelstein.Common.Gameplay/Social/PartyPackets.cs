@@ -7,7 +7,7 @@ namespace Edelstein.Common.Gameplay.Social
 {
     public static class PartyPackets
     {
-        public static void WritePartyData(this IPacketWriter writer, IParty p)
+        public static void WritePartyData(this IPacketWriter writer, IParty p, int channelID)
         {
             var members = p.Members.ToArray();
 
@@ -27,7 +27,7 @@ namespace Edelstein.Common.Gameplay.Social
             writer.WriteInt(p.Boss);
 
             foreach (var member in members)
-                writer.WriteInt(member?.Field ?? 0);
+                writer.WriteInt(member?.Channel == channelID ? member?.Field ?? 0 : 0);
 
             foreach (var _ in members)
             {

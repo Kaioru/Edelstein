@@ -61,6 +61,20 @@ message PartyJoinResponse {
   PartyContract party = 2;
 }
 
+message PartyUpdateChangeLevelOrJobRequest {
+  int32 character = 1;
+  int32 level = 2;
+  int32 job = 3;
+}
+message PartyUpdateChangeLevelOrJobResponse { PartyServiceResult result = 1; }
+
+message PartyUpdateUserMigrationRequest {
+  int32 character = 1;
+  int32 channel = 2;
+  int32 field = 3;
+}
+message PartyUpdateUserMigrationResponse { PartyServiceResult result = 1; }
+
 message PartyUpdateContract {
   PartyContract party = 1;
 }
