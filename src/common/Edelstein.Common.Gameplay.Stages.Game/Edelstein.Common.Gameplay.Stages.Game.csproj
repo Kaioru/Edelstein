@@ -29,6 +29,8 @@
     <None Remove="Continent\Templates\" />
     <None Remove="stateless" />
     <None Remove="Objects\User\Types\" />
+    <None Remove="DotNet.Glob" />
+    <None Remove="Commands\Util\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -52,6 +54,7 @@
     <Folder Include="Continent\" />
     <Folder Include="Continent\Templates\" />
     <Folder Include="Objects\User\Types\" />
+    <Folder Include="Commands\Util\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
@@ -61,5 +64,6 @@
     <PackageReference Include="PowerArgs" Version="3.6.0" />
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <PackageReference Include="stateless" Version="5.11.0" />
+    <PackageReference Include="DotNet.Glob" Version="3.1.2" />
   </ItemGroup>
 </Project>

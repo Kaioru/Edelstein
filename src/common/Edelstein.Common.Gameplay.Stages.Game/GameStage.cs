@@ -50,6 +50,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public ITemplateRepository<ItemSetTemplate> ItemSetTemplates { get; }
 
         public ITemplateRepository<FieldTemplate> FieldTemplates { get; }
+        public ITemplateRepository<FieldStringTemplate> FieldStringTemplates { get; }
         public ITemplateRepository<ContiMoveTemplate> ContiMoveTemplates { get; }
         public ITemplateRepository<NPCTemplate> NPCTemplates { get; }
 
@@ -77,6 +78,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ITemplateRepository<ItemOptionTemplate> itemOptionTemplates,
             ITemplateRepository<ItemSetTemplate> itemSetTemplates,
             ITemplateRepository<FieldTemplate> fieldTemplates,
+            ITemplateRepository<FieldStringTemplate> fieldStringTemplates,
             ITemplateRepository<ContiMoveTemplate> contiMoveTemplates,
             ITemplateRepository<NPCTemplate> npcTemplates
         ) : base(
@@ -115,6 +117,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ItemOptionTemplates = itemOptionTemplates;
             ItemSetTemplates = itemSetTemplates;
             FieldTemplates = fieldTemplates;
+            FieldStringTemplates = fieldStringTemplates;
             ContiMoveTemplates = contiMoveTemplates;
             NPCTemplates = npcTemplates;
 
@@ -146,6 +149,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             commandProcessor.Register(new DebugCommand());
 
             commandProcessor.Register(new StatCommand());
+            commandProcessor.Register(new FieldCommand(FieldRepository, FieldStringTemplates, FieldTemplates));
             commandProcessor.Register(new ContiMoveCommand(ContiMoveRepository));
         }
 

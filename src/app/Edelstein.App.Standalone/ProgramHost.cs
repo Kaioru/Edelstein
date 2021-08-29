@@ -85,6 +85,7 @@ namespace Edelstein.App.Standalone
             collection.AddSingleton<ITemplateRepository<ItemOptionTemplate>, ItemOptionTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ItemSetTemplate>, ItemSetTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<FieldTemplate>, FieldTemplateRepository>();
+            collection.AddSingleton<ITemplateRepository<FieldStringTemplate>, FieldStringTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ContiMoveTemplate>, ContiMoveTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<NPCTemplate>, NPCTemplateRepository>();
 
@@ -165,6 +166,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ITemplateRepository<ItemOptionTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemSetTemplate>>(),
                     provider.GetService<ITemplateRepository<FieldTemplate>>(),
+                    provider.GetService<ITemplateRepository<FieldStringTemplate>>(),
                     provider.GetService<ITemplateRepository<ContiMoveTemplate>>(),
                     provider.GetService<ITemplateRepository<NPCTemplate>>()
                 ));
