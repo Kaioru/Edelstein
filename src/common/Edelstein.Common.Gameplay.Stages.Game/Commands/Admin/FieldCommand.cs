@@ -31,7 +31,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Admin
             Aliases.Add("Warp");
         }
 
-        protected override async Task<IEnumerable<TemplateCommandIndex>> Indeces()
+        protected override async Task<IEnumerable<TemplateCommandIndex>> Indices()
         {
             var result = new List<TemplateCommandIndex>();
             var strings = (await _strings.RetrieveAll()).ToList();
