@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
@@ -23,12 +24,29 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                     _ = Stage.InviteService.DeregisterAll(new InviteDeregisterAllRequest { Invited = ID });
 
                     if (FieldUser?.Party != null)
+                    {
                         _ = Stage.PartyService.UpdateUserMigration(new PartyUpdateUserMigrationRequest
                         {
                             Character = ID,
                             Channel = -2,
                             Field = -1
                         });
+
+                        if (FieldUser?.Party?.Boss == ID)
+                        {
+                            var nextLeader = FieldUser.Party.Members
+                                .Where(m => m.ID != FieldUser.ID)
+                                .Where(m => m.Channel >= 0)
+                                .OrderByDescending(m => m.Level)
+                                .FirstOrDefault();
+
+                            if (nextLeader != null)
+                                _ = Stage.PartyService.ChangeBoss(new PartyChangeBossRequest {
+                                    Character = nextLeader.ID,
+                                    IsDisconnect = true
+                                });
+                        }
+                    }
                 }
 
                 if (Field != null && FieldUser != null)
