@@ -34,6 +34,15 @@ namespace Edelstein.Common.Gameplay.Users
                 .Count()) > 0;
         }
 
+        public Task<Character> RetrieveByName(string name)
+        {
+            using var session = _store.StartSession();
+            return session
+                .Query<Character>()
+                .Where(c => c.Name.ToLower() == name.ToLower())
+                .FirstOrDefault();
+        }
+
         public Task<IEnumerable<Character>> RetrieveAllByAccountWorld(int accountworld)
         {
             using var session = _store.StartSession();
