@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Transport.Bootstrapping;

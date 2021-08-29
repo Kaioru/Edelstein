@@ -1,6 +1,4 @@
-﻿using System;
-using System.Globalization;
-using Edelstein.Protocol.Gameplay.Templating;
+﻿using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates

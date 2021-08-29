@@ -1,5 +1,4 @@
-﻿using System;
-using Edelstein.Protocol.Gameplay.Spatial;
+﻿using Edelstein.Protocol.Gameplay.Spatial;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 using Edelstein.Protocol.Util.Spatial;

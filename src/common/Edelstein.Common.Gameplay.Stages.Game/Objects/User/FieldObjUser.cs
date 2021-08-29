@@ -23,7 +23,6 @@ using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transport;
-using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 {

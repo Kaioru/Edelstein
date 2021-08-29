@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
-using MoreLinq;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates
 {

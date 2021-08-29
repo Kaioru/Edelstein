@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Numerics;
 using Edelstein.Protocol.Network.Utils;
 using Edelstein.Protocol.Util.Spatial;
 
