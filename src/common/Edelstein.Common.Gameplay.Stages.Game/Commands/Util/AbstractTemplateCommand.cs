@@ -45,7 +45,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Util
             _templates = templates;
         }
 
-        protected abstract Task<IEnumerable<TemplateCommandIndex>> Indeces();
+        protected abstract Task<IEnumerable<TemplateCommandIndex>> Indices();
         protected abstract Task Execute(IFieldObjUser user, TTemplate template, TArgs args);
 
         public override async Task Execute(IFieldObjUser user, TArgs args)
@@ -56,7 +56,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Util
             stopwatch.Start();
 
             var glob = Glob.Parse(args.Search, _options);
-            var data = await Indeces();
+            var data = await Indices();
 
             var results = data
                 .Where(d => glob.IsMatch(d.SearchString))
