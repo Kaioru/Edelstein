@@ -84,7 +84,36 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
                     }
                 case PartyRequestCode.InviteParty:
                     {
-                        if (user.Party == null) return;
+                        if (user.Party == null)
+                        {
+                            var contract = new PartyCreateRequest
+                            {
+                                Member = new PartyMemberContract
+                                {
+                                    Id = user.ID,
+                                    Name = user.Character.Name,
+                                    Job = user.Character.Job,
+                                    Level = user.Character.Level,
+                                    Channel = stage.ChannelID,
+                                    Field = user.Field.ID
+                                }
+                            };
+                            var serviceResponse = await service.Create(contract);
+                            var serviceResult = serviceResponse.Result;
+
+                            if (serviceResult != PartyServiceResult.Ok) return;
+
+                            var createResponse = new UnstructuredOutgoingPacket(PacketSendOperations.PartyResult);
+
+                            createResponse.WriteByte((byte)PartyResultCode.CreateNewParty_Done);
+                            createResponse.WriteInt(serviceResponse.Party.Id);
+                            createResponse.WriteInt(0); // TownPortal-TownID
+                            createResponse.WriteInt(0); // TownPortal-FieldID
+                            createResponse.WriteInt(0); // TownPortal-SkillID
+                            createResponse.WritePoint2D(new Point2D(0, 0)); //TownPortal-Position
+
+                            await user.Dispatch(createResponse);
+                        }
 
                         var name = packet.ReadString();
                         var result = PartyResultCode.InviteParty_Sent;
