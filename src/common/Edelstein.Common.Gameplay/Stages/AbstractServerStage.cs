@@ -96,6 +96,7 @@ namespace Edelstein.Common.Gameplay.Stages
                 var session = new SessionContract
                 {
                     Account = user.Account.ID,
+                    Character = user.Character?.ID,
                     State = SessionState.Offline
                 };
 
