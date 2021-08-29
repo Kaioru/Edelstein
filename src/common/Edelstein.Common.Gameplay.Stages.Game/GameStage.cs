@@ -177,7 +177,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
                 partyPacket.WriteByte((byte)PartyResultCode.LoadParty_Done);
                 partyPacket.WriteInt(fieldUser.Party.ID);
-                partyPacket.WritePartyData(fieldUser.Party, ChannelID);
+                partyPacket.WritePartyData(fieldUser.Party);
                 await user.Dispatch(partyPacket);
             }
         }
