@@ -9,13 +9,17 @@ using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Services;
 using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
+using Edelstein.Protocol.Services.Social;
 
 namespace Edelstein.Common.Gameplay.Stages.Login
 {
     public class LoginStage : AbstractServerStage<LoginStage, LoginStageUser, LoginStageConfig>, ILoginStage<LoginStage, LoginStageUser>
     {
-        public ITemplateRepository<WorldTemplate> WorldTemplates { get; set; }
-        public ITemplateRepository<ItemTemplate> ItemTemplates { get; set; }
+        public IGuildService GuildService { get; }
+        public IPartyService PartyService { get; }
+
+        public ITemplateRepository<WorldTemplate> WorldTemplates { get; }
+        public ITemplateRepository<ItemTemplate> ItemTemplates { get; }
 
         public LoginStage(
             LoginStageConfig config,
@@ -23,6 +27,8 @@ namespace Edelstein.Common.Gameplay.Stages.Login
             IServerRegistry serverRegistry,
             ISessionRegistry sessionRegistry,
             IMigrationRegistry migrationRegistry,
+            IGuildService guildService,
+            IPartyService partyService,
             IAccountRepository accountRepository,
             IAccountWorldRepository accountWorldRepository,
             ICharacterRepository characterRepository,
@@ -45,6 +51,10 @@ namespace Edelstein.Common.Gameplay.Stages.Login
         )
         {
             Logger = logger;
+
+            GuildService = guildService;
+            PartyService = partyService;
+
             WorldTemplates = worldTemplates;
             ItemTemplates = itemTemplates;
 

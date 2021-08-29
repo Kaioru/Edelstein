@@ -2,6 +2,7 @@
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Contracts.Social;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 {
@@ -24,8 +25,18 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
             if (!BCrypt.Net.BCrypt.EnhancedVerify(spw, user.Account.SPW)) result = LoginResultCode.IncorrectSPW;
             if (character == null || character.AccountWorldID != user.AccountWorld.ID) result = LoginResultCode.DBFail;
 
+            var guild = (await user.Stage.GuildService.LoadByCharacter(new GuildLoadByCharacterRequest { Character = characterID })).Guild;
+            var party = (await user.Stage.PartyService.LoadByCharacter(new PartyLoadByCharacterRequest { Character = characterID })).Party;
+
             if (result == LoginResultCode.Success)
+            {
+                // TODO: guild withdraw if not master
+
+                if (party != null)
+                    _ = user.Stage.PartyService.Withdraw(new PartyWithdrawRequest { Character = characterID });
+
                 await user.Stage.CharacterRepository.Delete(characterID);
+            }
 
             response.WriteInt(characterID);
             response.WriteByte((byte)result);
