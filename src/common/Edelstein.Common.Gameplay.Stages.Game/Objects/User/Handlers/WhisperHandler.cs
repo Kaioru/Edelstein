@@ -42,7 +42,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
                         }
 
                         response.WriteByte((byte)(WhisperFlags.Whisper | WhisperFlags.Result));
-                        response.WriteString(target?.Name ?? name);
+                        response.WriteString(allowed ? target.Name : name);
                         response.WriteBool(allowed);
 
                         if (allowed)
