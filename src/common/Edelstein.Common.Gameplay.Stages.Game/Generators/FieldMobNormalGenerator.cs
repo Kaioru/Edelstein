@@ -26,8 +26,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Generators
 
             var bounds = new Rect2D(
                 new Point2D(
-                    LifeTemplate.Position.X - 100,
-                    LifeTemplate.Position.Y - 100
+                    LifeTemplate.Position.X,
+                    LifeTemplate.Position.Y
                 ),
                 new Size2D(200, 200)
             );

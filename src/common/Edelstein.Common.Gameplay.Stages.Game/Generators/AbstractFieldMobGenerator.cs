@@ -21,10 +21,14 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Generators
         public abstract bool Check(DateTime now, IField field);
 
         public Task Generate(IField field)
-            => field.Enter(new FieldObjMob(MobTemplate, LifeTemplate.Left)
+        {
+            var mob = new FieldObjMob(MobTemplate, LifeTemplate.Left)
             {
                 Position = LifeTemplate.Position,
                 Foothold = field.GetFoothold(LifeTemplate.FH)
-            });
+            };
+
+            return field.Enter(mob, () => mob.GetEnterFieldPacket(FieldObjMobAppearType.Regen));
+        }
     }
 }
