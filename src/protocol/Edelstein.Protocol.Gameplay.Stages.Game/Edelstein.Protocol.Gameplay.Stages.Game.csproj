@@ -13,7 +13,6 @@
     <Folder Include="Objects\User\" />
     <Folder Include="Objects\User\Stats\" />
     <Folder Include="Objects\NPC\" />
-    <Folder Include="Objects\NPC\Templates\" />
     <Folder Include="Generators\" />
     <Folder Include="Objects\User\Messages\" />
     <Folder Include="Commands\" />
@@ -32,7 +31,6 @@
     <None Remove="Objects\User\" />
     <None Remove="Objects\User\Stats\" />
     <None Remove="Objects\NPC\" />
-    <None Remove="Objects\NPC\Templates\" />
     <None Remove="Generators\" />
     <None Remove="Objects\User\Messages\" />
     <None Remove="Commands\" />

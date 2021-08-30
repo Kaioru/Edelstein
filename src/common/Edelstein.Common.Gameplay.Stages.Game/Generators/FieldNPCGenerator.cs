@@ -4,8 +4,8 @@ using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Generators
 {
