@@ -17,6 +17,7 @@ using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Social;
 using Edelstein.Protocol.Services.Contracts.Social;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -31,7 +32,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public Rect2D Bounds => _template.Bounds;
 
         public IFieldInfo Info => _template;
-        public ICollection<Protocol.Gameplay.Stages.Game.Generators.AbstractFieldMobGenerator> Generators { get; }
+        public ICollection<IFieldGenerator> Generators { get; }
 
         private readonly GameStage _stage;
         private readonly FieldTemplate _template;
@@ -58,7 +59,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                 for (var col = 0; col < splitColCount; col++)
                     _splits[row, col] = new FieldSplit(row, col);
 
-            Generators = new List<Protocol.Gameplay.Stages.Game.Generators.AbstractFieldMobGenerator>();
+            Generators = new List<IFieldGenerator>();
 
             template.Life.ForEach(l =>
                  Generators.Add(l.Type switch

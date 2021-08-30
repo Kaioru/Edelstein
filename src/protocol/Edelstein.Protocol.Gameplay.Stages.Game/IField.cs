@@ -15,7 +15,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game
     {
         IFieldInfo Info { get; }
 
-        ICollection<AbstractFieldMobGenerator> Generators { get; }
+        ICollection<IFieldGenerator> Generators { get; }
 
         IFieldSplit GetSplit(Point2D position);
         IFieldSplit[] GetEnclosingSplits(Point2D position);

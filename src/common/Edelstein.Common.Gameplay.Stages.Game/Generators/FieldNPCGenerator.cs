@@ -9,7 +9,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Generators
 {
-    public class FieldNPCGenerator : Protocol.Gameplay.Stages.Game.Generators.AbstractFieldMobGenerator
+    public class FieldNPCGenerator : IFieldGenerator
     {
         private readonly FieldLifeTemplate _lifeTemplate;
         private readonly NPCTemplate _npcTemplate;
