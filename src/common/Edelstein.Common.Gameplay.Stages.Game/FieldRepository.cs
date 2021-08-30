@@ -35,9 +35,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             if (field != null) return field;
             var template = await _fieldTemplates.Retrieve(key);
             if (template == null) return null;
-            field = new Field(_gameStage, template);
-            await Insert(field);
-            return field;
+            var newField = new Field(_gameStage, template);
+
+            await newField.OnTick(DateTime.UtcNow);
+            await Insert(newField);
+            return newField;
         }
     }
 }

@@ -29,6 +29,7 @@ using Microsoft.Extensions.Logging;
 using Edelstein.Common.Gameplay.Stages.Game.Continent;
 using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -54,6 +55,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public ITemplateRepository<FieldStringTemplate> FieldStringTemplates { get; }
         public ITemplateRepository<ContiMoveTemplate> ContiMoveTemplates { get; }
         public ITemplateRepository<NPCTemplate> NPCTemplates { get; }
+        public ITemplateRepository<MobTemplate> MobTemplates { get; }
 
         public IFieldRepository FieldRepository { get; }
         public IFieldSetRepository FieldSetRepository { get; }
@@ -82,7 +84,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ITemplateRepository<FieldTemplate> fieldTemplates,
             ITemplateRepository<FieldStringTemplate> fieldStringTemplates,
             ITemplateRepository<ContiMoveTemplate> contiMoveTemplates,
-            ITemplateRepository<NPCTemplate> npcTemplates
+            ITemplateRepository<NPCTemplate> npcTemplates,
+            ITemplateRepository<MobTemplate> mobTemplates
         ) : base(
             ServerStageType.Game,
             config,
@@ -123,6 +126,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             FieldStringTemplates = fieldStringTemplates;
             ContiMoveTemplates = contiMoveTemplates;
             NPCTemplates = npcTemplates;
+            MobTemplates = mobTemplates;
 
             FieldRepository = new FieldRepository(this, FieldTemplates, tickerManager);
             FieldSetRepository = null; // TODO;

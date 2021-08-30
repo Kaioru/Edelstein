@@ -17,5 +17,16 @@
             LeftTop = leftTop;
             RightBottom = rightBottom;
         }
+
+        public Rect2D(Point2D middle, Size2D size)
+        {
+            LeftTop = new Point2D(middle.X - size.Width / 2, middle.Y - size.Height / 2);
+            RightBottom = new Point2D(middle.X + size.Width / 2, middle.Y + size.Height / 2);
+        }
+
+        public bool Contains(Point2D point)
+            =>
+                point.X <= RightBottom.X && point.X >= LeftTop.X &&
+                point.Y <= RightBottom.Y && point.Y >= LeftTop.Y;
     }
 }

@@ -5,7 +5,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob
 {
     public interface IFieldObjMob : IFieldControlledObj, IFieldLife
     {
-        IFieldObjMob Info { get; }
+        IFieldObjMobInfo Info { get; }
 
         int HP { get; }
         int MP { get; }

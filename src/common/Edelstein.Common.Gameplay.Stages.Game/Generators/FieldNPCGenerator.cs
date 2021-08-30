@@ -9,7 +9,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Generators
 {
-    public class FieldNPCGenerator : IFieldGenerator
+    public class FieldNPCGenerator : Protocol.Gameplay.Stages.Game.Generators.AbstractFieldMobGenerator
     {
         private readonly FieldLifeTemplate _lifeTemplate;
         private readonly NPCTemplate _npcTemplate;
@@ -23,7 +23,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Generators
         }
 
         public bool Check(DateTime now, IField field)
-            => NPC == null;
+            => NPC == null || NPC.Field == null;
 
         public async Task Generate(IField field)
         {

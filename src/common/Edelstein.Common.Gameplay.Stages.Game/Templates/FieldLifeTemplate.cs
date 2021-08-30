@@ -4,7 +4,7 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
-    public class FieldLifeTemplate : ITemplate
+    public record FieldLifeTemplate : ITemplate
     {
         public int ID { get; }
 

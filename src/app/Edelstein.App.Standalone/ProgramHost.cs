@@ -39,6 +39,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
 
 namespace Edelstein.App.Standalone
 {
@@ -88,6 +89,7 @@ namespace Edelstein.App.Standalone
             collection.AddSingleton<ITemplateRepository<FieldStringTemplate>, FieldStringTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ContiMoveTemplate>, ContiMoveTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<NPCTemplate>, NPCTemplateRepository>();
+            collection.AddSingleton<ITemplateRepository<MobTemplate>, MobTemplateRepository>();
 
             var provider = collection.BuildServiceProvider();
 
@@ -169,7 +171,8 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ITemplateRepository<FieldTemplate>>(),
                     provider.GetService<ITemplateRepository<FieldStringTemplate>>(),
                     provider.GetService<ITemplateRepository<ContiMoveTemplate>>(),
-                    provider.GetService<ITemplateRepository<NPCTemplate>>()
+                    provider.GetService<ITemplateRepository<NPCTemplate>>(),
+                    provider.GetService<ITemplateRepository<MobTemplate>>()
                 ));
                 gameCollection.AddSingleton<ISessionInitializer, GameSessionInitializer>();
                 gameCollection.AddSingleton<ITransportAcceptor>(p => new NettyTransportAcceptor(

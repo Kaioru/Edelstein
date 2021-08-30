@@ -31,7 +31,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public Rect2D Bounds => _template.Bounds;
 
         public IFieldInfo Info => _template;
-        public ICollection<IFieldGenerator> Generators { get; }
+        public ICollection<Protocol.Gameplay.Stages.Game.Generators.AbstractFieldMobGenerator> Generators { get; }
 
         private readonly GameStage _stage;
         private readonly FieldTemplate _template;
@@ -57,13 +57,16 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                 for (var col = 0; col < splitColCount; col++)
                     _splits[row, col] = new FieldSplit(row, col);
 
-            Generators = new List<IFieldGenerator>();
+            Generators = new List<Protocol.Gameplay.Stages.Game.Generators.AbstractFieldMobGenerator>();
 
             template.Life.ForEach(l =>
                  Generators.Add(l.Type switch
                  {
                      FieldLifeType.NPC => new FieldNPCGenerator(l, stage.NPCTemplates.Retrieve(l.TemplateID).Result),
-                     FieldLifeType.Monster => new FieldMobGenerator(),
+                     FieldLifeType.Monster =>
+                        l.MobTime > 0
+                            ? new FieldMobTimedGenerator(l, stage.MobTemplates.Retrieve(l.TemplateID).Result)
+                            : new FieldMobNormalGenerator(l, stage.MobTemplates.Retrieve(l.TemplateID).Result),
                      _ => throw new NotImplementedException()
                  })
              );
