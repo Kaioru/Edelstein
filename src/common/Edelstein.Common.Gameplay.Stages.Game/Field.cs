@@ -235,9 +235,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
                 await user.Dispatch(user.GetSetFieldPacket());
 
-
-
-
                 if (user.Guild != null)
                 {
                     if (!user.IsInstantiated)
