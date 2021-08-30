@@ -10,5 +10,8 @@
             Start = start;
             End = end;
         }
+
+        public override string ToString()
+            => $"({Start}, {End})";
     }
 }

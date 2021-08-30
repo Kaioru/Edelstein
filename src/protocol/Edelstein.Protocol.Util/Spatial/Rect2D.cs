@@ -28,5 +28,8 @@
             =>
                 point.X <= RightBottom.X && point.X >= LeftTop.X &&
                 point.Y <= RightBottom.Y && point.Y >= LeftTop.Y;
+
+        public override string ToString()
+            => $"[{LeftTop}, {RightBottom}]";
     }
 }
