@@ -18,21 +18,21 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Handlers
             IPacketReader packet
         )
         {
-            var response = new UnstructuredOutgoingPacket(PacketSendOperations.NpcMove);
+            var movement = new UnstructuredOutgoingPacket(PacketSendOperations.NpcMove);
 
-            response.WriteInt(controlled.ID);
-            response.WriteByte(packet.ReadByte()); // TODO: actions
-            response.WriteByte(packet.ReadByte());
+            movement.WriteInt(controlled.ID);
+            movement.WriteByte(packet.ReadByte()); // TODO: actions
+            movement.WriteByte(packet.ReadByte());
 
             if (controlled.Info.Move)
             {
                 var path = packet.Read(new MovePath());
 
-                response.Write(path);
+                movement.Write(path);
                 await controlled.Move(path);
             }
 
-            await controlled.FieldSplit.Dispatch(response);
+            await controlled.FieldSplit.Dispatch(movement);
         }
     }
 }
