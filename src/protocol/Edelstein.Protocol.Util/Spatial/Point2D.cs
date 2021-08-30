@@ -20,5 +20,8 @@ namespace Edelstein.Protocol.Util.Spatial
 
             return Math.Sqrt(distX * distX + distY * distY);
         }
+
+        public override string ToString()
+            => $"({X}, {Y})";
     }
 }
