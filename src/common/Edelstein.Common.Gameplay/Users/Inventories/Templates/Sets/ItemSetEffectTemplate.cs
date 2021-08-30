@@ -5,23 +5,23 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Templates.Sets
 {
     public record ItemSetEffectTemplate : ITemplate
     {
-        public int ID { get; init; }
+        public int ID { get; }
 
-        public short IncSTR { get; init; }
-        public short IncDEX { get; init; }
-        public short IncINT { get; init; }
-        public short IncLUK { get; init; }
-        public short IncMaxHP { get; init; }
-        public short IncMaxMP { get; init; }
-        public short IncPAD { get; init; }
-        public short IncMAD { get; init; }
-        public short IncPDD { get; init; }
-        public short IncMDD { get; init; }
-        public short IncACC { get; init; }
-        public short IncEVA { get; init; }
-        public short IncCraft { get; init; }
-        public short IncSpeed { get; init; }
-        public short IncJump { get; init; }
+        public short IncSTR { get; }
+        public short IncDEX { get; }
+        public short IncINT { get; }
+        public short IncLUK { get; }
+        public short IncMaxHP { get; }
+        public short IncMaxMP { get; }
+        public short IncPAD { get; }
+        public short IncMAD { get; }
+        public short IncPDD { get; }
+        public short IncMDD { get; }
+        public short IncACC { get; }
+        public short IncEVA { get; }
+        public short IncCraft { get; }
+        public short IncSpeed { get; }
+        public short IncJump { get; }
 
         public ItemSetEffectTemplate(int id, IDataProperty property)
         {

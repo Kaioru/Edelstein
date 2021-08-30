@@ -4,8 +4,8 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Templates
 {
     public record ItemBundleTemplate : ItemTemplate
     {
-        public double UnitPrice { get; init; }
-        public short MaxPerSlot { get; init; }
+        public double UnitPrice { get; }
+        public short MaxPerSlot { get; }
 
         public ItemBundleTemplate(int id, IDataProperty info) : base(id, info)
         {

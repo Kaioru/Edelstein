@@ -7,16 +7,16 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
     public record FieldPortalTemplate : IPhysicalPoint2D, ITemplate
     {
-        public int ID { get; init; }
-        public FieldPortalType Type { get; init; }
+        public int ID { get; }
+        public FieldPortalType Type { get; }
 
-        public string Name { get; init; }
-        public string Script { get; init; }
+        public string Name { get; }
+        public string Script { get; }
 
-        public int ToMap { get; init; }
-        public string ToName { get; init; }
+        public int ToMap { get; }
+        public string ToName { get; }
 
-        public Point2D Position { get; init; }
+        public Point2D Position { get; }
 
         public FieldPortalTemplate(int id, IDataProperty property)
         {

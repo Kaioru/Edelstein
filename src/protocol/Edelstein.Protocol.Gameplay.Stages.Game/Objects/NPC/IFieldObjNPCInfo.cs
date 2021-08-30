@@ -1,9 +1,9 @@
-﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC
-{
-    public interface IFieldObjNPCInfo
-    {
-        public int ID { get; }
+﻿using Edelstein.Protocol.Util.Repositories;
 
+namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC
+{
+    public interface IFieldObjNPCInfo : IRepositoryEntry<int>
+    {
         public bool Move { get; }
 
         public int TrunkPut { get; }

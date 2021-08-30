@@ -6,7 +6,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
     public class FieldLifeTemplate : ITemplate
     {
-        public int ID { get; init; }
+        public int ID { get; }
 
         public FieldLifeType Type { get; }
         public int TemplateID { get; }
