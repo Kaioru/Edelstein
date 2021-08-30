@@ -82,7 +82,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
 
         protected override IPacket GetChangeControllerPacket(bool setAsController)
         {
-            var packet = new UnstructuredOutgoingPacket(PacketSendOperations.NpcChangeController);
+            var packet = new UnstructuredOutgoingPacket(PacketSendOperations.MobChangeController);
 
             packet.WriteBool(setAsController);
             packet.WriteInt(ID);
