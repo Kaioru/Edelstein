@@ -23,8 +23,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 {
     public class Field : IField, ITickerBehavior
     {
-        private const int ScreenWidth = 1024;
-        private const int ScreenHeight = 768;
+        private const int ScreenWidth = 800;
+        private const int ScreenHeight = 600;
         private const int ScreenWidthOffset = ScreenWidth * 75 / 100;
         private const int ScreenHeightOffset = ScreenHeight * 75 / 100;
 

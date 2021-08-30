@@ -97,6 +97,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             return Task.CompletedTask;
         }
+
         public Task LeaveQuietly(IFieldObj obj)
         {
             lock (_objectLock)
@@ -149,8 +150,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                 var controlled = GetObjects().OfType<IFieldControlledObj>().ToList();
 
                 controlled
-                    .Where(c => c.Controller == null ||
-                                !controllers.Contains(c.Controller))
+                    .Where(c => c.Controller == null || !controllers.Contains(c.Controller))
                     .ForEach(c => c.Controller = controllers.FirstOrDefault());
             }
         }
