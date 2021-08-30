@@ -46,7 +46,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
 
             writer.WritePoint2D(Position);
             writer.WriteByte((byte)Action);
-            writer.WriteShort((short)Foothold.ID);
+            writer.WriteShort((short)(Foothold?.ID ?? 0));
             writer.WriteShort(0); // Foothold again? TODO
 
             writer.WriteByte((byte)appearType);
