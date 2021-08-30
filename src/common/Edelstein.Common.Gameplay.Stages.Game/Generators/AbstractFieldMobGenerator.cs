@@ -4,10 +4,11 @@ using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Generators
 {
-    public abstract class AbstractFieldMobGenerator : Protocol.Gameplay.Stages.Game.Generators.AbstractFieldMobGenerator
+    public abstract class AbstractFieldMobGenerator : IFieldGenerator
     {
         protected FieldLifeTemplate LifeTemplate { get; }
         protected MobTemplate MobTemplate { get; }
