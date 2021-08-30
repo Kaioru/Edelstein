@@ -13,16 +13,16 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
     public record FieldTemplate : ITemplate, IFieldInfo
     {
-        public int ID { get; init; }
+        public int ID { get; }
 
-        public FieldOpt Limit { get; init; }
-        public Rect2D Bounds { get; init; }
+        public FieldOpt Limit { get; }
+        public Rect2D Bounds { get; }
 
-        public int? FieldReturn { get; init; }
-        public int? ForcedReturn { get; init; }
+        public int? FieldReturn { get; }
+        public int? ForcedReturn { get; }
 
-        public string ScriptFirstUserEnter { get; init; }
-        public string ScriptUserEnter { get; init; }
+        public string ScriptFirstUserEnter { get; }
+        public string ScriptUserEnter { get; }
 
         public IDictionary<int, FieldPortalTemplate> Portals { get; }
         public IDictionary<int, FieldFootholdTemplate> Footholds { get; }
@@ -31,9 +31,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Templates
         public ICollection<FieldLifeTemplate> Life { get; }
         //public ICollection<FieldReactorTemplate> Reactors { get; }
 
-        public double MobRate { get; init; }
-        public int MobCapacityMin { get; init; }
-        public int MobCapacityMax { get; init; }
+        public double MobRate { get; }
+        public int MobCapacityMin { get; }
+        public int MobCapacityMax { get; }
 
         public FieldTemplate(
             int id,

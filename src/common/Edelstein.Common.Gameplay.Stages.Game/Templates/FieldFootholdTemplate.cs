@@ -7,12 +7,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
     public record FieldFootholdTemplate : IPhysicalLine2D, ITemplate
     {
-        public int ID { get; init; }
+        public int ID { get; }
 
-        public int Next { get; init; }
-        public int Prev { get; init; }
+        public int Next { get; }
+        public int Prev { get; }
 
-        public Line2D Line { get; init; }
+        public Line2D Line { get; }
 
         public FieldFootholdTemplate(int id, IDataProperty property)
         {

@@ -7,9 +7,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {
     public record FieldLadderOrRopeTemplate : IPhysicalLine2D, ITemplate
     {
-        public int ID { get; init; }
+        public int ID { get; }
 
-        public Line2D Line { get; init; }
+        public Line2D Line { get; }
 
         public FieldLadderOrRopeTemplate(int id, IDataProperty property)
         {

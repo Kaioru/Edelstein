@@ -1,9 +1,10 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
+using Edelstein.Protocol.Util.Repositories;
 using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game
 {
-    public interface IFieldInfo
+    public interface IFieldInfo : IRepositoryEntry<int>
     {
         public FieldOpt Limit { get; }
         public Rect2D Bounds { get; }

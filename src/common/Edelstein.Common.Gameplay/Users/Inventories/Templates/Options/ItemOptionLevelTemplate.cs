@@ -5,62 +5,62 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Templates.Options
 {
     public record ItemOptionLevelTemplate : ITemplate
     {
-        public int ID { get; init; }
+        public int ID { get; }
 
-        public int Prob { get; init; }
-        public int Time { get; init; }
+        public int Prob { get; }
+        public int Time { get; }
 
-        public short IncSTR { get; init; }
-        public short IncDEX { get; init; }
-        public short IncINT { get; init; }
-        public short IncLUK { get; init; }
-        public int IncHP { get; init; }
-        public int IncMP { get; init; }
-        public short IncACC { get; init; }
-        public short IncEVA { get; init; }
-        public short IncSpeed { get; init; }
-        public short IncJump { get; init; }
-        public int IncMaxHP { get; init; }
-        public int IncMaxMP { get; init; }
-        public short IncPAD { get; init; }
-        public short IncMAD { get; init; }
-        public short IncPDD { get; init; }
-        public short IncMDD { get; init; }
+        public short IncSTR { get; }
+        public short IncDEX { get; }
+        public short IncINT { get; }
+        public short IncLUK { get; }
+        public int IncHP { get; }
+        public int IncMP { get; }
+        public short IncACC { get; }
+        public short IncEVA { get; }
+        public short IncSpeed { get; }
+        public short IncJump { get; }
+        public int IncMaxHP { get; }
+        public int IncMaxMP { get; }
+        public short IncPAD { get; }
+        public short IncMAD { get; }
+        public short IncPDD { get; }
+        public short IncMDD { get; }
 
-        public short IncSTRr { get; init; }
-        public short IncDEXr { get; init; }
-        public short IncINTr { get; init; }
-        public short IncLUKr { get; init; }
-        public int IncMaxHPr { get; init; }
-        public int IncMaxMPr { get; init; }
-        public short IncACCr { get; init; }
-        public short IncEVAr { get; init; }
-        public short IncPADr { get; init; }
-        public short IncMADr { get; init; }
-        public short IncPDDr { get; init; }
-        public short IncMDDr { get; init; }
+        public short IncSTRr { get; }
+        public short IncDEXr { get; }
+        public short IncINTr { get; }
+        public short IncLUKr { get; }
+        public int IncMaxHPr { get; }
+        public int IncMaxMPr { get; }
+        public short IncACCr { get; }
+        public short IncEVAr { get; }
+        public short IncPADr { get; }
+        public short IncMADr { get; }
+        public short IncPDDr { get; }
+        public short IncMDDr { get; }
 
-        public short IncCr { get; init; }
+        public short IncCr { get; }
 
-        // public short IncCDr { get; init; }
-        // public short IncMAMr { get; init; }
-        // public short IncSkill { get; init; }
-        public short IncAllSkill { get; init; }
-        public short RecoveryHP { get; init; }
-        public short RecoveryMP { get; init; }
-        public short RecoveryUP { get; init; }
-        public short MPConReduce { get; init; }
-        public short MPConRestore { get; init; }
-        public short IgnoreTargetDEF { get; init; }
-        public short IgnoreDAM { get; init; }
-        public short IgnoreDAMr { get; init; }
-        public short IncDAMr { get; init; }
-        public short DAMReflect { get; init; }
-        public short AttackType { get; init; }
-        public int IncMesoProb { get; init; }
-        public int IncRewardProb { get; init; }
-        public short Level { get; init; }
-        public short Boss { get; init; }
+        // public short IncCDr { get;  }
+        // public short IncMAMr { get;  }
+        // public short IncSkill { get;  }
+        public short IncAllSkill { get; }
+        public short RecoveryHP { get; }
+        public short RecoveryMP { get; }
+        public short RecoveryUP { get; }
+        public short MPConReduce { get; }
+        public short MPConRestore { get; }
+        public short IgnoreTargetDEF { get; }
+        public short IgnoreDAM { get; }
+        public short IgnoreDAMr { get; }
+        public short IncDAMr { get; }
+        public short DAMReflect { get; }
+        public short AttackType { get; }
+        public int IncMesoProb { get; }
+        public int IncRewardProb { get; }
+        public short Level { get; }
+        public short Boss { get; }
 
         public ItemOptionLevelTemplate(int id, IDataProperty property)
         {

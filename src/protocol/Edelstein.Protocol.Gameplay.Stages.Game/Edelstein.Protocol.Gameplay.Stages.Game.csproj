@@ -16,6 +16,7 @@
     <Folder Include="Generators\" />
     <Folder Include="Objects\User\Messages\" />
     <Folder Include="Commands\" />
+    <Folder Include="Objects\Mob\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
@@ -34,6 +35,7 @@
     <None Remove="Generators\" />
     <None Remove="Objects\User\Messages\" />
     <None Remove="Commands\" />
+    <None Remove="Objects\Mob\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.3.2" />

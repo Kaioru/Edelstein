@@ -1,6 +1,8 @@
-﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Continent
+﻿using Edelstein.Protocol.Util.Repositories;
+
+namespace Edelstein.Protocol.Gameplay.Stages.Game.Continent
 {
-    public interface IContiMoveInfo
+    public interface IContiMoveInfo : IRepositoryEntry<int>
     {
         public string Name { get; }
 

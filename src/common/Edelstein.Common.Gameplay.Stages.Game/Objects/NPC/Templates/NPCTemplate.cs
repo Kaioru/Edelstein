@@ -10,16 +10,16 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates
 {
     public record NPCTemplate : ITemplate, IFieldObjNPCInfo
     {
-        public int ID { get; init; }
+        public int ID { get; }
 
-        public bool Move { get; init; }
+        public bool Move { get; }
 
-        public int TrunkPut { get; init; }
-        public int TrunkGet { get; init; }
+        public int TrunkPut { get; }
+        public int TrunkGet { get; }
 
         public bool IsTrunk => TrunkPut > 0 || TrunkGet > 0;
-        public bool IsStoreBank { get; init; }
-        public bool IsParcel { get; init; }
+        public bool IsStoreBank { get; }
+        public bool IsParcel { get; }
 
         public string Script => Scripts.FirstOrDefault()?.Script;
 

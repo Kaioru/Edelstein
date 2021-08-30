@@ -8,12 +8,12 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Templates.Options
 {
     public record ItemOptionTemplate : ITemplate
     {
-        public int ID { get; init; }
+        public int ID { get; }
 
-        public ItemOptionGrade Grade { get; init; }
-        public ItemOptionType Type { get; init; }
-        public short ReqLevel { get; init; }
-        public IDictionary<int, ItemOptionLevelTemplate> LevelData { get; init; }
+        public ItemOptionGrade Grade { get; }
+        public ItemOptionType Type { get; }
+        public short ReqLevel { get; }
+        public IDictionary<int, ItemOptionLevelTemplate> LevelData { get; }
 
         public ItemOptionTemplate(int id, IDataProperty info, IDataProperty level)
         {

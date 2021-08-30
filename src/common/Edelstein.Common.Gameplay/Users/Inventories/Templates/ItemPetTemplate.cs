@@ -4,7 +4,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories.Templates
 {
     public record ItemPetTemplate : ItemTemplate
     {
-        public int Life { get; init; }
+        public int Life { get; }
 
         public ItemPetTemplate(int id, IDataProperty info) : base(id, info)
         {
