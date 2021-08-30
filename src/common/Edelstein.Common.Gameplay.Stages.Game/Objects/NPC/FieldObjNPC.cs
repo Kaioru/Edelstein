@@ -4,7 +4,6 @@ using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
 
@@ -14,14 +13,14 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC
     {
         public override FieldObjType Type => FieldObjType.NPC;
 
-        public NPCTemplate Template { get; }
+        public IFieldObjNPCInfo Info { get; }
 
         public int RX0 { get; set; }
         public int RX1 { get; set; }
 
-        public FieldObjNPC(NPCTemplate template, bool left = true)
+        public FieldObjNPC(IFieldObjNPCInfo info, bool left = true)
         {
-            Template = template;
+            Info = info;
             Action = (MoveActionType)Convert.ToByte(left);
         }
 
@@ -30,7 +29,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC
             var packet = new UnstructuredOutgoingPacket(PacketSendOperations.NpcEnterField);
 
             packet.WriteInt(ID);
-            packet.WriteInt(Template.ID);
+            packet.WriteInt(Info.ID);
 
             packet.WritePoint2D(Position);
             packet.WriteByte((byte)Action);
@@ -61,7 +60,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC
             if (setAsController)
             {
                 // TODO: investigate why this triggers
-                packet.WriteInt(Template.ID);
+                packet.WriteInt(Info.ID);
                 packet.WritePoint2D(Position);
                 packet.WriteByte((byte)Action);
                 packet.WriteShort((short)(Foothold?.ID ?? 0));

@@ -1,7 +1,7 @@
 ﻿using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 
-namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates
+namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates
 {
     public record NPCScriptTemplate : ITemplate
     {

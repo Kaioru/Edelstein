@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 
-namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates
+namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates
 {
-    public record NPCTemplate : ITemplate
+    public record NPCTemplate : ITemplate, IFieldObjNPCInfo
     {
         public int ID { get; init; }
 
@@ -16,9 +17,11 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates
         public int TrunkPut { get; init; }
         public int TrunkGet { get; init; }
 
-        public bool Trunk => TrunkPut > 0 || TrunkGet > 0;
-        public bool StoreBank { get; init; }
-        public bool Parcel { get; init; }
+        public bool IsTrunk => TrunkPut > 0 || TrunkGet > 0;
+        public bool IsStoreBank { get; init; }
+        public bool IsParcel { get; init; }
+
+        public string Script => Scripts.FirstOrDefault()?.Script;
 
         public ICollection<NPCScriptTemplate> Scripts;
 
@@ -30,8 +33,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates
 
             TrunkPut = info.Resolve<int>("trunkPut") ?? 0;
             TrunkGet = info.Resolve<int>("trunkGet") ?? 0;
-            StoreBank = info.Resolve<bool>("storeBank") ?? false;
-            Parcel = info.Resolve<bool>("parcel") ?? false;
+            IsStoreBank = info.Resolve<bool>("storeBank") ?? false;
+            IsParcel = info.Resolve<bool>("parcel") ?? false;
             Scripts = info.Resolve("script")?.Children
                           .Where(p => p.Name.All(char.IsDigit)) // 1057006 causes errors
                           .Select(p => new NPCScriptTemplate(Convert.ToInt32(p.Name), p))

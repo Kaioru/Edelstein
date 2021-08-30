@@ -24,7 +24,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Handlers
             response.WriteByte(packet.ReadByte()); // TODO: actions
             response.WriteByte(packet.ReadByte());
 
-            if (controlled.Template.Move)
+            if (controlled.Info.Move)
             {
                 var path = packet.Read(new MovePath());
 

@@ -13,7 +13,6 @@ using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
@@ -29,6 +28,7 @@ using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Logging;
 using Edelstein.Common.Gameplay.Stages.Game.Continent;
 using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
