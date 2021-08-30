@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
@@ -12,7 +13,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects
         protected override async Task Handle(GameStageUser stageUser, IFieldObjUser user, IPacketReader packet)
         {
             var objID = packet.ReadInt();
-            var obj = user.Controlling.OfType<T>().FirstOrDefault(c => c.ID == objID);
+            var obj = user.Controlling
+                .ToImmutableList()
+                .OfType<T>()
+                .FirstOrDefault(c => c.ID == objID);
 
             if (obj == null) return;
             await Handle(stageUser, user, obj, packet);

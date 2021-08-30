@@ -24,13 +24,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
             _ = packet.ReadInt();
 
             var path = packet.Read(new MovePath());
-            var response = new UnstructuredOutgoingPacket(PacketSendOperations.UserMove);
+            var movement = new UnstructuredOutgoingPacket(PacketSendOperations.UserMove);
 
-            response.WriteInt(user.ID);
-            response.Write(path);
+            movement.WriteInt(user.ID);
+            movement.Write(path);
 
             await user.Move(path);
-            await user.FieldSplit.Dispatch(user, response);
+            await user.FieldSplit.Dispatch(user, movement);
         }
     }
 }

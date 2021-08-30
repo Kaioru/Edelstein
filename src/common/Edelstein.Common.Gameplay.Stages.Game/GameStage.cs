@@ -30,6 +30,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Continent;
 using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Handlers;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -132,9 +133,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             FieldSetRepository = null; // TODO;
             ContiMoveRepository = new ContiMoveRepository(this, ContiMoveTemplates, FieldRepository, tickerManager);
 
-            packetProcessor.Register(new PartyRequestHandler());
-            packetProcessor.Register(new PartyResultHandler());
-
             packetProcessor.Register(new UserTransferChannelRequestHandler());
             packetProcessor.Register(new UserMoveHandler());
             packetProcessor.Register(new UserEmotionHandler());
@@ -146,6 +144,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             packetProcessor.Register(new UserCharacterInfoRequestHandler());
 
             packetProcessor.Register(new WhisperHandler());
+
+            packetProcessor.Register(new PartyRequestHandler());
+            packetProcessor.Register(new PartyResultHandler());
+
+            packetProcessor.Register(new MobMoveHandler());
 
             packetProcessor.Register(new NPCMoveHandler());
 
