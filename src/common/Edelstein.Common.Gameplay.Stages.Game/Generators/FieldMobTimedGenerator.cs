@@ -1,37 +1,30 @@
 ﻿using System;
 using Edelstein.Protocol.Gameplay.Stages.Game;
-using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob;
+using System.Threading.Tasks;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Generators
 {
     public class FieldMobTimedGenerator : AbstractFieldMobGenerator
     {
-        private DateTime NextRegenCheck { get; set; }
-        private DateTime? NextRegen { get; set; }
-
-        private IFieldObjMob Mob { get; }
+        private DateTime NextRegen { get; set; }
+        private IFieldObjMob Mob { get; set; }
 
         public FieldMobTimedGenerator(
             FieldLifeTemplate lifeTemplate,
-            MobTemplate mobTemplate,
-            DateTime now
+            MobTemplate mobTemplate
         ) : base(lifeTemplate, mobTemplate)
         {
-            NextRegenCheck = now;
-            NextRegen = now;
         }
+
         public override bool Check(DateTime now, IField field)
         {
-            if (now < NextRegenCheck) return false;
-
-            NextRegenCheck = NextRegenCheck.AddSeconds(7);
-
-            if (Mob == null || Mob.Field == null)
+            if (Mob != null)
             {
-                if (NextRegen == null)
+                if (Mob.Field == null)
                 {
                     var random = new Random();
                     var buffer = 7 * LifeTemplate.MobTime / 10;
@@ -39,14 +32,27 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Generators
                         13 * LifeTemplate.MobTime / 10 + random.Next(buffer)
                     );
 
-                    NextRegen = DateTime.UtcNow.Add(interval);
+                    NextRegen = NextRegen.Add(interval);
+                    Mob = null;
                 }
 
-                return now >= NextRegen;
+                return false;
             }
-            else NextRegen = null;
 
-            return false;
+            return NextRegen < now;
+        }
+
+        public override async Task Generate(IField field)
+        {
+            var mob = new FieldObjMob(MobTemplate, LifeTemplate.Left)
+            {
+                Position = LifeTemplate.Position,
+                Foothold = field.GetFoothold(LifeTemplate.FH)
+            };
+
+            await field.Enter(mob, () => mob.GetEnterFieldPacket(FieldObjMobAppearType.Regen));
+
+            Mob = mob;
         }
     }
 }
