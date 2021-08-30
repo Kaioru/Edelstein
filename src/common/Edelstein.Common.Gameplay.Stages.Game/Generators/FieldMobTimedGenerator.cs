@@ -9,22 +9,26 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Generators
 {
     public class FieldMobTimedGenerator : AbstractFieldMobGenerator
     {
-        private DateTime LastRegenCheck { get; set; }
+        private DateTime NextRegenCheck { get; set; }
         private DateTime? NextRegen { get; set; }
 
         private IFieldObjMob Mob { get; }
 
         public FieldMobTimedGenerator(
             FieldLifeTemplate lifeTemplate,
-            MobTemplate mobTemplate
+            MobTemplate mobTemplate,
+            DateTime now
         ) : base(lifeTemplate, mobTemplate)
         {
-            LastRegenCheck = DateTime.UtcNow;
-            NextRegen = DateTime.UtcNow;
+            NextRegenCheck = now;
+            NextRegen = now;
         }
         public override bool Check(DateTime now, IField field)
         {
-            if ((now - LastRegenCheck).TotalSeconds >= 7) return false;
+            if (now < NextRegenCheck) return false;
+
+            NextRegenCheck = NextRegenCheck.AddSeconds(7);
+
             if (Mob == null || Mob.Field == null)
             {
                 if (NextRegen == null)

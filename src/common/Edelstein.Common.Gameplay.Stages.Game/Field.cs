@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game;
-using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
@@ -59,14 +58,16 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             Generators = new List<Protocol.Gameplay.Stages.Game.Generators.AbstractFieldMobGenerator>();
 
+            var now = DateTime.UtcNow;
+
             template.Life.ForEach(l =>
                  Generators.Add(l.Type switch
                  {
                      FieldLifeType.NPC => new FieldNPCGenerator(l, stage.NPCTemplates.Retrieve(l.TemplateID).Result),
                      FieldLifeType.Monster =>
                         l.MobTime > 0
-                            ? new FieldMobTimedGenerator(l, stage.MobTemplates.Retrieve(l.TemplateID).Result)
-                            : new FieldMobNormalGenerator(l, stage.MobTemplates.Retrieve(l.TemplateID).Result),
+                            ? new FieldMobTimedGenerator(l, stage.MobTemplates.Retrieve(l.TemplateID).Result, now)
+                            : new FieldMobNormalGenerator(l, stage.MobTemplates.Retrieve(l.TemplateID).Result, now),
                      _ => throw new NotImplementedException()
                  })
              );
@@ -74,6 +75,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
         public async Task OnTick(DateTime now)
         {
+            if (!GetUsers().Any()) return;
+
             await Task.WhenAll(
                 Generators
                     .Where(g => g.Check(now, this))

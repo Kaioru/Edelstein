@@ -43,6 +43,12 @@ namespace Edelstein.Common.Network.DotNetty.Pipeline
                 case NettyPacketState.DecodingHeader:
                     if (socket != null)
                     {
+                        if (input.ReadableBytes < 4)
+                        {
+                            RequestReplay();
+                            return;
+                        }
+
                         var sequence = input.ReadShortLE();
                         var length = input.ReadShortLE();
 
@@ -51,7 +57,16 @@ namespace Edelstein.Common.Network.DotNetty.Pipeline
                         _sequence = sequence;
                         _length = length;
                     }
-                    else _length = input.ReadShortLE();
+                    else
+                    {
+                        if (input.ReadableBytes < 2)
+                        {
+                            RequestReplay();
+                            return;
+                        }
+
+                        _length = input.ReadShortLE();
+                    }
 
                     Checkpoint(NettyPacketState.DecodingPayload);
                     return;
