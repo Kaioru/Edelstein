@@ -20,7 +20,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Generators
 
         public abstract bool Check(DateTime now, IField field);
 
-        public Task Generate(IField field)
+        public virtual Task Generate(IField field)
         {
             var mob = new FieldObjMob(MobTemplate, LifeTemplate.Left)
             {

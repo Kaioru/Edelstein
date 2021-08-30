@@ -16,6 +16,7 @@ using MoreLinq;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Social;
 using Edelstein.Protocol.Services.Contracts.Social;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -38,6 +39,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
         private readonly IFieldSplit[,] _splits;
 
+        private DateTime NextGeneratorTick { get; set; }
 
         // TODO: Better physicalspace2d handling
         public Field(GameStage stage, FieldTemplate template)
@@ -58,16 +60,14 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             Generators = new List<Protocol.Gameplay.Stages.Game.Generators.AbstractFieldMobGenerator>();
 
-            var now = DateTime.UtcNow;
-
             template.Life.ForEach(l =>
                  Generators.Add(l.Type switch
                  {
                      FieldLifeType.NPC => new FieldNPCGenerator(l, stage.NPCTemplates.Retrieve(l.TemplateID).Result),
                      FieldLifeType.Monster =>
                         l.MobTime > 0
-                            ? new FieldMobTimedGenerator(l, stage.MobTemplates.Retrieve(l.TemplateID).Result, now)
-                            : new FieldMobNormalGenerator(l, stage.MobTemplates.Retrieve(l.TemplateID).Result, now),
+                            ? new FieldMobTimedGenerator(l, stage.MobTemplates.Retrieve(l.TemplateID).Result)
+                            : new FieldMobNormalGenerator(l, stage.MobTemplates.Retrieve(l.TemplateID).Result),
                      _ => throw new NotImplementedException()
                  })
              );
@@ -78,15 +78,51 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             if (!GetUsers().Any()) return;
 
             await Task.WhenAll(
-                Generators
-                    .Where(g => g.Check(now, this))
-                    .Select(g => g.Generate(this))
-            );
-            await Task.WhenAll(
                 GetObjects()
                     .OfType<ITickerBehavior>()
                     .Select(o => o.OnTick(now))
             );
+
+            if (now > NextGeneratorTick)
+            {
+                NextGeneratorTick = NextGeneratorTick.AddSeconds(7);
+
+                var generators = Generators
+                    .Where(g => g.Check(now, this))
+                    .ToImmutableList();
+                var mobGenerators = generators
+                    .OfType<AbstractFieldMobGenerator>()
+                    .ToImmutableList();
+                var otherGenerators = generators
+                    .Except(mobGenerators)
+                    .ToImmutableList();
+
+                await Task.WhenAll(otherGenerators.Select(g => g.Generate(this)));
+
+                if (mobGenerators.Any())
+                {
+                    var userCount = GetUsers().Count();
+                    var mobCount = GetObjects<IFieldObjMob>().Count();
+                    var mobCapacity = Info.MobCapacityMin;
+
+                    if (userCount > Info.MobCapacityMin / 2)
+                        mobCapacity += (Info.MobCapacityMax - Info.MobCapacityMin) *
+                                       (2 * userCount - Info.MobCapacityMin) /
+                                       (3 * Info.MobCapacityMin);
+                    mobCapacity = Math.Min(mobCapacity, Info.MobCapacityMax);
+
+                    var mobGenCount = mobCapacity - mobCount;
+
+                    if (mobGenCount == 0) return;
+
+                    await Task.WhenAll(
+                        mobGenerators
+                            .Shuffle()
+                            .Take(mobGenCount)
+                            .Select(g => g.Generate(this))
+                    );
+                }
+            }
         }
 
         public IPhysicalPoint2D GetPortal(int id)

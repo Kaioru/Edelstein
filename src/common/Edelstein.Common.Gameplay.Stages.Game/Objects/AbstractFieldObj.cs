@@ -32,8 +32,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects
 
             var split = Field.GetSplit(Position);
 
-            if (FieldSplit != split)
-                await split.Enter(this, getEnterPacket, getLeavePacket);
+            if (split == null) FieldSplit?.Leave(this);
+            if (FieldSplit != split) await split.Enter(this, getEnterPacket, getLeavePacket);
         }
 
         public abstract IPacket GetEnterFieldPacket();

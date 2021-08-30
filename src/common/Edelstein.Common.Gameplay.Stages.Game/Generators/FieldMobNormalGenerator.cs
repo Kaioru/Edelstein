@@ -10,21 +10,15 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Generators
 {
     public class FieldMobNormalGenerator : AbstractFieldMobGenerator
     {
-        private DateTime NextRegenCheck { get; set; }
-
         public FieldMobNormalGenerator(
             FieldLifeTemplate lifeTemplate,
-            MobTemplate mobTemplate,
-            DateTime now
+            MobTemplate mobTemplate
         ) : base(lifeTemplate, mobTemplate)
         {
-            NextRegenCheck = now;
         }
 
         public override bool Check(DateTime now, IField field)
         {
-            if (now < NextRegenCheck) return false;
-
             var bounds = new Rect2D(
                 new Point2D(
                     LifeTemplate.Position.X,
@@ -32,8 +26,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Generators
                 ),
                 new Size2D(200, 200)
             );
-
-            NextRegenCheck = NextRegenCheck.AddSeconds(7);
 
             return !field
                     .GetObjects<IFieldObjMob>()
