@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 
 namespace Edelstein.Common.Gameplay.Users.Inventories.Templates.Sets

@@ -21,7 +21,7 @@ using Edelstein.Common.Util.Ticks;
 using Edelstein.Protocol.Datastore;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates.Options;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates.Sets;

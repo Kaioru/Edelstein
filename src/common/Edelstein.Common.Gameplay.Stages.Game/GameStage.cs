@@ -14,7 +14,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Commands;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
 using Edelstein.Protocol.Gameplay.Stages.Game.FieldSets;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates.Options;

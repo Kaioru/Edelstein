@@ -16,7 +16,6 @@
     <Folder Include="Users\Inventories\" />
     <Folder Include="Stages\" />
     <Folder Include="Users\Stats\" />
-    <Folder Include="Templating\" />
     <Folder Include="Spatial\" />
     <Folder Include="Users\" />
     <Folder Include="Social\" />

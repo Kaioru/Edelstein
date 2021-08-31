@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users.Inventories;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates;

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Common.Gameplay.Templating
