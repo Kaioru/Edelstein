@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Templating;
+﻿using Edelstein.Common.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates

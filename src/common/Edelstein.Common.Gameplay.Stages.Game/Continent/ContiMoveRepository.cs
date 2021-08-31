@@ -5,7 +5,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Continent.Templates;
 using Edelstein.Common.Util.Repositories;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continent;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 using Edelstein.Protocol.Util.Ticks;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Continent

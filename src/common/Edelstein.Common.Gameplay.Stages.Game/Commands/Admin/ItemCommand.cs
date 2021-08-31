@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Stages.Game.Commands.Util;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Admin
 {

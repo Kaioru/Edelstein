@@ -3,7 +3,7 @@ using Edelstein.Common.Gameplay.Stages.Login.Handlers;
 using Edelstein.Common.Gameplay.Stages.Login.Templates;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Login;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Protocol.Services;

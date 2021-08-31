@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Edelstein.Common.Util.Repositories;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 using Edelstein.Protocol.Util.Ticks;
 
 namespace Edelstein.Common.Gameplay.Stages.Game

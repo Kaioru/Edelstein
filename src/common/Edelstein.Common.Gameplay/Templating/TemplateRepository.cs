@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 using Foundatio.Caching;
 
 namespace Edelstein.Common.Gameplay.Templating

@@ -5,7 +5,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Commands.Util;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 using PowerArgs;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Admin

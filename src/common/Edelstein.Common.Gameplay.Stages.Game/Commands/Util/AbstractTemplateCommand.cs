@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNet.Globbing;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Templating;
 using MoreLinq;
 using PowerArgs;
 
