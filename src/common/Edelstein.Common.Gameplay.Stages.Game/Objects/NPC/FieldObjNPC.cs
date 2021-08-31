@@ -24,21 +24,27 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC
             Action = (MoveActionType)Convert.ToByte(left);
         }
 
+        public void WriteData(IPacketWriter writer)
+        {
+            writer.WriteInt(Info.ID);
+
+            writer.WritePoint2D(Position);
+            writer.WriteByte((byte)Action);
+            writer.WriteShort((short)(Foothold?.ID ?? 0));
+
+            writer.WriteShort((short)RX0);
+            writer.WriteShort((short)RX1);
+
+            writer.WriteBool(true); // enabled
+        }
+
         public override IPacket GetEnterFieldPacket()
         {
             var packet = new UnstructuredOutgoingPacket(PacketSendOperations.NpcEnterField);
 
             packet.WriteInt(ID);
-            packet.WriteInt(Info.ID);
 
-            packet.WritePoint2D(Position);
-            packet.WriteByte((byte)Action);
-            packet.WriteShort((short)(Foothold?.ID ?? 0));
-
-            packet.WriteShort((short)RX0);
-            packet.WriteShort((short)RX1);
-
-            packet.WriteBool(true); // enabled
+            WriteData(packet);
             return packet;
         }
 
@@ -58,18 +64,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC
             packet.WriteInt(ID);
 
             if (setAsController)
-            {
-                // TODO: investigate why this triggers
-                packet.WriteInt(Info.ID);
-                packet.WritePoint2D(Position);
-                packet.WriteByte((byte)Action);
-                packet.WriteShort((short)(Foothold?.ID ?? 0));
-
-                packet.WriteShort((short)RX0);
-                packet.WriteShort((short)RX1);
-
-                packet.WriteBool(true);
-            }
+                WriteData(packet);
             return packet;
         }
 
