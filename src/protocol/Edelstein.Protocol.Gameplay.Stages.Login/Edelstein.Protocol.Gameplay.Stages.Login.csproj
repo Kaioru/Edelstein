@@ -7,7 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
-    <ProjectReference Include="..\Edelstein.Protocol.Interop\Edelstein.Protocol.Interop.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
   </ItemGroup>
 </Project>

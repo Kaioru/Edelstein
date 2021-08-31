@@ -8,7 +8,6 @@
     <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj" />
-    <ProjectReference Include="..\Edelstein.Protocol.Interop\Edelstein.Protocol.Interop.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Services\Edelstein.Protocol.Services.csproj" />
   </ItemGroup>
