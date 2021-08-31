@@ -31,7 +31,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Login\Edelstein.Common.Gameplay.Stages.Login.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
-    <ProjectReference Include="..\..\common\Edelstein.Common.Interop\Edelstein.Common.Interop.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Datastore.LiteDB\Edelstein.Common.Datastore.LiteDB.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Parser.Duey\Edelstein.Common.Parser.Duey.csproj" />
