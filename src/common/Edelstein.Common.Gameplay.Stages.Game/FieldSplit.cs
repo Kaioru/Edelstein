@@ -16,8 +16,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public int Row { get; }
         public int Col { get; }
 
-        private readonly IDictionary<int, IFieldObjUser> _watchers;
-        private readonly IDictionary<int, IFieldObj> _objects;
+        private readonly ICollection<IFieldObjUser> _watchers;
+        private readonly ICollection<IFieldObj> _objects;
         private readonly object _watcherLock;
         private readonly object _objectLock;
 
@@ -26,8 +26,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             Row = row;
             Col = col;
 
-            _watchers = new Dictionary<int, IFieldObjUser>();
-            _objects = new Dictionary<int, IFieldObj>();
+            _watchers = new List<IFieldObjUser>();
+            _objects = new List<IFieldObj>();
             _watcherLock = new object();
             _objectLock = new object();
         }
@@ -61,16 +61,15 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             {
                 var enclosingSplits = user.Field.GetEnclosingSplits(this);
                 var oldSplits = user.Watching
-                    .Where(s => s != null)
                     .Except(enclosingSplits)
-                    .ToImmutableArray();
+                    .ToImmutableList();
                 var newSplits = enclosingSplits
                     .Where(s => s != null)
                     .Except(user.Watching)
-                    .ToImmutableArray();
+                    .ToImmutableList();
 
-                await Task.WhenAll(newSplits.Select(s => s.Watch(user)));
                 await Task.WhenAll(oldSplits.Select(s => s.Unwatch(user)));
+                await Task.WhenAll(newSplits.Select(s => s.Watch(user)));
             }
 
             UpdateControlledObjects();
@@ -91,7 +90,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         {
             lock (_objectLock)
             {
-                _objects[obj.ID] = obj;
+                _objects.Add(obj);
                 obj.FieldSplit = this;
             }
 
@@ -102,7 +101,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         {
             lock (_objectLock)
             {
-                _objects.Remove(obj.ID);
+                _objects.Remove(obj);
                 obj.FieldSplit = null;
             }
 
@@ -111,10 +110,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
         public async Task Watch(IFieldObjUser user)
         {
-
             lock (_watcherLock)
             {
-                _watchers[user.ID] = user;
+                _watchers.Add(user);
                 user.Watching.Add(this);
             }
 
@@ -129,7 +127,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         {
             lock (_watcherLock)
             {
-                _watchers.Remove(user.ID);
+                _watchers.Remove(user);
                 user.Watching.Remove(this);
             }
 
@@ -147,7 +145,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                 var controllers = GetWatchers()
                     .OrderBy(u => u.Controlling.Count)
                     .ToImmutableList();
-                var controlled = GetObjects().OfType<IFieldControlledObj>().ToList();
+                var controlled = GetObjects()
+                    .OfType<IFieldControlledObj>()
+                    .ToImmutableList();
 
                 controlled
                     .Where(c => c.Controller == null || !controllers.Contains(c.Controller))
@@ -156,27 +156,19 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         }
 
         public IFieldObjUser GetWatcher(int id)
-        {
-            if (_watchers.ContainsKey(id))
-                return _watchers[id];
-            return null;
-        }
+            => GetWatchers().FirstOrDefault(w => w.ID == id);
 
         public IEnumerable<IFieldObjUser> GetWatchers()
-            => _watchers.Values.ToImmutableList();
+            => _watchers.ToImmutableList();
 
         public IFieldObj GetObject(int id)
-        {
-            if (_objects.ContainsKey(id))
-                return _objects[id];
-            return null;
-        }
+            => GetObjects().FirstOrDefault(o => o.ID == id);
 
         public T GetObject<T>(int id) where T : IFieldObj
             => (T)GetObject(id);
 
         public IEnumerable<IFieldObj> GetObjects()
-            => _objects.Values.ToImmutableList();
+            => _objects.ToImmutableList();
 
         public IEnumerable<T> GetObjects<T>() where T : IFieldObj
             => GetObjects().OfType<T>();

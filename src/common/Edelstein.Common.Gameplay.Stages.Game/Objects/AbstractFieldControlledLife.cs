@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
+﻿using System;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
 

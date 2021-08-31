@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Spatial;
 
@@ -23,10 +26,14 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects
             Func<IPacket> getLeavePacket = null
         )
         {
-            if (Field == null)
+            if (Field == null && FieldSplit != null)
             {
-                if (FieldSplit != null)
-                    await FieldSplit.Leave(this);
+                if (this is IFieldObjUser user)
+                    await Task.WhenAll(user.Watching
+                        .ToImmutableList()
+                        .Select(w => w.Unwatch(user)));
+
+                await FieldSplit.Leave(this);
                 return;
             }
 

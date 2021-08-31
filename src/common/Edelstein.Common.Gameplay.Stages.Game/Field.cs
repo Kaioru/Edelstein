@@ -23,8 +23,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 {
     public class Field : IField, ITickerBehavior
     {
-        private const int ScreenWidth = 800;
-        private const int ScreenHeight = 600;
+        private const int ScreenWidth = 1024;
+        private const int ScreenHeight = 768;
         private const int ScreenWidthOffset = ScreenWidth * 75 / 100;
         private const int ScreenHeightOffset = ScreenHeight * 75 / 100;
 
@@ -261,7 +261,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         {
             var pool = GetPool(obj.Type);
 
-            obj.Field?.Leave(obj);
+            if (obj.Field != null)
+                await obj.Field.Leave(obj);
+
             obj.Field = this;
 
             if (obj is IFieldObjUser user)
@@ -322,9 +324,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             var pool = GetPool(obj.Type);
 
             obj.Field = null;
-
-            if (obj is IFieldObjUser user)
-                user.Watching.Clear();
 
             await pool.Leave(obj);
             await obj.UpdateFieldSplit(getLeavePacket: getLeavePacket);
