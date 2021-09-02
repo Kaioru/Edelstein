@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Contracts;
 using Edelstein.Protocol.Util.Ticks;
+using Microsoft.Extensions.Logging;
 using MoreLinq;
 
 namespace Edelstein.Common.Gameplay.Stages.Behaviors
@@ -48,18 +49,15 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
 
             var response = await _stage.ServerRegistry.Register(new RegisterServerRequest { Server = server });
 
-            if (response.Result == ServerRegistryResult.FailedAlreadyRegistered)
-            {
-                await _stage.ServerRegistry.Update(new UpdateServerRequest { Server = server });
-                _isInitialized = true;
-                _isDisconnected = false;
-            }
-
             if (response.Result == ServerRegistryResult.Ok)
             {
                 _isInitialized = true;
                 _isDisconnected = false;
+
+                _stage.Logger.LogInformation($"Successfully registered server {_stage.ID} to the server registry");
             }
+            else
+                _stage.Logger.LogInformation($"Failed to register server {_stage.ID} to the server registry due to {response.Result}");
         }
     }
 }
