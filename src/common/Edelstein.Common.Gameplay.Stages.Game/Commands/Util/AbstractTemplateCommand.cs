@@ -84,13 +84,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Util
                             r => $"{r.DisplayString} ({r.ID})"
                         );
 
-                        if (currentPage < maxPage) menu.Add(0, "#rNext page#k");
-                        if (currentPage > minPage) menu.Add(1, "#rPrevious page#k");
+                        if (currentPage < maxPage) menu.Add(-10, "#rNext page#k");
+                        if (currentPage > minPage) menu.Add(-20, "#rPrevious page#k");
 
                         var selection = target.AskMenu($"Found {results.Count} results for '{args.Search}' in {elapsed.TotalSeconds:F} seconds (page {currentPage} of {maxPage})", menu);
 
-                        if (selection == 0) { currentPage++; continue; }
-                        if (selection == 1) { currentPage--; continue; }
+                        if (selection == -10) { currentPage++; continue; }
+                        if (selection == -20) { currentPage--; continue; }
 
                         return selection;
                     }
