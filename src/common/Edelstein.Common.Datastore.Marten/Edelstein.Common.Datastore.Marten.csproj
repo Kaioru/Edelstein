@@ -9,8 +9,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Marten" />
+    <None Remove="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Marten" Version="3.13.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
   </ItemGroup>
 </Project>

@@ -40,17 +40,36 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
+using Edelstein.Protocol.Scripting;
 
 namespace Edelstein.App.Standalone
 {
     public class ProgramHost : IHostedService
     {
         private readonly ProgramConfig _config;
+        private readonly IDataStore _store;
+        private readonly ICacheClient _cache;
+        private readonly IMessageBus _messenger;
+        private readonly IDataDirectoryCollection _data;
+        private readonly IScriptEngine _scripting;
+
         private readonly ICollection<ITransportAcceptor> _acceptors;
 
-        public ProgramHost(IOptions<ProgramConfig> options)
+        public ProgramHost(
+            IOptions<ProgramConfig> options,
+            IDataStore store,
+            ICacheClient cache,
+            IMessageBus messenger,
+            IDataDirectoryCollection data,
+            IScriptEngine scripting
+        )
         {
             _config = options.Value;
+            _store = store;
+            _cache = cache;
+            _messenger = messenger;
+            _data = data;
+            _scripting = scripting;
             _acceptors = new List<ITransportAcceptor>();
         }
 
@@ -60,10 +79,11 @@ namespace Edelstein.App.Standalone
 
             collection.AddLogging(logging => logging.AddSerilog());
 
-            collection.AddSingleton<ICacheClient, InMemoryCacheClient>();
-            collection.AddSingleton<IMessageBus, InMemoryMessageBus>();
-            collection.AddSingleton<IDataStore>(p => new LiteDataStore(new LiteRepository(_config.Database)));
-            collection.AddSingleton<IDataDirectoryCollection>(p => new NXDataDirectoryCollection(_config.DataPath));
+            collection.AddSingleton(_store);
+            collection.AddSingleton(_cache);
+            collection.AddSingleton(_messenger);
+            collection.AddSingleton(_data);
+            collection.AddSingleton(_scripting);
 
             collection.AddSingleton<IServerRegistry, ServerRegistry>();
             collection.AddSingleton<ISessionRegistry, SessionRegistry>();
