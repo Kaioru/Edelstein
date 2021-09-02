@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Game\Edelstein.Common.Gameplay.Stages.Game.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Hosting\Edelstein.Common.Hosting.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Services\Edelstein.Common.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Microsoft.AspNetCore.Hosting" />
+    <None Remove="Serilog.Extensions.Logging" />
+    <None Remove="Serilog.Sinks.Console" />
+    <None Remove="Microsoft.Extensions.Hosting" />
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

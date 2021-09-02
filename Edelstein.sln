@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Common.Datastore.Marten", "src\common\Edelstein.Common.Datastore.Marten\Edelstein.Common.Datastore.Marten.csproj", "{A39517B2-A576-4253-B01A-8BB216DF51CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Datastore.Marten", "src\common\Edelstein.Common.Datastore.Marten\Edelstein.Common.Datastore.Marten.csproj", "{A39517B2-A576-4253-B01A-8BB216DF51CB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.App.Standalone", "src\app\Edelstein.App.Standalone\Edelstein.App.Standalone.csproj", "{AD273B40-4F55-43C7-9837-4AC89D907D8B}"
 EndProject
@@ -55,6 +55,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Hosting", "src\common\Edelstein.Common.Hosting\Edelstein.Common.Hosting.csproj", "{E0E6DB36-09C3-40A2-A852-A9D37EFDB374}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.App.Login", "src\app\Edelstein.App.Login\Edelstein.App.Login.csproj", "{97CC11A0-56E8-4DC9-AA23-E1B8925B1FE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.App.Game", "src\app\Edelstein.App.Game\Edelstein.App.Game.csproj", "{7D278A88-5900-4CC3-8549-C40E7BFE105B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -158,6 +160,10 @@ Global
 		{97CC11A0-56E8-4DC9-AA23-E1B8925B1FE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97CC11A0-56E8-4DC9-AA23-E1B8925B1FE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97CC11A0-56E8-4DC9-AA23-E1B8925B1FE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D278A88-5900-4CC3-8549-C40E7BFE105B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D278A88-5900-4CC3-8549-C40E7BFE105B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D278A88-5900-4CC3-8549-C40E7BFE105B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D278A88-5900-4CC3-8549-C40E7BFE105B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,5 +199,6 @@ Global
 		{62FD8EED-BED2-4C3C-90C2-F94B55B82917} = {9CCC2052-ABE3-46C4-9DA9-503365F05C97}
 		{E0E6DB36-09C3-40A2-A852-A9D37EFDB374} = {379C3451-CE89-40E9-8E88-8EDC9E888FD8}
 		{97CC11A0-56E8-4DC9-AA23-E1B8925B1FE1} = {08BE3F56-F4E7-41D9-BBF1-14DC804B08A7}
+		{7D278A88-5900-4CC3-8549-C40E7BFE105B} = {08BE3F56-F4E7-41D9-BBF1-14DC804B08A7}
 	EndGlobalSection
 EndGlobal
