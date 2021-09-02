@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
     public class AliveReqBehavior<TStage, TUser, TConfig> : ITickerBehavior
         where TStage : AbstractServerStage<TStage, TUser, TConfig>
         where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
-        where TConfig : IServerStageInfo
+        where TConfig : ServerStageInfo
     {
         private readonly TStage _stage;
 

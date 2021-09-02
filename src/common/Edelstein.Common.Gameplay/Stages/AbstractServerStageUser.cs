@@ -12,7 +12,7 @@ namespace Edelstein.Common.Gameplay.Stages
     public abstract class AbstractServerStageUser<TStage, TUser, TConfig> : AbstractStageUser<TStage, TUser>, IServerStageUser<TStage, TUser>
         where TStage : AbstractServerStage<TStage, TUser, TConfig>
         where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
-        where TConfig : IServerStageInfo
+        where TConfig : ServerStageInfo
     {
         private static readonly TimeSpan SessionDisconnectDuration = TimeSpan.FromMinutes(3);
         private static readonly TimeSpan SessionUpdateDuration = TimeSpan.FromMinutes(1);

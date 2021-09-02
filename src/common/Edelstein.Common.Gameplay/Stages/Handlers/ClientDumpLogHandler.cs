@@ -9,7 +9,7 @@ namespace Edelstein.Common.Gameplay.Stages.Handlers
     public class ClientDumpLogHandler<TStage, TUser, TConfig> : AbstractPacketHandler<TStage, TUser>
         where TStage : AbstractServerStage<TStage, TUser, TConfig>
         where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
-        where TConfig : IServerStageInfo
+        where TConfig : ServerStageInfo
     {
         public override short Operation => (short)PacketRecvOperations.ClientDumpLog;
         private readonly TStage _stage;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Contracts;
@@ -10,7 +11,7 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
     public class ServerUpdateBehavior<TStage, TUser, TConfig> : ITickerBehavior
         where TStage : AbstractServerStage<TStage, TUser, TConfig>
         where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
-        where TConfig : IServerStageInfo
+        where TConfig : ServerStageInfo
     {
         private readonly TStage _stage;
         private bool _isInitialized = false;
@@ -23,24 +24,18 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
 
         public async Task OnTick(DateTime now)
         {
-            var config = _stage.Info;
-            var tags = config
-                .GetType()
-                .GetProperties()
-                .ToDictionary(
-                    p => p.Name.ToString(),
-                    p => p.GetValue(config).ToString()
-                );
-
             var server = new ServerContract
             {
                 Id = _stage.ID,
-                Host = config.Host,
-                Port = config.Port
+                Host = _stage.Info.Host,
+                Port = _stage.Info.Port
             };
+            var metadata = new Dictionary<string, string>();
+
+            _stage.Info.AddMetadata(metadata);
 
             server.Metadata.Add("Type", Enum.GetName(_stage.Type));
-            server.Metadata.Add(tags);
+            server.Metadata.Add(metadata);
 
             if (_isInitialized && !_isDisconnected)
             {
