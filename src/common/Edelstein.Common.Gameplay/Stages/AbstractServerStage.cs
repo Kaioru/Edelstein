@@ -15,7 +15,7 @@ namespace Edelstein.Common.Gameplay.Stages
     public abstract class AbstractServerStage<TStage, TUser, TInfo> : AbstractStage<TStage, TUser>, IServerStage<TStage, TUser>
         where TStage : AbstractServerStage<TStage, TUser, TInfo>
         where TUser : AbstractServerStageUser<TStage, TUser, TInfo>
-        where TInfo : IServerStageInfo
+        where TInfo : ServerStageInfo
     {
         private static readonly TimeSpan ServerUpdateFreq = TimeSpan.FromMinutes(1);
         private static readonly TimeSpan AliveBehaviorFreq = TimeSpan.FromSeconds(1);
