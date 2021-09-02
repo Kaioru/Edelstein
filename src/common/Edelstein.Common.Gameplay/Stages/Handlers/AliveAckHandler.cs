@@ -7,7 +7,7 @@ namespace Edelstein.Common.Gameplay.Stages.Handlers
     public class AliveAckHandler<TStage, TUser, TConfig> : AbstractPacketHandler<TStage, TUser>
         where TStage : AbstractServerStage<TStage, TUser, TConfig>
         where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
-        where TConfig : ServerStageConfig
+        where TConfig : IServerStageInfo
     {
         public override short Operation => (short)PacketRecvOperations.AliveAck;
 

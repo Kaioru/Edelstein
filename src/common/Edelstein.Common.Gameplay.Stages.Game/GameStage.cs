@@ -36,8 +36,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 {
     public class GameStage : AbstractServerStage<GameStage, GameStageUser, GameStageConfig>, IGameStage<GameStage, GameStageUser>
     {
-        public int WorldID => Config.WorldID;
-        public int ChannelID => Config.ChannelID;
+        public int WorldID => Info.WorldID;
+        public int ChannelID => Info.ChannelID;
 
         public IDispatchService DispatchService { get; }
 

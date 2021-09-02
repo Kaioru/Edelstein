@@ -37,7 +37,7 @@ namespace Edelstein.App.Standalone
 
                 .ConfigureServices((context, builder) =>
                 {
-                    builder.Configure<ProgramConfig>(context.Configuration.GetSection("Service"));
+                    builder.Configure<ProgramConfig>(context.Configuration.GetSection("Host"));
                     builder.AddHostedService<ProgramHost>();
                 })
                 .RunConsoleAsync();

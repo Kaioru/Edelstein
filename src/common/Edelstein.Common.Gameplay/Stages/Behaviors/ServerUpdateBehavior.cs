@@ -10,7 +10,7 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
     public class ServerUpdateBehavior<TStage, TUser, TConfig> : ITickerBehavior
         where TStage : AbstractServerStage<TStage, TUser, TConfig>
         where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
-        where TConfig : ServerStageConfig
+        where TConfig : IServerStageInfo
     {
         private readonly TStage _stage;
         private bool _isInitialized = false;
@@ -23,7 +23,7 @@ namespace Edelstein.Common.Gameplay.Stages.Behaviors
 
         public async Task OnTick(DateTime now)
         {
-            var config = _stage.Config;
+            var config = _stage.Info;
             var tags = config
                 .GetType()
                 .GetProperties()
