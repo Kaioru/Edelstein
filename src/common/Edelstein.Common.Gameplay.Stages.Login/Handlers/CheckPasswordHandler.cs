@@ -35,7 +35,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
             if (account == null)
             {
-                if (_stage.Config.AutoRegister)
+                if (_stage.Info.AutoRegister)
                 {
                     account = new Account
                     {

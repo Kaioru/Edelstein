@@ -17,7 +17,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
         public override async Task Handle(LoginStageUser user, IPacketReader packet)
         {
-            var worldTemplates = (await Task.WhenAll(user.Stage.Config.Worlds
+            var worldTemplates = (await Task.WhenAll(user.Stage.Info.Worlds
                 .Select(w => user.Stage.WorldTemplates.Retrieve(w))))
                 .Where(w => w != null)
                 .OrderBy(w => w.ID)

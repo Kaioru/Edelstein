@@ -12,17 +12,17 @@ using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Stages
 {
-    public abstract class AbstractServerStage<TStage, TUser, TConfig> : AbstractStage<TStage, TUser>, IServerStage<TStage, TUser>
-        where TStage : AbstractServerStage<TStage, TUser, TConfig>
-        where TUser : AbstractServerStageUser<TStage, TUser, TConfig>
-        where TConfig : ServerStageConfig
+    public abstract class AbstractServerStage<TStage, TUser, TInfo> : AbstractStage<TStage, TUser>, IServerStage<TStage, TUser>
+        where TStage : AbstractServerStage<TStage, TUser, TInfo>
+        where TUser : AbstractServerStageUser<TStage, TUser, TInfo>
+        where TInfo : IServerStageInfo
     {
         private static readonly TimeSpan ServerUpdateFreq = TimeSpan.FromMinutes(1);
         private static readonly TimeSpan AliveBehaviorFreq = TimeSpan.FromSeconds(1);
 
         public ServerStageType Type { get; init; }
-        public TConfig Config { get; init; }
-        public string ID => Config.ID;
+        public TInfo Info { get; init; }
+        public string ID => Info.ID;
 
         public ILogger Logger { get; init; }
 
@@ -36,7 +36,7 @@ namespace Edelstein.Common.Gameplay.Stages
 
         protected AbstractServerStage(
             ServerStageType type,
-            TConfig config,
+            TInfo config,
             ILogger<IStage<TStage, TUser>> logger,
             IServerRegistry serverRegistry,
             ISessionRegistry sessionRegistry,
@@ -49,7 +49,7 @@ namespace Edelstein.Common.Gameplay.Stages
         ) : base()
         {
             Type = type;
-            Config = config;
+            Info = config;
             Logger = logger;
             ServerRegistry = serverRegistry;
             SessionRegistry = sessionRegistry;
@@ -58,11 +58,11 @@ namespace Edelstein.Common.Gameplay.Stages
             AccountWorldRepository = accountWorldRepository;
             CharacterRepository = characterRepository;
 
-            tickerManager.Schedule(new ServerUpdateBehavior<TStage, TUser, TConfig>((TStage)this), ServerUpdateFreq, TimeSpan.Zero);
-            tickerManager.Schedule(new AliveReqBehavior<TStage, TUser, TConfig>((TStage)this), AliveBehaviorFreq);
-            processor.Register(new AliveAckHandler<TStage, TUser, TConfig>());
-            processor.Register(new MigrateInHandler<TStage, TUser, TConfig>((TStage)this));
-            processor.Register(new ClientDumpLogHandler<TStage, TUser, TConfig>((TStage)this));
+            tickerManager.Schedule(new ServerUpdateBehavior<TStage, TUser, TInfo>((TStage)this), ServerUpdateFreq, TimeSpan.Zero);
+            tickerManager.Schedule(new AliveReqBehavior<TStage, TUser, TInfo>((TStage)this), AliveBehaviorFreq);
+            processor.Register(new AliveAckHandler<TStage, TUser, TInfo>());
+            processor.Register(new MigrateInHandler<TStage, TUser, TInfo>((TStage)this));
+            processor.Register(new ClientDumpLogHandler<TStage, TUser, TInfo>((TStage)this));
         }
 
         public override async Task Enter(TUser user)
