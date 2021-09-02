@@ -51,7 +51,10 @@ namespace Edelstein.Common.Datastore.Marten
         }
 
         public Task Save()
-            => _session.SaveChangesAsync();
+        {
+            _session.SaveChanges();
+            return Task.CompletedTask;
+        }
 
         public void Dispose()
             => _session.Dispose();
