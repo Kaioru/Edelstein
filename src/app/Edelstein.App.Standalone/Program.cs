@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Edelstein.Common.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,9 +28,16 @@ namespace Edelstein.App.Standalone
                     logging.ClearProviders();
                     logging.AddSerilog();
                 })
+
+                .ConfigureDataStore()
+                .ConfigureCaching()
+                .ConfigureMessaging()
+                .ConfigureParser()
+                .ConfigureScripting()
+
                 .ConfigureServices((context, builder) =>
                 {
-                    builder.Configure<ProgramConfig>(context.Configuration);
+                    builder.Configure<ProgramConfig>(context.Configuration.GetSection("Service"));
                     builder.AddHostedService<ProgramHost>();
                 })
                 .RunConsoleAsync();

@@ -12,8 +12,5 @@ namespace Edelstein.App.Standalone
         public short Version { get; init; } = 95;
         public string Patch { get; init; } = "1";
         public byte Locale { get; init; } = 8;
-
-        public string Database { get; init; } = "edelstein.db";
-        public string DataPath { get; init; } = "data";
     }
 }

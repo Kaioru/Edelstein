@@ -6,8 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="Duey" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
 </Project>
