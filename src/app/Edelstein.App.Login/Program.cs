@@ -48,7 +48,6 @@ namespace Edelstein.App.Login
                 .ConfigureCaching()
                 .ConfigureMessaging()
                 .ConfigureParser()
-                .ConfigureScripting()
 
                 .ConfigureServices((context, builder) =>
                 {

@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.App.Login", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.App.Game", "src\app\Edelstein.App.Game\Edelstein.App.Game.csproj", "{7D278A88-5900-4CC3-8549-C40E7BFE105B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.App.WebAPI", "src\app\Edelstein.App.WebAPI\Edelstein.App.WebAPI.csproj", "{FF2D01B6-D0D6-42A8-B71E-04008606ECC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -164,6 +166,10 @@ Global
 		{7D278A88-5900-4CC3-8549-C40E7BFE105B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D278A88-5900-4CC3-8549-C40E7BFE105B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D278A88-5900-4CC3-8549-C40E7BFE105B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF2D01B6-D0D6-42A8-B71E-04008606ECC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF2D01B6-D0D6-42A8-B71E-04008606ECC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF2D01B6-D0D6-42A8-B71E-04008606ECC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF2D01B6-D0D6-42A8-B71E-04008606ECC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -200,5 +206,6 @@ Global
 		{E0E6DB36-09C3-40A2-A852-A9D37EFDB374} = {379C3451-CE89-40E9-8E88-8EDC9E888FD8}
 		{97CC11A0-56E8-4DC9-AA23-E1B8925B1FE1} = {08BE3F56-F4E7-41D9-BBF1-14DC804B08A7}
 		{7D278A88-5900-4CC3-8549-C40E7BFE105B} = {08BE3F56-F4E7-41D9-BBF1-14DC804B08A7}
+		{FF2D01B6-D0D6-42A8-B71E-04008606ECC0} = {08BE3F56-F4E7-41D9-BBF1-14DC804B08A7}
 	EndGlobalSection
 EndGlobal

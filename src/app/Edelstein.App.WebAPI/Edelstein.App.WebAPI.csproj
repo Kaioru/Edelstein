@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\Edelstein.Common.Services\Edelstein.Common.Services.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common\Edelstein.Common.Hosting\Edelstein.Common.Hosting.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Serilog.Sinks.Console" />
+    <None Remove="Serilog.Extensions.Logging" />
+    <None Remove="Serilog.Settings.Configuration" />
+    <None Remove="Serilog.Extensions.Hosting" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.2.0" />
+  </ItemGroup>
+</Project>
