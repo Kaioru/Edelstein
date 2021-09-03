@@ -18,16 +18,8 @@ namespace Edelstein.App.Standalone
                     builder.AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true);
                     builder.AddCommandLine(args);
                 })
-                .ConfigureLogging(logging =>
-                {
-                    Log.Logger = new LoggerConfiguration()
-                        .WriteTo.Console()
-                        .MinimumLevel.Debug()
-                        .CreateLogger();
 
-                    logging.ClearProviders();
-                    logging.AddSerilog();
-                })
+                .UseSerilog((ctx, logger) => logger.ReadFrom.Configuration(ctx.Configuration))
 
                 .ConfigureDataStore()
                 .ConfigureCaching()

@@ -18,7 +18,6 @@ using Edelstein.Protocol.Util.Ticks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace Edelstein.App.Login
@@ -33,16 +32,8 @@ namespace Edelstein.App.Login
                     builder.AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true);
                     builder.AddCommandLine(args);
                 })
-                .ConfigureLogging(logging =>
-                {
-                    Log.Logger = new LoggerConfiguration()
-                        .WriteTo.Console()
-                        .MinimumLevel.Debug()
-                        .CreateLogger();
 
-                    logging.ClearProviders();
-                    logging.AddSerilog();
-                })
+                .UseSerilog((ctx, logger) => logger.ReadFrom.Configuration(ctx.Configuration))
 
                 .ConfigureDataStore()
                 .ConfigureCaching()
