@@ -17,11 +17,14 @@
     <None Remove="Serilog.Sinks.Console" />
     <None Remove="Microsoft.Extensions.Hosting" />
     <None Remove="appsettings.json" />
+    <None Remove="Serilog.Settings.Configuration" />
+    <None Remove="Serilog.Extensions.Hosting" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.2.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.json">
