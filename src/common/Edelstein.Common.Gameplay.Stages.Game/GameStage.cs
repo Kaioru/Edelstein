@@ -143,6 +143,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             packetProcessor.Register(new UserChangeSlotPositionRequestHandler());
             packetProcessor.Register(new UserCharacterInfoRequestHandler());
 
+            packetProcessor.Register(new GroupMessageHandler());
             packetProcessor.Register(new WhisperHandler());
 
             packetProcessor.Register(new PartyRequestHandler());
