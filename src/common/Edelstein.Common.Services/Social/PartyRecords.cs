@@ -16,9 +16,6 @@ namespace Edelstein.Common.Services.Social
 
         ICollection<IPartyMember> IParty.Members => Members.ToList<IPartyMember>();
 
-        public DateTime DateDocumentCreated { get; set; }
-        public DateTime DateDocumentUpdated { get; set; }
-
         public PartyRecord() => Members = new List<PartyMemberRecord>();
         public PartyRecord(PartyContract contract) => FromContract(contract);
 

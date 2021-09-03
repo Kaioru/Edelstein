@@ -16,9 +16,6 @@ namespace Edelstein.Common.Services
 
         public DateTime DateExpire { get; set; }
 
-        public DateTime DateDocumentCreated { get; set; }
-        public DateTime DateDocumentUpdated { get; set; }
-
         public ServerRegistryRecord() { }
         public ServerRegistryRecord(ServerContract server) => FromContract(server);
 
