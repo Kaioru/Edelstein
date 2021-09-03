@@ -58,9 +58,6 @@ namespace Edelstein.Protocol.Gameplay.Users
 
         public int[] WishList { get; }
 
-        public DateTime DateDocumentCreated { get; set; }
-        public DateTime DateDocumentUpdated { get; set; }
-
         public Character()
         {
             Level = 1;

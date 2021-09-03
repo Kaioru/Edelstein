@@ -28,9 +28,6 @@ namespace Edelstein.Common.Services.Social
         public int Point { get; set; }
         public byte Level { get; set; }
 
-        public DateTime DateDocumentCreated { get; set; }
-        public DateTime DateDocumentUpdated { get; set; }
-
         public GuildRecord()
         {
             Grade = Array.Empty<string>();

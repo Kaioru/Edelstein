@@ -18,8 +18,5 @@ namespace Edelstein.Protocol.Gameplay.Users
         public byte? Gender { get; set; }
 
         public byte? LatestConnectedWorld { get; set; }
-
-        public DateTime DateDocumentCreated { get; set; }
-        public DateTime DateDocumentUpdated { get; set; }
     }
 }
