@@ -33,6 +33,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
             {
                 case GroupMessageType.Party:
                     {
+                        if (user.Party == null) return;
+
                         var partyChat = new UnstructuredOutgoingPacket(PacketSendOperations.GroupMessage);
 
                         partyChat.WriteByte((byte)GroupMessageType.Party);
