@@ -17,7 +17,7 @@ namespace Edelstein.App.WebAPI
                 .ConfigureMessaging()
                 .ConfigureParser()
 
-                .ConfigureWebHostDefaults(builder => builder.UseStartup<Startup>())
+                .ConfigureWebHostDefaults(builder => builder.UseStartup<ProgramStartup>())
                 .RunConsoleAsync();
     }
 }

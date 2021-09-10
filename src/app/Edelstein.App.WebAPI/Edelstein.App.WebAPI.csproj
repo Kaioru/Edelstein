@@ -17,10 +17,30 @@
     <None Remove="Serilog.Extensions.Logging" />
     <None Remove="Serilog.Settings.Configuration" />
     <None Remove="Serilog.Extensions.Hosting" />
+    <None Remove="GraphQL\" />
+    <None Remove="GraphQL.Server.Core" />
+    <None Remove="GraphQL.Server.Ui.Playground" />
+    <None Remove="GraphQL.Server.Ui.Voyager" />
+    <None Remove="GraphQL.Server.Transports.AspNetCore.SystemTextJson" />
+    <None Remove="GraphQL.Server.Authorization.AspNetCore" />
+    <None Remove="GraphQL.Server.Ui.Altair" />
+    <None Remove="GraphQL.Server.Transports.AspNetCore" />
+    <None Remove="GraphQL\Types\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.2.0" />
+    <PackageReference Include="GraphQL.Server.Core" Version="5.0.2" />
+    <PackageReference Include="GraphQL.Server.Ui.Playground" Version="5.0.2" />
+    <PackageReference Include="GraphQL.Server.Ui.Voyager" Version="5.0.2" />
+    <PackageReference Include="GraphQL.Server.Transports.AspNetCore.SystemTextJson" Version="5.0.2" />
+    <PackageReference Include="GraphQL.Server.Authorization.AspNetCore" Version="5.0.2" />
+    <PackageReference Include="GraphQL.Server.Ui.Altair" Version="5.0.2" />
+    <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="5.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GraphQL\" />
+    <Folder Include="GraphQL\Types\" />
   </ItemGroup>
 </Project>
