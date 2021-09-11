@@ -154,6 +154,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             packetProcessor.Register(new PartyRequestHandler());
             packetProcessor.Register(new PartyResultHandler());
 
+            packetProcessor.Register(new FuncKeyMappedModifiedHandler());
+            packetProcessor.Register(new QuickSlotKeyMappedModifiedHandler());
+
             packetProcessor.Register(new MobMoveHandler());
 
             packetProcessor.Register(new NPCMoveHandler());
