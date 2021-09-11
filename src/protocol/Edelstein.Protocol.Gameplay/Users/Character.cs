@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Edelstein.Protocol.Datastore;
 using Edelstein.Protocol.Gameplay.Users.Inventories;
+using Edelstein.Protocol.Gameplay.Users.Skills;
 
 namespace Edelstein.Protocol.Gameplay.Users
 {
@@ -51,7 +51,7 @@ namespace Edelstein.Protocol.Gameplay.Users
         //public int[] QuickSlotKeys { get; set; }
 
         public IDictionary<ItemInventoryType, ItemInventory> Inventories { get; set; }
-        //public IDictionary<int, SkillRecord> SkillRecord { get; set; }
+        public IDictionary<int, CharacterSkillRecord> SkillRecord { get; set; }
         //public IDictionary<short, string> QuestRecord { get; set; }
         //public IDictionary<short, string> QuestRecordEx { get; set; }
         //public IDictionary<short, DateTime> QuestComplete { get; set; }
@@ -134,7 +134,7 @@ namespace Edelstein.Protocol.Gameplay.Users
                 [ItemInventoryType.Etc] = new ItemInventory(24),
                 [ItemInventoryType.Cash] = new ItemInventory(24)
             };
-            //SkillRecord = new Dictionary<int, SkillRecord>();
+            SkillRecord = new Dictionary<int, CharacterSkillRecord>();
             //QuestRecord = new Dictionary<short, string>();
             //QuestRecordEx = new Dictionary<short, string>();
             //QuestComplete = new Dictionary<short, DateTime>();

@@ -18,6 +18,8 @@
     <Folder Include="Spatial\" />
     <Folder Include="Users\" />
     <Folder Include="Social\" />
+    <Folder Include="Users\Skills\" />
+    <Folder Include="Users\Skills\Modify\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Space\" />
@@ -25,5 +27,7 @@
     <None Remove="Social\" />
     <None Remove="Social\Guild\" />
     <None Remove="Social\Party\" />
+    <None Remove="Users\Skills\" />
+    <None Remove="Users\Skills\Modify\" />
   </ItemGroup>
 </Project>
