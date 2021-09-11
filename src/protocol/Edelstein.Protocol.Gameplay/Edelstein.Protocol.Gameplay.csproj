@@ -20,6 +20,7 @@
     <Folder Include="Social\" />
     <Folder Include="Users\Skills\" />
     <Folder Include="Users\Skills\Modify\" />
+    <Folder Include="Users\Keys\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Space\" />
@@ -29,5 +30,6 @@
     <None Remove="Social\Party\" />
     <None Remove="Users\Skills\" />
     <None Remove="Users\Skills\Modify\" />
+    <None Remove="Users\Keys\" />
   </ItemGroup>
 </Project>

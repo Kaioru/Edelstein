@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Edelstein.Protocol.Datastore;
 using Edelstein.Protocol.Gameplay.Users.Inventories;
+using Edelstein.Protocol.Gameplay.Users.Keys;
 using Edelstein.Protocol.Gameplay.Users.Skills;
 
 namespace Edelstein.Protocol.Gameplay.Users
@@ -47,8 +48,8 @@ namespace Edelstein.Protocol.Gameplay.Users
 
         public short SubJob { get; set; }
 
-        //public FunctionKey[] FunctionKeys { get; set; }
-        //public int[] QuickSlotKeys { get; set; }
+        public CharacterFunctionKey[] FunctionKeys { get; set; }
+        public CharacterQuickSlotKey[] QuickSlotKeys { get; set; }
 
         public IDictionary<ItemInventoryType, ItemInventory> Inventories { get; set; }
         public IDictionary<int, CharacterSkillRecord> SkillRecord { get; set; }
@@ -73,58 +74,58 @@ namespace Edelstein.Protocol.Gameplay.Users
             Pets = new long[3];
             ExtendSP = new Dictionary<byte, byte>();
 
-            //FunctionKeys = new FunctionKey[90];
-            //FunctionKeys[2] = new FunctionKey(KeyType.Menu, KeyMenu.ChatAll);
-            //FunctionKeys[3] = new FunctionKey(KeyType.Menu, KeyMenu.ChatParty);
-            //FunctionKeys[4] = new FunctionKey(KeyType.Menu, KeyMenu.ChatFriend);
-            //FunctionKeys[5] = new FunctionKey(KeyType.Menu, KeyMenu.ChatGuild);
-            //FunctionKeys[6] = new FunctionKey(KeyType.Menu, KeyMenu.ChatAlliance);
-            //FunctionKeys[7] = new FunctionKey(KeyType.Menu, KeyMenu.ChatCouple);
-            //FunctionKeys[8] = new FunctionKey(KeyType.Menu, KeyMenu.ChatExpedition);
-            //FunctionKeys[16] = new FunctionKey(KeyType.Menu, KeyMenu.Quest);
-            //FunctionKeys[17] = new FunctionKey(KeyType.Menu, KeyMenu.WorldMap);
-            //FunctionKeys[18] = new FunctionKey(KeyType.Menu, KeyMenu.Equip);
-            //FunctionKeys[19] = new FunctionKey(KeyType.Menu, KeyMenu.Friend);
-            //FunctionKeys[20] = new FunctionKey(KeyType.Menu, KeyMenu.Expedition);
-            //FunctionKeys[23] = new FunctionKey(KeyType.Menu, KeyMenu.Item);
-            //FunctionKeys[24] = new FunctionKey(KeyType.Menu, KeyMenu.PartySearch);
-            //FunctionKeys[25] = new FunctionKey(KeyType.Menu, KeyMenu.Party);
-            //FunctionKeys[26] = new FunctionKey(KeyType.Menu, KeyMenu.Shortcut);
-            //FunctionKeys[27] = new FunctionKey(KeyType.Menu, KeyMenu.QuickSlot);
-            //FunctionKeys[29] = new FunctionKey(KeyType.BasicAction, KeyMenu.Attack);
-            //FunctionKeys[31] = new FunctionKey(KeyType.Menu, KeyMenu.Stat);
-            //FunctionKeys[33] = new FunctionKey(KeyType.Menu, KeyMenu.Family);
-            //FunctionKeys[34] = new FunctionKey(KeyType.Menu, KeyMenu.Guild);
-            //FunctionKeys[35] = new FunctionKey(KeyType.Menu, KeyMenu.ChatWhisper);
-            //FunctionKeys[37] = new FunctionKey(KeyType.Menu, KeyMenu.Skill);
-            //FunctionKeys[38] = new FunctionKey(KeyType.Menu, KeyMenu.QuestAlarm);
-            //FunctionKeys[39] = new FunctionKey(KeyType.Menu, KeyMenu.MedalQuest);
-            //FunctionKeys[40] = new FunctionKey(KeyType.Menu, KeyMenu.ChatType);
-            //FunctionKeys[41] = new FunctionKey(KeyType.Menu, KeyMenu.CashShop);
-            //FunctionKeys[43] = new FunctionKey(KeyType.Menu, KeyMenu.KeyConfig);
-            //FunctionKeys[44] = new FunctionKey(KeyType.BasicAction, KeyMenu.Pickup);
-            //FunctionKeys[45] = new FunctionKey(KeyType.BasicAction, KeyMenu.Sit);
-            //FunctionKeys[46] = new FunctionKey(KeyType.Menu, KeyMenu.Messenger);
-            //FunctionKeys[50] = new FunctionKey(KeyType.Menu, KeyMenu.MiniMap);
-            //FunctionKeys[56] = new FunctionKey(KeyType.BasicAction, KeyMenu.Jump);
-            //FunctionKeys[57] = new FunctionKey(KeyType.BasicAction, KeyMenu.NpcTalk);
-            //FunctionKeys[59] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion0);
-            //FunctionKeys[60] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion1);
-            //FunctionKeys[61] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion2);
-            //FunctionKeys[62] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion3);
-            //FunctionKeys[63] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion4);
-            //FunctionKeys[64] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion5);
-            //FunctionKeys[65] = new FunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion6);
+            FunctionKeys = new CharacterFunctionKey[90];
+            FunctionKeys[2] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.ChatAll);
+            FunctionKeys[3] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.ChatParty);
+            FunctionKeys[4] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.ChatFriend);
+            FunctionKeys[5] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.ChatGuild);
+            FunctionKeys[6] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.ChatAlliance);
+            FunctionKeys[7] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.ChatCouple);
+            FunctionKeys[8] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.ChatExpedition);
+            FunctionKeys[16] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Quest);
+            FunctionKeys[17] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.WorldMap);
+            FunctionKeys[18] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Equip);
+            FunctionKeys[19] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Friend);
+            FunctionKeys[20] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Expedition);
+            FunctionKeys[23] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Item);
+            FunctionKeys[24] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.PartySearch);
+            FunctionKeys[25] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Party);
+            FunctionKeys[26] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Shortcut);
+            FunctionKeys[27] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.QuickSlot);
+            FunctionKeys[29] = new CharacterFunctionKey(KeyType.BasicAction, KeyMenu.Attack);
+            FunctionKeys[31] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Stat);
+            FunctionKeys[33] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Family);
+            FunctionKeys[34] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Guild);
+            FunctionKeys[35] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.ChatWhisper);
+            FunctionKeys[37] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Skill);
+            FunctionKeys[38] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.QuestAlarm);
+            FunctionKeys[39] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.MedalQuest);
+            FunctionKeys[40] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.ChatType);
+            FunctionKeys[41] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.CashShop);
+            FunctionKeys[43] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.KeyConfig);
+            FunctionKeys[44] = new CharacterFunctionKey(KeyType.BasicAction, KeyMenu.Pickup);
+            FunctionKeys[45] = new CharacterFunctionKey(KeyType.BasicAction, KeyMenu.Sit);
+            FunctionKeys[46] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.Messenger);
+            FunctionKeys[50] = new CharacterFunctionKey(KeyType.Menu, KeyMenu.MiniMap);
+            FunctionKeys[56] = new CharacterFunctionKey(KeyType.BasicAction, KeyMenu.Jump);
+            FunctionKeys[57] = new CharacterFunctionKey(KeyType.BasicAction, KeyMenu.NpcTalk);
+            FunctionKeys[59] = new CharacterFunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion0);
+            FunctionKeys[60] = new CharacterFunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion1);
+            FunctionKeys[61] = new CharacterFunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion2);
+            FunctionKeys[62] = new CharacterFunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion3);
+            FunctionKeys[63] = new CharacterFunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion4);
+            FunctionKeys[64] = new CharacterFunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion5);
+            FunctionKeys[65] = new CharacterFunctionKey(KeyType.BasicEmotion, KeyMenu.Emotion6);
 
-            //QuickSlotKeys = new int[8];
-            //QuickSlotKeys[0] = 42;
-            //QuickSlotKeys[1] = 82;
-            //QuickSlotKeys[2] = 71;
-            //QuickSlotKeys[3] = 73;
-            //QuickSlotKeys[4] = 29;
-            //QuickSlotKeys[5] = 83;
-            //QuickSlotKeys[6] = 79;
-            //QuickSlotKeys[7] = 81;
+            QuickSlotKeys = new CharacterQuickSlotKey[8];
+            QuickSlotKeys[0] = new CharacterQuickSlotKey(42);
+            QuickSlotKeys[1] = new CharacterQuickSlotKey(82);
+            QuickSlotKeys[2] = new CharacterQuickSlotKey(71);
+            QuickSlotKeys[3] = new CharacterQuickSlotKey(73);
+            QuickSlotKeys[4] = new CharacterQuickSlotKey(29);
+            QuickSlotKeys[5] = new CharacterQuickSlotKey(83);
+            QuickSlotKeys[6] = new CharacterQuickSlotKey(79);
+            QuickSlotKeys[7] = new CharacterQuickSlotKey(81);
 
             Inventories = new Dictionary<ItemInventoryType, ItemInventory>
             {
