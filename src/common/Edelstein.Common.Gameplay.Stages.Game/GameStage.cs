@@ -186,6 +186,27 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             user.FieldUser = fieldUser;
 
             await field.Enter(fieldUser);
+
+            var functionKeyPacket = new UnstructuredOutgoingPacket(PacketSendOperations.FuncKeyMappedInit);
+            var quickSlotKeyPacket = new UnstructuredOutgoingPacket(PacketSendOperations.QuickslotMappedInit);
+
+            functionKeyPacket.WriteBool(false);
+
+            for (var i = 0; i < 90; i++)
+            {
+                var key = user.Character.FunctionKeys[i];
+
+                functionKeyPacket.WriteByte(key?.Type ?? 0);
+                functionKeyPacket.WriteInt(key?.Action ?? 0);
+            }
+
+            quickSlotKeyPacket.WriteBool(false);
+
+            for (var i = 0; i < 8; i++)
+                quickSlotKeyPacket.WriteInt(user.Character.QuickSlotKeys[i].Key);
+
+            _ = user.Dispatch(functionKeyPacket);
+            _ = user.Dispatch(quickSlotKeyPacket);
         }
 
         public override async Task Leave(GameStageUser user)
