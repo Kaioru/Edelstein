@@ -1,4 +1,5 @@
 ﻿using System;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Users.Inventories;
 using Edelstein.Protocol.Network;
 

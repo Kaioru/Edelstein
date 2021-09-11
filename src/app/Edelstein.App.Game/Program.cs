@@ -11,6 +11,7 @@ using Edelstein.Common.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates.Options;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates.Sets;
+using Edelstein.Common.Gameplay.Users.Skills.Templates;
 using Edelstein.Common.Hosting;
 using Edelstein.Common.Network.DotNetty;
 using Edelstein.Common.Services;
@@ -71,6 +72,7 @@ namespace Edelstein.App.Game
                     builder.AddSingleton<ITemplateRepository<ItemStringTemplate>, ItemStringTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<ItemOptionTemplate>, ItemOptionTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<ItemSetTemplate>, ItemSetTemplateRepository>();
+                    builder.AddSingleton<ITemplateRepository<CharacterSkillTemplate>, CharacterSkillTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<FieldTemplate>, FieldTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<FieldStringTemplate>, FieldStringTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<ContiMoveTemplate>, ContiMoveTemplateRepository>();

@@ -31,6 +31,7 @@ using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Handlers;
+using Edelstein.Common.Gameplay.Users.Skills.Templates;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -51,6 +52,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public ITemplateRepository<ItemStringTemplate> ItemStringTemplates { get; }
         public ITemplateRepository<ItemOptionTemplate> ItemOptionTemplates { get; }
         public ITemplateRepository<ItemSetTemplate> ItemSetTemplates { get; }
+
+        public ITemplateRepository<CharacterSkillTemplate> CharacterSkillTemplates { get; }
 
         public ITemplateRepository<FieldTemplate> FieldTemplates { get; }
         public ITemplateRepository<FieldStringTemplate> FieldStringTemplates { get; }
@@ -82,6 +85,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ITemplateRepository<ItemStringTemplate> itemStringTemplates,
             ITemplateRepository<ItemOptionTemplate> itemOptionTemplates,
             ITemplateRepository<ItemSetTemplate> itemSetTemplates,
+            ITemplateRepository<CharacterSkillTemplate> characterSkillTemplates,
             ITemplateRepository<FieldTemplate> fieldTemplates,
             ITemplateRepository<FieldStringTemplate> fieldStringTemplates,
             ITemplateRepository<ContiMoveTemplate> contiMoveTemplates,
@@ -123,6 +127,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ItemStringTemplates = itemStringTemplates;
             ItemOptionTemplates = itemOptionTemplates;
             ItemSetTemplates = itemSetTemplates;
+            CharacterSkillTemplates = characterSkillTemplates;
             FieldTemplates = fieldTemplates;
             FieldStringTemplates = fieldStringTemplates;
             ContiMoveTemplates = contiMoveTemplates;

@@ -38,6 +38,7 @@ using Microsoft.Extensions.Options;
 using Serilog;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Scripting;
+using Edelstein.Common.Gameplay.Users.Skills.Templates;
 
 namespace Edelstein.App.Standalone
 {
@@ -102,6 +103,7 @@ namespace Edelstein.App.Standalone
             collection.AddSingleton<ITemplateRepository<ItemStringTemplate>, ItemStringTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ItemOptionTemplate>, ItemOptionTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ItemSetTemplate>, ItemSetTemplateRepository>();
+            collection.AddSingleton<ITemplateRepository<CharacterSkillTemplate>, CharacterSkillTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<FieldTemplate>, FieldTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<FieldStringTemplate>, FieldStringTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ContiMoveTemplate>, ContiMoveTemplateRepository>();
@@ -185,6 +187,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ITemplateRepository<ItemStringTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemOptionTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemSetTemplate>>(),
+                    provider.GetService<ITemplateRepository<CharacterSkillTemplate>>(),
                     provider.GetService<ITemplateRepository<FieldTemplate>>(),
                     provider.GetService<ITemplateRepository<FieldStringTemplate>>(),
                     provider.GetService<ITemplateRepository<ContiMoveTemplate>>(),
