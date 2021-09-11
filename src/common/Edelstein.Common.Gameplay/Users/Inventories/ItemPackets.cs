@@ -27,7 +27,7 @@ namespace Edelstein.Common.Gameplay.Users.Inventories
             p.WriteInt(i.TemplateID);
             p.WriteBool(i.CashItemSN.HasValue);
             if (i.CashItemSN.HasValue) p.WriteLong(i.CashItemSN.Value);
-            p.WriteDateTime(i.DateExpire ?? DateTime.FromFileTimeUtc(150842304000000000)); // TODO: constants
+            p.WriteDateTime(i.DateExpire ?? GameConstants.Permanent); // TODO: constants
         }
 
         private static void WriteItemEquipData(this IPacketWriter p, ItemSlotEquip i)

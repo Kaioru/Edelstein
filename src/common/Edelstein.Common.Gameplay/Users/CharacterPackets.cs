@@ -94,7 +94,17 @@ namespace Edelstein.Common.Gameplay.Users
 
             if (flags.HasFlag(CharacterDataFlags.SkillRecord))
             {
-                p.WriteShort(0);
+                p.WriteShort((short)c.SkillRecord.Count);
+
+                c.SkillRecord.ForEach(kv =>
+                {
+                    p.WriteInt(kv.Key);
+                    p.WriteInt(kv.Value.Level);
+                    p.WriteDateTime(kv.Value.DateExpire ?? GameConstants.Permanent);
+
+                    if (GameConstants.IsSkillNeedMasterLevel(kv.Key))
+                        p.WriteInt(kv.Value.MasterLevel ?? 0);
+                });
             }
 
             if (flags.HasFlag(CharacterDataFlags.SkillCooltime))

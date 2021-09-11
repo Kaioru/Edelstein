@@ -25,6 +25,8 @@
     <None Remove="Social\" />
     <None Remove="Users\Inventories\Templates\Options\" />
     <None Remove="Users\Inventories\Templates\Sets\" />
+    <None Remove="Users\Skills\" />
+    <None Remove="Users\Skills\Modify\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Users\" />
@@ -44,6 +46,8 @@
     <Folder Include="Social\" />
     <Folder Include="Users\Inventories\Templates\Options\" />
     <Folder Include="Users\Inventories\Templates\Sets\" />
+    <Folder Include="Users\Skills\" />
+    <Folder Include="Users\Skills\Modify\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />

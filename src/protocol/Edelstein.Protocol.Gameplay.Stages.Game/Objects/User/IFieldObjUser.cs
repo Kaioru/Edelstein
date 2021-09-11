@@ -7,6 +7,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
+using Edelstein.Protocol.Gameplay.Users.Skills.Modify;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Network;
 
@@ -52,6 +53,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
         Task EndConversation();
 
         Task ModifyStats(Action<IModifyStatContext> action = null, bool exclRequest = false);
+        Task ModifySkills(Action<IModifySkillContext> action = null, bool exclRequest = false);
         Task ModifyInventory(Action<IModifyMultiInventoryContext> action = null, bool exclRequest = false);
     }
 }

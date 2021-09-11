@@ -10,6 +10,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Common.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Modify;
 using Edelstein.Common.Gameplay.Users.Inventories.Modify.Operations;
+using Edelstein.Common.Gameplay.Users.Skills.Modify;
 using Edelstein.Common.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Social;
 using Edelstein.Protocol.Gameplay.Stages.Game;
@@ -20,6 +21,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
+using Edelstein.Protocol.Gameplay.Users.Skills.Modify;
 using Edelstein.Protocol.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transport;
@@ -305,6 +307,22 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                     Level = context.Level,
                     Job = context.Job
                 });
+        }
+
+        public async Task ModifySkills(Action<IModifySkillContext> action = null, bool exclRequest = false)
+        {
+            var context = new ModifySkillContext(Character);
+
+            action?.Invoke(context);
+            await UpdateStats();
+
+            var skillPacket = new UnstructuredOutgoingPacket(PacketSendOperations.ChangeSkillRecordResult);
+
+            skillPacket.WriteBool(exclRequest);
+            skillPacket.Write(context);
+            skillPacket.WriteBool(true);
+
+            await Dispatch(skillPacket);
         }
 
         public async Task ModifyInventory(Action<IModifyMultiInventoryContext> action = null, bool exclRequest = false)
