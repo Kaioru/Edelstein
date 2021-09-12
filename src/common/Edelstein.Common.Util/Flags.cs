@@ -1,8 +1,10 @@
 ﻿using System.Collections;
+using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Network.Utils;
 
 namespace Edelstein.Common.Util
 {
-    public readonly struct Flags
+    public readonly struct Flags : IPacketWritable
     {
         private readonly BitArray _bits;
 
@@ -44,6 +46,9 @@ namespace Edelstein.Common.Util
 
             return bytes;
         }
+
+        public void WriteToPacket(IPacketWriter writer)
+            => writer.WriteBytes(ToArray());
 
         public Flags And(Flags b) => new(_bits.And(b._bits));
         public Flags Or(Flags b) => new(_bits.Or(b._bits));
