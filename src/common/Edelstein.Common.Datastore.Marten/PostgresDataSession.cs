@@ -18,7 +18,7 @@ namespace Edelstein.Common.Datastore.Marten
             => new PostgresDataQuery<T>(_session.Query<T>());
 
         public Task<T> Retrieve<T>(int id) where T : class, IDataDocument
-            => _session.LoadAsync<T>(id);
+            => Task.FromResult(_session.Load<T>(id));
 
         public Task Insert<T>(T entity) where T : class, IDataDocument
         {
