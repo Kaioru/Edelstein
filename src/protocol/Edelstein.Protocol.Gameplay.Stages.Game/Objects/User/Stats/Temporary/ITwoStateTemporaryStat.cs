@@ -2,6 +2,5 @@
 {
     public interface ITwoStateTemporaryStat : ITemporaryStat
     {
-        void Reset();
     }
 }
