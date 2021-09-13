@@ -15,6 +15,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify
             bool isExpireAfterDisconnect = true
         );
 
+        void Reset(ITemporaryStat stat);
         void ResetByType(SecondaryStatType type);
         void ResetByReason(int reason);
     }
