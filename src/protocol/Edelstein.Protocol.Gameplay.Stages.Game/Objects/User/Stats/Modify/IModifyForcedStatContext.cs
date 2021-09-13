@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify
+﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify
 {
     public interface IModifyForcedStatContext
     {
@@ -19,7 +17,5 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify
         byte? Speed { get; set; }
         byte? Jump { get; set; }
         byte? SpeedMax { get; set; }
-
-        public Task Reset();
     }
 }
