@@ -10,9 +10,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify
             SecondaryStatType type,
             int value,
             int reason,
-            DateTime? dateExpire = null,
-            bool isExpireAfterMigrate = false,
-            bool isExpireAfterDisconnect = true
+            DateTime? dateExpire = null
         );
 
         void Reset(ITemporaryStat stat);
