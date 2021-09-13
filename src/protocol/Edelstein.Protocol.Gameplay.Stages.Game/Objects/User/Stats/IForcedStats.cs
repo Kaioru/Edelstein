@@ -1,4 +1,6 @@
-﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
+﻿using System.Threading.Tasks;
+
+namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
 {
     public interface IForcedStats
     {
@@ -15,5 +17,7 @@
         byte? Speed { get; }
         byte? Jump { get; }
         byte? SpeedMax { get; }
+
+        Task Reset();
     }
 }
