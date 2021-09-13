@@ -7,14 +7,6 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
     {
         IEnumerable<ITemporaryStat> TemporaryStats { get; }
 
-        ITwoStateTemporaryStat EnergyChargedStat { get; }
-        ITwoStateTemporaryStat DashSpeedStat { get; }
-        ITwoStateTemporaryStat DashJumpStat { get; }
-        ITwoStateTemporaryStat RideVehicleStat { get; }
-        ITwoStatePartyBoosterStat PartyBoosterStat { get; }
-        ITwoStateGuidedBulletStat GuidedBulletStat { get; }
-        ITwoStateTemporaryStat UndeadStat { get; }
-
         int GetStatOption(SecondaryStatType type);
         bool HasStatOption(SecondaryStatType type);
     }
