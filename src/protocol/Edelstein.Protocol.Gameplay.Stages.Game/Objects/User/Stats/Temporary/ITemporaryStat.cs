@@ -11,8 +11,5 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Temporary
         int Reason { get; }
 
         DateTime? DateExpire { get; }
-
-        bool IsExpireAfterMigrate { get; }
-        bool IsExpireAfterDisconnect { get; }
     }
 }
