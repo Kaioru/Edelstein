@@ -53,6 +53,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
         public ICalculatedRates Rates { get; }
         public ICalculatedStats Stats { get; }
+        public ISecondaryStat SecondaryStats { get; }
 
         public IGuild Guild { get; set; }
         public IParty Party { get; set; }
@@ -70,6 +71,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                 GameStage.ItemOptionTemplates,
                 GameStage.ItemSetTemplates
             );
+            SecondaryStats = null;
 
             _ = UpdateStats();
         }

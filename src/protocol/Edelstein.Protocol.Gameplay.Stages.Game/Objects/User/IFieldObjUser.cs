@@ -27,6 +27,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
 
         ICalculatedRates Rates { get; }
         ICalculatedStats Stats { get; }
+        ISecondaryStat SecondaryStats { get; }
 
         IGuild Guild { get; set; }
         IGuildMember GuildMember => Guild?.Members.FirstOrDefault(m => m.ID == ID);

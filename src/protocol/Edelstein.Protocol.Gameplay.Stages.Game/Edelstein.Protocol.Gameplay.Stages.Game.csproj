@@ -17,6 +17,8 @@
     <Folder Include="Objects\User\Messages\" />
     <Folder Include="Commands\" />
     <Folder Include="Objects\Mob\" />
+    <Folder Include="Objects\User\Stats\Temporary\" />
+    <Folder Include="Objects\User\Stats\Modify\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
@@ -35,6 +37,8 @@
     <None Remove="Objects\User\Messages\" />
     <None Remove="Commands\" />
     <None Remove="Objects\Mob\" />
+    <None Remove="Objects\User\Stats\Temporary\" />
+    <None Remove="Objects\User\Stats\Modify\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.3.2" />
