@@ -5,7 +5,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
 {
     public interface ISecondaryStats
     {
-        IEnumerable<ISecondaryStat> Stats { get; }
+        IEnumerable<ITemporaryStat> TemporaryStats { get; }
 
         ITwoStateTemporaryStat EnergyChargedStat { get; }
         ITwoStateTemporaryStat DashSpeedStat { get; }
