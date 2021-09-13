@@ -19,6 +19,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Users.Skills.Modify;
@@ -53,7 +54,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
         public ICalculatedRates Rates { get; }
         public ICalculatedStats Stats { get; }
-        public ISecondaryStat SecondaryStats { get; }
+
+        public IForcedStats ForcedStats { get; }
+        public ISecondaryStats SecondaryStats { get; }
 
         public IGuild Guild { get; set; }
         public IParty Party { get; set; }
@@ -71,6 +74,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                 GameStage.ItemOptionTemplates,
                 GameStage.ItemSetTemplates
             );
+
+            ForcedStats = null;
             SecondaryStats = null;
 
             _ = UpdateStats();
@@ -310,6 +315,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                     Job = context.Job
                 });
         }
+
+        public Task ModifyForcedStats(Action<IModifyForcedStatContext> action = null, bool exclRequest = false) => throw new NotImplementedException();
+        public Task ModifyTemporaryStats(Action<IModifyTemporaryStatContext> action = null, bool exclRequest = false) => throw new NotImplementedException();
 
         public async Task ModifySkills(Action<IModifySkillContext> action = null, bool exclRequest = false)
         {
