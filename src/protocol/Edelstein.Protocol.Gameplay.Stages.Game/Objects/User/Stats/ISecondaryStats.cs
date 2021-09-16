@@ -10,8 +10,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
         bool HasStatOption(SecondaryStatType type);
         int GetStatOption(SecondaryStatType type);
 
-        ITemporaryStat GetStat(SecondaryStatType type);
-        ITwoStateGuidedBulletStat GetGuidedBulletStat() => GetStat(SecondaryStatType.GuidedBullet) as ITwoStateGuidedBulletStat;
-        ITwoStatePartyBoosterStat GetPartyBoosterStat() => GetStat(SecondaryStatType.PartyBooster) as ITwoStatePartyBoosterStat;
+        ITwoStateGuidedBulletStat GetGuidedBulletStat();
+        ITwoStatePartyBoosterStat GetPartyBoosterStat();
     }
 }
