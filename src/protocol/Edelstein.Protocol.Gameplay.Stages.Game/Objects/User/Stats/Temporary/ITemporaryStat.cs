@@ -1,9 +1,8 @@
 ﻿using System;
-using Edelstein.Protocol.Network.Utils;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Temporary
 {
-    public interface ITemporaryStat : IPacketWritable
+    public interface ITemporaryStat
     {
         SecondaryStatType Type { get; }
 

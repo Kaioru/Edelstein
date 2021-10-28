@@ -141,7 +141,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             packet.WriteShort(Guild?.Mark ?? 0);
             packet.WriteByte(Guild?.MarkColor ?? 0);
 
-            SecondaryStats.WriteToRemote(packet);
+            packet.WriteSecondaryStatsToRemote(SecondaryStats);
 
             packet.WriteShort(Character.Job);
             packet.WriteCharacterLook(Character);
