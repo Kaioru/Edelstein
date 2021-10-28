@@ -57,8 +57,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
         Task EndConversation();
 
         Task ModifyStats(Action<IModifyStatContext> action = null, bool exclRequest = false);
+        Task ModifySecondaryStats(Action<IModifySecondaryStatContext> action = null, bool exclRequest = false);
         Task ModifyForcedStats(Action<IModifyForcedStatContext> action = null, bool exclRequest = false);
-        Task ModifyTemporaryStats(Action<IModifyTemporaryStatContext> action = null, bool exclRequest = false);
 
         Task ModifySkills(Action<IModifySkillContext> action = null, bool exclRequest = false);
         Task ModifyInventory(Action<IModifyMultiInventoryContext> action = null, bool exclRequest = false);

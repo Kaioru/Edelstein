@@ -6,11 +6,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats.Temporary
 {
     public record TemporaryStat : ITemporaryStat
     {
-        public SecondaryStatType Type { get; }
+        public SecondaryStatType Type { get; init; }
 
-        public int Value { get; }
-        public int Reason { get; }
+        public int Value { get; init; }
+        public int Reason { get; init; }
 
-        public DateTime? DateExpire { get; }
+        public DateTime? DateExpire { get; init; }
     }
 }

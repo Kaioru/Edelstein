@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Temporary;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify
 {
-    public interface IModifyTemporaryStatContext
+    public interface IModifySecondaryStatContext
     {
+        ISecondaryStats SetHistory { get; }
+        ISecondaryStats ResetHistory { get; }
+
         void Set(ITemporaryStat stat);
         void Set(
             SecondaryStatType type,

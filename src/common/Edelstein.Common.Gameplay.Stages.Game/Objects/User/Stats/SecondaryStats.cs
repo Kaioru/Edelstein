@@ -7,25 +7,17 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
 {
     public class SecondaryStats : ISecondaryStats
     {
-        private readonly IDictionary<SecondaryStatType, ITemporaryStat> _stats;
+        public IDictionary<SecondaryStatType, ITemporaryStat> Stats { get; }
 
-        public int this[SecondaryStatType type] => _stats.ContainsKey(type) ? _stats[type].Value : 0;
-
-        public ITwoStateTemporaryStat EnergyCharged { get; }
-        public ITwoStateTemporaryStat DashSpeed { get; }
-        public ITwoStateTemporaryStat DashJump { get; }
-        public ITwoStateTemporaryStat RideVehicle { get; }
-        public ITwoStatePartyBoosterStat PartyBooster { get; }
-        public ITwoStateGuidedBulletStat GuidedBullet { get; }
-        public ITwoStateTemporaryStat Undead { get; }
+        public int this[SecondaryStatType type] => Stats.ContainsKey(type) ? Stats[type].Value : 0;
 
         public SecondaryStats()
         {
-            _stats = new Dictionary<SecondaryStatType, ITemporaryStat>();
+            Stats = new Dictionary<SecondaryStatType, ITemporaryStat>();
 
-            // TODO: TwoState initializers
+            // TODO: TwoState 
         }
 
-        public IDictionary<SecondaryStatType, ITemporaryStat> All() => _stats.ToImmutableDictionary();
+        public IDictionary<SecondaryStatType, ITemporaryStat> All() => Stats.ToImmutableDictionary();
     }
 }
