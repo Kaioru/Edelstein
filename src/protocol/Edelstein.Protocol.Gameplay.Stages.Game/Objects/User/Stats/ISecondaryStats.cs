@@ -1,10 +1,12 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Temporary;
-using Edelstein.Protocol.Network.Utils;
+﻿using System.Collections.Generic;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Temporary;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
 {
-    public interface ISecondaryStats : IPacketWritable
+    public interface ISecondaryStats
     {
+        int this[SecondaryStatType type] { get; }
+
         ITwoStateTemporaryStat EnergyCharged { get; }
         ITwoStateTemporaryStat DashSpeed { get; }
         ITwoStateTemporaryStat DashJump { get; }
@@ -13,7 +15,6 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
         ITwoStateGuidedBulletStat GuidedBullet { get; }
         ITwoStateTemporaryStat Undead { get; }
 
-        bool HasStatOption(SecondaryStatType type);
-        int GetStatOption(SecondaryStatType type);
+        ICollection<ITemporaryStat> All();
     }
 }
