@@ -23,6 +23,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
 
         bool IsDialoging { get; }
         bool IsConversing { get; }
+        IDialog CurrentDialog { get; }
+        IConversation CurrentConversation { get; }
 
         ICollection<IFieldSplit> Watching { get; }
         ICollection<IFieldControlledObj> Controlling { get; }
