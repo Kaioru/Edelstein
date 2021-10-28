@@ -23,7 +23,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
             if (type == ConversationRequestType.AskQuiz ||
                 type == ConversationRequestType.AskSpeedQuiz)
             {
-                await user.ConversationContext.Respond(
+                await user.ConverseAnswer(
                     new ConversationResponse<string>(type, packet.ReadString())
                 );
                 return;
@@ -49,31 +49,31 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
             {
                 case ConversationRequestType.AskText:
                 case ConversationRequestType.AskBoxText:
-                    await user.ConversationContext.Respond(
+                    await user.ConverseAnswer(
                         new ConversationResponse<string>(type, packet.ReadString())
                     );
                     break;
                 case ConversationRequestType.AskNumber:
                 case ConversationRequestType.AskMenu:
                 case ConversationRequestType.AskSlideMenu:
-                    await user.ConversationContext.Respond(
+                    await user.ConverseAnswer(
                         new ConversationResponse<int>(type, packet.ReadInt())
                     );
                     break;
                 case ConversationRequestType.AskAvatar:
                 case ConversationRequestType.AskMemberShopAvatar:
-                    await user.ConversationContext.Respond(
+                    await user.ConverseAnswer(
                         new ConversationResponse<byte>(type, packet.ReadByte())
                     );
                     break;
                 case ConversationRequestType.AskYesNo:
                 case ConversationRequestType.AskAccept:
-                    await user.ConversationContext.Respond(
+                    await user.ConverseAnswer(
                         new ConversationResponse<bool>(type, Convert.ToBoolean(answer))
                     );
                     break;
                 default:
-                    await user.ConversationContext.Respond(
+                    await user.ConverseAnswer(
                         new ConversationResponse<byte>(type, answer)
                     );
                     break;

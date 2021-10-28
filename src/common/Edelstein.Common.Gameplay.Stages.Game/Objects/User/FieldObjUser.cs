@@ -18,6 +18,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Dialogs;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify;
@@ -46,9 +47,12 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public ISocket Socket => GameStageUser.Socket;
 
         public bool IsInstantiated { get; set; }
-        public bool IsConversing => ConversationContext != null;
 
-        public IConversationContext ConversationContext { get; set; }
+        private IDialog CurrentDialog { get; set; }
+        private IConversationContext CurrentConversation { get; set; }
+
+        public bool IsDialoging => CurrentDialog != null;
+        public bool IsConversing => CurrentConversation != null;
 
         public ICollection<IFieldSplit> Watching { get; }
         public ICollection<IFieldControlledObj> Controlling { get; }
@@ -258,11 +262,28 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             return result;
         }
 
+        public async Task Dialog(IDialog dialog)
+        {
+            if (IsDialoging) return;
+
+            CurrentDialog = dialog;
+            await CurrentDialog.Enter(this);
+        }
+
+        public async Task EndDialog()
+        {
+            if (IsDialoging)
+            {
+                CurrentDialog = null;
+                await CurrentDialog.Leave(this);
+            }
+        }
+
         public async Task Converse(IConversation conversation)
         {
             if (IsConversing) return;
 
-            ConversationContext = conversation.Context;
+            CurrentConversation = conversation.Context;
 
             await Task.Run(async () =>
             {
@@ -278,12 +299,15 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             });
         }
 
+        public Task ConverseAnswer<T>(IConversationResponse<T> response)
+            => CurrentConversation.Respond(response);
+
         public Task EndConversation()
         {
             if (IsConversing)
             {
-                ConversationContext.Dispose();
-                ConversationContext = null;
+                CurrentConversation.Dispose();
+                CurrentConversation = null;
             }
             return Task.CompletedTask;
         }
