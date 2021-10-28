@@ -48,11 +48,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
         public bool IsInstantiated { get; set; }
 
-        private IDialog CurrentDialog { get; set; }
-        private IConversationContext CurrentConversation { get; set; }
-
         public bool IsDialoging => CurrentDialog != null;
         public bool IsConversing => CurrentConversation != null;
+        public IDialog CurrentDialog { get; set; }
+        public IConversation CurrentConversation { get; set; }
 
         public ICollection<IFieldSplit> Watching { get; }
         public ICollection<IFieldControlledObj> Controlling { get; }
@@ -283,7 +282,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         {
             if (IsConversing) return;
 
-            CurrentConversation = conversation.Context;
+            CurrentConversation = conversation;
 
             await Task.Run(async () =>
             {
@@ -300,13 +299,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         }
 
         public Task ConverseAnswer<T>(IConversationResponse<T> response)
-            => CurrentConversation.Respond(response);
+            => CurrentConversation.Context.Respond(response);
 
         public Task EndConversation()
         {
             if (IsConversing)
             {
-                CurrentConversation.Dispose();
+                CurrentConversation.Context.Dispose();
                 CurrentConversation = null;
             }
             return Task.CompletedTask;

@@ -57,6 +57,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                         : Field.GetStartPointClosestTo(FieldUser.Position).ID
                     );
 
+                    await FieldUser.EndDialog();
                     await FieldUser.EndConversation();
                 }
             }
