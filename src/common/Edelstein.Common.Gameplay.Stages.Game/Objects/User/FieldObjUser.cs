@@ -7,6 +7,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Conversations;
 using Edelstein.Common.Gameplay.Stages.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats.Modify;
 using Edelstein.Common.Gameplay.Users;
 using Edelstein.Common.Gameplay.Users.Inventories.Modify;
 using Edelstein.Common.Gameplay.Users.Inventories.Modify.Operations;
@@ -129,7 +130,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public override IPacket GetEnterFieldPacket()
         {
             var packet = new UnstructuredOutgoingPacket(PacketSendOperations.UserEnterField);
-             
+
             packet.WriteInt(ID);
 
             packet.WriteByte(Character.Level);
@@ -314,8 +315,47 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                 });
         }
 
+        public async Task ModifySecondaryStats(Action<IModifySecondaryStatContext> action = null, bool exclRequest = false)
+        {
+            var context = new ModifySecondaryStatContext(SecondaryStats as SecondaryStats);
+
+            action?.Invoke(context);
+            await UpdateStats();
+
+            if (context.ResetHistory.All().Any())
+            {
+                var resetLocalPacket = new UnstructuredOutgoingPacket();
+                var resetRemotePacket = new UnstructuredOutgoingPacket();
+
+                resetLocalPacket.WriteSecondaryStatsFlag(context.ResetHistory);
+                resetLocalPacket.WriteBool(false); // IsMovementAffectingStat
+
+                resetRemotePacket.WriteInt(ID);
+                resetRemotePacket.WriteSecondaryStatsFlag(context.ResetHistory);
+
+                await Dispatch(resetLocalPacket);
+                await FieldSplit.Dispatch(resetRemotePacket);
+            }
+
+            if (context.SetHistory.All().Any())
+            {
+                var setLocalPacket = new UnstructuredOutgoingPacket();
+                var setRemotePacket = new UnstructuredOutgoingPacket();
+
+                setLocalPacket.WriteSecondaryStatsToLocal(context.SetHistory);
+                setLocalPacket.WriteShort(0); // tDelay
+                setLocalPacket.WriteBool(false); // IsMovementAffectingStat
+
+                setRemotePacket.WriteInt(ID);
+                setRemotePacket.WriteSecondaryStatsToLocal(context.SetHistory);
+                setRemotePacket.WriteShort(0); // tDelay
+
+                await Dispatch(setLocalPacket);
+                await FieldSplit.Dispatch(setRemotePacket);
+            }
+        }
+
         public Task ModifyForcedStats(Action<IModifyForcedStatContext> action = null, bool exclRequest = false) => throw new NotImplementedException();
-        public Task ModifyTemporaryStats(Action<IModifyTemporaryStatContext> action = null, bool exclRequest = false) => throw new NotImplementedException();
 
         public async Task ModifySkills(Action<IModifySkillContext> action = null, bool exclRequest = false)
         {

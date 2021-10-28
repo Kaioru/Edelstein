@@ -35,6 +35,7 @@
     <None Remove="Objects\Mob\Templates\" />
     <None Remove="Objects\Mob\Handlers\" />
     <None Remove="Objects\User\Stats\Temporary\" />
+    <None Remove="Objects\User\Stats\Modify\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -63,6 +64,7 @@
     <Folder Include="Objects\Mob\Templates\" />
     <Folder Include="Objects\Mob\Handlers\" />
     <Folder Include="Objects\User\Stats\Temporary\" />
+    <Folder Include="Objects\User\Stats\Modify\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />

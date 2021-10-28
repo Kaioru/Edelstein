@@ -10,15 +10,22 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
     {
         private const int SecondaryStatFlagSize = 128;
 
-        public static void WriteSecondaryStatsToLocal(this IPacketWriter writer, ISecondaryStats stats)
+        public static void WriteSecondaryStatsFlag(this IPacketWriter writer, ISecondaryStats stats)
         {
-            var now = DateTime.UtcNow;
             var all = stats.All();
             var flag = new Flags(SecondaryStatFlagSize);
 
             all.Keys.ForEach(t => flag.SetFlag((int)t));
 
             writer.Write(flag);
+        }
+
+        public static void WriteSecondaryStatsToLocal(this IPacketWriter writer, ISecondaryStats stats)
+        {
+            var now = DateTime.UtcNow;
+            var all = stats.All();
+
+            writer.WriteSecondaryStatsFlag(stats);
 
             SecondaryStatsOrder.WriteOrderLocal.ForEach(t =>
             {
@@ -56,11 +63,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
         public static void WriteSecondaryStatsToRemote(this IPacketWriter writer, ISecondaryStats stats)
         {
             var all = stats.All();
-            var flag = new Flags(SecondaryStatFlagSize);
 
-            all.Keys.ForEach(t => flag.SetFlag((int)t));
-
-            writer.Write(flag);
+            writer.WriteSecondaryStatsFlag(stats);
 
             SecondaryStatsOrder.WriteOrderRemote.ForEach(kv =>
             {
