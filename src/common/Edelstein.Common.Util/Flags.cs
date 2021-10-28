@@ -20,35 +20,25 @@ namespace Edelstein.Common.Util
         public bool HasFlag(int index)
             => _bits[index];
 
-        public byte[] ToArray()
+        public int[] ToArray()
         {
-            var numBytes = _bits.Count / 8;
+            var num = _bits.Count / 8 / 4;
 
-            if (_bits.Count % 8 != 0) numBytes++;
+            if (_bits.Count % 8 != 0) num++;
 
-            var bytes = new byte[numBytes];
-            var byteIndex = 0;
-            var bitIndex = 0;
+            var arr = new int[num];
 
-            for (int i = 0; i < _bits.Count; i++)
-            {
-                if (_bits[i])
-                    bytes[byteIndex] |= (byte)(1 << (7 - bitIndex));
-
-                bitIndex++;
-
-                if (bitIndex == 8)
-                {
-                    bitIndex = 0;
-                    byteIndex++;
-                }
-            }
-
-            return bytes;
+            _bits.CopyTo(arr, 0);
+            return arr;
         }
 
         public void WriteToPacket(IPacketWriter writer)
-            => writer.WriteBytes(ToArray());
+        {
+            var arr = ToArray();
+
+            for (var i = arr.Length; i > 0; i--)
+                writer.WriteInt(arr[i - 1]);
+        }
 
         public Flags And(Flags b) => new(_bits.And(b._bits));
         public Flags Or(Flags b) => new(_bits.Or(b._bits));

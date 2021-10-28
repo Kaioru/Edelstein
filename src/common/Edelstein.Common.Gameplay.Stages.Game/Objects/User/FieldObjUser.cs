@@ -324,8 +324,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
             if (context.ResetHistory.All().Any())
             {
-                var resetLocalPacket = new UnstructuredOutgoingPacket();
-                var resetRemotePacket = new UnstructuredOutgoingPacket();
+                var resetLocalPacket = new UnstructuredOutgoingPacket(PacketSendOperations.TemporaryStatReset);
+                var resetRemotePacket = new UnstructuredOutgoingPacket(PacketSendOperations.UserTemporaryStatReset);
 
                 resetLocalPacket.WriteSecondaryStatsFlag(context.ResetHistory);
                 resetLocalPacket.WriteBool(false); // IsMovementAffectingStat
@@ -339,8 +339,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
             if (context.SetHistory.All().Any())
             {
-                var setLocalPacket = new UnstructuredOutgoingPacket();
-                var setRemotePacket = new UnstructuredOutgoingPacket();
+                var setLocalPacket = new UnstructuredOutgoingPacket(PacketSendOperations.TemporaryStatSet);
+                var setRemotePacket = new UnstructuredOutgoingPacket(PacketSendOperations.UserTemporaryStatSet);
 
                 setLocalPacket.WriteSecondaryStatsToLocal(context.SetHistory);
                 setLocalPacket.WriteShort(0); // tDelay
