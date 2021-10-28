@@ -76,7 +76,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             );
 
             ForcedStats = null;
-            SecondaryStats = null;
+            SecondaryStats = new SecondaryStats();
 
             _ = UpdateStats();
         }
@@ -129,6 +129,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public override IPacket GetEnterFieldPacket()
         {
             var packet = new UnstructuredOutgoingPacket(PacketSendOperations.UserEnterField);
+             
             packet.WriteInt(ID);
 
             packet.WriteByte(Character.Level);
@@ -140,10 +141,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             packet.WriteShort(Guild?.Mark ?? 0);
             packet.WriteByte(Guild?.MarkColor ?? 0);
 
-            packet.WriteLong(0);
-            packet.WriteLong(0);
-            packet.WriteByte(0); // nDefenseAtt
-            packet.WriteByte(0); // nDefenseState
+            SecondaryStats.WriteToRemote(packet);
 
             packet.WriteShort(Character.Job);
             packet.WriteCharacterLook(Character);
