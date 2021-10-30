@@ -16,9 +16,9 @@ using Edelstein.Common.Gameplay.Users.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Social;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Stages.Game.Dialogs;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Dialogs;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify;
@@ -48,10 +48,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
         public bool IsInstantiated { get; set; }
 
-        public bool IsDialoging => CurrentDialog != null;
         public bool IsConversing => CurrentConversation != null;
-        public IDialog CurrentDialog { get; set; }
+        public bool IsDialoging => CurrentDialog != null;
+
         public IConversation CurrentConversation { get; set; }
+        public IDialog CurrentDialog { get; set; }
 
         public ICollection<IFieldSplit> Watching { get; }
         public ICollection<IFieldControlledObj> Controlling { get; }
@@ -261,23 +262,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             return result;
         }
 
-        public async Task Dialog(IDialog dialog)
-        {
-            if (IsDialoging) return;
-
-            CurrentDialog = dialog;
-            await CurrentDialog.Enter(this);
-        }
-
-        public async Task EndDialog()
-        {
-            if (IsDialoging)
-            {
-                CurrentDialog = null;
-                await CurrentDialog.Leave(this);
-            }
-        }
-
         public async Task Converse(IConversation conversation)
         {
             if (IsConversing) return;
@@ -309,6 +293,23 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                 CurrentConversation = null;
             }
             return Task.CompletedTask;
+        }
+
+        public async Task Dialog(IDialog dialog)
+        {
+            if (IsDialoging) return;
+
+            CurrentDialog = dialog;
+            await CurrentDialog.Enter(this);
+        }
+
+        public async Task EndDialog()
+        {
+            if (IsDialoging)
+            {
+                CurrentDialog = null;
+                await CurrentDialog.Leave(this);
+            }
         }
 
         public async Task ModifyStats(Action<IModifyStatContext> action = null, bool exclRequest = false)
