@@ -57,12 +57,12 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
             T
         > function);
 
-        Task Dialog(IDialog dialog);
-        Task EndDialog();
-
         Task Converse(IConversation conversation);
         Task ConverseAnswer<T>(IConversationResponse<T> response);
         Task EndConversation();
+
+        Task Dialog(IDialog dialog);
+        Task EndDialog();
 
         Task ModifyStats(Action<IModifyStatContext> action = null, bool exclRequest = false);
         Task ModifySecondaryStats(Action<IModifySecondaryStatContext> action = null, bool exclRequest = false);
