@@ -19,7 +19,7 @@
     <Folder Include="Objects\Mob\" />
     <Folder Include="Objects\User\Stats\Temporary\" />
     <Folder Include="Objects\User\Stats\Modify\" />
-    <Folder Include="Objects\User\Dialogs\" />
+    <Folder Include="Dialogs\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
@@ -40,7 +40,7 @@
     <None Remove="Objects\Mob\" />
     <None Remove="Objects\User\Stats\Temporary\" />
     <None Remove="Objects\User\Stats\Modify\" />
-    <None Remove="Objects\User\Dialogs\" />
+    <None Remove="Dialogs\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.3.2" />
