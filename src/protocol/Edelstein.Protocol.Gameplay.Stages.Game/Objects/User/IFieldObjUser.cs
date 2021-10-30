@@ -58,7 +58,6 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
         > function);
 
         Task Converse(IConversation conversation);
-        Task ConverseAnswer<T>(IConversationResponse<T> response);
         Task EndConversation();
 
         Task Dialog(IDialog dialog);

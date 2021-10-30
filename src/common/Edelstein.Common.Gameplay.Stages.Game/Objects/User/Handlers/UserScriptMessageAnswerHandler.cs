@@ -20,10 +20,14 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
         {
             var type = (ConversationRequestType)packet.ReadByte();
 
+            if (!user.IsConversing) return;
+
+            var context = user.CurrentConversation.Context;
+
             if (type == ConversationRequestType.AskQuiz ||
                 type == ConversationRequestType.AskSpeedQuiz)
             {
-                await user.ConverseAnswer(
+                await context.Respond(
                     new ConversationResponse<string>(type, packet.ReadString())
                 );
                 return;
@@ -49,31 +53,31 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
             {
                 case ConversationRequestType.AskText:
                 case ConversationRequestType.AskBoxText:
-                    await user.ConverseAnswer(
+                    await context.Respond(
                         new ConversationResponse<string>(type, packet.ReadString())
                     );
                     break;
                 case ConversationRequestType.AskNumber:
                 case ConversationRequestType.AskMenu:
                 case ConversationRequestType.AskSlideMenu:
-                    await user.ConverseAnswer(
+                    await context.Respond(
                         new ConversationResponse<int>(type, packet.ReadInt())
                     );
                     break;
                 case ConversationRequestType.AskAvatar:
                 case ConversationRequestType.AskMemberShopAvatar:
-                    await user.ConverseAnswer(
+                    await context.Respond(
                         new ConversationResponse<byte>(type, packet.ReadByte())
                     );
                     break;
                 case ConversationRequestType.AskYesNo:
                 case ConversationRequestType.AskAccept:
-                    await user.ConverseAnswer(
+                    await context.Respond(
                         new ConversationResponse<bool>(type, Convert.ToBoolean(answer))
                     );
                     break;
                 default:
-                    await user.ConverseAnswer(
+                    await context.Respond(
                         new ConversationResponse<byte>(type, answer)
                     );
                     break;
