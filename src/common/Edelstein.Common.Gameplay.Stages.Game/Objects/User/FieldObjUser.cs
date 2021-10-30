@@ -282,9 +282,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             });
         }
 
-        public Task ConverseAnswer<T>(IConversationResponse<T> response)
-            => CurrentConversation.Context.Respond(response);
-
         public Task EndConversation()
         {
             if (IsConversing)
