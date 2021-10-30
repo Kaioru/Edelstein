@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Users.Inventories
 {
-    public class ItemLocker
+    public record ItemLocker
     {
         public short SlotMax { get; set; }
         public IList<ItemLockerSlot> Items { get; set; }

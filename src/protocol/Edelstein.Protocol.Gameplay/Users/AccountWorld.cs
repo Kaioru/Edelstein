@@ -1,5 +1,4 @@
-﻿using System;
-using Edelstein.Protocol.Datastore;
+﻿using Edelstein.Protocol.Datastore;
 using Edelstein.Protocol.Gameplay.Users.Inventories;
 
 namespace Edelstein.Protocol.Gameplay.Users

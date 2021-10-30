@@ -2,6 +2,7 @@
 {
     public interface IShopDialog : IDialog
     {
+        int TemplateID { get; }
         IShopDialogInfo Info { get; }
     }
 }
