@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Social;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Dialogs;
+using Edelstein.Protocol.Gameplay.Stages.Game.Dialogs;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify;
@@ -21,10 +21,11 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
 
         bool IsInstantiated { get; set; }
 
-        bool IsDialoging { get; }
         bool IsConversing { get; }
-        IDialog CurrentDialog { get; }
+        bool IsDialoging { get; }
+
         IConversation CurrentConversation { get; }
+        IDialog CurrentDialog { get; }
 
         ICollection<IFieldSplit> Watching { get; }
         ICollection<IFieldControlledObj> Controlling { get; }
