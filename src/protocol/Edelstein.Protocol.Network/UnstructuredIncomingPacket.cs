@@ -37,6 +37,8 @@ namespace Edelstein.Protocol.Network
         public long ReadLong() => _reader.ReadInt64();
         public ulong ReadULong() => _reader.ReadUInt64();
 
+        public double ReadDouble() => _reader.ReadDouble();
+
         public string ReadString(short? length = null) => StringEncoding.GetString(_reader.ReadBytes(length ?? ReadShort()));
         public byte[] ReadBytes(short length) => _reader.ReadBytes(length);
 

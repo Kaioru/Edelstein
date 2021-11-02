@@ -21,6 +21,8 @@ namespace Edelstein.Protocol.Network
         long ReadLong();
         ulong ReadULong();
 
+        double ReadDouble();
+
         string ReadString(short? length = null);
         byte[] ReadBytes(short length);
 

@@ -3,6 +3,7 @@ using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game;
 using Edelstein.Common.Gameplay.Stages.Game.Commands;
 using Edelstein.Common.Gameplay.Stages.Game.Continent.Templates;
+using Edelstein.Common.Gameplay.Stages.Game.Dialogs.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Templates;
@@ -77,6 +78,7 @@ namespace Edelstein.App.Game
                     builder.AddSingleton<ITemplateRepository<FieldStringTemplate>, FieldStringTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<ContiMoveTemplate>, ContiMoveTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<NPCTemplate>, NPCTemplateRepository>();
+                    builder.AddSingleton<ITemplateRepository<NPCShopTemplate>, NPCShopTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<MobTemplate>, MobTemplateRepository>();
 
                     builder.AddSingleton<ISessionInitializer, GameSessionInitializer>();

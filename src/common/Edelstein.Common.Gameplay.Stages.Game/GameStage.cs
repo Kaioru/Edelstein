@@ -32,6 +32,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Handlers;
 using Edelstein.Common.Gameplay.Users.Skills.Templates;
+using Edelstein.Common.Gameplay.Stages.Game.Dialogs.Templates;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -59,6 +60,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public ITemplateRepository<FieldStringTemplate> FieldStringTemplates { get; }
         public ITemplateRepository<ContiMoveTemplate> ContiMoveTemplates { get; }
         public ITemplateRepository<NPCTemplate> NPCTemplates { get; }
+        public ITemplateRepository<NPCShopTemplate> NPCShopTemplates { get; }
         public ITemplateRepository<MobTemplate> MobTemplates { get; }
 
         public IFieldRepository FieldRepository { get; }
@@ -90,6 +92,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ITemplateRepository<FieldStringTemplate> fieldStringTemplates,
             ITemplateRepository<ContiMoveTemplate> contiMoveTemplates,
             ITemplateRepository<NPCTemplate> npcTemplates,
+            ITemplateRepository<NPCShopTemplate> npcShopTemplates,
             ITemplateRepository<MobTemplate> mobTemplates
         ) : base(
             ServerStageType.Game,
@@ -132,6 +135,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             FieldStringTemplates = fieldStringTemplates;
             ContiMoveTemplates = contiMoveTemplates;
             NPCTemplates = npcTemplates;
+            NPCShopTemplates = npcShopTemplates;
             MobTemplates = mobTemplates;
 
             FieldRepository = new FieldRepository(this, FieldTemplates, tickerManager);
@@ -173,6 +177,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             commandProcessor.Register(new ItemCommand(ItemStringTemplates, ItemTemplates));
             commandProcessor.Register(new FieldCommand(FieldRepository, FieldStringTemplates, FieldTemplates));
             commandProcessor.Register(new ContiMoveCommand(ContiMoveRepository));
+            commandProcessor.Register(new NPCShopCommand(npcShopTemplates));
         }
 
         public override async Task Enter(GameStageUser user)

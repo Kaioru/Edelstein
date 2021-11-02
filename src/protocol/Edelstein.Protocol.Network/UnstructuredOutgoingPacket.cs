@@ -73,6 +73,12 @@ namespace Edelstein.Protocol.Network
             return this;
         }
 
+        public IPacketWriter WriteDouble(double value)
+        {
+            _writer.Write(value);
+            return this;
+        }
+
         public IPacketWriter WriteString(string value, short? length = null)
         {
             value ??= string.Empty;
