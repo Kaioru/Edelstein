@@ -39,6 +39,7 @@ using Serilog;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Scripting;
 using Edelstein.Common.Gameplay.Users.Skills.Templates;
+using Edelstein.Common.Gameplay.Stages.Game.Dialogs.Templates;
 
 namespace Edelstein.App.Standalone
 {
@@ -108,6 +109,7 @@ namespace Edelstein.App.Standalone
             collection.AddSingleton<ITemplateRepository<FieldStringTemplate>, FieldStringTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<ContiMoveTemplate>, ContiMoveTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<NPCTemplate>, NPCTemplateRepository>();
+            collection.AddSingleton<ITemplateRepository<NPCShopTemplate>, NPCShopTemplateRepository>();
             collection.AddSingleton<ITemplateRepository<MobTemplate>, MobTemplateRepository>();
 
             var provider = collection.BuildServiceProvider();
@@ -192,6 +194,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ITemplateRepository<FieldStringTemplate>>(),
                     provider.GetService<ITemplateRepository<ContiMoveTemplate>>(),
                     provider.GetService<ITemplateRepository<NPCTemplate>>(),
+                    provider.GetService<ITemplateRepository<NPCShopTemplate>>(),
                     provider.GetService<ITemplateRepository<MobTemplate>>()
                 ));
                 gameCollection.AddSingleton<ISessionInitializer, GameSessionInitializer>();

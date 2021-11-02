@@ -20,6 +20,8 @@ namespace Edelstein.Protocol.Network
         IPacketWriter WriteLong(long value);
         IPacketWriter WriteULong(ulong value);
 
+        IPacketWriter WriteDouble(double value);
+
         IPacketWriter WriteString(string value, short? length = null);
         IPacketWriter WriteBytes(byte[] value);
 

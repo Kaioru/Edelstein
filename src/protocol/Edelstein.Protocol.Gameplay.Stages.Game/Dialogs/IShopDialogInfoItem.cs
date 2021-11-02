@@ -1,6 +1,8 @@
-﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Dialogs
+﻿using Edelstein.Protocol.Util.Repositories;
+
+namespace Edelstein.Protocol.Gameplay.Stages.Game.Dialogs
 {
-    public interface IShopDialogInfoItem
+    public interface IShopDialogItemInfo : IRepositoryEntry<int>
     {
         int TemplateID { get; }
 
@@ -15,5 +17,7 @@
         double UnitPrice { get; }
         short MaxPerSlot { get; }
         int Quantity { get; }
+
+        int Stock { get; }
     }
 }

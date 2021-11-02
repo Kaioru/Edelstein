@@ -7,6 +7,26 @@ namespace Edelstein.Common.Gameplay.Constants
     {
         public static DateTime Permanent = DateTime.FromFileTimeUtc(150842304000000000);
 
+        public static bool IsRechargeableItem(int templateID)
+        {
+            var type = templateID / 10000;
+            return type == 207 || type == 233;
+        }
+
+        public static bool IsTreatSingly(int templateID)
+        {
+            var type = templateID / 1000000;
+
+            if (type == 2 || type == 3 || type == 4)
+            {
+                var subType = templateID / 10000;
+                if (subType != 207 && subType != 233)
+                    return false;
+            }
+
+            return true;
+        }
+
         public static bool IsExtendSPJob(int job)
             => job / 1000 == 3 || job / 100 == 22 || job == 2001;
 
