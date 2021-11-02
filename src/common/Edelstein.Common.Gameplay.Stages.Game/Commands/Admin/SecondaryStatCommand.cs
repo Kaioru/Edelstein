@@ -16,7 +16,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Admin
         [ArgDescription("The value of secondary stat")]
         public short Value { get; set; }
 
-        [ArgPosition(1)]
+        [ArgPosition(2)]
         [ArgDescription("The reason of secondary stat")]
         public int Reason { get; set; } = (int)Skill.CitizenCristalThrow;
     }
