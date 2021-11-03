@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Stats;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob.Stats;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
 
@@ -14,8 +19,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
         public override FieldObjType Type => FieldObjType.Mob;
 
         public IFieldObjMobInfo Info { get; }
+
         public int HP { get; }
         public int MP { get; }
+
+        public IMobStats MobStats { get; }
 
         public FieldObjMob(IFieldObjMobInfo info, bool left = true)
         {
@@ -33,6 +41,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
 
             HP = Info.MaxHP;
             MP = Info.MaxHP;
+
+            MobStats = new MobStats();
         }
 
 
@@ -94,12 +104,29 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
 
         public Task Hit(IFieldObjUser user, int damage)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task Kill(IFieldObjUser user)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public async Task ModifyMobStats(Action<IModifyMobStatContext> action = null)
+        {
+            var context = new ModifyMobStatContext(MobStats as MobStats);
+
+            action?.Invoke(context);
+
+            if (context.ResetHistory.ToDictionary().Any())
+            {
+                // TODO
+            }
+
+            if (context.SetHistory.ToDictionary().Any())
+            {
+                // TODO
+            }
         }
     }
 }

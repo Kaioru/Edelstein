@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob.Stats;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob
@@ -10,7 +13,11 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob
         int HP { get; }
         int MP { get; }
 
+        IMobStats MobStats { get; }
+
         Task Hit(IFieldObjUser user, int damage);
         Task Kill(IFieldObjUser user);
+
+        Task ModifyMobStats(Action<IModifyMobStatContext> action = null);
     }
 }
