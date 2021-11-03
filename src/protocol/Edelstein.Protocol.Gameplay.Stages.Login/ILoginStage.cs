@@ -4,6 +4,5 @@
         where TStage : ILoginStage<TStage, TUser>
         where TUser : ILoginStageUser<TStage, TUser>
     {
-
     }
 }
