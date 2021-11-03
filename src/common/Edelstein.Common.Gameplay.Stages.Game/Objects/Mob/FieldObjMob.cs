@@ -51,8 +51,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
             writer.WriteByte(1); // CalcDamageStatIndex
             writer.WriteInt(Info.ID);
 
-            writer.WriteLong(0); // Temporary Stat
-            writer.WriteLong(0); // Temporary Stat
+            writer.WriteMobStats(MobStats);
 
             writer.WritePoint2D(Position);
             writer.WriteByte((byte)Action);
