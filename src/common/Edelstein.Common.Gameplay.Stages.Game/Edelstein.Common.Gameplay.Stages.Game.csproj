@@ -34,7 +34,6 @@
     <None Remove="Objects\Mob\" />
     <None Remove="Objects\Mob\Templates\" />
     <None Remove="Objects\Mob\Handlers\" />
-    <None Remove="Objects\User\Stats\Temporary\" />
     <None Remove="Objects\User\Stats\Modify\" />
     <None Remove="Dialogs\" />
     <None Remove="Dialogs\Templates\" />
@@ -65,7 +64,6 @@
     <Folder Include="Objects\Mob\" />
     <Folder Include="Objects\Mob\Templates\" />
     <Folder Include="Objects\Mob\Handlers\" />
-    <Folder Include="Objects\User\Stats\Temporary\" />
     <Folder Include="Objects\User\Stats\Modify\" />
     <Folder Include="Dialogs\" />
     <Folder Include="Dialogs\Templates\" />
