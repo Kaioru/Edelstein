@@ -8,6 +8,8 @@ namespace Edelstein.Protocol.Util.Repositories
         TEntry
     > where TEntry : class, IRepositoryEntry<TKey>
     {
+        Task<bool> Exists(TKey key);
+
         Task<TEntry> Retrieve(TKey key);
         Task<IEnumerable<TEntry>> Retrieve(IEnumerable<TKey> keys);
     }

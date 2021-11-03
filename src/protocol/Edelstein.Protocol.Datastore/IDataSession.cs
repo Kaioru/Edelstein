@@ -9,6 +9,7 @@ namespace Edelstein.Protocol.Datastore
 
         IDataQuery<T> Query<T>() where T : class, IDataDocument;
 
+        Task<bool> Exists<T>(int id) where T : class, IDataDocument;
         Task<T> Retrieve<T>(int id) where T : class, IDataDocument;
         Task Insert<T>(T entity) where T : class, IDataDocument;
         Task Update<T>(T entity) where T : class, IDataDocument;

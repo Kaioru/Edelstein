@@ -14,6 +14,9 @@ namespace Edelstein.Common.Util.Repositories
             Dictionary = dictionary ?? new Dictionary<TKey, TEntry>();
         }
 
+        public Task<bool> Exists(TKey key)
+            => Task.FromResult(Dictionary.ContainsKey(key));
+
         public virtual Task<TEntry> Retrieve(TKey key)
         {
             if (Dictionary.ContainsKey(key))

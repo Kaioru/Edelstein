@@ -13,6 +13,12 @@ namespace Edelstein.Common.Util.Repositories
         public DataStoreRepository(IDataStore store)
             => Store = store;
 
+        public Task<bool> Exists(int key)
+        {
+            using var session = Store.StartSession();
+            return session.Exists<TEntry>(key);
+        }
+
         public Task<TEntry> Retrieve(int key)
         {
             using var session = Store.StartSession();

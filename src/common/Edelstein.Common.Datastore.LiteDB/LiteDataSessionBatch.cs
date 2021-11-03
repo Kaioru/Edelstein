@@ -22,6 +22,9 @@ namespace Edelstein.Common.Datastore.LiteDB
         public IDataQuery<T> Query<T>() where T : class, IDataDocument
             => _session.Query<T>();
 
+        public async Task<bool> Exists<T>(int id) where T : class, IDataDocument
+             => (await Query<T>().Where(o => o.ID == id).Count()) > 0;
+
         public Task<T> Retrieve<T>(int id) where T : class, IDataDocument
             => _session.Retrieve<T>(id);
 

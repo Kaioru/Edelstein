@@ -25,6 +25,9 @@ namespace Edelstein.Common.Gameplay.Templating
         public void Register(TemplateProvider<TEntry> provider)
             => _providers[provider.ID] = provider;
 
+        public Task<bool> Exists(int key)
+            => Task.FromResult(_providers.ContainsKey(key));
+
         public async Task<TEntry> Retrieve(int key)
         {
             if (!await _cache.ExistsAsync(key.ToString()) && _providers.ContainsKey(key))
