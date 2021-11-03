@@ -10,6 +10,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Stats
 
         public MobStats()
         {
+            Stats = new Dictionary<MobStatType, IMobStat>();
             // TODO: BurnedInfo.. etc 
         }
 

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob.Stats.Modify;
+using MoreLinq;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Stats.Modify
 {
