@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Temporary;
 using Edelstein.Protocol.Network;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats

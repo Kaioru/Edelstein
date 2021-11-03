@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Temporary;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
 {
