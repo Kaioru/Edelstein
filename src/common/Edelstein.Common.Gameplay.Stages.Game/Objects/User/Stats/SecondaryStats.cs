@@ -10,6 +10,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
 
         public SecondaryStats()
         {
+            Stats = new Dictionary<SecondaryStatType, ITemporaryStat>();
             // TODO: TwoState 
         }
 

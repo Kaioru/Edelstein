@@ -120,12 +120,25 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
 
             if (context.ResetHistory.ToDictionary().Any())
             {
-                // TODO
+                var resetPacket = new UnstructuredOutgoingPacket(PacketSendOperations.MobStatReset);
+
+                resetPacket.WriteInt(ID);
+                resetPacket.WriteMobStatsFlag(context.ResetHistory);
+                resetPacket.WriteByte(0); // CalcDamageStatIndex
+
+                await FieldSplit.Dispatch(resetPacket);
             }
 
             if (context.SetHistory.ToDictionary().Any())
             {
-                // TODO
+                var setPacket = new UnstructuredOutgoingPacket(PacketSendOperations.MobStatSet);
+
+                setPacket.WriteInt(ID);
+                setPacket.WriteMobStats(context.SetHistory);
+                setPacket.WriteShort(0); // tDelay
+                setPacket.WriteByte(0); // CalcDamageStatIndex
+
+                await FieldSplit.Dispatch(setPacket);
             }
         }
     }
