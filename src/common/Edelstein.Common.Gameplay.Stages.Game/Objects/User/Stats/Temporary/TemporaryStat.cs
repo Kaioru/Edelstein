@@ -6,7 +6,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats.Temporary
 {
     public record TemporaryStat : ITemporaryStat
     {
-        public SecondaryStatType ID { get; init; }
+        public SecondaryStatType Type { get; init; }
 
         public int Value { get; init; }
         public int Reason { get; init; }

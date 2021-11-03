@@ -343,7 +343,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             action?.Invoke(context);
             await UpdateStats();
 
-            if (context.ResetHistory.All().Any())
+            if (context.ResetHistory.Stats.Any())
             {
                 var resetLocalPacket = new UnstructuredOutgoingPacket(PacketSendOperations.TemporaryStatReset);
                 var resetRemotePacket = new UnstructuredOutgoingPacket(PacketSendOperations.UserTemporaryStatReset);
@@ -358,7 +358,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                 await FieldSplit.Dispatch(resetRemotePacket);
             }
 
-            if (context.SetHistory.All().Any())
+            if (context.SetHistory.Stats.Any())
             {
                 var setLocalPacket = new UnstructuredOutgoingPacket(PacketSendOperations.TemporaryStatSet);
                 var setRemotePacket = new UnstructuredOutgoingPacket(PacketSendOperations.UserTemporaryStatSet);

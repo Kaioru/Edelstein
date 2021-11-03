@@ -30,8 +30,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats.Modify
         {
             Reset(stat);
 
-            _setHistory.Stats[stat.ID] = stat;
-            _stats.Stats[stat.ID] = stat;
+            _setHistory.Stats[stat.Type] = stat;
+            _stats.Stats[stat.Type] = stat;
         }
 
         public void Set(
@@ -42,14 +42,14 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats.Modify
         )
             => Set(new TemporaryStat
             {
-                ID = type,
+                Type = type,
                 Value = value,
                 Reason = reason,
                 DateExpire = dateExpire
             });
 
         public void Reset(ITemporaryStat stat)
-            => ResetByType(stat.ID);
+            => ResetByType(stat.Type);
 
         public void ResetByType(SecondaryStatType type)
         {
