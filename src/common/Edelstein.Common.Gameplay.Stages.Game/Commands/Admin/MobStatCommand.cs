@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Constants.Types;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob;
@@ -21,7 +20,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Admin
 
         [ArgPosition(2)]
         [ArgDescription("The reason of mob stat")]
-        public int Reason { get; set; } = (int)Skill.CitizenCristalThrow;
+        public int Reason { get; set; } = (int)Skill.UnrecordedSeal;
     }
 
     public class MobStatCommand : AbstractCommand<MobStatCommandArgs>
