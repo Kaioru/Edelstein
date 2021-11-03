@@ -107,7 +107,7 @@ namespace Edelstein.Common.Hosting
                 switch (type)
                 {
                     case HostScriptingType.Lua:
-                        c.AddLuaScripting();
+                        c.AddLuaScripting(section["Directory"]);
                         break;
                 }
             });

@@ -5,9 +5,9 @@ namespace Edelstein.Common.Scripting.NLua
 {
     public static class ServiceCollectionNLuaExtensions
     {
-        public static void AddLuaScripting(this IServiceCollection c)
+        public static void AddLuaScripting(this IServiceCollection c, string directory)
         {
-            c.AddSingleton<IScriptEngine, LuaScriptEngine>();
+            c.AddSingleton<IScriptEngine>(new LuaScriptEngine(directory));
         }
     }
 }
