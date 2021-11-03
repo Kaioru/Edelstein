@@ -4,7 +4,13 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
 {
     public interface ISecondaryStats
     {
-        int this[SecondaryStatType type] { get; }
-        IDictionary<SecondaryStatType, ITemporaryStat> Stats { get; }
+        bool HasStat(SecondaryStatType type);
+
+        int GetValue(SecondaryStatType type);
+        int GetReason(SecondaryStatType type);
+
+        ITemporaryStat GetStat(SecondaryStatType type);
+
+        IDictionary<SecondaryStatType, ITemporaryStat> ToDictionary();
     }
 }

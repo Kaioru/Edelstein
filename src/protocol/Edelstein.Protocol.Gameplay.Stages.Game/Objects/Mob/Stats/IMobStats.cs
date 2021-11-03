@@ -4,7 +4,13 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob.Stats
 {
     public interface IMobStats
     {
-        int this[MobStatType type] { get; }
-        IDictionary<MobStatType, IMobStat> Stats { get; }
+        bool HasStat(MobStatType type);
+
+        int GetValue(MobStatType type);
+        int GetReason(MobStatType type);
+
+        IMobStat GetStat(MobStatType type);
+
+        IDictionary<MobStatType, IMobStat> ToDictionary();
     }
 }
