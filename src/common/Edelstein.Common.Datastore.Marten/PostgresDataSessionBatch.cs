@@ -17,6 +17,9 @@ namespace Edelstein.Common.Datastore.Marten
         public IDataQuery<T> Query<T>() where T : class, IDataDocument
             => new PostgresDataQuery<T>(_session.Query<T>());
 
+        public async Task<bool> Exists<T>(int id) where T : class, IDataDocument
+             => (await Query<T>().Where(o => o.ID == id).Count()) > 0;
+
         public Task<T> Retrieve<T>(int id) where T : class, IDataDocument
             => Task.FromResult(_session.Load<T>(id));
 

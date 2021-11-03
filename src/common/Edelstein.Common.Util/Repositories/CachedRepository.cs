@@ -20,6 +20,14 @@ namespace Edelstein.Common.Util.Repositories
             Duration = duration;
         }
 
+        public async Task<bool> Exists(TKey key)
+        {
+            if (await Cache.ExistsAsync(key.ToString()))
+                return true;
+
+            return await Repository.Exists(key);
+        }
+
         public async Task<TEntry> Retrieve(TKey key)
         {
             var cached = await Cache.GetAsync<TEntry>(key.ToString());

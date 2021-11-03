@@ -10,28 +10,26 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
     {
         private const int SecondaryStatFlagSize = 128;
 
-        public static void WriteSecondaryStatsFlag(this IPacketWriter writer, ISecondaryStats stats)
+        public static void WriteSecondaryStatsFlag(this IPacketWriter writer, ISecondaryStats secondary)
         {
-            var all = stats.All();
             var flag = new Flags(SecondaryStatFlagSize);
 
-            all.Keys.ForEach(t => flag.SetFlag((int)t));
+            secondary.Stats.Keys.ForEach(t => flag.SetFlag((int)t));
 
             writer.Write(flag);
         }
 
-        public static void WriteSecondaryStatsToLocal(this IPacketWriter writer, ISecondaryStats stats)
+        public static void WriteSecondaryStatsToLocal(this IPacketWriter writer, ISecondaryStats secondary)
         {
             var now = DateTime.UtcNow;
-            var all = stats.All();
 
-            writer.WriteSecondaryStatsFlag(stats);
+            writer.WriteSecondaryStatsFlag(secondary);
 
             SecondaryStatsOrder.WriteOrderLocal.ForEach(t =>
             {
-                if (!all.ContainsKey(t)) return;
+                if (!secondary.Stats.ContainsKey(t)) return;
 
-                var stat = all[t];
+                var stat = secondary.Stats[t];
                 var remaining = stat.DateExpire.HasValue ? (stat.DateExpire.Value - now).TotalMilliseconds : int.MaxValue;
 
                 writer.WriteShort((short)stat.Value);
@@ -43,33 +41,31 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             writer.WriteByte(0); // nDefenseState
 
             if (
-                all.ContainsKey(SecondaryStatType.SwallowAttackDamage) &&
-                all.ContainsKey(SecondaryStatType.SwallowDefence) &&
-                all.ContainsKey(SecondaryStatType.SwallowCritical) &&
-                all.ContainsKey(SecondaryStatType.SwallowMaxMP) &&
-                all.ContainsKey(SecondaryStatType.SwallowEvasion)
+                secondary.Stats.ContainsKey(SecondaryStatType.SwallowAttackDamage) &&
+                secondary.Stats.ContainsKey(SecondaryStatType.SwallowDefence) &&
+                secondary.Stats.ContainsKey(SecondaryStatType.SwallowCritical) &&
+                secondary.Stats.ContainsKey(SecondaryStatType.SwallowMaxMP) &&
+                secondary.Stats.ContainsKey(SecondaryStatType.SwallowEvasion)
             )
                 writer.WriteByte(0);
 
-            if (all.ContainsKey(SecondaryStatType.Dice))
+            if (secondary.Stats.ContainsKey(SecondaryStatType.Dice))
                 writer.WriteBytes(new byte[22]);
 
-            if (all.ContainsKey(SecondaryStatType.BlessingArmor))
+            if (secondary.Stats.ContainsKey(SecondaryStatType.BlessingArmor))
                 writer.WriteInt(0);
 
             // TODO: TWOSTATE
         }
 
-        public static void WriteSecondaryStatsToRemote(this IPacketWriter writer, ISecondaryStats stats)
+        public static void WriteSecondaryStatsToRemote(this IPacketWriter writer, ISecondaryStats secondary)
         {
-            var all = stats.All();
-
-            writer.WriteSecondaryStatsFlag(stats);
+            writer.WriteSecondaryStatsFlag(secondary);
 
             SecondaryStatsOrder.WriteOrderRemote.ForEach(kv =>
             {
-                if (!all.ContainsKey(kv.Key)) return;
-                kv.Value.Invoke(all[kv.Key], writer);
+                if (!secondary.Stats.ContainsKey(kv.Key)) return;
+                kv.Value.Invoke(secondary.Stats[kv.Key], writer);
             });
 
             writer.WriteByte(0); // nDefenseAtt
