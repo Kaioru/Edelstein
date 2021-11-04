@@ -41,13 +41,20 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
                 )
             );
 
-            HP = Info.MaxHP;
-            MP = Info.MaxHP;
-
             Stats = new CalculatedMobStats(this);
             MobStats = new MobStats();
+
+            UpdateStats().Wait();
+
+            HP = Stats.MaxHP;
+            MP = Stats.MaxHP;
         }
 
+
+        public async Task UpdateStats()
+        {
+            await Stats.Calculate();
+        }
 
         public void WriteData(IPacketWriter writer, FieldObjMobAppearType appearType, int? appearOption = null)
         {
