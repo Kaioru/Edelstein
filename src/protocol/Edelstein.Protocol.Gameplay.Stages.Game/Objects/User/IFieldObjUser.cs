@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Social;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Dialogs;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Attacking;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify;
@@ -32,6 +33,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
 
         ICalculatedRates Rates { get; }
         ICalculatedStats Stats { get; }
+
+        ICalculatedDamage Damage { get; }
 
         IForcedStats ForcedStats { get; }
         ISecondaryStats SecondaryStats { get; }

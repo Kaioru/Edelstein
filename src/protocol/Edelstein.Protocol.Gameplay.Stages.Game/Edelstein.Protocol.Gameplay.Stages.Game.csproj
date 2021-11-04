@@ -22,6 +22,7 @@
     <Folder Include="Objects\Reactor\" />
     <Folder Include="Objects\Mob\Stats\" />
     <Folder Include="Objects\Mob\Stats\Modify\" />
+    <Folder Include="Objects\User\Attacking\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
@@ -45,6 +46,7 @@
     <None Remove="Objects\Reactor\" />
     <None Remove="Objects\Mob\Stats\" />
     <None Remove="Objects\Mob\Stats\Modify\" />
+    <None Remove="Objects\User\Attacking\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.3.2" />
