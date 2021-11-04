@@ -9,16 +9,16 @@ using MoreLinq;
 
 namespace Edelstein.Common.Gameplay.Users.Skills.Templates
 {
-    public class CharacterSkillTemplateRepository : TemplateRepository<CharacterSkillTemplate>
+    public class SkillTemplateRepository : TemplateRepository<SkillTemplate>
     {
         private static readonly TimeSpan CacheDuration = TimeSpan.FromHours(1);
 
-        public CharacterSkillTemplateRepository(
+        public SkillTemplateRepository(
             IDataDirectoryCollection collection,
-            ILogger<CharacterSkillTemplateRepository> logger = null
+            ILogger<SkillTemplateRepository> logger = null
         ) : base(CacheDuration)
         {
-            logger ??= new NullLogger<CharacterSkillTemplateRepository>();
+            logger ??= new NullLogger<SkillTemplateRepository>();
 
             var dirSkills = collection.Resolve("Skill").ResolveAll();
             var stopwatch = new Stopwatch();
@@ -31,9 +31,9 @@ namespace Edelstein.Common.Gameplay.Users.Skills.Templates
                 .Select(n =>
                 {
                     var id = Convert.ToInt32(n.Name);
-                    return new TemplateProvider<CharacterSkillTemplate>(
+                    return new TemplateProvider<SkillTemplate>(
                         id,
-                        () => new CharacterSkillTemplate(
+                        () => new SkillTemplate(
                             id,
                             n.ResolveAll()
                         )

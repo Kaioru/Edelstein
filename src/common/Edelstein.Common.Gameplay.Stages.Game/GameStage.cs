@@ -54,7 +54,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public ITemplateRepository<ItemOptionTemplate> ItemOptionTemplates { get; }
         public ITemplateRepository<ItemSetTemplate> ItemSetTemplates { get; }
 
-        public ITemplateRepository<CharacterSkillTemplate> CharacterSkillTemplates { get; }
+        public ITemplateRepository<SkillTemplate> CharacterSkillTemplates { get; }
 
         public ITemplateRepository<FieldTemplate> FieldTemplates { get; }
         public ITemplateRepository<FieldStringTemplate> FieldStringTemplates { get; }
@@ -87,7 +87,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ITemplateRepository<ItemStringTemplate> itemStringTemplates,
             ITemplateRepository<ItemOptionTemplate> itemOptionTemplates,
             ITemplateRepository<ItemSetTemplate> itemSetTemplates,
-            ITemplateRepository<CharacterSkillTemplate> characterSkillTemplates,
+            ITemplateRepository<SkillTemplate> characterSkillTemplates,
             ITemplateRepository<FieldTemplate> fieldTemplates,
             ITemplateRepository<FieldStringTemplate> fieldStringTemplates,
             ITemplateRepository<ContiMoveTemplate> contiMoveTemplates,
