@@ -10,10 +10,10 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Attacking
 
         void SetSeed(int s1, int s2, int s3);
 
-        IEnumerable<ICalculatedDamageInfo> CalculateCharacterPDamage();
-        IEnumerable<ICalculatedDamageInfo> CalculateCharacterMDamage();
+        IEnumerable<ICalculatedDamageInfo> CalculateCharacterPDamage(IAttackInfo info);
+        IEnumerable<ICalculatedDamageInfo> CalculateCharacterMDamage(IAttackInfo info);
 
-        int CalculateMobPDamage();
-        int CalculateMobMDamage();
+        int CalculateMobPDamage(IMobAttackInfo info);
+        int CalculateMobMDamage(IMobAttackInfo info);
     }
 }
