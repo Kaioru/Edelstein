@@ -204,7 +204,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             await Stats.Calculate();
 
             if (Character.HP > Stats.MaxHP) await ModifyStats(s => s.HP = Stats.MaxHP);
-            if (Character.HP > Stats.MaxMP) await ModifyStats(s => s.HP = Stats.MaxMP);
+            if (Character.MP > Stats.MaxMP) await ModifyStats(s => s.MP = Stats.MaxMP);
         }
 
         public async Task UpdateAvatar()
