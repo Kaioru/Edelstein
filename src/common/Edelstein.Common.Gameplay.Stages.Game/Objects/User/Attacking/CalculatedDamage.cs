@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Edelstein.Common.Util;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Attacking;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
 {
     public class CalculatedDamage : ICalculatedDamage
     {
+        private static readonly int RND_SIZE = 7;
+
         public int InitSeed1 { get; private set; }
         public int InitSeed2 { get; private set; }
         public int InitSeed3 { get; private set; }
@@ -39,22 +42,30 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
             RndGenForMob = new CRand32(s1, s2, s3);
         }
 
-        public IEnumerable<ICalculatedDamageInfo> CalculateCharacterPDamage()
+        public IEnumerable<ICalculatedDamageInfo> CalculateCharacterPDamage(IAttackInfo info)
         {
+            var random = new Rotational<long>(new long[RND_SIZE]);
+
+            RndGenForCharacter.Next(random.Array);
+
             return null;
         }
 
-        public IEnumerable<ICalculatedDamageInfo> CalculateCharacterMDamage()
+        public IEnumerable<ICalculatedDamageInfo> CalculateCharacterMDamage(IAttackInfo info)
         {
+            var random = new Rotational<long>(new long[RND_SIZE]);
+
+            RndGenForCharacter.Next(random.Array);
+
             return null;
         }
 
-        public int CalculateMobPDamage()
+        public int CalculateMobPDamage(IMobAttackInfo info)
         {
             return 0;
         }
 
-        public int CalculateMobMDamage()
+        public int CalculateMobMDamage(IMobAttackInfo info)
         {
             return 0;
         }
