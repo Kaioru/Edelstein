@@ -10,6 +10,7 @@ using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates.Options;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates.Sets;
+using Edelstein.Common.Gameplay.Users.Skills.Templates;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
 {
@@ -53,18 +54,21 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
         private readonly ITemplateRepository<ItemTemplate> _itemTemplates;
         private readonly ITemplateRepository<ItemOptionTemplate> _optionTemplates;
         private readonly ITemplateRepository<ItemSetTemplate> _setTemplates;
+        private readonly ITemplateRepository<SkillTemplate> _skillTemplates;
 
         public CalculatedStats(
             IFieldObjUser user,
             ITemplateRepository<ItemTemplate> itemTemplates,
             ITemplateRepository<ItemOptionTemplate> optionTemplates,
-            ITemplateRepository<ItemSetTemplate> setTemplates
+            ITemplateRepository<ItemSetTemplate> setTemplates,
+            ITemplateRepository<SkillTemplate> skillTemplates
         )
         {
             _user = user;
             _itemTemplates = itemTemplates;
             _optionTemplates = optionTemplates;
             _setTemplates = setTemplates;
+            _skillTemplates = skillTemplates;
         }
 
         public async Task Calculate()
@@ -149,13 +153,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
                 if (equipTemplate.SetItemID > 0) setIDs.Add(equipTemplate.SetItemID);
                 // TODO: and not Dragon or Mechanic
 
+                MaxHPr += equipTemplate.IncMaxHPr;
+                MaxMPr += equipTemplate.IncMaxMPr;
+
                 var itemReqLevel = equipTemplate.ReqLevel;
                 var itemOptionLevel = (itemReqLevel - 1) / 10;
 
                 itemOptionLevel = Math.Max(itemOptionLevel, 1);
-
-                MaxMPr += equipTemplate.IncMaxHPr;
-                MaxMPr += equipTemplate.IncMaxMPr;
 
                 await ApplyItemOption(i.Option1, itemOptionLevel);
                 await ApplyItemOption(i.Option2, itemOptionLevel);
@@ -164,10 +168,25 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
 
             await Task.WhenAll(setIDs.Distinct().Select(s => ApplyItemSetEffect(s, setIDs.Count(i => i == s))));
 
-            if (
-                character.Job % 1000 / 100 == 5 &&
-                !character.Inventories[ItemInventoryType.Equip].Items.ContainsKey((short)BodyPart.Weapon)
-            )
+            var skills = _user.Character.SkillRecord;
+
+            await Task.WhenAll(skills.Select(async kv =>
+            {
+                var skillTemplate = await _skillTemplates.Retrieve(kv.Key);
+
+                if (skillTemplate == null) return;
+                if (!skillTemplate.IsPSD) return;
+                if (!skillTemplate.LevelData.ContainsKey(kv.Value.Level)) return;
+
+                var skillLevelTemplate = skillTemplate.LevelData[kv.Value.Level];
+
+                // TODO: more psd handling
+
+                MaxHPr += skillLevelTemplate.MHPr;
+                MaxMPr += skillLevelTemplate.MMPr;
+            }));
+
+            if (character.Job % 1000 / 100 == 5 && !character.Inventories[ItemInventoryType.Equip].Items.ContainsKey((short)BodyPart.Weapon))
                 PAD += (int)(character.Level > 30 ? 31d : character.Level * 0.7 + 10d);
 
             STR += (int)(STR * (STRr / 100d));

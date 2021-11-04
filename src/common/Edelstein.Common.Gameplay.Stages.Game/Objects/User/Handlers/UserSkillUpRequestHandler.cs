@@ -16,7 +16,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
         {
             _ = packet.ReadInt();
             var templateID = packet.ReadInt();
-            var template = await stageUser.Stage.CharacterSkillTemplates.Retrieve(templateID);
+            var template = await stageUser.Stage.SkillTemplates.Retrieve(templateID);
 
             if (template == null) return;
 

@@ -33,6 +33,8 @@ namespace Edelstein.Common.Gameplay.Users.Skills.Templates
 
             var common = property.Resolve("common");
 
+            Console.WriteLine($"{id} : {common == null}");
+
             if (common != null)
             {
                 var maxLevel = common.Resolve<int>("maxLevel") ?? 0;
@@ -50,7 +52,7 @@ namespace Edelstein.Common.Gameplay.Users.Skills.Templates
 
                 LevelData = level.Children.ToImmutableDictionary(
                     c => Convert.ToInt32(c.Name),
-                    c => (ISkillLevelInfo)new SkillLevelCommonTemplate(Convert.ToInt32(c.Name), c.ResolveAll())
+                    c => (ISkillLevelInfo)new SkillLevelTemplate(Convert.ToInt32(c.Name), c.ResolveAll())
                 );
             }
 
