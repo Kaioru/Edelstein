@@ -33,7 +33,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Stats
         {
             MaxHP = _mob.Info.MaxHP;
             MaxMP = _mob.Info.MaxMP;
-
+            
             PAD = _mob.Info.PAD;
             PDR = _mob.Info.PDR;
             MAD = _mob.Info.MAD;
@@ -50,6 +50,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Stats
 
             PAD = Math.Min(PAD, 29999);
             MAD = Math.Min(MAD, 29999);
+            ACC = Math.Min(ACC, 9999);
+            EVA = Math.Min(EVA, 9999);
 
             return Task.CompletedTask;
         }
