@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game.Conversations;
 using Edelstein.Common.Gameplay.Stages.Game.Conversations.Speakers;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats.Modify;
@@ -19,6 +20,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Dialogs;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Attacking;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats.Modify;
@@ -60,6 +62,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public ICalculatedRates Rates { get; }
         public ICalculatedStats Stats { get; }
 
+        public ICalculatedDamage Damage { get; }
+
         public IForcedStats ForcedStats { get; }
         public ISecondaryStats SecondaryStats { get; }
 
@@ -79,6 +83,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                 GameStage.ItemOptionTemplates,
                 GameStage.ItemSetTemplates
             );
+
+            Damage = new CalculatedDamage();
 
             ForcedStats = null;
             SecondaryStats = new SecondaryStats();
@@ -108,9 +114,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
             if (!IsInstantiated)
             {
-                packet.WriteInt(0);
-                packet.WriteInt(0);
-                packet.WriteInt(0);
+                packet.WriteInt(Damage.InitSeed1);
+                packet.WriteInt(Damage.InitSeed2);
+                packet.WriteInt(Damage.InitSeed3);
 
                 packet.WriteCharacterData(Character);
 

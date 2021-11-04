@@ -39,6 +39,7 @@
     <None Remove="Dialogs\Templates\" />
     <None Remove="Objects\Mob\Stats\" />
     <None Remove="Objects\Mob\Stats\Modify\" />
+    <None Remove="Objects\User\Attacking\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -71,6 +72,7 @@
     <Folder Include="Dialogs\Templates\" />
     <Folder Include="Objects\Mob\Stats\" />
     <Folder Include="Objects\Mob\Stats\Modify\" />
+    <Folder Include="Objects\User\Attacking\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
