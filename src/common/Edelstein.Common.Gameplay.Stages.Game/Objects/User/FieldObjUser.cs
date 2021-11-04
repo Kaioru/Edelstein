@@ -89,7 +89,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             ForcedStats = null;
             SecondaryStats = new SecondaryStats();
 
-            _ = UpdateStats();
+            UpdateStats().Wait();
         }
 
         public Task OnPacket(IPacketReader packet) => GameStageUser.OnPacket(packet);
