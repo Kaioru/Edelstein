@@ -13,6 +13,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob
         int HP { get; }
         int MP { get; }
 
+        ICalculatedMobStats Stats { get; }
+
         IMobStats MobStats { get; }
 
         Task Hit(IFieldObjUser user, int damage);

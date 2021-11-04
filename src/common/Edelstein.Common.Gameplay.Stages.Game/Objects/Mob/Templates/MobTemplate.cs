@@ -11,9 +11,18 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates
         public MoveAbilityType MoveAbility { get; }
 
         public short Level { get; }
-        public int EXP { get; }
+
         public int MaxHP { get; }
         public int MaxMP { get; }
+
+        public int PAD { get; }
+        public int PDR { get; }
+        public int MAD { get; }
+        public int MDR { get; }
+        public int ACC { get; }
+        public int EVA { get; }
+
+        public int EXP { get; }
 
         public MobTemplate(int id, IDataProperty property, IDataProperty info)
         {
@@ -25,9 +34,18 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates
             else MoveAbility = MoveAbilityType.Stop;
 
             Level = info.Resolve<short>("level") ?? 0;
-            EXP = info.Resolve<int>("exp") ?? 0;
+
             MaxHP = info.Resolve<int>("maxHP") ?? 1;
             MaxMP = info.Resolve<int>("maxMP") ?? 0;
+
+            PAD = info.Resolve<int>("pad") ?? 0;
+            PDR = info.Resolve<int>("pdr") ?? 0;
+            MAD = info.Resolve<int>("mad") ?? 0;
+            MDR = info.Resolve<int>("mdr") ?? 0;
+            ACC = info.Resolve<int>("acc") ?? 0;
+            EVA = info.Resolve<int>("eva") ?? 0;
+
+            EXP = info.Resolve<int>("exp") ?? 0;
         }
     }
 }

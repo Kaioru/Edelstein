@@ -23,6 +23,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
         public int HP { get; }
         public int MP { get; }
 
+        public ICalculatedMobStats Stats { get; }
+
         public IMobStats MobStats { get; }
 
         public FieldObjMob(IFieldObjMobInfo info, bool left = true)
@@ -42,6 +44,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
             HP = Info.MaxHP;
             MP = Info.MaxHP;
 
+            Stats = new CalculatedMobStats(this);
             MobStats = new MobStats();
         }
 
