@@ -81,7 +81,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                 this,
                 GameStage.ItemTemplates,
                 GameStage.ItemOptionTemplates,
-                GameStage.ItemSetTemplates
+                GameStage.ItemSetTemplates,
+                GameStage.SkillTemplates
             );
 
             Damage = new CalculatedDamage();
