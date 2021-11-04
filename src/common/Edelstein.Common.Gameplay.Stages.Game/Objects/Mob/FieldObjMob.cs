@@ -50,7 +50,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
             MP = Stats.MaxHP;
         }
 
-
         public async Task UpdateStats()
         {
             await Stats.Calculate();
