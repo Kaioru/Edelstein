@@ -73,7 +73,7 @@ namespace Edelstein.App.Game
                     builder.AddSingleton<ITemplateRepository<ItemStringTemplate>, ItemStringTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<ItemOptionTemplate>, ItemOptionTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<ItemSetTemplate>, ItemSetTemplateRepository>();
-                    builder.AddSingleton<ITemplateRepository<CharacterSkillTemplate>, CharacterSkillTemplateRepository>();
+                    builder.AddSingleton<ITemplateRepository<SkillTemplate>, SkillTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<FieldTemplate>, FieldTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<FieldStringTemplate>, FieldStringTemplateRepository>();
                     builder.AddSingleton<ITemplateRepository<ContiMoveTemplate>, ContiMoveTemplateRepository>();
