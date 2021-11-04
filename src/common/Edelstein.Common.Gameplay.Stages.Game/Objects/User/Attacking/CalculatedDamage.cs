@@ -11,10 +11,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
         public int InitSeed3 { get; private set; }
 
         private CRand32 RndGenForCharacter { get; set; }
-        private CRand32 RndForCheckDamageMiss { get; set; }
-        private CRand32 RndForMortalBlow { get; set; }
-        private CRand32 RndForSummoned { get; set; }
-        private CRand32 RndForMob { get; set; }
         private CRand32 RndGenForMob { get; set; }
 
         public CalculatedDamage()
@@ -40,10 +36,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
             s3 |= 0x10;
 
             RndGenForCharacter = new CRand32(s1, s2, s3);
-            RndForCheckDamageMiss = new CRand32(s1, s2, s3);
-            RndForMortalBlow = new CRand32(s1, s2, s3);
-            RndForSummoned = new CRand32(s1, s2, s3);
-            RndForMob = new CRand32(s1, s2, s3);
             RndGenForMob = new CRand32(s1, s2, s3);
         }
 
