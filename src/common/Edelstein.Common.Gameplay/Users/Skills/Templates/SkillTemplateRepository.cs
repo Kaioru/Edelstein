@@ -42,7 +42,7 @@ namespace Edelstein.Common.Gameplay.Users.Skills.Templates
                 .DistinctBy(t => t.ID)
                 .ForEach(t => Register(t));
 
-            logger.LogInformation($"Loaded {Count} character skill templates in {stopwatch.Elapsed}");
+            logger.LogInformation($"Loaded {Count} skill templates in {stopwatch.Elapsed}");
 
             stopwatch.Stop();
         }
