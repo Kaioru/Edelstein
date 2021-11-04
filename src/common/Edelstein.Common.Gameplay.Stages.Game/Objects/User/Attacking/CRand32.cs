@@ -13,24 +13,16 @@
             S3 = s3;
         }
 
-        public long Next()
+        public int Next()
         {
-            int v3;
-            int v4;
-            int v5;
+            S1 = ((((S1 >> 6) & 0x3FFFFFF) ^ (S1 << 12)) & 0x1FFF) ^ ((S1 >> 19) & 0x1FFF) ^ (S1 << 12);
+            S2 = ((((S2 >> 23) & 0x1FF) ^ (S2 << 4)) & 0x7F) ^ ((S2 >> 25) & 0x7F) ^ (S2 << 4);
+            S3 = ((((S3 << 17) ^ ((S3 >> 8) & 0xFFFFFF)) & 0x1FFFFF) ^ (S3 << 17)) ^ ((S3 >> 11) & 0x1FFFFF);
 
-            v3 = ((((S1 >> 6) & 0x3FFFFFF) ^ (S1 << 12)) & 0x1FFF) ^ ((S1 >> 19) & 0x1FFF) ^ (S1 << 12);
-            v4 = ((((S2 >> 23) & 0x1FF) ^ (S2 << 4)) & 0x7F) ^ ((S2 >> 25) & 0x7F) ^ (S2 << 4);
-            v5 = ((((S3 << 17) ^ ((S3 >> 8) & 0xFFFFFF)) & 0x1FFFFF) ^ (S3 << 17)) ^ ((S3 >> 11) & 0x1FFFFF);
-
-            S3 = v5;
-            S1 = v3;
-            S2 = v4;
-
-            return (S1 ^ S2 ^ S3) & 0xFFFFFFFFL;
+            return S1 ^ S2 ^ S3;
         }
 
-        public void Next(long[] arr)
+        public void Next(int[] arr)
         {
             for (var i = 0; i < arr.Length; i++)
                 arr[i] = Next();
