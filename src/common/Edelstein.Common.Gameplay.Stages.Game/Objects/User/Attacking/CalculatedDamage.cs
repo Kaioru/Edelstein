@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using Edelstein.Common.Gameplay.Templating;
+using Edelstein.Common.Gameplay.Users.Skills.Templates;
 using Edelstein.Common.Util;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Attacking;
 
@@ -9,26 +10,25 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
     {
         private static readonly int RND_SIZE = 7;
 
-        public int InitSeed1 { get; private set; }
-        public int InitSeed2 { get; private set; }
-        public int InitSeed3 { get; private set; }
+        public uint InitSeed1 { get; private set; }
+        public uint InitSeed2 { get; private set; }
+        public uint InitSeed3 { get; private set; }
 
         private CRand32 RndGenForCharacter { get; set; }
         private CRand32 RndGenForMob { get; set; }
 
-        public CalculatedDamage()
+        private ITemplateRepository<SkillTemplate> _skillTemplates;
+
+        public CalculatedDamage(ITemplateRepository<SkillTemplate> skillTemplates)
         {
             var random = new Random();
 
-            SetSeed(random.Next(), random.Next(), random.Next());
+            SetSeed((uint)random.Next(), (uint)random.Next(), (uint)random.Next());
+
+            _skillTemplates = skillTemplates;
         }
 
-        public CalculatedDamage(int s1, int s2, int s3)
-        {
-            SetSeed(s1, s2, s3);
-        }
-
-        public void SetSeed(int s1, int s2, int s3)
+        public void SetSeed(uint s1, uint s2, uint s3)
         {
             InitSeed1 = s1;
             InitSeed2 = s2;
@@ -42,23 +42,46 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
             RndGenForMob = new CRand32(s1, s2, s3);
         }
 
-        public IEnumerable<ICalculatedDamageInfo> CalculateCharacterPDamage(IAttackInfo info)
+        public void SkipCalculationForCharacterDamage() => RndGenForCharacter.Next(new uint[RND_SIZE]);
+
+        public ICalculatedDamageInfo[] CalculateCharacterPDamage(IAttackInfo info)
         {
-            var random = new Rotational<long>(new long[RND_SIZE]);
+            var random = new Rotational<uint>(new uint[RND_SIZE]);
+            var skillTemplate = info.SkillID > 0 ? _skillTemplates.Retrieve(info.SkillID).Result : null;
+            var skillLevelTemplate = info.SkillID > 0 ? skillTemplate.LevelData[info.SkillLevel] : null;
+            var attackCount = skillLevelTemplate != null ? skillLevelTemplate.AttackCount : 1;
+            var result = new ICalculatedDamageInfo[attackCount];
 
             RndGenForCharacter.Next(random.Array);
 
-            return null;
+            for (var i = 0; i < attackCount; i++)
+            {
+                var damage = 1;
+                var critical = false;
+
+                random.Next(); // if mob not invincible, calc miss
+                random.Next(); 
+                random.Next(); // adjust random damage
+
+                if (CalculatedDamageHelpers.GetRandom(random.Next(), 0.0, 100.0) <= 5.0) // TODO crit rate calc
+                    critical = true;
+
+                result[i] = new CalculatedDamageInfo(damage, critical);
+            }
+
+            return result;
         }
 
-        public IEnumerable<ICalculatedDamageInfo> CalculateCharacterMDamage(IAttackInfo info)
+        public ICalculatedDamageInfo[] CalculateCharacterMDamage(IAttackInfo info)
         {
-            var random = new Rotational<long>(new long[RND_SIZE]);
+            var random = new Rotational<uint>(new uint[RND_SIZE]);
 
             RndGenForCharacter.Next(random.Array);
 
-            return null;
+            return Array.Empty<ICalculatedDamageInfo>();
         }
+
+        public void SkipCalculationForMobDamage() => RndGenForMob.Next(new uint[RND_SIZE]);
 
         public int CalculateMobPDamage(IMobAttackInfo info)
         {

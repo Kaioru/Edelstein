@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
-
-namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Attacking
+﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Attacking
 {
     public interface ICalculatedDamage
     {
-        int InitSeed1 { get; }
-        int InitSeed2 { get; }
-        int InitSeed3 { get; }
+        uint InitSeed1 { get; }
+        uint InitSeed2 { get; }
+        uint InitSeed3 { get; }
 
-        void SetSeed(int s1, int s2, int s3);
+        void SetSeed(uint s1, uint s2, uint s3);
 
-        IEnumerable<ICalculatedDamageInfo> CalculateCharacterPDamage(IAttackInfo info);
-        IEnumerable<ICalculatedDamageInfo> CalculateCharacterMDamage(IAttackInfo info);
+        void SkipCalculationForCharacterDamage();
+        ICalculatedDamageInfo[] CalculateCharacterPDamage(IAttackInfo info);
+        ICalculatedDamageInfo[] CalculateCharacterMDamage(IAttackInfo info);
 
+        void SkipCalculationForMobDamage();
         int CalculateMobPDamage(IMobAttackInfo info);
         int CalculateMobMDamage(IMobAttackInfo info);
     }

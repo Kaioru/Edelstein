@@ -10,7 +10,7 @@
             Array = array;
         }
 
-        public T Next() => Array[Index++ % Array.Length - 1];
+        public T Next() => Array[Index++ % (Array.Length - 1)];
         public int Skip(int count = 1) => Index += count;
     }
 }

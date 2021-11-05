@@ -17,7 +17,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob
 
         IMobStats MobStats { get; }
 
-        Task Hit(IFieldObjUser user, int damage);
+        Task Damage(IFieldObjUser user, int damage);
         Task Kill(IFieldObjUser user);
 
         Task ModifyMobStats(Action<IModifyMobStatContext> action = null);
