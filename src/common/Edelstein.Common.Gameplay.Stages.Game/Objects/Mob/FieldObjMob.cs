@@ -110,14 +110,16 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
             return packet;
         }
 
-        public Task Hit(IFieldObjUser user, int damage)
+        public Task Damage(IFieldObjUser user, int damage)
         {
-            throw new NotImplementedException();
+            // TODO
+            return Task.CompletedTask;
         }
 
         public Task Kill(IFieldObjUser user)
         {
-            throw new NotImplementedException();
+            // TODO
+            return Task.CompletedTask;
         }
 
         public async Task ModifyMobStats(Action<IModifyMobStatContext> action = null)

@@ -85,7 +85,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                 GameStage.SkillTemplates
             );
 
-            Damage = new CalculatedDamage();
+            Damage = new CalculatedDamage(
+                GameStage.SkillTemplates
+            );
 
             ForcedStats = null;
             SecondaryStats = new SecondaryStats();
@@ -115,9 +117,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
             if (!IsInstantiated)
             {
-                packet.WriteInt(Damage.InitSeed1);
-                packet.WriteInt(Damage.InitSeed2);
-                packet.WriteInt(Damage.InitSeed3);
+                packet.WriteUInt(Damage.InitSeed1);
+                packet.WriteUInt(Damage.InitSeed2);
+                packet.WriteUInt(Damage.InitSeed3);
 
                 packet.WriteCharacterData(Character);
 

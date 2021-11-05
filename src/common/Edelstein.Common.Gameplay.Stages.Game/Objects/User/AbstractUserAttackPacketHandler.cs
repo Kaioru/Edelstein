@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Constants.Types;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking;
 using Edelstein.Common.Gameplay.Users;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Users.Inventories;
+using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Protocol.Network;
 using MoreLinq;
 
@@ -17,7 +21,20 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         protected override async Task Handle(GameStageUser stageUser, IFieldObjUser user, IPacketReader packet)
         {
             var clientAttackInfo = packet.Read(new ClientAttackInfo());
+
+            var skill = (Skill)clientAttackInfo.SkillID;
             var skillLevel = clientAttackInfo.SkillID > 0 ? user.Character.GetSkillLevel(clientAttackInfo.SkillID) : 0;
+            var damageType = Type == AttackType.Magic ? DamageType.Magic : DamageType.Physical;
+
+            if (Type == AttackType.Melee)
+            {
+                // TODO bmage blows
+            }
+
+            if (Type == AttackType.Body)
+            {
+                // TODO teleport mastery
+            }
 
             var operation = (PacketSendOperations)((int)PacketSendOperations.UserMeleeAttack + (int)Type);
             var response = new UnstructuredOutgoingPacket(operation);
@@ -45,25 +62,60 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             {
                 response.WriteByte(0); // nMastery
                 response.WriteByte(0); // v82
-                response.WriteInt(2070000); // bMovingShoot
+                response.WriteInt(0); // bMovingShoot
 
                 clientAttackInfo.Mobs.ForEach(m =>
                 {
-                    // TODO: temporary
+                    var critical = new bool[clientAttackInfo.DamagePerMob];
+                    var damage = new int[clientAttackInfo.DamagePerMob];
+                    var totalDamage = damage.Sum();
                     var mob = user.Field.GetObject<IFieldObjMob>(m.MobID);
 
-                    if (mob != null)
-                        mob.Controller = user;
+                    Array.Copy(m.Damage, damage, damage.Length);
 
                     response.WriteInt(m.MobID);
                     response.WriteByte(m.HitAction);
 
-                    // TODO use calcdamage
-                    m.Damage.ForEach(d =>
+                    if (mob != null)
                     {
-                        response.WriteBool(false); // Critical
-                        response.WriteInt(d);
-                    });
+                        var equipInventory = user.Character.Inventories[ItemInventoryType.Equip];
+                        var serverAttackInfo = new AttackInfo(user, mob)
+                        {
+                            WeaponID = equipInventory.Items.ContainsKey((short)BodyPart.Weapon)
+                                ? equipInventory.Items[(short)BodyPart.Weapon].TemplateID
+                                : 0,
+                            BulletID = 0,
+                            SkillID = clientAttackInfo.SkillID,
+                            SkillLevel = skillLevel
+                        };
+
+                        var calculatedDamage = damageType == DamageType.Physical
+                            ? user.Damage.CalculateCharacterPDamage(serverAttackInfo)
+                            : user.Damage.CalculateCharacterMDamage(serverAttackInfo);
+                        var calculatedTotalDamage = calculatedDamage.Select(d => d.Damage).Sum();
+
+                        // TODO cheatdetector?
+                        //if (clientAttackInfo.DamagePerMob != calculatedDamage.Length) return;
+                        //if (totalDamage != calculatedTotalDamage) return;
+                        
+                        user.Message($"Dealt damage: {string.Join(" + ", calculatedDamage.Select(d => $"{d.Damage}{(d.IsCritical ? "*" : "")}"))} = {totalDamage}");
+
+                        mob.Controller = user;
+                        mob.Damage(user, calculatedTotalDamage);
+
+                        for (var i = 0; i < clientAttackInfo.DamagePerMob; i++)
+                        {
+                            critical[i] = calculatedDamage.Length < i ? calculatedDamage[i].IsCritical : false;
+                            damage[i] = calculatedDamage.Length < i ? calculatedDamage[i].Damage : damage[i];
+                        }
+                    }
+                    else user.Damage.SkipCalculationForCharacterDamage();
+
+                    for (var i = 0; i < clientAttackInfo.DamagePerMob; i++)
+                    {
+                        response.WriteBool(critical[i]);
+                        response.WriteInt(damage[i]);
+                    }
                 });
             }
 
