@@ -167,7 +167,7 @@ namespace Edelstein.Common.Gameplay.Users.Skills.Templates
             Prop = ResolveExpression(property.ResolveOrDefault<string>("prop"), x, u, d);
             SubProp = ResolveExpression(property.ResolveOrDefault<string>("subProp"), x, u, d);
 
-            AttackCount = ResolveExpression(property.ResolveOrDefault<string>("attackCount"), x, u, d);
+            AttackCount = ResolveExpression(property.ResolveOrDefault<string>("attackCount") ?? "1", x, u, d);
             BulletCount = ResolveExpression(property.ResolveOrDefault<string>("bulletCount"), x, u, d);
             BulletConsume = ResolveExpression(property.ResolveOrDefault<string>("bulletConsume"), x, u, d);
 
