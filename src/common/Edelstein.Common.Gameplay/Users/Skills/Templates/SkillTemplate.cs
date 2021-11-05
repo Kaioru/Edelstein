@@ -33,8 +33,6 @@ namespace Edelstein.Common.Gameplay.Users.Skills.Templates
 
             var common = property.Resolve("common");
 
-            Console.WriteLine($"{id} : {common == null}");
-
             if (common != null)
             {
                 var maxLevel = common.Resolve<int>("maxLevel") ?? 0;

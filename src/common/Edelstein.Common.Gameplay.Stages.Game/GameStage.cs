@@ -144,6 +144,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             packetProcessor.Register(new UserTransferChannelRequestHandler());
             packetProcessor.Register(new UserMoveHandler());
+            packetProcessor.Register(new UserMeleeAttackHandler());
             packetProcessor.Register(new UserEmotionHandler());
             packetProcessor.Register(new UserChatHandler());
             packetProcessor.Register(new UserScriptMessageAnswerHandler());
