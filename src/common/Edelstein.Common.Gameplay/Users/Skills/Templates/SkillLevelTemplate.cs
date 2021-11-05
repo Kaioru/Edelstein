@@ -161,7 +161,7 @@ namespace Edelstein.Common.Gameplay.Users.Skills.Templates
             Prop = property.Resolve<short>("prop") ?? 0;
             SubProp = property.Resolve<short>("subProp") ?? 0;
 
-            AttackCount = property.Resolve<short>("attackCount") ?? 0;
+            AttackCount = property.Resolve<short>("attackCount") ?? 1;
             BulletCount = property.Resolve<short>("bulletCount") ?? 0;
             BulletConsume = property.Resolve<short>("bulletConsume") ?? 0;
 
