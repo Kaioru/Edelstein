@@ -64,7 +64,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
                 random.Next(); // adjust random damage
 
                 if (CalculatedDamageHelpers.GetRandom(random.Next(), 0.0, 100.0) <= 5.0) // TODO crit rate calc
+                {
                     critical = true;
+                    random.Next(); // crit damage
+                }
 
                 result[i] = new CalculatedDamageInfo(damage, critical);
             }
