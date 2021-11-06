@@ -50,27 +50,31 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
             var skillTemplate = info.SkillID > 0 ? _skillTemplates.Retrieve(info.SkillID).Result : null;
             var skillLevelTemplate = info.SkillID > 0 ? skillTemplate.LevelData[info.SkillLevel] : null;
             var attackCount = skillLevelTemplate != null ? skillLevelTemplate.AttackCount : 1;
-            var result = new ICalculatedDamageInfo[attackCount];
+
+            var critical = new bool[attackCount];
+            var damage = new int[attackCount];
 
             RndGenForCharacter.Next(random.Array);
 
             for (var i = 0; i < attackCount; i++)
             {
-                var damage = 1;
-                var critical = false;
-
                 random.Next(); // if mob not invincible, calc miss
                 random.Next(); 
                 random.Next(); // adjust random damage
 
-                if (CalculatedDamageHelpers.GetRandom(random.Next(), 0.0, 100.0) <= 5.0) // TODO crit rate calc
+                if (info.User.Stats.Cr > 0 && CalculatedDamageHelpers.GetRandom(random.Next(), 0.0, 100.0) <= info.User.Stats.Cr)
                 {
-                    critical = true;
-                    random.Next(); // crit damage
-                }
+                    var damR = CalculatedDamageHelpers.GetRandom(random.Next(), info.User.Stats.CDMin, info.User.Stats.CDMax);
 
-                result[i] = new CalculatedDamageInfo(damage, critical);
+                    critical[i] = true;
+                    damage[i] = 10; // TODO damage calc first then apply
+                }
             }
+
+            var result = new ICalculatedDamageInfo[attackCount];
+
+            for (var i = 0; i < attackCount; i ++)
+                result[i] = new CalculatedDamageInfo(damage[i], critical[i]);
 
             return result;
         }

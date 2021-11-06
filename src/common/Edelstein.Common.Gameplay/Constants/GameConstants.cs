@@ -27,6 +27,9 @@ namespace Edelstein.Common.Gameplay.Constants
             return true;
         }
 
+        public static WeaponType GetWeaponType(int templateID)
+            => (WeaponType)(templateID / 10000 % 100);
+
         public static bool IsExtendSPJob(int job)
             => job / 1000 == 3 || job / 100 == 22 || job == 2001;
 

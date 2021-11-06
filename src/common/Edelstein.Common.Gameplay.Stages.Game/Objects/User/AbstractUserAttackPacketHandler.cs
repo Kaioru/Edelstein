@@ -95,7 +95,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                         var calculatedTotalDamage = calculatedDamage.Select(d => d.Damage).Sum();
 
                         // TODO cheatdetector?
-                        //if (clientAttackInfo.DamagePerMob != calculatedDamage.Length) return;
+                        if (clientAttackInfo.DamagePerMob != calculatedDamage.Length)
+                            user.Message($"Attack count mismatch: {clientAttackInfo.DamagePerMob} : {calculatedDamage.Length}");
                         //if (totalDamage != calculatedTotalDamage) return;
                         
                         user.Message($"Dealt damage: {string.Join(" + ", calculatedDamage.Select(d => $"{d.Damage}{(d.IsCritical ? "*" : "")}"))} = {totalDamage}");
@@ -105,8 +106,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
                         for (var i = 0; i < clientAttackInfo.DamagePerMob; i++)
                         {
-                            critical[i] = calculatedDamage.Length < i ? calculatedDamage[i].IsCritical : false;
-                            damage[i] = calculatedDamage.Length < i ? calculatedDamage[i].Damage : damage[i];
+                            critical[i] = calculatedDamage[i].IsCritical;
+                            //damage[i] = calculatedDamage[i].Damage;
                         }
                     }
                     else user.Damage.SkipCalculationForCharacterDamage();
