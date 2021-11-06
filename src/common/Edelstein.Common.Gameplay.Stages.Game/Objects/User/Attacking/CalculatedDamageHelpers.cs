@@ -2,6 +2,7 @@
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
 {
+    // TODO remove this class, reorganise
     public static class CalculatedDamageHelpers
     {
         public static double GetRandom(uint rand, double f0, double f1)
