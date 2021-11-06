@@ -309,7 +309,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
                 stat2 = LUK;
                 attack = MAD;
                 multiplier = 1.0;
-            } else
+            }
+            else
             {
                 switch (weaponType)
                 {
@@ -373,7 +374,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
                 }
             }
 
-            var damageMinMultiplier = weaponType switch
+            var masteryMultiplier = weaponType switch
             {
                 WeaponType.Wand or
                 WeaponType.Staff => 0.25,
@@ -385,8 +386,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             };
             var mastery = 0; // TODO weapon mastery handling
 
+            masteryMultiplier += mastery / 100d;
+            masteryMultiplier = Math.Min(masteryMultiplier, 0.95);
+
             DamageMax = (int)((stat3 + stat2 + 4 * stat1) / 100d * attack * multiplier + 0.5);
-            DamageMin = (int)(Math.Min(mastery / 100d + damageMinMultiplier, 0.95) * DamageMax + 0.5);
+            DamageMin = (int)(DamageMax * masteryMultiplier + 0.5);
         }
     }
 }
