@@ -134,17 +134,17 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             await CalculateDamage();
 
             STR += (int)(STR * (STRr / 100d));
-            DEXr += (int)(DEX * (DEXr / 100d));
-            INTr += (int)(INT * (INTr / 100d));
-            LUKr += (int)(LUK * (LUKr / 100d));
-            MaxMPr += (int)(MaxMP * (MaxMPr / 100d));
-            MaxMPr += (int)(MaxMP * (MaxMPr / 100d));
-            PADr += (int)(PAD * (PADr / 100d));
-            PDDr += (int)(PDD * (PDDr / 100d));
-            MADr += (int)(MAD * (MADr / 100d));
-            MDDr += (int)(MDD * (MDDr / 100d));
-            ACCr += (int)(ACC * (ACCr / 100d));
-            EVAr += (int)(EVA * (EVAr / 100d));
+            DEX += (int)(DEX * (DEXr / 100d));
+            INT += (int)(INT * (INTr / 100d));
+            LUK += (int)(LUK * (LUKr / 100d));
+            MaxMP += (int)(MaxHP * (MaxHPr / 100d));
+            MaxMP += (int)(MaxMP * (MaxMPr / 100d));
+            PAD += (int)(PAD * (PADr / 100d));
+            PDD += (int)(PDD * (PDDr / 100d));
+            MAD += (int)(MAD * (MADr / 100d));
+            MDD += (int)(MDD * (MDDr / 100d));
+            ACC += (int)(ACC * (ACCr / 100d));
+            EVA += (int)(EVA * (EVAr / 100d));
 
             MaxHP = Math.Min(MaxHP, 99999);
             MaxMP = Math.Min(MaxMP, 99999);
