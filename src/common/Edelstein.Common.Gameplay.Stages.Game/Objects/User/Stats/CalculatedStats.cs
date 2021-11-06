@@ -126,8 +126,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             MDamR = 0;
             BossDamR = 0;
 
-            DamageMin = 0;
-            DamageMax = 0;
+            DamageMin = 1;
+            DamageMax = 1;
         }
 
         public async Task Calculate()
@@ -166,8 +166,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             CDMin = Math.Min(CDMin, CDMax);
 
             DamageMin = Math.Min(DamageMin, DamageMax);
-            DamageMin = Math.Min(DamageMin, 999999);
-            DamageMax = Math.Min(DamageMax, 999999);
+            DamageMin = Math.Max(Math.Min(DamageMin, 999999), 1);
+            DamageMax = Math.Max(Math.Min(DamageMax, 999999), 1);
         }
 
         public async Task CalculateEquipments()
