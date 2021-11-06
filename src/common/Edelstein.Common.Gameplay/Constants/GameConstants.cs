@@ -43,6 +43,9 @@ namespace Edelstein.Common.Gameplay.Constants
             return job % 1000 == 0 || job == 2001 ? 0 : 1;
         }
 
+        public static int GetJobType(int job)
+            => job / 100 % 10;
+
         public static bool IsEvanJob(int job)
         {
             switch ((Job)job)

@@ -7,6 +7,11 @@ using Edelstein.Common.Gameplay.Users.Inventories.Templates;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates.Options;
 using Edelstein.Common.Gameplay.Users.Inventories.Templates.Sets;
 using Edelstein.Common.Gameplay.Users.Skills.Templates;
+using Edelstein.Protocol.Gameplay.Users.Inventories;
+using System.Linq;
+using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
+using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Constants.Types;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
 {
@@ -165,9 +170,223 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             DamageMax = Math.Min(DamageMax, 999999);
         }
 
-        public async Task CalculateEquipments() { }
-        public async Task CalculatePassiveSkills() { }
-        public async Task CalculateSecondaryStats() { }
-        public async Task CalculateDamage() { }
+        public async Task CalculateEquipments()
+        {
+            var equippedItems = _user.Character.Inventories[ItemInventoryType.Equip].Items
+                .Where(kv => kv.Key < 0)
+                .Where(kv => kv.Value is ItemSlotEquip)
+                .Select(kv => (kv.Key, (ItemSlotEquip)kv.Value))
+                .ToList();
+
+            await Task.WhenAll(equippedItems.Select(async kv =>
+            {
+                var (pos, item) = kv;
+                var template = await _itemTemplates.Retrieve(item.TemplateID);
+
+                if (template is not ItemEquipTemplate equipTemplate) return;
+
+                STR += item.STR;
+                DEX += item.DEX;
+                INT += item.INT;
+                LUK += item.LUK;
+                MaxHP += item.MaxHP;
+                MaxMP += item.MaxMP;
+
+                if ( // TODO use BodyPart
+                    pos != -30 &&
+                    pos != -38 &&
+                    pos != -31 &&
+                    pos != -39 &&
+                    pos != -32 &&
+                    pos != -40 &&
+                    (item.TemplateID / 10000 == 190 || pos != -18 && pos != -19 && pos != -20))
+                {
+                    PAD += item.PAD;
+                    PDD += item.PDD;
+                    MAD += item.MAD;
+                    MDD += item.MDD;
+                    ACC += item.ACC;
+                    EVA += item.EVA;
+                    Craft += item.Craft;
+                    Speed += item.Speed;
+                    Jump += item.Jump;
+                }
+
+                MaxHPr += equipTemplate.IncMaxHPr;
+                MaxMPr += equipTemplate.IncMaxMPr;
+
+                // TODO: and not Dragon or Mechanic
+                // TODO: item options
+            }));
+
+            // TODO: item sets
+        }
+
+        public async Task CalculatePassiveSkills()
+        {
+            var skills = _user.Character.SkillRecord;
+
+            await Task.WhenAll(skills.Select(async kv =>
+            {
+                var (id, record) = kv;
+                var skillTemplate = await _skillTemplates.Retrieve(id);
+
+                if (skillTemplate == null) return;
+                if (!skillTemplate.IsPSD) return;
+                if (!skillTemplate.LevelData.ContainsKey(kv.Value.Level)) return;
+
+                var skillLevelTemplate = skillTemplate.LevelData[kv.Value.Level];
+
+                // TODO: more psd handling
+
+                MaxHPr += skillLevelTemplate.MHPr;
+                MaxMPr += skillLevelTemplate.MMPr;
+
+                Cr += skillLevelTemplate.Cr;
+                CDMin += skillLevelTemplate.CDMin;
+                CDMax += skillLevelTemplate.CDMax;
+
+                ACCr += skillLevelTemplate.ACCr;
+                EVAr += skillLevelTemplate.EVAr;
+
+                PADr += skillLevelTemplate.PADr;
+                MADr += skillLevelTemplate.MADr;
+
+                PAD += skillLevelTemplate.PADx;
+                MAD += skillLevelTemplate.MADx;
+
+                IMDr += skillLevelTemplate.IMDr;
+
+                Jump += skillLevelTemplate.PsdJump;
+                Speed += skillLevelTemplate.PsdSpeed;
+            }));
+        }
+
+        public async Task CalculateSecondaryStats()
+        {
+            PAD += _user.SecondaryStats.GetValue(SecondaryStatType.PAD);
+            PDD += _user.SecondaryStats.GetValue(SecondaryStatType.PDD);
+            MAD += _user.SecondaryStats.GetValue(SecondaryStatType.MAD);
+            MDD += _user.SecondaryStats.GetValue(SecondaryStatType.MDD);
+            ACC += _user.SecondaryStats.GetValue(SecondaryStatType.ACC);
+            EVA += _user.SecondaryStats.GetValue(SecondaryStatType.EVA);
+            Craft += _user.SecondaryStats.GetValue(SecondaryStatType.Craft);
+            Speed += _user.SecondaryStats.GetValue(SecondaryStatType.Speed);
+            Jump += _user.SecondaryStats.GetValue(SecondaryStatType.Jump);
+            MaxHP += _user.SecondaryStats.GetValue(SecondaryStatType.MaxHP);
+            MaxMP += _user.SecondaryStats.GetValue(SecondaryStatType.MaxMP);
+
+            MaxHP += _user.SecondaryStats.GetValue(SecondaryStatType.EMHP);
+            MaxMP += _user.SecondaryStats.GetValue(SecondaryStatType.EMMP);
+            PAD += _user.SecondaryStats.GetValue(SecondaryStatType.EPAD);
+            PDD += _user.SecondaryStats.GetValue(SecondaryStatType.EPDD);
+            // MAD += _user.SecondaryStats.GetValue(SecondaryStatType.EMAD); // Does not exist
+            MDD += _user.SecondaryStats.GetValue(SecondaryStatType.EMDD);
+        }
+
+        public async Task CalculateDamage()
+        {
+            var equipInventory = _user.Character.Inventories[ItemInventoryType.Equip];
+            var weaponID = equipInventory.Items.ContainsKey(-(short)BodyPart.Weapon)
+                ? equipInventory.Items[-(short)BodyPart.Weapon].TemplateID
+                : 0;
+            var weaponType = GameConstants.GetWeaponType(weaponID);
+            var stat1 = 0;
+            var stat2 = 0;
+            var stat3 = 0;
+            var attack = PAD;
+            var multiplier = 0.0;
+
+            if (GameConstants.GetJobLevel(_user.Character.Job) == 0)
+            {
+                stat1 = STR;
+                stat2 = DEX;
+                multiplier = 1.2;
+            }
+            else if (GameConstants.GetJobType(_user.Character.Job) == 2)
+            {
+                stat1 = INT;
+                stat2 = LUK;
+                attack = MAD;
+                multiplier = 1.0;
+            } else
+            {
+                switch (weaponType)
+                {
+                    case WeaponType.OneHandedSword:
+                    case WeaponType.OneHandedAxe:
+                    case WeaponType.OneHandedMace:
+                        stat1 = STR;
+                        stat2 = DEX;
+                        multiplier = 1.20;
+                        break;
+                    case WeaponType.TwoHandedSword:
+                    case WeaponType.TwoHandedAxe:
+                    case WeaponType.TwoHandedMace:
+                        stat1 = STR;
+                        stat2 = DEX;
+                        multiplier = 1.32;
+                        break;
+                    case WeaponType.Dagger:
+                        stat1 = LUK;
+                        stat2 = DEX;
+                        stat3 = STR;
+                        multiplier = 1.30;
+                        break;
+                    case WeaponType.Barehand:
+                        stat1 = STR;
+                        stat2 = DEX;
+                        attack = 1;
+                        multiplier = 1.43;
+                        break;
+                    case WeaponType.Polearm:
+                    case WeaponType.Spear:
+                        stat1 = STR;
+                        stat2 = DEX;
+                        multiplier = 1.49;
+                        break;
+                    case WeaponType.Bow:
+                        stat1 = DEX;
+                        stat2 = STR;
+                        multiplier = 1.20;
+                        break;
+                    case WeaponType.Crossbow:
+                        stat1 = DEX;
+                        stat2 = STR;
+                        multiplier = 1.35;
+                        break;
+                    case WeaponType.ThrowingGlove:
+                        stat1 = LUK;
+                        stat2 = DEX;
+                        multiplier = 1.75;
+                        break;
+                    case WeaponType.Knuckle:
+                        stat1 = STR;
+                        stat2 = DEX;
+                        multiplier = 1.70;
+                        break;
+                    case WeaponType.Gun:
+                        stat1 = DEX;
+                        stat2 = STR;
+                        multiplier = 1.50;
+                        break;
+                }
+            }
+
+            var damageMinMultiplier = weaponType switch
+            {
+                WeaponType.Wand or
+                WeaponType.Staff => 0.25,
+                WeaponType.Bow or
+                WeaponType.Crossbow or
+                WeaponType.ThrowingGlove or
+                WeaponType.Gun => 0.15,
+                _ => 0.20,
+            };
+            var mastery = 0; // TODO weapon mastery handling
+
+            DamageMax = (int)((stat3 + stat2 + 4 * stat1) / 100d * attack * multiplier + 0.5);
+            DamageMin = (int)(Math.Min(mastery / 100d + damageMinMultiplier, 0.95) * DamageMax + 0.5);
+        }
     }
 }
