@@ -49,6 +49,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
         public int ACCr { get; private set; }
         public int EVAr { get; private set; }
 
+        public int Cr { get; private set; }
+        public int CDMin { get; private set; }
+        public int CDMax { get; private set; }
+
         private readonly IFieldObjUser _user;
 
         private readonly ITemplateRepository<ItemTemplate> _itemTemplates;
@@ -107,6 +111,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             MDDr = 0;
             ACCr = 0;
             EVAr = 0;
+
+            Cr = 5;
+            CDMin = 20;
+            CDMax = 50;
 
             var equipped = character.Inventories[ItemInventoryType.Equip].Items
                 .Where(kv => kv.Key < 0)
@@ -215,6 +223,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             EVA = Math.Min(EVA, 9999);
             Speed = Math.Min(Math.Max(Speed, 100), 140);
             Jump = Math.Min(Math.Max(Jump, 100), 123);
+
+            Cr = Math.Max(Cr, 0);
+            CDMax = Math.Max(CDMax, 0);
+            CDMin = Math.Min(Math.Max(CDMin, 0), CDMax);
         }
 
         public async Task ApplyItemOption(int itemOptionID, int level)

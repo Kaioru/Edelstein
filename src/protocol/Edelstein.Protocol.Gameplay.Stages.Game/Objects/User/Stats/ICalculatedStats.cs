@@ -37,6 +37,10 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
         int ACCr { get; }
         int EVAr { get; }
 
+        int Cr { get; }
+        int CDMin { get; }
+        int CDMax { get; }
+
         Task Calculate();
     }
 }
