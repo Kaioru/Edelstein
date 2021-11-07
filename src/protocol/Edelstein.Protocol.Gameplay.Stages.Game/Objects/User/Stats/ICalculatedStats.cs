@@ -20,6 +20,9 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
         int PEVA { get; }
         int MEVA { get; }
 
+        int Ar { get; }
+        int Er { get; }
+
         int Craft { get; }
         int Speed { get; }
         int Jump { get; }
