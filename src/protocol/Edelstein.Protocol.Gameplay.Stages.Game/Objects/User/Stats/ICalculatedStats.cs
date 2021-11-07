@@ -15,8 +15,10 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats
         int PDD { get; }
         int MAD { get; }
         int MDD { get; }
-        int ACC { get; }
-        int EVA { get; }
+        int PACC { get; }
+        int MACC { get; }
+        int PEVA { get; }
+        int MEVA { get; }
 
         int Craft { get; }
         int Speed { get; }
