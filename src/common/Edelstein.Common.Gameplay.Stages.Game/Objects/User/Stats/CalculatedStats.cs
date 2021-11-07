@@ -12,6 +12,8 @@ using System.Linq;
 using Edelstein.Protocol.Gameplay.Users.Inventories.Modify;
 using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Constants.Types;
+using Edelstein.Common.Gameplay.Users;
+using System.Collections.Generic;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
 {
@@ -64,6 +66,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
         public int PDamR { get; private set; }
         public int MDamR { get; private set; }
         public int BossDamR { get; private set; }
+
+        private int Mastery { get; set; }
 
         public int DamageMin { get; private set; }
         public int DamageMax { get; private set; }
@@ -142,6 +146,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             MDamR = 0;
             BossDamR = 0;
 
+            Mastery = 0;
+
             DamageMin = 1;
             DamageMax = 1;
         }
@@ -152,7 +158,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             await CalculateEquipments();
             await CalculatePassiveSkills();
             await CalculateSecondaryStats();
-            await CalculateDamage();
+            await CalculateMastery();
 
             STR += (int)(STR * (STRr / 100d));
             DEX += (int)(DEX * (DEXr / 100d));
@@ -189,6 +195,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             MEVA = Math.Min(MEVA, 9999);
             Speed = Math.Min(Math.Max(Speed, 100), 140);
             Jump = Math.Min(Math.Max(Jump, 100), 123);
+
+            await CalculateDamage();
 
             CDMin = Math.Min(CDMin, CDMax);
 
@@ -314,6 +322,56 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             MDD += _user.SecondaryStats.GetValue(SecondaryStatType.EMDD);
         }
 
+        public async Task CalculateMastery()
+        {
+            var equipInventory = _user.Character.Inventories[ItemInventoryType.Equip];
+            var weaponID = equipInventory.Items.ContainsKey(-(short)BodyPart.Weapon)
+                ? equipInventory.Items[-(short)BodyPart.Weapon].TemplateID
+                : 0;
+            var jobType = GameConstants.GetJobType(_user.Character.Job);
+            var jobRace = GameConstants.GetJobRace(_user.Character.Job);
+            var jobBranch = GameConstants.GetJobBranch(_user.Character.Job);
+            var weaponType = GameConstants.GetWeaponType(weaponID);
+
+            if (jobType == 2)
+            {
+                var skills = new List<int>();
+
+                switch (jobRace)
+                {
+                    case 0:
+                        skills.Add(jobBranch switch
+                        {
+                            1 => (int)Skill.Wizard1SpellMastery,
+                            2 => (int)Skill.Wizard2SpellMastery,
+                            3 => (int)Skill.ClericSpellMastery,
+                            _ => 0
+                        });
+                        break;
+                    case 1:
+                        skills.Add((int)Skill.FlamewizardSpellMastery);
+                        break;
+                    case 2:
+                        skills.Add((int)Skill.EvanSpellMastery);
+                        skills.Add((int)Skill.EvanMagicMastery);
+                        break;
+                    case 3:
+                        skills.Add((int)Skill.BmageSpellMastery);
+                        break;
+                }
+
+                foreach (var skill in skills)
+                {
+                    var skillTemplate = await _skillTemplates.Retrieve(skill);
+                    var skillLevelTemplate = skillTemplate.LevelData[_user.Character.GetSkillLevel(skill)];
+
+                    Mastery += skillLevelTemplate.Mastery;
+                    MAD += skillLevelTemplate.X;
+                }
+                return;
+            }
+        }
+
         public async Task CalculateDamage()
         {
             var equipInventory = _user.Character.Inventories[ItemInventoryType.Equip];
@@ -414,9 +472,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
                 WeaponType.Gun => 0.15,
                 _ => 0.20,
             };
-            var mastery = 0; // TODO weapon mastery handling
 
-            masteryMultiplier += mastery / 100d;
+            masteryMultiplier += Mastery / 100d;
             masteryMultiplier = Math.Min(masteryMultiplier, 0.95);
 
             DamageMax = (int)((stat3 + stat2 + 4 * stat1) / 100d * attack * multiplier + 0.5);
