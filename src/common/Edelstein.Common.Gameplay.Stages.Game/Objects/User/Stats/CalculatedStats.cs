@@ -518,8 +518,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             Mastery += incMastery;
             PAD += incPAD;
             MAD += incACC;
-
-            Console.WriteLine(Mastery);
         }
 
         public async Task CalculateDamage()
