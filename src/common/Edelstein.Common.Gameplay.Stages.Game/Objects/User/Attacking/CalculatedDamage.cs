@@ -54,22 +54,42 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
 
             RndGenForCharacter.Next(random.Array);
 
+            var userStats = info.User.Stats;
+            var mobStats = info.Mob.Stats;
+            var userLevel = info.User.Character.Level;
+            var mobLevel = info.Mob.Info.Level;
+            var sqrtACC = Math.Sqrt(userStats.PACC);
+            var sqrtEVA = Math.Sqrt(mobStats.EVA);
+            var hitRate = sqrtACC - sqrtEVA + 100 + userStats.Ar * (sqrtACC - sqrtEVA + 100) / 100;
+            
+            hitRate = Math.Min(hitRate, 100);
+
+            if (mobLevel > userLevel)
+                hitRate -= 5 * (mobLevel - userLevel);
+
             for (var i = 0; i < attackCount; i++)
             {
-                random.Next(); // if mob not invincible, calc miss
-                random.Next();
+                random.Skip();
 
-                var damage = GetRandomInRange(random.Next(), info.User.Stats.DamageMin, info.User.Stats.DamageMax);
+                if (hitRate < GetRandomInRange(random.Next(), 0, 100))
+                {
+                    result[i] = new CalculatedDamageInfo(0);
+                    continue;
+                }
+
+                var damage = GetRandomInRange(random.Next(), userStats.DamageMin, userStats.DamageMax);
                 var critical = false;
 
                 if (skillLevelTemplate != null)
                     damage *= skillLevelTemplate.Damage / 100d;
+                if (mobLevel > userLevel)
+                    damage *= (100.0 - (mobLevel - userLevel)) / 100.0; ;
 
-                damage *= (100d - (info.Mob.Stats.PDR * info.User.Stats.IMDr / -100 + info.Mob.Stats.PDR)) / 100d;
+                damage *= (100d - (mobStats.PDR * userStats.IMDr / -100 + mobStats.PDR)) / 100d;
 
-                if (info.User.Stats.Cr > 0 && GetRandomInRange(random.Next(), 0.0, 100.0) <= info.User.Stats.Cr)
+                if (info.User.Stats.Cr > 0 && GetRandomInRange(random.Next(), 0.0, 100.0) <= userStats.Cr)
                 {
-                    var cd = GetRandomInRange(random.Next(), info.User.Stats.CDMin, info.User.Stats.CDMax) / 100d;
+                    var cd = GetRandomInRange(random.Next(), userStats.CDMin, userStats.CDMax) / 100d;
 
                     critical = true;
                     damage += (int)(damage * cd);

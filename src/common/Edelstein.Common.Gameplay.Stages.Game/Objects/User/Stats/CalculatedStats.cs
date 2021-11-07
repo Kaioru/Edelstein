@@ -35,6 +35,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
         private int ACC { get; set; }
         private int EVA { get; set; }
 
+        public int Ar { get; private set; }
+        public int Er { get; private set; }
+
         private int STRr { get; set; }
         private int DEXr { get; set; }
         private int INTr { get; set; }
@@ -108,6 +111,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
 
             ACC = 0;
             EVA = 0;
+
+            Ar = 0;
+            Er = 0;
 
             STRr = 0;
             DEXr = 0;
@@ -269,6 +275,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
 
                 ACCr += skillLevelTemplate.ACCr;
                 EVAr += skillLevelTemplate.EVAr;
+
+                Ar += skillLevelTemplate.Ar;
+                Er += skillLevelTemplate.Er;
 
                 PADr += skillLevelTemplate.PADr;
                 MADr += skillLevelTemplate.MADr;
