@@ -50,9 +50,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
             var skillTemplate = info.SkillID > 0 ? _skillTemplates.Retrieve(info.SkillID).Result : null;
             var skillLevelTemplate = info.SkillID > 0 ? skillTemplate.LevelData[info.SkillLevel] : null;
             var attackCount = skillLevelTemplate != null ? skillLevelTemplate.AttackCount : 1;
-
-            var critical = new bool[attackCount];
-            var damage = new int[attackCount];
+            var result = new ICalculatedDamageInfo[attackCount];
 
             RndGenForCharacter.Next(random.Array);
 
@@ -61,28 +59,26 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
                 random.Next(); // if mob not invincible, calc miss
                 random.Next();
 
-                damage[i] = (int)GetRandomInRange(random.Next(), info.User.Stats.DamageMin, info.User.Stats.DamageMax);
+                var damage = GetRandomInRange(random.Next(), info.User.Stats.DamageMin, info.User.Stats.DamageMax);
+                var critical = false;
 
                 if (skillLevelTemplate != null)
-                    damage[i] = (int)(damage[i] * skillLevelTemplate.Damage / 100d);
+                    damage *= skillLevelTemplate.Damage / 100d;
 
-                damage[i] = (int)(damage[i] * ((100d - (info.Mob.Stats.PDR * info.User.Stats.IMDr / -100 + info.Mob.Stats.PDR)) / 100d));
+                damage *= (100d - (info.Mob.Stats.PDR * info.User.Stats.IMDr / -100 + info.Mob.Stats.PDR)) / 100d;
 
                 if (info.User.Stats.Cr > 0 && GetRandomInRange(random.Next(), 0.0, 100.0) <= info.User.Stats.Cr)
                 {
                     var cd = GetRandomInRange(random.Next(), info.User.Stats.CDMin, info.User.Stats.CDMax) / 100d;
 
-                    critical[i] = true;
-                    damage[i] += (int)(damage[i] * cd);
+                    critical = true;
+                    damage += (int)(damage * cd);
                 }
 
-                damage[i] = (int)(damage[i] * 0.9); // TODO unsure
+                damage *= 0.9; // TODO unsure
+
+                result[i] = new CalculatedDamageInfo((int)damage, critical);
             }
-
-            var result = new ICalculatedDamageInfo[attackCount];
-
-            for (var i = 0; i < attackCount; i++)
-                result[i] = new CalculatedDamageInfo(damage[i], critical[i]);
 
             return result;
         }

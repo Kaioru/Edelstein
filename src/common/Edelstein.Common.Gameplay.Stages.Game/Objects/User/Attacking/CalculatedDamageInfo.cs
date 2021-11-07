@@ -12,5 +12,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
             Damage = damage;
             IsCritical = isCritical;
         }
+
+        public CalculatedDamageInfo(int damage)
+        {
+            Damage = damage;
+        }
     }
 }
