@@ -59,21 +59,29 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
             for (var i = 0; i < attackCount; i++)
             {
                 random.Next(); // if mob not invincible, calc miss
-                random.Next(); 
-                random.Next(); // adjust random damage
+                random.Next();
 
-                if (info.User.Stats.Cr > 0 && CalculatedDamageHelpers.GetRandom(random.Next(), 0.0, 100.0) <= info.User.Stats.Cr)
+                damage[i] = (int)GetRandomInRange(random.Next(), info.User.Stats.DamageMin, info.User.Stats.DamageMax);
+
+                if (skillLevelTemplate != null)
+                    damage[i] = (int)(damage[i] * skillLevelTemplate.Damage / 100d);
+
+                damage[i] = (int)(damage[i] * ((100d - (info.Mob.Stats.PDR * info.User.Stats.IMDr / -100 + info.Mob.Stats.PDR)) / 100d));
+
+                if (info.User.Stats.Cr > 0 && GetRandomInRange(random.Next(), 0.0, 100.0) <= info.User.Stats.Cr)
                 {
-                    var damR = CalculatedDamageHelpers.GetRandom(random.Next(), info.User.Stats.CDMin, info.User.Stats.CDMax);
+                    var cd = GetRandomInRange(random.Next(), info.User.Stats.CDMin, info.User.Stats.CDMax) / 100d;
 
                     critical[i] = true;
-                    damage[i] = 10; // TODO damage calc first then apply
+                    damage[i] += (int)(damage[i] * cd);
                 }
+
+                damage[i] = (int)(damage[i] * 0.9); // TODO unsure
             }
 
             var result = new ICalculatedDamageInfo[attackCount];
 
-            for (var i = 0; i < attackCount; i ++)
+            for (var i = 0; i < attackCount; i++)
                 result[i] = new CalculatedDamageInfo(damage[i], critical[i]);
 
             return result;
@@ -98,6 +106,23 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
         public int CalculateMobMDamage(IMobAttackInfo info)
         {
             return 0;
+        }
+
+
+        public double GetRandomInRange(uint rand, double f0, double f1)
+        {
+            if (f1 != f0)
+            {
+                if (f0 > f1)
+                {
+                    var tmp = f1;
+                    f0 = f1;
+                    f1 = tmp;
+                }
+
+                return f0 + rand % 10000000 * (f1 - f0) / 9999999.0;
+            }
+            else return f0;
         }
     }
 }
