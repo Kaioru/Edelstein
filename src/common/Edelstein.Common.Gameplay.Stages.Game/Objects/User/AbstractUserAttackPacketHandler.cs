@@ -68,7 +68,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                 {
                     var critical = new bool[clientAttackInfo.DamagePerMob];
                     var damage = new int[clientAttackInfo.DamagePerMob];
-                    var totalDamage = damage.Sum();
+                    var totalDamage = m.Damage.Sum();
                     var mob = user.Field.GetObject<IFieldObjMob>(m.MobID);
 
                     Array.Copy(m.Damage, damage, damage.Length);
@@ -97,9 +97,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                         // TODO cheatdetector?
                         if (clientAttackInfo.DamagePerMob != calculatedDamage.Length)
                             user.Message($"Attack count mismatch: {clientAttackInfo.DamagePerMob} : {calculatedDamage.Length}");
-                        //if (totalDamage != calculatedTotalDamage) return;
-                        
-                        user.Message($"Dealt damage: {string.Join(" + ", calculatedDamage.Select(d => $"{d.Damage}{(d.IsCritical ? "*" : "")}"))} = {totalDamage}");
+                        if (totalDamage != calculatedTotalDamage) 
+                            user.Message($"Damage mismatch: {totalDamage} : {calculatedTotalDamage}");
 
                         mob.Controller = user;
                         mob.Damage(user, calculatedTotalDamage);
@@ -107,7 +106,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                         for (var i = 0; i < clientAttackInfo.DamagePerMob; i++)
                         {
                             critical[i] = calculatedDamage[i].IsCritical;
-                            //damage[i] = calculatedDamage[i].Damage;
+                            damage[i] = calculatedDamage[i].Damage;
                         }
                     }
                     else user.Damage.SkipCalculationForCharacterDamage();
