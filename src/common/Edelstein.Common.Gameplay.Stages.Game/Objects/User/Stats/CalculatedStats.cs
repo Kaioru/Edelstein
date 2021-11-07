@@ -328,10 +328,14 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             var weaponID = equipInventory.Items.ContainsKey(-(short)BodyPart.Weapon)
                 ? equipInventory.Items[-(short)BodyPart.Weapon].TemplateID
                 : 0;
+            var subWeaponID = equipInventory.Items.ContainsKey(-(short)BodyPart.Shield)
+                ? equipInventory.Items[-(short)BodyPart.Weapon].TemplateID
+                : 0;
             var jobType = GameConstants.GetJobType(_user.Character.Job);
             var jobRace = GameConstants.GetJobRace(_user.Character.Job);
             var jobBranch = GameConstants.GetJobBranch(_user.Character.Job);
             var weaponType = GameConstants.GetWeaponType(weaponID);
+            var subWeaponType = GameConstants.GetWeaponType(subWeaponID);
 
             if (jobType == 2)
             {
@@ -370,6 +374,152 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
                 }
                 return;
             }
+
+            void GetMastery(int skillID, ref int mastery, ref int stat)
+            {
+                var skillLevel = _user.Character.GetSkillLevel(skillID);
+                var skillTemplate = _skillTemplates.Retrieve(skillID).Result;
+                var skillLevelTemplate = skillTemplate.LevelData[skillLevel];
+
+                mastery += skillLevelTemplate.Mastery;
+                stat += skillLevelTemplate.X;
+            }
+
+            var incMastery = 0;
+            var incPAD = 0;
+            var incACC = 0;
+            var incIgnore = 0;
+
+            switch (weaponType)
+            {
+                case WeaponType.OneHandedSword:
+                case WeaponType.TwoHandedSword:
+                    {
+                        var skills = new List<int>{
+                            (int)Skill.FighterWeaponMastery,
+                            (int)Skill.PageWeaponMastery,
+                            (int)Skill.SoulmasterSwordMastery
+                        };
+
+                        foreach (var skill in skills)
+                        {
+                            if (incMastery != 0) continue;
+
+                            GetMastery(skill, ref incMastery, ref incACC);
+
+                            if (skill == (int)Skill.PageWeaponMastery && _user.SecondaryStats.HasStat(SecondaryStatType.WeaponCharge))
+                                GetMastery((int)Skill.PaladinAdvancedCharge, ref incMastery, ref incIgnore);
+                            break;
+                        }
+                        break;
+                    }
+                case WeaponType.OneHandedAxe:
+                case WeaponType.TwoHandedAxe:
+                    GetMastery((int)Skill.FighterWeaponMastery, ref incMastery, ref incACC);
+                    break;
+                case WeaponType.OneHandedMace:
+                case WeaponType.TwoHandedMace:
+                    {
+                        GetMastery((int)Skill.PageWeaponMastery, ref incMastery, ref incACC);
+
+                        if (_user.SecondaryStats.HasStat(SecondaryStatType.WeaponCharge))
+                            GetMastery((int)Skill.PaladinAdvancedCharge, ref incMastery, ref incIgnore);
+                        break;
+                    }
+                case WeaponType.Spear:
+                case WeaponType.Polearm:
+                    {
+                        if (weaponType == WeaponType.Polearm && jobRace == 2 && jobType == 1)
+                        {
+                            GetMastery((int)Skill.AranPolearmMastery, ref incMastery, ref incACC);
+                            GetMastery((int)Skill.AranHighMastery, ref incMastery, ref incPAD);
+                            break;
+                        }
+
+                        GetMastery((int)Skill.SpearmanWeaponMastery, ref incMastery, ref incACC);
+
+                        if (_user.SecondaryStats.HasStat(SecondaryStatType.Beholder))
+                            GetMastery((int)Skill.DarkknightBeholder, ref incMastery, ref incIgnore);
+                        break;
+                    }
+                case WeaponType.Bow:
+                    {
+                        if (jobRace == 1)
+                        {
+                            GetMastery((int)Skill.WindbreakerBowMastery, ref incMastery, ref incACC);
+                            GetMastery((int)Skill.WindbreakerBowExpert, ref incMastery, ref incPAD);
+                            break;
+                        }
+
+                        GetMastery((int)Skill.HunterBowMastery, ref incMastery, ref incACC);
+                        GetMastery((int)Skill.BowmasterBowExpert, ref incMastery, ref incPAD);
+                        break;
+                    }
+                case WeaponType.Crossbow:
+                    {
+                        if (jobRace == 2)
+                        {
+                            GetMastery((int)Skill.WildhunterCrossbowMastery, ref incMastery, ref incACC);
+                            GetMastery((int)Skill.WildhunterCrossbowExpert, ref incMastery, ref incPAD);
+                            break;
+                        }
+
+                        GetMastery((int)Skill.CrossbowmanCrossbowMastery, ref incMastery, ref incACC);
+                        GetMastery((int)Skill.CrossbowmasterCrossbowExpert, ref incMastery, ref incPAD);
+                        break;
+                    }
+                case WeaponType.ThrowingGlove:
+                    {
+                        if (jobRace == 1)
+                        {
+                            GetMastery((int)Skill.NightwalkerJavelinMastery, ref incMastery, ref incACC);
+                            break;
+                        }
+
+                        GetMastery((int)Skill.AssassinJavelinMastery, ref incMastery, ref incACC);
+                        break;
+                    }
+                case WeaponType.Dagger:
+                    {
+                        if (subWeaponType == WeaponType.SubDagger)
+                        {
+                            GetMastery((int)Skill.Dual1DualMastery, ref incMastery, ref incACC);
+                            break;
+                        }
+
+                        GetMastery((int)Skill.ThiefDaggerMastery, ref incMastery, ref incACC);
+                        break;
+                    }
+                case WeaponType.Knuckle:
+                    {
+                        if (jobRace == 1)
+                        {
+                            GetMastery((int)Skill.StrikerKnuckleMastery, ref incMastery, ref incACC);
+                            break;
+                        }
+
+                        GetMastery((int)Skill.InfighterKnuckleMastery, ref incMastery, ref incACC);
+                        break;
+                    }
+                case WeaponType.Gun:
+                    {
+                        if (jobRace == 2)
+                        {
+                            GetMastery((int)Skill.MechanicGunMastery, ref incMastery, ref incACC);
+                            GetMastery((int)Skill.MechanicHn07Upgrade, ref incMastery, ref incIgnore);
+                            break;
+                        }
+
+                        GetMastery((int)Skill.GunslingerGunMastery, ref incMastery, ref incACC);
+                        break;
+                    }
+            }
+
+            Mastery += incMastery;
+            PAD += incPAD;
+            MAD += incACC;
+
+            Console.WriteLine(Mastery);
         }
 
         public async Task CalculateDamage()
