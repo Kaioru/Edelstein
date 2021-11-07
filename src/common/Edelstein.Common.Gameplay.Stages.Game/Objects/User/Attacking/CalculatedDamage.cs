@@ -92,7 +92,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
                     var cd = GetRandomInRange(random.Next(), userStats.CDMin, userStats.CDMax) / 100d;
 
                     critical = true;
-                    damage += (int)(damage * cd);
+                    damage += (int)((int)damage * cd);
                 }
 
                 damage *= 0.9; // TODO unsure
