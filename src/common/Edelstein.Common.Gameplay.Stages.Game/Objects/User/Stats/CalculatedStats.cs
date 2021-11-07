@@ -27,8 +27,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
         public int PDD { get; private set; }
         public int MAD { get; private set; }
         public int MDD { get; private set; }
-        public int ACC { get; private set; }
-        public int EVA { get; private set; }
+        public int PACC { get; private set; }
+        public int MACC { get; private set; }
+        public int PEVA { get; private set; }
+        public int MEVA { get; private set; }
+
+        private int ACC { get; set; }
+        private int EVA { get; set; }
 
         private int STRr { get; set; }
         private int DEXr { get; set; }
@@ -93,9 +98,14 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             MaxHP = character.MaxHP;
             MaxMP = character.MaxMP;
             PAD = 0;
-            PDD = (int)(INT * 0.4 + 0.5 * LUK + DEX * 0.5 + STR * 1.2);
+            PDD = 0;
             MAD = 0;
-            MDD = (int)(STR * 0.4 + 0.5 * DEX + LUK * 0.5 + INT * 1.2);
+            MDD = 0;
+            PACC = 0;
+            MACC = 0;
+            PEVA = 0;
+            MEVA = 0;
+
             ACC = 0;
             EVA = 0;
 
@@ -144,12 +154,21 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             LUK += (int)(LUK * (LUKr / 100d));
             MaxMP += (int)(MaxHP * (MaxHPr / 100d));
             MaxMP += (int)(MaxMP * (MaxMPr / 100d));
+
             PAD += (int)(PAD * (PADr / 100d));
+            PDD += (int)(STR * 1.2 + LUK * 0.5 + DEX * 0.5 + INT * 0.4);
             PDD += (int)(PDD * (PDDr / 100d));
             MAD += (int)(MAD * (MADr / 100d));
+            MDD += (int)(INT * 1.2 + DEX * 0.5 + LUK * 0.5 + STR * 0.4);
             MDD += (int)(MDD * (MDDr / 100d));
-            ACC += (int)(ACC * (ACCr / 100d));
-            EVA += (int)(EVA * (EVAr / 100d));
+            PACC = (int)(DEX * 1.2 + LUK) + ACC;
+            PACC += (int)(PACC * (ACCr / 100d));
+            MACC = (int)(LUK * 1.2 + INT) + ACC;
+            MACC += (int)(MACC * (ACCr / 100d));
+            PEVA = LUK * 2 + DEX + EVA;
+            PEVA += (int)(PEVA * (EVAr / 100d));
+            MEVA = LUK * 2 + INT + EVA;
+            MEVA += (int)(MEVA * (EVAr / 100d));
 
             MaxHP = Math.Min(MaxHP, 99999);
             MaxMP = Math.Min(MaxMP, 99999);
@@ -158,8 +177,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             PDD = Math.Min(PDD, 30000);
             MAD = Math.Min(MAD, 29999);
             MDD = Math.Min(MDD, 30000);
-            ACC = Math.Min(ACC, 9999);
-            EVA = Math.Min(EVA, 9999);
+            PACC = Math.Min(PACC, 9999);
+            MACC = Math.Min(MACC, 9999);
+            PEVA = Math.Min(PEVA, 9999);
+            MEVA = Math.Min(MEVA, 9999);
             Speed = Math.Min(Math.Max(Speed, 100), 140);
             Jump = Math.Min(Math.Max(Jump, 100), 123);
 
