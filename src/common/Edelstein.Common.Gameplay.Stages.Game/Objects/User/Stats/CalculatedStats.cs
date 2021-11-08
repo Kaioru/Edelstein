@@ -378,6 +378,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             void GetMastery(int skillID, ref int mastery, ref int stat)
             {
                 var skillLevel = _user.Character.GetSkillLevel(skillID);
+
+                if (skillLevel == 0) return;
+
                 var skillTemplate = _skillTemplates.Retrieve(skillID).Result;
                 var skillLevelTemplate = skillTemplate.LevelData[skillLevel];
 
