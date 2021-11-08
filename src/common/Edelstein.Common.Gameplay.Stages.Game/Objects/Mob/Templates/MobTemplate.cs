@@ -39,9 +39,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates
             MaxMP = info.Resolve<int>("maxMP") ?? 0;
 
             PAD = info.Resolve<int>("pad") ?? 0;
-            PDR = info.Resolve<int>("pdr") ?? 0;
+            PDR = info.Resolve<int>("pdr") ?? 10;
             MAD = info.Resolve<int>("mad") ?? 0;
-            MDR = info.Resolve<int>("mdr") ?? 0;
+            MDR = info.Resolve<int>("mdr") ?? 10;
             ACC = info.Resolve<int>("acc") ?? 0;
             EVA = info.Resolve<int>("eva") ?? 0;
 

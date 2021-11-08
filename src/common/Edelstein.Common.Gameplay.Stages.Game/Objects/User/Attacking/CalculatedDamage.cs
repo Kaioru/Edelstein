@@ -80,22 +80,22 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
                 var damage = GetRandomInRange(random.Next(), userStats.DamageMin, userStats.DamageMax);
                 var critical = false;
 
-                if (skillLevelTemplate != null)
-                    damage *= skillLevelTemplate.Damage / 100d;
+                Console.WriteLine($"{userStats.DamageMin} : {userStats.DamageMax} : {damage}");
                 if (mobLevel > userLevel)
-                    damage *= (100.0 - (mobLevel - userLevel)) / 100.0; ;
+                    damage *= (100d - (mobLevel - userLevel)) / 100d; ;
 
                 damage *= (100d - (mobStats.PDR * userStats.IMDr / -100 + mobStats.PDR)) / 100d;
 
-                if (info.User.Stats.Cr > 0 && GetRandomInRange(random.Next(), 0.0, 100.0) <= userStats.Cr)
+                if (skillLevelTemplate != null)
+                    damage *= skillLevelTemplate.Damage / 100d;
+
+                if (info.User.Stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= userStats.Cr)
                 {
-                    var cd = GetRandomInRange(random.Next(), userStats.CDMin, userStats.CDMax) / 100d;
+                    var cd = (int)GetRandomInRange(random.Next(), userStats.CDMin, userStats.CDMax) / 100d;
 
                     critical = true;
-                    damage += (int)((int)damage * cd);
+                    damage += (int)damage * cd;
                 }
-
-                damage *= 0.9; // TODO unsure
 
                 result[i] = new CalculatedDamageInfo((int)damage, critical);
             }
