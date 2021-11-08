@@ -80,7 +80,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
                 var damage = GetRandomInRange(random.Next(), userStats.DamageMin, userStats.DamageMax);
                 var critical = false;
 
-                Console.WriteLine($"{userStats.DamageMin} : {userStats.DamageMax} : {damage}");
                 if (mobLevel > userLevel)
                     damage *= (100d - (mobLevel - userLevel)) / 100d; ;
 
