@@ -97,8 +97,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                         // TODO cheatdetector?
                         if (clientAttackInfo.DamagePerMob != calculatedDamage.Length)
                             user.Message($"Attack count mismatch: {clientAttackInfo.DamagePerMob} : {calculatedDamage.Length}");
-                        if (totalDamage != calculatedTotalDamage) 
-                            user.Message($"Damage mismatch: {totalDamage} : {calculatedTotalDamage}");
+                        if (totalDamage != calculatedTotalDamage)
+                        {
+                            user.Message($"Client damage: {string.Join(" + ", m.Damage.Select(m => $"{m}"))} = {totalDamage}");
+                            user.Message($"Server damage: {string.Join(" + ", calculatedDamage.Select(m => $"{m.Damage}"))} = {calculatedTotalDamage}");
+                        }
 
                         mob.Controller = user;
                         mob.Damage(user, calculatedTotalDamage);
