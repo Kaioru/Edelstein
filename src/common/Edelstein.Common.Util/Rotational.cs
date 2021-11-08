@@ -1,4 +1,6 @@
-﻿namespace Edelstein.Common.Util
+﻿using System;
+
+namespace Edelstein.Common.Util
 {
     public class Rotational<T>
     {
@@ -10,7 +12,7 @@
             Array = array;
         }
 
-        public T Next() => Array[Index++ % (Array.Length - 1)];
+        public T Next() => Array[Index++ % Array.Length];
         public int Skip(int count = 1) => Index += count;
     }
 }

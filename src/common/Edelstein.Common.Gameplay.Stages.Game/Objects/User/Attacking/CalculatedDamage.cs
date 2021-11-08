@@ -95,7 +95,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
                     critical = true;
                     damage += (int)damage * cd;
                 }
-
                 result[i] = new CalculatedDamageInfo((int)damage, critical);
             }
 

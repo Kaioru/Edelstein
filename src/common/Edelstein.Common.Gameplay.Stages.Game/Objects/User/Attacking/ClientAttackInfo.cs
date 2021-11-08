@@ -131,5 +131,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
 
             _ = reader.ReadInt(); // mob crc
         }
+
+        internal object[] Select(System.Func<object, string> p)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
