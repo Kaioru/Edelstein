@@ -164,7 +164,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             DEX += (int)(DEX * (DEXr / 100d));
             INT += (int)(INT * (INTr / 100d));
             LUK += (int)(LUK * (LUKr / 100d));
-            MaxMP += (int)(MaxHP * (MaxHPr / 100d));
+            MaxHP += (int)(MaxHP * (MaxHPr / 100d));
             MaxMP += (int)(MaxMP * (MaxMPr / 100d));
 
             PAD += (int)(PAD * (PADr / 100d));
