@@ -1,25 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\Protocol.targets" />
+
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Transport\" />
-    <Folder Include="Session\" />
-    <Folder Include="Ciphers\" />
-    <Folder Include="Utils\" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Utils\" />
   </ItemGroup>
 </Project>

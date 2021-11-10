@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+  <Import Project="..\Protocol.targets" />
 
   <ItemGroup>
     <Protobuf Include="Protos\server_registry.proto" />
@@ -15,10 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ServiceModel.Primitives" Version="4.8.1" />
-    <PackageReference Include="Google.Api.CommonProtos" Version="2.3.0" />
-    <PackageReference Include="Grpc.Core" Version="2.39.1" />
-    <PackageReference Include="Grpc.Tools" Version="2.39.1">
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.9.0" />
+    <PackageReference Include="Google.Api.CommonProtos" Version="2.4.0" />
+    <PackageReference Include="Grpc.Core" Version="2.41.1" />
+    <PackageReference Include="Grpc.Tools" Version="2.41.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

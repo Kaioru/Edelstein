@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+  <Import Project="..\Protocol.targets" />
 
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
@@ -10,26 +8,5 @@
     <ProjectReference Include="..\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Services\Edelstein.Protocol.Services.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Users\Inventories\" />
-    <Folder Include="Stages\" />
-    <Folder Include="Users\Stats\" />
-    <Folder Include="Spatial\" />
-    <Folder Include="Users\" />
-    <Folder Include="Social\" />
-    <Folder Include="Users\Skills\" />
-    <Folder Include="Users\Skills\Modify\" />
-    <Folder Include="Users\Keys\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Space\" />
-    <None Remove="Users\" />
-    <None Remove="Social\" />
-    <None Remove="Social\Guild\" />
-    <None Remove="Social\Party\" />
-    <None Remove="Users\Skills\" />
-    <None Remove="Users\Skills\Modify\" />
-    <None Remove="Users\Keys\" />
   </ItemGroup>
 </Project>

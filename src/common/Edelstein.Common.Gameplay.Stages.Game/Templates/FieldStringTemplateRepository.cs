@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Linq;
-using MoreLinq;
+using static MoreLinq.Extensions.ForEachExtension;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Templates
 {

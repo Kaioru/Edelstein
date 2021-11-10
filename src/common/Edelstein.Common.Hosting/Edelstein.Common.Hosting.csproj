@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+  <Import Project="..\Common.targets" />
 
   <ItemGroup>
     <None Remove="Extensions\" />
@@ -18,11 +16,11 @@
     <Folder Include="Types\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Foundatio" Version="10.2.1" />
-    <PackageReference Include="Foundatio.Redis" Version="10.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Foundatio.JsonNet" Version="10.2.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Foundatio" Version="10.2.2" />
+    <PackageReference Include="Foundatio.Redis" Version="10.2.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Foundatio.JsonNet" Version="10.2.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Datastore.LiteDB\Edelstein.Common.Datastore.LiteDB.csproj" />

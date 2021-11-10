@@ -5,7 +5,7 @@ using Edelstein.Common.Gameplay.Templating;
 using Edelstein.Protocol.Parser;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using MoreLinq;
+using static MoreLinq.Extensions.ForEachExtension;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Templates
 {

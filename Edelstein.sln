@@ -2,29 +2,29 @@
 # Visual Studio Version 16
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Datastore.Marten", "src\common\Edelstein.Common.Datastore.Marten\Edelstein.Common.Datastore.Marten.csproj", "{A39517B2-A576-4253-B01A-8BB216DF51CB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.App.Standalone", "src\app\Edelstein.App.Standalone\Edelstein.App.Standalone.csproj", "{AD273B40-4F55-43C7-9837-4AC89D907D8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.App.Standalone", "src\app\Edelstein.App.Standalone\Edelstein.App.Standalone.csproj", "{AD273B40-4F55-43C7-9837-4AC89D907D8B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tinystein", "src\app\Tinystein\Tinystein.csproj", "{8BB250F2-1165-4DFA-847D-EBBD11EFFC95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tinystein", "src\app\Tinystein\Tinystein.csproj", "{8BB250F2-1165-4DFA-847D-EBBD11EFFC95}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Common.Datastore.LiteDB", "src\common\Edelstein.Common.Datastore.LiteDB\Edelstein.Common.Datastore.LiteDB.csproj", "{1E0193B1-8179-4867-B222-4205BE28F312}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Datastore.LiteDB", "src\common\Edelstein.Common.Datastore.LiteDB\Edelstein.Common.Datastore.LiteDB.csproj", "{1E0193B1-8179-4867-B222-4205BE28F312}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Common.Gameplay.Stages.Game", "src\common\Edelstein.Common.Gameplay.Stages.Game\Edelstein.Common.Gameplay.Stages.Game.csproj", "{F0CFB6C3-446E-4E6C-99E2-0200F08CE1F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Gameplay.Stages.Game", "src\common\Edelstein.Common.Gameplay.Stages.Game\Edelstein.Common.Gameplay.Stages.Game.csproj", "{F0CFB6C3-446E-4E6C-99E2-0200F08CE1F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Common.Gameplay.Stages.Login", "src\common\Edelstein.Common.Gameplay.Stages.Login\Edelstein.Common.Gameplay.Stages.Login.csproj", "{20A6F09C-49DB-401E-A324-122D5E0BF917}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Gameplay.Stages.Login", "src\common\Edelstein.Common.Gameplay.Stages.Login\Edelstein.Common.Gameplay.Stages.Login.csproj", "{20A6F09C-49DB-401E-A324-122D5E0BF917}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Common.Gameplay", "src\common\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj", "{DD72CA59-B612-4100-BD4B-942CAEC803F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Gameplay", "src\common\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj", "{DD72CA59-B612-4100-BD4B-942CAEC803F5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Common.Network.DotNetty", "src\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj", "{B5FC18B8-6E73-4FA3-92F4-190B4574BB38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Network.DotNetty", "src\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj", "{B5FC18B8-6E73-4FA3-92F4-190B4574BB38}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Common.Parser.Duey", "src\common\Edelstein.Common.Parser.Duey\Edelstein.Common.Parser.Duey.csproj", "{6C95F9AC-7825-4AF3-9FC3-599E3B5F3F7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Parser.Duey", "src\common\Edelstein.Common.Parser.Duey\Edelstein.Common.Parser.Duey.csproj", "{6C95F9AC-7825-4AF3-9FC3-599E3B5F3F7A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Common.Parser.reWZ", "src\common\Edelstein.Common.Parser.reWZ\Edelstein.Common.Parser.reWZ.csproj", "{C750BDE6-55E4-42D7-8B58-932D8DEE60FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Parser.reWZ", "src\common\Edelstein.Common.Parser.reWZ\Edelstein.Common.Parser.reWZ.csproj", "{C750BDE6-55E4-42D7-8B58-932D8DEE60FC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Common.Scripting.NLua", "src\common\Edelstein.Common.Scripting.NLua\Edelstein.Common.Scripting.NLua.csproj", "{7ED30C0E-AB1A-48C5-A376-57667DDB5CCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Scripting.NLua", "src\common\Edelstein.Common.Scripting.NLua\Edelstein.Common.Scripting.NLua.csproj", "{7ED30C0E-AB1A-48C5-A376-57667DDB5CCF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Common.Services", "src\common\Edelstein.Common.Services\Edelstein.Common.Services.csproj", "{7EEA1956-3DD9-4E21-99A3-A9A9A6E2B9B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Services", "src\common\Edelstein.Common.Services\Edelstein.Common.Services.csproj", "{7EEA1956-3DD9-4E21-99A3-A9A9A6E2B9B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Common.Util", "src\common\Edelstein.Common.Util\Edelstein.Common.Util.csproj", "{2CB908D1-4C82-4F23-933E-1BBDD8644AAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Util", "src\common\Edelstein.Common.Util\Edelstein.Common.Util.csproj", "{2CB908D1-4C82-4F23-933E-1BBDD8644AAC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edelstein.Protocol.Datastore", "src\protocol\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj", "{9C6F4532-703D-44B8-8F2B-A2CE1ABC4A88}"
 EndProject
@@ -47,10 +47,19 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{27845866-0BB1-44FF-97D6-B61477950FBD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{08BE3F56-F4E7-41D9-BBF1-14DC804B08A7}"
+	ProjectSection(SolutionItems) = preProject
+		src\app\App.targets = src\app\App.targets
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{379C3451-CE89-40E9-8E88-8EDC9E888FD8}"
+	ProjectSection(SolutionItems) = preProject
+		src\common\Common.targets = src\common\Common.targets
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protocol", "protocol", "{9CCC2052-ABE3-46C4-9DA9-503365F05C97}"
+	ProjectSection(SolutionItems) = preProject
+		src\protocol\Protocol.targets = src\protocol\Protocol.targets
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Hosting", "src\common\Edelstein.Common.Hosting\Edelstein.Common.Hosting.csproj", "{E0E6DB36-09C3-40A2-A852-A9D37EFDB374}"
 EndProject

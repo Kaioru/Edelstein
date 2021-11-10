@@ -1,53 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+  <Import Project="..\Protocol.targets" />
 
-  <ItemGroup>
-    <Folder Include="Objects\" />
-    <Folder Include="FieldSets\" />
-    <Folder Include="Conversations\" />
-    <Folder Include="Continent\" />
-    <Folder Include="Movements\" />
-    <Folder Include="Objects\User\" />
-    <Folder Include="Objects\User\Stats\" />
-    <Folder Include="Objects\NPC\" />
-    <Folder Include="Generators\" />
-    <Folder Include="Objects\User\Messages\" />
-    <Folder Include="Commands\" />
-    <Folder Include="Objects\Mob\" />
-    <Folder Include="Objects\User\Stats\Modify\" />
-    <Folder Include="Dialogs\" />
-    <Folder Include="Objects\Reactor\" />
-    <Folder Include="Objects\Mob\Stats\" />
-    <Folder Include="Objects\Mob\Stats\Modify\" />
-    <Folder Include="Objects\User\Attacking\" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Remove="FieldSets\" />
-    <None Remove="Conversations\" />
-    <None Remove="Contimove\" />
-    <None Remove="morelinq" />
-    <None Remove="Movements\" />
-    <None Remove="Objects\User\" />
-    <None Remove="Objects\User\Stats\" />
-    <None Remove="Objects\NPC\" />
-    <None Remove="Generators\" />
-    <None Remove="Objects\User\Messages\" />
-    <None Remove="Commands\" />
-    <None Remove="Objects\Mob\" />
-    <None Remove="Objects\User\Stats\Modify\" />
-    <None Remove="Dialogs\" />
-    <None Remove="Objects\Reactor\" />
-    <None Remove="Objects\Mob\Stats\" />
-    <None Remove="Objects\Mob\Stats\Modify\" />
-    <None Remove="Objects\User\Attacking\" />
-  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.3.2" />
   </ItemGroup>

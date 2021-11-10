@@ -1,15 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+  <Import Project="..\Protocol.targets" />
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-    <Folder Include="Ticks\" />
-    <Folder Include="Spatial\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Spatial\" />
-  </ItemGroup>
 </Project>
