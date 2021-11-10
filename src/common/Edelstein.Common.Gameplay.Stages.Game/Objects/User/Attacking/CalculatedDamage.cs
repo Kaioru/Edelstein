@@ -61,7 +61,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
             var sqrtACC = Math.Sqrt(userStats.PACC);
             var sqrtEVA = Math.Sqrt(mobStats.EVA);
             var hitRate = sqrtACC - sqrtEVA + 100 + userStats.Ar * (sqrtACC - sqrtEVA + 100) / 100;
-            
+
             hitRate = Math.Min(hitRate, 100);
 
             if (mobLevel > userLevel)
@@ -88,13 +88,15 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
                 if (skillLevelTemplate != null)
                     damage *= skillLevelTemplate.Damage / 100d;
 
-                if (info.User.Stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= userStats.Cr)
+                if (userStats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= userStats.Cr)
                 {
                     var cd = (int)GetRandomInRange(random.Next(), userStats.CDMin, userStats.CDMax) / 100d;
 
                     critical = true;
                     damage += (int)damage * cd;
                 }
+
+                damage = Math.Min(Math.Max(damage, 1), 999999);
                 result[i] = new CalculatedDamageInfo((int)damage, critical);
             }
 
