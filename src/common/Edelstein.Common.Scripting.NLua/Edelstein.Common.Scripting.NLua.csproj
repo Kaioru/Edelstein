@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+  <Import Project="..\Common.targets" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Scripting\Edelstein.Protocol.Scripting.csproj" />
@@ -12,7 +10,7 @@
     <None Remove="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NLua" Version="1.5.9" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+    <PackageReference Include="NLua" Version="1.5.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>
 </Project>

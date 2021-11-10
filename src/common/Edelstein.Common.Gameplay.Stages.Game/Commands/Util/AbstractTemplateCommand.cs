@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DotNet.Globbing;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Common.Gameplay.Templating;
-using MoreLinq;
 using PowerArgs;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Util

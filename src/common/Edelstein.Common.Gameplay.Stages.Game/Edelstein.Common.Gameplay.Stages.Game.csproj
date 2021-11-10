@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+  <Import Project="..\Common.targets" />
 
   <ItemGroup>
     <None Remove="Templates\" />
@@ -82,6 +80,6 @@
     <PackageReference Include="PowerArgs" Version="3.6.0" />
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
     <PackageReference Include="stateless" Version="5.11.0" />
-    <PackageReference Include="DotNet.Glob" Version="3.1.2" />
+    <PackageReference Include="DotNet.Glob" Version="3.1.3" />
   </ItemGroup>
 </Project>
