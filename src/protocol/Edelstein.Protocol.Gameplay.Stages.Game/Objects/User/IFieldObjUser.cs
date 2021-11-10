@@ -31,13 +31,10 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User
         ICollection<IFieldSplit> Watching { get; }
         ICollection<IFieldControlledObj> Controlling { get; }
 
-        ICalculatedRates Rates { get; }
-        ICalculatedStats Stats { get; }
-
-        ICalculatedDamage Damage { get; }
-
         IForcedStats ForcedStats { get; }
         ISecondaryStats SecondaryStats { get; }
+        ICalculatedStats Stats { get; }
+        ICalculatedDamage Damage { get; }
 
         IGuild Guild { get; set; }
         IGuildMember GuildMember => Guild?.Members.FirstOrDefault(m => m.ID == ID);

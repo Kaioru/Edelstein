@@ -178,6 +178,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
 
             commandProcessor.Register(new StatCommand());
             commandProcessor.Register(new SecondaryStatCommand());
+            commandProcessor.Register(new ForcedStatCommand());
             commandProcessor.Register(new MobStatCommand());
             commandProcessor.Register(new ItemCommand(ItemStringTemplates, ItemTemplates));
             commandProcessor.Register(new FieldCommand(FieldRepository, FieldStringTemplates, FieldTemplates));

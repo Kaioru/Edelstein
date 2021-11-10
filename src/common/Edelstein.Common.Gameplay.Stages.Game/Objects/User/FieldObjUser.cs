@@ -59,13 +59,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
         public ICollection<IFieldSplit> Watching { get; }
         public ICollection<IFieldControlledObj> Controlling { get; }
 
-        public ICalculatedRates Rates { get; }
-        public ICalculatedStats Stats { get; }
-
-        public ICalculatedDamage Damage { get; }
 
         public IForcedStats ForcedStats { get; }
         public ISecondaryStats SecondaryStats { get; }
+        public ICalculatedStats Stats { get; }
+        public ICalculatedDamage Damage { get; }
 
         public IGuild Guild { get; set; }
         public IParty Party { get; set; }
@@ -76,7 +74,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             Watching = new List<IFieldSplit>();
             Controlling = new List<IFieldControlledObj>();
 
-            Rates = new CalculatedRates(this);
+            ForcedStats = new ForcedStats();
+            SecondaryStats = new SecondaryStats();
             Stats = new CalculatedStats(
                 this,
                 GameStage.ItemTemplates,
@@ -84,13 +83,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                 GameStage.ItemSetTemplates,
                 GameStage.SkillTemplates
             );
-
             Damage = new CalculatedDamage(
                 GameStage.SkillTemplates
             );
 
-            ForcedStats = null;
-            SecondaryStats = new SecondaryStats();
 
             UpdateStats().Wait();
         }
@@ -203,7 +199,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
         public async Task UpdateStats()
         {
-            await Rates.Calculate();
             await Stats.Calculate();
 
             if (Character.HP > Stats.MaxHP) await ModifyStats(s => s.HP = Stats.MaxHP);
@@ -385,7 +380,21 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             }
         }
 
-        public Task ModifyForcedStats(Action<IModifyForcedStatContext> action = null, bool exclRequest = false) => throw new NotImplementedException();
+        public async Task ModifyForcedStats(Action<IModifyForcedStatContext> action = null, bool exclRequest = false)
+        {
+            var context = new ModifyForcedStatContext(ForcedStats as ForcedStats);
+
+            action?.Invoke(context);
+            await UpdateStats();
+
+            var statPacket = new UnstructuredOutgoingPacket(context.Flag > 0
+                ? PacketSendOperations.ForcedStatSet
+                : PacketSendOperations.ForcedStatReset);
+
+            if (context.Flag > 0) statPacket.Write(context);
+
+            await Dispatch(statPacket);
+        }
 
         public async Task ModifySkills(Action<IModifySkillContext> action = null, bool exclRequest = false)
         {

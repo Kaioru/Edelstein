@@ -167,6 +167,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats
             MaxHP += (int)(MaxHP * (MaxHPr / 100d));
             MaxMP += (int)(MaxMP * (MaxMPr / 100d));
 
+            // TODO: forcedstats
+
             PAD += (int)(PAD * (PADr / 100d));
             PDD += (int)(STR * 1.2 + LUK * 0.5 + DEX * 0.5 + INT * 0.4);
             PDD += (int)(PDD * (PDDr / 100d));
