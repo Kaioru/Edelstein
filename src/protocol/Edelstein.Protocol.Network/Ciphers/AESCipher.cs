@@ -18,12 +18,10 @@ namespace Edelstein.Protocol.Network.Ciphers
             for (var i = 0; i < userKey.Length; i++)
                 expandedKey[i * 4] = userKey[i];
 
-            _cipher = new AesManaged
-            {
-                KeySize = 256,
-                Key = expandedKey,
-                Mode = CipherMode.ECB
-            };
+            _cipher = Aes.Create();
+            _cipher.KeySize = 256;
+            _cipher.Key = expandedKey;
+            _cipher.Mode = CipherMode.ECB;
         }
 
         public void Transform(Span<byte> input, uint pSrc)
