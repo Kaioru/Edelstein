@@ -71,8 +71,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                     var totalDamage = m.Damage.Sum();
                     var mob = user.Field.GetObject<IFieldObjMob>(m.MobID);
 
-                    Array.Copy(m.Damage, damage, damage.Length);
-
                     response.WriteInt(m.MobID);
                     response.WriteByte(m.HitAction);
 
@@ -96,7 +94,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
                         // TODO cheatdetector?
                         if (clientAttackInfo.DamagePerMob != calculatedDamage.Length)
+                        {
                             user.Message($"Attack count mismatch: {clientAttackInfo.DamagePerMob} : {calculatedDamage.Length}");
+                            return;
+                        }
                         if (totalDamage != calculatedTotalDamage)
                         {
                             user.Message($"Client damage: {string.Join(" + ", m.Damage.Select(m => $"{m}"))} = {totalDamage}");
