@@ -7,15 +7,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Attacking
         public int Damage { get; }
         public bool IsCritical { get; }
 
-        public CalculatedDamageInfo(int damage, bool isCritical)
+        public CalculatedDamageInfo(int damage, bool isCritical = false)
         {
             Damage = damage;
             IsCritical = isCritical;
-        }
-
-        public CalculatedDamageInfo(int damage)
-        {
-            Damage = damage;
         }
     }
 }
