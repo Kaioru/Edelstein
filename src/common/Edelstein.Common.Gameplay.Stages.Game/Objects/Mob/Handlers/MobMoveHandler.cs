@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Stages.Game.Movements;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
@@ -11,6 +12,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Handlers
     public class MobMoveHandler : AbstractControlledPacketHandler<IFieldObjMob>
     {
         public override short Operation => (short)PacketRecvOperations.MobMove;
+        public override FieldObjType Type => FieldObjType.Mob;
 
         protected override async Task Handle(
             GameStageUser stageUser,
@@ -52,7 +54,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Handlers
             response.WriteInt(controlled.ID);
             response.WriteShort(mobCtrlSN);
             response.WriteBool(mobMoveStartResult);
-            response.WriteShort(0); // nMP
+            response.WriteShort((short)controlled.MP); // nMP
             response.WriteByte(0); // SkillCommand
             response.WriteByte(0); // SLV
 
@@ -61,10 +63,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Handlers
             var movement = new UnstructuredOutgoingPacket(PacketSendOperations.MobMove);
 
             movement.WriteInt(controlled.ID);
-            movement.WriteBool(mobMoveStartResult);
-            movement.WriteByte(curSplit);
-            movement.WriteByte(0); // not sure
-            movement.WriteByte(0); // not sure
+            movement.WriteBool(false); // NotForceLandingWhenDiscard
+            movement.WriteBool(false); // NotChangeAction
+            movement.WriteBool(false); // NextAttackPossible
+            movement.WriteBool(false); // Left
             movement.WriteInt(illegalVelocity);
 
             movement.WriteInt(0); // MultiTargetForBall
