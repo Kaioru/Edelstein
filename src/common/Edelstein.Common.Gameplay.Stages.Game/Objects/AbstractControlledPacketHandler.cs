@@ -13,12 +13,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects
         protected override async Task Handle(GameStageUser stageUser, IFieldObjUser user, IPacketReader packet)
         {
             var objID = packet.ReadInt();
-            var obj = user.Controlling
-                .ToImmutableList()
-                .OfType<T>()
-                .FirstOrDefault(c => c.ID == objID);
+            var obj = user.Field.GetObject<T>(objID);
 
             if (obj == null) return;
+            if (obj.Controller != user) return;
+
             await Handle(stageUser, user, obj, packet);
         }
 

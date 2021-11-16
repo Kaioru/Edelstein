@@ -20,8 +20,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
 
         public IFieldObjMobInfo Info { get; }
 
-        public int HP { get; }
-        public int MP { get; }
+        public int HP { get; private set; }
+        public int MP { get; private set; }
 
         public ICalculatedMobStats Stats { get; }
 
@@ -110,16 +110,36 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob
             return packet;
         }
 
-        public Task Damage(IFieldObjUser user, int damage)
+        public async Task Damage(IFieldObjUser user, int damage)
         {
-            // TODO
-            return Task.CompletedTask;
+            lock (this)
+            {
+                HP -= Math.Min(damage, HP);
+                HP = Math.Min(Math.Max(HP, 0), Stats.MaxHP);
+            }
+
+            var indicatorPacket = new UnstructuredOutgoingPacket(PacketSendOperations.MobHPIndicator);
+            var indicator = HP / (float)Stats.MaxHP * 100f;
+
+            indicator = Math.Min(100, indicator);
+            indicator = Math.Max(0, indicator);
+
+            indicatorPacket.WriteInt(ID);
+            indicatorPacket.WriteByte((byte)indicator);
+
+            await user.Dispatch(indicatorPacket);
+
+            if (HP > 0) {
+                await UpdateStats();
+                return;
+            }
+
+            await Kill(user);
         }
 
-        public Task Kill(IFieldObjUser user)
+        public async Task Kill(IFieldObjUser user)
         {
-            // TODO
-            return Task.CompletedTask;
+            await Field.Leave(this);
         }
 
         public async Task ModifyMobStats(Action<IModifyMobStatContext> action = null)
