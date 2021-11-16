@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Constants.Types;
@@ -25,6 +26,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             var skill = (Skill)clientAttackInfo.SkillID;
             var skillLevel = clientAttackInfo.SkillID > 0 ? user.Character.GetSkillLevel(clientAttackInfo.SkillID) : 0;
             var damageType = Type == AttackType.Magic ? DamageType.Magic : DamageType.Physical;
+            var damageApply = new List<Tuple<IFieldObjMob, int>>();
 
             if (Type == AttackType.Melee)
             {
@@ -104,8 +106,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
                             user.Message($"Server damage: {string.Join(" + ", calculatedDamage.Select(m => $"{m.Damage}"))} = {calculatedTotalDamage}");
                         }
 
-                        mob.Controller = user;
-                        mob.Damage(user, calculatedTotalDamage);
+                        damageApply.Add(Tuple.Create(mob, calculatedTotalDamage));
 
                         for (var i = 0; i < clientAttackInfo.DamagePerMob; i++)
                         {
@@ -126,6 +127,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
             // TODO Keydown
 
             await user.FieldSplit.Dispatch(user, response);
+            await Task.WhenAll(damageApply.Select(async a =>
+            {
+                var (mob, damage) = a;
+
+                mob.Controller = user;
+                await mob.Damage(user, damage);
+            }));
         }
     }
 }

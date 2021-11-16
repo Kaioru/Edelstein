@@ -12,6 +12,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects
 
         public async Task Move(IMovePath path)
         {
+            if (Field == null) return;
             if (path.Action.HasValue) Action = path.Action.Value;
             if (path.Position.HasValue) Position = path.Position.Value;
             if (path.FootholdID.HasValue) Foothold = Field.GetFoothold(path.FootholdID.Value);
