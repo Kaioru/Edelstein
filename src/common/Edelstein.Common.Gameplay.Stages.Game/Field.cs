@@ -329,8 +329,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             await obj.UpdateFieldSplit(getLeavePacket: getLeavePacket);
         }
 
-        public IFieldObjUser GetUser(int id) => GetObjects<IFieldObjUser>().FirstOrDefault(u => u.ID == id);
-        public IEnumerable<IFieldObjUser> GetUsers() => GetObjects<IFieldObjUser>();
+        public IFieldObjUser GetUser(int id) => GetPool(FieldObjType.User).GetObject<IFieldObjUser>(id);
+        public IEnumerable<IFieldObjUser> GetUsers() => GetPool(FieldObjType.User).GetObjects<IFieldObjUser>();
 
         public IFieldObj GetObject(int id) => GetObjects().FirstOrDefault(o => o.ID == id);
         public T GetObject<T>(int id) where T : IFieldObj => GetObjects<T>().FirstOrDefault(o => o.ID == id);
