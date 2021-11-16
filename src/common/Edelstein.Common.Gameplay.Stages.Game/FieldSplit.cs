@@ -174,7 +174,9 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             => GetObjects().OfType<T>();
 
         public Task Dispatch(IFieldObj source, IPacket packet)
-            => Task.WhenAll(GetWatchers().Where(u => u.ID != source.ID).Select(u => u.Dispatch(packet)));
+            => Task.WhenAll(GetWatchers()
+                .Where(u => source is IFieldObjUser && u.ID != source.ID)
+                .Select(u => u.Dispatch(packet)));
 
         public Task Dispatch(IPacket packet)
             => Task.WhenAll(GetWatchers().Select(u => u.Dispatch(packet)));

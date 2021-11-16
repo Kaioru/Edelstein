@@ -21,6 +21,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Handlers
             IPacketReader packet
         )
         {
+            if (controlled.HP <= 0) return;
+
             var mobCtrlSN = packet.ReadShort();
             var v7 = packet.ReadByte(); //v85 = nDistance | 4 * (v184 | 2 * ((unsigned __int8)retaddr | 2 * v72)); [ CONFIRMED ]
 
