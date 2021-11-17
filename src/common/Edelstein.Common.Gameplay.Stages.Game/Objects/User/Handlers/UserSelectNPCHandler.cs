@@ -40,7 +40,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers
                     context,
                     new BasicSpeaker(context, templateID: npc.Info.ID),
                     new BasicSpeaker(context, flags: ConversationSpeakerFlags.NPCReplacedByUser),
-                    scriptName,
                     script
                 );
 
