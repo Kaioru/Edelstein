@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Constants.Types;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.AffectedArea;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.MessageBox;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.AffectedArea;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Util.Spatial;
@@ -29,6 +30,17 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Common
             };
 
             await user.Field.Enter(affectedArea);
+
+            var messageBox = new FieldObjMessageBox
+            {
+                ItemID = 5080000,
+                Hope = "Welcome to Edelstein!",
+                Name = "Edelstein Team",
+                Position = user.Position,
+                DateExpire = DateTime.UtcNow.AddSeconds(10)
+            };
+
+            await user.Field.Enter(messageBox);
         }
     }
 }
