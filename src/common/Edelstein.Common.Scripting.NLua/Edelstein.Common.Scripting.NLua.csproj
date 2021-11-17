@@ -10,7 +10,7 @@
     <None Remove="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NLua" Version="1.5.11" />
+    <PackageReference Include="NLua" Version="1.6.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>
 </Project>
