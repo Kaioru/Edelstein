@@ -1,5 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Constants.Types;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.AffectedArea;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.AffectedArea;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
+using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Common
 {
@@ -14,9 +19,16 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Commands.Common
 
         public override async Task Execute(IFieldObjUser user, DebugCommandArgs args)
         {
-            var number = await user.Prompt(target => target.AskNumber("What number?"));
+            var affectedArea = new FieldObjAffectedArea
+            {
+                AffectedAreaType = AffectedAreaType.Buff,
+                OwnerID = user.ID,
+                Area = new Rect2D(user.Position, new Size2D(150, 100)),
+                SkillID = 5281000,
+                DateExpire = DateTime.UtcNow.AddSeconds(3)
+            };
 
-            await user.Message($"Input number: {number}");
+            await user.Field.Enter(affectedArea);
         }
     }
 }
