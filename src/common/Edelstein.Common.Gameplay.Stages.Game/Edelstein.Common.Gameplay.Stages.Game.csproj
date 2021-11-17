@@ -38,6 +38,7 @@
     <None Remove="Objects\Mob\Stats\" />
     <None Remove="Objects\Mob\Stats\Modify\" />
     <None Remove="Objects\User\Attacking\" />
+    <None Remove="Conversations\Scripted\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -71,10 +72,12 @@
     <Folder Include="Objects\Mob\Stats\" />
     <Folder Include="Objects\Mob\Stats\Modify\" />
     <Folder Include="Objects\User\Attacking\" />
+    <Folder Include="Conversations\Scripted\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Game\Edelstein.Protocol.Gameplay.Stages.Game.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Scripting\Edelstein.Protocol.Scripting.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PowerArgs" Version="3.6.0" />

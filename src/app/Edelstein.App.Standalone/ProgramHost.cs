@@ -184,6 +184,7 @@ namespace Edelstein.App.Standalone
                     provider.GetService<ICharacterRepository>(),
                     provider.GetService<ITickerManager>(),
                     p.GetService<IPacketProcessor<GameStage, GameStageUser>>(),
+                    provider.GetService<IScriptEngine>(),
                     p.GetService<ICommandProcessor>(),
                     provider.GetService<ITemplateRepository<ItemTemplate>>(),
                     provider.GetService<ITemplateRepository<ItemStringTemplate>>(),
