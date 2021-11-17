@@ -10,4 +10,10 @@
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.3.2" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Objects\AffectedArea\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Objects\AffectedArea\" />
+  </ItemGroup>
 </Project>

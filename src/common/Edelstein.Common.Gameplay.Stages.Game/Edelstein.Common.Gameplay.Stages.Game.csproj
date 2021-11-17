@@ -39,6 +39,7 @@
     <None Remove="Objects\Mob\Stats\Modify\" />
     <None Remove="Objects\User\Attacking\" />
     <None Remove="Conversations\Scripted\" />
+    <None Remove="Objects\AffectedArea\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -73,6 +74,7 @@
     <Folder Include="Objects\Mob\Stats\Modify\" />
     <Folder Include="Objects\User\Attacking\" />
     <Folder Include="Conversations\Scripted\" />
+    <Folder Include="Objects\AffectedArea\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
