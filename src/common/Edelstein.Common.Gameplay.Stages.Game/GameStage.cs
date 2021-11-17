@@ -33,6 +33,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Handlers;
 using Edelstein.Common.Gameplay.Users.Skills.Templates;
 using Edelstein.Common.Gameplay.Stages.Game.Dialogs.Templates;
+using Edelstein.Protocol.Scripting;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -47,6 +48,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public IGuildService GuildService { get; }
         public IPartyService PartyService { get; }
 
+        public IScriptEngine ScriptEngine { get; }
         public ICommandProcessor CommandProcessor { get; }
 
         public ITemplateRepository<ItemTemplate> ItemTemplates { get; }
@@ -82,6 +84,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             ICharacterRepository characterRepository,
             ITickerManager tickerManager,
             IPacketProcessor<GameStage, GameStageUser> packetProcessor,
+            IScriptEngine scriptEngine,
             ICommandProcessor commandProcessor,
             ITemplateRepository<ItemTemplate> itemTemplates,
             ITemplateRepository<ItemStringTemplate> itemStringTemplates,
@@ -125,6 +128,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
                 .Subscribe()
                 .ForEachAwaitAsync(OnPartyUpdate);
 
+            ScriptEngine = scriptEngine;
             CommandProcessor = commandProcessor;
             ItemTemplates = itemTemplates;
             ItemStringTemplates = itemStringTemplates;
@@ -150,6 +154,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             packetProcessor.Register(new UserBodyAttackHandler());
             packetProcessor.Register(new UserEmotionHandler());
             packetProcessor.Register(new UserChatHandler());
+            packetProcessor.Register(new UserSelectNPCHandler());
             packetProcessor.Register(new UserScriptMessageAnswerHandler());
             packetProcessor.Register(new UserGatherItemRequestHandler());
             packetProcessor.Register(new UserSortItemRequestHandler());

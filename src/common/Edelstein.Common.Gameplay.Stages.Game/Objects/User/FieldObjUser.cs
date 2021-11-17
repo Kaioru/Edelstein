@@ -272,18 +272,13 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User
 
             CurrentConversation = conversation;
 
-            await Task.Run(async () =>
-            {
-                try
-                {
-                    await conversation.Start();
-                }
-                finally
-                {
-                    await EndConversation();
-                    await ModifyStats(exclRequest: true);
-                }
-            });
+            await Task
+                 .Run(() => conversation.Start()
+                 .ContinueWith(async t =>
+                 {
+                     await EndConversation();
+                     await ModifyStats(exclRequest: true);
+                 }));
         }
 
         public Task EndConversation()

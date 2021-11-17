@@ -7,6 +7,8 @@ namespace Edelstein.Common.Scripting.NLua
 {
     public class LuaScriptEngine : IScriptEngine
     {
+        public const string Extension = "lua";
+
         public string RootDirectory { get; }
 
         public LuaScriptEngine(string rootDirectory)
@@ -18,12 +20,12 @@ namespace Edelstein.Common.Scripting.NLua
             => new LuaScript(source).Evaluate(globals);
 
         public Task<object> EvaluateFromFile(string path, IDictionary<string, object> globals = null)
-            => new LuaScript(File.ReadAllText(Path.Join(RootDirectory, path))).Evaluate(globals);
+            => new LuaScript(File.ReadAllText(Path.Join(RootDirectory, Path.ChangeExtension(path, Extension)))).Evaluate(globals);
 
         public Task<IScript> Create(string source = "")
             => Task.FromResult<IScript>(new LuaScript(source));
 
         public Task<IScript> CreateFromFile(string path)
-            => Task.FromResult<IScript>(new LuaScript(File.ReadAllText(Path.Join(RootDirectory, path))));
+            => Task.FromResult<IScript>(new LuaScript(File.ReadAllText(Path.Join(RootDirectory, Path.ChangeExtension(path, Extension)))));
     }
 }
