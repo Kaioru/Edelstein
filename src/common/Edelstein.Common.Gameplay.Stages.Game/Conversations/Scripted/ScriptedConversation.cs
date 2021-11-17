@@ -9,18 +9,15 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Conversations.Scripted
 {
     public class ScriptedConversation : AbstractConversation
     {
-        private readonly string _name;
         private readonly IScript _script;
 
         public ScriptedConversation(
             IConversationContext context,
             IConversationSpeaker self,
             IConversationSpeaker target,
-            string name,
             IScript script
         ) : base(context, self, target)
         {
-            _name = name;
             _script = script;
         }
 
