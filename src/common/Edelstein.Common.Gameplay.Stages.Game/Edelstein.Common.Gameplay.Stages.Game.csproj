@@ -40,6 +40,7 @@
     <None Remove="Objects\User\Attacking\" />
     <None Remove="Conversations\Scripted\" />
     <None Remove="Objects\AffectedArea\" />
+    <None Remove="Objects\MessageBox\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
@@ -75,6 +76,7 @@
     <Folder Include="Objects\User\Attacking\" />
     <Folder Include="Conversations\Scripted\" />
     <Folder Include="Objects\AffectedArea\" />
+    <Folder Include="Objects\MessageBox\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
