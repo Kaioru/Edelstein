@@ -27,6 +27,7 @@
     <None Remove="Users\Skills\Modify\" />
     <None Remove="Users\Skills\Templates\" />
     <None Remove="MathParser.org-mXparser" />
+    <None Remove="Spatial\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Users\" />
@@ -49,6 +50,7 @@
     <Folder Include="Users\Skills\" />
     <Folder Include="Users\Skills\Modify\" />
     <Folder Include="Users\Skills\Templates\" />
+    <Folder Include="Spatial\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />

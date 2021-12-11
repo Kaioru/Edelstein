@@ -18,6 +18,7 @@ using Edelstein.Common.Gameplay.Social;
 using Edelstein.Protocol.Services.Contracts.Social;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
+using Edelstein.Common.Gameplay.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game
 {
@@ -35,7 +36,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public ICollection<IFieldGenerator> Generators { get; }
 
         private readonly GameStage _stage;
+
         private readonly FieldTemplate _template;
+        private readonly IPhysicalCollection2D<FieldFootholdTemplate> _footholds;
+
         private readonly object _objectLock;
         private readonly IDictionary<FieldObjType, IFieldPool> _pools;
         private readonly IFieldSplit[,] _splits;
@@ -46,7 +50,11 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         public Field(GameStage stage, FieldTemplate template)
         {
             _stage = stage;
+
             _template = template;
+            _footholds = new PhysicalLineGrid2D<FieldFootholdTemplate>(_template.Bounds, new Size2D(ScreenWidthOffset / 3, ScreenHeightOffset / 3));
+            _footholds.Insert(_template.Footholds.Values);
+
             _objectLock = new object();
             _pools = new Dictionary<FieldObjType, IFieldPool>();
 
@@ -159,14 +167,26 @@ namespace Edelstein.Common.Gameplay.Stages.Game
         }
 
         public IPhysicalLine2D GetFootholdClosestTo(Point2D point)
-            => GetFootholds()
-                .OrderBy(f => f.Line.Start.Distance(point) + f.Line.End.Distance(point))
-                .FirstOrDefault();
+            => _footholds.FindNearest(point);
+
+        public IPhysicalLine2D GetFootholdBelow(Point2D point)
+            => _footholds.FindNearestBelow(point);
 
         public IPhysicalLine2D GetFootholdUnderneath(Point2D point)
-            => GetFootholdClosestTo(point);
+        {
+            var foothold = _footholds.FindNearestBelow(point);
 
-        public IEnumerable<IPhysicalLine2D> GetFootholds() => _template.Footholds.Values.ToImmutableList();
+            if (foothold == null) return null;
+
+            if (point.Y >= Math.Min(foothold.Line.Start.Y, foothold.Line.End.Y) &&
+                point.Y <= Math.Max(foothold.Line.Start.Y, foothold.Line.End.Y))
+                return foothold;
+
+            return null;
+        }
+
+        public IEnumerable<IPhysicalLine2D> GetFootholds()
+            => _template.Footholds.Values.ToImmutableList();
 
         public IPhysicalLine2D GetLadderOrRope(int id)
         {
@@ -175,7 +195,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             return null;
         }
 
-        public IEnumerable<IPhysicalLine2D> GetLadderOrRopes() => _template.LadderOrRopes.Values.ToImmutableList();
+        public IEnumerable<IPhysicalLine2D> GetLadderOrRopes()
+            => _template.LadderOrRopes.Values.ToImmutableList();
 
         private IFieldSplit GetSplit(int row, int col)
         {

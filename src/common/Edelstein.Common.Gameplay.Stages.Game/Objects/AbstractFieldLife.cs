@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
@@ -15,7 +16,10 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects
             if (Field == null) return;
             if (path.Action.HasValue) Action = path.Action.Value;
             if (path.Position.HasValue) Position = path.Position.Value;
-            if (path.FootholdID.HasValue) Foothold = Field.GetFoothold(path.FootholdID.Value);
+
+            Foothold = path.FootholdID.HasValue ? Field.GetFoothold(path.FootholdID.Value) : null;
+
+            Console.WriteLine($"Client FH: {path.FootholdID} (Pos: {path.Position}) : Server FH: {Field.GetFootholdUnderneath(path.Position.Value)}");
 
             await UpdateFieldSplit();
         }
