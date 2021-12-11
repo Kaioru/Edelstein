@@ -16,6 +16,7 @@ namespace Edelstein.Protocol.Gameplay.Spatial
 
         IPhysicalLine2D GetFoothold(int id);
         IPhysicalLine2D GetFootholdClosestTo(Point2D point);
+        IPhysicalLine2D GetFootholdBelow(Point2D point);
         IPhysicalLine2D GetFootholdUnderneath(Point2D point);
         IEnumerable<IPhysicalLine2D> GetFootholds();
 
