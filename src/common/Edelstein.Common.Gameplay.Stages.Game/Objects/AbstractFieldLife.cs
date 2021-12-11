@@ -19,7 +19,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects
 
             Foothold = path.FootholdID.HasValue ? Field.GetFoothold(path.FootholdID.Value) : null;
 
-            Console.WriteLine($"Client FH: {path.FootholdID} (Pos: {path.Position}) : Server FH: {Field.GetFootholdUnderneath(path.Position.Value)}");
+            // TODO check foothold mismatch
 
             await UpdateFieldSplit();
         }
