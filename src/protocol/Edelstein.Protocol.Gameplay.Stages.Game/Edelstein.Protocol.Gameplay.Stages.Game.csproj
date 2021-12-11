@@ -13,9 +13,11 @@
   <ItemGroup>
     <None Remove="Objects\AffectedArea\" />
     <None Remove="Objects\MessageBox\" />
+    <None Remove="Objects\Drop\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Objects\AffectedArea\" />
     <Folder Include="Objects\MessageBox\" />
+    <Folder Include="Objects\Drop\" />
   </ItemGroup>
 </Project>
