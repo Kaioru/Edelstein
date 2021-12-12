@@ -29,8 +29,15 @@ namespace Edelstein.Common.Parser.reWZ
 
         public IDataProperty Resolve(string path = null)
         {
-            var node = _node.ResolvePath(path);
-            return node == null ? null : new WZDataProperty(node);
+            try
+            {
+                var node = _node.ResolvePath(path);
+                return node == null ? null : new WZDataProperty(node);
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
         }
 
         public IDataProperty ResolveAll()
@@ -40,10 +47,28 @@ namespace Edelstein.Common.Parser.reWZ
             => context.Invoke(ResolveAll());
 
         public T? Resolve<T>(string path = null) where T : struct
-            => _node.ResolvePath(path).ValueOrDie<T>();
+        {
+            try
+            {
+                return _node.ResolvePath(path).ValueOrDie<T>();
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
+        }
 
         public T ResolveOrDefault<T>(string path = null) where T : class
-            => _node.ResolvePath(path).ValueOrDefault<T>(null);
+        {
+            try
+            {
+                return _node.ResolvePath(path).ValueOrDefault<T>(null);
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
+        }
 
         public Task<IDataProperty> ResolveAsync(string path = null)
             => Task.Run(() => Resolve(path));
