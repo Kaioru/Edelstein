@@ -22,8 +22,8 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
         public override async Task Handle(LoginStageUser user, IPacketReader packet)
         {
-            var password = packet.ReadString();
             var username = packet.ReadString();
+            var password = packet.ReadString();
             _ = packet.ReadBytes(16); // MachineID
             _ = packet.ReadInt(); // GameRoomClient
             _ = packet.ReadByte(); // GameStartMode
