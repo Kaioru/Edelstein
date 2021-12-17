@@ -69,7 +69,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
             if (result == LoginResultCode.Success)
             {
                 response.WriteInt(account.ID);
-                response.WriteByte(account.Gender ?? 0xA);
+                response.WriteByte(account.Gender ?? 0);
                 response.WriteByte((byte)account.GradeCode);
                 response.WriteShort((short)account.SubGradeCode);
                 response.WriteByte(0); // nCountryID
@@ -84,8 +84,9 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
 
                 response.WriteLong(user.Key);
 
-                user.State = account.Gender == null ? LoginState.SelectGender : LoginState.SelectWorld;
+                // user.State = account.Gender == null ? LoginState.SelectGender : LoginState.SelectWorld; TODO fix select gender related DC
                 user.Account = account;
+                user.State = LoginState.SelectWorld;
 
                 await _stage.Enter(user);
             }

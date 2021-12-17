@@ -27,7 +27,7 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers
             user.Account.Gender = gender;
 
             response.WriteByte(gender);
-            response.WriteBool(true);
+            response.WriteBool(!cancel);
 
             await user.Dispatch(response);
         }
