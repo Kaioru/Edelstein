@@ -181,6 +181,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game
             commandProcessor.Register(new AliasCommand(commandProcessor));
             commandProcessor.Register(new DebugCommand());
 
+            commandProcessor.Register(new SetupCommand());
+
             commandProcessor.Register(new StatCommand());
             commandProcessor.Register(new SecondaryStatCommand());
             commandProcessor.Register(new ForcedStatCommand());
