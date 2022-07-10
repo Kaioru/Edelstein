@@ -1,23 +1,10 @@
-# Edelstein [![CircleCI](https://circleci.com/gh/Kaioru/Edelstein.svg?style=svg)](https://circleci.com/gh/Kaioru/Edelstein)
-A MapleStory Global v.95 server emulator written in C#.
+# Edelstein [![Build](https://github.com/Kaioru/Edelstein/actions/workflows/build.yaml/badge.svg)](https://github.com/Kaioru/Edelstein/actions/workflows/build.yaml)
+A v.95.1 Mushroom game server emulator written in C#.
 
 **this project is a work-in-progress**
 
 ## 👨‍💻 Cloning the repo
 1. ```git clone https://github.com/Kaioru/Edelstein && cd Edelstein```
-2. ```git submodule update --init --recursive```
-
-## 🐳 Building from Docker
-
-### Running with Docker Compose
-1. ```docker-compose up```
-
-yup. it's that easy.
-
-### Configuring .env
-By default, the predefined Container service runs on 127.0.0.1. 
-
-To change this, create a .env file and add ```HOST={ip}``` to change the host the service runs on.
 
 ## 🔨 Building from scratch
 
@@ -30,9 +17,9 @@ To change this, create a .env file and add ```HOST={ip}``` to change the host th
 2. Download the data from [Server.NX](https://github.com/kaioru/server.nx/releases)
 3. Unzip both into their own folders
 
-### Running the Container service
-The Container service is the quick and easy way to spin up Edelstein
-1. ```cd src/Edelstein.Service.All```
+### Running the Standalone app
+The Standalone app is the quick and easy way to spin up Edelstein
+1. ```cd src/app/Edelstein.App.Standalone```
 2. ```cp appsettings.json appsettings.Production.json```
 3. Edit the appsettings.Production.json appropriately (remember to set the scripts and data path!)
 4. ```dotnet run```
@@ -44,4 +31,3 @@ The Container service is the quick and easy way to spin up Edelstein
 ## ⭐️ Acknowledgements
 * [Rebirth](https://github.com/RajanGrewal/Rebirth) - lot's of referencing from here.
 * [Destiny](https://github.com/Fraysa/Destiny) - even more referencing from here.
-* [@kwakery](https://github.com/kwakery) - for bein a nub, jk ily.

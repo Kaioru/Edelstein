@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+package edelstein.protocol.services.contracts;
+
+enum SessionRegistryResult {
+  SESSION_REGISTRY_RESULT_UNSPECIFIED = 0;
+  SESSION_REGISTRY_RESULT_OK = 1;
+  SESSION_REGISTRY_RESULT_FAILED_UNKNOWN = 2;
+  SESSION_REGISTRY_RESULT_FAILED_TIMEOUT = 3;
+  SESSION_REGISTRY_RESULT_FAILED_NOT_STARTED = 4;
+  SESSION_REGISTRY_RESULT_FAILED_ALREADY_STARTED = 5;
+}
+
+enum SessionState {
+  SESSION_STATE_OFFLINE = 0;
+  SESSION_STATE_LOGGED_IN = 1;
+  SESSION_STATE_MIGRATING = 2;
+}
+
+message SessionContract {
+  int32 account = 1;
+  google.protobuf.Int32Value character = 2;
+
+  string server = 3;
+  SessionState state = 4;
+}
+
+message StartSessionRequest { SessionContract session = 1; }
+message StartSessionResponse { SessionRegistryResult result = 1; }
+
+message UpdateSessionRequest { SessionContract session = 1; }
+message UpdateSessionResponse { SessionRegistryResult result = 1; }
+
+message DescribeSessionByAccountRequest { int32 account = 1; }
+message DescribeSessionByAccountResponse {
+  SessionRegistryResult result = 1;
+  SessionContract session = 2;
+}
+
+message DescribeSessionByCharacterRequest { int32 character = 1; }
+message DescribeSessionByCharacterResponse {
+  SessionRegistryResult result = 1;
+  SessionContract session = 2;
+}

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Protocol.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Datastore\Edelstein.Protocol.Datastore.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Parser\Edelstein.Protocol.Parser.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Services\Edelstein.Protocol.Services.csproj" />
+  </ItemGroup>
+</Project>

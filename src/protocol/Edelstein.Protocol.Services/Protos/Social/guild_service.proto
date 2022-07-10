@@ -1,0 +1,54 @@
+﻿syntax = "proto3";
+
+package edelstein.protocol.services.contracts.social;
+
+enum GuildServiceResult {
+  GUILD_SERVICE_RESULT_UNSPECIFIED = 0;
+  GUILD_SERVICE_RESULT_OK = 1;
+  GUILD_SERVICE_RESULT_FAILED_UNKNOWN = 2;
+  GUILD_SERVICE_RESULT_FAILED_TIMEOUT = 3;
+}
+
+message GuildContract {
+  int32 id = 1;
+  string name = 2;
+  repeated string grade = 3;
+
+  int32 max_member_num = 4;
+  repeated GuildMemberContract members = 5;
+
+  int32 mark_bg = 6;
+  int32 mark_bg_color = 7;
+  int32 mark = 8;
+  int32 mark_color = 9;
+
+  string notice = 10;
+  int32 point = 11;
+  int32 level = 12;
+}
+
+message GuildMemberContract {
+  int32 id = 1;
+  string name = 2;
+  int32 job = 3;
+  int32 level = 4;
+  int32 grade = 5;
+  bool online = 6;
+  int32 commitment = 7;
+}
+
+message GuildLoadByIDRequest { int32 id = 1; }
+message GuildLoadByIDResponse {
+  GuildServiceResult result = 1;
+  GuildContract guild = 2;
+}
+
+message GuildLoadByCharacterRequest { int32 character = 1; }
+message GuildLoadByCharacterResponse {
+  GuildServiceResult result = 1;
+  GuildContract guild = 2;
+}
+
+message GuildUpdateContract {
+  GuildContract guild = 1;
+}

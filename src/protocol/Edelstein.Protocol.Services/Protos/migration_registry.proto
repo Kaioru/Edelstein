@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package edelstein.protocol.services.contracts;
+
+enum MigrationRegistryResult {
+  MIGRATION_REGISTRY_RESULT_UNSPECIFIED = 0;
+  MIGRATION_REGISTRY_RESULT_OK = 1;
+  MIGRATION_REGISTRY_RESULT_FAILED_UNKNOWN = 2;
+  MIGRATION_REGISTRY_RESULT_FAILED_TIMEOUT = 3;
+  MIGRATION_REGISTRY_RESULT_FAILED_NOT_REGISTERED = 4;
+  MIGRATION_REGISTRY_RESULT_FAILED_ALREADY_REGISTERED = 5;
+  MIGRATION_REGISTRY_RESULT_FAILED_INVALID_CHARACTER = 6;
+  MIGRATION_REGISTRY_RESULT_FAILED_INVALID_CLIENT_KEY = 7;
+  MIGRATION_REGISTRY_RESULT_FAILED_INVALID_SERVER = 8;
+}
+
+message MigrationContract {
+  int32 character = 1;
+  int64 client_key = 2;
+
+  string server_from = 3;
+  string server_to = 4;
+}
+
+message RegisterMigrationRequest { MigrationContract migration = 1; }
+message RegisterMigrationResponse { MigrationRegistryResult result = 1; }
+
+message DeregisterMigrationRequest { int32 character = 1; }
+message DeregisterMigrationResponse { MigrationRegistryResult result = 1; }
+
+message ClaimMigrationRequest {
+  int32 character = 1;
+  int64 client_key = 2;
+  string server = 3;
+}
+message ClaimMigrationResponse {
+  MigrationRegistryResult result = 1;
+  MigrationContract migration = 2;
+}

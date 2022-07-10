@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Protocol.targets" />
+
+  <ItemGroup>
+    <Protobuf Include="Protos\server_registry.proto" />
+    <Protobuf Include="Protos\session_registry.proto" />
+    <Protobuf Include="Protos\migration_registry.proto" />
+    <Protobuf Include="Protos\dispatch_service.proto" />
+    <Protobuf Include="Protos\Social\invite_service.proto" />
+    <Protobuf Include="Protos\Social\guild_service.proto" />
+    <Protobuf Include="Protos\Social\party_service.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.9.0" />
+    <PackageReference Include="Google.Api.CommonProtos" Version="2.4.0" />
+    <PackageReference Include="Grpc.Core" Version="2.41.1" />
+    <PackageReference Include="Grpc.Tools" Version="2.41.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="protobuf-net.Grpc" Version="1.0.152" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="protobuf-net.Grpc" />
+    <None Remove="Protos\Social\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Protos\Social\" />
+  </ItemGroup>
+</Project>

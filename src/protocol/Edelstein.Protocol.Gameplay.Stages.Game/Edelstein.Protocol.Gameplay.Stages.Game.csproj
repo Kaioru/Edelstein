@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Protocol.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="morelinq" Version="3.3.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Objects\AffectedArea\" />
+    <None Remove="Objects\MessageBox\" />
+    <None Remove="Objects\Drop\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Objects\AffectedArea\" />
+    <Folder Include="Objects\MessageBox\" />
+    <Folder Include="Objects\Drop\" />
+  </ItemGroup>
+</Project>

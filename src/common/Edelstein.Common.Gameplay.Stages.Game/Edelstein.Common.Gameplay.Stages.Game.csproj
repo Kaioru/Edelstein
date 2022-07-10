@@ -1,0 +1,92 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Common.targets" />
+
+  <ItemGroup>
+    <None Remove="Templates\" />
+    <None Remove="Objects\" />
+    <None Remove="Movements\" />
+    <None Remove="Movements\Fragments\" />
+    <None Remove="Objects\User\" />
+    <None Remove="Objects\User\Handlers\" />
+    <None Remove="Objects\User\Stats\" />
+    <None Remove="Objects\NPC\" />
+    <None Remove="Objects\NPC\Templates\" />
+    <None Remove="Objects\NPC\Handlers\" />
+    <None Remove="Generators\" />
+    <None Remove="Objects\User\Messages\" />
+    <None Remove="Commands\" />
+    <None Remove="PowerArgs" />
+    <None Remove="Commands\Common\" />
+    <None Remove="Commands\Admin\" />
+    <None Remove="Conversations\" />
+    <None Remove="Conversations\Speakers\" />
+    <None Remove="Conversations\Requests\" />
+    <None Remove="System.Linq.Async" />
+    <None Remove="Continent\" />
+    <None Remove="Continent\Templates\" />
+    <None Remove="stateless" />
+    <None Remove="Objects\User\Types\" />
+    <None Remove="DotNet.Glob" />
+    <None Remove="Commands\Util\" />
+    <None Remove="Objects\Mob\" />
+    <None Remove="Objects\Mob\Templates\" />
+    <None Remove="Objects\Mob\Handlers\" />
+    <None Remove="Objects\User\Stats\Modify\" />
+    <None Remove="Dialogs\" />
+    <None Remove="Dialogs\Templates\" />
+    <None Remove="Objects\Mob\Stats\" />
+    <None Remove="Objects\Mob\Stats\Modify\" />
+    <None Remove="Objects\User\Attacking\" />
+    <None Remove="Conversations\Scripted\" />
+    <None Remove="Objects\AffectedArea\" />
+    <None Remove="Objects\MessageBox\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templates\" />
+    <Folder Include="Objects\" />
+    <Folder Include="Movements\" />
+    <Folder Include="Movements\Fragments\" />
+    <Folder Include="Objects\User\" />
+    <Folder Include="Objects\User\Handlers\" />
+    <Folder Include="Objects\User\Stats\" />
+    <Folder Include="Objects\NPC\" />
+    <Folder Include="Objects\NPC\Templates\" />
+    <Folder Include="Objects\NPC\Handlers\" />
+    <Folder Include="Generators\" />
+    <Folder Include="Objects\User\Messages\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Commands\Common\" />
+    <Folder Include="Commands\Admin\" />
+    <Folder Include="Conversations\" />
+    <Folder Include="Conversations\Speakers\" />
+    <Folder Include="Conversations\Requests\" />
+    <Folder Include="Continent\" />
+    <Folder Include="Continent\Templates\" />
+    <Folder Include="Objects\User\Types\" />
+    <Folder Include="Commands\Util\" />
+    <Folder Include="Objects\Mob\" />
+    <Folder Include="Objects\Mob\Templates\" />
+    <Folder Include="Objects\Mob\Handlers\" />
+    <Folder Include="Objects\User\Stats\Modify\" />
+    <Folder Include="Dialogs\" />
+    <Folder Include="Dialogs\Templates\" />
+    <Folder Include="Objects\Mob\Stats\" />
+    <Folder Include="Objects\Mob\Stats\Modify\" />
+    <Folder Include="Objects\User\Attacking\" />
+    <Folder Include="Conversations\Scripted\" />
+    <Folder Include="Objects\AffectedArea\" />
+    <Folder Include="Objects\MessageBox\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Game\Edelstein.Protocol.Gameplay.Stages.Game.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Scripting\Edelstein.Protocol.Scripting.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="PowerArgs" Version="3.6.0" />
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+    <PackageReference Include="stateless" Version="5.11.0" />
+    <PackageReference Include="DotNet.Glob" Version="3.1.3" />
+  </ItemGroup>
+</Project>
