@@ -361,7 +361,7 @@
         DropLeaveField = 0x144,
         END_DROPPOOL = 0x144,
         BEGIN_MESSAGEBOXPOOL = 0x145,
-        CreateMessgaeBoxFailed = 0x145,
+        CreateMessageBoxFailed = 0x145,
         MessageBoxEnterField = 0x146,
         MessageBoxLeaveField = 0x147,
         END_MESSAGEBOXPOOL = 0x147,
