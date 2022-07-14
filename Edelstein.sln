@@ -10,6 +10,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protocol", "protocol", "{7F8DD283-A64C-40EC-98F2-84FA38716C28}"
+	ProjectSection(SolutionItems) = preProject
+		src\protocol\Protocol.targets = src\protocol\Protocol.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Network", "src\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj", "{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,5 +28,12 @@ Global
 		{E8E4BA1B-1B13-4BD1-907D-BECBBF3F357B} = {71E8FDEE-8F29-4294-8B21-97F367594BD3}
 		{52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504} = {71E8FDEE-8F29-4294-8B21-97F367594BD3}
 		{7F8DD283-A64C-40EC-98F2-84FA38716C28} = {71E8FDEE-8F29-4294-8B21-97F367594BD3}
+		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
