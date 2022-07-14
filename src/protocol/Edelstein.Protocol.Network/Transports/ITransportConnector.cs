@@ -2,7 +2,7 @@
 
 public interface ITransportConnector : ITransport
 {
-    IAdapter? Adapter { get; }
+    ISocket? Socket { get; }
 
     Task Connect(string host, int port);
 }
