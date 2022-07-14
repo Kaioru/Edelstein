@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Network;
 
-public interface ISocketAdapter
+public interface IAdapter
 {
     ISocket Socket { get; }
 
