@@ -3,5 +3,4 @@
 public interface ITransportAcceptor : ITransport
 {
     Task Accept(string host, int port);
-    Task Close();
 }
