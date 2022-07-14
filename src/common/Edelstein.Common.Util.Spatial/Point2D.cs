@@ -2,7 +2,7 @@
 
 namespace Edelstein.Common.Util.Spatial;
 
-public struct Point2D : IPoint2D
+public readonly struct Point2D : IPoint2D
 {
     public int MinX => X;
     public int MinY => Y;
