@@ -3,5 +3,4 @@
 public interface ITransportConnector : ITransport
 {
     Task Connect(string host, int port);
-    Task Close();
 }
