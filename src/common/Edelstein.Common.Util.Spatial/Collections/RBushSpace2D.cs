@@ -11,6 +11,9 @@ public class RBushSpace2D<TObject> : ISpace2D<TObject> where TObject : IObject2D
     public RBushSpace2D()
         => _tree = new RBush<RBushSpaceObject2D<TObject>>();
 
+    public void BulkInsert(IEnumerable<TObject> obj)
+        => _tree.BulkLoad(obj.Select(o => new RBushSpaceObject2D<TObject>(o)));
+
     public IEnumerable<TObject> Find(IObject2D obj)
         => _tree
             .Search(new(obj.MinX, obj.MinY, obj.MaxX, obj.MaxY))
