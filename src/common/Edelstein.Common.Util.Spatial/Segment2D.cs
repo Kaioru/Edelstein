@@ -17,9 +17,9 @@ public struct Segment2D : ISegment2D
         P1 = p1;
         P2 = p2;
     }
-    
+
     public IPoint2D Middle => new Point2D((P1.X + P2.X) / 2, (P1.Y + P2.Y) / 2);
-    
+
     public double Length => P1.Distance(P2);
     public double Slope => IsVertical ? 0 : (P2.Y - P1.Y) / (P2.X - P1.X);
 
@@ -34,7 +34,7 @@ public struct Segment2D : ISegment2D
 
     public bool Intersects(IPoint2D point)
         => Math.Abs(point.Distance(P1) + point.Distance(P2) - P1.Distance(P2)) < 0.01;
-    
+
     private int Cross(IPoint2D point)
         => (point.X - P1.X) * (P2.Y - P1.Y) - (point.Y - P1.Y) * (P2.X - P1.X);
 }
