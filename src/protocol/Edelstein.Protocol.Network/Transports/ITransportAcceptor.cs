@@ -4,7 +4,7 @@ namespace Edelstein.Protocol.Network.Transports;
 
 public interface ITransportAcceptor : ITransport
 {
-    ILocalRepository<string, IAdapter> Adapters { get; }
+    ILocalRepository<string, ISocket> Sockets { get; }
 
     Task Accept(string host, int port);
 }

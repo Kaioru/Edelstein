@@ -1,9 +1,8 @@
 ﻿using Edelstein.Protocol.Network.Packets;
-using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Network;
 
-public interface IAdapter : IIdentifiable<string>
+public interface IAdapter
 {
     ISocket Socket { get; }
 
