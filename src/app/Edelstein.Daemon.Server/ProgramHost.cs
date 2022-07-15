@@ -22,10 +22,12 @@ public class ProgramHost : IHostedService
     private readonly ICollection<ITransportAcceptor> _acceptors;
     private readonly IServiceCollection _collection;
     private readonly ProgramConfig _config;
+    private readonly ProgramHostContext _context;
     private readonly ILogger<ProgramHost> _logger;
 
     public ProgramHost(
         IOptions<ProgramConfig> options,
+        ProgramHostContext context,
         ILogger<ProgramHost> logger,
         IServiceCollection collection
     )
@@ -33,6 +35,7 @@ public class ProgramHost : IHostedService
         _config = options.Value;
         _logger = logger;
         _collection = collection;
+        _context = context;
         _acceptors = new List<ITransportAcceptor>();
     }
 
@@ -40,10 +43,7 @@ public class ProgramHost : IHostedService
     {
         foreach (var stage in _config.Stages.OrderBy(s => s.Type))
         {
-            var collection = new ServiceCollection();
-
-            foreach (var descriptor in _collection)
-                collection.Add(descriptor);
+            var collection = new ServiceCollection { _collection };
 
             collection.Scan(s => s
                 .FromApplicationDependencies()
