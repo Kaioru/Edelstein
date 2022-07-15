@@ -4,10 +4,10 @@ namespace Edelstein.Common.Util.Spatial;
 
 public readonly struct Rectangle2D : IRectangle2D
 {
-    public float MinX => Left;
-    public float MinY => Top;
-    public float MaxX => Right;
-    public float MaxY => Bottom;
+    public int MinX => Left;
+    public int MinY => Top;
+    public int MaxX => Right;
+    public int MaxY => Bottom;
 
     public IPoint2D P1 { get; }
     public IPoint2D P2 { get; }
@@ -18,10 +18,10 @@ public readonly struct Rectangle2D : IRectangle2D
         P2 = p2;
     }
 
-    public float Left => Math.Min(P1.X, P2.X);
-    public float Right => Math.Max(P1.X, P2.X);
-    public float Top => Math.Min(P1.Y, P2.Y);
-    public float Bottom => Math.Max(P1.Y, P2.Y);
+    public int Left => Math.Min(P1.X, P2.X);
+    public int Right => Math.Max(P1.X, P2.X);
+    public int Top => Math.Min(P1.Y, P2.Y);
+    public int Bottom => Math.Max(P1.Y, P2.Y);
 
     public float Height => Math.Abs(P1.Y - P2.Y);
     public float Width => Math.Abs(P1.X - P2.X);

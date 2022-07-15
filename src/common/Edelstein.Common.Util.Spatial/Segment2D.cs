@@ -4,10 +4,10 @@ namespace Edelstein.Common.Util.Spatial;
 
 public readonly struct Segment2D : ISegment2D
 {
-    public float MinX => Math.Min(P1.X, P2.X);
-    public float MinY => Math.Min(P1.Y, P2.Y);
-    public float MaxX => Math.Max(P1.X, P2.X);
-    public float MaxY => Math.Max(P1.Y, P2.Y);
+    public int MinX => Math.Min(P1.X, P2.X);
+    public int MinY => Math.Min(P1.Y, P2.Y);
+    public int MaxX => Math.Max(P1.X, P2.X);
+    public int MaxY => Math.Max(P1.Y, P2.Y);
 
     public IPoint2D P1 { get; }
     public IPoint2D P2 { get; }
@@ -32,17 +32,17 @@ public readonly struct Segment2D : ISegment2D
     public bool IsBelow(IPoint2D point)
         => Cross(point) < 0;
 
-    public IPoint2D? AtX(float x)
+    public IPoint2D? AtX(int x)
         => x >= MinX && x <= MaxX
             ? Slope.HasValue
-                ? new Point2D(x, (Slope.Value * (x - MinX)) + MinY)
+                ? new Point2D(x, (int)(Slope.Value * (x - MinX)) + MinY)
                 : null
             : null;
 
-    public IPoint2D? AtY(float y)
+    public IPoint2D? AtY(int y)
         => y >= MinY && y <= MaxY
             ? Slope.HasValue
-                ? new Point2D(((y - MinY) / Slope.Value) + MinX, y)
+                ? new Point2D((int)((y - MinY) / Slope.Value) + MinX, y)
                 : new Point2D(MinX, y)
             : null;
 

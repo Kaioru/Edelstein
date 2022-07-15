@@ -15,8 +15,8 @@ public interface ISegment2D : IObject2D
     bool IsAbove(IPoint2D point);
     bool IsBelow(IPoint2D point);
 
-    IPoint2D? AtX(float x);
-    IPoint2D? AtY(float y);
+    IPoint2D? AtX(int x);
+    IPoint2D? AtY(int y);
     
     bool Intersects(IPoint2D point);
 }
