@@ -10,5 +10,5 @@ public interface IItemInventory<TSlot> where TSlot : IItemSlot
 {
     short SlotMax { get; }
 
-    IDictionary<short, IItemSlot> Items { get; }
+    IDictionary<short, TSlot> Items { get; }
 }
