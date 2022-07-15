@@ -10,5 +10,5 @@ public record LoginContextPipelines(
     IPipeline<ISocketOnPacket<ILoginStageUser>> SocketOnPacket,
     IPipeline<ISocketOnException<ILoginStageUser>> SocketOnException,
     IPipeline<ISocketOnDisconnect<ILoginStageUser>> SocketOnDisconnect,
-    IPipeline<ILoginCheckPassword> LoginCheckPassword
+    IPipeline<ICheckPassword> LoginCheckPassword
 ) : ILoginContextPipelines;
