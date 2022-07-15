@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\Common.targets"/>
+  <Import Project="..\Common.targets" />
 
   <ItemGroup>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Login\Edelstein.Protocol.Gameplay.Stages.Login.csproj"/>
-    <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj"/>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Login\Edelstein.Protocol.Gameplay.Stages.Login.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Pipelines\Edelstein.Protocol.Util.Pipelines.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
-﻿using Edelstein.Protocol.Gameplay;
+﻿using Edelstein.Protocol.Gameplay.Stages;
 
-namespace Edelstein.Common.Gameplay;
+namespace Edelstein.Common.Gameplay.Stages;
 
 public abstract class AbstractStage<TStageUser> : IStage<TStageUser> where TStageUser : IStageUser
 {

@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay;
+﻿namespace Edelstein.Protocol.Gameplay.Stages;
 
 public interface IStage<in TStageUser> where TStageUser : IStageUser
 {
