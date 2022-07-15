@@ -4,6 +4,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Util.Repositories\Edelstein.Common.Util.Repositories.csproj" />
   </ItemGroup>
 
   <ItemGroup>
