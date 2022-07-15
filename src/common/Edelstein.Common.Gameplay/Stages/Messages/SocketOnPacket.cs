@@ -4,7 +4,7 @@ using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Messages;
 
-public record StageUserOnPacket<TStageUser>(
+public record SocketOnPacket<TStageUser>(
     TStageUser User,
     IPacketReader Packet
-) : IStageUserOnPacket<TStageUser> where TStageUser : IStageUser;
+) : ISocketOnPacket<TStageUser> where TStageUser : IStageUser;

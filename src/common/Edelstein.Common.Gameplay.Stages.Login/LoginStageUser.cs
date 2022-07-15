@@ -21,11 +21,11 @@ public class LoginStageUser : AbstractStageUser, ILoginStageUser
     public byte? SelectedChannelID { get; set; }
 
     public override Task OnPacket(IPacketReader packet) =>
-        Context.Pipelines.StageUserOnPacket.Process(new StageUserOnPacket<ILoginStageUser>(this, packet));
+        Context.Pipelines.SocketOnPacket.Process(new SocketOnPacket<ILoginStageUser>(this, packet));
 
     public override Task OnException(Exception exception) =>
-        Context.Pipelines.StageUserOnException.Process(new StageUserOnException<ILoginStageUser>(this, exception));
+        Context.Pipelines.SocketOnException.Process(new SocketOnException<ILoginStageUser>(this, exception));
 
     public override Task OnDisconnect() =>
-        Context.Pipelines.StageUserOnDisconnect.Process(new StageUserOnDisconnect<ILoginStageUser>(this));
+        Context.Pipelines.SocketOnDisconnect.Process(new SocketOnDisconnect<ILoginStageUser>(this));
 }

@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Messages;
 
-public interface IStageUserOnPacket<out TStageUser> : IStageUserRequest<TStageUser> where TStageUser : IStageUser
+public interface ISocketOnPacket<out TStageUser> : IStageUserMessage<TStageUser> where TStageUser : IStageUser
 {
     IPacketReader Packet { get; }
 }
