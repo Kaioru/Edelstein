@@ -62,9 +62,7 @@ public class NettyTransportAcceptor : ITransportAcceptor
     public async Task Close()
     {
         await Task.WhenAll(Sockets.Values.Select(s => s.Close()));
-
         if (Channel != null) await Channel.CloseAsync();
-
         await Task.WhenAll(
             Task.Run(async () =>
             {

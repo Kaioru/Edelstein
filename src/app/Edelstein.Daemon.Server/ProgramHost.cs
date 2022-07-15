@@ -10,6 +10,7 @@ using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Util.Pipelines;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -19,16 +20,19 @@ namespace Edelstein.Daemon.Server;
 public class ProgramHost : IHostedService
 {
     private readonly ICollection<ITransportAcceptor> _acceptors;
+    private readonly IServiceCollection _collection;
     private readonly ProgramConfig _config;
     private readonly ILogger<ProgramHost> _logger;
 
     public ProgramHost(
         IOptions<ProgramConfig> options,
-        ILogger<ProgramHost> logger
+        ILogger<ProgramHost> logger,
+        IServiceCollection collection
     )
     {
         _config = options.Value;
         _logger = logger;
+        _collection = collection;
         _acceptors = new List<ITransportAcceptor>();
     }
 
@@ -37,6 +41,9 @@ public class ProgramHost : IHostedService
         foreach (var stage in _config.Stages.OrderBy(s => s.Type))
         {
             var collection = new ServiceCollection();
+
+            foreach (var descriptor in _collection)
+                collection.Add(descriptor);
 
             collection.Scan(s => s
                 .FromApplicationDependencies()

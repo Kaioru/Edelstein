@@ -15,6 +15,7 @@ await Host.CreateDefaultBuilder(args)
     .UseSerilog((ctx, logger) => logger.ReadFrom.Configuration(ctx.Configuration))
     .ConfigureServices((ctx, services) =>
     {
+        services.AddSingleton(services);
         services.Configure<ProgramConfig>(ctx.Configuration.GetSection("Host"));
         services.AddHostedService<ProgramHost>();
     })
