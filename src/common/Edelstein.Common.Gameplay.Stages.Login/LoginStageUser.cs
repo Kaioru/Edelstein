@@ -14,7 +14,7 @@ public class LoginStageUser : AbstractStageUser, ILoginStageUser
     public byte? SelectedWorldID { get; set; }
     public byte? SelectedChannelID { get; set; }
 
-    public override Task OnPacket(IPacket packet) => throw new NotImplementedException();
+    public override Task OnPacket(IPacketReader packet) => throw new NotImplementedException();
 
     public override Task OnException(Exception exception) => throw new NotImplementedException();
 
