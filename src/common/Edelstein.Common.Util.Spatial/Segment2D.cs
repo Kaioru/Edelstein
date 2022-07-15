@@ -43,7 +43,7 @@ public readonly struct Segment2D : ISegment2D
         => y >= MinY && y <= MaxY
             ? Slope.HasValue
                 ? new Point2D(((y - MinY) / Slope.Value) + MinX, y)
-                : null
+                : new Point2D(MinX, y)
             : null;
 
     public bool Intersects(IPoint2D point)
