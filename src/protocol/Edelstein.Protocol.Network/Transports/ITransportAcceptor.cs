@@ -1,6 +1,4 @@
-﻿using Edelstein.Protocol.Util.Repositories;
-
-namespace Edelstein.Protocol.Network.Transports;
+﻿namespace Edelstein.Protocol.Network.Transports;
 
 public interface ITransportAcceptor : ITransport
 {

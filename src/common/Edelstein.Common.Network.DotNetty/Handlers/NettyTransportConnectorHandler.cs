@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using DotNetty.Transport.Channels;
+﻿using DotNetty.Transport.Channels;
 using Edelstein.Protocol.Network.Packets;
 using Edelstein.Protocol.Network.Transports;
 
