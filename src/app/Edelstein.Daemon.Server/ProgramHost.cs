@@ -1,4 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Stages.Login;
+using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Util.Pipelines;
 using Edelstein.Protocol.Gameplay.Stages.Login;
@@ -16,11 +17,13 @@ public class ProgramHost : IHostedService
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        var initializer = new LoginStageUserInitializer(
+        var pipelines = new LoginContextPipelines(
             new Pipeline<IStageUserOnPacket<ILoginStageUser>>(),
             new Pipeline<IStageUserOnException<ILoginStageUser>>(),
             new Pipeline<IStageUserOnDisconnect<ILoginStageUser>>()
         );
+        var context = new LoginContext(pipelines);
+        var initializer = new LoginStageUserInitializer(context);
         var acceptor = new NettyTransportAcceptor(initializer, 95, "1", 8);
 
         acceptor.Accept("127.0.0.1", 8484).Wait(cancellationToken);
