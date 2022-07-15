@@ -6,8 +6,8 @@ namespace Edelstein.Protocol.Network;
 
 public interface ISocket : IIdentifiable<string>
 {
-    IPEndPoint AddressLocal { get; }
-    IPEndPoint AddressRemote { get; }
+    EndPoint AddressLocal { get; }
+    EndPoint AddressRemote { get; }
 
     uint SeqSend { get; set; }
     uint SeqRecv { get; set; }
