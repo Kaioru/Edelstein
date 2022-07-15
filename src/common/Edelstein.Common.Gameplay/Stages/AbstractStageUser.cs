@@ -1,10 +1,10 @@
-﻿using Edelstein.Protocol.Gameplay;
-using Edelstein.Protocol.Gameplay.Accounts;
+﻿using Edelstein.Protocol.Gameplay.Accounts;
 using Edelstein.Protocol.Gameplay.Characters;
+using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Packets;
 
-namespace Edelstein.Common.Gameplay;
+namespace Edelstein.Common.Gameplay.Stages;
 
 public abstract class AbstractStageUser : IStageUser
 {

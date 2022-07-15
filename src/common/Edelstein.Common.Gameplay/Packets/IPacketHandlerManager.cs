@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay;
+﻿using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Common.Gameplay.Packets;
