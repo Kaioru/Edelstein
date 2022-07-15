@@ -26,41 +26,26 @@ public readonly struct Segment2D : ISegment2D
     public bool IsVertical => Math.Abs(P1.X - P2.X) <= 0;
     public bool IsHorizontal => Math.Abs(P1.Y - P2.Y) <= 0;
 
-    public bool IsAbove(IPoint2D point)
-    {
-        return Cross(point) > 0;
-    }
+    public bool IsAbove(IPoint2D point) => Cross(point) > 0;
 
-    public bool IsBelow(IPoint2D point)
-    {
-        return Cross(point) < 0;
-    }
+    public bool IsBelow(IPoint2D point) => Cross(point) < 0;
 
-    public IPoint2D? AtX(int x)
-    {
-        return x >= MinX && x <= MaxX
+    public IPoint2D? AtX(int x) =>
+        x >= MinX && x <= MaxX
             ? Slope.HasValue
                 ? new Point2D(x, (int)(Slope.Value * (x - MinX)) + MinY)
                 : null
             : null;
-    }
 
-    public IPoint2D? AtY(int y)
-    {
-        return y >= MinY && y <= MaxY
+    public IPoint2D? AtY(int y) =>
+        y >= MinY && y <= MaxY
             ? Slope.HasValue
                 ? new Point2D((int)((y - MinY) / Slope.Value) + MinX, y)
                 : new Point2D(MinX, y)
             : null;
-    }
 
-    public bool Intersects(IPoint2D point)
-    {
-        return Math.Abs(point.Distance(P1) + point.Distance(P2) - P1.Distance(P2)) < 0.01;
-    }
+    public bool Intersects(IPoint2D point) =>
+        Math.Abs(point.Distance(P1) + point.Distance(P2) - P1.Distance(P2)) < 0.01;
 
-    private float Cross(IPoint2D point)
-    {
-        return (point.X - P1.X) * (P2.Y - P1.Y) - (point.Y - P1.Y) * (P2.X - P1.X);
-    }
+    private float Cross(IPoint2D point) => (point.X - P1.X) * (P2.Y - P1.Y) - (point.Y - P1.Y) * (P2.X - P1.X);
 }

@@ -9,10 +9,8 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
 {
     private readonly ITransportAcceptor _acceptor;
 
-    public NettyTransportAcceptorHandler(ITransportAcceptor acceptor)
-    {
+    public NettyTransportAcceptorHandler(ITransportAcceptor acceptor) =>
         _acceptor = acceptor ?? throw new ArgumentNullException(nameof(acceptor));
-    }
 
     public override void ChannelActive(IChannelHandlerContext context)
     {

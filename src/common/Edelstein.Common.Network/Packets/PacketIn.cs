@@ -23,58 +23,25 @@ public class PacketIn : IPacketReader
     public long Cursor => _stream.Position;
     public long Available => _stream.Length - _stream.Position;
 
-    public byte ReadByte()
-    {
-        return _reader.ReadByte();
-    }
+    public byte ReadByte() => _reader.ReadByte();
 
-    public bool ReadBool()
-    {
-        return _reader.ReadBoolean();
-    }
+    public bool ReadBool() => _reader.ReadBoolean();
 
-    public short ReadShort()
-    {
-        return _reader.ReadInt16();
-    }
+    public short ReadShort() => _reader.ReadInt16();
 
-    public ushort ReadUShort()
-    {
-        return _reader.ReadUInt16();
-    }
+    public ushort ReadUShort() => _reader.ReadUInt16();
 
-    public int ReadInt()
-    {
-        return _reader.ReadInt32();
-    }
+    public int ReadInt() => _reader.ReadInt32();
 
-    public uint ReadUInt()
-    {
-        return _reader.ReadUInt32();
-    }
+    public uint ReadUInt() => _reader.ReadUInt32();
 
-    public long ReadLong()
-    {
-        return _reader.ReadInt64();
-    }
+    public long ReadLong() => _reader.ReadInt64();
 
-    public ulong ReadULong()
-    {
-        return _reader.ReadUInt64();
-    }
+    public ulong ReadULong() => _reader.ReadUInt64();
 
-    public double ReadDouble()
-    {
-        return _reader.ReadDouble();
-    }
+    public double ReadDouble() => _reader.ReadDouble();
 
-    public string ReadString(short? length = null)
-    {
-        return _encoding.GetString(_reader.ReadBytes(length ?? ReadShort()));
-    }
+    public string ReadString(short? length = null) => _encoding.GetString(_reader.ReadBytes(length ?? ReadShort()));
 
-    public byte[] ReadBytes(short length)
-    {
-        return _reader.ReadBytes(length);
-    }
+    public byte[] ReadBytes(short length) => _reader.ReadBytes(length);
 }

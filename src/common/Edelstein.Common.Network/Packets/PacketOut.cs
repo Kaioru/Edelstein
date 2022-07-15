@@ -15,10 +15,7 @@ public class PacketOut : IPacketWriter
         _writer = new BinaryWriter(_stream);
     }
 
-    public PacketOut(Enum operation) : this()
-    {
-        WriteShort(Convert.ToInt16(operation));
-    }
+    public PacketOut(Enum operation) : this() => WriteShort(Convert.ToInt16(operation));
 
     public byte[] Buffer => _stream.ToArray();
     public long Length => _stream.Length;

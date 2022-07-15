@@ -8,10 +8,7 @@ namespace Edelstein.Common.Gameplay;
 
 public abstract class AbstractStageUser : IStageUser
 {
-    protected AbstractStageUser(ISocket socket)
-    {
-        Socket = socket;
-    }
+    protected AbstractStageUser(ISocket socket) => Socket = socket;
 
     public int ID => Character?.ID ?? -1;
 
@@ -25,13 +22,7 @@ public abstract class AbstractStageUser : IStageUser
     public abstract Task OnException(Exception exception);
     public abstract Task OnDisconnect();
 
-    public Task Dispatch(IPacket packet)
-    {
-        return Socket.Dispatch(packet);
-    }
+    public Task Dispatch(IPacket packet) => Socket.Dispatch(packet);
 
-    public Task Disconnect()
-    {
-        return Socket.Close();
-    }
+    public Task Disconnect() => Socket.Close();
 }

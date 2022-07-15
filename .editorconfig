@@ -34,3 +34,21 @@ indent_size = 2
 [*.sh]
 end_of_line = lf
 indent_size = 2
+
+###############################
+# .NET Coding Conventions     #
+###############################
+[*.{cs,vb}]
+
+# Expression-level
+csharp_style_expression_bodied_constructors = when_on_single_line
+csharp_style_expression_bodied_methods = when_on_single_line
+csharp_style_expression_bodied_properties = when_on_single_line
+csharp_style_expression_bodied_indexers = when_on_single_line
+csharp_style_expression_bodied_accessors = when_on_single_line
+csharp_style_expression_bodied_lambdas = when_on_single_line
+csharp_style_expression_bodied_local_functions = when_on_single_line
+
+# Code block
+csharp_prefer_braces = when_multiline
+csharp_prefer_simple_using_statement = true

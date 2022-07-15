@@ -27,13 +27,7 @@ public class NettySocket : ISocket
 
     public bool IsDataEncrypted { get; }
 
-    public Task Dispatch(IPacket packet)
-    {
-        return _channel.WriteAndFlushAsync(packet);
-    }
+    public Task Dispatch(IPacket packet) => _channel.WriteAndFlushAsync(packet);
 
-    public Task Close()
-    {
-        return _channel.DisconnectAsync();
-    }
+    public Task Close() => _channel.DisconnectAsync();
 }
