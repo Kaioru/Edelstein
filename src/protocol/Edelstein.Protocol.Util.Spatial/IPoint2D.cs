@@ -2,8 +2,8 @@
 
 public interface IPoint2D : IObject2D
 {
-    int X { get; }
-    int Y { get; }
+    float X { get; }
+    float Y { get; }
 
-    double Distance(IPoint2D point);
+    float Distance(IPoint2D point);
 }

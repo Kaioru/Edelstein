@@ -2,8 +2,8 @@
 
 public interface IObject2D
 {
-    int MinX { get; }
-    int MinY { get; }
-    int MaxX { get; }
-    int MaxY { get; }
+    float MinX { get; }
+    float MinY { get; }
+    float MaxX { get; }
+    float MaxY { get; }
 }
