@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Stages.Login;
+﻿using Edelstein.Common.Gameplay.Stages.Actions;
+using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Util.Pipelines;
@@ -18,7 +19,9 @@ public class ProgramHost : IHostedService
     public Task StartAsync(CancellationToken cancellationToken)
     {
         var pipelines = new LoginContextPipelines(
-            new Pipeline<IStageUserOnPacket<ILoginStageUser>>(),
+            new Pipeline<IStageUserOnPacket<ILoginStageUser>>(
+                new StageUserOnPacketAction<ILoginStageUser>()
+            ),
             new Pipeline<IStageUserOnException<ILoginStageUser>>(),
             new Pipeline<IStageUserOnDisconnect<ILoginStageUser>>()
         );
