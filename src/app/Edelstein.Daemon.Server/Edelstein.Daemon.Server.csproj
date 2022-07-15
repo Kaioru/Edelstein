@@ -18,6 +18,11 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Login\Edelstein.Common.Gameplay.Stages.Login.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
+  </ItemGroup>
+
   <Import Project="..\App.targets" />
   
 </Project>
