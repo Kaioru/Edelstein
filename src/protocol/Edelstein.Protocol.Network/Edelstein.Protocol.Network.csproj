@@ -5,5 +5,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Util.Repositories\Edelstein.Protocol.Util.Repositories.csproj" />
   </ItemGroup>
-
+  
 </Project>
