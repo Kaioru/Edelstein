@@ -9,6 +9,8 @@ public interface IStageUser<TStage, TStageUser> : IIdentifiable<int>, IAdapter
     where TStage : IStage<TStage, TStageUser>
     where TStageUser : IStageUser<TStage, TStageUser>
 {
+    TStage? Stage { get; set; }
+
     IAccount? Account { get; set; }
     IAccountWorld? AccountWorld { get; set; }
     ICharacter? Character { get; set; }

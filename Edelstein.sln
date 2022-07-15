@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Util.Repos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Network", "src\common\Edelstein.Common.Network\Edelstein.Common.Network.csproj", "{50A57807-DF35-4741-A4DD-4CC597C04725}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Gameplay.Stages.Login", "src\common\Edelstein.Common.Gameplay.Stages.Login\Edelstein.Common.Gameplay.Stages.Login.csproj", "{0D3A0DF2-F5C0-49FA-A3E0-ADEE991E74BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,7 @@ Global
 		{7EB1A7AE-CF5B-4C1C-86EA-4107FF7A08E4} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{AC4B804A-319E-47D0-90E9-DA0E9E29E3DD} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{50A57807-DF35-4741-A4DD-4CC597C04725} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
+		{0D3A0DF2-F5C0-49FA-A3E0-ADEE991E74BC} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -111,5 +114,9 @@ Global
 		{50A57807-DF35-4741-A4DD-4CC597C04725}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50A57807-DF35-4741-A4DD-4CC597C04725}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50A57807-DF35-4741-A4DD-4CC597C04725}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D3A0DF2-F5C0-49FA-A3E0-ADEE991E74BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D3A0DF2-F5C0-49FA-A3E0-ADEE991E74BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D3A0DF2-F5C0-49FA-A3E0-ADEE991E74BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D3A0DF2-F5C0-49FA-A3E0-ADEE991E74BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
