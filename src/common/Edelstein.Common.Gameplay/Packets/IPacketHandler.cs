@@ -7,5 +7,7 @@ public interface IPacketHandler<in TStageUser> where TStageUser : IStageUser
 {
     short Operation { get; }
 
+    bool Check(TStageUser user);
+
     Task Handle(TStageUser user, IPacketReader reader);
 }

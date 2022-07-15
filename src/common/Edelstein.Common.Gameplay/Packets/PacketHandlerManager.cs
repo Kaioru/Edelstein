@@ -25,7 +25,8 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
         var operation = reader.ReadShort();
         var handler = _handlers.GetValueOrDefault(operation);
 
-        if (handler != null) return handler.Handle(user, reader);
+        if (handler != null && handler.Check(user))
+            return handler.Handle(user, reader);
         return Task.CompletedTask;
     }
 }
