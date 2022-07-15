@@ -13,15 +13,6 @@ namespace Edelstein.Common.Network.DotNetty.Transports;
 
 public class NettyTransportConnector : ITransportConnector
 {
-    public IAdapterInitializer Initializer { get; }
-
-    public short Version { get; }
-    public string Patch { get; }
-    public byte Locale { get; }
-
-    private IChannel? Channel { get; set; }
-    private IEventLoopGroup? WorkerGroup { get; set; }
-
     public NettyTransportConnector(IAdapterInitializer initializer, short version, string patch, byte locale)
     {
         Initializer = initializer ?? throw new ArgumentNullException(nameof(initializer));
@@ -29,6 +20,14 @@ public class NettyTransportConnector : ITransportConnector
         Patch = patch;
         Locale = locale;
     }
+
+    private IChannel? Channel { get; set; }
+    private IEventLoopGroup? WorkerGroup { get; set; }
+    public IAdapterInitializer Initializer { get; }
+
+    public short Version { get; }
+    public string Patch { get; }
+    public byte Locale { get; }
 
     public async Task Connect(string host, int port)
     {
@@ -53,7 +52,9 @@ public class NettyTransportConnector : ITransportConnector
     }
 
     public Task Dispatch(IPacket packet)
-        => Task.FromResult(Channel?.WriteAndFlushAsync(packet));
+    {
+        return Task.FromResult(Channel?.WriteAndFlushAsync(packet));
+    }
 
     public async Task Close()
     {

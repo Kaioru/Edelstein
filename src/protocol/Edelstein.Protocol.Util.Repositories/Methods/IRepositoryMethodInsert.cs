@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Util.Repositories.Methods;
 
-public interface IRepositoryMethodInsert<in TKey, TEntry> 
+public interface IRepositoryMethodInsert<in TKey, TEntry>
     where TKey : notnull
     where TEntry : IIdentifiable<TKey>
 {

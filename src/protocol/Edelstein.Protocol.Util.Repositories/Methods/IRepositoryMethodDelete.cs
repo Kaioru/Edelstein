@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Util.Repositories.Methods;
 
-public interface IRepositoryMethodDelete<in TKey, in TEntry> 
+public interface IRepositoryMethodDelete<in TKey, in TEntry>
     where TKey : notnull
     where TEntry : IIdentifiable<TKey>
 {

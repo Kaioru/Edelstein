@@ -9,13 +9,12 @@ namespace Edelstein.Common.Network.DotNetty.Codecs;
 
 public class NettyPacketDecoder : ReplayingDecoder<NettyPacketState>
 {
-    private readonly ITransport _transport;
-
     private readonly AESCipher _aesCipher;
     private readonly IGCipher _igCipher;
+    private readonly ITransport _transport;
+    private short _length;
 
     private short _sequence;
-    private short _length;
 
     public NettyPacketDecoder(
         ITransport transport,

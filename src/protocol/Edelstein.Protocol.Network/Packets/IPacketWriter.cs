@@ -3,7 +3,7 @@
 public interface IPacketWriter : IPacket
 {
     long Length { get; }
-    
+
     IPacketWriter WriteByte(byte value);
     IPacketWriter WriteBool(bool value);
 

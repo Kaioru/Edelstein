@@ -6,18 +6,18 @@ namespace Edelstein.Common.Util.Spatial.Collections;
 public class RBushSpaceObject2D<TObject> : ISpatialData where TObject : IObject2D
 {
     private readonly Envelope _envelope;
-    public ref readonly Envelope Envelope => ref _envelope;
-
-    public TObject Object { get; }
 
     public RBushSpaceObject2D(TObject obj)
     {
         _envelope = new Envelope(
-            MinX: obj.MinX,
-            MinY: obj.MinY,
-            MaxX: obj.MaxX,
-            MaxY: obj.MaxY
+            obj.MinX,
+            obj.MinY,
+            obj.MaxX,
+            obj.MaxY
         );
         Object = obj;
     }
+
+    public TObject Object { get; }
+    public ref readonly Envelope Envelope => ref _envelope;
 }
