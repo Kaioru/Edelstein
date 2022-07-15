@@ -2,5 +2,5 @@
 
 public enum ProgramStageType
 {
-    Login
+    Login = 0
 }

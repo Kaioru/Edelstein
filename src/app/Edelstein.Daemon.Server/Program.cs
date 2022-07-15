@@ -1,7 +1,9 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Util.Pipelines;
 using Edelstein.Daemon.Server;
 using Edelstein.Daemon.Server.Configs;
+using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Util.Pipelines;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +35,9 @@ await Host.CreateDefaultBuilder(args)
         services.AddSingleton(typeof(IPacketHandlerManager<>), typeof(PacketHandlerManager<>));
         services.AddSingleton(typeof(IPipeline<>), typeof(Pipeline<>));
 
-        services.AddSingleton(services);
+        services.AddSingleton<ILoginContextPipelines, LoginContextPipelines>();
+        services.AddSingleton<ILoginContext, LoginContext>();
+
         services.AddHostedService<ProgramHost>();
     })
     .RunConsoleAsync();
