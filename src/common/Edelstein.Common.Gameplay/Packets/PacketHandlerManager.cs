@@ -51,13 +51,20 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
         var operation = reader.ReadShort();
         var handler = _handlers.GetValueOrDefault(operation);
 
-        if (handler == null) return;
+        if (handler == null)
+        {
+            _logger.LogWarning(
+                "Unhandled packet operation 0x{operation:X} ({operationName})",
+                operation, Enum.GetName((PacketRecvOperations)operation)
+            );
+            return;
+        }
 
         if (handler.Check(user)) await handler.Handle(user, reader);
 
         _logger.LogDebug(
             "Handled packet operation 0x{operation:X} ({operationName}) with {available} available bytes left",
-            handler.Operation, Enum.GetName((PacketRecvOperations)handler.Operation), reader.Available
+            operation, Enum.GetName((PacketRecvOperations)operation), reader.Available
         );
     }
 }
