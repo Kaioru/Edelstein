@@ -1,6 +1,8 @@
-﻿namespace Edelstein.Protocol.Gameplay;
+﻿using Edelstein.Protocol.Util.Repositories;
 
-public interface IStage<TStage, TStageUser>
+namespace Edelstein.Protocol.Gameplay;
+
+public interface IStage<TStage, TStageUser> : IIdentifiable<string>
     where TStage : IStage<TStage, TStageUser>
     where TStageUser : IStageUser<TStage, TStageUser>
 {

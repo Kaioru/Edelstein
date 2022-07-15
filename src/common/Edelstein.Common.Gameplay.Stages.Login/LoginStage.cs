@@ -7,6 +7,8 @@ public class LoginStage : ILoginStage
 {
     private readonly IDictionary<int, ILoginStageUser> _users;
 
+    public string ID => "Login-0";
+
     public LoginStage()
     {
         _users = new Dictionary<int, ILoginStageUser>();
