@@ -26,10 +26,7 @@ public class IGCipher
     {
     }
 
-    public IGCipher(byte[] shuffle)
-    {
-        _shuffle = shuffle;
-    }
+    public IGCipher(byte[] shuffle) => _shuffle = shuffle;
 
     public unsafe uint Hash(uint pSrc, int nLen, uint dwKey)
     {

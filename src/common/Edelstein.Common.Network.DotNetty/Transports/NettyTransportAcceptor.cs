@@ -57,10 +57,7 @@ public class NettyTransportAcceptor : ITransportAcceptor
             .BindAsync(port);
     }
 
-    public Task Dispatch(IPacket packet)
-    {
-        return Task.FromResult(Sockets.Values.Select(s => s.Dispatch(packet)));
-    }
+    public Task Dispatch(IPacket packet) => Task.FromResult(Sockets.Values.Select(s => s.Dispatch(packet)));
 
     public async Task Close()
     {

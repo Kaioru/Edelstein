@@ -9,10 +9,7 @@ public class ProgramHost : IHostedService
 {
     private readonly ILogger<ProgramHost> _logger;
 
-    public ProgramHost(ILogger<ProgramHost> logger)
-    {
-        _logger = logger;
-    }
+    public ProgramHost(ILogger<ProgramHost> logger) => _logger = logger;
 
     public Task StartAsync(CancellationToken cancellationToken)
     {

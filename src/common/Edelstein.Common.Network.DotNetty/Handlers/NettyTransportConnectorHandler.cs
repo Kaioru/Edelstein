@@ -8,10 +8,8 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
 {
     private readonly ITransportConnector _connector;
 
-    public NettyTransportConnectorHandler(ITransportConnector connector)
-    {
+    public NettyTransportConnectorHandler(ITransportConnector connector) =>
         _connector = connector ?? throw new ArgumentNullException(nameof(connector));
-    }
 
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
