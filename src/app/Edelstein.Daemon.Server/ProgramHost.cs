@@ -20,7 +20,7 @@ public class ProgramHost : IHostedService
         var acceptor = new NettyTransportAcceptor(initializer, 95, "1", 8);
 
         acceptor.Accept("127.0.0.1", 8484).Wait(cancellationToken);
-        
+
         _logger.LogInformation("Host has started");
         return Task.CompletedTask;
     }

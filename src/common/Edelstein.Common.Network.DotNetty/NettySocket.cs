@@ -9,6 +9,14 @@ public class NettySocket : ISocket
 {
     private readonly IChannel _channel;
 
+    public NettySocket(IChannel channel, uint seqSend, uint seqRecv, bool isDataEncrypted = true)
+    {
+        _channel = channel ?? throw new ArgumentNullException(nameof(channel));
+        SeqSend = seqSend;
+        SeqRecv = seqRecv;
+        IsDataEncrypted = isDataEncrypted;
+    }
+
     public string ID => _channel.Id.AsLongText();
 
     public EndPoint AddressLocal => _channel.LocalAddress;
@@ -19,14 +27,13 @@ public class NettySocket : ISocket
 
     public bool IsDataEncrypted { get; }
 
-    public NettySocket(IChannel channel, uint seqSend, uint seqRecv, bool isDataEncrypted = true)
+    public Task Dispatch(IPacket packet)
     {
-        _channel = channel ?? throw new ArgumentNullException(nameof(channel));
-        SeqSend = seqSend;
-        SeqRecv = seqRecv;
-        IsDataEncrypted = isDataEncrypted;
+        return _channel.WriteAndFlushAsync(packet);
     }
 
-    public Task Dispatch(IPacket packet) => _channel.WriteAndFlushAsync(packet);
-    public Task Close() => _channel.DisconnectAsync();
+    public Task Close()
+    {
+        return _channel.DisconnectAsync();
+    }
 }

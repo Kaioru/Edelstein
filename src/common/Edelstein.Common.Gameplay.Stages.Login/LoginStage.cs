@@ -2,7 +2,15 @@
 
 namespace Edelstein.Common.Gameplay.Stages.Login;
 
-public class LoginStage : AbstractStage<ILoginStage, ILoginStageUser>, ILoginStage
+public class LoginStage : AbstractStage<ILoginStageUser>, ILoginStage
 {
-    public override string ID => "Login-0";
+    public override Task Enter(ILoginStageUser user)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override Task Leave(ILoginStageUser user)
+    {
+        throw new NotImplementedException();
+    }
 }

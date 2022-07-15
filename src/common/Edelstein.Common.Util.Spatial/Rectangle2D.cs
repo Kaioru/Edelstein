@@ -30,8 +30,10 @@ public readonly struct Rectangle2D : IRectangle2D
     public bool IsSquare => Math.Abs(Height - Width) <= 0;
 
     public bool Intersects(IPoint2D point)
-        => point.X >= Left &&
-           point.X <= Right &&
-           point.Y >= Top &&
-           point.Y <= Bottom;
+    {
+        return point.X >= Left &&
+               point.X <= Right &&
+               point.Y >= Top &&
+               point.Y <= Bottom;
+    }
 }

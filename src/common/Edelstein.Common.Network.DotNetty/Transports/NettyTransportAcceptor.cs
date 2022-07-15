@@ -14,17 +14,6 @@ namespace Edelstein.Common.Network.DotNetty.Transports;
 
 public class NettyTransportAcceptor : ITransportAcceptor
 {
-    public IAdapterInitializer Initializer { get; }
-    public IDictionary<string, ISocket> Sockets { get; }
-
-    public short Version { get; }
-    public string Patch { get; }
-    public byte Locale { get; }
-
-    private IChannel? Channel { get; set; }
-    private IEventLoopGroup? BossGroup { get; set; }
-    private IEventLoopGroup? WorkerGroup { get; set; }
-
     public NettyTransportAcceptor(IAdapterInitializer initializer, short version, string patch, byte locale)
     {
         Initializer = initializer ?? throw new ArgumentNullException(nameof(initializer));
@@ -33,6 +22,16 @@ public class NettyTransportAcceptor : ITransportAcceptor
         Patch = patch;
         Locale = locale;
     }
+
+    private IChannel? Channel { get; set; }
+    private IEventLoopGroup? BossGroup { get; set; }
+    private IEventLoopGroup? WorkerGroup { get; set; }
+    public IAdapterInitializer Initializer { get; }
+    public IDictionary<string, ISocket> Sockets { get; }
+
+    public short Version { get; }
+    public string Patch { get; }
+    public byte Locale { get; }
 
     public async Task Accept(string host, int port)
     {
@@ -59,7 +58,9 @@ public class NettyTransportAcceptor : ITransportAcceptor
     }
 
     public Task Dispatch(IPacket packet)
-        => Task.FromResult(Sockets.Values.Select(s => s.Dispatch(packet)));
+    {
+        return Task.FromResult(Sockets.Values.Select(s => s.Dispatch(packet)));
+    }
 
     public async Task Close()
     {

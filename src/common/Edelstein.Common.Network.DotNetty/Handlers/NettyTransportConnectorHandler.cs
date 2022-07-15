@@ -18,7 +18,10 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
         var packet = (IPacketReader)message;
 
-        if (adapter != null) adapter.OnPacket(packet);
+        if (adapter != null)
+        {
+            adapter.OnPacket(packet);
+        }
         else
         {
             var version = packet.ReadShort();

@@ -6,10 +6,13 @@ using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Common.Gameplay;
 
-public class AbstractStageUser<TStage, TStageUser> : IStageUser<TStage, TStageUser>
-    where TStage : IStage<TStage, TStageUser>
-    where TStageUser : IStageUser<TStage, TStageUser>
+public abstract class AbstractStageUser : IStageUser
 {
+    protected AbstractStageUser(ISocket socket)
+    {
+        Socket = socket;
+    }
+
     public int ID => Character?.ID ?? -1;
 
     public ISocket Socket { get; }
@@ -18,26 +21,17 @@ public class AbstractStageUser<TStage, TStageUser> : IStageUser<TStage, TStageUs
     public IAccountWorld? AccountWorld { get; set; }
     public ICharacter? Character { get; set; }
 
-    protected AbstractStageUser(ISocket socket)
+    public abstract Task OnPacket(IPacket packet);
+    public abstract Task OnException(Exception exception);
+    public abstract Task OnDisconnect();
+
+    public Task Dispatch(IPacket packet)
     {
-        Socket = socket;
+        return Socket.Dispatch(packet);
     }
 
-    public Task OnPacket(IPacket packet)
+    public Task Disconnect()
     {
-        throw new NotImplementedException();
+        return Socket.Close();
     }
-
-    public Task OnException(Exception exception)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task OnDisconnect()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task Dispatch(IPacket packet) => Socket.Dispatch(packet);
-    public Task Disconnect() => Socket.Close();
 }

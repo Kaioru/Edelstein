@@ -9,10 +9,9 @@ namespace Edelstein.Common.Network.DotNetty.Codecs;
 
 public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
 {
-    private readonly ITransport _transport;
-
     private readonly AESCipher _aesCipher;
     private readonly IGCipher _igCipher;
+    private readonly ITransport _transport;
 
     public NettyPacketEncoder(
         ITransport transport,
