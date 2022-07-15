@@ -62,8 +62,20 @@ public class NettyTransportAcceptor : ITransportAcceptor
     public async Task Close()
     {
         await Task.WhenAll(Sockets.Values.Select(s => s.Close()));
+
         if (Channel != null) await Channel.CloseAsync();
-        if (BossGroup != null) await BossGroup.ShutdownGracefullyAsync();
-        if (WorkerGroup != null) await WorkerGroup.ShutdownGracefullyAsync();
+
+        await Task.WhenAll(
+            Task.Run(async () =>
+            {
+                if (BossGroup != null)
+                    await BossGroup.ShutdownGracefullyAsync();
+            }),
+            Task.Run(async () =>
+            {
+                if (WorkerGroup != null)
+                    await WorkerGroup.ShutdownGracefullyAsync();
+            })
+        );
     }
 }
