@@ -1,10 +1,13 @@
-﻿using Edelstein.Common.Gameplay.Stages.Actions;
+﻿using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Util.Pipelines;
 using Edelstein.Protocol.Gameplay.Stages.Login;
-using Edelstein.Protocol.Gameplay.Stages.Messages;
+using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
+using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Util.Pipelines;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -18,16 +21,30 @@ public class ProgramHost : IHostedService
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        var pipelines = new LoginContextPipelines(
-            new Pipeline<IStageUserOnPacket<ILoginStageUser>>(
-                new StageUserOnPacketAction<ILoginStageUser>()
-            ),
-            new Pipeline<IStageUserOnException<ILoginStageUser>>(),
-            new Pipeline<IStageUserOnDisconnect<ILoginStageUser>>()
+        var collection = new ServiceCollection();
+
+        collection.Scan(s => s
+            .FromApplicationDependencies()
+            .AddClasses(c => c.AssignableTo(typeof(IPacketHandler<>)))
+            .AsImplementedInterfaces()
+            .WithSingletonLifetime()
+            .AddClasses(c => c.AssignableTo(typeof(IPipelineAction<>)))
+            .AsImplementedInterfaces()
+            .WithSingletonLifetime()
         );
-        var context = new LoginContext(pipelines);
-        var initializer = new LoginStageUserInitializer(context);
-        var acceptor = new NettyTransportAcceptor(initializer, 95, "1", 8);
+
+        collection.AddSingleton(typeof(IPacketHandlerManager<>), typeof(PacketHandlerManager<>));
+        collection.AddSingleton(typeof(IPipeline<>), typeof(Pipeline<>));
+
+        collection.AddSingleton<ILoginContext, LoginContext>();
+        collection.AddSingleton<ILoginContextPipelines, LoginContextPipelines>();
+        collection.AddSingleton<ILoginStage, LoginStage>();
+
+        collection.AddSingleton<IAdapterInitializer, LoginStageUserInitializer>();
+
+        var provider = collection.BuildServiceProvider();
+        var adapter = provider.GetRequiredService<IAdapterInitializer>();
+        var acceptor = new NettyTransportAcceptor(adapter, 95, "1", 8);
 
         acceptor.Accept("127.0.0.1", 8484).Wait(cancellationToken);
 

@@ -3,6 +3,6 @@ using Edelstein.Protocol.Gameplay.Stages.Messages;
 
 namespace Edelstein.Common.Gameplay.Stages.Messages;
 
-public record StageUserOnDisconnect<TStageUser>(
+public record SocketOnDisconnect<TStageUser>(
     TStageUser User
-) : IStageUserOnDisconnect<TStageUser> where TStageUser : IStageUser;
+) : ISocketOnDisconnect<TStageUser> where TStageUser : IStageUser;

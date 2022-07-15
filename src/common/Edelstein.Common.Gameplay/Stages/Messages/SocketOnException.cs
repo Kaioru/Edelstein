@@ -3,7 +3,7 @@ using Edelstein.Protocol.Gameplay.Stages.Messages;
 
 namespace Edelstein.Common.Gameplay.Stages.Messages;
 
-public record StageUserOnException<TStageUser>(
+public record SocketOnException<TStageUser>(
     TStageUser User,
     Exception Exception
-) : IStageUserOnException<TStageUser> where TStageUser : IStageUser;
+) : ISocketOnException<TStageUser> where TStageUser : IStageUser;
