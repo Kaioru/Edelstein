@@ -12,5 +12,9 @@ await Host.CreateDefaultBuilder(args)
         builder.AddCommandLine(args);
     })
     .UseSerilog((ctx, logger) => logger.ReadFrom.Configuration(ctx.Configuration))
-    .ConfigureServices((ctx, services) => { services.AddHostedService<ProgramHost>(); })
+    .ConfigureServices((ctx, services) =>
+    {
+        services.AddSingleton(services);
+        services.AddHostedService<ProgramHost>();
+    })
     .RunConsoleAsync();
