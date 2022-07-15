@@ -71,7 +71,7 @@ public class ProgramHost : IHostedService
 
             var provider = collection.BuildServiceProvider();
             var adapter = provider.GetRequiredService<IAdapterInitializer>();
-            var acceptor = new NettyTransportAcceptor(adapter, 95, "1", 8);
+            var acceptor = new NettyTransportAcceptor(adapter, stage.Version, stage.Patch, stage.Locale);
 
             await acceptor.Accept(stage.Host, stage.Port);
 
