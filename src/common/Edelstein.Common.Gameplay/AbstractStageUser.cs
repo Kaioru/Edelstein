@@ -18,7 +18,7 @@ public abstract class AbstractStageUser : IStageUser
     public IAccountWorld? AccountWorld { get; set; }
     public ICharacter? Character { get; set; }
 
-    public abstract Task OnPacket(IPacket packet);
+    public abstract Task OnPacket(IPacketReader packet);
     public abstract Task OnException(Exception exception);
     public abstract Task OnDisconnect();
 
