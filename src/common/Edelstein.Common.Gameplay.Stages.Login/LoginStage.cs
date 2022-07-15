@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using Edelstein.Protocol.Gameplay.Stages.Login;
+﻿using Edelstein.Protocol.Gameplay.Stages.Login;
 
 namespace Edelstein.Common.Gameplay.Stages.Login;
 
