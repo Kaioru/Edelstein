@@ -1,10 +1,14 @@
-﻿using Edelstein.Common.Gameplay.Stages.Login;
+﻿using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Stages.Login;
+using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
+using Edelstein.Common.Util.Pipelines;
 using Edelstein.Daemon.Server.Configs;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
+using Edelstein.Protocol.Util.Pipelines;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -18,17 +22,13 @@ public class ProgramHost : IHostedService
     private readonly ProgramConfig _config;
     private readonly ILogger<ProgramHost> _logger;
 
-    private readonly ILoginContext _loginContext;
-
     public ProgramHost(
         IOptions<ProgramConfig> options,
-        ILogger<ProgramHost> logger,
-        ILoginContext loginContext
+        ILogger<ProgramHost> logger
     )
     {
         _config = options.Value;
         _logger = logger;
-        _loginContext = loginContext;
         _acceptors = new List<ITransportAcceptor>();
     }
 
@@ -38,10 +38,24 @@ public class ProgramHost : IHostedService
         {
             var collection = new ServiceCollection();
 
+            collection.Scan(s => s
+                .FromApplicationDependencies()
+                .AddClasses(c => c.AssignableTo(typeof(IPacketHandler<>)))
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime()
+                .AddClasses(c => c.AssignableTo(typeof(IPipelineAction<>)))
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime()
+            );
+
+            collection.AddSingleton(typeof(IPacketHandlerManager<>), typeof(PacketHandlerManager<>));
+            collection.AddSingleton(typeof(IPipeline<>), typeof(Pipeline<>));
+
             switch (stage.Type)
             {
                 case ProgramStageType.Login:
-                    collection.AddSingleton(_loginContext);
+                    collection.AddSingleton<ILoginContext, LoginContext>();
+                    collection.AddSingleton<ILoginContextPipelines, LoginContextPipelines>();
                     collection.AddSingleton<IAdapterInitializer, LoginStageUserInitializer>();
                     collection.AddSingleton<ILoginStage, LoginStage>();
                     break;
