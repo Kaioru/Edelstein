@@ -4,21 +4,15 @@ namespace Edelstein.Common.Util.Spatial;
 
 public readonly struct Point2D : IPoint2D
 {
-    public float MinX => X;
-    public float MinY => Y;
-    public float MaxX => X;
-    public float MaxY => Y;
+    public int MinX => X;
+    public int MinY => Y;
+    public int MaxX => X;
+    public int MaxY => Y;
 
-    public float X { get; }
-    public float Y { get; }
+    public int X { get; }
+    public int Y { get; }
 
     public Point2D(int x, int y)
-    {
-        X = x;
-        Y = y;
-    }
-
-    public Point2D(float x, float y)
     {
         X = x;
         Y = y;
