@@ -10,9 +10,9 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers;
 
 public class CheckPasswordHandler : ILoginPacketHandler
 {
-    private readonly IPipeline<ILoginCheckPassword> _pipeline;
+    private readonly IPipeline<ICheckPassword> _pipeline;
 
-    public CheckPasswordHandler(IPipeline<ILoginCheckPassword> pipeline) => _pipeline = pipeline;
+    public CheckPasswordHandler(IPipeline<ICheckPassword> pipeline) => _pipeline = pipeline;
 
     public short Operation => (short)PacketRecvOperations.CheckPassword;
 

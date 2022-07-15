@@ -7,4 +7,4 @@ public record CheckPassword(
     ILoginStageUser User,
     string Username,
     string Password
-) : ILoginCheckPassword;
+) : ICheckPassword;
