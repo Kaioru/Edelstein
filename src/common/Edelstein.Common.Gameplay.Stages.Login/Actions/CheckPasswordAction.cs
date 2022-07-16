@@ -13,7 +13,7 @@ public class CheckPasswordAction : IPipelineAction<ICheckPassword>
     public Task Handle(IPipelineContext ctx, ICheckPassword message)
     {
         _logger.LogInformation(
-            "Login attempt with username: {username}, password: {password}",
+            "Login attempt with username: {Username}, password: {Password}",
             message.Username, message.Password
         );
         return Task.CompletedTask;

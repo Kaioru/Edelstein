@@ -26,12 +26,12 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
     {
         if (_handlers.ContainsKey(handler.Operation))
             _logger.LogWarning(
-                "Overriding packet handler for operation 0x{operation:X} ({operationName}) to {handler}",
+                "Overriding packet handler for operation 0x{Operation:X} ({OperationName}) to {Handler}",
                 handler.Operation, Enum.GetName((PacketRecvOperations)handler.Operation), handler.GetType().Name
             );
         else
             _logger.LogDebug(
-                "Set packet handler for operation 0x{operation:X} ({operationName}) to {handler}",
+                "Set packet handler for operation 0x{Operation:X} ({OperationName}) to {Handler}",
                 handler.Operation, Enum.GetName((PacketRecvOperations)handler.Operation), handler.GetType().Name
             );
         _handlers[handler.Operation] = handler;
@@ -40,7 +40,7 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
     public void Remove(IPacketHandler<TStageUser> handler)
     {
         _logger.LogWarning(
-            "Removing packet handler for operation 0x{operation:X} ({operationName})",
+            "Removing packet handler for operation 0x{Operation:X} ({OperationName})",
             handler.Operation, Enum.GetName((PacketRecvOperations)handler.Operation)
         );
         _handlers.Remove(handler.Operation);
@@ -54,7 +54,7 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
         if (handler == null)
         {
             _logger.LogWarning(
-                "Unhandled packet operation 0x{operation:X} ({operationName})",
+                "Unhandled packet operation 0x{Operation:X} ({OperationName})",
                 operation, Enum.GetName((PacketRecvOperations)operation)
             );
             return;
@@ -63,7 +63,7 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
         if (handler.Check(user)) await handler.Handle(user, reader);
 
         _logger.LogDebug(
-            "Handled packet operation 0x{operation:X} ({operationName}) with {available} available bytes left",
+            "Handled packet operation 0x{Operation:X} ({OperationName}) with {Available} available bytes left",
             operation, Enum.GetName((PacketRecvOperations)operation), reader.Available
         );
     }

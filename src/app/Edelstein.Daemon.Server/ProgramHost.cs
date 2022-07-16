@@ -76,7 +76,7 @@ public class ProgramHost : IHostedService
             await acceptor.Accept(stage.Host, stage.Port);
 
             _logger.LogInformation(
-                "{id} socket acceptor bound at {host}:{port}",
+                "{ID} socket acceptor bound at {Host}:{Port}",
                 stage.ID, stage.Host, stage.Port
             );
             _acceptors.Add(acceptor);
