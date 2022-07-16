@@ -2,10 +2,8 @@
 
 namespace Edelstein.Daemon.Server.Configs;
 
-public record ProgramConfigStage : IIdentifiable<string>
+public abstract record AbstractProgramConfigStage : IIdentifiable<string>
 {
-    public ProgramStageType Type { get; set; }
-
     public string Host { get; set; }
     public short Port { get; set; }
 

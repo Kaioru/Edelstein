@@ -18,7 +18,7 @@ await Host.CreateDefaultBuilder(args)
         services.AddSingleton(services);
 
         services.Configure<ProgramConfig>(ctx.Configuration.GetSection("Host"));
-        services.AddSingleton<ProgramHostContext>();
+        services.AddSingleton<ProgramContext>();
         services.AddHostedService<ProgramHost>();
     })
     .RunConsoleAsync();

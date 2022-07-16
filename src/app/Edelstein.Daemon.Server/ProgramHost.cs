@@ -22,12 +22,12 @@ public class ProgramHost : IHostedService
     private readonly ICollection<ITransportAcceptor> _acceptors;
     private readonly IServiceCollection _collection;
     private readonly ProgramConfig _config;
-    private readonly ProgramHostContext _context;
+    private readonly ProgramContext _context;
     private readonly ILogger<ProgramHost> _logger;
 
     public ProgramHost(
         IOptions<ProgramConfig> options,
-        ProgramHostContext context,
+        ProgramContext context,
         ILogger<ProgramHost> logger,
         IServiceCollection collection
     )
@@ -41,7 +41,11 @@ public class ProgramHost : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        foreach (var stage in _config.Stages.OrderBy(s => s.Type))
+        var stages = new List<AbstractProgramConfigStage>();
+
+        stages.AddRange(_config.LoginStages);
+
+        foreach (var stage in stages)
         {
             var collection = new ServiceCollection { _collection };
 
@@ -58,9 +62,10 @@ public class ProgramHost : IHostedService
             collection.AddSingleton(typeof(IPacketHandlerManager<>), typeof(PacketHandlerManager<>));
             collection.AddSingleton(typeof(IPipeline<>), typeof(Pipeline<>));
 
-            switch (stage.Type)
+            switch (stage)
             {
-                case ProgramStageType.Login:
+                case ILoginContextOptions options:
+                    collection.AddSingleton(options);
                     collection.AddSingleton<ILoginContext, LoginContext>();
                     collection.AddSingleton<ILoginContextPipelines, LoginContextPipelines>();
                     collection.AddSingleton<IAdapterInitializer, LoginStageUserInitializer>();

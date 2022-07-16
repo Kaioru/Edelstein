@@ -2,5 +2,5 @@
 
 public record ProgramConfig
 {
-    public ICollection<ProgramConfigStage> Stages { get; set; }
+    public ICollection<ProgramConfigStageLogin> LoginStages { get; set; }
 }
