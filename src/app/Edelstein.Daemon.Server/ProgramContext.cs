@@ -1,3 +1,3 @@
 ﻿namespace Edelstein.Daemon.Server;
 
-public record ProgramHostContext;
+public record ProgramContext;

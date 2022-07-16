@@ -2,5 +2,6 @@
 
 public interface ILoginContext
 {
+    ILoginContextOptions Options { get; }
     ILoginContextPipelines Pipelines { get; }
 }
