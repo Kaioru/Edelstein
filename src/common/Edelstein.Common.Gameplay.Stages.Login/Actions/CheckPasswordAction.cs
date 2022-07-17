@@ -44,6 +44,18 @@ public class CheckPasswordAction : IPipelineAction<ICheckPassword>
                 AuthLoginResult.FailedInvalidPassword => LoginResult.IncorrectPassword,
                 _ => LoginResult.Unknown
             };
+
+            if (result == LoginResult.NotRegistered)
+            {
+                // TODO: Move autoregister this to plugin
+                result = LoginResult.Success;
+                await _auth.Register(new AuthRegisterRequest(message.Username, message.Password));
+                _logger.LogInformation(
+                    "Created new user {Username} with password {Password}",
+                    message.Username, message.Password
+                );
+            }
+
             var account = await _repository.RetrieveByUsername(message.Username) ??
                           await _repository.Insert(new Account { Username = message.Username });
             var packet = new PacketOut(PacketSendOperations.CheckPasswordResult);
