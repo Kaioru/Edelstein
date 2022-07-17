@@ -6,6 +6,8 @@
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Login\Edelstein.Protocol.Gameplay.Stages.Login.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Pipelines\Edelstein.Protocol.Util.Pipelines.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Network\Edelstein.Common.Network.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
   </ItemGroup>
 
   <ItemGroup>
