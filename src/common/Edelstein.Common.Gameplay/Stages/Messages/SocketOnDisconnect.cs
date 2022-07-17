@@ -5,4 +5,4 @@ namespace Edelstein.Common.Gameplay.Stages.Messages;
 
 public record SocketOnDisconnect<TStageUser>(
     TStageUser User
-) : ISocketOnDisconnect<TStageUser> where TStageUser : IStageUser;
+) : ISocketOnDisconnect<TStageUser> where TStageUser : IStageUser<TStageUser>;

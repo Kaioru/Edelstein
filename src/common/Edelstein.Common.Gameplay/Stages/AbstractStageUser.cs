@@ -6,13 +6,15 @@ using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages;
 
-public abstract class AbstractStageUser : IStageUser
+public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser> where TStageUser : IStageUser<TStageUser>
 {
     protected AbstractStageUser(ISocket socket) => Socket = socket;
 
     public int ID => Character?.ID ?? -1;
 
     public ISocket Socket { get; }
+
+    public IStage<TStageUser>? Stage { get; set; }
 
     public IAccount? Account { get; set; }
     public IAccountWorld? AccountWorld { get; set; }

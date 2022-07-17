@@ -2,8 +2,17 @@
 
 namespace Edelstein.Common.Gameplay.Stages;
 
-public abstract class AbstractStage<TStageUser> : IStage<TStageUser> where TStageUser : IStageUser
+public abstract class AbstractStage<TStageUser> : IStage<TStageUser> where TStageUser : IStageUser<TStageUser>
 {
-    public abstract Task Enter(TStageUser user);
-    public abstract Task Leave(TStageUser user);
+    public virtual Task Enter(TStageUser user)
+    {
+        user.Stage = this;
+        return Task.CompletedTask;
+    }
+
+    public virtual Task Leave(TStageUser user)
+    {
+        user.Stage = null;
+        return Task.CompletedTask;
+    }
 }

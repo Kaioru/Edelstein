@@ -6,7 +6,7 @@ using Edelstein.Protocol.Util.Pipelines;
 namespace Edelstein.Common.Gameplay.Stages.Actions;
 
 public abstract class AbstractSocketOnPacketAction<TStageUser> : IPipelineAction<ISocketOnPacket<TStageUser>>
-    where TStageUser : IStageUser
+    where TStageUser : IStageUser<TStageUser>
 {
     private readonly IPacketHandlerManager<TStageUser> _handler;
 

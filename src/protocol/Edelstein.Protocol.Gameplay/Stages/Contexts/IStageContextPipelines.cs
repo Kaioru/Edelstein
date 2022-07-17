@@ -3,7 +3,7 @@ using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Contexts;
 
-public interface IStageContextPipelines<TStageUser> where TStageUser : IStageUser
+public interface IStageContextPipelines<TStageUser> where TStageUser : IStageUser<TStageUser>
 {
     IPipeline<ISocketOnPacket<TStageUser>> SocketOnPacket { get; }
     IPipeline<ISocketOnException<TStageUser>> SocketOnException { get; }

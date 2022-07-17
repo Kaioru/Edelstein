@@ -7,4 +7,4 @@ namespace Edelstein.Common.Gameplay.Stages.Messages;
 public record SocketOnPacket<TStageUser>(
     TStageUser User,
     IPacketReader Packet
-) : ISocketOnPacket<TStageUser> where TStageUser : IStageUser;
+) : ISocketOnPacket<TStageUser> where TStageUser : IStageUser<TStageUser>;

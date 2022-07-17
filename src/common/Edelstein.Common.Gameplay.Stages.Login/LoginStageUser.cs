@@ -6,7 +6,7 @@ using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Login;
 
-public class LoginStageUser : AbstractStageUser, ILoginStageUser
+public class LoginStageUser : AbstractStageUser<ILoginStageUser>, ILoginStageUser
 {
     public LoginStageUser(
         ISocket socket,
