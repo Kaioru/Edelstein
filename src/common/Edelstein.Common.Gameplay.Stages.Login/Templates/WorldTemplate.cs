@@ -3,7 +3,7 @@ using Edelstein.Protocol.Gameplay.Stages.Login.Templates;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Templates;
 
-public class WorldTemplate : IWorldTemplate
+public record WorldTemplate : IWorldTemplate
 {
     public WorldTemplate(int id, IDataProperty property)
     {
