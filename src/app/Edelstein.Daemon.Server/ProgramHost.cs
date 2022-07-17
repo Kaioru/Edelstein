@@ -2,12 +2,14 @@
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
+using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Util.Pipelines;
 using Edelstein.Daemon.Server.Configs;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
+using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Util.Pipelines;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -62,12 +64,15 @@ public class ProgramHost : IHostedService
             collection.AddSingleton(typeof(IPacketHandlerManager<>), typeof(PacketHandlerManager<>));
             collection.AddSingleton(typeof(IPipeline<>), typeof(Pipeline<>));
 
+            collection.AddSingleton<IAuthService, AuthService>();
+
             switch (stage)
             {
                 case ILoginContextOptions options:
                     collection.AddSingleton(options);
                     collection.AddSingleton<ILoginContext, LoginContext>();
                     collection.AddSingleton<ILoginContextPipelines, LoginContextPipelines>();
+                    collection.AddSingleton<ILoginContextServices, LoginContextServices>();
                     collection.AddSingleton<IAdapterInitializer, LoginStageUserInitializer>();
                     collection.AddSingleton<ILoginStage, LoginStage>();
                     break;

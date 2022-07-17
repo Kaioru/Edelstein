@@ -1,5 +1,7 @@
 ﻿using Edelstein.Protocol.Util.Repositories;
 
+#pragma warning disable CS8618
+
 namespace Edelstein.Daemon.Server.Configs;
 
 public abstract record AbstractProgramConfigStage : IIdentifiable<string>

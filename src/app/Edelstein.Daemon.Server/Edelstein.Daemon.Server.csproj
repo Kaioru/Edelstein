@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Login\Edelstein.Common.Gameplay.Stages.Login.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Util.Pipelines\Edelstein.Common.Util.Pipelines.csproj" />
   </ItemGroup>
 
