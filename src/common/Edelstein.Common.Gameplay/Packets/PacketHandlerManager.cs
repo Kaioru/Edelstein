@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Packets;
 
-public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser> where TStageUser : IStageUser
+public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser> where TStageUser : IStageUser<TStageUser>
 {
     private readonly Dictionary<short, IPacketHandler<TStageUser>> _handlers;
     private readonly ILogger _logger;

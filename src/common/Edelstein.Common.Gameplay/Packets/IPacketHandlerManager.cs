@@ -3,7 +3,7 @@ using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Common.Gameplay.Packets;
 
-public interface IPacketHandlerManager<TStageUser> where TStageUser : IStageUser
+public interface IPacketHandlerManager<TStageUser> where TStageUser : IStageUser<TStageUser>
 {
     void Add(IPacketHandler<TStageUser> handler);
     void Remove(IPacketHandler<TStageUser> handler);
