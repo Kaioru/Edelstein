@@ -12,4 +12,7 @@ public class AuthDbContext : DbContext
     }
 
     public DbSet<IdentityModel> Identities { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder) =>
+        builder.Entity<IdentityModel>(entity => { entity.HasIndex(e => e.Username).IsUnique(); });
 }

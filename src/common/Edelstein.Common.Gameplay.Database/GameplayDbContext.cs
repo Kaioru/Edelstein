@@ -12,4 +12,7 @@ public class GameplayDbContext : DbContext
     }
 
     public DbSet<AccountModel> Accounts { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder) =>
+        builder.Entity<AccountModel>(entity => { entity.HasIndex(e => e.Username).IsUnique(); });
 }

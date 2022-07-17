@@ -39,6 +39,9 @@ namespace Edelstein.Common.Services.Auth.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("Identities");
                 });
 #pragma warning restore 612, 618
