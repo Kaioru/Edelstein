@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Database.Repositories;
+﻿using Edelstein.Common.Gameplay.Accounts;
+using Edelstein.Common.Gameplay.Database.Repositories;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
@@ -65,7 +66,7 @@ public class ProgramHost : IHostedService
             collection.AddSingleton(typeof(IPacketHandlerManager<>), typeof(PacketHandlerManager<>));
             collection.AddSingleton(typeof(IPipeline<>), typeof(Pipeline<>));
 
-            collection.AddSingleton<AccountRepository>();
+            collection.AddSingleton<IAccountRepository, AccountRepository>();
 
             collection.AddSingleton<IAuthService, AuthService>();
 
@@ -79,7 +80,6 @@ public class ProgramHost : IHostedService
                     collection.AddSingleton<IAdapterInitializer, LoginStageUserInitializer>();
                     collection.AddSingleton<ILoginStage, LoginStage>();
                     break;
-                default: throw new ArgumentOutOfRangeException();
             }
 
             var provider = collection.BuildServiceProvider();

@@ -2,7 +2,7 @@
 
 namespace Edelstein.Common.Gameplay.Accounts;
 
-public class Account : IAccount
+public record Account : IAccount
 {
     public int ID { get; set; }
 

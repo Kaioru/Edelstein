@@ -3,7 +3,7 @@ using Edelstein.Protocol.Gameplay.Inventories;
 
 namespace Edelstein.Common.Gameplay.Accounts;
 
-public class AccountWorld : IAccountWorld
+public record AccountWorld : IAccountWorld
 {
     public int ID { get; set; }
 
