@@ -19,10 +19,8 @@ public class WorldTemplateLoader : ITemplateLoader
     public async Task<int> Load()
     {
         var directory = _data.Resolve("Server/World.img");
-        var count = 0;
 
-        if (directory == null) return count;
-
+        if (directory == null) return 0;
         foreach (var node in directory)
         {
             var id = Convert.ToInt32(node.Name.Split(".")[0]);
@@ -31,9 +29,8 @@ public class WorldTemplateLoader : ITemplateLoader
                 id,
                 () => new WorldTemplate(id, node)
             ));
-            count++;
         }
 
-        return count;
+        return _manager.Count;
     }
 }
