@@ -62,6 +62,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Data.NX", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Util.Templates", "src\protocol\Edelstein.Protocol.Util.Templates\Edelstein.Protocol.Util.Templates.csproj", "{6F1CF958-D5DD-476D-A70D-B505937CE527}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Util.Templates", "src\common\Edelstein.Common.Util.Templates\Edelstein.Common.Util.Templates.csproj", "{B480AB73-7002-4062-9DF5-88BA309045F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,7 @@ Global
 		{5C47AC0A-7066-4689-88D9-87806CD51E12} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{ECFD4186-F76C-4CD3-AC45-85FF4A9770AD} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{6F1CF958-D5DD-476D-A70D-B505937CE527} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{B480AB73-7002-4062-9DF5-88BA309045F7} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -181,5 +184,9 @@ Global
 		{6F1CF958-D5DD-476D-A70D-B505937CE527}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F1CF958-D5DD-476D-A70D-B505937CE527}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F1CF958-D5DD-476D-A70D-B505937CE527}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B480AB73-7002-4062-9DF5-88BA309045F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B480AB73-7002-4062-9DF5-88BA309045F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B480AB73-7002-4062-9DF5-88BA309045F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B480AB73-7002-4062-9DF5-88BA309045F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

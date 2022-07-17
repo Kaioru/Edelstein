@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Accounts;
+﻿using System.Diagnostics;
+using Edelstein.Common.Gameplay.Accounts;
 using Edelstein.Common.Gameplay.Database.Repositories;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login;
@@ -45,6 +46,17 @@ public class ProgramHost : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        foreach (var loader in _context.TemplateLoaders)
+        {
+            var stopwatch = new Stopwatch();
+            var count = await loader.Load();
+
+            _logger.LogInformation(
+                "{Loader} initialized {Count} templates in {Elapsed}",
+                loader.GetType().Name, count, stopwatch.Elapsed
+            );
+        }
+
         var stages = new List<AbstractProgramConfigStage>();
 
         stages.AddRange(_config.LoginStages);
@@ -74,6 +86,7 @@ public class ProgramHost : IHostedService
             {
                 case ILoginContextOptions options:
                     collection.AddSingleton(options);
+                    collection.AddSingleton(_context.LoginTemplates);
                     collection.AddSingleton<ILoginContext, LoginContext>();
                     collection.AddSingleton<ILoginContextPipelines, LoginContextPipelines>();
                     collection.AddSingleton<ILoginContextServices, LoginContextServices>();

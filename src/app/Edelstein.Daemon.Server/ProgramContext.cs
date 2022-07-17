@@ -1,3 +1,9 @@
-﻿namespace Edelstein.Daemon.Server;
+﻿using Edelstein.Common.Util.Templates;
+using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 
-public record ProgramContext;
+namespace Edelstein.Daemon.Server;
+
+public record ProgramContext(
+    IEnumerable<ITemplateLoader> TemplateLoaders,
+    ILoginContextTemplates LoginTemplates
+);

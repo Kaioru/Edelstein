@@ -2,7 +2,7 @@
 
 public interface IDataProperty
 {
-    Task<IDataNode?> Resolve(string? path = null);
-    Task<T?> Resolve<T>(string? path = null) where T : struct;
-    Task<T?> ResolveOrDefault<T>(string? path = null) where T : class;
+    IDataNode? Resolve(string? path = null);
+    T? Resolve<T>(string? path = null) where T : struct;
+    T? ResolveOrDefault<T>(string? path = null) where T : class;
 }

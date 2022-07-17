@@ -32,6 +32,7 @@
     <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Util.Pipelines\Edelstein.Common.Util.Pipelines.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Util.Templates\Edelstein.Common.Util.Templates.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Data\Edelstein.Protocol.Data.csproj" />
   </ItemGroup>
 
