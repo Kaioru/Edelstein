@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Database.Repositories;
+using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
@@ -63,6 +64,8 @@ public class ProgramHost : IHostedService
 
             collection.AddSingleton(typeof(IPacketHandlerManager<>), typeof(PacketHandlerManager<>));
             collection.AddSingleton(typeof(IPipeline<>), typeof(Pipeline<>));
+
+            collection.AddSingleton<AccountRepository>();
 
             collection.AddSingleton<IAuthService, AuthService>();
 
