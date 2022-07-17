@@ -3,6 +3,9 @@
 **/*.db
 **/*.json
 **/*.nx
+**/*.wz
+!*.nx/
+!*.wz/
 !**/*.example.json
 !**/appsettings.json
 
