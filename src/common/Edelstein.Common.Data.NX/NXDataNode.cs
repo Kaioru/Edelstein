@@ -22,21 +22,21 @@ public class NXDataNode : IDataNode
 
     public IDataNode ResolveAll() => new NXDataNode(_node.ResolveAll());
 
-    public Task<IDataNode?> Resolve(string? path = null)
+    public IDataNode? Resolve(string? path = null)
     {
         try
         {
-            return Task.FromResult<IDataNode?>(new NXDataNode(_node.ResolvePath(path)));
+            return new NXDataNode(_node.ResolvePath(path));
         }
         catch (Exception)
         {
-            return Task.FromResult<IDataNode?>(null);
+            return null;
         }
     }
 
-    public Task<T?> Resolve<T>(string? path = null) where T : struct =>
-        Task.Run(() => _node.Resolve<T>(path));
+    public T? Resolve<T>(string? path = null) where T : struct =>
+        _node.Resolve<T>(path);
 
-    public Task<T?> ResolveOrDefault<T>(string? path = null) where T : class =>
-        Task.Run<T?>(() => _node.ResolveOrDefault<T>(path));
+    public T? ResolveOrDefault<T>(string? path = null) where T : class =>
+        _node.ResolveOrDefault<T>(path);
 }

@@ -16,27 +16,27 @@ public class NXDataManager : IDataManager
                 d => (INXNode)new NXFile(d).Root
             );
 
-
-    public Task<IDataNode?> Resolve(string? path = null)
+    public T? Resolve<T>(string? path = null) where T : struct
     {
-        if (string.IsNullOrEmpty(path)) return Task.FromResult<IDataNode?>(null);
+        var node = Resolve(path);
+        if (node == null) return null;
+        return node.Resolve<T>();
+    }
+
+    public T? ResolveOrDefault<T>(string? path = null) where T : class
+    {
+        var node = Resolve(path);
+        if (node == null) return null;
+        return node.ResolveOrDefault<T>();
+    }
+
+
+    public IDataNode? Resolve(string? path = null)
+    {
+        if (string.IsNullOrEmpty(path)) return null;
         var split = path.Split('/');
-        return Task.FromResult<IDataNode?>(!_nodes.ContainsKey(split[0])
+        return !_nodes.ContainsKey(split[0])
             ? null
-            : new NXDataNode(_nodes[split[0]].ResolvePath(string.Join("/", split.Skip(1).ToArray()))));
-    }
-
-    public async Task<T?> Resolve<T>(string? path = null) where T : struct
-    {
-        var node = await Resolve(path);
-        if (node == null) return null;
-        return await node.Resolve<T>();
-    }
-
-    public async Task<T?> ResolveOrDefault<T>(string? path = null) where T : class
-    {
-        var node = await Resolve(path);
-        if (node == null) return null;
-        return await node.ResolveOrDefault<T>();
+            : new NXDataNode(_nodes[split[0]].ResolvePath(string.Join("/", split.Skip(1).ToArray())));
     }
 }

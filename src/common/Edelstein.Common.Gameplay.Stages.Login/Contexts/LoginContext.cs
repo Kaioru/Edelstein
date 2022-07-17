@@ -5,5 +5,6 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Contexts;
 public record LoginContext(
     ILoginContextOptions Options,
     ILoginContextPipelines Pipelines,
-    ILoginContextServices Services
+    ILoginContextServices Services,
+    ILoginContextTemplates Templates
 ) : ILoginContext;
