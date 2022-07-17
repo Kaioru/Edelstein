@@ -50,6 +50,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Util.Pip
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Util.Pipelines", "src\common\Edelstein.Common.Util.Pipelines\Edelstein.Common.Util.Pipelines.csproj", "{2AD308AC-DFCF-432A-8EE1-CCA9EB7E9B90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Services.Auth", "src\protocol\Edelstein.Protocol.Services.Auth\Edelstein.Protocol.Services.Auth.csproj", "{29772724-F425-4DF7-8195-22D9D2C9CD15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,7 @@ Global
 		{81DB3B1B-B98B-463F-B357-56B41D3298EB} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{C1E7D255-401B-4E69-B2CD-BD14D21DEEC6} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{2AD308AC-DFCF-432A-8EE1-CCA9EB7E9B90} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
+		{29772724-F425-4DF7-8195-22D9D2C9CD15} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -139,5 +142,9 @@ Global
 		{2AD308AC-DFCF-432A-8EE1-CCA9EB7E9B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AD308AC-DFCF-432A-8EE1-CCA9EB7E9B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AD308AC-DFCF-432A-8EE1-CCA9EB7E9B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29772724-F425-4DF7-8195-22D9D2C9CD15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29772724-F425-4DF7-8195-22D9D2C9CD15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29772724-F425-4DF7-8195-22D9D2C9CD15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29772724-F425-4DF7-8195-22D9D2C9CD15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
