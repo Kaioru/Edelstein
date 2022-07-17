@@ -27,7 +27,7 @@ public class WorldTemplateLoader : ITemplateLoader
         {
             var id = Convert.ToInt32(node.Name.Split(".")[0]);
 
-            await _manager.Insert(new TemplateProvider<IWorldTemplate>(
+            await _manager.Insert(new TemplateProviderLazy<IWorldTemplate>(
                 id,
                 () => new WorldTemplate(id, node)
             ));
