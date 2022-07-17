@@ -1,12 +1,11 @@
 ﻿using Edelstein.Common.Gameplay.Accounts;
 using Edelstein.Protocol.Gameplay.Accounts;
-using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Common.Gameplay.Database.Repositories;
 
-public class AccountRepository : IRepository<int, IAccount>
+public class AccountRepository : IAccountRepository
 {
-    private static IAccount account => new Account { ID = 1, Username = "Testing" };
+    private static readonly IAccount account = new Account { ID = 1, Username = "Testing" };
 
     public Task<IAccount?> Retrieve(int key) => Task.FromResult<IAccount?>(account);
     public Task<IAccount> Insert(IAccount entry) => Task.FromResult(account);

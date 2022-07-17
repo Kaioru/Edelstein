@@ -1,5 +1,4 @@
 ﻿using Edelstein.Common.Gameplay.Accounts;
-using Edelstein.Common.Gameplay.Database.Repositories;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Network.Packets;
@@ -17,13 +16,13 @@ public class CheckPasswordAction : IPipelineAction<ICheckPassword>
 {
     private readonly IAuthService _auth;
     private readonly ILogger _logger;
-    private readonly AccountRepository _repository;
+    private readonly IAccountRepository _repository;
     private readonly ILoginStage _stage;
 
     public CheckPasswordAction(
         ILogger<CheckPasswordAction> logger,
         IAuthService auth,
-        AccountRepository repository,
+        IAccountRepository repository,
         ILoginStage stage
     )
     {
