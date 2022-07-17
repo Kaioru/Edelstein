@@ -1,17 +1,57 @@
 ﻿using Edelstein.Common.Gameplay.Accounts;
+using Edelstein.Common.Gameplay.Database.Models;
 using Edelstein.Protocol.Gameplay.Accounts;
+using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Gameplay.Database.Repositories;
 
 public class AccountRepository : IAccountRepository
 {
-    private static readonly IAccount account = new Account { ID = 1, Username = "Testing" };
+    private readonly IDbContextFactory<GameplayDbContext> _dbFactory;
 
-    public Task<IAccount?> Retrieve(int key) => Task.FromResult<IAccount?>(account);
-    public Task<IAccount> Insert(IAccount entry) => Task.FromResult(account);
-    public Task<IAccount> Update(IAccount entry) => Task.FromResult(account);
-    public Task Delete(int key) => Task.CompletedTask;
-    public Task Delete(IAccount entry) => Task.CompletedTask;
+    public AccountRepository(IDbContextFactory<GameplayDbContext> dbFactory) => _dbFactory = dbFactory;
 
-    public Task<IAccount?> RetrieveByUsername(string username) => Task.FromResult<IAccount?>(account);
+    public async Task<IAccount?> Retrieve(int key)
+    {
+        await using var db = await _dbFactory.CreateDbContextAsync();
+        return (await db.Accounts.FindAsync(key))?.Adapt<Account>();
+    }
+
+    public async Task<IAccount> Insert(IAccount entry)
+    {
+        await using var db = await _dbFactory.CreateDbContextAsync();
+        var model = entry.Adapt<AccountModel>();
+        db.Accounts.Add(model);
+        await db.SaveChangesAsync();
+        return model.Adapt<Account>();
+    }
+
+    public async Task<IAccount> Update(IAccount entry)
+    {
+        await using var db = await _dbFactory.CreateDbContextAsync();
+        var model = entry.Adapt<AccountModel>();
+        db.Accounts.Update(model);
+        await db.SaveChangesAsync();
+        return model.Adapt<Account>();
+    }
+
+    public async Task Delete(int key)
+    {
+        await using var db = await _dbFactory.CreateDbContextAsync();
+        db.Remove(new AccountModel { ID = key });
+    }
+
+    public async Task Delete(IAccount entry)
+    {
+        await using var db = await _dbFactory.CreateDbContextAsync();
+        db.Remove(entry.Adapt<AccountModel>());
+    }
+
+    public async Task<IAccount?> RetrieveByUsername(string username)
+    {
+        await using var db = await _dbFactory.CreateDbContextAsync();
+        return (await db.Accounts.FirstOrDefaultAsync(a => a.Username.ToLower().Equals(username.ToLower())))
+            ?.Adapt<Account>();
+    }
 }
