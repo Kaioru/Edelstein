@@ -1,10 +1,10 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Login;
-using Edelstein.Protocol.Gameplay.Stages.Login.Handlers;
+﻿using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Handlers;
 
-public abstract class AbstractLoginPacketHandler : ILoginPacketHandler
+public abstract class AbstractLoginPacketHandler : IPacketHandler<ILoginStageUser>
 {
     public abstract short Operation { get; }
 

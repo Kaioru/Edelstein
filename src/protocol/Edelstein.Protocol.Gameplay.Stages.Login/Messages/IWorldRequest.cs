@@ -1,5 +1,7 @@
-﻿namespace Edelstein.Protocol.Gameplay.Stages.Login.Messages;
+﻿using Edelstein.Protocol.Gameplay.Stages.Messages;
 
-public interface IWorldRequest : ILoginMessage
+namespace Edelstein.Protocol.Gameplay.Stages.Login.Messages;
+
+public interface IWorldRequest : IStageUserMessage<ILoginStageUser>
 {
 }
