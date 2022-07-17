@@ -1,5 +1,8 @@
-﻿using Edelstein.Daemon.Server;
+﻿using Edelstein.Common.Gameplay.Database;
+using Edelstein.Common.Services.Auth;
+using Edelstein.Daemon.Server;
 using Edelstein.Daemon.Server.Configs;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,6 +19,11 @@ await Host.CreateDefaultBuilder(args)
     .ConfigureServices((ctx, services) =>
     {
         services.AddSingleton(services);
+
+        services.AddDbContextFactory<AuthDbContext>(o =>
+            o.UseNpgsql(ctx.Configuration.GetConnectionString(AuthDbContext.ConnectionStringKey)));
+        services.AddDbContextFactory<GameplayDbContext>(o =>
+            o.UseNpgsql(ctx.Configuration.GetConnectionString(GameplayDbContext.ConnectionStringKey)));
 
         services.Configure<ProgramConfig>(ctx.Configuration.GetSection("Host"));
         services.AddSingleton<ProgramContext>();
