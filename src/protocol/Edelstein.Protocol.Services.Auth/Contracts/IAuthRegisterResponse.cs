@@ -2,5 +2,5 @@
 
 public interface IAuthRegisterResponse
 {
-    
+    AuthRegisterResult Result { get; }
 }
