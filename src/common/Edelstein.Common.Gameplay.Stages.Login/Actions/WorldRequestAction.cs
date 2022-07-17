@@ -1,4 +1,6 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
+﻿using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Network.Packets;
+using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
 using Edelstein.Protocol.Util.Pipelines;
 using Microsoft.Extensions.Logging;
 
@@ -10,9 +12,8 @@ public class WorldRequestAction : IPipelineAction<IWorldRequest>
 
     public WorldRequestAction(ILogger<WorldRequestAction> logger) => _logger = logger;
 
-    public Task Handle(IPipelineContext ctx, IWorldRequest message)
-    {
-        _logger.LogInformation("Called world request");
-        return Task.CompletedTask;
-    }
+    public async Task Handle(IPipelineContext ctx, IWorldRequest message) =>
+        // TODO: loading worlds
+        await message.User.Dispatch(new PacketOut(PacketSendOperations.WorldInformation).WriteByte(0xFF));
+    // await message.User.Dispatch(new PacketOut(PacketSendOperations.LatestConnectedWorld).WriteByte(0));
 }
