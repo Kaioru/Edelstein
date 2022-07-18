@@ -49,14 +49,36 @@ public class SessionService : ISessionService
 
             return new SessionStartResponse(SessionStartResult.Success, session.Adapt<Session>());
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return new SessionStartResponse(SessionStartResult.Unknown);
         }
     }
 
-    public Task<ISessionUpdateResponse> Update(ISessionUpdateRequest request) =>
-        Task.FromResult<ISessionUpdateResponse>(new SessionUpdateResponse(SessionUpdateResult.Success, _session));
+    public async Task<ISessionUpdateResponse> Update(ISessionUpdateRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            var now = DateTime.UtcNow;
+            var session = await db.Sessions
+                .Where(s => s.ID == request.AccountID)
+                .FirstOrDefaultAsync();
+
+            if (session == null) return new SessionUpdateResponse(SessionUpdateResult.FailedNotActive);
+
+            session.State = request.State ?? SessionState.LoggedIn;
+            session.DateUpdated = now;
+            session.DateExpire = now.Add(_sessionDuration);
+            db.Sessions.Update(session);
+
+            return new SessionUpdateResponse(SessionUpdateResult.Success);
+        }
+        catch (Exception)
+        {
+            return new SessionUpdateResponse(SessionUpdateResult.FailedUnknown);
+        }
+    }
 
     public async Task<ISessionEndResponse> End(ISessionEndRequest request)
     {
