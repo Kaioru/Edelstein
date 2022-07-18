@@ -72,7 +72,7 @@ public class SessionService : ISessionService
             session.DateExpire = now.Add(_sessionDuration);
             db.Sessions.Update(session);
 
-            return new SessionUpdateResponse(SessionUpdateResult.Success);
+            return new SessionUpdateResponse(SessionUpdateResult.Success, session.Adapt<Session>());
         }
         catch (Exception)
         {
