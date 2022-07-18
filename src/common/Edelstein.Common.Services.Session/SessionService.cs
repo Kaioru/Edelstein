@@ -26,24 +26,17 @@ public class SessionService : ISessionService
                 .FirstOrDefaultAsync();
 
             if (session?.DateExpire > now) return new SessionStartResponse(SessionStartResult.FailedAlreadyActive);
-            if (session == null)
+            if (session != null)
+                db.Sessions.Remove(session);
+
+            session = new SessionModel
             {
-                session = new SessionModel
-                {
-                    ID = request.AccountID,
-                    State = SessionState.LoggedIn,
-                    DateUpdated = now,
-                    DateExpire = now.Add(_sessionDuration)
-                };
-                db.Sessions.Add(session);
-            }
-            else
-            {
-                session.State = SessionState.LoggedIn;
-                session.DateUpdated = now;
-                session.DateExpire = now.Add(_sessionDuration);
-                db.Sessions.Update(session);
-            }
+                ID = request.AccountID,
+                State = SessionState.LoggedIn,
+                DateUpdated = now,
+                DateExpire = now.Add(_sessionDuration)
+            };
+            db.Sessions.Add(session);
 
             await db.SaveChangesAsync();
 
