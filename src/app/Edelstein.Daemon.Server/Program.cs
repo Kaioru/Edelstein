@@ -1,7 +1,6 @@
 ﻿using Edelstein.Common.Data.NX;
 using Edelstein.Common.Gameplay.Database;
 using Edelstein.Common.Services.Auth;
-using Edelstein.Common.Services.Session;
 using Edelstein.Daemon.Server;
 using Edelstein.Daemon.Server.Configs;
 using Edelstein.Protocol.Data;
@@ -25,8 +24,6 @@ await Host.CreateDefaultBuilder(args)
 
         services.AddPooledDbContextFactory<AuthDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(AuthDbContext.ConnectionStringKey)));
-        services.AddPooledDbContextFactory<SessionDbContext>(o =>
-            o.UseNpgsql(ctx.Configuration.GetConnectionString(SessionDbContext.ConnectionStringKey)));
         services.AddPooledDbContextFactory<GameplayDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(GameplayDbContext.ConnectionStringKey)));
 
