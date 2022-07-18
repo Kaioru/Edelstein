@@ -4,7 +4,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Pipelines\Edelstein.Protocol.Util.Pipelines.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Services.Session\Edelstein.Common.Services.Session.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -66,6 +66,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Util.Templ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Services.Session", "src\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj", "{F9ACFFB8-8CE3-4C11-B56B-15D2D54D843D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Services.Session", "src\common\Edelstein.Common.Services.Session\Edelstein.Common.Services.Session.csproj", "{37C86E62-94B4-41C7-8EF6-E4D80901DCEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,7 @@ Global
 		{6F1CF958-D5DD-476D-A70D-B505937CE527} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{B480AB73-7002-4062-9DF5-88BA309045F7} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{F9ACFFB8-8CE3-4C11-B56B-15D2D54D843D} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{37C86E62-94B4-41C7-8EF6-E4D80901DCEA} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -195,5 +198,9 @@ Global
 		{F9ACFFB8-8CE3-4C11-B56B-15D2D54D843D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9ACFFB8-8CE3-4C11-B56B-15D2D54D843D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9ACFFB8-8CE3-4C11-B56B-15D2D54D843D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37C86E62-94B4-41C7-8EF6-E4D80901DCEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37C86E62-94B4-41C7-8EF6-E4D80901DCEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37C86E62-94B4-41C7-8EF6-E4D80901DCEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37C86E62-94B4-41C7-8EF6-E4D80901DCEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
