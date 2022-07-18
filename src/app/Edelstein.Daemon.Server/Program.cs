@@ -1,13 +1,9 @@
 ﻿using Edelstein.Common.Data.NX;
 using Edelstein.Common.Gameplay.Database;
-using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Services.Auth;
-using Edelstein.Common.Util.Templates;
 using Edelstein.Daemon.Server;
 using Edelstein.Daemon.Server.Configs;
 using Edelstein.Protocol.Data;
-using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
-using Edelstein.Protocol.Util.Templates;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,18 +29,7 @@ await Host.CreateDefaultBuilder(args)
 
         services.AddSingleton<IDataManager>(new NXDataManager(ctx.Configuration.GetSection("Data")["Directory"]));
 
-        services.Scan(s => s
-            .FromApplicationDependencies()
-            .AddClasses(c => c.AssignableTo<ITemplateLoader>())
-            .AsImplementedInterfaces()
-            .WithSingletonLifetime()
-        );
-        services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));
-
-        services.AddSingleton<ILoginContextTemplates, LoginContextTemplates>();
-
         services.Configure<ProgramConfig>(ctx.Configuration.GetSection("Host"));
-        services.AddSingleton<ProgramContext>();
         services.AddHostedService<ProgramHost>();
     })
     .RunConsoleAsync();

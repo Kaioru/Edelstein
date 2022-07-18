@@ -7,6 +7,7 @@ using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Util.Pipelines;
+using Edelstein.Common.Util.Templates;
 using Edelstein.Daemon.Server.Configs;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
@@ -14,6 +15,7 @@ using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Util.Pipelines;
+using Edelstein.Protocol.Util.Templates;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -27,12 +29,10 @@ public class ProgramHost : IHostedService
     private readonly ICollection<ITransportAcceptor> _acceptors;
     private readonly IServiceCollection _collection;
     private readonly ProgramConfig _config;
-    private readonly ProgramContext _context;
     private readonly ILogger<ProgramHost> _logger;
 
     public ProgramHost(
         IOptions<ProgramConfig> options,
-        ProgramContext context,
         ILogger<ProgramHost> logger,
         IServiceCollection collection
     )
@@ -40,23 +40,11 @@ public class ProgramHost : IHostedService
         _config = options.Value;
         _logger = logger;
         _collection = collection;
-        _context = context;
         _acceptors = new List<ITransportAcceptor>();
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        foreach (var loader in _context.TemplateLoaders)
-        {
-            var stopwatch = new Stopwatch();
-            var count = await loader.Load();
-
-            _logger.LogInformation(
-                "{Loader} initialized {Count} templates in {Elapsed}",
-                loader.GetType().Name, count, stopwatch.Elapsed
-            );
-        }
-
         var stages = new List<AbstractProgramConfigStage>();
 
         stages.AddRange(_config.LoginStages);
@@ -73,10 +61,14 @@ public class ProgramHost : IHostedService
                 .AddClasses(c => c.AssignableTo(typeof(IPipelineAction<>)))
                 .AsImplementedInterfaces()
                 .WithSingletonLifetime()
+                .AddClasses(c => c.AssignableTo<ITemplateLoader>())
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime()
             );
 
             collection.AddSingleton(typeof(IPacketHandlerManager<>), typeof(PacketHandlerManager<>));
             collection.AddSingleton(typeof(IPipeline<>), typeof(Pipeline<>));
+            collection.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));
 
             collection.AddSingleton<IAccountRepository, AccountRepository>();
 
@@ -86,16 +78,29 @@ public class ProgramHost : IHostedService
             {
                 case ILoginContextOptions options:
                     collection.AddSingleton(options);
-                    collection.AddSingleton(_context.LoginTemplates);
                     collection.AddSingleton<ILoginContext, LoginContext>();
                     collection.AddSingleton<ILoginContextPipelines, LoginContextPipelines>();
                     collection.AddSingleton<ILoginContextServices, LoginContextServices>();
+                    collection.AddSingleton<ILoginContextTemplates, LoginContextTemplates>();
                     collection.AddSingleton<IAdapterInitializer, LoginStageUserInitializer>();
                     collection.AddSingleton<ILoginStage, LoginStage>();
                     break;
             }
 
             var provider = collection.BuildServiceProvider();
+            var loaders = provider.GetServices<ITemplateLoader>();
+
+            foreach (var loader in loaders)
+            {
+                var stopwatch = new Stopwatch();
+                var count = await loader.Load();
+
+                _logger.LogInformation(
+                    "{Loader} initialized {Count} templates in {Elapsed}",
+                    loader.GetType().Name, count, stopwatch.Elapsed
+                );
+            }
+
             var adapter = provider.GetRequiredService<IAdapterInitializer>();
             var acceptor = new NettyTransportAcceptor(adapter, stage.Version, stage.Patch, stage.Locale);
 

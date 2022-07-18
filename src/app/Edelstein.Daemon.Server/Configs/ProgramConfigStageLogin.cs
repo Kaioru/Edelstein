@@ -4,4 +4,7 @@
 
 namespace Edelstein.Daemon.Server.Configs;
 
-public record ProgramConfigStageLogin : AbstractProgramConfigStage, ILoginContextOptions;
+public record ProgramConfigStageLogin : AbstractProgramConfigStage, ILoginContextOptions
+{
+    public byte[] Worlds { get; set; }
+}
