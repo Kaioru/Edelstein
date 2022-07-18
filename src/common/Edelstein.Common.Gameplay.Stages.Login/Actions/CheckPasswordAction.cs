@@ -3,10 +3,13 @@ using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Network.Packets;
 using Edelstein.Common.Services.Auth.Contracts;
+using Edelstein.Common.Services.Session.Contracts;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Auth.Contracts;
+using Edelstein.Protocol.Services.Session;
+using Edelstein.Protocol.Services.Session.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
 using Microsoft.Extensions.Logging;
 
@@ -17,17 +20,20 @@ public class CheckPasswordAction : IPipelineAction<ICheckPassword>
     private readonly IAuthService _auth;
     private readonly ILogger _logger;
     private readonly IAccountRepository _repository;
+    private readonly ISessionService _sessions;
     private readonly ILoginStage _stage;
 
     public CheckPasswordAction(
         ILogger<CheckPasswordAction> logger,
         IAuthService auth,
+        ISessionService sessions,
         IAccountRepository repository,
         ILoginStage stage
     )
     {
         _logger = logger;
         _auth = auth;
+        _sessions = sessions;
         _repository = repository;
         _stage = stage;
     }
@@ -58,6 +64,17 @@ public class CheckPasswordAction : IPipelineAction<ICheckPassword>
 
             var account = await _repository.RetrieveByUsername(message.Username) ??
                           await _repository.Insert(new Account { Username = message.Username });
+
+
+            if (result == LoginResult.Success)
+            {
+                var sessionResponse = await _sessions.Start(new SessionStartRequest(account.ID));
+                var sessionResult = sessionResponse.Result;
+
+                if (sessionResult != SessionStartResult.Success)
+                    result = LoginResult.AlreadyConnected;
+            }
+
             var packet = new PacketOut(PacketSendOperations.CheckPasswordResult);
 
             packet.WriteByte((byte)result);
