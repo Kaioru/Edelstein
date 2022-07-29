@@ -1,10 +1,12 @@
-﻿using Edelstein.Protocol.Gameplay.Stages;
+﻿using Edelstein.Common.Network.Packets;
+using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Network.Packets;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Packets;
 
-public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser> where TStageUser : IStageUser<TStageUser>
+public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser>
+    where TStageUser : IStageUser<TStageUser>
 {
     private readonly Dictionary<short, IPacketHandler<TStageUser>> _handlers;
     private readonly ILogger _logger;
@@ -46,8 +48,9 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
         _handlers.Remove(handler.Operation);
     }
 
-    public async Task Process(TStageUser user, IPacketReader reader)
+    public async Task Process(TStageUser user, IPacket packet)
     {
+        var reader = new PacketIn(packet.Buffer);
         var operation = reader.ReadShort();
         var handler = _handlers.GetValueOrDefault(operation);
 

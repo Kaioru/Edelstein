@@ -20,7 +20,7 @@ public class LoginStageUser : AbstractStageUser<ILoginStageUser>, ILoginStageUse
     public byte? SelectedWorldID { get; set; }
     public byte? SelectedChannelID { get; set; }
 
-    public override Task OnPacket(IPacketReader packet) =>
+    public override Task OnPacket(IPacket packet) =>
         Context.Pipelines.SocketOnPacket.Process(new SocketOnPacket<ILoginStageUser>(this, packet));
 
     public override Task OnException(Exception exception) =>

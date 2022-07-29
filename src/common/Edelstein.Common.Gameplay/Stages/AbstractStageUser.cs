@@ -20,7 +20,7 @@ public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser> whe
     public IAccountWorld? AccountWorld { get; set; }
     public ICharacter? Character { get; set; }
 
-    public abstract Task OnPacket(IPacketReader packet);
+    public abstract Task OnPacket(IPacket packet);
     public abstract Task OnException(Exception exception);
     public abstract Task OnDisconnect();
 
