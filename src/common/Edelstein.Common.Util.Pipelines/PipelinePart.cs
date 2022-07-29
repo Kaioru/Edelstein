@@ -4,14 +4,14 @@ namespace Edelstein.Common.Util.Pipelines;
 
 internal class PipelinePart<TMessage> : IComparer<PipelinePart<TMessage>>
 {
-    public PipelinePart(int priority, IPipelineAction<TMessage> action)
+    public PipelinePart(int priority, IPipelinePlug<TMessage> plug)
     {
         Priority = priority;
-        Action = action;
+        Plug = plug;
     }
 
     private int Priority { get; }
-    internal IPipelineAction<TMessage> Action { get; }
+    internal IPipelinePlug<TMessage> Plug { get; }
 
     public int Compare(PipelinePart<TMessage>? x, PipelinePart<TMessage>? y)
     {

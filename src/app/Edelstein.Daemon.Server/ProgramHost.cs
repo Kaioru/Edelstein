@@ -58,7 +58,7 @@ public class ProgramHost : IHostedService
                 .AddClasses(c => c.AssignableTo(typeof(IPacketHandler<>)))
                 .AsImplementedInterfaces()
                 .WithSingletonLifetime()
-                .AddClasses(c => c.AssignableTo(typeof(IPipelineAction<>)))
+                .AddClasses(c => c.AssignableTo(typeof(IPipelinePlug<>)))
                 .AsImplementedInterfaces()
                 .WithSingletonLifetime()
                 .AddClasses(c => c.AssignableTo<ITemplateLoader>())
