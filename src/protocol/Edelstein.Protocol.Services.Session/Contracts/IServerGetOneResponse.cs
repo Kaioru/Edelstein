@@ -2,8 +2,7 @@
 
 namespace Edelstein.Protocol.Services.Session.Contracts;
 
-public interface IServerGetOneResponse<out TServer> where TServer : IServer
+public interface IServerGetOneResponse<out TServer> : IServerResponse where TServer : IServer
 {
-    ServerGetResult Result { get; }
     TServer? Server { get; }
 }

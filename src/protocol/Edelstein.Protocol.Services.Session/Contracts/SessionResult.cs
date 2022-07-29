@@ -1,9 +1,11 @@
 ﻿namespace Edelstein.Protocol.Services.Session.Contracts;
 
-public enum SessionGetResult
+public enum SessionResult
 {
     Unknown = 0x0,
     Success = 0x1,
     FailedUnknown = 0x2,
-    FailedNotFound = 0x3
+    FailedAlreadyStarted = 0x3,
+    FailedNotStarted = 0x4,
+    FailedNotFound = 0x5
 }
