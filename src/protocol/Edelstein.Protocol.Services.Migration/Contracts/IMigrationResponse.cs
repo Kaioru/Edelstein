@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Services.Session.Contracts;
+﻿namespace Edelstein.Protocol.Services.Migration.Contracts;
 
 public interface IMigrationResponse
 {

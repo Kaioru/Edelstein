@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Services.Session.Types;
+﻿namespace Edelstein.Protocol.Services.Server.Types;
 
 public interface IServerGame : IServer
 {
