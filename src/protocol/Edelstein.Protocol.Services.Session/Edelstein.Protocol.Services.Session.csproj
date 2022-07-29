@@ -1,12 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <Import Project="..\Protocol.targets" />
 
-    <ItemGroup>
+  <ItemGroup>
       <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
       <ProjectReference Include="..\Edelstein.Protocol.Util.Repositories\Edelstein.Protocol.Util.Repositories.csproj" />
     </ItemGroup>
