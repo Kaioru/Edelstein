@@ -6,7 +6,7 @@ public interface IAdapter
 {
     ISocket Socket { get; }
 
-    Task OnPacket(IPacketReader packet);
+    Task OnPacket(IPacket packet);
     Task OnException(Exception exception);
     Task OnDisconnect();
 
