@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Services.Server.Contracts;
 
-public interface IServerGetGameByWorldAndChannel
+public interface IServerGetGameByWorldAndChannelRequest
 {
     int WorldID { get; }
     int ChannelID { get; }

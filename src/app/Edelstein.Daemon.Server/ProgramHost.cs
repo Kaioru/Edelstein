@@ -6,6 +6,7 @@ using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Services.Auth;
+using Edelstein.Common.Services.Server;
 using Edelstein.Common.Util.Pipelines;
 using Edelstein.Common.Util.Templates;
 using Edelstein.Daemon.Server.Configs;
@@ -14,6 +15,7 @@ using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Services.Auth;
+using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Util.Pipelines;
 using Edelstein.Protocol.Util.Templates;
 using Microsoft.Extensions.DependencyInjection;
@@ -73,6 +75,7 @@ public class ProgramHost : IHostedService
             collection.AddSingleton<IAccountRepository, AccountRepository>();
 
             collection.AddSingleton<IAuthService, AuthService>();
+            collection.AddSingleton<IServerService, ServerService>();
 
             switch (stage)
             {
