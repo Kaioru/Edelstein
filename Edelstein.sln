@@ -66,6 +66,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Util.Templ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Services.Session", "src\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj", "{3E125BDA-9907-4D90-9214-1F25160F22E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Services.Server", "src\protocol\Edelstein.Protocol.Services.Server\Edelstein.Protocol.Services.Server.csproj", "{9615A13E-FB70-49CD-8902-1454A95D1410}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Services.Migration", "src\protocol\Edelstein.Protocol.Services.Migration\Edelstein.Protocol.Services.Migration.csproj", "{754A2E11-8BFE-4C0D-85C8-182D5824F1EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +105,8 @@ Global
 		{6F1CF958-D5DD-476D-A70D-B505937CE527} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{B480AB73-7002-4062-9DF5-88BA309045F7} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{3E125BDA-9907-4D90-9214-1F25160F22E8} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{9615A13E-FB70-49CD-8902-1454A95D1410} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{754A2E11-8BFE-4C0D-85C8-182D5824F1EB} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -195,5 +201,13 @@ Global
 		{3E125BDA-9907-4D90-9214-1F25160F22E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E125BDA-9907-4D90-9214-1F25160F22E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E125BDA-9907-4D90-9214-1F25160F22E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9615A13E-FB70-49CD-8902-1454A95D1410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9615A13E-FB70-49CD-8902-1454A95D1410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9615A13E-FB70-49CD-8902-1454A95D1410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9615A13E-FB70-49CD-8902-1454A95D1410}.Release|Any CPU.Build.0 = Release|Any CPU
+		{754A2E11-8BFE-4C0D-85C8-182D5824F1EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{754A2E11-8BFE-4C0D-85C8-182D5824F1EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{754A2E11-8BFE-4C0D-85C8-182D5824F1EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{754A2E11-8BFE-4C0D-85C8-182D5824F1EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

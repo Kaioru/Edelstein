@@ -2,7 +2,7 @@
 using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Util.Repositories;
 
-namespace Edelstein.Protocol.Services.Session.Types;
+namespace Edelstein.Protocol.Services.Migration.Types;
 
 public interface IMigration : IIdentifiable<int>
 {
