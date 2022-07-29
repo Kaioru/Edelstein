@@ -14,8 +14,8 @@ public interface IServerService
 
     Task<IServerGetOneResponse<IServer>> GetByID(IServerGetByIDRequest request);
 
-    Task<IServerGetOneResponse<IServerGame>> GetGameByWorldAndChannel(IServerGetGameByWorldAndChannel request);
-    Task<IServerGetAllResponse<IServerGame>> GetGameByWorld(IServerGetGameByWorld request);
+    Task<IServerGetOneResponse<IServerGame>> GetGameByWorldAndChannel(IServerGetGameByWorldAndChannelRequest request);
+    Task<IServerGetAllResponse<IServerGame>> GetGameByWorld(IServerGetGameByWorldRequest request);
 
     Task<IServerGetAllResponse<IServer>> GetAll();
 }
