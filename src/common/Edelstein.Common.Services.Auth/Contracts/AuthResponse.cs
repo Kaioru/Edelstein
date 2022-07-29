@@ -2,4 +2,4 @@
 
 namespace Edelstein.Common.Services.Auth.Contracts;
 
-public record AuthRegisterResponse(AuthRegisterResult Result) : IAuthRegisterResponse;
+public record AuthResponse(AuthResult Result) : IAuthResponse;
