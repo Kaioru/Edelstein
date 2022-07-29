@@ -2,8 +2,7 @@
 
 namespace Edelstein.Protocol.Services.Session.Contracts;
 
-public interface ISessionGetOneResponse
+public interface ISessionGetOneResponse : ISessionResponse
 {
-    SessionGetResult Result { get; }
     ISession? Session { get; }
 }

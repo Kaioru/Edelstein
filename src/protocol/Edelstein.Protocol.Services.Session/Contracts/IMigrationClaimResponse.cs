@@ -2,8 +2,7 @@
 
 namespace Edelstein.Protocol.Services.Session.Contracts;
 
-public interface IMigrationClaimResponse
+public interface IMigrationClaimResponse : IMigrationResponse
 {
-    MigrationClaimResult Result { get; }
     IMigration? Migration { get; }
 }

@@ -5,12 +5,12 @@ namespace Edelstein.Protocol.Services.Session;
 
 public interface IServerService
 {
-    Task<IServerRegisterResponse> RegisterLogin(IServerRegisterRequest<IServerLogin> request);
-    Task<IServerRegisterResponse> RegisterGame(IServerRegisterRequest<IServerGame> request);
+    Task<IServerResponse> RegisterLogin(IServerRegisterRequest<IServerLogin> request);
+    Task<IServerResponse> RegisterGame(IServerRegisterRequest<IServerGame> request);
 
-    Task<IServerPingResponse> Ping(IServerPingRequest request);
+    Task<IServerResponse> Ping(IServerPingRequest request);
 
-    Task<IServerDeregisterResponse> Deregister(IServerDeregisterRequest request);
+    Task<IServerResponse> Deregister(IServerDeregisterRequest request);
 
     Task<IServerGetOneResponse<IServer>> GetByID(IServerGetByIDRequest request);
 
