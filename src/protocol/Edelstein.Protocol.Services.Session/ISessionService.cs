@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Services.Session;
 
-public interface IServerSessionService
+public interface ISessionService
 {
     Task<ISessionStartResponse> Start(ISessionStartRequest request);
     Task<ISessionUpdateResponse> Update(ISessionUpdateRequest request);
