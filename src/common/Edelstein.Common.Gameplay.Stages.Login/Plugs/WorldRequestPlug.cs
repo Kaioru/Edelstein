@@ -6,14 +6,14 @@ using Edelstein.Protocol.Util.Pipelines;
 using Edelstein.Protocol.Util.Templates;
 using Microsoft.Extensions.Logging;
 
-namespace Edelstein.Common.Gameplay.Stages.Login.Actions;
+namespace Edelstein.Common.Gameplay.Stages.Login.Plugs;
 
-public class WorldRequestAction : IPipelineAction<IWorldRequest>
+public class WorldRequestPlug : IPipelinePlug<IWorldRequest>
 {
     private readonly ILogger _logger;
     private readonly ITemplateManager<IWorldTemplate> _templates;
 
-    public WorldRequestAction(ILogger<WorldRequestAction> logger, ITemplateManager<IWorldTemplate> templates)
+    public WorldRequestPlug(ILogger<WorldRequestPlug> logger, ITemplateManager<IWorldTemplate> templates)
     {
         _logger = logger;
         _templates = templates;

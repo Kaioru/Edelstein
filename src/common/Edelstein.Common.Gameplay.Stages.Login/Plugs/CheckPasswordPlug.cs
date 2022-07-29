@@ -10,17 +10,17 @@ using Edelstein.Protocol.Services.Auth.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
 using Microsoft.Extensions.Logging;
 
-namespace Edelstein.Common.Gameplay.Stages.Login.Actions;
+namespace Edelstein.Common.Gameplay.Stages.Login.Plugs;
 
-public class CheckPasswordAction : IPipelineAction<ICheckPassword>
+public class CheckPasswordPlug : IPipelinePlug<ICheckPassword>
 {
     private readonly IAuthService _auth;
     private readonly ILogger _logger;
     private readonly IAccountRepository _repository;
     private readonly ILoginStage _stage;
 
-    public CheckPasswordAction(
-        ILogger<CheckPasswordAction> logger,
+    public CheckPasswordPlug(
+        ILogger<CheckPasswordPlug> logger,
         IAuthService auth,
         IAccountRepository repository,
         ILoginStage stage

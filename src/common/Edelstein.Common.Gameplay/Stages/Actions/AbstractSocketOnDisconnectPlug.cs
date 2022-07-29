@@ -4,7 +4,7 @@ using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Actions;
 
-public abstract class AbstractSocketOnDisconnectAction<TStageUser> : IPipelineAction<ISocketOnDisconnect<TStageUser>>
+public abstract class AbstractSocketOnDisconnectPlug<TStageUser> : IPipelinePlug<ISocketOnDisconnect<TStageUser>>
     where TStageUser : IStageUser<TStageUser>
 {
     public async Task Handle(IPipelineContext ctx, ISocketOnDisconnect<TStageUser> message)
