@@ -12,7 +12,7 @@ public class AuthService : IAuthService
 
     public AuthService(IDbContextFactory<AuthDbContext> dbFactory) => _dbFactory = dbFactory;
 
-    public async Task<IAuthLoginResponse> Login(IAuthLoginRequest request)
+    public async Task<IAuthResponse> Login(IAuthRequest request)
     {
         try
         {
@@ -21,26 +21,26 @@ public class AuthService : IAuthService
                 .FirstOrDefaultAsync(i => i.Username.ToLower().Equals(request.Username.ToLower()));
 
             if (identity == null)
-                return new AuthLoginResponse(AuthLoginResult.FailedInvalidUsername);
+                return new AuthResponse(AuthResult.FailedInvalidUsername);
             if (!BCrypt.Net.BCrypt.Verify(request.Password, identity.Password))
-                return new AuthLoginResponse(AuthLoginResult.FailedInvalidPassword);
+                return new AuthResponse(AuthResult.FailedInvalidPassword);
 
-            return new AuthLoginResponse(AuthLoginResult.Success);
+            return new AuthResponse(AuthResult.Success);
         }
         catch (Exception)
         {
-            return new AuthLoginResponse(AuthLoginResult.FailedUnknown);
+            return new AuthResponse(AuthResult.FailedUnknown);
         }
     }
 
-    public async Task<IAuthRegisterResponse> Register(IAuthRegisterRequest request)
+    public async Task<IAuthResponse> Register(IAuthRequest request)
     {
         try
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
 
             if (await db.Identities.AnyAsync(i => i.Username.ToLower().Equals(request.Username.ToLower())))
-                return new AuthRegisterResponse(AuthRegisterResult.FailedUsernameExists);
+                return new AuthResponse(AuthResult.FailedUsernameExists);
 
             db.Identities.Add(new IdentityModel
             {
@@ -49,11 +49,11 @@ public class AuthService : IAuthService
             });
             await db.SaveChangesAsync();
 
-            return new AuthRegisterResponse(AuthRegisterResult.Success);
+            return new AuthResponse(AuthResult.Success);
         }
         catch (Exception)
         {
-            return new AuthRegisterResponse(AuthRegisterResult.FailedUnknown);
+            return new AuthResponse(AuthResult.FailedUnknown);
         }
     }
 }

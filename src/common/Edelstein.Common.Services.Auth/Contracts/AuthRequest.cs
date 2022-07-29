@@ -2,4 +2,4 @@
 
 namespace Edelstein.Common.Services.Auth.Contracts;
 
-public record AuthRegisterRequest(string Username, string Password) : IAuthRegisterRequest;
+public record AuthRequest(string Username, string Password) : IAuthRequest;

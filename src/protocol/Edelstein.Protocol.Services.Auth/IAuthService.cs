@@ -4,6 +4,6 @@ namespace Edelstein.Protocol.Services.Auth;
 
 public interface IAuthService
 {
-    Task<IAuthLoginResponse> Login(IAuthLoginRequest request);
-    Task<IAuthRegisterResponse> Register(IAuthRegisterRequest request);
+    Task<IAuthResponse> Login(IAuthRequest request);
+    Task<IAuthResponse> Register(IAuthRequest request);
 }

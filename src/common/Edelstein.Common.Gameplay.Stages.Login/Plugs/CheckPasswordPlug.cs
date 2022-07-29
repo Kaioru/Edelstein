@@ -36,12 +36,12 @@ public class CheckPasswordPlug : IPipelinePlug<ICheckPassword>
     {
         try
         {
-            var response = await _auth.Login(new AuthLoginRequest(message.Username, message.Password));
+            var response = await _auth.Login(new AuthRequest(message.Username, message.Password));
             var result = response.Result switch
             {
-                AuthLoginResult.Success => LoginResult.Success,
-                AuthLoginResult.FailedInvalidUsername => LoginResult.NotRegistered,
-                AuthLoginResult.FailedInvalidPassword => LoginResult.IncorrectPassword,
+                AuthResult.Success => LoginResult.Success,
+                AuthResult.FailedInvalidUsername => LoginResult.NotRegistered,
+                AuthResult.FailedInvalidPassword => LoginResult.IncorrectPassword,
                 _ => LoginResult.Unknown
             };
 
@@ -49,7 +49,7 @@ public class CheckPasswordPlug : IPipelinePlug<ICheckPassword>
             {
                 // TODO: Move autoregister this to plugin
                 result = LoginResult.Success;
-                await _auth.Register(new AuthRegisterRequest(message.Username, message.Password));
+                await _auth.Register(new AuthRequest(message.Username, message.Password));
                 _logger.LogInformation(
                     "Created new user {Username} with password {Password}",
                     message.Username, message.Password
