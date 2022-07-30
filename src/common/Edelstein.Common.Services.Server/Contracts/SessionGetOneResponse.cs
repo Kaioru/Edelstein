@@ -4,6 +4,6 @@ using Edelstein.Protocol.Services.Session.Types;
 namespace Edelstein.Common.Services.Server.Contracts;
 
 public record SessionGetOneResponse(
-    ISession? Session,
-    SessionResult Result
+    SessionResult Result,
+    ISession? Session = null
 ) : ISessionGetOneResponse;

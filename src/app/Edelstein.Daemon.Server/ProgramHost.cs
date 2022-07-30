@@ -16,6 +16,7 @@ using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Server;
+using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Util.Pipelines;
 using Edelstein.Protocol.Util.Templates;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,6 +77,7 @@ public class ProgramHost : IHostedService
 
             collection.AddSingleton<IAuthService, AuthService>();
             collection.AddSingleton<IServerService, ServerService>();
+            collection.AddSingleton<ISessionService, SessionService>();
 
             switch (stage)
             {
