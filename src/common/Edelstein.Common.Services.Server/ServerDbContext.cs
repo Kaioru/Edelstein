@@ -28,15 +28,18 @@ public class ServerDbContext : DbContext
         builder.Entity<SessionModel>()
             .HasOne(m => m.Server)
             .WithMany(p => p.Sessions)
+            .HasForeignKey(m => m.ServerID)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<MigrationModel>()
             .HasOne(m => m.FromServer)
             .WithMany(p => p.MigrationOut)
+            .HasForeignKey(m => m.FromServerID)
             .OnDelete(DeleteBehavior.Cascade);
         builder.Entity<MigrationModel>()
             .HasOne(m => m.ToServer)
             .WithMany(p => p.MigrationIn)
+            .HasForeignKey(m => m.ToServerID)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
