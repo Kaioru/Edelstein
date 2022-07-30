@@ -154,7 +154,7 @@ public class ServerService : IServerService
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
             var now = DateTime.UtcNow;
-            var existing = await db.Servers.FirstOrDefaultAsync(s => s.ID.Equals(model.ID));
+            var existing = await db.Servers.FindAsync(model.ID);
 
             if (existing != null)
             {
