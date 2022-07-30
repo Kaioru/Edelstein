@@ -3,10 +3,14 @@ using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Network.Packets;
 using Edelstein.Common.Services.Auth.Contracts;
+using Edelstein.Common.Services.Server.Contracts;
+using Edelstein.Common.Services.Server.Types;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Auth.Contracts;
+using Edelstein.Protocol.Services.Session;
+using Edelstein.Protocol.Services.Session.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
 using Microsoft.Extensions.Logging;
 
@@ -17,17 +21,20 @@ public class CheckPasswordPlug : IPipelinePlug<ICheckPassword>
     private readonly IAuthService _auth;
     private readonly ILogger _logger;
     private readonly IAccountRepository _repository;
+    private readonly ISessionService _session;
     private readonly ILoginStage _stage;
 
     public CheckPasswordPlug(
         ILogger<CheckPasswordPlug> logger,
         IAuthService auth,
+        ISessionService session,
         IAccountRepository repository,
         ILoginStage stage
     )
     {
         _logger = logger;
         _auth = auth;
+        _session = session;
         _repository = repository;
         _stage = stage;
     }
@@ -58,11 +65,25 @@ public class CheckPasswordPlug : IPipelinePlug<ICheckPassword>
 
             var account = await _repository.RetrieveByUsername(message.Username) ??
                           await _repository.Insert(new Account { Username = message.Username });
+
+            if (result == LoginResult.Success)
+            {
+                var session = new Session
+                {
+                    ServerID = message.User.Context.Options.ID,
+                    ActiveAccount = account.ID
+                };
+
+                if ((await _session.Start(new SessionStartRequest(session))).Result != SessionResult.Success)
+                    result = LoginResult.AlreadyConnected;
+            }
+
             var packet = new PacketOut(PacketSendOperations.CheckPasswordResult);
 
             packet.WriteByte((byte)result);
             packet.WriteByte(0);
             packet.WriteInt(0);
+
 
             if (result == LoginResult.Success)
             {
