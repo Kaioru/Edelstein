@@ -15,6 +15,7 @@ using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Services.Auth;
+using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Util.Pipelines;
@@ -78,6 +79,7 @@ public class ProgramHost : IHostedService
             collection.AddSingleton<IAuthService, AuthService>();
             collection.AddSingleton<IServerService, ServerService>();
             collection.AddSingleton<ISessionService, SessionService>();
+            collection.AddSingleton<IMigrationService, MigrationService>();
 
             switch (stage)
             {
