@@ -19,8 +19,4 @@
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Repositories\Edelstein.Protocol.Util.Repositories.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations" />
-  </ItemGroup>
-
 </Project>

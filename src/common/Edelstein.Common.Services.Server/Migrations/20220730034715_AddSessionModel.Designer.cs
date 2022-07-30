@@ -3,6 +3,7 @@ using System;
 using Edelstein.Common.Services.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Edelstein.Common.Services.Server.Migrations
 {
     [DbContext(typeof(ServerDbContext))]
-    partial class ServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220730034715_AddSessionModel")]
+    partial class AddSessionModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,35 +23,6 @@ namespace Edelstein.Common.Services.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Edelstein.Common.Services.Server.Models.MigrationModel", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("FromServerID")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ToServerID")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("FromServerID");
-
-                    b.HasIndex("ToServerID");
-
-                    b.ToTable("Migrations");
-                });
 
             modelBuilder.Entity("Edelstein.Common.Services.Server.Models.ServerModel", b =>
                 {
@@ -122,25 +95,6 @@ namespace Edelstein.Common.Services.Server.Migrations
                     b.HasDiscriminator().HasValue("Login");
                 });
 
-            modelBuilder.Entity("Edelstein.Common.Services.Server.Models.MigrationModel", b =>
-                {
-                    b.HasOne("Edelstein.Common.Services.Server.Models.ServerModel", "FromServer")
-                        .WithMany("MigrationOut")
-                        .HasForeignKey("FromServerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Edelstein.Common.Services.Server.Models.ServerModel", "ToServer")
-                        .WithMany("MigrationIn")
-                        .HasForeignKey("ToServerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FromServer");
-
-                    b.Navigation("ToServer");
-                });
-
             modelBuilder.Entity("Edelstein.Common.Services.Server.Models.SessionModel", b =>
                 {
                     b.HasOne("Edelstein.Common.Services.Server.Models.ServerModel", "Server")
@@ -154,10 +108,6 @@ namespace Edelstein.Common.Services.Server.Migrations
 
             modelBuilder.Entity("Edelstein.Common.Services.Server.Models.ServerModel", b =>
                 {
-                    b.Navigation("MigrationIn");
-
-                    b.Navigation("MigrationOut");
-
                     b.Navigation("Sessions");
                 });
 #pragma warning restore 612, 618
