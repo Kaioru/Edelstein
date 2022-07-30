@@ -12,5 +12,8 @@ public record MigrationModel : IIdentifiable<int>
 
     public string Key { get; set; }
 
+    public DateTime DateUpdated { get; set; }
+    public DateTime DateExpire { get; set; }
+
     public int ID { get; set; }
 }
