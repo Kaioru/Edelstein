@@ -13,5 +13,6 @@ public record LoginContextPipelines(
     IPipeline<ICheckPassword> CheckPassword,
     IPipeline<ISelectWorld> SelectWorld,
     IPipeline<ICheckUserLimit> CheckUserLimit,
-    IPipeline<IWorldRequest> WorldRequest
+    IPipeline<IWorldRequest> WorldRequest,
+    IPipeline<ILogoutWorld> LogoutWorld
 ) : ILoginContextPipelines;
