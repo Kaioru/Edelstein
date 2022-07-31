@@ -10,4 +10,5 @@ public interface ILoginContextPipelines : IStageContextPipelines<ILoginStageUser
     IPipeline<ISelectWorld> SelectWorld { get; }
     IPipeline<ICheckUserLimit> CheckUserLimit { get; }
     IPipeline<IWorldRequest> WorldRequest { get; }
+    IPipeline<ILogoutWorld> LogoutWorld { get; }
 }
