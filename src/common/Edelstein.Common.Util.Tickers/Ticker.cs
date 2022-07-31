@@ -8,16 +8,17 @@ public class Ticker : ITicker
 {
     private readonly CancellationTokenSource _cts;
     private readonly ILogger _logger;
-    private readonly int _refreshRate;
     private readonly ITickable _tickable;
 
     public Ticker(ILogger logger, ITickable tickable, int refreshRate)
     {
         _logger = logger;
         _tickable = tickable;
-        _refreshRate = refreshRate;
         _cts = new CancellationTokenSource();
+        RefreshRate = refreshRate;
     }
+
+    public int RefreshRate { get; }
 
     public Task Start()
         => Task.Run(async () =>
@@ -26,7 +27,7 @@ public class Ticker : ITicker
 
             stopwatch.Start();
 
-            var limit = 1 / (float)_refreshRate * 1000;
+            var limit = 1 / (float)RefreshRate * 1000;
             var previous = stopwatch.ElapsedMilliseconds;
 
             while (!_cts.IsCancellationRequested)

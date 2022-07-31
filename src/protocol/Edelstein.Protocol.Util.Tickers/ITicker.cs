@@ -2,6 +2,8 @@
 
 public interface ITicker
 {
+    int RefreshRate { get; }
+
     Task Start();
     Task Stop();
 }

@@ -9,9 +9,10 @@ public class TickerManager : ITickerManager, ITickable
     private readonly ICollection<ITickerManagerContext> _tickables;
     private readonly ITicker _ticker;
 
-    public TickerManager(ILogger<TickerManager> logger)
+    public TickerManager(ILogger<TickerManager> logger, int refreshRate = 4)
     {
-        _ticker = new Ticker(logger, this, 4);
+        RefreshRate = refreshRate;
+        _ticker = new Ticker(logger, this, RefreshRate);
         _tickables = new List<ITickerManagerContext>();
     }
 
@@ -30,6 +31,9 @@ public class TickerManager : ITickerManager, ITickable
         foreach (var b in tickables.Where(b => b.IsRequestedCancellation))
             _tickables.Remove(b);
     }
+
+
+    public int RefreshRate { get; }
 
     public Task Start()
     {
