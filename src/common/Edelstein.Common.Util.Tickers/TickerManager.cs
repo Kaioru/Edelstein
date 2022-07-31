@@ -47,7 +47,7 @@ public class TickerManager : ITickerManager, ITickable
         => Schedule(tickable, TimeSpan.Zero);
 
     public ITickerManagerContext Schedule(ITickable tickable, TimeSpan frequency)
-        => Schedule(tickable, frequency, TimeSpan.Zero);
+        => Schedule(tickable, frequency, frequency);
 
     public ITickerManagerContext Schedule(ITickable tickable, TimeSpan frequency, TimeSpan delay)
     {

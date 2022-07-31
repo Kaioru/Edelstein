@@ -32,10 +32,10 @@ public class ServerUpdateBootstrap<TConfig> : IBootstrap, ITickable where TConfi
     private ITickerManagerContext? Context { get; set; }
     private bool IsRegistered { get; set; }
 
-    public Task Start()
+    public async Task Start()
     {
-        Context = _ticker.Schedule(this, TimeSpan.FromMinutes(2), TimeSpan.Zero);
-        return Task.CompletedTask;
+        Context = _ticker.Schedule(this, TimeSpan.FromMinutes(2));
+        await Context.OnTick(DateTime.UtcNow);
     }
 
     public async Task Stop()
