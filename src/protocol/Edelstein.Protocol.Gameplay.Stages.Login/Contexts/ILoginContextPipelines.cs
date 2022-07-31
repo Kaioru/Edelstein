@@ -7,5 +7,6 @@ namespace Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 public interface ILoginContextPipelines : IStageContextPipelines<ILoginStageUser>
 {
     IPipeline<ICheckPassword> CheckPassword { get; }
+    IPipeline<ICheckUserLimit> CheckUserLimit { get; }
     IPipeline<IWorldRequest> WorldRequest { get; }
 }
