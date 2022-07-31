@@ -64,7 +64,7 @@ public class WorldRequestPlug : IPipelinePlug<IWorldRequest>
                 packet.WriteInt(0); // TODO: UserNo
                 packet.WriteByte((byte)stage.WorldID);
                 packet.WriteByte((byte)stage.ChannelID);
-                packet.WriteBool(false); // TODO: AdultChannel
+                packet.WriteBool(stage.IsAdultChannel);
             }
 
             packet.WriteShort(0); // TODO: Balloon
