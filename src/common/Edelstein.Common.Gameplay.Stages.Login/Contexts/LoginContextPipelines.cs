@@ -11,5 +11,6 @@ public record LoginContextPipelines(
     IPipeline<ISocketOnException<ILoginStageUser>> SocketOnException,
     IPipeline<ISocketOnDisconnect<ILoginStageUser>> SocketOnDisconnect,
     IPipeline<ICheckPassword> CheckPassword,
+    IPipeline<ICheckUserLimit> CheckUserLimit,
     IPipeline<IWorldRequest> WorldRequest
 ) : ILoginContextPipelines;
