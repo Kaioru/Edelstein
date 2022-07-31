@@ -22,9 +22,9 @@ public class TickerManagerContext : ITickerManagerContext
 
     public async Task OnTick(DateTime now)
     {
-        await _tickable.OnTick(now);
-
         TickPrev = now;
         TickNext = now + _frequency;
+
+        await _tickable.OnTick(now);
     }
 }

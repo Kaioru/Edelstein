@@ -12,7 +12,7 @@ namespace Edelstein.Common.Services.Server;
 
 public class ServerService : IServerService
 {
-    private static readonly TimeSpan _expiry = TimeSpan.FromMinutes(10);
+    private static readonly TimeSpan _expiry = TimeSpan.FromMinutes(5);
     private readonly IDbContextFactory<ServerDbContext> _dbFactory;
 
     public ServerService(IDbContextFactory<ServerDbContext> dbFactory) => _dbFactory = dbFactory;
