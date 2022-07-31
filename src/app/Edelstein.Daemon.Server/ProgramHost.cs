@@ -12,7 +12,7 @@ public class ProgramHost : IHostedService
     private readonly ProgramConfig _config;
     private readonly ILogger _logger;
 
-    public ProgramHost(ILogger logger, ProgramConfig config, IEnumerable<IBootstrap> bootstrap)
+    public ProgramHost(ILogger<ProgramHost> logger, ProgramConfig config, IEnumerable<IBootstrap> bootstrap)
     {
         _logger = logger;
         _config = config;
