@@ -47,13 +47,13 @@ public class AccountWorldRepository : IAccountWorldRepository
     public async Task Delete(int key)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        db.Remove(new AccountWorldModel { ID = key });
+        db.AccountWorlds.Remove(new AccountWorldModel { ID = key });
     }
 
     public async Task Delete(IAccountWorld entry)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        db.Remove(entry.Adapt<AccountWorldModel>());
+        db.AccountWorlds.Remove(new AccountWorldModel { ID = entry.ID });
     }
 
     public async Task<IAccountWorld?> RetrieveByAccountAndWorld(int accountID, int worldID)
