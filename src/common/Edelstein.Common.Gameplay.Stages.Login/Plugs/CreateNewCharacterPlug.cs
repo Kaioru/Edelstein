@@ -28,32 +28,42 @@ public class CreateNewCharacterPlug : IPipelinePlug<ICreateNewCharacter>
 
             packet.WriteByte((byte)result);
 
-            var character = new Character
+            if (await _characterRepository.CheckExistsByName(message.Name))
+                result = LoginResult.InvalidCharacterName;
+
+            if (result == LoginResult.Success)
             {
-                AccountWorldID = message.User.AccountWorld!.ID,
-                Name = message.Name,
-                Job = 0, // TODO: race -> job
-                Face = message.Face,
-                Hair = message.Hair + message.HairColor,
-                Skin = (byte)message.Skin,
-                Gender = message.Gender,
-                FieldID = 310000000, // TODO: start maps
-                FieldPortal = 0,
-                SubJob = 0 // TODO: race -> subjob
-            };
+                var character = new Character
+                {
+                    AccountWorldID = message.User.AccountWorld!.ID,
+                    Name = message.Name,
+                    Job = 0, // TODO: race -> job
+                    Face = message.Face,
+                    Hair = message.Hair + message.HairColor,
+                    Skin = (byte)message.Skin,
+                    Gender = message.Gender,
+                    FieldID = 310000000, // TODO: start maps
+                    FieldPortal = 0,
+                    SubJob = 0 // TODO: race -> subjob
+                };
 
-            message.User.Character = await _characterRepository.Insert(character);
+                message.User.Character = await _characterRepository.Insert(character);
 
-            _logger.LogDebug(
-                "Created new {Race} character: {Name} (ID: {ID})",
-                message.Race, message.Name, message.User.Character.ID
-            );
+                _logger.LogDebug(
+                    "Created new {Race} character: {Name} (ID: {ID})",
+                    message.Race, message.Name, message.User.Character.ID
+                );
 
-            // TODO: WriteCharacterStats
-            // TODO: WriteCharacterLook
+                // TODO: WriteCharacterStats
+                // TODO: WriteCharacterLook
 
-            packet.WriteBool(false);
-            packet.WriteBool(false);
+                packet.WriteBool(false);
+                packet.WriteBool(false);
+            }
+            else
+            {
+                packet.WriteInt(0);
+            }
 
             await message.User.Dispatch(packet);
         }
