@@ -1,6 +1,9 @@
 ﻿using Edelstein.Common.Services.Server.Contracts;
 using Edelstein.Common.Services.Server.Models;
 using Edelstein.Common.Services.Server.Types;
+using Edelstein.Common.Util.Serializers;
+using Edelstein.Protocol.Gameplay.Accounts;
+using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Migration.Contracts;
 using Mapster;
@@ -12,8 +15,13 @@ public class MigrationService : IMigrationService
 {
     private static readonly TimeSpan _expiry = TimeSpan.FromMinutes(5);
     private readonly IDbContextFactory<ServerDbContext> _dbFactory;
+    private readonly ISerializer _serializer;
 
-    public MigrationService(IDbContextFactory<ServerDbContext> dbFactory) => _dbFactory = dbFactory;
+    public MigrationService(IDbContextFactory<ServerDbContext> dbFactory, ISerializer serializer)
+    {
+        _dbFactory = dbFactory;
+        _serializer = serializer;
+    }
 
     public async Task<IMigrationResponse> Start(IMigrationStartRequest request)
     {
@@ -30,6 +38,10 @@ public class MigrationService : IMigrationService
             }
 
             var model = request.Migration.Adapt<MigrationModel>();
+
+            model.AccountBytes = _serializer.Serialize(request.Migration.Account);
+            model.AccountWorldBytes = _serializer.Serialize(request.Migration.AccountWorld);
+            model.CharacterBytes = _serializer.Serialize(request.Migration.Character);
 
             model.DateUpdated = now;
             model.DateExpire = now.Add(_expiry);
@@ -57,6 +69,12 @@ public class MigrationService : IMigrationService
 
             db.Migrations.Remove(existing);
             await db.SaveChangesAsync();
+
+            var migration = existing.Adapt<Migration>();
+
+            migration.Account = _serializer.Deserialize<IAccount>(existing.AccountBytes);
+            migration.AccountWorld = _serializer.Deserialize<IAccountWorld>(existing.AccountWorldBytes);
+            migration.Character = _serializer.Deserialize<ICharacter>(existing.CharacterBytes);
 
             return new MigrationClaimResponse(MigrationResult.Success, existing.Adapt<Migration>());
         }
