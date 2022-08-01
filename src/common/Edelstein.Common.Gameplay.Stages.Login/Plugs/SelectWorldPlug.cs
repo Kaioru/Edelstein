@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Accounts;
+using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Services.Server.Contracts;
 using Edelstein.Common.Util.Buffers.Bytes;
@@ -12,37 +13,62 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Plugs;
 
 public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
 {
-    private readonly IServerService _serverService;
+    private readonly IAccountWorldRepository _repository;
+    private readonly IServerService _server;
 
-    public SelectWorldPlug(IServerService serverService) => _serverService = serverService;
+    public SelectWorldPlug(IServerService server, IAccountWorldRepository repository)
+    {
+        _server = server;
+        _repository = repository;
+    }
 
     public async Task Handle(IPipelineContext ctx, ISelectWorld message)
     {
-        var packet = new ByteWriter(PacketSendOperations.SelectWorldResult);
-        var gameStage = await _serverService.GetGameByWorldAndChannel(
-            new ServerGetGameByWorldAndChannelRequest(
-                message.WorldID,
-                message.ChannelIndex + 1
-            )
-        );
-        var result = gameStage.Result == ServerResult.Success || gameStage.Server == null
-            ? LoginResult.Success
-            : LoginResult.DBFail;
-
-        packet.WriteByte((byte)result);
-
-        if (result == LoginResult.Success)
+        try
         {
-            message.User.State = LoginState.SelectCharacter;
-            message.User.SelectedWorldID = (byte)gameStage.Server!.WorldID;
-            message.User.SelectedChannelID = (byte)gameStage.Server!.ChannelID;
+            var gameStage = await _server.GetGameByWorldAndChannel(
+                new ServerGetGameByWorldAndChannelRequest(
+                    message.WorldID,
+                    message.ChannelIndex + 1
+                )
+            );
+            var result = gameStage.Result == ServerResult.Success || gameStage.Server == null
+                ? LoginResult.Success
+                : LoginResult.DBFail;
+            var accountWorld = await _repository.RetrieveByAccountAndWorld(
+                message.User.Account!.ID,
+                gameStage.Server!.WorldID
+            ) ?? await _repository.Insert(new AccountWorld
+            {
+                AccountID = message.User.Account.ID,
+                WorldID = gameStage.Server!.WorldID
+            });
+            var packet = new ByteWriter(PacketSendOperations.SelectWorldResult);
 
-            packet.WriteByte(0);
-            packet.WriteBool(true);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
+            packet.WriteByte((byte)result);
+
+            if (result == LoginResult.Success)
+            {
+                message.User.State = LoginState.SelectCharacter;
+                message.User.AccountWorld = accountWorld;
+                message.User.SelectedWorldID = (byte)gameStage.Server!.WorldID;
+                message.User.SelectedChannelID = (byte)gameStage.Server!.ChannelID;
+
+                packet.WriteByte(0);
+                packet.WriteBool(true);
+                packet.WriteInt(accountWorld.CharacterSlotMax);
+                packet.WriteInt(0);
+            }
+
+            await message.User.Dispatch(packet);
         }
+        catch (Exception)
+        {
+            var packet = new ByteWriter(PacketSendOperations.SelectWorldResult);
 
-        await message.User.Dispatch(packet);
+            packet.WriteByte((byte)LoginResult.DBFail);
+
+            await message.User.Dispatch(packet);
+        }
     }
 }

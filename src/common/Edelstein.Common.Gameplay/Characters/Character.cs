@@ -6,6 +6,7 @@ namespace Edelstein.Common.Gameplay.Characters;
 public record Character : ICharacter
 {
     public int ID { get; set; }
+    public int AccountWorldID { get; set; }
 
     public string Name { get; set; }
     public byte Gender { get; set; }
