@@ -1,5 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages;
-using Edelstein.Protocol.Network.Packets;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Gameplay.Packets;
 
@@ -9,5 +9,5 @@ public interface IPacketHandler<in TStageUser> where TStageUser : IStageUser<TSt
 
     bool Check(TStageUser user);
 
-    Task Handle(TStageUser user, IPacketReader reader);
+    Task Handle(TStageUser user, IByteReader reader);
 }

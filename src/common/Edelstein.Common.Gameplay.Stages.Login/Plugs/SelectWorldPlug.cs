@@ -1,7 +1,7 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
-using Edelstein.Common.Network.Packets;
 using Edelstein.Common.Services.Server.Contracts;
+using Edelstein.Common.Util.Buffers.Bytes;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
 using Edelstein.Protocol.Services.Server;
@@ -18,7 +18,7 @@ public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
 
     public async Task Handle(IPipelineContext ctx, ISelectWorld message)
     {
-        var packet = new PacketOut(PacketSendOperations.SelectWorldResult);
+        var packet = new ByteWriter(PacketSendOperations.SelectWorldResult);
         var gameStage = await _serverService.GetGameByWorldAndChannel(
             new ServerGetGameByWorldAndChannelRequest(
                 message.WorldID,

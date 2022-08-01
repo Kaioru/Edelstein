@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Network.Packets;
+﻿using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Protocol.Network.Transports;
 
@@ -10,6 +10,6 @@ public interface ITransport
     string Patch { get; }
     byte Locale { get; }
 
-    Task Dispatch(IPacket packet);
+    Task Dispatch(IByteBuffer packet);
     Task Close();
 }

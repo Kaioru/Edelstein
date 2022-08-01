@@ -1,13 +1,12 @@
-﻿using DotNetty.Buffers;
-using DotNetty.Codecs;
+﻿using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Crypto;
-using Edelstein.Protocol.Network.Packets;
 using Edelstein.Protocol.Network.Transports;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Network.DotNetty.Codecs;
 
-public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
+public class NettyPacketEncoder : MessageToByteEncoder<IByteBuffer>
 {
     private readonly AESCipher _aesCipher;
     private readonly IGCipher _igCipher;
@@ -24,7 +23,11 @@ public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
         _igCipher = igCipher ?? throw new ArgumentNullException(nameof(igCipher));
     }
 
-    protected override void Encode(IChannelHandlerContext context, IPacket message, IByteBuffer output)
+    protected override void Encode(
+        IChannelHandlerContext context,
+        IByteBuffer message,
+        global::DotNetty.Buffers.IByteBuffer output
+    )
     {
         var socket = context.Channel.GetAttribute(NettyAttributes.SocketKey).Get();
         var dataLen = (short)message.Buffer.Length;

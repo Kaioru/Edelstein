@@ -2,7 +2,7 @@
 using Edelstein.Common.Gameplay.Stages.Login.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
-using Edelstein.Protocol.Network.Packets;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Handlers;
@@ -17,7 +17,7 @@ public class CheckPasswordHandler : AbstractLoginPacketHandler
 
     public override bool Check(ILoginStageUser user) => user.State == LoginState.CheckPassword;
 
-    public override Task Handle(ILoginStageUser user, IPacketReader reader)
+    public override Task Handle(ILoginStageUser user, IByteReader reader)
     {
         var message = new CheckPassword(
             user,

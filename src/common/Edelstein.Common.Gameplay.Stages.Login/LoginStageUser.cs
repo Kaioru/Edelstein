@@ -2,7 +2,7 @@
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Network;
-using Edelstein.Protocol.Network.Packets;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Gameplay.Stages.Login;
 
@@ -20,7 +20,7 @@ public class LoginStageUser : AbstractStageUser<ILoginStageUser>, ILoginStageUse
     public byte? SelectedWorldID { get; set; }
     public byte? SelectedChannelID { get; set; }
 
-    public override Task OnPacket(IPacket packet) =>
+    public override Task OnPacket(IByteBuffer packet) =>
         Context.Pipelines.SocketOnPacket.Process(new SocketOnPacket<ILoginStageUser>(this, packet));
 
     public override Task OnException(Exception exception) =>

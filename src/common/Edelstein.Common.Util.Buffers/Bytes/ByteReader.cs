@@ -1,21 +1,21 @@
 ﻿using System.Text;
-using Edelstein.Protocol.Network.Packets;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 
-namespace Edelstein.Common.Network.Packets;
+namespace Edelstein.Common.Util.Buffers.Bytes;
 
-public class PacketIn : IPacketReader
+public class ByteReader : IByteReader
 {
     private readonly Encoding _encoding = Encoding.ASCII;
     private readonly BinaryReader _reader;
     private readonly MemoryStream _stream;
 
-    public PacketIn(byte[] buffer)
+    public ByteReader(byte[] buffer)
     {
         _stream = new MemoryStream(buffer);
         _reader = new BinaryReader(_stream);
     }
 
-    public PacketIn() : this(Array.Empty<byte>())
+    public ByteReader() : this(Array.Empty<byte>())
     {
     }
 

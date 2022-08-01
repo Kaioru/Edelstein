@@ -1,10 +1,10 @@
 ﻿using Edelstein.Common.Gameplay.Accounts;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
-using Edelstein.Common.Network.Packets;
 using Edelstein.Common.Services.Auth.Contracts;
 using Edelstein.Common.Services.Server.Contracts;
 using Edelstein.Common.Services.Server.Types;
+using Edelstein.Common.Util.Buffers.Bytes;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
 using Edelstein.Protocol.Services.Auth;
@@ -78,7 +78,7 @@ public class CheckPasswordPlug : IPipelinePlug<ICheckPassword>
                     result = LoginResult.AlreadyConnected;
             }
 
-            var packet = new PacketOut(PacketSendOperations.CheckPasswordResult);
+            var packet = new ByteWriter(PacketSendOperations.CheckPasswordResult);
 
             packet.WriteByte((byte)result);
             packet.WriteByte(0);
@@ -113,7 +113,7 @@ public class CheckPasswordPlug : IPipelinePlug<ICheckPassword>
         }
         catch (Exception)
         {
-            var packet = new PacketOut(PacketSendOperations.CheckPasswordResult);
+            var packet = new ByteWriter(PacketSendOperations.CheckPasswordResult);
 
             packet.WriteByte((byte)LoginResult.DBFail);
             packet.WriteByte(0);

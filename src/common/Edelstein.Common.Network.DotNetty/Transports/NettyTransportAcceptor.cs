@@ -6,9 +6,10 @@ using DotNetty.Transport.Channels.Sockets;
 using Edelstein.Common.Crypto;
 using Edelstein.Common.Network.DotNetty.Codecs;
 using Edelstein.Common.Network.DotNetty.Handlers;
+using Edelstein.Common.Util.Buffers.Bytes;
 using Edelstein.Protocol.Network;
-using Edelstein.Protocol.Network.Packets;
 using Edelstein.Protocol.Network.Transports;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Network.DotNetty.Transports;
 
@@ -57,7 +58,8 @@ public class NettyTransportAcceptor : ITransportAcceptor
             .BindAsync(port);
     }
 
-    public Task Dispatch(IPacket packet) => Task.FromResult(Sockets.Values.Select(s => s.Dispatch(packet)));
+    public Task Dispatch(IByteBuffer packet) =>
+        Task.FromResult(Sockets.Values.Select(s => s.Dispatch(new ByteReader(packet.Buffer))));
 
     public async Task Close()
     {

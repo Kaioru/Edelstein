@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Network.Packets;
 using Edelstein.Common.Services.Server.Contracts;
+using Edelstein.Common.Util.Buffers.Bytes;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Login.Templates;
 using Edelstein.Protocol.Services.Server;
@@ -41,7 +41,7 @@ public class WorldRequestPlug : IPipelinePlug<IWorldRequest>
                 continue;
             }
 
-            var packet = new PacketOut(PacketSendOperations.WorldInformation);
+            var packet = new ByteWriter(PacketSendOperations.WorldInformation);
 
             packet.WriteByte(worldID);
             packet.WriteString(template.Name);
@@ -72,7 +72,7 @@ public class WorldRequestPlug : IPipelinePlug<IWorldRequest>
             await message.User.Dispatch(packet);
         }
 
-        await message.User.Dispatch(new PacketOut(PacketSendOperations.WorldInformation).WriteByte(0xFF));
-        await message.User.Dispatch(new PacketOut(PacketSendOperations.LatestConnectedWorld).WriteInt(0));
+        await message.User.Dispatch(new ByteWriter(PacketSendOperations.WorldInformation).WriteByte(0xFF));
+        await message.User.Dispatch(new ByteWriter(PacketSendOperations.LatestConnectedWorld).WriteInt(0));
     }
 }

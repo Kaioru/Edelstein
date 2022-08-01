@@ -2,7 +2,7 @@
 using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Crypto;
-using Edelstein.Common.Network.Packets;
+using Edelstein.Common.Util.Buffers.Bytes;
 using Edelstein.Protocol.Network.Transports;
 
 namespace Edelstein.Common.Network.DotNetty.Codecs;
@@ -94,7 +94,7 @@ public class NettyPacketDecoder : ReplayingDecoder<NettyPacketState>
                     socket.SeqRecv = _igCipher.Hash(seqRecv, 4, 0);
                 }
 
-                output.Add(new PacketIn(buffer));
+                output.Add(new ByteReader(buffer));
                 return;
         }
     }

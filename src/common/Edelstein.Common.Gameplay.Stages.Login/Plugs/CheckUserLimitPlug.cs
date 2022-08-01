@@ -1,5 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Network.Packets;
+using Edelstein.Common.Util.Buffers.Bytes;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
 using Edelstein.Protocol.Util.Pipelines;
 
@@ -9,7 +9,7 @@ public class CheckUserLimitPlug : IPipelinePlug<ICheckUserLimit>
 {
     public async Task Handle(IPipelineContext ctx, ICheckUserLimit message)
     {
-        var packet = new PacketOut(PacketSendOperations.CheckUserLimitResult);
+        var packet = new ByteWriter(PacketSendOperations.CheckUserLimitResult);
 
         packet.WriteByte(0);
         packet.WriteByte(0);

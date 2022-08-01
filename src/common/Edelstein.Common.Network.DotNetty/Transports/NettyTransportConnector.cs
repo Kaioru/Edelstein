@@ -6,8 +6,8 @@ using Edelstein.Common.Crypto;
 using Edelstein.Common.Network.DotNetty.Codecs;
 using Edelstein.Common.Network.DotNetty.Handlers;
 using Edelstein.Protocol.Network;
-using Edelstein.Protocol.Network.Packets;
 using Edelstein.Protocol.Network.Transports;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Network.DotNetty.Transports;
 
@@ -51,7 +51,7 @@ public class NettyTransportConnector : ITransportConnector
             .ConnectAsync(IPAddress.Parse(host), port);
     }
 
-    public Task Dispatch(IPacket packet) => Task.FromResult(Channel?.WriteAndFlushAsync(packet));
+    public Task Dispatch(IByteBuffer packet) => Task.FromResult(Channel?.WriteAndFlushAsync(packet));
 
     public async Task Close()
     {

@@ -4,6 +4,8 @@ namespace Edelstein.Common.Gameplay.Database.Models;
 
 public record AccountModel : IAccount
 {
+    public ICollection<AccountWorldModel> AccountWorlds { get; set; }
+
     public int ID { get; set; }
 
     public string Username { get; set; }
