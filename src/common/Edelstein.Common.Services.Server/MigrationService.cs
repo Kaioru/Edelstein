@@ -81,7 +81,7 @@ public class MigrationService : IMigrationService
             migration.AccountWorld = _serializer.Deserialize<IAccountWorld>(existing.AccountWorldBytes);
             migration.Character = _serializer.Deserialize<ICharacter>(existing.CharacterBytes);
 
-            return new MigrationClaimResponse(MigrationResult.Success, existing.Adapt<Migration>());
+            return new MigrationClaimResponse(MigrationResult.Success, migration);
         }
         catch (Exception)
         {
