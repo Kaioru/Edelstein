@@ -61,13 +61,13 @@ public class CharacterRepository : ICharacterRepository
     public async Task<bool> CheckExistsByName(string name)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        return await db.Characters.AnyAsync(c => c.Name == name);
+        return await db.Characters.AnyAsync(c => c.Name.ToLower() == name.ToLower());
     }
 
     public async Task<ICharacter?> RetrieveByName(string name)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        var model = await db.Characters.FirstOrDefaultAsync(c => c.Name == name);
+        var model = await db.Characters.FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
         return model?.Adapt(_serializer.Deserialize<Character>(model.Bytes));
     }
 
