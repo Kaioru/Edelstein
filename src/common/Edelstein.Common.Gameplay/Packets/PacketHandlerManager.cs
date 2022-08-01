@@ -1,6 +1,6 @@
-﻿using Edelstein.Common.Network.Packets;
+﻿using Edelstein.Common.Util.Buffers.Bytes;
 using Edelstein.Protocol.Gameplay.Stages;
-using Edelstein.Protocol.Network.Packets;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Packets;
@@ -48,9 +48,9 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
         _handlers.Remove(handler.Operation);
     }
 
-    public async Task Process(TStageUser user, IPacket packet)
+    public async Task Process(TStageUser user, IByteBuffer packet)
     {
-        var reader = new PacketIn(packet.Buffer);
+        var reader = new ByteReader(packet.Buffer);
         var operation = reader.ReadShort();
         var handler = _handlers.GetValueOrDefault(operation);
 

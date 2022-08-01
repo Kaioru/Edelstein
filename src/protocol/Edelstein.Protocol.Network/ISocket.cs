@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Edelstein.Protocol.Network.Packets;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Network;
@@ -14,6 +14,6 @@ public interface ISocket : IIdentifiable<string>
 
     bool IsDataEncrypted { get; }
 
-    Task Dispatch(IPacket packet);
+    Task Dispatch(IByteBuffer packet);
     Task Close();
 }

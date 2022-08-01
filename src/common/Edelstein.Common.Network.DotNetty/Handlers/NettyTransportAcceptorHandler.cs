@@ -1,7 +1,7 @@
 ﻿using DotNetty.Transport.Channels;
-using Edelstein.Common.Network.Packets;
-using Edelstein.Protocol.Network.Packets;
+using Edelstein.Common.Util.Buffers.Bytes;
 using Edelstein.Protocol.Network.Transports;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Network.DotNetty.Handlers;
 
@@ -21,7 +21,7 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
             (uint)random.Next()
         );
         var newAdapter = _acceptor.Initializer.Initialize(newSocket);
-        var handshake = new PacketOut();
+        var handshake = new ByteWriter();
 
         handshake.WriteShort(_acceptor.Version);
         handshake.WriteString(_acceptor.Patch);
@@ -52,7 +52,7 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
 
-        adapter?.OnPacket((IPacketReader)message);
+        adapter?.OnPacket((IByteReader)message);
     }
 
     public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)

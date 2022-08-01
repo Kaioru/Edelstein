@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using DotNetty.Transport.Channels;
 using Edelstein.Protocol.Network;
-using Edelstein.Protocol.Network.Packets;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Network.DotNetty;
 
@@ -27,7 +27,7 @@ public class NettySocket : ISocket
 
     public bool IsDataEncrypted { get; }
 
-    public Task Dispatch(IPacket packet) => _channel.WriteAndFlushAsync(packet);
-
     public Task Close() => _channel.DisconnectAsync();
+
+    public Task Dispatch(IByteBuffer packet) => _channel.WriteAndFlushAsync(packet);
 }

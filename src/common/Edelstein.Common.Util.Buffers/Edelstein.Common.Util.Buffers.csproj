@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Common.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Buffers\Edelstein.Protocol.Util.Buffers.csproj" />
+  </ItemGroup>
+
+</Project>

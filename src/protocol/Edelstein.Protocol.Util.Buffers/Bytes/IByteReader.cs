@@ -1,6 +1,6 @@
-﻿namespace Edelstein.Protocol.Network.Packets;
+﻿namespace Edelstein.Protocol.Util.Buffers.Bytes;
 
-public interface IPacketReader : IPacket
+public interface IByteReader : IByteBuffer
 {
     long Cursor { get; }
     long Available { get; }

@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Network.Packets;
+﻿using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Protocol.Network;
 
@@ -6,10 +6,10 @@ public interface IAdapter
 {
     ISocket Socket { get; }
 
-    Task OnPacket(IPacket packet);
+    Task OnPacket(IByteBuffer packet);
     Task OnException(Exception exception);
     Task OnDisconnect();
 
-    Task Dispatch(IPacket packet);
+    Task Dispatch(IByteBuffer packet);
     Task Disconnect();
 }

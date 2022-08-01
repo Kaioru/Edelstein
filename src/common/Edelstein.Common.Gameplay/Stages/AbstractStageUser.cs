@@ -2,7 +2,7 @@
 using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Network;
-using Edelstein.Protocol.Network.Packets;
+using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Gameplay.Stages;
 
@@ -20,11 +20,11 @@ public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser> whe
     public IAccountWorld? AccountWorld { get; set; }
     public ICharacter? Character { get; set; }
 
-    public abstract Task OnPacket(IPacket packet);
+    public abstract Task OnPacket(IByteBuffer packet);
     public abstract Task OnException(Exception exception);
     public abstract Task OnDisconnect();
 
-    public Task Dispatch(IPacket packet) => Socket.Dispatch(packet);
+    public Task Dispatch(IByteBuffer packet) => Socket.Dispatch(packet);
 
     public Task Disconnect() => Socket.Close();
 }
