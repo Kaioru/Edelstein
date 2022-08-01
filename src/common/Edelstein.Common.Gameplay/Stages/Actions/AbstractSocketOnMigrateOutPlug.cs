@@ -56,6 +56,9 @@ public class AbstractSocketOnMigrateOutPlug<TStageUser, TOptions> : IPipelinePlu
                 "Failed to start migration for user {Name} due to {Reason}",
                 message.User.Character.Name, response.Result
             );
+            return;
         }
+
+        message.User.IsMigrating = true;
     }
 }
