@@ -22,7 +22,7 @@ public abstract class AbstractMigrateInHandler<TStageUser> : IPacketHandler<TSta
         user.AccountWorld == null &&
         user.Character == null;
 
-    public async Task Handle(TStageUser user, IByteReader reader)
+    public Task Handle(TStageUser user, IByteReader reader)
     {
         var character = reader.ReadInt();
         _ = reader.ReadBytes(18);
@@ -34,6 +34,6 @@ public abstract class AbstractMigrateInHandler<TStageUser> : IPacketHandler<TSta
             key
         );
 
-        await _pipeline.Process(message);
+        return _pipeline.Process(message);
     }
 }
