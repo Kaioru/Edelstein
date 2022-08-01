@@ -13,4 +13,5 @@ public interface ILoginContextPipelines : IStageContextPipelines<ILoginStageUser
     IPipeline<ILogoutWorld> LogoutWorld { get; }
     IPipeline<ICheckDuplicatedID> CheckDuplicatedID { get; }
     IPipeline<ICreateNewCharacter> CreateNewCharacter { get; }
+    IPipeline<IEnableSPWRequest> EnableSPWRequest { get; }
 }

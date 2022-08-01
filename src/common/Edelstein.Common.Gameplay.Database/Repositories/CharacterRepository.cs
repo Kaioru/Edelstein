@@ -71,6 +71,13 @@ public class CharacterRepository : ICharacterRepository
         return model?.Adapt(_serializer.Deserialize<Character>(model.Bytes));
     }
 
+    public async Task<ICharacter?> RetrieveByAccountWorldAndCharacter(int accountWorld, int character)
+    {
+        await using var db = await _dbFactory.CreateDbContextAsync();
+        var model = await db.Characters.FirstOrDefaultAsync(c => c.AccountWorldID == accountWorld && c.ID == character);
+        return model?.Adapt(_serializer.Deserialize<Character>(model.Bytes));
+    }
+
     public async Task<IEnumerable<ICharacter>> RetrieveAllByAccountWorld(int accountWorld)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
