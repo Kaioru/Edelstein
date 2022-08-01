@@ -2,6 +2,7 @@
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Util.Buffers.Bytes;
+using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
 using Edelstein.Protocol.Util.Pipelines;
 using Microsoft.Extensions.Logging;
@@ -33,7 +34,7 @@ public class CreateNewCharacterPlug : IPipelinePlug<ICreateNewCharacter>
 
             if (result == LoginResult.Success)
             {
-                var character = new Character
+                ICharacter character = new Character
                 {
                     AccountWorldID = message.User.AccountWorld!.ID,
                     Name = message.Name,
@@ -47,15 +48,15 @@ public class CreateNewCharacterPlug : IPipelinePlug<ICreateNewCharacter>
                     SubJob = 0 // TODO: race -> subjob
                 };
 
-                message.User.Character = await _characterRepository.Insert(character);
+                character = await _characterRepository.Insert(character);
 
                 _logger.LogDebug(
                     "Created new {Race} character: {Name} (ID: {ID})",
-                    message.Race, message.Name, message.User.Character.ID
+                    message.Race, message.Name, character.ID
                 );
 
-                // TODO: WriteCharacterStats
-                // TODO: WriteCharacterLook
+                packet.WriteCharacterStats(character);
+                packet.WriteCharacterLooks(character);
 
                 packet.WriteBool(false);
                 packet.WriteBool(false);

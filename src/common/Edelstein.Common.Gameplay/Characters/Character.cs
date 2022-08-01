@@ -1,10 +1,38 @@
-﻿using Edelstein.Protocol.Gameplay.Characters;
+﻿using Edelstein.Common.Gameplay.Inventories;
+using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Inventories;
 
 namespace Edelstein.Common.Gameplay.Characters;
 
 public record Character : ICharacter
 {
+    public Character()
+    {
+        Level = 1;
+        STR = 4;
+        DEX = 4;
+        INT = 4;
+        LUK = 4;
+        HP = 50;
+        MaxHP = 50;
+        MP = 50;
+        MaxMP = 50;
+
+        Pets = new long[3];
+        ExtendSP = new Dictionary<byte, byte>();
+
+        Inventories = new Dictionary<ItemInventoryType, IItemInventory>
+        {
+            [ItemInventoryType.Equip] = new ItemInventory(24),
+            [ItemInventoryType.Consume] = new ItemInventory(24),
+            [ItemInventoryType.Install] = new ItemInventory(24),
+            [ItemInventoryType.Etc] = new ItemInventory(24),
+            [ItemInventoryType.Cash] = new ItemInventory(24)
+        };
+
+        WishList = new int[10];
+    }
+
     public int ID { get; set; }
     public int AccountWorldID { get; set; }
 

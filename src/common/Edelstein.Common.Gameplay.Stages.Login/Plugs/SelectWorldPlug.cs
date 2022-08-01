@@ -1,4 +1,6 @@
-﻿using Edelstein.Common.Gameplay.Accounts;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Accounts;
+using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Services.Server.Contracts;
@@ -13,13 +15,19 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Plugs;
 
 public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
 {
-    private readonly IAccountWorldRepository _repository;
+    private readonly IAccountWorldRepository _accountWorldRepository;
+    private readonly ICharacterRepository _characterRepository;
     private readonly IServerService _server;
 
-    public SelectWorldPlug(IServerService server, IAccountWorldRepository repository)
+    public SelectWorldPlug(
+        IServerService server,
+        IAccountWorldRepository accountWorldRepository,
+        ICharacterRepository characterRepository
+    )
     {
         _server = server;
-        _repository = repository;
+        _accountWorldRepository = accountWorldRepository;
+        _characterRepository = characterRepository;
     }
 
     public async Task Handle(IPipelineContext ctx, ISelectWorld message)
@@ -35,14 +43,17 @@ public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
             var result = gameStage.Result == ServerResult.Success || gameStage.Server == null
                 ? LoginResult.Success
                 : LoginResult.DBFail;
-            var accountWorld = await _repository.RetrieveByAccountAndWorld(
+            var accountWorld = await _accountWorldRepository.RetrieveByAccountAndWorld(
                 message.User.Account!.ID,
                 gameStage.Server!.WorldID
-            ) ?? await _repository.Insert(new AccountWorld
+            ) ?? await _accountWorldRepository.Insert(new AccountWorld
             {
                 AccountID = message.User.Account.ID,
                 WorldID = gameStage.Server!.WorldID
             });
+            var characters = (await _characterRepository
+                    .RetrieveAllByAccountWorld(accountWorld.ID))
+                .ToImmutableList();
             var packet = new ByteWriter(PacketSendOperations.SelectWorldResult);
 
             packet.WriteByte((byte)result);
@@ -56,7 +67,17 @@ public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
 
                 message.User.Account.LatestConnectedWorld = message.User.SelectedWorldID;
 
-                packet.WriteByte(0);
+                packet.WriteByte((byte)characters.Count);
+
+                foreach (var character in characters)
+                {
+                    packet.WriteCharacterStats(character);
+                    packet.WriteCharacterLooks(character);
+
+                    packet.WriteBool(false);
+                    packet.WriteBool(false);
+                }
+
                 packet.WriteBool(!string.IsNullOrEmpty(message.User.Account.SPW));
                 packet.WriteInt(accountWorld.CharacterSlotMax);
                 packet.WriteInt(0);
@@ -64,8 +85,9 @@ public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
 
             await message.User.Dispatch(packet);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Console.WriteLine(e);
             var packet = new ByteWriter(PacketSendOperations.SelectWorldResult);
 
             packet.WriteByte((byte)LoginResult.DBFail);
