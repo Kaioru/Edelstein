@@ -20,6 +20,9 @@ public class LoginStageUser : AbstractStageUser<ILoginStageUser>, ILoginStageUse
     public byte? SelectedWorldID { get; set; }
     public byte? SelectedChannelID { get; set; }
 
+    public override Task OnMigrateIn(int character, long key) =>
+        Context.Pipelines.SocketOnMigrateIn.Process(new SocketOnMigrateIn<ILoginStageUser>(this, character, key));
+
     public override Task OnMigrateOut(string server) =>
         Context.Pipelines.SocketOnMigrateOut.Process(new SocketOnMigrateOut<ILoginStageUser>(this, server));
 

@@ -5,6 +5,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Contexts;
 
 public interface IStageContextPipelines<TStageUser> where TStageUser : IStageUser<TStageUser>
 {
+    IPipeline<ISocketOnMigrateIn<TStageUser>> SocketOnMigrateIn { get; }
     IPipeline<ISocketOnMigrateOut<TStageUser>> SocketOnMigrateOut { get; }
 
     IPipeline<ISocketOnPacket<TStageUser>> SocketOnPacket { get; }

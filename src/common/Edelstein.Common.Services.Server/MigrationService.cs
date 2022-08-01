@@ -67,6 +67,11 @@ public class MigrationService : IMigrationService
             if (existing == null || existing.DateExpire < now)
                 return new MigrationClaimResponse(MigrationResult.FailedNotStarted);
 
+            if (existing.Key != request.Key)
+                return new MigrationClaimResponse(MigrationResult.FailedInvalidKey);
+            if (existing.ToServerID != request.ServerID)
+                return new MigrationClaimResponse(MigrationResult.FailedInvalidServer);
+
             db.Migrations.Remove(existing);
             await db.SaveChangesAsync();
 

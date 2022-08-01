@@ -2,4 +2,8 @@
 
 namespace Edelstein.Common.Services.Server.Contracts;
 
-public record MigrationClaimRequest(string Key, int ID) : IMigrationClaimRequest;
+public record MigrationClaimRequest(
+    int ID,
+    string ServerID,
+    long Key
+) : IMigrationClaimRequest;
