@@ -5,6 +5,8 @@ namespace Edelstein.Protocol.Gameplay.Characters;
 
 public interface ICharacter : IIdentifiable<int>
 {
+    int AccountWorldID { get; set; }
+
     string Name { get; set; }
     byte Gender { get; set; }
     byte Skin { get; set; }
@@ -45,5 +47,5 @@ public interface ICharacter : IIdentifiable<int>
 
     IDictionary<ItemInventoryType, IItemInventory> Inventories { get; }
 
-    public int[] WishList { get; }
+    int[] WishList { get; }
 }

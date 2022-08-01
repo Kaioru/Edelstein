@@ -11,6 +11,5 @@ public record AccountWorldModel : IDataModel
 
     public int ID { get; set; }
 
-    public int Version { get; set; }
     public byte[] Bytes { get; set; }
 }

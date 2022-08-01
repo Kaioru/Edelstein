@@ -3,6 +3,7 @@ using Edelstein.Common.Data.NX;
 using Edelstein.Common.Gameplay.Accounts;
 using Edelstein.Common.Gameplay.Database;
 using Edelstein.Common.Gameplay.Database.Repositories;
+using Edelstein.Common.Gameplay.Database.Serializers;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
@@ -51,7 +52,10 @@ await Host.CreateDefaultBuilder(args)
         services.AddPooledDbContextFactory<GameplayDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(GameplayDbContext.ConnectionStringKey)));
 
+        services.AddSingleton<ISerializer, BinarySerializer>();
+
         services.AddSingleton<IAccountRepository, AccountRepository>();
+        services.AddSingleton<IAccountWorldRepository, AccountWorldRepository>();
 
         services.AddSingleton<IAuthService, AuthService>();
         services.AddSingleton<IServerService, ServerService>();
