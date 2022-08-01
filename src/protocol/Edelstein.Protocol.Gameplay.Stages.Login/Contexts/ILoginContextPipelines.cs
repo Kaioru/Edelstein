@@ -11,4 +11,5 @@ public interface ILoginContextPipelines : IStageContextPipelines<ILoginStageUser
     IPipeline<ICheckUserLimit> CheckUserLimit { get; }
     IPipeline<IWorldRequest> WorldRequest { get; }
     IPipeline<ILogoutWorld> LogoutWorld { get; }
+    IPipeline<ICheckDuplicatedID> CheckDuplicatedID { get; }
 }

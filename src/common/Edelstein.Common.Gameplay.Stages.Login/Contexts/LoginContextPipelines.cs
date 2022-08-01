@@ -14,5 +14,6 @@ public record LoginContextPipelines(
     IPipeline<ISelectWorld> SelectWorld,
     IPipeline<ICheckUserLimit> CheckUserLimit,
     IPipeline<IWorldRequest> WorldRequest,
-    IPipeline<ILogoutWorld> LogoutWorld
+    IPipeline<ILogoutWorld> LogoutWorld,
+    IPipeline<ICheckDuplicatedID> CheckDuplicatedID
 ) : ILoginContextPipelines;
