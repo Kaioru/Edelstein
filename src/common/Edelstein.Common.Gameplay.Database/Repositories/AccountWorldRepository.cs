@@ -39,6 +39,7 @@ public class AccountWorldRepository : IAccountWorldRepository
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
         var model = entry.Adapt<AccountWorldModel>();
+        model.Bytes = _serializer.Serialize(entry);
         db.AccountWorlds.Update(model);
         await db.SaveChangesAsync();
         return model.Adapt(_serializer.Deserialize<AccountWorld>(model.Bytes));
