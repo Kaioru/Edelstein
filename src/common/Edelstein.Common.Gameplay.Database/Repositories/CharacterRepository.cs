@@ -40,6 +40,7 @@ public class CharacterRepository : ICharacterRepository
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
         var model = entry.Adapt<CharacterModel>();
+        model.Bytes = _serializer.Serialize(entry);
         db.Characters.Update(model);
         await db.SaveChangesAsync();
         return model.Adapt(_serializer.Deserialize<Character>(model.Bytes));
