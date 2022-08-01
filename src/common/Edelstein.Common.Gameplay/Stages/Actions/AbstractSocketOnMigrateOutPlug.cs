@@ -60,5 +60,9 @@ public class AbstractSocketOnMigrateOutPlug<TStageUser, TOptions> : IPipelinePlu
         }
 
         message.User.IsMigrating = true;
+        _logger.LogDebug(
+            "Migrated out character {Name} from service {From} to service {To} ",
+            message.User.Character.Name, _options.ID, message.ServerID
+        );
     }
 }
