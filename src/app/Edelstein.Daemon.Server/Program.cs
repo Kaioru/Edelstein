@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Data.NX;
 using Edelstein.Common.Gameplay.Accounts;
+using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Database;
 using Edelstein.Common.Gameplay.Database.Repositories;
 using Edelstein.Common.Gameplay.Database.Serializers;
@@ -56,6 +57,7 @@ await Host.CreateDefaultBuilder(args)
 
         services.AddSingleton<IAccountRepository, AccountRepository>();
         services.AddSingleton<IAccountWorldRepository, AccountWorldRepository>();
+        services.AddSingleton<ICharacterRepository, CharacterRepository>();
 
         services.AddSingleton<IAuthService, AuthService>();
         services.AddSingleton<IServerService, ServerService>();
