@@ -77,6 +77,7 @@ public class AbstractSocketOnMigrateInPlug<TStageUser, TStage, TOptions> : IPipe
             return;
         }
 
+        message.User.Key = migrationResponse.Migration!.Key;
         message.User.Account = migrationResponse.Migration!.Account;
         message.User.AccountWorld = migrationResponse.Migration!.AccountWorld;
         message.User.Character = migrationResponse.Migration!.Character;
