@@ -76,7 +76,7 @@ public class CharacterRepository : ICharacterRepository
         await using var db = await _dbFactory.CreateDbContextAsync();
         var results = await db.Characters.Where(c => c.AccountWorldID == accountWorld).ToListAsync();
         return results
-            .Select(m => _serializer.Deserialize<Character>(m.Bytes))
+            .Select(m => m.Adapt(_serializer.Deserialize<Character>(m.Bytes)))
             .ToImmutableList();
     }
 }
