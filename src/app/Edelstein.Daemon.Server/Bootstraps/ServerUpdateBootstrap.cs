@@ -1,6 +1,7 @@
 ﻿using Edelstein.Common.Services.Server.Contracts;
 using Edelstein.Common.Services.Server.Types;
 using Edelstein.Daemon.Server.Configs;
+using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
@@ -42,6 +43,10 @@ public class ServerUpdateBootstrap<TConfig> : IBootstrap, ITickable where TConfi
     {
         Context?.Cancel();
         await _service.Deregister(new ServerDeregisterRequest(_config.ID));
+        _logger.LogInformation(
+            "Deregistered stage {ID} to server registry",
+            _config.ID
+        );
     }
 
     public async Task OnTick(DateTime now)
@@ -56,6 +61,16 @@ public class ServerUpdateBootstrap<TConfig> : IBootstrap, ITickable where TConfi
                         ID = _config.ID,
                         Host = _config.Host,
                         Port = _config.Port
+                    })),
+                IGameContextOptions game => await _service.RegisterGame(new ServerRegisterRequest<IServerGame>(
+                    new ServerGame
+                    {
+                        ID = _config.ID,
+                        Host = _config.Host,
+                        Port = _config.Port,
+                        WorldID = game.WorldID,
+                        ChannelID = game.ChannelID,
+                        IsAdultChannel = game.IsAdultChannel
                     })),
                 _ => throw new ArgumentOutOfRangeException()
             };

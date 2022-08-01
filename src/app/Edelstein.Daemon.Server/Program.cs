@@ -6,6 +6,8 @@ using Edelstein.Common.Gameplay.Database;
 using Edelstein.Common.Gameplay.Database.Repositories;
 using Edelstein.Common.Gameplay.Database.Serializers;
 using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Stages.Game;
+using Edelstein.Common.Gameplay.Stages.Game.Contexts;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
@@ -18,6 +20,8 @@ using Edelstein.Daemon.Server;
 using Edelstein.Daemon.Server.Bootstraps;
 using Edelstein.Daemon.Server.Configs;
 using Edelstein.Protocol.Data;
+using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Network;
@@ -81,6 +85,7 @@ await Host.CreateDefaultBuilder(args)
 
         services.AddSingleton(config);
         stages.AddRange(config.LoginStages);
+        stages.AddRange(config.GameStages);
 
         foreach (var stage in stages)
             services.AddSingleton<IBootstrap>(p =>
@@ -117,6 +122,20 @@ await Host.CreateDefaultBuilder(args)
                         scope.AddSingleton<IAdapterInitializer, LoginStageUserInitializer>();
                         scope.AddSingleton<ILoginStage, LoginStage>();
                         break;
+                    case IGameContextOptions options:
+                        scope.Scan(s => s
+                            .FromAssemblyOf<GameStage>()
+                            .AddClasses(c => c.AssignableTo<ITemplateLoader>())
+                            .AsImplementedInterfaces()
+                            .WithSingletonLifetime()
+                        );
+
+                        scope.AddSingleton(options);
+                        scope.AddSingleton<IGameContext, GameContext>();
+                        scope.AddSingleton<IGameContextPipelines, GameContextPipelines>();
+                        scope.AddSingleton<IAdapterInitializer, GameStageUserInitializer>();
+                        scope.AddSingleton<IGameStage, GameStage>();
+                        break;
                 }
 
                 var provider = scope.BuildServiceProvider();
@@ -137,6 +156,15 @@ await Host.CreateDefaultBuilder(args)
                 new ServerUpdateBootstrap<ProgramConfigStageLogin>(
                     p.GetRequiredService<ILogger<ServerUpdateBootstrap<ProgramConfigStageLogin>>>(),
                     login,
+                    p.GetRequiredService<IServerService>(),
+                    p.GetRequiredService<ITickerManager>()
+                )
+            );
+        foreach (var game in config.GameStages)
+            services.AddSingleton<IBootstrap>(p =>
+                new ServerUpdateBootstrap<ProgramConfigStageGame>(
+                    p.GetRequiredService<ILogger<ServerUpdateBootstrap<ProgramConfigStageGame>>>(),
+                    game,
                     p.GetRequiredService<IServerService>(),
                     p.GetRequiredService<ITickerManager>()
                 )

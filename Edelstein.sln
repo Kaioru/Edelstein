@@ -78,6 +78,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Util.Buf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Util.Buffers", "src\common\Edelstein.Common.Util.Buffers\Edelstein.Common.Util.Buffers.csproj", "{1F9AAF15-4E61-482F-8EE5-F5C24B5F7C79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Gameplay.Stages.Game", "src\protocol\Edelstein.Protocol.Gameplay.Stages.Game\Edelstein.Protocol.Gameplay.Stages.Game.csproj", "{2900D1FA-42CA-470E-B823-EE0685B3D637}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Gameplay.Stages.Game", "src\common\Edelstein.Common.Gameplay.Stages.Game\Edelstein.Common.Gameplay.Stages.Game.csproj", "{0C5CD00D-31DA-43C9-A339-AD527038D779}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +123,8 @@ Global
 		{9C8B5E32-BA3B-41E9-B119-E7A162B70EB1} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{7F975131-6322-41AA-80BB-63727892D3FD} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{1F9AAF15-4E61-482F-8EE5-F5C24B5F7C79} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
+		{2900D1FA-42CA-470E-B823-EE0685B3D637} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{0C5CD00D-31DA-43C9-A339-AD527038D779} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -237,5 +243,13 @@ Global
 		{1F9AAF15-4E61-482F-8EE5-F5C24B5F7C79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F9AAF15-4E61-482F-8EE5-F5C24B5F7C79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F9AAF15-4E61-482F-8EE5-F5C24B5F7C79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2900D1FA-42CA-470E-B823-EE0685B3D637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2900D1FA-42CA-470E-B823-EE0685B3D637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2900D1FA-42CA-470E-B823-EE0685B3D637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2900D1FA-42CA-470E-B823-EE0685B3D637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C5CD00D-31DA-43C9-A339-AD527038D779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C5CD00D-31DA-43C9-A339-AD527038D779}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C5CD00D-31DA-43C9-A339-AD527038D779}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C5CD00D-31DA-43C9-A339-AD527038D779}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
