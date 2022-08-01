@@ -6,8 +6,8 @@
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Pipelines\Edelstein.Protocol.Util.Pipelines.csproj" />
-    <ProjectReference Include="..\Edelstein.Common.Network\Edelstein.Common.Network.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Util.Buffers\Edelstein.Common.Util.Buffers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

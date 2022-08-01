@@ -22,12 +22,14 @@ public class GameplayDbContext : DbContext
         builder.Entity<AccountWorldModel>()
             .HasOne(m => m.Account)
             .WithMany(p => p.AccountWorlds)
+            .HasForeignKey(m => m.AccountID)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<CharacterModel>(entity => entity.HasIndex(e => e.Name).IsUnique());
         builder.Entity<CharacterModel>()
             .HasOne(m => m.AccountWorld)
             .WithMany(p => p.Characters)
+            .HasForeignKey(m => m.AccountWorldID)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
