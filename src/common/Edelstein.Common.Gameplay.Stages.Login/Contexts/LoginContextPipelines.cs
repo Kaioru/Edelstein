@@ -19,6 +19,7 @@ public record LoginContextPipelines(
     IPipeline<ILogoutWorld> LogoutWorld,
     IPipeline<ICheckDuplicatedID> CheckDuplicatedID,
     IPipeline<ICreateNewCharacter> CreateNewCharacter,
+    IPipeline<IDeleteCharacter> DeleteCharacter,
     IPipeline<IEnableSPWRequest> EnableSPWRequest,
     IPipeline<ICheckSPWRequest> CheckSPWRequest
 ) : ILoginContextPipelines;
