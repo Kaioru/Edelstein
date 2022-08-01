@@ -9,7 +9,7 @@ public interface IMigration : IIdentifiable<int>
     string FromServerID { get; }
     string ToServerID { get; }
 
-    string Key { get; }
+    long Key { get; }
 
     IAccount Account { get; }
     IAccountWorld AccountWorld { get; }

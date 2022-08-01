@@ -3,6 +3,7 @@ using System;
 using Edelstein.Common.Services.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Edelstein.Common.Services.Server.Migrations
 {
     [DbContext(typeof(ServerDbContext))]
-    partial class ServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220801133035_RemoveKeyFromMigrationModel")]
+    partial class RemoveKeyFromMigrationModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,9 +53,6 @@ namespace Edelstein.Common.Services.Server.Migrations
                     b.Property<string>("FromServerID")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<long>("Key")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("ToServerID")
                         .IsRequired()

@@ -10,7 +10,7 @@ public record MigrationModel : IIdentifiable<int>
     public ServerModel FromServer { get; set; }
     public ServerModel ToServer { get; set; }
 
-    public string Key { get; set; }
+    public long Key { get; set; }
 
     public byte[] AccountBytes { get; set; }
     public byte[] AccountWorldBytes { get; set; }

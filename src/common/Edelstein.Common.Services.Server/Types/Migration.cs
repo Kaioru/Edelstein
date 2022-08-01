@@ -11,7 +11,7 @@ public record Migration : IMigration
     public string FromServerID { get; set; }
     public string ToServerID { get; set; }
 
-    public string Key { get; set; }
+    public long Key { get; set; }
 
     public IAccount Account { get; set; }
     public IAccountWorld AccountWorld { get; set; }
