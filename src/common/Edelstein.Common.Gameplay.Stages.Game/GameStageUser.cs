@@ -12,6 +12,9 @@ public class GameStageUser : AbstractStageUser<IGameStageUser>, IGameStageUser
 
     public IGameContext Context { get; }
 
+    public override Task OnMigrateIn(int character, long key) =>
+        Context.Pipelines.SocketOnMigrateIn.Process(new SocketOnMigrateIn<IGameStageUser>(this, character, key));
+
     public override Task OnMigrateOut(string server) =>
         Context.Pipelines.SocketOnMigrateOut.Process(new SocketOnMigrateOut<IGameStageUser>(this, server));
 

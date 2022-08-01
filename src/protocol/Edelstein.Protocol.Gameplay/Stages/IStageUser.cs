@@ -17,5 +17,6 @@ public interface IStageUser<TStageUser> : IIdentifiable<int>, IAdapter where TSt
 
     bool IsMigrating { get; set; }
 
+    Task OnMigrateIn(int character, long key);
     Task OnMigrateOut(string server);
 }

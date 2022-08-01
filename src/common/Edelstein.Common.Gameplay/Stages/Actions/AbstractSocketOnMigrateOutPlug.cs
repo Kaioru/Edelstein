@@ -18,7 +18,6 @@ public class AbstractSocketOnMigrateOutPlug<TStageUser, TOptions> : IPipelinePlu
     private readonly IMigrationService _migrationService;
     private readonly TOptions _options;
 
-
     public AbstractSocketOnMigrateOutPlug(
         ILogger<AbstractSocketOnMigrateOutPlug<TStageUser, TOptions>> logger,
         IMigrationService migrationService,
@@ -40,6 +39,7 @@ public class AbstractSocketOnMigrateOutPlug<TStageUser, TOptions> : IPipelinePlu
 
         var migration = new Migration
         {
+            ID = message.User.Character.ID,
             FromServerID = _options.ID,
             ToServerID = message.ServerID,
             Key = message.User.Key,
@@ -53,7 +53,7 @@ public class AbstractSocketOnMigrateOutPlug<TStageUser, TOptions> : IPipelinePlu
         {
             await message.User.Disconnect();
             _logger.LogDebug(
-                "Failed to start migration for user {Name} due to {Reason}",
+                "Failed to migrate out for user {Name} due to {Reason}",
                 message.User.Character.Name, response.Result
             );
             return;

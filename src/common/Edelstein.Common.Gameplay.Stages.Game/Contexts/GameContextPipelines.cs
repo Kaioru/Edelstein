@@ -6,6 +6,7 @@ using Edelstein.Protocol.Util.Pipelines;
 namespace Edelstein.Common.Gameplay.Stages.Game.Contexts;
 
 public record GameContextPipelines(
+    IPipeline<ISocketOnMigrateIn<IGameStageUser>> SocketOnMigrateIn,
     IPipeline<ISocketOnMigrateOut<IGameStageUser>> SocketOnMigrateOut,
     IPipeline<ISocketOnPacket<IGameStageUser>> SocketOnPacket,
     IPipeline<ISocketOnException<IGameStageUser>> SocketOnException,
