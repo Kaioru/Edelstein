@@ -40,12 +40,14 @@ public class AccountRepository : IAccountRepository
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
         db.Accounts.Remove(new AccountModel { ID = key });
+        await db.SaveChangesAsync();
     }
 
     public async Task Delete(IAccount entry)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
         db.Accounts.Remove(new AccountModel { ID = entry.ID });
+        await db.SaveChangesAsync();
     }
 
     public async Task<IAccount?> RetrieveByUsername(string username)
