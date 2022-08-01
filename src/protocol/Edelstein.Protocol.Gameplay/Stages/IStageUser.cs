@@ -12,4 +12,6 @@ public interface IStageUser<TStageUser> : IIdentifiable<int>, IAdapter where TSt
     IAccount? Account { get; set; }
     IAccountWorld? AccountWorld { get; set; }
     ICharacter? Character { get; set; }
+
+    bool IsMigrating { get; set; }
 }
