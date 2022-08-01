@@ -63,7 +63,7 @@ public class AbstractSocketOnMigrateInPlug<TStageUser, TStage, TOptions> : IPipe
         }
 
         var sessionResponse = await _sessionService.UpdateServer(new SessionUpdateServerRequest(
-            migrationResponse.Migration!.Account.ID,
+            migrationResponse.Migration.Account.ID,
             _options.ID
         ));
 
@@ -77,10 +77,10 @@ public class AbstractSocketOnMigrateInPlug<TStageUser, TStage, TOptions> : IPipe
             return;
         }
 
-        message.User.Key = migrationResponse.Migration!.Key;
-        message.User.Account = migrationResponse.Migration!.Account;
-        message.User.AccountWorld = migrationResponse.Migration!.AccountWorld;
-        message.User.Character = migrationResponse.Migration!.Character;
+        message.User.Key = migrationResponse.Migration.Key;
+        message.User.Account = migrationResponse.Migration.Account;
+        message.User.AccountWorld = migrationResponse.Migration.AccountWorld;
+        message.User.Character = migrationResponse.Migration.Character;
 
         await _stage.Enter(message.User);
     }
