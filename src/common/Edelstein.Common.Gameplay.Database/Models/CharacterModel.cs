@@ -2,7 +2,10 @@
 
 public record CharacterModel : IDataModel
 {
-    public AccountWorldModel AccountWorld { get; }
+    public AccountWorldModel AccountWorld { get; set; }
+
+    public int AccountWorldID { get; set; }
+
     public string Name { get; set; }
 
     public int ID { get; set; }

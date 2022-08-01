@@ -7,6 +7,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ceras" Version="4.1.7" />
     <PackageReference Include="Mapster" Version="7.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
@@ -16,10 +17,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Transformers\Inventories" />
   </ItemGroup>
 
 </Project>
