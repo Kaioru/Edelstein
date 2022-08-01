@@ -36,7 +36,8 @@ public abstract class AbstractSocketOnDisconnectPlug<TStageUser> : IPipelinePlug
 
         if (message.User.Account != null)
         {
-            await _session.End(new SessionEndRequest(message.User.Account.ID));
+            if (!message.User.IsMigrating)
+                await _session.End(new SessionEndRequest(message.User.Account.ID));
             await _accountRepository.Update(message.User.Account);
         }
 
