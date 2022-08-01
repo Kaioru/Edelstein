@@ -11,18 +11,18 @@ using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Plugs;
 
-public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
+public class CheckSPWRequestPlug : IPipelinePlug<ICheckSPWRequest>
 {
     private readonly ICharacterRepository _characterRepository;
     private readonly IServerService _serverService;
 
-    public EnableSPWRequestPlug(IServerService serverService, ICharacterRepository characterRepository)
+    public CheckSPWRequestPlug(ICharacterRepository characterRepository, IServerService serverService)
     {
-        _serverService = serverService;
         _characterRepository = characterRepository;
+        _serverService = serverService;
     }
 
-    public async Task Handle(IPipelineContext ctx, IEnableSPWRequest message)
+    public async Task Handle(IPipelineContext ctx, ICheckSPWRequest message)
     {
         try
         {
@@ -37,7 +37,7 @@ public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
 
             if (character == null)
             {
-                await message.User.Dispatch(new ByteWriter(PacketSendOperations.EnableSPWResult)
+                await message.User.Dispatch(new ByteWriter(PacketSendOperations.CheckSPWResult)
                     .WriteBool(false)
                     .WriteByte((byte)LoginResult.NotAuthorized)
                 );
@@ -46,9 +46,18 @@ public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
 
             if (response.Result != ServerResult.Success || response.Server == null)
             {
-                await message.User.Dispatch(new ByteWriter(PacketSendOperations.EnableSPWResult)
+                await message.User.Dispatch(new ByteWriter(PacketSendOperations.CheckSPWResult)
                     .WriteBool(false)
                     .WriteByte((byte)LoginResult.NotConnectableWorld)
+                );
+                return;
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(message.SPW, message.User.Account!.SPW))
+            {
+                await message.User.Dispatch(new ByteWriter(PacketSendOperations.CheckSPWResult)
+                    .WriteBool(false)
+                    .WriteByte((byte)LoginResult.IncorrectSPW)
                 );
                 return;
             }
@@ -58,7 +67,6 @@ public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
             var port = endpoint.Port;
             var packet = new ByteWriter(PacketSendOperations.SelectCharacterResult);
 
-            message.User.Account!.SPW = BCrypt.Net.BCrypt.HashPassword(message.SPW);
             message.User.Character = character;
 
             packet.WriteByte(0);
@@ -76,7 +84,7 @@ public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
         }
         catch (Exception)
         {
-            var packet = new ByteWriter(PacketSendOperations.EnableSPWResult);
+            var packet = new ByteWriter(PacketSendOperations.CheckSPWResult);
 
             packet.WriteBool(false);
             packet.WriteByte((byte)LoginResult.DBFail);
