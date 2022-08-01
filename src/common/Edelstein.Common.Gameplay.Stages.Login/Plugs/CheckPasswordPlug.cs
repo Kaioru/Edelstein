@@ -101,7 +101,9 @@ public class CheckPasswordPlug : IPipelinePlug<ICheckPassword>
                 packet.WriteByte(1); // v44
                 packet.WriteByte(0); // sMsg
 
-                packet.WriteLong(0); // UserKey
+                message.User.Key = new Random().NextInt64();
+
+                packet.WriteLong(message.User.Key);
 
                 message.User.Account = account;
                 message.User.State = LoginState.SelectWorld;

@@ -20,6 +20,8 @@ public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser> whe
     public IAccountWorld? AccountWorld { get; set; }
     public ICharacter? Character { get; set; }
 
+    public long Key { get; set; }
+
     public bool IsMigrating { get; set; }
 
     public abstract Task OnPacket(IByteBuffer packet);
