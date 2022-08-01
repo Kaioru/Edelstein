@@ -54,6 +54,8 @@ public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
                 message.User.SelectedWorldID = (byte)gameStage.Server!.WorldID;
                 message.User.SelectedChannelID = (byte)gameStage.Server!.ChannelID;
 
+                message.User.Account.LatestConnectedWorld = message.User.SelectedWorldID;
+
                 packet.WriteByte(0);
                 packet.WriteBool(true);
                 packet.WriteInt(accountWorld.CharacterSlotMax);
