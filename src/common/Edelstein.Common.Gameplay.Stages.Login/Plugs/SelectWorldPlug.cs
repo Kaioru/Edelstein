@@ -85,9 +85,8 @@ public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
 
             await message.User.Dispatch(packet);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine(e);
             var packet = new ByteWriter(PacketSendOperations.SelectWorldResult);
 
             packet.WriteByte((byte)LoginResult.DBFail);
