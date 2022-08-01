@@ -73,6 +73,9 @@ public class WorldRequestPlug : IPipelinePlug<IWorldRequest>
         }
 
         await message.User.Dispatch(new ByteWriter(PacketSendOperations.WorldInformation).WriteByte(0xFF));
-        await message.User.Dispatch(new ByteWriter(PacketSendOperations.LatestConnectedWorld).WriteInt(0));
+
+        if (message.User.Account?.LatestConnectedWorld != null)
+            await message.User.Dispatch(new ByteWriter(PacketSendOperations.LatestConnectedWorld)
+                .WriteInt((int)message.User.Account.LatestConnectedWorld));
     }
 }
