@@ -44,7 +44,7 @@ public class ServerUpdateBootstrap<TConfig> : IBootstrap, ITickable where TConfi
         Context?.Cancel();
         await _service.Deregister(new ServerDeregisterRequest(_config.ID));
         _logger.LogInformation(
-            "Deregistered stage {ID} to server registry",
+            "Deregistered stage {ID} from server registry",
             _config.ID
         );
     }
