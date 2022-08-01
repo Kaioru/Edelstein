@@ -1,6 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Accounts;
 using Edelstein.Common.Gameplay.Database.Models;
-using Edelstein.Common.Gameplay.Database.Serializers;
+using Edelstein.Common.Util.Serializers;
 using Edelstein.Protocol.Gameplay.Accounts;
 using Mapster;
 using Microsoft.EntityFrameworkCore;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Database.Models;
-using Edelstein.Common.Gameplay.Database.Serializers;
+using Edelstein.Common.Util.Serializers;
 using Edelstein.Protocol.Gameplay.Characters;
 using Mapster;
 using Microsoft.EntityFrameworkCore;

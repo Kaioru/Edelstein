@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Common.Gameplay.Database.Serializers;
+﻿namespace Edelstein.Common.Util.Serializers;
 
 public interface ISerializer
 {
