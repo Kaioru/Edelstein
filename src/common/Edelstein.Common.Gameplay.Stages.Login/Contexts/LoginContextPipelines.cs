@@ -7,6 +7,7 @@ using Edelstein.Protocol.Util.Pipelines;
 namespace Edelstein.Common.Gameplay.Stages.Login.Contexts;
 
 public record LoginContextPipelines(
+    IPipeline<ISocketOnMigrateOut<ILoginStageUser>> SocketOnMigrateOut,
     IPipeline<ISocketOnPacket<ILoginStageUser>> SocketOnPacket,
     IPipeline<ISocketOnException<ILoginStageUser>> SocketOnException,
     IPipeline<ISocketOnDisconnect<ILoginStageUser>> SocketOnDisconnect,

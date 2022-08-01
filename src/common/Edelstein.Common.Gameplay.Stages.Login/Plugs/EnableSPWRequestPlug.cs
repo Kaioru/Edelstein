@@ -5,6 +5,7 @@ using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Services.Server.Contracts;
 using Edelstein.Common.Util.Buffers.Bytes;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
+using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
@@ -14,12 +15,18 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Plugs;
 public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
 {
     private readonly ICharacterRepository _characterRepository;
+    private readonly IMigrationService _migrationService;
     private readonly IServerService _serverService;
 
-    public EnableSPWRequestPlug(IServerService serverService, ICharacterRepository characterRepository)
+    public EnableSPWRequestPlug(
+        IServerService serverService,
+        ICharacterRepository characterRepository,
+        IMigrationService migrationService
+    )
     {
         _serverService = serverService;
         _characterRepository = characterRepository;
+        _migrationService = migrationService;
     }
 
     public async Task Handle(IPipelineContext ctx, IEnableSPWRequest message)
@@ -72,6 +79,7 @@ public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
             packet.WriteByte(0);
             packet.WriteInt(0);
 
+            await message.User.OnMigrateOut(response.Server.ID);
             await message.User.Dispatch(packet);
         }
         catch (Exception)
