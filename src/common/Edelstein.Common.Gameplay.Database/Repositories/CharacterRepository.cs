@@ -58,7 +58,7 @@ public class CharacterRepository : ICharacterRepository
         db.Characters.Remove(new CharacterModel { ID = entry.ID });
     }
 
-    public async Task<bool> CheckNameExists(string name)
+    public async Task<bool> CheckExistsByName(string name)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
         return await db.Characters.AnyAsync(c => c.Name == name);
