@@ -1,6 +1,8 @@
-﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
+﻿using Edelstein.Protocol.Gameplay.Stages.Contexts;
 
-public interface IGameContextOptions
+namespace Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
+
+public interface IGameContextOptions : IStageContextOptions
 {
     int WorldID { get; }
     int ChannelID { get; }

@@ -24,6 +24,7 @@ public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser> whe
 
     public bool IsMigrating { get; set; }
 
+    public abstract Task OnMigrateOut(string server);
     public abstract Task OnPacket(IByteBuffer packet);
     public abstract Task OnException(Exception exception);
     public abstract Task OnDisconnect();
