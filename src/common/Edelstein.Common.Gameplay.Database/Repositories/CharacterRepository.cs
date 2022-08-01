@@ -50,12 +50,14 @@ public class CharacterRepository : ICharacterRepository
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
         db.Characters.Remove(new CharacterModel { ID = key });
+        await db.SaveChangesAsync();
     }
 
     public async Task Delete(ICharacter entry)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
         db.Characters.Remove(new CharacterModel { ID = entry.ID });
+        await db.SaveChangesAsync();
     }
 
     public async Task<bool> CheckExistsByName(string name)

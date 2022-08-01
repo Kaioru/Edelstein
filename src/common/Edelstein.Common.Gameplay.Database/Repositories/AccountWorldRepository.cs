@@ -49,12 +49,14 @@ public class AccountWorldRepository : IAccountWorldRepository
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
         db.AccountWorlds.Remove(new AccountWorldModel { ID = key });
+        await db.SaveChangesAsync();
     }
 
     public async Task Delete(IAccountWorld entry)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
         db.AccountWorlds.Remove(new AccountWorldModel { ID = entry.ID });
+        await db.SaveChangesAsync();
     }
 
     public async Task<IAccountWorld?> RetrieveByAccountAndWorld(int accountID, int worldID)
