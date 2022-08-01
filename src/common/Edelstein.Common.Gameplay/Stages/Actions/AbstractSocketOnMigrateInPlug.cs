@@ -82,6 +82,13 @@ public class AbstractSocketOnMigrateInPlug<TStageUser, TStage, TOptions> : IPipe
         message.User.AccountWorld = migrationResponse.Migration.AccountWorld;
         message.User.Character = migrationResponse.Migration.Character;
 
+        _logger.LogDebug(
+            "Migrated in character {Name} from service {From} to service {To} ",
+            message.User.Character.Name,
+            migrationResponse.Migration.FromServerID,
+            migrationResponse.Migration.ToServerID
+        );
+
         await _stage.Enter(message.User);
     }
 }
