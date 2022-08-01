@@ -57,7 +57,7 @@ public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
                 message.User.Account.LatestConnectedWorld = message.User.SelectedWorldID;
 
                 packet.WriteByte(0);
-                packet.WriteBool(true);
+                packet.WriteBool(!string.IsNullOrEmpty(message.User.Account.SPW));
                 packet.WriteInt(accountWorld.CharacterSlotMax);
                 packet.WriteInt(0);
             }
