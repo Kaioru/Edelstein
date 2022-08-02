@@ -5,6 +5,7 @@ using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Database;
 using Edelstein.Common.Gameplay.Database.Repositories;
 using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Stages;
 using Edelstein.Common.Gameplay.Stages.Game;
 using Edelstein.Common.Gameplay.Stages.Game.Contexts;
 using Edelstein.Common.Gameplay.Stages.Login;
@@ -108,7 +109,7 @@ await Host.CreateDefaultBuilder(args)
                 {
                     case ILoginContextOptions options:
                         scope.Scan(s => s
-                            .FromAssemblyOf<LoginStage>()
+                            .FromAssembliesOf(typeof(AbstractStage<>), typeof(LoginStage))
                             .AddClasses(c => c.AssignableTo<ITemplateLoader>())
                             .AsImplementedInterfaces()
                             .WithSingletonLifetime()
@@ -124,7 +125,7 @@ await Host.CreateDefaultBuilder(args)
                         break;
                     case IGameContextOptions options:
                         scope.Scan(s => s
-                            .FromAssemblyOf<GameStage>()
+                            .FromAssembliesOf(typeof(AbstractStage<>), typeof(GameStage))
                             .AddClasses(c => c.AssignableTo<ITemplateLoader>())
                             .AsImplementedInterfaces()
                             .WithSingletonLifetime()
@@ -133,6 +134,7 @@ await Host.CreateDefaultBuilder(args)
                         scope.AddSingleton(options);
                         scope.AddSingleton<IGameContext, GameContext>();
                         scope.AddSingleton<IGameContextPipelines, GameContextPipelines>();
+                        scope.AddSingleton<IGameContextTemplates, GameContextTemplates>();
                         scope.AddSingleton<IAdapterInitializer, GameStageUserInitializer>();
                         scope.AddSingleton<IGameStage, GameStage>();
                         break;

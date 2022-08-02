@@ -11,11 +11,12 @@ public class NXDataNode : IDataNode
     public NXDataNode(INXNode node) => _node = node;
 
     public IEnumerator<IDataNode> GetEnumerator() =>
-        _node.Children.Select(c => new NXDataNode(c)).GetEnumerator();
+        Children.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public IDataNode Parent => new NXDataNode(_node.Parent);
+    public IEnumerable<IDataNode> Children => _node.Children.Select(c => new NXDataNode(c));
 
     public string Name => _node.Name;
     public string Path => System.IO.Path.Join(_node.Parent.Name, _node.Name);
