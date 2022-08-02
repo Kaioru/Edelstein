@@ -233,17 +233,18 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
 
         if (item is IItemSlotBundle bundle)
         {
-            var newBundle = bundle.Adapt<ItemSlotBundle>();
+            if (bundle.Number > count)
+            {
+                var newBundle = bundle.Adapt<ItemSlotBundle>();
 
-            newBundle.Number = Math.Min(bundle.Number, count);
-            bundle.Number -= count;
+                newBundle.Number = count;
+                bundle.Number -= count;
 
-            if (bundle.Number > 0)
                 UpdateQuantitySlot(slot, bundle.Number);
-            else
-                RemoveSlot(slot);
+                return newBundle;
+            }
 
-            return newBundle;
+            bundle.Number = count;
         }
 
         RemoveSlot(slot);
