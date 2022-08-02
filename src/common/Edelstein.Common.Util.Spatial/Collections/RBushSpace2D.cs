@@ -18,7 +18,7 @@ public class RBushSpace2D<TObject> : ISpace2D<TObject> where TObject : IObject2D
             .Search(new(obj.MinX, obj.MinY, obj.MaxX, obj.MaxY))
             .Select(o => o.Object);
 
-    public IEnumerable<TObject> FindClosest(IPoint2D point, int n) =>
+    public IEnumerable<TObject> FindClosest(IPoint2D point, int n = 1) =>
         _tree
             .Knn(n, point.X, point.Y)
             .Select(o => o.Object);

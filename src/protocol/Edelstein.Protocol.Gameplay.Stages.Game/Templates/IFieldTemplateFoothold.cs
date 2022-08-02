@@ -1,9 +1,8 @@
-﻿using Edelstein.Protocol.Util.Repositories;
-using Edelstein.Protocol.Util.Spatial;
+﻿using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 
-public interface IFieldTemplateFoothold : IIdentifiable<int>, IObject2D
+public interface IFieldTemplateFoothold : IFieldSpaceObject
 {
     int NextID { get; }
     int PrevID { get; }
