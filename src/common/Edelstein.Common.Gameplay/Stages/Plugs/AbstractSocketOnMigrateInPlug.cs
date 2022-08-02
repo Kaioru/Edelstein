@@ -9,7 +9,7 @@ using Edelstein.Protocol.Services.Session.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
 using Microsoft.Extensions.Logging;
 
-namespace Edelstein.Common.Gameplay.Stages.Actions;
+namespace Edelstein.Common.Gameplay.Stages.Plugs;
 
 public class AbstractSocketOnMigrateInPlug<TStageUser, TStage, TOptions> : IPipelinePlug<ISocketOnMigrateIn<TStageUser>>
     where TStageUser : IStageUser<TStageUser>

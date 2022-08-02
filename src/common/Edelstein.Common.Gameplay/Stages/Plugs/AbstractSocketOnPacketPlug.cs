@@ -3,7 +3,7 @@ using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Messages;
 using Edelstein.Protocol.Util.Pipelines;
 
-namespace Edelstein.Common.Gameplay.Stages.Actions;
+namespace Edelstein.Common.Gameplay.Stages.Plugs;
 
 public abstract class AbstractSocketOnPacketPlug<TStageUser> : IPipelinePlug<ISocketOnPacket<TStageUser>>
     where TStageUser : IStageUser<TStageUser>

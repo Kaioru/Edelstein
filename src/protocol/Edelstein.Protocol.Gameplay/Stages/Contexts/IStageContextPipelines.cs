@@ -7,6 +7,7 @@ public interface IStageContextPipelines<TStageUser> where TStageUser : IStageUse
 {
     IPipeline<ISocketOnMigrateIn<TStageUser>> SocketOnMigrateIn { get; }
     IPipeline<ISocketOnMigrateOut<TStageUser>> SocketOnMigrateOut { get; }
+    IPipeline<ISocketOnAliveAck<TStageUser>> SocketOnAliveAck { get; }
 
     IPipeline<ISocketOnPacket<TStageUser>> SocketOnPacket { get; }
     IPipeline<ISocketOnException<TStageUser>> SocketOnException { get; }

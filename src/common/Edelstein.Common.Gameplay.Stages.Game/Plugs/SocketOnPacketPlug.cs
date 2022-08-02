@@ -1,5 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Stages.Actions;
+using Edelstein.Common.Gameplay.Stages.Plugs;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Plugs;

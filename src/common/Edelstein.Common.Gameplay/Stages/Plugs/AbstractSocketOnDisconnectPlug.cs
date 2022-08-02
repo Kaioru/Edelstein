@@ -6,7 +6,7 @@ using Edelstein.Protocol.Gameplay.Stages.Messages;
 using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Util.Pipelines;
 
-namespace Edelstein.Common.Gameplay.Stages.Actions;
+namespace Edelstein.Common.Gameplay.Stages.Plugs;
 
 public abstract class AbstractSocketOnDisconnectPlug<TStageUser> : IPipelinePlug<ISocketOnDisconnect<TStageUser>>
     where TStageUser : IStageUser<TStageUser>
