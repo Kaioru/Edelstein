@@ -1,7 +1,7 @@
 ﻿using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
-using Edelstein.Common.Util.Buffers.Bytes;
+using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
 using Edelstein.Protocol.Util.Pipelines;

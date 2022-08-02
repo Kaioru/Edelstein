@@ -6,7 +6,7 @@ using DotNetty.Transport.Channels.Sockets;
 using Edelstein.Common.Crypto;
 using Edelstein.Common.Network.DotNetty.Codecs;
 using Edelstein.Common.Network.DotNetty.Handlers;
-using Edelstein.Common.Util.Buffers.Bytes;
+using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Util.Buffers.Bytes;

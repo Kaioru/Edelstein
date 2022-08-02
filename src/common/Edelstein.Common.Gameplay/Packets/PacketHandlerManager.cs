@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Util.Buffers.Bytes;
+﻿using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Util.Buffers.Bytes;
 using Microsoft.Extensions.Logging;
