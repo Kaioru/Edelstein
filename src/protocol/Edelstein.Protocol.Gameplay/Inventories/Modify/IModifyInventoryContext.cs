@@ -25,4 +25,7 @@ public interface IModifyInventoryContext : IModifyInventoryContext<IItemSlot>, I
 
     IItemSlot? TakeSlot(short slot);
     IItemSlot? TakeSlot(short slot, short count);
+
+    void UpdateQuantitySlot(short slot, short count);
+    void UpdateEXPSlot(short slot, int exp);
 }

@@ -251,6 +251,9 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         return item;
     }
 
-    private void UpdateQuantitySlot(short slot, short quantity)
+    public void UpdateQuantitySlot(short slot, short quantity)
         => _operations.Enqueue(new UpdateQuantityModifyInventoryOperation(_type, slot, quantity));
+
+    public void UpdateEXPSlot(short slot, int exp)
+        => _operations.Enqueue(new UpdateEXPModifyInventoryOperation(_type, slot, exp));
 }
