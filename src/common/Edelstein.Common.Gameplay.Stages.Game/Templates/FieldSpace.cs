@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Util.Spatial;
 using Edelstein.Common.Util.Spatial.Collections;
-using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
+using Edelstein.Protocol.Gameplay.Stages.Game.Spatial;
 using Edelstein.Protocol.Util.Spatial;
 using Edelstein.Protocol.Util.Spatial.Collections;
 

@@ -1,15 +1,17 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
-using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Util.Buffers.Bytes;
 using Edelstein.Protocol.Util.Repositories;
+using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game;
 
-public interface IField : IFieldObjectPool, IStage<IFieldUser>, IIdentifiable<int>
+public interface IField : IIdentifiable<int>, IStage<IFieldUser>, IFieldObjectPool
 {
-    IFieldTemplate Template { get; }
+    IFieldSplit? GetSplit(IPoint2D position);
+    IFieldSplit[] GetEnclosingSplits(IPoint2D position);
+    IFieldSplit[] GetEnclosingSplits(IFieldSplit split);
 
-    IFieldObjectPool? GetObjectPool(FieldObjectType type);
+    IFieldObjectPool? GetPool(FieldObjectType type);
 
     Task Enter(IFieldUser user, byte portal, Func<IPacket>? getEnterPacket = null);
     Task Enter(IFieldUser user, string portal, Func<IPacket>? getEnterPacket = null);

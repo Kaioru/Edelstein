@@ -2,7 +2,6 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game;
 
-public interface IFieldUser : IFieldObject, IStageUser<IFieldUser>
+public interface IFieldUser : IStageUser<IFieldUser>, IFieldLife, IFieldSplitObserver, IFieldController
 {
-    bool IsInstantiated { get; }
 }

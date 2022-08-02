@@ -1,13 +1,14 @@
 ﻿using Edelstein.Common.Util.Spatial;
 using Edelstein.Protocol.Data;
+using Edelstein.Protocol.Gameplay.Stages.Game.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Templates;
 
-public class FieldTemplatePortal : IFieldTemplatePortal
+public class FieldPortal : IFieldPortal
 {
-    public FieldTemplatePortal(int id, IDataProperty property)
+    public FieldPortal(int id, IDataProperty property)
     {
         ID = id;
 
