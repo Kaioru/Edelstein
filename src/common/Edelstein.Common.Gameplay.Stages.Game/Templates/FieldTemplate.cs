@@ -63,6 +63,9 @@ public record FieldTemplate : IFieldTemplate
         Footholds = new FieldSpace<IFieldTemplateFoothold>(Bounds);
         Footholds.BulkInsert(footholds);
 
+        StartPoints = new FieldSpace<IFieldTemplatePortal>(Bounds);
+        StartPoints.BulkInsert(portals.Where(p => p.Type == FieldPortalType.StartPoint));
+
         Portals = new FieldSpace<IFieldTemplatePortal>(Bounds);
         Portals.BulkInsert(portals);
 
@@ -84,7 +87,7 @@ public record FieldTemplate : IFieldTemplate
     public IRectangle2D Bounds { get; }
 
     public IFieldSpace<IFieldTemplateFoothold> Footholds { get; }
-
+    public IFieldSpace<IFieldTemplatePortal> StartPoints { get; }
     public IFieldSpace<IFieldTemplatePortal> Portals { get; }
 
     public int? FieldReturn { get; }
