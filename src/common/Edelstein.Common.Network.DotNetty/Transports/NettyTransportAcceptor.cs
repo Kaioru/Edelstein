@@ -71,12 +71,12 @@ public class NettyTransportAcceptor : ITransportAcceptor
             Task.Run(async () =>
             {
                 if (BossGroup != null)
-                    await BossGroup.ShutdownGracefullyAsync();
+                    await BossGroup.ShutdownGracefullyAsync(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3));
             }),
             Task.Run(async () =>
             {
                 if (WorkerGroup != null)
-                    await WorkerGroup.ShutdownGracefullyAsync();
+                    await WorkerGroup.ShutdownGracefullyAsync(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3));
             })
         );
     }
