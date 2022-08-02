@@ -59,7 +59,7 @@ public record Character : ICharacter
     public short AP { get; set; }
     public short SP { get; set; }
 
-    public IDictionary<byte, byte> ExtendSP { get; }
+    public IDictionary<byte, byte> ExtendSP { get; set; }
 
     public int EXP { get; set; }
     public short POP { get; set; }
@@ -74,7 +74,7 @@ public record Character : ICharacter
 
     public short SubJob { get; set; }
 
-    public IDictionary<ItemInventoryType, IItemInventory> Inventories { get; }
+    public IDictionary<ItemInventoryType, IItemInventory> Inventories { get; set; }
 
-    public int[] WishList { get; }
+    public int[] WishList { get; set; }
 }

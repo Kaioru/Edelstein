@@ -8,8 +8,7 @@ public class BinarySerializer : ISerializer
 
     public BinarySerializer() => _serializer = new CerasSerializer();
 
-    public byte[] Serialize<TObject>(TObject obj) =>
-        _serializer.Serialize(obj);
+    public byte[] Serialize<TObject>(TObject obj) => _serializer.Serialize(obj);
 
     public TObject Deserialize<TObject>(byte[] data) =>
         _serializer.Deserialize<TObject>(data);
