@@ -9,6 +9,7 @@ public interface IFieldTemplate : ITemplate
 
     IRectangle2D Bounds { get; }
     IFieldSpace<IFieldTemplateFoothold> Footholds { get; }
+    IFieldSpace<IFieldTemplatePortal> Portals { get; }
 
     int? FieldReturn { get; }
     int? ForcedReturn { get; }

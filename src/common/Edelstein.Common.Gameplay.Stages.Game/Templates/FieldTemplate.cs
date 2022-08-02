@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Util.Spatial;
-using Edelstein.Common.Util.Spatial.Collections;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Util.Spatial;
@@ -37,6 +36,9 @@ public record FieldTemplate : IFieldTemplate
             .SelectMany(c => c.Children)
             .Select(p => new FieldTemplateFoothold(Convert.ToInt32(p.Name), p.ResolveAll()))
             .ToImmutableList();
+        var portals = foothold.Children
+            .Select(p => new FieldTemplatePortal(Convert.ToInt32(p.Name), p.ResolveAll()))
+            .ToImmutableList();
 
         var leftTop = new Point2D(
             footholds.Min(f => f.MinX),
@@ -61,6 +63,9 @@ public record FieldTemplate : IFieldTemplate
         Footholds = new FieldSpace<IFieldTemplateFoothold>(Bounds);
         Footholds.BulkInsert(footholds);
 
+        Portals = new FieldSpace<IFieldTemplatePortal>(Bounds);
+        Portals.BulkInsert(portals);
+
         MobRate = info.Resolve<double>("mobRate") ?? 1.0;
 
         var mobCapacity = Bounds.Height * Bounds.Width * MobRate * 0.0000078125;
@@ -79,6 +84,8 @@ public record FieldTemplate : IFieldTemplate
     public IRectangle2D Bounds { get; }
 
     public IFieldSpace<IFieldTemplateFoothold> Footholds { get; }
+
+    public IFieldSpace<IFieldTemplatePortal> Portals { get; }
 
     public int? FieldReturn { get; }
     public int? ForcedReturn { get; }
