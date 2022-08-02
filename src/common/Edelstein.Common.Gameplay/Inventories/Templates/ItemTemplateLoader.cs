@@ -20,7 +20,6 @@ public class ItemTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var count = 0;
         var dirCharacter = _data.Resolve("Character")?.ResolveAll();
         var dirItem = _data.Resolve("Item")?.ResolveAll();
 
@@ -97,10 +96,6 @@ public class ItemTemplateLoader : ITemplateLoader
         await Task.WhenAll(loadBundle);
         if (loadPet != null) await Task.WhenAll(loadPet);
 
-        count += loadEquip.Count;
-        count += loadBundle.Count;
-        if (loadPet != null) count += loadPet.Count;
-
-        return count;
+        return _manager.Count;
     }
 }
