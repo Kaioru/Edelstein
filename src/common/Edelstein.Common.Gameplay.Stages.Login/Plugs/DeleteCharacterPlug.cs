@@ -18,7 +18,7 @@ public class DeleteCharacterPlug : IPipelinePlug<IDeleteCharacter>
         try
         {
             var result = LoginResult.Success;
-            var packet = new ByteWriter(PacketSendOperations.DeleteCharacterResult);
+            var packet = new PacketWriter(PacketSendOperations.DeleteCharacterResult);
 
             var character = await _characterRepository.RetrieveByAccountWorldAndCharacter(
                 message.User.AccountWorld!.ID,
@@ -38,7 +38,7 @@ public class DeleteCharacterPlug : IPipelinePlug<IDeleteCharacter>
         }
         catch (Exception)
         {
-            await message.User.Dispatch(new ByteWriter(PacketSendOperations.DeleteCharacterResult)
+            await message.User.Dispatch(new PacketWriter(PacketSendOperations.DeleteCharacterResult)
                 .WriteInt(message.CharacterID)
                 .WriteByte((byte)LoginResult.DBFail)
             );

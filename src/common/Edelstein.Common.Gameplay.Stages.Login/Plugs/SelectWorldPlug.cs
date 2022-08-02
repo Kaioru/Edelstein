@@ -54,7 +54,7 @@ public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
             var characters = (await _characterRepository
                     .RetrieveAllByAccountWorld(accountWorld.ID))
                 .ToImmutableList();
-            var packet = new ByteWriter(PacketSendOperations.SelectWorldResult);
+            var packet = new PacketWriter(PacketSendOperations.SelectWorldResult);
 
             packet.WriteByte((byte)result);
 
@@ -87,7 +87,7 @@ public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
         }
         catch (Exception)
         {
-            var packet = new ByteWriter(PacketSendOperations.SelectWorldResult);
+            var packet = new PacketWriter(PacketSendOperations.SelectWorldResult);
 
             packet.WriteByte((byte)LoginResult.DBFail);
 

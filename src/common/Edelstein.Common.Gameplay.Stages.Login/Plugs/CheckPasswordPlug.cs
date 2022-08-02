@@ -78,7 +78,7 @@ public class CheckPasswordPlug : IPipelinePlug<ICheckPassword>
                     result = LoginResult.AlreadyConnected;
             }
 
-            var packet = new ByteWriter(PacketSendOperations.CheckPasswordResult);
+            var packet = new PacketWriter(PacketSendOperations.CheckPasswordResult);
 
             packet.WriteByte((byte)result);
             packet.WriteByte(0);
@@ -115,7 +115,7 @@ public class CheckPasswordPlug : IPipelinePlug<ICheckPassword>
         }
         catch (Exception)
         {
-            var packet = new ByteWriter(PacketSendOperations.CheckPasswordResult);
+            var packet = new PacketWriter(PacketSendOperations.CheckPasswordResult);
 
             packet.WriteByte((byte)LoginResult.DBFail);
             packet.WriteByte(0);

@@ -19,7 +19,7 @@ public class CheckSPWRequestHandler : AbstractLoginPacketHandler
         user.State == LoginState.SelectCharacter &&
         user.Account?.SPW != null;
 
-    public override Task Handle(ILoginStageUser user, IByteReader reader)
+    public override Task Handle(ILoginStageUser user, IPacketReader reader)
     {
         var message = new CheckSPWRequest(
             user,

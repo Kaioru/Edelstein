@@ -44,7 +44,7 @@ public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
 
             if (character == null)
             {
-                await message.User.Dispatch(new ByteWriter(PacketSendOperations.EnableSPWResult)
+                await message.User.Dispatch(new PacketWriter(PacketSendOperations.EnableSPWResult)
                     .WriteBool(false)
                     .WriteByte((byte)LoginResult.NotAuthorized)
                 );
@@ -53,7 +53,7 @@ public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
 
             if (response.Result != ServerResult.Success || response.Server == null)
             {
-                await message.User.Dispatch(new ByteWriter(PacketSendOperations.EnableSPWResult)
+                await message.User.Dispatch(new PacketWriter(PacketSendOperations.EnableSPWResult)
                     .WriteBool(false)
                     .WriteByte((byte)LoginResult.NotConnectableWorld)
                 );
@@ -63,7 +63,7 @@ public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
             var endpoint = new IPEndPoint(IPAddress.Parse(response.Server.Host), response.Server.Port);
             var address = endpoint.Address.MapToIPv4().GetAddressBytes();
             var port = endpoint.Port;
-            var packet = new ByteWriter(PacketSendOperations.SelectCharacterResult);
+            var packet = new PacketWriter(PacketSendOperations.SelectCharacterResult);
 
             message.User.Account!.SPW = BCrypt.Net.BCrypt.HashPassword(message.SPW);
             message.User.Character = character;
@@ -84,7 +84,7 @@ public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
         }
         catch (Exception)
         {
-            var packet = new ByteWriter(PacketSendOperations.EnableSPWResult);
+            var packet = new PacketWriter(PacketSendOperations.EnableSPWResult);
 
             packet.WriteBool(false);
             packet.WriteByte((byte)LoginResult.DBFail);

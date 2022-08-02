@@ -48,9 +48,9 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
         _handlers.Remove(handler.Operation);
     }
 
-    public async Task Process(TStageUser user, IByteBuffer packet)
+    public async Task Process(TStageUser user, IPacket packet)
     {
-        var reader = new ByteReader(packet.Buffer);
+        var reader = new PacketReader(packet.Buffer);
         var operation = reader.ReadShort();
         var handler = _handlers.GetValueOrDefault(operation);
 

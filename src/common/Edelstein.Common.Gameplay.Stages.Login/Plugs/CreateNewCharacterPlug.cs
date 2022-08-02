@@ -25,7 +25,7 @@ public class CreateNewCharacterPlug : IPipelinePlug<ICreateNewCharacter>
         try
         {
             var result = LoginResult.Success;
-            var packet = new ByteWriter(PacketSendOperations.CreateNewCharacterResult);
+            var packet = new PacketWriter(PacketSendOperations.CreateNewCharacterResult);
 
             packet.WriteByte((byte)result);
 
@@ -70,7 +70,7 @@ public class CreateNewCharacterPlug : IPipelinePlug<ICreateNewCharacter>
         }
         catch (Exception)
         {
-            var packet = new ByteWriter(PacketSendOperations.CreateNewCharacterResult);
+            var packet = new PacketWriter(PacketSendOperations.CreateNewCharacterResult);
 
             packet.WriteByte((byte)LoginResult.DBFail);
             packet.WriteInt(0);

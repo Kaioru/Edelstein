@@ -3,78 +3,78 @@ using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Util.Buffers.Bytes;
 
-public class ByteWriter : IByteWriter
+public class PacketWriter : IPacketWriter
 {
     private readonly Encoding _encoding = Encoding.ASCII;
     private readonly MemoryStream _stream;
     private readonly BinaryWriter _writer;
 
-    public ByteWriter()
+    public PacketWriter()
     {
         _stream = new MemoryStream();
         _writer = new BinaryWriter(_stream);
     }
 
-    public ByteWriter(Enum operation) : this() => WriteShort(Convert.ToInt16(operation));
+    public PacketWriter(Enum operation) : this() => WriteShort(Convert.ToInt16(operation));
 
     public byte[] Buffer => _stream.ToArray();
     public long Length => _stream.Length;
 
-    public IByteWriter WriteByte(byte value)
+    public IPacketWriter WriteByte(byte value)
     {
         _writer.Write(value);
         return this;
     }
 
-    public IByteWriter WriteBool(bool value)
+    public IPacketWriter WriteBool(bool value)
     {
         _writer.Write(value);
         return this;
     }
 
-    public IByteWriter WriteShort(short value)
+    public IPacketWriter WriteShort(short value)
     {
         _writer.Write(value);
         return this;
     }
 
-    public IByteWriter WriteUShort(ushort value)
+    public IPacketWriter WriteUShort(ushort value)
     {
         _writer.Write(value);
         return this;
     }
 
-    public IByteWriter WriteInt(int value)
+    public IPacketWriter WriteInt(int value)
     {
         _writer.Write(value);
         return this;
     }
 
-    public IByteWriter WriteUInt(uint value)
+    public IPacketWriter WriteUInt(uint value)
     {
         _writer.Write(value);
         return this;
     }
 
-    public IByteWriter WriteLong(long value)
+    public IPacketWriter WriteLong(long value)
     {
         _writer.Write(value);
         return this;
     }
 
-    public IByteWriter WriteULong(ulong value)
+    public IPacketWriter WriteULong(ulong value)
     {
         _writer.Write(value);
         return this;
     }
 
-    public IByteWriter WriteDouble(double value)
+    public IPacketWriter WriteDouble(double value)
     {
         _writer.Write(value);
         return this;
     }
 
-    public IByteWriter WriteString(string value, short? length = null)
+    public IPacketWriter WriteString(string value, short? length = null)
     {
         value ??= string.Empty;
 
@@ -92,7 +92,7 @@ public class ByteWriter : IByteWriter
         return this;
     }
 
-    public IByteWriter WriteBytes(byte[] value)
+    public IPacketWriter WriteBytes(byte[] value)
     {
         _writer.Write(value);
         return this;

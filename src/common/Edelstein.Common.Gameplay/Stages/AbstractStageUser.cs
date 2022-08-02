@@ -26,11 +26,11 @@ public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser> whe
 
     public abstract Task OnMigrateIn(int character, long key);
     public abstract Task OnMigrateOut(string server);
-    public abstract Task OnPacket(IByteBuffer packet);
+    public abstract Task OnPacket(IPacket packet);
     public abstract Task OnException(Exception exception);
     public abstract Task OnDisconnect();
 
-    public Task Dispatch(IByteBuffer packet) => Socket.Dispatch(packet);
+    public Task Dispatch(IPacket packet) => Socket.Dispatch(packet);
 
     public Task Disconnect() => Socket.Close();
 }

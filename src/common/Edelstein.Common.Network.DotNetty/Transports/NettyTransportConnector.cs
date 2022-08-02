@@ -51,7 +51,7 @@ public class NettyTransportConnector : ITransportConnector
             .ConnectAsync(IPAddress.Parse(host), port);
     }
 
-    public Task Dispatch(IByteBuffer packet) => Task.FromResult(Channel?.WriteAndFlushAsync(packet));
+    public Task Dispatch(IPacket packet) => Task.FromResult(Channel?.WriteAndFlushAsync(packet));
 
     public async Task Close()
     {

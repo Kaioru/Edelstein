@@ -21,7 +21,7 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
             (uint)random.Next()
         );
         var newAdapter = _acceptor.Initializer.Initialize(newSocket);
-        var handshake = new ByteWriter();
+        var handshake = new PacketWriter();
 
         handshake.WriteShort(_acceptor.Version);
         handshake.WriteString(_acceptor.Patch);
@@ -52,7 +52,7 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
 
-        adapter?.OnPacket((IByteReader)message);
+        adapter?.OnPacket((IPacketReader)message);
     }
 
     public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)

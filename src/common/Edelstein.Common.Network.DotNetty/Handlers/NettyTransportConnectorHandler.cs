@@ -14,7 +14,7 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
-        var packet = (IByteReader)message;
+        var packet = (IPacketReader)message;
 
         if (adapter != null)
         {

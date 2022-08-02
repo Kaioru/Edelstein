@@ -6,10 +6,10 @@ public interface IAdapter
 {
     ISocket Socket { get; }
 
-    Task OnPacket(IByteBuffer packet);
+    Task OnPacket(IPacket packet);
     Task OnException(Exception exception);
     Task OnDisconnect();
 
-    Task Dispatch(IByteBuffer packet);
+    Task Dispatch(IPacket packet);
     Task Disconnect();
 }

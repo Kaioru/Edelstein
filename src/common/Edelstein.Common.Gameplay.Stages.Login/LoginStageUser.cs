@@ -26,7 +26,7 @@ public class LoginStageUser : AbstractStageUser<ILoginStageUser>, ILoginStageUse
     public override Task OnMigrateOut(string server) =>
         Context.Pipelines.SocketOnMigrateOut.Process(new SocketOnMigrateOut<ILoginStageUser>(this, server));
 
-    public override Task OnPacket(IByteBuffer packet) =>
+    public override Task OnPacket(IPacket packet) =>
         Context.Pipelines.SocketOnPacket.Process(new SocketOnPacket<ILoginStageUser>(this, packet));
 
     public override Task OnException(Exception exception) =>

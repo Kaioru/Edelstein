@@ -19,7 +19,7 @@ public class EnableSPWRequestHandler : AbstractLoginPacketHandler
         user.State == LoginState.SelectCharacter &&
         user.Account?.SPW == null;
 
-    public override Task Handle(ILoginStageUser user, IByteReader reader)
+    public override Task Handle(ILoginStageUser user, IPacketReader reader)
     {
         _ = reader.ReadBool(); // Unknown1
 

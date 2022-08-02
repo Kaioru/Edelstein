@@ -58,8 +58,8 @@ public class NettyTransportAcceptor : ITransportAcceptor
             .BindAsync(port);
     }
 
-    public Task Dispatch(IByteBuffer packet) =>
-        Task.FromResult(Sockets.Values.Select(s => s.Dispatch(new ByteReader(packet.Buffer))));
+    public Task Dispatch(IPacket packet) =>
+        Task.FromResult(Sockets.Values.Select(s => s.Dispatch(new PacketReader(packet.Buffer))));
 
     public async Task Close()
     {

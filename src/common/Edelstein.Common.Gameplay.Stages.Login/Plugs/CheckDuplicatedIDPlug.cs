@@ -16,7 +16,7 @@ public class CheckDuplicatedIDPlug : IPipelinePlug<ICheckDuplicatedID>
     public async Task Handle(IPipelineContext ctx, ICheckDuplicatedID message)
     {
         var result = await _characterRepository.CheckExistsByName(message.Name);
-        var packet = new ByteWriter(PacketSendOperations.CheckDuplicatedIDResult);
+        var packet = new PacketWriter(PacketSendOperations.CheckDuplicatedIDResult);
 
         packet.WriteString(message.Name);
         packet.WriteBool(result);

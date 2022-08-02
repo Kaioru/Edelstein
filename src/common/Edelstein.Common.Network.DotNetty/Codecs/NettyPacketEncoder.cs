@@ -1,4 +1,5 @@
-﻿using DotNetty.Codecs;
+﻿using DotNetty.Buffers;
+using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Crypto;
 using Edelstein.Protocol.Network.Transports;
@@ -6,7 +7,7 @@ using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Network.DotNetty.Codecs;
 
-public class NettyPacketEncoder : MessageToByteEncoder<IByteBuffer>
+public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
 {
     private readonly AESCipher _aesCipher;
     private readonly IGCipher _igCipher;
@@ -25,8 +26,8 @@ public class NettyPacketEncoder : MessageToByteEncoder<IByteBuffer>
 
     protected override void Encode(
         IChannelHandlerContext context,
-        IByteBuffer message,
-        global::DotNetty.Buffers.IByteBuffer output
+        IPacket message,
+        IByteBuffer output
     )
     {
         var socket = context.Channel.GetAttribute(NettyAttributes.SocketKey).Get();
