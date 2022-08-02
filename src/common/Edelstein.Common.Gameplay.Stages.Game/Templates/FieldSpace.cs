@@ -36,7 +36,7 @@ public class FieldSpace<TObject> : IFieldSpace<TObject> where TObject : IFieldSp
         new Segment2D(point, new Point2D(point.X, Bounds.Bottom))
     );
 
-    public TObject? FindByID(int id) => _objects.ContainsKey(id)
-        ? _objects[id]
+    public TObject? FindByID(int id) => _objects.TryGetValue(id, out var obj)
+        ? obj
         : default;
 }

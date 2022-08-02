@@ -4,14 +4,14 @@ namespace Edelstein.Common.Util.Templates;
 
 public class TemplateManager<TTemplate> : ITemplateManager<TTemplate> where TTemplate : ITemplate
 {
-    private readonly Dictionary<int, ITemplateProvider<TTemplate>> _providers;
+    private readonly IDictionary<int, ITemplateProvider<TTemplate>> _providers;
 
     public TemplateManager() => _providers = new Dictionary<int, ITemplateProvider<TTemplate>>();
 
     public int Count => _providers.Count;
 
     public async Task<TTemplate?> Retrieve(int key) =>
-        _providers.ContainsKey(key) ? await _providers[key].Provide() : default;
+        _providers.TryGetValue(key, out var provider) ? await provider.Provide() : default;
 
     public async Task<IEnumerable<TTemplate>> RetrieveAll() =>
         await Task.WhenAll(_providers.Values.Select(p => p.Provide()));

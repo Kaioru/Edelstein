@@ -32,8 +32,8 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
 
     public override IEnumerable<AbstractModifyInventoryOperation> Operations => _operations.AsEnumerable();
 
-    public IItemSlot? this[short slot] => _inventory.Items.ContainsKey(slot)
-        ? _inventory.Items[slot]
+    public IItemSlot? this[short slot] => _inventory.Items.TryGetValue(slot, out var item)
+        ? item
         : null;
 
     public override void Add(IItemSlot? item)
