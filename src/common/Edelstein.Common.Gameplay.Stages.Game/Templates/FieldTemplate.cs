@@ -4,7 +4,6 @@ using Edelstein.Common.Util.Spatial.Collections;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Util.Spatial;
-using Edelstein.Protocol.Util.Spatial.Collections;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Templates;
 
@@ -59,7 +58,7 @@ public record FieldTemplate : IFieldTemplate
 
         Bounds = new Rectangle2D(leftTop, rightBottom);
 
-        Footholds = new RBushSpace2D<IFieldTemplateFoothold>();
+        Footholds = new FieldSpace<IFieldTemplateFoothold>(Bounds);
         Footholds.BulkInsert(footholds);
 
         MobRate = info.Resolve<double>("mobRate") ?? 1.0;
@@ -79,7 +78,7 @@ public record FieldTemplate : IFieldTemplate
 
     public IRectangle2D Bounds { get; }
 
-    public ISpace2D<IFieldTemplateFoothold> Footholds { get; }
+    public IFieldSpace<IFieldTemplateFoothold> Footholds { get; }
 
     public int? FieldReturn { get; }
     public int? ForcedReturn { get; }
