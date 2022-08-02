@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using Edelstein.Common.Data.NX;
+﻿using Edelstein.Common.Data.NX;
 using Edelstein.Common.Gameplay.Accounts;
 using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Database;
@@ -26,6 +25,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
@@ -107,6 +107,11 @@ await Host.CreateDefaultBuilder(args)
                 scope.AddSingleton(typeof(IPacketHandlerManager<>), typeof(PacketHandlerManager<>));
                 scope.AddSingleton(typeof(IPipeline<>), typeof(Pipeline<>));
 
+                scope.AddSingleton<ITransportAcceptor>(p => new NettyTransportAcceptor(
+                    p.GetRequiredService<IAdapterInitializer>(),
+                    stage.Version, stage.Patch, stage.Locale
+                ));
+
                 switch (stage)
                 {
                     case ILoginContextOptions options:
@@ -142,18 +147,23 @@ await Host.CreateDefaultBuilder(args)
                         break;
                 }
 
-                var provider = scope.BuildServiceProvider();
-                var adapter = provider.GetRequiredService<IAdapterInitializer>();
-                var acceptor = new NettyTransportAcceptor(adapter, stage.Version, stage.Patch, stage.Locale);
-                var loaders = provider.GetServices<ITemplateLoader>();
+                scope.AddSingleton(stage);
+                scope.AddSingleton(typeof(ServerStartBootstrap<,>));
 
-                return new ServerStartBootstrap(
-                    p.GetRequiredService<ILogger<ServerStartBootstrap>>(),
-                    p.GetRequiredService<ITickerManager>(),
-                    acceptor,
-                    stage,
-                    loaders.ToImmutableList()
-                );
+                var provider = scope.BuildServiceProvider();
+
+                return stage switch
+                {
+                    ILoginContextOptions => provider.GetRequiredService<ServerStartBootstrap<
+                        ILoginStage,
+                        ILoginStageUser
+                    >>(),
+                    IGameContextOptions => provider.GetRequiredService<ServerStartBootstrap<
+                        IGameStage,
+                        IGameStageUser
+                    >>(),
+                    _ => new ServerVoidBootstrap()
+                };
             });
 
         foreach (var login in config.LoginStages)
