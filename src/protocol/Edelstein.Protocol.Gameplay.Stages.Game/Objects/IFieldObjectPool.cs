@@ -7,8 +7,8 @@ public interface IFieldObjectPool
     Task Enter(IFieldObject obj);
     Task Leave(IFieldObject obj);
 
-    IFieldObject GetObject(int id);
-    T GetObject<T>(int id) where T : IFieldObject;
+    IFieldObject? GetObject(int id);
+    T? GetObject<T>(int id) where T : IFieldObject;
 
     IEnumerable<IFieldObject> GetObjects();
     IEnumerable<T> GetObjects<T>() where T : IFieldObject;
