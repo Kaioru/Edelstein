@@ -71,6 +71,18 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
     public override void Add(IItemTemplate template, short count) =>
         this[GetTypeByID(template.ID)]?.Add(template, count);
 
+    public void SetEquipped(BodyPart part, int templateID) =>
+        this[ItemInventoryType.Equip]?.SetSlot((short)-(short)part, templateID);
+
+    public void SetEquipped(BodyPart part, int templateID, short count) =>
+        this[ItemInventoryType.Equip]?.SetSlot((short)-(short)part, templateID, count);
+
+    public void SetEquipped(BodyPart part, IItemTemplate template) =>
+        this[ItemInventoryType.Equip]?.SetSlot((short)-(short)part, template.ID);
+
+    public void SetEquipped(BodyPart part, IItemTemplate template, short count) =>
+        this[ItemInventoryType.Equip]?.SetSlot((short)-(short)part, template.ID, count);
+
     private ItemInventoryType GetTypeByID(int id)
         => (ItemInventoryType)(id / 1_000_000);
 }
