@@ -22,4 +22,7 @@ public interface IModifyInventoryContext : IModifyInventoryContext<IItemSlot>, I
     void SetSlot(short slot, int templateID, short count);
     void SetSlot(short slot, IItemTemplate template);
     void SetSlot(short slot, IItemTemplate template, short count);
+
+    IItemSlot? TakeSlot(short slot);
+    IItemSlot? TakeSlot(short slot, short count);
 }

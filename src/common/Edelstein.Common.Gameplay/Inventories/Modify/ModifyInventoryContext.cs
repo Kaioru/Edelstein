@@ -6,6 +6,7 @@ using Edelstein.Protocol.Gameplay.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Inventories.Templates;
 using Edelstein.Protocol.Util.Templates;
+using Mapster;
 
 namespace Edelstein.Common.Gameplay.Inventories.Modify;
 
@@ -221,6 +222,29 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         if (item is IItemSlotBundle bundle)
             bundle.Number = count;
         if (item != null) SetSlot(slot, item);
+    }
+
+    public IItemSlot? TakeSlot(short slot) =>
+        TakeSlot(slot, 1);
+
+    public IItemSlot? TakeSlot(short slot, short count)
+    {
+        var item = this[slot];
+
+        if (item is IItemSlotBundle bundle)
+        {
+            var newBundle = bundle.Adapt<ItemSlotBundle>();
+
+            newBundle.Number = Math.Min(bundle.Number, count);
+            bundle.Number -= count;
+            if (bundle.Number > 0) UpdateQuantitySlot(slot, bundle.Number);
+            else RemoveSlot(slot);
+
+            return newBundle;
+        }
+
+        RemoveSlot(slot);
+        return item;
     }
 
     private void UpdateQuantitySlot(short slot, short quantity)
