@@ -2,7 +2,7 @@
 using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Crypto;
-using Edelstein.Common.Util.Buffers.Bytes;
+using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Network.Transports;
 
 namespace Edelstein.Common.Network.DotNetty.Codecs;

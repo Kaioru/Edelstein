@@ -1,9 +1,9 @@
-﻿using Edelstein.Protocol.Gameplay.Inventories.Items;
-using Edelstein.Protocol.Util.Buffers.Bytes;
+﻿using Edelstein.Common.Util.Buffers.Packets;
+using Edelstein.Protocol.Gameplay.Inventories.Items;
 
 namespace Edelstein.Protocol.Gameplay.Inventories.Modify;
 
-public interface IModifyInventory
+public interface IModifyInventory : IPacketWritable
 {
     bool IsUpdated { get; }
     bool IsUpdatedAvatar { get; }
@@ -29,6 +29,4 @@ public interface IModifyInventory
 
     void Gather();
     void Sort();
-
-    IPacket GetPacket();
 }

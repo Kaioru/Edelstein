@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Services.Server.Contracts;
-using Edelstein.Common.Util.Buffers.Bytes;
+using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Login.Templates;
 using Edelstein.Protocol.Services.Server;
