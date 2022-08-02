@@ -11,7 +11,7 @@ public interface IFieldObject
 
     IField? Field { get; set; }
     IFieldSplit? FieldSplit { get; set; }
-    IPoint2D Position { get; set; }
+    IPoint2D Position { get; }
 
     IPacket GetEnterFieldPacket();
     IPacket GetLeaveFieldPacket();

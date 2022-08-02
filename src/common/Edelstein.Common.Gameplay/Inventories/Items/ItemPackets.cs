@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Inventories.Items;
+﻿using Edelstein.Common.Util.Buffers.Packets;
+using Edelstein.Protocol.Gameplay.Inventories.Items;
 using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Gameplay.Inventories.Items;
@@ -28,7 +29,7 @@ public static class ItemPackets
     {
         writer.WriteInt(item.ID);
         writer.WriteBool(false); // TODO: cash item SN
-        writer.WriteLong(DateTime.FromFileTimeUtc(150842304000000000).ToFileTimeUtc()); // TODO: constants
+        writer.WriteDateTime(DateTime.FromFileTimeUtc(150842304000000000)); // TODO: constants
     }
 
     public static void WriteItemEquipData(this IPacketWriter writer, IItemSlotEquip equip)
@@ -105,7 +106,8 @@ public static class ItemPackets
         writer.WriteShort(pet.Tameness);
         writer.WriteByte(pet.Repleteness);
 
-        writer.WriteLong(pet.DateDead?.ToFileTimeUtc() ?? 0);
+        if (pet.DateDead != null) writer.WriteDateTime(pet.DateDead.Value);
+        else writer.WriteLong(0);
 
         writer.WriteShort(pet.PetAttribute);
         writer.WriteShort(pet.PetSkill);
