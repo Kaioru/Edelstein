@@ -84,6 +84,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Gameplay.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Util.Serializers", "src\common\Edelstein.Common.Util.Serializers\Edelstein.Common.Util.Serializers.csproj", "{17538531-5188-408F-8609-6B17566D6AD5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Daemon.WebAPI", "src\app\Edelstein.Daemon.WebAPI\Edelstein.Daemon.WebAPI.csproj", "{99003A86-4A37-4B6C-9C4D-72D49077654B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,6 +130,7 @@ Global
 		{2900D1FA-42CA-470E-B823-EE0685B3D637} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{0C5CD00D-31DA-43C9-A339-AD527038D779} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{17538531-5188-408F-8609-6B17566D6AD5} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
+		{99003A86-4A37-4B6C-9C4D-72D49077654B} = {E8E4BA1B-1B13-4BD1-907D-BECBBF3F357B}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -258,5 +261,9 @@ Global
 		{17538531-5188-408F-8609-6B17566D6AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17538531-5188-408F-8609-6B17566D6AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17538531-5188-408F-8609-6B17566D6AD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99003A86-4A37-4B6C-9C4D-72D49077654B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99003A86-4A37-4B6C-9C4D-72D49077654B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99003A86-4A37-4B6C-9C4D-72D49077654B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99003A86-4A37-4B6C-9C4D-72D49077654B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
