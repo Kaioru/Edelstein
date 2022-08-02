@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Stages.Actions;
+﻿using Edelstein.Common.Gameplay.Stages.Plugs;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Services.Migration;

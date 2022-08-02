@@ -8,6 +8,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Contexts;
 public record GameContextPipelines(
     IPipeline<ISocketOnMigrateIn<IGameStageUser>> SocketOnMigrateIn,
     IPipeline<ISocketOnMigrateOut<IGameStageUser>> SocketOnMigrateOut,
+    IPipeline<ISocketOnAliveAck<IGameStageUser>> SocketOnAliveAck,
     IPipeline<ISocketOnPacket<IGameStageUser>> SocketOnPacket,
     IPipeline<ISocketOnException<IGameStageUser>> SocketOnException,
     IPipeline<ISocketOnDisconnect<IGameStageUser>> SocketOnDisconnect

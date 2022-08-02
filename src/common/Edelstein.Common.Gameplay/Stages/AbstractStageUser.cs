@@ -26,6 +26,8 @@ public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser> whe
 
     public abstract Task OnMigrateIn(int character, long key);
     public abstract Task OnMigrateOut(string server);
+    public abstract Task OnAliveAck(DateTime date);
+
     public abstract Task OnPacket(IPacket packet);
     public abstract Task OnException(Exception exception);
     public abstract Task OnDisconnect();

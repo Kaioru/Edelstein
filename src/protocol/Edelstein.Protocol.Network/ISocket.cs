@@ -14,6 +14,10 @@ public interface ISocket : IIdentifiable<string>
 
     bool IsDataEncrypted { get; }
 
+
+    DateTime LastAliveSent { get; set; }
+    DateTime LastAliveRecv { get; set; }
+
     Task Dispatch(IPacket packet);
     Task Close();
 }

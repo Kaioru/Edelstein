@@ -1,6 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Accounts;
 using Edelstein.Common.Gameplay.Characters;
-using Edelstein.Common.Gameplay.Stages.Actions;
+using Edelstein.Common.Gameplay.Stages.Plugs;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Services.Session;
 

@@ -27,6 +27,9 @@ public class NettySocket : ISocket
 
     public bool IsDataEncrypted { get; }
 
+    public DateTime LastAliveSent { get; set; }
+    public DateTime LastAliveRecv { get; set; }
+
     public Task Close() => _channel.DisconnectAsync();
 
     public Task Dispatch(IPacket packet) => _channel.WriteAndFlushAsync(packet);

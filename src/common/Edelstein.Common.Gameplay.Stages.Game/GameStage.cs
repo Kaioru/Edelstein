@@ -4,6 +4,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game;
 
 public class GameStage : IGameStage
 {
+    public IReadOnlyCollection<IGameStageUser> Users => new List<IGameStageUser>();
+
     public async Task Enter(IGameStageUser user)
     {
         var fieldUser = new FieldUser(

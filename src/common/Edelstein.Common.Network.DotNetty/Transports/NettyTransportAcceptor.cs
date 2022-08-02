@@ -30,6 +30,8 @@ public class NettyTransportAcceptor : ITransportAcceptor
     public IAdapterInitializer Initializer { get; }
     public IDictionary<string, ISocket> Sockets { get; }
 
+    public TimeSpan Timeout => TimeSpan.FromMinutes(4);
+
     public short Version { get; }
     public string Patch { get; }
     public byte Locale { get; }
@@ -49,7 +51,7 @@ public class NettyTransportAcceptor : ITransportAcceptor
             .ChildHandler(new ActionChannelInitializer<IChannel>(ch =>
             {
                 ch.Pipeline.AddLast(
-                    new ReadTimeoutHandler(TimeSpan.FromMinutes(4)),
+                    new ReadTimeoutHandler(Timeout),
                     new NettyPacketDecoder(this, aesCipher, igCipher),
                     new NettyTransportAcceptorHandler(this),
                     new NettyPacketEncoder(this, aesCipher, igCipher)

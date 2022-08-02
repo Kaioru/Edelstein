@@ -18,6 +18,9 @@ public class GameStageUser : AbstractStageUser<IGameStageUser>, IGameStageUser
     public override Task OnMigrateOut(string server) =>
         Context.Pipelines.SocketOnMigrateOut.Process(new SocketOnMigrateOut<IGameStageUser>(this, server));
 
+    public override Task OnAliveAck(DateTime date) =>
+        Context.Pipelines.SocketOnAliveAck.Process(new SocketOnAliveAck<IGameStageUser>(this, date));
+
     public override Task OnPacket(IPacket packet) =>
         Context.Pipelines.SocketOnPacket.Process(new SocketOnPacket<IGameStageUser>(this, packet));
 
