@@ -4,4 +4,5 @@ public interface IGameContext
 {
     IGameContextOptions Options { get; }
     IGameContextPipelines Pipelines { get; }
+    IGameContextTemplates Templates { get; }
 }

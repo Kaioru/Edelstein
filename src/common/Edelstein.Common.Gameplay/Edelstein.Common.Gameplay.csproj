@@ -3,19 +3,17 @@
   <Import Project="..\Common.targets" />
 
   <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Data\Edelstein.Protocol.Data.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Pipelines\Edelstein.Protocol.Util.Pipelines.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Util.Buffers\Edelstein.Common.Util.Buffers.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Util.Templates\Edelstein.Common.Util.Templates.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Inventories\Templates" />
   </ItemGroup>
 
 </Project>
