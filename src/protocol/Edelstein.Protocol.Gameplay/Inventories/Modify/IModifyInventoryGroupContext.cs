@@ -1,6 +1,14 @@
-﻿namespace Edelstein.Protocol.Gameplay.Inventories.Modify;
+﻿using Edelstein.Protocol.Gameplay.Inventories.Items;
 
-public interface IModifyInventoryGroupContext
+namespace Edelstein.Protocol.Gameplay.Inventories.Modify;
+
+public interface IModifyInventoryGroupContext<TSlot, TContext> : IModifyInventory<TSlot>
+    where TSlot : IItemSlot
+    where TContext : IModifyInventoryContext<TSlot>
 {
-    IModifyInventoryContext? this[ItemInventoryType type] { get; }
+    TContext? this[ItemInventoryType type] { get; }
+}
+
+public interface IModifyInventoryGroupContext : IModifyInventoryGroupContext<IItemSlot, IModifyInventoryContext>
+{
 }

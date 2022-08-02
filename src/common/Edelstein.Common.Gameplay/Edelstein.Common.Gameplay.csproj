@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Inventories\Modify\Operations" />
     <Folder Include="Inventories\Templates" />
   </ItemGroup>
 
