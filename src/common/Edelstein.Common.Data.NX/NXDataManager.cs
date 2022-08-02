@@ -35,8 +35,8 @@ public class NXDataManager : IDataManager
     {
         if (string.IsNullOrEmpty(path)) return null;
         var split = path.Split('/');
-        return !_nodes.ContainsKey(split[0])
-            ? null
-            : new NXDataNode(_nodes[split[0]].ResolvePath(string.Join("/", split.Skip(1).ToArray())));
+        return _nodes.TryGetValue(split[0], out var value)
+            ? new NXDataNode(value.ResolvePath(string.Join("/", split.Skip(1).ToArray())))
+            : null;
     }
 }
