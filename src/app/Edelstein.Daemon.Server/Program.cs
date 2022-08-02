@@ -93,6 +93,8 @@ await Host.CreateDefaultBuilder(args)
             {
                 var scope = new ServiceCollection { services };
 
+                scope.AddSingleton(p.GetRequiredService<ITickerManager>());
+
                 scope.Scan(s => s
                     .FromApplicationDependencies()
                     .AddClasses(c => c.AssignableTo(typeof(IPacketHandler<>)))
@@ -147,6 +149,7 @@ await Host.CreateDefaultBuilder(args)
 
                 return new ServerStartBootstrap(
                     p.GetRequiredService<ILogger<ServerStartBootstrap>>(),
+                    p.GetRequiredService<ITickerManager>(),
                     acceptor,
                     stage,
                     loaders.ToImmutableList()
