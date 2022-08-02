@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Util.Spatial;
 using Edelstein.Protocol.Data;
+using Edelstein.Protocol.Gameplay.Stages.Game.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Util.Spatial;
 
@@ -34,10 +35,10 @@ public record FieldTemplate : IFieldTemplate
         var footholds = foothold.Children
             .SelectMany(c => c.Children)
             .SelectMany(c => c.Children)
-            .Select(p => new FieldTemplateFoothold(Convert.ToInt32(p.Name), p.ResolveAll()))
+            .Select(p => new FieldFoothold(Convert.ToInt32(p.Name), p.ResolveAll()))
             .ToImmutableList();
         var portals = foothold.Children
-            .Select(p => new FieldTemplatePortal(Convert.ToInt32(p.Name), p.ResolveAll()))
+            .Select(p => new FieldPortal(Convert.ToInt32(p.Name), p.ResolveAll()))
             .ToImmutableList();
 
         var leftTop = new Point2D(
@@ -60,13 +61,13 @@ public record FieldTemplate : IFieldTemplate
 
         Bounds = new Rectangle2D(leftTop, rightBottom);
 
-        Footholds = new FieldSpace<IFieldTemplateFoothold>(Bounds);
+        Footholds = new FieldSpace<IFieldFoothold>(Bounds);
         Footholds.BulkInsert(footholds);
 
-        StartPoints = new FieldSpace<IFieldTemplatePortal>(Bounds);
+        StartPoints = new FieldSpace<IFieldPortal>(Bounds);
         StartPoints.BulkInsert(portals.Where(p => p.Type == FieldPortalType.StartPoint));
 
-        Portals = new FieldSpace<IFieldTemplatePortal>(Bounds);
+        Portals = new FieldSpace<IFieldPortal>(Bounds);
         Portals.BulkInsert(portals);
 
         MobRate = info.Resolve<double>("mobRate") ?? 1.0;
@@ -86,9 +87,9 @@ public record FieldTemplate : IFieldTemplate
 
     public IRectangle2D Bounds { get; }
 
-    public IFieldSpace<IFieldTemplateFoothold> Footholds { get; }
-    public IFieldSpace<IFieldTemplatePortal> StartPoints { get; }
-    public IFieldSpace<IFieldTemplatePortal> Portals { get; }
+    public IFieldSpace<IFieldFoothold> Footholds { get; }
+    public IFieldSpace<IFieldPortal> StartPoints { get; }
+    public IFieldSpace<IFieldPortal> Portals { get; }
 
     public int? FieldReturn { get; }
     public int? ForcedReturn { get; }

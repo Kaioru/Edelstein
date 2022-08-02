@@ -9,11 +9,9 @@ public interface IFieldObject
 
     int? ObjectID { get; set; }
 
-    IField? Field { get; }
-    IPoint2D Position { get; }
-
-    Task OnEnterField(int id, IField field);
-    Task OnLeaveField();
+    IField? Field { get; set; }
+    IFieldSplit? FieldSplit { get; set; }
+    IPoint2D Position { get; set; }
 
     IPacket GetEnterFieldPacket();
     IPacket GetLeaveFieldPacket();
