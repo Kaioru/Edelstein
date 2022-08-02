@@ -9,7 +9,7 @@ public class CheckUserLimitPlug : IPipelinePlug<ICheckUserLimit>
 {
     public async Task Handle(IPipelineContext ctx, ICheckUserLimit message)
     {
-        var packet = new ByteWriter(PacketSendOperations.CheckUserLimitResult);
+        var packet = new PacketWriter(PacketSendOperations.CheckUserLimitResult);
 
         packet.WriteByte(0);
         packet.WriteByte(0);

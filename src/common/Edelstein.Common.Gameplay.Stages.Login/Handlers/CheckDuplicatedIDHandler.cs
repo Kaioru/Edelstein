@@ -17,7 +17,7 @@ public class CheckDuplicatedIDHandler : AbstractLoginPacketHandler
 
     public override bool Check(ILoginStageUser user) => user.State == LoginState.SelectCharacter;
 
-    public override Task Handle(ILoginStageUser user, IByteReader reader)
+    public override Task Handle(ILoginStageUser user, IPacketReader reader)
     {
         var message = new CheckDuplicatedID(
             user,

@@ -44,7 +44,7 @@ public class CheckSPWRequestPlug : IPipelinePlug<ICheckSPWRequest>
 
             if (character == null)
             {
-                await message.User.Dispatch(new ByteWriter(PacketSendOperations.CheckSPWResult)
+                await message.User.Dispatch(new PacketWriter(PacketSendOperations.CheckSPWResult)
                     .WriteBool(false)
                     .WriteByte((byte)LoginResult.NotAuthorized)
                 );
@@ -53,7 +53,7 @@ public class CheckSPWRequestPlug : IPipelinePlug<ICheckSPWRequest>
 
             if (response.Result != ServerResult.Success || response.Server == null)
             {
-                await message.User.Dispatch(new ByteWriter(PacketSendOperations.CheckSPWResult)
+                await message.User.Dispatch(new PacketWriter(PacketSendOperations.CheckSPWResult)
                     .WriteBool(false)
                     .WriteByte((byte)LoginResult.NotConnectableWorld)
                 );
@@ -62,7 +62,7 @@ public class CheckSPWRequestPlug : IPipelinePlug<ICheckSPWRequest>
 
             if (!BCrypt.Net.BCrypt.Verify(message.SPW, message.User.Account!.SPW))
             {
-                await message.User.Dispatch(new ByteWriter(PacketSendOperations.CheckSPWResult)
+                await message.User.Dispatch(new PacketWriter(PacketSendOperations.CheckSPWResult)
                     .WriteBool(false)
                     .WriteByte((byte)LoginResult.IncorrectSPW)
                 );
@@ -72,7 +72,7 @@ public class CheckSPWRequestPlug : IPipelinePlug<ICheckSPWRequest>
             var endpoint = new IPEndPoint(IPAddress.Parse(response.Server.Host), response.Server.Port);
             var address = endpoint.Address.MapToIPv4().GetAddressBytes();
             var port = endpoint.Port;
-            var packet = new ByteWriter(PacketSendOperations.SelectCharacterResult);
+            var packet = new PacketWriter(PacketSendOperations.SelectCharacterResult);
 
             message.User.Character = character;
 
@@ -92,7 +92,7 @@ public class CheckSPWRequestPlug : IPipelinePlug<ICheckSPWRequest>
         }
         catch (Exception)
         {
-            var packet = new ByteWriter(PacketSendOperations.CheckSPWResult);
+            var packet = new PacketWriter(PacketSendOperations.CheckSPWResult);
 
             packet.WriteBool(false);
             packet.WriteByte((byte)LoginResult.DBFail);

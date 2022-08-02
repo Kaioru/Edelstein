@@ -7,7 +7,7 @@ namespace Edelstein.Common.Gameplay.Characters;
 public static class CharacterPackets
 {
     public static void WriteCharacterData(
-        this IByteWriter writer,
+        this IPacketWriter writer,
         ICharacter c,
         CharacterFlags flags = CharacterFlags.All
     )
@@ -105,7 +105,7 @@ public static class CharacterPackets
     }
 
     public static void WriteCharacterStats(
-        this IByteWriter writer,
+        this IPacketWriter writer,
         ICharacter c
     )
     {
@@ -145,7 +145,7 @@ public static class CharacterPackets
     }
 
     public static void WriteCharacterLooks(
-        this IByteWriter writer,
+        this IPacketWriter writer,
         ICharacter c
     )
     {

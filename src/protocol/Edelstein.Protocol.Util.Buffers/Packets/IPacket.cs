@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Util.Buffers.Bytes;
 
-public interface IByteBuffer
+public interface IPacket
 {
     byte[] Buffer { get; }
 }

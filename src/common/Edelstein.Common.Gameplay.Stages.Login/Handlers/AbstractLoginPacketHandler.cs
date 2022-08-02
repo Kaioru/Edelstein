@@ -9,5 +9,5 @@ public abstract class AbstractLoginPacketHandler : IPacketHandler<ILoginStageUse
     public abstract short Operation { get; }
 
     public virtual bool Check(ILoginStageUser user) => true;
-    public abstract Task Handle(ILoginStageUser user, IByteReader reader);
+    public abstract Task Handle(ILoginStageUser user, IPacketReader reader);
 }

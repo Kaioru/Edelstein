@@ -3,19 +3,19 @@ using Edelstein.Protocol.Util.Buffers.Bytes;
 
 namespace Edelstein.Common.Util.Buffers.Bytes;
 
-public class ByteReader : IByteReader
+public class PacketReader : IPacketReader
 {
     private readonly Encoding _encoding = Encoding.ASCII;
     private readonly BinaryReader _reader;
     private readonly MemoryStream _stream;
 
-    public ByteReader(byte[] buffer)
+    public PacketReader(byte[] buffer)
     {
         _stream = new MemoryStream(buffer);
         _reader = new BinaryReader(_stream);
     }
 
-    public ByteReader() : this(Array.Empty<byte>())
+    public PacketReader() : this(Array.Empty<byte>())
     {
     }
 

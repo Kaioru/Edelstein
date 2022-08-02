@@ -10,6 +10,6 @@ public interface ITransport
     string Patch { get; }
     byte Locale { get; }
 
-    Task Dispatch(IByteBuffer packet);
+    Task Dispatch(IPacket packet);
     Task Close();
 }

@@ -41,7 +41,7 @@ public class WorldRequestPlug : IPipelinePlug<IWorldRequest>
                 continue;
             }
 
-            var packet = new ByteWriter(PacketSendOperations.WorldInformation);
+            var packet = new PacketWriter(PacketSendOperations.WorldInformation);
 
             packet.WriteByte(worldID);
             packet.WriteString(template.Name);
@@ -72,10 +72,10 @@ public class WorldRequestPlug : IPipelinePlug<IWorldRequest>
             await message.User.Dispatch(packet);
         }
 
-        await message.User.Dispatch(new ByteWriter(PacketSendOperations.WorldInformation).WriteByte(0xFF));
+        await message.User.Dispatch(new PacketWriter(PacketSendOperations.WorldInformation).WriteByte(0xFF));
 
         if (message.User.Account?.LatestConnectedWorld != null)
-            await message.User.Dispatch(new ByteWriter(PacketSendOperations.LatestConnectedWorld)
+            await message.User.Dispatch(new PacketWriter(PacketSendOperations.LatestConnectedWorld)
                 .WriteInt((int)message.User.Account.LatestConnectedWorld));
     }
 }

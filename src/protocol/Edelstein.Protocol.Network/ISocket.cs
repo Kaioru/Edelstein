@@ -14,6 +14,6 @@ public interface ISocket : IIdentifiable<string>
 
     bool IsDataEncrypted { get; }
 
-    Task Dispatch(IByteBuffer packet);
+    Task Dispatch(IPacket packet);
     Task Close();
 }

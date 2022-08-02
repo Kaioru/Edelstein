@@ -30,5 +30,5 @@ public interface IModifyInventory
     void Gather();
     void Sort();
 
-    IByteBuffer GetPacket();
+    IPacket GetPacket();
 }

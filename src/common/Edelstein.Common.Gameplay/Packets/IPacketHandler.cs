@@ -9,5 +9,5 @@ public interface IPacketHandler<in TStageUser> where TStageUser : IStageUser<TSt
 
     bool Check(TStageUser user);
 
-    Task Handle(TStageUser user, IByteReader reader);
+    Task Handle(TStageUser user, IPacketReader reader);
 }

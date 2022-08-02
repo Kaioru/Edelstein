@@ -8,5 +8,5 @@ public interface IPacketHandlerManager<TStageUser> where TStageUser : IStageUser
     void Add(IPacketHandler<TStageUser> handler);
     void Remove(IPacketHandler<TStageUser> handler);
 
-    Task Process(TStageUser user, IByteBuffer packet);
+    Task Process(TStageUser user, IPacket packet);
 }

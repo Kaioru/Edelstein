@@ -29,5 +29,5 @@ public class NettySocket : ISocket
 
     public Task Close() => _channel.DisconnectAsync();
 
-    public Task Dispatch(IByteBuffer packet) => _channel.WriteAndFlushAsync(packet);
+    public Task Dispatch(IPacket packet) => _channel.WriteAndFlushAsync(packet);
 }
