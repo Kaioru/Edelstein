@@ -9,6 +9,8 @@ public interface IModifyInventoryGroupContext<TSlot, TContext> : IModifyInventor
     TContext? this[ItemInventoryType type] { get; }
 }
 
-public interface IModifyInventoryGroupContext : IModifyInventoryGroupContext<IItemSlot, IModifyInventoryContext>
+public interface IModifyInventoryGroupContext :
+    IModifyInventoryGroupContext<IItemSlot, IModifyInventoryContext>,
+    IModifyInventory
 {
 }

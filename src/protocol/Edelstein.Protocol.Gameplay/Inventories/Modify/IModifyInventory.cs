@@ -15,14 +15,9 @@ public interface IModifyInventory<in TSlot> : IPacketWritable where TSlot : IIte
     void Remove(int templateID, short count);
     void Remove(IItemTemplate template);
     void Remove(IItemTemplate template, short count);
-    void Remove(TSlot item);
-    void Remove(TSlot item, short count);
 
     void RemoveAll(int templateID);
     void RemoveAll(IItemTemplate template);
-    void RemoveAll(TSlot item);
-
-    void Update(TSlot item);
 
     void Gather();
     void Sort();

@@ -10,14 +10,13 @@ public interface IModifyInventoryContext<TSlot> : IModifyInventory<TSlot> where 
     void SetSlot(short slot, TSlot item);
 
     void RemoveSlot(short slot);
-    void RemoveSlot(short slot, short count);
 
     void MoveSlot(short from, short to);
 
     void UpdateSlot(short slot);
 }
 
-public interface IModifyInventoryContext : IModifyInventoryContext<IItemSlot>
+public interface IModifyInventoryContext : IModifyInventoryContext<IItemSlot>, IModifyInventory
 {
     void SetSlot(short slot, int templateID);
     void SetSlot(short slot, int templateID, short count);
