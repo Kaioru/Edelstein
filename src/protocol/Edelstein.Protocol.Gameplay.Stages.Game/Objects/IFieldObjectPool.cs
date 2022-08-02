@@ -2,11 +2,11 @@
 
 public interface IFieldObjectPool
 {
-    IReadOnlyCollection<IFieldObject> Objects { get; }
+    IReadOnlyCollection<IFieldObject?> Objects { get; }
+
+    Task Enter(IFieldObject obj);
+    Task Leave(IFieldObject obj);
 
     IFieldObject? GetObject(int id);
-    T? GetObject<T>(int id) where T : IFieldObject;
-
-    IEnumerable<IFieldObject> GetObjects();
-    IEnumerable<T> GetObjects<T>() where T : IFieldObject;
+    IEnumerable<IFieldObject?> GetObjects();
 }

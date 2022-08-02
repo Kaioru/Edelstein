@@ -18,4 +18,7 @@ public interface IField : IIdentifiable<int>, IStage<IFieldUser>, IFieldObjectPo
 
     Task Enter(IFieldObject obj, Func<IPacket>? getEnterPacket = null);
     Task Leave(IFieldObject obj, Func<IPacket>? getLeavePacket = null);
+
+    T? GetObject<T>(int id) where T : IFieldObject;
+    IEnumerable<T> GetObjects<T>() where T : IFieldObject;
 }
