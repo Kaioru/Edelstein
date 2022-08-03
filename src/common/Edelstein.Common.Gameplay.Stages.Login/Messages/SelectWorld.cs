@@ -6,5 +6,5 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Messages;
 public record SelectWorld(
     ILoginStageUser User,
     int WorldID,
-    int ChannelIndex
+    int ChannelID
 ) : ISelectWorld;

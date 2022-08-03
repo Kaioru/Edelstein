@@ -70,6 +70,7 @@ public class CheckSPWRequestPlug : IPipelinePlug<ICheckSPWRequest>
             var port = endpoint.Port;
             var packet = new PacketWriter(PacketSendOperations.SelectCharacterResult);
 
+            Console.WriteLine(port);
             message.User.Character = character;
 
             packet.WriteByte(0);
