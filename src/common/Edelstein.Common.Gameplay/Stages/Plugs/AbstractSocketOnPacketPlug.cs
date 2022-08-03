@@ -12,6 +12,6 @@ public abstract class AbstractSocketOnPacketPlug<TStageUser> : IPipelinePlug<ISo
 
     protected AbstractSocketOnPacketPlug(IPacketHandlerManager<TStageUser> handler) => _handler = handler;
 
-    public Task Handle(IPipelineContext ctx, ISocketOnPacket<TStageUser> message) =>
+    public virtual Task Handle(IPipelineContext ctx, ISocketOnPacket<TStageUser> message) =>
         _handler.Process(message.User, message.Packet);
 }

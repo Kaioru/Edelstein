@@ -29,7 +29,7 @@ public abstract class AbstractSocketOnDisconnectPlug<TStageUser> : IPipelinePlug
         _characterRepository = characterRepository;
     }
 
-    public async Task Handle(IPipelineContext ctx, ISocketOnDisconnect<TStageUser> message)
+    public virtual async Task Handle(IPipelineContext ctx, ISocketOnDisconnect<TStageUser> message)
     {
         if (message.User.Stage != null)
             await message.User.Stage.Leave(message.User);
