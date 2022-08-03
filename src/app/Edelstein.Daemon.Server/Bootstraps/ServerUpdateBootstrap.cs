@@ -49,65 +49,66 @@ public class ServerUpdateBootstrap<TConfig> : IBootstrap, ITickable where TConfi
         );
     }
 
-    public async Task OnTick(DateTime now)
-    {
-        var response = IsRegistered
-            ? await _service.Ping(new ServerPingRequest(_config.ID))
-            : _config switch
-            {
-                ILoginContextOptions login => await _service.RegisterLogin(new ServerRegisterRequest<IServerLogin>(
-                    new ServerLogin
-                    {
-                        ID = _config.ID,
-                        Host = _config.Host,
-                        Port = _config.Port
-                    })),
-                IGameContextOptions game => await _service.RegisterGame(new ServerRegisterRequest<IServerGame>(
-                    new ServerGame
-                    {
-                        ID = _config.ID,
-                        Host = _config.Host,
-                        Port = _config.Port,
-                        WorldID = game.WorldID,
-                        ChannelID = game.ChannelID,
-                        IsAdultChannel = game.IsAdultChannel
-                    })),
-                _ => throw new ArgumentOutOfRangeException()
-            };
-
-        if (response.Result == ServerResult.Success)
+    public Task OnTick(DateTime now) =>
+        _ = Task.Run(async () =>
         {
-            if (!IsRegistered)
+            var response = IsRegistered
+                ? await _service.Ping(new ServerPingRequest(_config.ID))
+                : _config switch
+                {
+                    ILoginContextOptions login => await _service.RegisterLogin(new ServerRegisterRequest<IServerLogin>(
+                        new ServerLogin
+                        {
+                            ID = _config.ID,
+                            Host = _config.Host,
+                            Port = _config.Port
+                        })),
+                    IGameContextOptions game => await _service.RegisterGame(new ServerRegisterRequest<IServerGame>(
+                        new ServerGame
+                        {
+                            ID = _config.ID,
+                            Host = _config.Host,
+                            Port = _config.Port,
+                            WorldID = game.WorldID,
+                            ChannelID = game.ChannelID,
+                            IsAdultChannel = game.IsAdultChannel
+                        })),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+
+            if (response.Result == ServerResult.Success)
             {
-                IsRegistered = true;
-                _logger.LogInformation(
-                    "Registered stage {ID} to server registry, updating at {Next}",
-                    _config.ID, Context?.TickNext
-                );
+                if (!IsRegistered)
+                {
+                    IsRegistered = true;
+                    _logger.LogInformation(
+                        "Registered stage {ID} to server registry, updating at {Next}",
+                        _config.ID, Context?.TickNext
+                    );
+                }
+                else
+                {
+                    _logger.LogDebug(
+                        "Updated stage {ID} in server registry, updating at {Next}",
+                        _config.ID, Context?.TickNext
+                    );
+                }
             }
             else
             {
-                _logger.LogDebug(
-                    "Updated stage {ID} in server registry, updating at {Next}",
-                    _config.ID, Context?.TickNext
-                );
-            }
-        }
-        else
-        {
-            if (IsRegistered)
-            {
+                if (IsRegistered)
+                {
+                    _logger.LogWarning(
+                        "Failed to updated stage {ID} in server registry due to {Reason} retrying at {Next}",
+                        _config.ID, response.Result, Context?.TickNext
+                    );
+                    return;
+                }
+
                 _logger.LogWarning(
-                    "Failed to updated stage {ID} in server registry due to {Reason} retrying at {Next}",
+                    "Failed to register stage {ID} to server registry due to {Reason} retrying at {Next}",
                     _config.ID, response.Result, Context?.TickNext
                 );
-                return;
             }
-
-            _logger.LogWarning(
-                "Failed to register stage {ID} to server registry due to {Reason} retrying at {Next}",
-                _config.ID, response.Result, Context?.TickNext
-            );
-        }
-    }
+        });
 }
