@@ -5,6 +5,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Services.Auth\Edelstein.Protocol.Services.Auth.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Services.Migration\Edelstein.Protocol.Services.Migration.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Services.Server\Edelstein.Protocol.Services.Server.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Util.Pipelines\Edelstein.Protocol.Util.Pipelines.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Util.Templates\Edelstein.Protocol.Util.Templates.csproj" />
   </ItemGroup>
