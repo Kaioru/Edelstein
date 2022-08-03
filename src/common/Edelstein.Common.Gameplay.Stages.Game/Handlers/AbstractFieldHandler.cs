@@ -8,7 +8,7 @@ public abstract class AbstractFieldHandler : IPacketHandler<IGameStageUser>
 {
     public abstract short Operation { get; }
 
-    public bool Check(IGameStageUser user) => user.Field != null && user.FieldUser != null;
+    public virtual bool Check(IGameStageUser user) => user.Field != null && user.FieldUser != null;
 
     public Task Handle(IGameStageUser user, IPacketReader reader) =>
         Handle(user.FieldUser!, reader);

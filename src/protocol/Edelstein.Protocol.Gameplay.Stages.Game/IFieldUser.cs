@@ -8,6 +8,8 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game;
 
 public interface IFieldUser : IFieldLife, IFieldSplitObserver, IFieldController, ICommandContext
 {
+    IGameStageUser StageUser { get; }
+
     IAccount Account { get; }
     IAccountWorld AccountWorld { get; }
     ICharacter Character { get; }

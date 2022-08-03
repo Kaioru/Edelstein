@@ -15,8 +15,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game;
 
 public class FieldUser : AbstractFieldLife, IFieldUser
 {
-    private readonly IGameStageUser _user;
-
     public FieldUser(
         IGameStageUser user,
         IAccount account,
@@ -24,7 +22,7 @@ public class FieldUser : AbstractFieldLife, IFieldUser
         ICharacter character
     ) : base(new Point2D(0, 0))
     {
-        _user = user;
+        StageUser = user;
         Account = account;
         AccountWorld = accountWorld;
         Character = character;
@@ -34,7 +32,9 @@ public class FieldUser : AbstractFieldLife, IFieldUser
 
     public override FieldObjectType Type => FieldObjectType.User;
 
-    public ISocket Socket => _user.Socket;
+    public ISocket Socket => StageUser.Socket;
+
+    public IGameStageUser StageUser { get; }
 
     public IAccount Account { get; }
     public IAccountWorld AccountWorld { get; }
@@ -51,8 +51,8 @@ public class FieldUser : AbstractFieldLife, IFieldUser
 
         packet.WriteShort(0); // ClientOpt
 
-        packet.WriteInt(_user.Context.Options.ChannelID);
-        packet.WriteInt(_user.Context.Options.WorldID);
+        packet.WriteInt(StageUser.Context.Options.ChannelID);
+        packet.WriteInt(StageUser.Context.Options.WorldID);
 
         packet.WriteBool(true); // sNotifierMessage._m_pStr
         packet.WriteBool(!IsInstantiated);
@@ -155,14 +155,14 @@ public class FieldUser : AbstractFieldLife, IFieldUser
         packet.WriteByte(0xA);
         packet.WriteString(message);
 
-        await _user.Dispatch(packet);
+        await StageUser.Dispatch(packet);
     }
 
-    public Task OnPacket(IPacket packet) => _user.OnPacket(packet);
-    public Task OnException(Exception exception) => _user.OnException(exception);
-    public Task OnDisconnect() => _user.OnDisconnect();
-    public Task Dispatch(IPacket packet) => _user.Dispatch(packet);
-    public Task Disconnect() => _user.Disconnect();
+    public Task OnPacket(IPacket packet) => StageUser.OnPacket(packet);
+    public Task OnException(Exception exception) => StageUser.OnException(exception);
+    public Task OnDisconnect() => StageUser.OnDisconnect();
+    public Task Dispatch(IPacket packet) => StageUser.Dispatch(packet);
+    public Task Disconnect() => StageUser.Disconnect();
 
     protected override IPacket GetMovePacket(IMovePath ctx)
     {
