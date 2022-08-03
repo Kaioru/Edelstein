@@ -5,7 +5,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Spatial;
 using Edelstein.Protocol.Util.Spatial;
 using Edelstein.Protocol.Util.Spatial.Collections;
 
-namespace Edelstein.Common.Gameplay.Stages.Game.Templates;
+namespace Edelstein.Common.Gameplay.Stages.Game.Spatial;
 
 public class FieldSpace<TObject> : IFieldSpace<TObject> where TObject : IFieldSpaceObject
 {
@@ -18,6 +18,8 @@ public class FieldSpace<TObject> : IFieldSpace<TObject> where TObject : IFieldSp
         _objects = new Dictionary<int, TObject>();
         _space = new RBushSpace2D<TObject>();
     }
+
+    public IReadOnlyCollection<TObject> Objects => _objects.Values.ToImmutableList();
 
     public IRectangle2D Bounds { get; }
 

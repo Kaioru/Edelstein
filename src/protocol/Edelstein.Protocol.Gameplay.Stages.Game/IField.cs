@@ -11,8 +11,8 @@ public interface IField : IIdentifiable<int>, IFieldObjectPool
     IFieldTemplate Template { get; }
 
     IFieldSplit? GetSplit(IPoint2D position);
-    IFieldSplit[] GetEnclosingSplits(IPoint2D position);
-    IFieldSplit[] GetEnclosingSplits(IFieldSplit split);
+    IFieldSplit?[] GetEnclosingSplits(IPoint2D position);
+    IFieldSplit?[] GetEnclosingSplits(IFieldSplit split);
 
     IFieldObjectPool? GetPool(FieldObjectType type);
 

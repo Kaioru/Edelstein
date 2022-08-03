@@ -4,27 +4,27 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects;
 
-public class FieldObjectPool : IFieldObjectPool
+public class FieldObjectPool : AbstractFieldObjectPool, IFieldObjectPool
 {
-    private readonly IDictionary<int, IFieldObject?> _objects;
+    private readonly IDictionary<int, IFieldObject> _objects;
     private readonly Queue<int> _runningObjectID;
 
     public FieldObjectPool()
     {
-        _objects = new ConcurrentDictionary<int, IFieldObject?>();
+        _objects = new ConcurrentDictionary<int, IFieldObject>();
         _runningObjectID = new Queue<int>(Enumerable.Range(1, 30_000));
     }
 
-    public IReadOnlyCollection<IFieldObject?> Objects => _objects.Values.ToImmutableList();
+    public override IReadOnlyCollection<IFieldObject> Objects => _objects.Values.ToImmutableList();
 
-    public Task Enter(IFieldObject obj)
+    public override Task Enter(IFieldObject obj)
     {
         obj.ObjectID = _runningObjectID.Dequeue();
         _objects[obj.ObjectID.Value] = obj;
         return Task.CompletedTask;
     }
 
-    public Task Leave(IFieldObject obj)
+    public override Task Leave(IFieldObject obj)
     {
         var objectID = obj.ObjectID;
 
@@ -38,9 +38,9 @@ public class FieldObjectPool : IFieldObjectPool
         return Task.CompletedTask;
     }
 
-    public IFieldObject? GetObject(int id) => _objects.TryGetValue(id, out var obj)
+    public override IFieldObject? GetObject(int id) => _objects.TryGetValue(id, out var obj)
         ? obj
         : null;
 
-    public IEnumerable<IFieldObject?> GetObjects() => Objects;
+    public override IEnumerable<IFieldObject> GetObjects() => Objects;
 }
