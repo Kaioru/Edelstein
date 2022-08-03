@@ -13,5 +13,6 @@ public record GameContextPipelines(
     IPipeline<ISocketOnPacket<IGameStageUser>> SocketOnPacket,
     IPipeline<ISocketOnException<IGameStageUser>> SocketOnException,
     IPipeline<ISocketOnDisconnect<IGameStageUser>> SocketOnDisconnect,
-    IPipeline<IUserMove> UserMove
+    IPipeline<IUserMove> UserMove,
+    IPipeline<IUserChat> UserChat
 ) : IGameContextPipelines;
