@@ -15,18 +15,15 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Plugs;
 public class EnableSPWRequestPlug : IPipelinePlug<IEnableSPWRequest>
 {
     private readonly ICharacterRepository _characterRepository;
-    private readonly IMigrationService _migrationService;
     private readonly IServerService _serverService;
 
     public EnableSPWRequestPlug(
         IServerService serverService,
-        ICharacterRepository characterRepository,
-        IMigrationService migrationService
+        ICharacterRepository characterRepository
     )
     {
         _serverService = serverService;
         _characterRepository = characterRepository;
-        _migrationService = migrationService;
     }
 
     public async Task Handle(IPipelineContext ctx, IEnableSPWRequest message)

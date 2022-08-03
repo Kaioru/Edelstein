@@ -62,12 +62,19 @@ public class AbstractSocketOnMigrateInPlug<TStageUser, TStage, TOptions> : IPipe
             return;
         }
 
-        var sessionResponse = await _sessionService.UpdateServer(new SessionUpdateServerRequest(
+        var sessionServerResponse = await _sessionService.UpdateServer(new SessionUpdateServerRequest(
             migrationResponse.Migration.Account.ID,
             _options.ID
         ));
+        var sessionCharacterResponse = await _sessionService.UpdateCharacter(new SessionUpdateCharacterRequest(
+            migrationResponse.Migration.Account.ID,
+            message.CharacterID
+        ));
 
-        if (sessionResponse.Result != SessionResult.Success)
+        if (
+            sessionServerResponse.Result != SessionResult.Success ||
+            sessionCharacterResponse.Result != SessionResult.Success
+        )
         {
             await message.User.Disconnect();
             _logger.LogDebug(

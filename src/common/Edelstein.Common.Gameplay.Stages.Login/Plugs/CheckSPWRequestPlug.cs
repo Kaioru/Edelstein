@@ -5,7 +5,6 @@ using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Services.Server.Contracts;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
-using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
@@ -15,18 +14,15 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Plugs;
 public class CheckSPWRequestPlug : IPipelinePlug<ICheckSPWRequest>
 {
     private readonly ICharacterRepository _characterRepository;
-    private readonly IMigrationService _migrationService;
     private readonly IServerService _serverService;
 
     public CheckSPWRequestPlug(
         ICharacterRepository characterRepository,
-        IServerService serverService,
-        IMigrationService migrationService
+        IServerService serverService
     )
     {
         _characterRepository = characterRepository;
         _serverService = serverService;
-        _migrationService = migrationService;
     }
 
     public async Task Handle(IPipelineContext ctx, ICheckSPWRequest message)
