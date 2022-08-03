@@ -29,7 +29,7 @@ public class AbstractSocketOnMigrateOutPlug<TStageUser, TOptions> : IPipelinePlu
         _options = options;
     }
 
-    public async Task Handle(IPipelineContext ctx, ISocketOnMigrateOut<TStageUser> message)
+    public virtual async Task Handle(IPipelineContext ctx, ISocketOnMigrateOut<TStageUser> message)
     {
         if (message.User.Account == null || message.User.AccountWorld == null || message.User.Character == null)
         {

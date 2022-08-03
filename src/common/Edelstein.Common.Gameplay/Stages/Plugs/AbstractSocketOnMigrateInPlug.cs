@@ -38,7 +38,7 @@ public class AbstractSocketOnMigrateInPlug<TStageUser, TStage, TOptions> : IPipe
         _options = options;
     }
 
-    public async Task Handle(IPipelineContext ctx, ISocketOnMigrateIn<TStageUser> message)
+    public virtual async Task Handle(IPipelineContext ctx, ISocketOnMigrateIn<TStageUser> message)
     {
         if (message.User.Account != null || message.User.AccountWorld != null || message.User.Character != null)
         {
