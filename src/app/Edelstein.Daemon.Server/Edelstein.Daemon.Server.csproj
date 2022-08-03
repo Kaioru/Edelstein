@@ -1,24 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\App.targets"/>
+  <Import Project="..\App.targets" />
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1"/>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5"/>
-    <PackageReference Include="Scrutor" Version="4.2.0"/>
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.0"/>
-    <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0"/>
-    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1"/>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5" />
+    <PackageReference Include="Scrutor" Version="4.2.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,18 +28,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Data.NX\Edelstein.Common.Data.NX.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Database\Edelstein.Common.Gameplay.Database.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Game\Edelstein.Common.Gameplay.Stages.Game.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Login\Edelstein.Common.Gameplay.Stages.Login.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Util.Pipelines\Edelstein.Common.Util.Pipelines.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Util.Templates\Edelstein.Common.Util.Templates.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Util.Tickers\Edelstein.Common.Util.Tickers.csproj"/>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Data\Edelstein.Protocol.Data.csproj"/>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Game\Edelstein.Protocol.Gameplay.Stages.Game.csproj"/>
+    <ProjectReference Include="..\..\common\Edelstein.Common.Data.NX\Edelstein.Common.Data.NX.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Database\Edelstein.Common.Gameplay.Database.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Game\Edelstein.Common.Gameplay.Stages.Game.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Login\Edelstein.Common.Gameplay.Stages.Login.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Util.Pipelines\Edelstein.Common.Util.Pipelines.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Util.Templates\Edelstein.Common.Util.Templates.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Util.Tickers\Edelstein.Common.Util.Tickers.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Data\Edelstein.Protocol.Data.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Game\Edelstein.Protocol.Gameplay.Stages.Game.csproj" />
   </ItemGroup>
 
 </Project>
