@@ -14,6 +14,14 @@ public abstract class AbstractFieldLife : AbstractFieldObject, IFieldLife
 
     public IFieldFoothold? Foothold { get; private set; }
 
+    public void SetPosition(IPoint2D position)
+    {
+        Position = position;
+        Foothold = Field?.Template.Footholds
+            .Find(Position)
+            .FirstOrDefault(f => f.Line.Intersects(Position));
+    }
+
     public Task Move(IPoint2D position) =>
         Move(position, Field?.Template.Footholds
             .Find(Position)
