@@ -3,7 +3,7 @@ using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Util.Tickers;
 
-namespace Edelstein.Daemon.Server.Tasks;
+namespace Edelstein.Daemon.Server.Tickers;
 
 public class AliveTicker : ITickable
 {
