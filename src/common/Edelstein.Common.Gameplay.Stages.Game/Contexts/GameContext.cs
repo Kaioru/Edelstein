@@ -5,5 +5,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Contexts;
 public record GameContext(
     IGameContextOptions Options,
     IGameContextPipelines Pipelines,
+    IGameContextManagers Managers,
     IGameContextTemplates Templates
 ) : IGameContext;

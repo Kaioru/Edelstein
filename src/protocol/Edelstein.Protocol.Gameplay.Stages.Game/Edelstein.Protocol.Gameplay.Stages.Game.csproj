@@ -4,6 +4,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Util.Commands\Edelstein.Protocol.Util.Commands.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Util.Spatial\Edelstein.Protocol.Util.Spatial.csproj" />
   </ItemGroup>
 
