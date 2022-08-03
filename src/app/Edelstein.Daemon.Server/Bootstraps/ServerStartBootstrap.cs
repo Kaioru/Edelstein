@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Edelstein.Common.Util.Templates;
 using Edelstein.Daemon.Server.Configs;
-using Edelstein.Daemon.Server.Tasks;
+using Edelstein.Daemon.Server.Tickers;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
