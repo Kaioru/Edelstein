@@ -30,7 +30,7 @@ public class NettyTransportAcceptor : ITransportAcceptor
     public IAdapterInitializer Initializer { get; }
     public IDictionary<string, ISocket> Sockets { get; }
 
-    public TimeSpan Timeout => TimeSpan.FromMinutes(1);
+    public TimeSpan Timeout => TimeSpan.FromMinutes(4);
 
     public short Version { get; }
     public string Patch { get; }
