@@ -6,4 +6,6 @@ public record ProgramConfig
 {
     public ICollection<ProgramConfigStageLogin> LoginStages { get; set; }
     public ICollection<ProgramConfigStageGame> GameStages { get; set; }
+
+    public int TicksPerSecond { get; set; } = 4;
 }

@@ -71,7 +71,10 @@ await Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((ctx, services) =>
     {
-        services.AddSingleton<ITickerManager, TickerManager>();
+        services.AddSingleton<ITickerManager, TickerManager>(p => new TickerManager(
+            p.GetRequiredService<ILogger<TickerManager>>(),
+            p.GetRequiredService<ProgramConfig>().TicksPerSecond
+        ));
         services.AddSingleton<IDataManager>(new NXDataManager(ctx.Configuration.GetSection("Data")["Directory"]));
         services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));
     })
