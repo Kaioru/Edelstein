@@ -8,4 +8,6 @@ public record ProgramConfig
     public ICollection<ProgramConfigStageGame> GameStages { get; set; }
 
     public int TicksPerSecond { get; set; } = 4;
+
+    public ICollection<string> Plugins { get; set; }
 }

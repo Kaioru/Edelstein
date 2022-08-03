@@ -10,6 +10,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Contexts;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
+using Edelstein.Common.Plugin;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Server;
 using Edelstein.Common.Util.Pipelines;
@@ -26,6 +27,7 @@ using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
+using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
@@ -77,6 +79,7 @@ await Host.CreateDefaultBuilder(args)
         ));
         services.AddSingleton<IDataManager>(new NXDataManager(ctx.Configuration.GetSection("Data")["Directory"]));
         services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));
+        services.AddSingleton(typeof(IPluginManager<>), typeof(PluginManager<>));
     })
     .ConfigureServices((ctx, services) =>
     {
@@ -93,7 +96,6 @@ await Host.CreateDefaultBuilder(args)
                 var scope = new ServiceCollection { services };
 
                 scope.AddSingleton(p.GetRequiredService<ITickerManager>());
-
                 scope.Scan(s => s
                     .FromApplicationDependencies()
                     .AddClasses(c => c.AssignableTo(typeof(IPacketHandler<>)))
@@ -155,7 +157,7 @@ await Host.CreateDefaultBuilder(args)
                 }
 
                 scope.AddSingleton(stage);
-                scope.AddSingleton(typeof(ServerStartBootstrap<,>));
+                scope.AddSingleton(typeof(ServerStartBootstrap<,,>));
 
                 var provider = scope.BuildServiceProvider();
 
@@ -163,11 +165,13 @@ await Host.CreateDefaultBuilder(args)
                 {
                     ILoginContextOptions => provider.GetRequiredService<ServerStartBootstrap<
                         ILoginStage,
-                        ILoginStageUser
+                        ILoginStageUser,
+                        ILoginContext
                     >>(),
                     IGameContextOptions => provider.GetRequiredService<ServerStartBootstrap<
                         IGameStage,
-                        IGameStageUser
+                        IGameStageUser,
+                        IGameContext
                     >>(),
                     _ => new ServerVoidBootstrap()
                 };

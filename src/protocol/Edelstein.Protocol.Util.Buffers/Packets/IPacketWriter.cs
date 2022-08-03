@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Util.Buffers.Bytes;
+﻿namespace Edelstein.Protocol.Util.Buffers.Packets;
 
 public interface IPacketWriter : IPacket
 {

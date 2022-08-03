@@ -1,6 +1,6 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
-using Edelstein.Protocol.Util.Buffers.Bytes;
+using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Repositories;
 using Edelstein.Protocol.Util.Spatial;
 

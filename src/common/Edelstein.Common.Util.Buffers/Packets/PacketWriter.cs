@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Edelstein.Protocol.Util.Buffers.Bytes;
+using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Util.Buffers.Packets;
 

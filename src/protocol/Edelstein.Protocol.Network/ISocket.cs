@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Edelstein.Protocol.Util.Buffers.Bytes;
+using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Network;

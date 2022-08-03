@@ -1,7 +1,7 @@
 ﻿using DotNetty.Transport.Channels;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Network.Transports;
-using Edelstein.Protocol.Util.Buffers.Bytes;
+using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Network.DotNetty.Handlers;
 
