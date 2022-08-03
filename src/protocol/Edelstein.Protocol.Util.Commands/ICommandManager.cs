@@ -1,6 +1,7 @@
 ﻿namespace Edelstein.Protocol.Util.Commands;
 
 public interface ICommandManager<TContext>
+    where TContext : ICommandContext
 {
     IReadOnlyCollection<ICommand<TContext>> Commands { get; }
 

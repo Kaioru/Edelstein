@@ -5,6 +5,7 @@ using Edelstein.Protocol.Util.Commands;
 namespace Edelstein.Common.Util.Commands;
 
 public class CommandManager<TContext> : ICommandManager<TContext>
+    where TContext : ICommandContext
 {
     private readonly ICollection<ICommand<TContext>> _commands;
     private readonly Regex _regex = new("([\"'])(?:(?=(\\\\?))\\2.)*?\\1|([^\\s]+)", RegexOptions.Compiled);
