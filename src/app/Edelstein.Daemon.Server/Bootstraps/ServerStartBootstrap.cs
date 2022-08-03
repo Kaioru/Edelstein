@@ -58,7 +58,13 @@ public class ServerStartBootstrap<TStage, TStageUser> : IBootstrap
 
         _contexts.Add(_ticker.Schedule(new AliveTask(_acceptor)));
         if (_stage is ITickable tickable)
+        {
             _contexts.Add(_ticker.Schedule(tickable));
+            _logger.LogInformation(
+                "Scheduled ticker for stage {ID}",
+                _config.ID
+            );
+        }
 
         await _acceptor.Accept(_config.Host, _config.Port);
 

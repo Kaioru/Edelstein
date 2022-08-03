@@ -1,8 +1,9 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Util.Tickers;
 
 namespace Edelstein.Common.Gameplay.Stages.Game;
 
-public class GameStage : IGameStage
+public class GameStage : IGameStage, ITickable
 {
     public IReadOnlyCollection<IGameStageUser> Users => new List<IGameStageUser>();
 
@@ -19,4 +20,6 @@ public class GameStage : IGameStage
     }
 
     public Task Leave(IGameStageUser user) => Task.CompletedTask;
+
+    public Task OnTick(DateTime now) => Task.CompletedTask;
 }
