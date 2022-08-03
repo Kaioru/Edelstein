@@ -1,5 +1,6 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
+using Edelstein.Protocol.Gameplay.Stages.Game.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Messages;
 using Edelstein.Protocol.Util.Pipelines;
 
@@ -11,5 +12,6 @@ public record GameContextPipelines(
     IPipeline<ISocketOnAliveAck<IGameStageUser>> SocketOnAliveAck,
     IPipeline<ISocketOnPacket<IGameStageUser>> SocketOnPacket,
     IPipeline<ISocketOnException<IGameStageUser>> SocketOnException,
-    IPipeline<ISocketOnDisconnect<IGameStageUser>> SocketOnDisconnect
+    IPipeline<ISocketOnDisconnect<IGameStageUser>> SocketOnDisconnect,
+    IPipeline<IUserMove> UserMove
 ) : IGameContextPipelines;

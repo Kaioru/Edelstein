@@ -2,6 +2,7 @@
 using Edelstein.Common.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
+using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Game;
@@ -111,6 +112,17 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
             .Where(o => o != observer)
             .Select(o => observer.Dispatch(o.GetLeaveFieldPacket())));
     }
+
+    public override Task Dispatch(IPacket packet) =>
+        Task.WhenAll(Observers
+            .OfType<IAdapter>()
+            .Select(a => a.Dispatch(packet)));
+
+    public override Task Dispatch(IPacket packet, IFieldObject obj) =>
+        Task.WhenAll(Observers
+            .OfType<IAdapter>()
+            .Where(a => a != obj)
+            .Select(a => a.Dispatch(packet)));
 
     public override IFieldObject? GetObject(int id) => Objects.FirstOrDefault(o => o.ObjectID == id);
     public override IEnumerable<IFieldObject> GetObjects() => Objects;

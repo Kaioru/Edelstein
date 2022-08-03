@@ -14,13 +14,12 @@ public abstract class AbstractFieldObjectPool : IFieldObjectPool
     public abstract IFieldObject? GetObject(int id);
     public abstract IEnumerable<IFieldObject> GetObjects();
 
-
-    public Task Dispatch(IPacket packet) =>
+    public virtual Task Dispatch(IPacket packet) =>
         Task.WhenAll(Objects
             .OfType<IAdapter>()
             .Select(a => a.Dispatch(packet)));
 
-    public Task Dispatch(IPacket packet, IFieldObject obj) =>
+    public virtual Task Dispatch(IPacket packet, IFieldObject obj) =>
         Task.WhenAll(Objects
             .OfType<IAdapter>()
             .Where(a => a != obj)

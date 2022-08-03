@@ -1,5 +1,7 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Spatial;
+using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects;
@@ -12,12 +14,39 @@ public abstract class AbstractFieldLife : AbstractFieldObject, IFieldLife
 
     public IFieldFoothold? Foothold { get; private set; }
 
-    public Task Move(IPoint2D position)
-    {
-        Position = position;
-        Foothold = Field?.Template.Footholds
+    public Task Move(IPoint2D position) =>
+        Move(position, Field?.Template.Footholds
             .Find(Position)
-            .FirstOrDefault(f => f.Line.Intersects(Position));
-        return Task.CompletedTask;
+            .FirstOrDefault(f => f.Line.Intersects(Position)));
+
+    public async Task Move(IMovePath ctx)
+    {
+        if (Field == null) return;
+
+        await Move(ctx.Position, ctx.FootholdID.HasValue
+            ? Field.Template.Footholds.FindByID(ctx.FootholdID.Value)
+            : null
+        );
+
+        if (FieldSplit != null)
+            await FieldSplit.Dispatch(GetMovePacket(ctx), this);
     }
+
+    private async Task Move(IPoint2D? position, IFieldFoothold? foothold)
+    {
+        if (position != null) Position = position;
+        Foothold = foothold;
+
+        var split = Field?.GetSplit(Position);
+
+        if (split == null)
+        {
+            if (Field != null) await Field.Enter(this);
+            return;
+        }
+
+        if (FieldSplit != split) await split.Enter(this);
+    }
+
+    protected abstract IPacket GetMovePacket(IMovePath ctx);
 }

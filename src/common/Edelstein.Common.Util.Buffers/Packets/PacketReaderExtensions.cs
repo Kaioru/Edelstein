@@ -6,10 +6,10 @@ namespace Edelstein.Common.Util.Buffers.Packets;
 
 public static class PacketReaderExtensions
 {
-    public static IPacketReadable Read(
+    public static T Read<T>(
         this IPacketReader reader,
-        IPacketReadable readable
-    )
+        T readable
+    ) where T : IPacketReadable
     {
         readable.ReadFrom(reader);
         return readable;

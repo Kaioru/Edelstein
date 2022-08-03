@@ -6,6 +6,7 @@ using Edelstein.Common.Util.Spatial;
 using Edelstein.Protocol.Gameplay.Accounts;
 using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Buffers.Packets;
@@ -152,4 +153,14 @@ public class FieldUser : AbstractFieldLife, IFieldUser
     public Task OnDisconnect() => _user.OnDisconnect();
     public Task Dispatch(IPacket packet) => _user.Dispatch(packet);
     public Task Disconnect() => _user.Disconnect();
+
+    protected override IPacket GetMovePacket(IMovePath ctx)
+    {
+        var packet = new PacketWriter(PacketSendOperations.UserMove);
+
+        packet.WriteInt(Character.ID);
+        packet.Write(ctx);
+
+        return packet;
+    }
 }

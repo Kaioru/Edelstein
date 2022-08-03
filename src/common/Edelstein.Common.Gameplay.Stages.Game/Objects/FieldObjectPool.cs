@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects;
@@ -19,8 +20,10 @@ public class FieldObjectPool : AbstractFieldObjectPool, IFieldObjectPool
 
     public override Task Enter(IFieldObject obj)
     {
-        obj.ObjectID = _runningObjectID.Dequeue();
-        _objects[obj.ObjectID.Value] = obj;
+        if (obj is IFieldUser user) user.ObjectID = user.Character.ID;
+        else obj.ObjectID = _runningObjectID.Dequeue();
+
+        _objects[obj.ObjectID!.Value] = obj;
         return Task.CompletedTask;
     }
 
@@ -31,7 +34,9 @@ public class FieldObjectPool : AbstractFieldObjectPool, IFieldObjectPool
         if (objectID == null) return Task.CompletedTask;
 
         _objects.Remove(objectID.Value);
-        _runningObjectID.Enqueue(objectID.Value);
+
+        if (obj is not IFieldUser)
+            _runningObjectID.Enqueue(objectID.Value);
 
         obj.ObjectID = null;
 
