@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Plugin;
 
-public interface IPlugin<in TContext>
+public interface IPlugin<TContext> : IIdentifiable<string>
 {
-    Task OnStart(ILogger logger, TContext ctx);
+    Task OnStart(IPluginHost<TContext> host, TContext ctx);
     Task OnStop();
 }

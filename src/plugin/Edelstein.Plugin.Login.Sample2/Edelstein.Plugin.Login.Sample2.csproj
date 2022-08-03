@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Plugin.targets" />
+
+  <PropertyGroup>
+    <TargetName>SampleLoginPlugin2</TargetName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin.Login\Edelstein.Protocol.Plugin.Login.csproj" />
+  </ItemGroup>
+
+</Project>

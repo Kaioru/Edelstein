@@ -4,14 +4,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Plugin;
 
-public class PluginManager<TContext> : IPluginManager<TContext>
+public class PluginManager<TContext> : IPluginManager<TContext>, IPluginCollection<TContext>
 {
     private readonly TContext _context;
-    private readonly ICollection<IPlugin<TContext>> _loaded;
+    private readonly IDictionary<string, IPlugin<TContext>> _loaded;
     private readonly ICollection<PluginLoader> _loaders;
     private readonly ILogger _logger;
     private readonly ILoggerFactory _loggerFactory;
-    private readonly Type[] _shared;
 
     public PluginManager(
         ILogger<PluginManager<TContext>> logger,
@@ -23,9 +22,13 @@ public class PluginManager<TContext> : IPluginManager<TContext>
         _loggerFactory = loggerFactory;
         _context = context;
         _loaders = new List<PluginLoader>();
-        _loaded = new List<IPlugin<TContext>>();
-        _shared = new[] { typeof(IPlugin<TContext>), typeof(TContext) };
+        _loaded = new Dictionary<string, IPlugin<TContext>>();
     }
+
+    public Task<IPlugin<TContext>?> Retrieve(string key) =>
+        Task.FromResult(_loaded.TryGetValue(key, out var plugin)
+            ? plugin
+            : null);
 
     public Task Load(string path)
     {
@@ -35,7 +38,7 @@ public class PluginManager<TContext> : IPluginManager<TContext>
             return Task.CompletedTask;
         }
 
-        _loaders.Add(PluginLoader.CreateFromAssemblyFile(path, _shared));
+        _loaders.Add(PluginLoader.CreateFromAssemblyFile(path, config => config.PreferSharedTypes = true));
         return Task.CompletedTask;
     }
 
@@ -70,9 +73,7 @@ public class PluginManager<TContext> : IPluginManager<TContext>
                         continue;
                     }
 
-                    await plugin.OnStart(_loggerFactory.CreateLogger(type), _context);
-                    _loaded.Add(plugin);
-                    _logger.LogInformation("{Type} plugin started", type);
+                    _loaded.Add(plugin.ID, plugin);
                 }
             }
             catch (Exception)
@@ -80,14 +81,23 @@ public class PluginManager<TContext> : IPluginManager<TContext>
                 _logger.LogError("Failed to load plugin assembly {Assembly}", assembly.Location);
             }
         }
+
+        foreach (var plugin in _loaded.Values)
+        {
+            await plugin.OnStart(
+                new PluginHost<TContext>(_loggerFactory.CreateLogger(plugin.GetType()), this),
+                _context
+            );
+            _logger.LogInformation("Started plugin {ID}", plugin.ID);
+        }
     }
 
     public async Task Stop()
     {
-        foreach (var plugin in _loaded)
+        foreach (var plugin in _loaded.Values)
         {
             await plugin.OnStop();
-            _logger.LogInformation("{Type} plugin stopped", plugin.GetType());
+            _logger.LogInformation("Stopped plugin {ID}", plugin.ID);
         }
 
         _loaded.Clear();
