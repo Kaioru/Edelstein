@@ -101,6 +101,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugin", "plugin", "{67E6F8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Plugin.Login.Sample", "src\plugin\Edelstein.Plugin.Login.Sample\Edelstein.Plugin.Login.Sample.csproj", "{8AC1E252-495C-4F57-9782-93932A2267C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Plugin.Login.Sample2", "src\plugin\Edelstein.Plugin.Login.Sample2\Edelstein.Plugin.Login.Sample2.csproj", "{0E8BB7E1-772C-47F2-9F13-77890832492A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -152,6 +154,7 @@ Global
 		{A9B19E36-0C93-4015-9473-BF2417CCD32D} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{67E6F87D-53E1-4B7C-B9F5-6192D18FD4D1} = {71E8FDEE-8F29-4294-8B21-97F367594BD3}
 		{8AC1E252-495C-4F57-9782-93932A2267C5} = {67E6F87D-53E1-4B7C-B9F5-6192D18FD4D1}
+		{0E8BB7E1-772C-47F2-9F13-77890832492A} = {67E6F87D-53E1-4B7C-B9F5-6192D18FD4D1}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -306,5 +309,9 @@ Global
 		{8AC1E252-495C-4F57-9782-93932A2267C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AC1E252-495C-4F57-9782-93932A2267C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AC1E252-495C-4F57-9782-93932A2267C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E8BB7E1-772C-47F2-9F13-77890832492A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E8BB7E1-772C-47F2-9F13-77890832492A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E8BB7E1-772C-47F2-9F13-77890832492A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E8BB7E1-772C-47F2-9F13-77890832492A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
