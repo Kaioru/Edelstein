@@ -1,9 +1,8 @@
-﻿using Edelstein.Protocol.Util.Repositories;
+﻿namespace Edelstein.Protocol.Services.Migration.Contracts;
 
-namespace Edelstein.Protocol.Services.Migration.Contracts;
-
-public interface IMigrationClaimRequest : IIdentifiable<int>
+public interface IMigrationClaimRequest
 {
+    int CharacterID { get; }
     string ServerID { get; }
     long Key { get; }
 }

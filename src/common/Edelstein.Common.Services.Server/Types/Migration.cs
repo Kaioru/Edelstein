@@ -6,7 +6,8 @@ namespace Edelstein.Common.Services.Server.Types;
 
 public record Migration : IMigration
 {
-    public int ID { get; set; }
+    public int AccountID { get; set; }
+    public int CharacterID { get; set; }
 
     public string FromServerID { get; set; }
     public string ToServerID { get; set; }

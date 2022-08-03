@@ -13,7 +13,7 @@ namespace Edelstein.Common.Services.Server;
 
 public class MigrationService : IMigrationService
 {
-    private static readonly TimeSpan _expiry = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan _expiry = TimeSpan.FromMinutes(1);
     private readonly IDbContextFactory<ServerDbContext> _dbFactory;
     private readonly ISerializer _serializer;
 
@@ -29,7 +29,8 @@ public class MigrationService : IMigrationService
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
             var now = DateTime.UtcNow;
-            var existing = await db.Migrations.FindAsync(request.Migration.ID);
+            var existing = await db.Migrations
+                .FirstOrDefaultAsync(m => m.AccountID == request.Migration.AccountID);
 
             if (existing != null)
             {
@@ -62,7 +63,8 @@ public class MigrationService : IMigrationService
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
             var now = DateTime.UtcNow;
-            var existing = await db.Migrations.FindAsync(request.ID);
+            var existing = await db.Migrations
+                .FirstOrDefaultAsync(m => m.CharacterID == request.CharacterID);
 
             if (existing == null || existing.DateExpire < now)
                 return new MigrationClaimResponse(MigrationResult.FailedNotStarted);

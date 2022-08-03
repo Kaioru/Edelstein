@@ -1,11 +1,13 @@
 ﻿using Edelstein.Protocol.Gameplay.Accounts;
 using Edelstein.Protocol.Gameplay.Characters;
-using Edelstein.Protocol.Util.Repositories;
 
 namespace Edelstein.Protocol.Services.Migration.Types;
 
-public interface IMigration : IIdentifiable<int>
+public interface IMigration
 {
+    int AccountID { get; }
+    int CharacterID { get; }
+
     string FromServerID { get; }
     string ToServerID { get; }
 
