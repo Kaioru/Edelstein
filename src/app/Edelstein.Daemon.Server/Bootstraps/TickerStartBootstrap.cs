@@ -17,7 +17,7 @@ public class TickerStartBootstrap : IBootstrap
     public async Task Start()
     {
         await _ticker.Start();
-        _logger.LogInformation("Ticker started with refresh rate of {RefreshRate} Hz", _ticker.RefreshRate);
+        _logger.LogInformation("Ticker started with rate of {RefreshRate} ticks per second", _ticker.RefreshRate);
     }
 
     public Task Stop() => _ticker.Stop();
