@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Stages.Game.Spatial;
 using Edelstein.Common.Util.Spatial;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Stages.Game.Spatial;
@@ -12,7 +13,7 @@ public record FieldTemplate : IFieldTemplate
     public FieldTemplate(
         int id,
         IDataNode foothold,
-        IDataProperty portal,
+        IDataNode portal,
         IDataProperty ladderRope,
         IDataProperty life,
         IDataProperty info
@@ -37,7 +38,7 @@ public record FieldTemplate : IFieldTemplate
             .SelectMany(c => c.Children)
             .Select(p => new FieldFoothold(Convert.ToInt32(p.Name), p.ResolveAll()))
             .ToImmutableList();
-        var portals = foothold.Children
+        var portals = portal.Children
             .Select(p => new FieldPortal(Convert.ToInt32(p.Name), p.ResolveAll()))
             .ToImmutableList();
 

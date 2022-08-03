@@ -12,6 +12,9 @@ public class GameStageUser : AbstractStageUser<IGameStageUser>, IGameStageUser
 
     public IGameContext Context { get; }
 
+    public IField? Field => FieldUser?.Field;
+    public IFieldUser? FieldUser { get; set; }
+
     public override Task OnMigrateIn(int character, long key) =>
         Context.Pipelines.SocketOnMigrateIn.Process(new SocketOnMigrateIn<IGameStageUser>(this, character, key));
 

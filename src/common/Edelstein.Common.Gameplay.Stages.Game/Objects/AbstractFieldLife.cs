@@ -10,7 +10,7 @@ public abstract class AbstractFieldLife : AbstractFieldObject, IFieldLife
     {
     }
 
-    public IFieldFoothold? Foothold { get; protected set; }
+    public IFieldFoothold? Foothold { get; private set; }
 
     public Task Move(IPoint2D position)
     {

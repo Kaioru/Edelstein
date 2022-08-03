@@ -4,7 +4,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Util.Spatial;
 
-namespace Edelstein.Common.Gameplay.Stages.Game.Templates;
+namespace Edelstein.Common.Gameplay.Stages.Game.Spatial;
 
 public class FieldPortal : IFieldPortal
 {

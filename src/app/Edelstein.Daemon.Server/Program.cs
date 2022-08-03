@@ -147,6 +147,8 @@ await Host.CreateDefaultBuilder(args)
                             .WithSingletonLifetime()
                         );
 
+                        scope.AddSingleton<IFieldManager, FieldManager>();
+
                         scope.AddSingleton(options);
                         scope.AddSingleton<IGameContext, GameContext>();
                         scope.AddSingleton<IGameContextPipelines, GameContextPipelines>();
