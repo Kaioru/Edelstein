@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Util.Commands;
 
-public interface ICommand<in TContext> : ICommandManager<TContext>, ICommandExecutable<TContext>
+public interface ICommand<TContext> : ICommandManager<TContext>, ICommandExecutable<TContext>
 {
     string Name { get; }
     string Description { get; }
