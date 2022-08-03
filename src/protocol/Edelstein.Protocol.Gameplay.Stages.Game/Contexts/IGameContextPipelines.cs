@@ -6,6 +6,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 
 public interface IGameContextPipelines : IStageContextPipelines<IGameStageUser>
 {
+    IPipeline<IUserTransferChannelRequest> UserTransferChannelRequest { get; }
     IPipeline<IUserMove> UserMove { get; }
     IPipeline<IUserChat> UserChat { get; }
 }
