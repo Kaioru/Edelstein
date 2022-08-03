@@ -13,6 +13,9 @@ public class Pipeline<TMessage> : IPipeline<TMessage>
     public void Add(int priority, IPipelinePlug<TMessage> plug) =>
         _parts.Add(new PipelinePart<TMessage>(priority, plug));
 
+    public void Add(IPipelinePlug<TMessage> plug) =>
+        Add(PipelinePriority.Normal, plug);
+
     public void Remove(IPipelinePlug<TMessage> plug)
     {
         var part = _parts.FirstOrDefault(p => p.Plug == plug);
