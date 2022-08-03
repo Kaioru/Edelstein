@@ -54,9 +54,9 @@ public abstract class AbstractCommand<TContext> : CommandManager<TContext>, ICom
         {
             await Execute(ctx, args);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            // TODO: error handling
+            await ctx.Message(e.ToString());
         }
 
         return true;
