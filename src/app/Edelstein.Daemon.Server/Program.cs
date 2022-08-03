@@ -13,6 +13,7 @@ using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Plugin;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Server;
+using Edelstein.Common.Util.Commands;
 using Edelstein.Common.Util.Pipelines;
 using Edelstein.Common.Util.Serializers;
 using Edelstein.Common.Util.Templates;
@@ -32,6 +33,7 @@ using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Session;
+using Edelstein.Protocol.Util.Commands;
 using Edelstein.Protocol.Util.Pipelines;
 using Edelstein.Protocol.Util.Templates;
 using Edelstein.Protocol.Util.Tickers;
@@ -148,6 +150,7 @@ await Host.CreateDefaultBuilder(args)
                         );
 
                         scope.AddSingleton<IFieldManager, FieldManager>();
+                        scope.AddSingleton(typeof(ICommandManager<>), typeof(CommandManager<>));
 
                         scope.AddSingleton(options);
                         scope.AddSingleton<IGameContext, GameContext>();
