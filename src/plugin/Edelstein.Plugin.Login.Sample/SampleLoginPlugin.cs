@@ -15,5 +15,5 @@ public class SampleLoginPlugin : ILoginPlugin
         return Task.CompletedTask;
     }
 
-    public Task OnStop(ILogger logger) => Task.CompletedTask;
+    public Task OnStop() => Task.CompletedTask;
 }

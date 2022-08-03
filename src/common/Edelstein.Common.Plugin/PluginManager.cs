@@ -70,7 +70,7 @@ public class PluginManager<TContext> : IPluginManager<TContext>
                         continue;
                     }
 
-                    await plugin.OnStart(_loggerFactory.CreateLogger<IPlugin<TContext>>(), _context);
+                    await plugin.OnStart(_loggerFactory.CreateLogger(type), _context);
                     _loaded.Add(plugin);
                     _logger.LogInformation("{Type} plugin started", type);
                 }
@@ -86,7 +86,7 @@ public class PluginManager<TContext> : IPluginManager<TContext>
     {
         foreach (var plugin in _loaded)
         {
-            await plugin.OnStop(_loggerFactory.CreateLogger<IPlugin<TContext>>());
+            await plugin.OnStop();
             _logger.LogInformation("{Type} plugin stopped", plugin.GetType());
         }
 
