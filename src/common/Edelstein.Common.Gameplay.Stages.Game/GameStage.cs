@@ -1,9 +1,8 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Game;
-using Edelstein.Protocol.Util.Tickers;
 
 namespace Edelstein.Common.Gameplay.Stages.Game;
 
-public class GameStage : IGameStage, ITickable
+public class GameStage : IGameStage
 {
     public IReadOnlyCollection<IGameStageUser> Users => new List<IGameStageUser>();
 

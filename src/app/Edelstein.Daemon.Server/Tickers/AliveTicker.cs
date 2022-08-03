@@ -5,13 +5,13 @@ using Edelstein.Protocol.Util.Tickers;
 
 namespace Edelstein.Daemon.Server.Tasks;
 
-public class AliveTask : ITickable
+public class AliveTicker : ITickable
 {
     private readonly ITransportAcceptor _acceptor;
     private readonly TimeSpan _aliveFrequency;
     private readonly TimeSpan _aliveSchedule;
 
-    public AliveTask(ITransportAcceptor acceptor)
+    public AliveTicker(ITransportAcceptor acceptor)
     {
         _acceptor = acceptor;
         _aliveFrequency = _acceptor.Timeout.Divide(2);

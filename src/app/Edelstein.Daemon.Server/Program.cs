@@ -71,13 +71,9 @@ await Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((ctx, services) =>
     {
+        services.AddSingleton<ITickerManager, TickerManager>();
         services.AddSingleton<IDataManager>(new NXDataManager(ctx.Configuration.GetSection("Data")["Directory"]));
         services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));
-    })
-    .ConfigureServices((ctx, services) =>
-    {
-        services.AddSingleton<ITickerManager, TickerManager>();
-        services.AddSingleton<IBootstrap, TickerStartBootstrap>();
     })
     .ConfigureServices((ctx, services) =>
     {
@@ -120,6 +116,10 @@ await Host.CreateDefaultBuilder(args)
                             .AddClasses(c => c.AssignableTo<ITemplateLoader>())
                             .AsImplementedInterfaces()
                             .WithSingletonLifetime()
+                            .FromAssembliesOf(typeof(AbstractStage<>), typeof(LoginStage))
+                            .AddClasses(c => c.AssignableTo<ITickable>())
+                            .AsImplementedInterfaces()
+                            .WithSingletonLifetime()
                         );
 
                         scope.AddSingleton(options);
@@ -134,6 +134,10 @@ await Host.CreateDefaultBuilder(args)
                         scope.Scan(s => s
                             .FromAssembliesOf(typeof(AbstractStage<>), typeof(GameStage))
                             .AddClasses(c => c.AssignableTo<ITemplateLoader>())
+                            .AsImplementedInterfaces()
+                            .WithSingletonLifetime()
+                            .FromAssembliesOf(typeof(AbstractStage<>), typeof(GameStage))
+                            .AddClasses(c => c.AssignableTo<ITickable>())
                             .AsImplementedInterfaces()
                             .WithSingletonLifetime()
                         );
@@ -185,5 +189,6 @@ await Host.CreateDefaultBuilder(args)
                 )
             );
     })
+    .ConfigureServices((ctx, services) => { services.AddSingleton<IBootstrap, TickerStartBootstrap>(); })
     .ConfigureServices((ctx, services) => { services.AddHostedService<ProgramHost>(); })
     .RunConsoleAsync();

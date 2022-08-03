@@ -20,6 +20,7 @@ public class ServerStartBootstrap<TStage, TStageUser> : IBootstrap
     private readonly ILogger _logger;
     private readonly TStage _stage;
     private readonly ICollection<ITemplateLoader> _templateLoaders;
+    private readonly ICollection<ITickable> _tickables;
     private readonly ITickerManager _ticker;
 
     public ServerStartBootstrap(
@@ -28,6 +29,7 @@ public class ServerStartBootstrap<TStage, TStageUser> : IBootstrap
         TStage stage,
         ITransportAcceptor acceptor,
         ITickerManager ticker,
+        IEnumerable<ITickable> tickables,
         IEnumerable<ITemplateLoader> templateLoaders
     )
     {
@@ -36,6 +38,7 @@ public class ServerStartBootstrap<TStage, TStageUser> : IBootstrap
         _stage = stage;
         _acceptor = acceptor;
         _ticker = ticker;
+        _tickables = tickables.ToImmutableList();
         _templateLoaders = templateLoaders.ToImmutableList();
         _contexts = new List<ITickerManagerContext>();
     }
@@ -56,15 +59,16 @@ public class ServerStartBootstrap<TStage, TStageUser> : IBootstrap
             );
         }
 
-        _contexts.Add(_ticker.Schedule(new AliveTask(_acceptor)));
-        if (_stage is ITickable tickable)
+        foreach (var tickable in _tickables)
         {
             _contexts.Add(_ticker.Schedule(tickable));
             _logger.LogInformation(
-                "Scheduled ticker for stage {ID}",
-                _config.ID
+                "{Tickable} scheduled to ticker manager",
+                tickable.GetType().Name
             );
         }
+
+        _contexts.Add(_ticker.Schedule(new AliveTicker(_acceptor)));
 
         await _acceptor.Accept(_config.Host, _config.Port);
 
