@@ -3,7 +3,7 @@
 namespace Edelstein.Common.Services.Server.Contracts;
 
 public record MigrationClaimRequest(
-    int ID,
+    int CharacterID,
     string ServerID,
     long Key
 ) : IMigrationClaimRequest;

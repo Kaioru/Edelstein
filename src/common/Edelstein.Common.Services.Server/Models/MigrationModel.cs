@@ -1,8 +1,6 @@
-﻿using Edelstein.Protocol.Util.Repositories;
+﻿namespace Edelstein.Common.Services.Server.Models;
 
-namespace Edelstein.Common.Services.Server.Models;
-
-public record MigrationModel : IIdentifiable<int>
+public record MigrationModel
 {
     public string FromServerID { get; set; }
     public string ToServerID { get; set; }
@@ -19,5 +17,6 @@ public record MigrationModel : IIdentifiable<int>
     public DateTime DateUpdated { get; set; }
     public DateTime DateExpire { get; set; }
 
-    public int ID { get; set; }
+    public int AccountID { get; set; }
+    public int CharacterID { get; set; }
 }

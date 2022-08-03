@@ -19,9 +19,20 @@ public class SessionService : ISessionService
         try
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
+            var now = DateTime.UtcNow;
+            var existing = await db.Sessions.FindAsync(request.Session.ActiveAccount);
 
-            if (await db.Sessions.FindAsync(request.Session.ActiveAccount) != null)
-                return new SessionResponse(SessionResult.FailedAlreadyStarted);
+            if (existing != null)
+            {
+                var migration = await db.Migrations
+                    .FirstOrDefaultAsync(m => m.AccountID == request.Session.ActiveAccount);
+
+                if (migration == null || migration.DateExpire > now)
+                    return new SessionResponse(SessionResult.FailedAlreadyStarted);
+
+                db.Sessions.Remove(existing);
+                db.Migrations.Remove(migration);
+            }
 
             db.Sessions.Add(request.Session.Adapt<SessionModel>());
             await db.SaveChangesAsync();

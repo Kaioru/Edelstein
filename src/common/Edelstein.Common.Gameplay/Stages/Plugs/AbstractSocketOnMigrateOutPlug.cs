@@ -39,7 +39,8 @@ public class AbstractSocketOnMigrateOutPlug<TStageUser, TOptions> : IPipelinePlu
 
         var migration = new Migration
         {
-            ID = message.User.Character.ID,
+            AccountID = message.User.Account.ID,
+            CharacterID = message.User.Character.ID,
             FromServerID = _options.ID,
             ToServerID = message.ServerID,
             Key = message.User.Key,

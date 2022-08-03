@@ -31,6 +31,8 @@ public class ServerDbContext : DbContext
             .HasForeignKey(m => m.ServerID)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.Entity<MigrationModel>().HasKey(m => m.AccountID);
+        builder.Entity<MigrationModel>().HasKey(m => m.CharacterID);
         builder.Entity<MigrationModel>()
             .HasOne(m => m.FromServer)
             .WithMany(p => p.MigrationOut)
