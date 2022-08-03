@@ -11,6 +11,7 @@ public class SampleLoginPlugin : ILoginPlugin
     public Task OnStart(ILogger logger, ILoginContext ctx)
     {
         ctx.Pipelines.CheckPassword.Add(PipelinePriority.Highest, new SampleCheckPasswordPlug(logger));
+        ctx.Pipelines.SocketOnMigrateOut.Add(PipelinePriority.Highest, new SampleSocketOnMigrateOutPlug(logger));
         logger.LogInformation("Sample login plugin registered custom pipeline plugs");
         return Task.CompletedTask;
     }
