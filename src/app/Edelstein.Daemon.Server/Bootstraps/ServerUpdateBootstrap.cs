@@ -49,7 +49,8 @@ public class ServerUpdateBootstrap<TConfig> : IBootstrap, ITickable where TConfi
         );
     }
 
-    public Task OnTick(DateTime now) =>
+    public Task OnTick(DateTime now)
+    {
         _ = Task.Run(async () =>
         {
             var response = IsRegistered
@@ -111,4 +112,7 @@ public class ServerUpdateBootstrap<TConfig> : IBootstrap, ITickable where TConfi
                 );
             }
         });
+
+        return Task.CompletedTask;
+    }
 }
