@@ -13,6 +13,9 @@ public class CommandManager<TContext> : ICommandManager<TContext>
     public CommandManager() =>
         _commands = new List<ICommand<TContext>>();
 
+    public CommandManager(IEnumerable<ICommand<TContext>> commands) =>
+        _commands = commands.ToList();
+
     public IReadOnlyCollection<ICommand<TContext>> Commands => _commands.ToImmutableList();
 
     public void Register(ICommand<TContext> command) =>
