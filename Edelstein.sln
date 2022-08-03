@@ -103,6 +103,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Plugin.Login.Samp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Plugin.Login.Sample2", "src\plugin\Edelstein.Plugin.Login.Sample2\Edelstein.Plugin.Login.Sample2.csproj", "{0E8BB7E1-772C-47F2-9F13-77890832492A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Util.Commands", "src\protocol\Edelstein.Protocol.Util.Commands\Edelstein.Protocol.Util.Commands.csproj", "{9A03E55B-95ED-40A5-8397-1C5F515EE2E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Util.Commands", "src\common\Edelstein.Common.Util.Commands\Edelstein.Common.Util.Commands.csproj", "{7023EDE0-C407-4049-B3E5-85CC0FA0D336}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +159,8 @@ Global
 		{67E6F87D-53E1-4B7C-B9F5-6192D18FD4D1} = {71E8FDEE-8F29-4294-8B21-97F367594BD3}
 		{8AC1E252-495C-4F57-9782-93932A2267C5} = {67E6F87D-53E1-4B7C-B9F5-6192D18FD4D1}
 		{0E8BB7E1-772C-47F2-9F13-77890832492A} = {67E6F87D-53E1-4B7C-B9F5-6192D18FD4D1}
+		{9A03E55B-95ED-40A5-8397-1C5F515EE2E8} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{7023EDE0-C407-4049-B3E5-85CC0FA0D336} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -313,5 +319,13 @@ Global
 		{0E8BB7E1-772C-47F2-9F13-77890832492A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E8BB7E1-772C-47F2-9F13-77890832492A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E8BB7E1-772C-47F2-9F13-77890832492A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A03E55B-95ED-40A5-8397-1C5F515EE2E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A03E55B-95ED-40A5-8397-1C5F515EE2E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A03E55B-95ED-40A5-8397-1C5F515EE2E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A03E55B-95ED-40A5-8397-1C5F515EE2E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7023EDE0-C407-4049-B3E5-85CC0FA0D336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7023EDE0-C407-4049-B3E5-85CC0FA0D336}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7023EDE0-C407-4049-B3E5-85CC0FA0D336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7023EDE0-C407-4049-B3E5-85CC0FA0D336}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

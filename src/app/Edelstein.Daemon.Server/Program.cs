@@ -152,6 +152,7 @@ await Host.CreateDefaultBuilder(args)
                         scope.AddSingleton(options);
                         scope.AddSingleton<IGameContext, GameContext>();
                         scope.AddSingleton<IGameContextPipelines, GameContextPipelines>();
+                        scope.AddSingleton<IGameContextManagers, GameContextManagers>();
                         scope.AddSingleton<IGameContextTemplates, GameContextTemplates>();
                         scope.AddSingleton<IAdapterInitializer, GameStageUserInitializer>();
                         scope.AddSingleton<IGameStage, GameStage>();
