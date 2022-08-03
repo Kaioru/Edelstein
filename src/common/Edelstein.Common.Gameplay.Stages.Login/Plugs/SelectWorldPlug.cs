@@ -37,7 +37,7 @@ public class SelectWorldPlug : IPipelinePlug<ISelectWorld>
             var gameStage = await _server.GetGameByWorldAndChannel(
                 new ServerGetGameByWorldAndChannelRequest(
                     message.WorldID,
-                    message.ChannelIndex + 1
+                    message.ChannelID
                 )
             );
             var result = gameStage.Result == ServerResult.Success || gameStage.Server == null
