@@ -1,7 +1,7 @@
 ﻿using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Inventories;
 using Edelstein.Protocol.Gameplay.Inventories.Items;
-using Edelstein.Protocol.Util.Buffers.Bytes;
+using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Characters;
 

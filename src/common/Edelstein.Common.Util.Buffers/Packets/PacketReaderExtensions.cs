@@ -1,5 +1,5 @@
 ﻿using Edelstein.Common.Util.Spatial;
-using Edelstein.Protocol.Util.Buffers.Bytes;
+using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Util.Buffers.Packets;

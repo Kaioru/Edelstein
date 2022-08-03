@@ -1,5 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Inventories;
-using Edelstein.Protocol.Util.Buffers.Bytes;
+using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Inventories.Modify.Operations;
 

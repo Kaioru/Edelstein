@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Protocol.targets"/>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Gameplay.Stages.Game\Edelstein.Protocol.Gameplay.Stages.Game.csproj"/>
+    <ProjectReference Include="..\Edelstein.Protocol.Plugin\Edelstein.Protocol.Plugin.csproj"/>
+  </ItemGroup>
+
+</Project>

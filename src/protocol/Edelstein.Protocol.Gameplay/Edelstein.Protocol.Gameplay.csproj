@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\Protocol.targets" />
+  <Import Project="..\Protocol.targets"/>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Util.Buffers\Edelstein.Common.Util.Buffers.csproj" />
-    <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
-    <ProjectReference Include="..\Edelstein.Protocol.Util.Pipelines\Edelstein.Protocol.Util.Pipelines.csproj" />
-    <ProjectReference Include="..\Edelstein.Protocol.Util.Templates\Edelstein.Protocol.Util.Templates.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj"/>
+    <ProjectReference Include="..\Edelstein.Protocol.Util.Pipelines\Edelstein.Protocol.Util.Pipelines.csproj"/>
+    <ProjectReference Include="..\Edelstein.Protocol.Util.Templates\Edelstein.Protocol.Util.Templates.csproj"/>
   </ItemGroup>
 
 </Project>

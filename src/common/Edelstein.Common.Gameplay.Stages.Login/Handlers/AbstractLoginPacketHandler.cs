@@ -1,6 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Login;
-using Edelstein.Protocol.Util.Buffers.Bytes;
+using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Handlers;
 

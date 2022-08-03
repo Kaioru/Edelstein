@@ -1,6 +1,6 @@
-﻿using Edelstein.Common.Util.Buffers.Packets;
-using Edelstein.Protocol.Gameplay.Inventories.Items;
+﻿using Edelstein.Protocol.Gameplay.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Inventories.Templates;
+using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Inventories.Modify;
 
