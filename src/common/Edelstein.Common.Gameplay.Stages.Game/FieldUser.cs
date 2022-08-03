@@ -83,6 +83,16 @@ public class FieldUser : AbstractFieldLife, IFieldUser
         return packet;
     }
 
+    public async Task Message(string message)
+    {
+        var packet = new PacketWriter(PacketSendOperations.Message);
+
+        packet.WriteByte(0xA);
+        packet.WriteString(message);
+
+        await _user.Dispatch(packet);
+    }
+
     public override IPacket GetEnterFieldPacket()
     {
         var packet = new PacketWriter(PacketSendOperations.UserEnterField);

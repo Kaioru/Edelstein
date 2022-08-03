@@ -5,6 +5,7 @@ using PowerArgs;
 namespace Edelstein.Common.Util.Commands;
 
 public abstract class AbstractCommand<TContext, TArgs> : AbstractCommand<TContext> where TArgs : CommandArgs
+    where TContext : ICommandContext
 {
     public override async Task Execute(TContext ctx, string[] args)
     {
@@ -18,8 +19,8 @@ public abstract class AbstractCommand<TContext, TArgs> : AbstractCommand<TContex
         }
         catch (ArgException e)
         {
-            //await user.Message(e.Message);
-            //await user.Message($"Usage: {def.UsageSummary}");
+            await ctx.Message(e.Message);
+            await ctx.Message($"Usage: {def.UsageSummary}");
         }
     }
 
@@ -27,6 +28,7 @@ public abstract class AbstractCommand<TContext, TArgs> : AbstractCommand<TContex
 }
 
 public abstract class AbstractCommand<TContext> : CommandManager<TContext>, ICommand<TContext>
+    where TContext : ICommandContext
 {
     private readonly ICollection<string> _aliases;
 
