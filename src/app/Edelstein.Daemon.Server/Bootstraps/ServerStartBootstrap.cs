@@ -1,9 +1,11 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
+using Edelstein.Common.Gameplay.Stages.Game.Continents;
 using Edelstein.Common.Util.Templates;
 using Edelstein.Daemon.Server.Configs;
 using Edelstein.Daemon.Server.Tickers;
 using Edelstein.Protocol.Gameplay.Stages;
+using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Util.Tickers;
@@ -17,32 +19,35 @@ public class ServerStartBootstrap<TStage, TStageUser, TContext> : IBootstrap
 {
     private readonly ITransportAcceptor _acceptor;
     private readonly ProgramConfig _config;
+    private readonly TContext _context;
     private readonly ICollection<ITickerManagerContext> _contexts;
     private readonly ILogger _logger;
+    private readonly ILoggerFactory _loggerFactory;
     private readonly IPluginManager<TContext> _pluginManager;
     private readonly AbstractProgramConfigStage _stageConfig;
     private readonly ICollection<ITemplateLoader> _templateLoaders;
-    private readonly ICollection<ITickable> _tickables;
     private readonly ITickerManager _ticker;
 
     public ServerStartBootstrap(
         ILogger<ServerStartBootstrap<TStage, TStageUser, TContext>> logger,
+        ILoggerFactory loggerFactory,
+        TContext context,
         ProgramConfig config,
         AbstractProgramConfigStage stageConfig,
         ITransportAcceptor acceptor,
         ITickerManager ticker,
         IPluginManager<TContext> pluginManager,
-        IEnumerable<ITickable> tickables,
         IEnumerable<ITemplateLoader> templateLoaders
     )
     {
         _logger = logger;
+        _loggerFactory = loggerFactory;
+        _context = context;
         _config = config;
         _stageConfig = stageConfig;
         _acceptor = acceptor;
         _ticker = ticker;
         _pluginManager = pluginManager;
-        _tickables = tickables.ToImmutableList();
         _templateLoaders = templateLoaders.ToImmutableList();
         _contexts = new List<ITickerManagerContext>();
     }
@@ -60,15 +65,6 @@ public class ServerStartBootstrap<TStage, TStageUser, TContext> : IBootstrap
             _logger.LogInformation(
                 "{Loader} initialized {Count} templates in {Elapsed}",
                 loader.GetType().Name, count, stopwatch.Elapsed
-            );
-        }
-
-        foreach (var tickable in _tickables)
-        {
-            _contexts.Add(_ticker.Schedule(tickable));
-            _logger.LogInformation(
-                "{Tickable} scheduled to ticker manager",
-                tickable.GetType().Name
             );
         }
 
@@ -91,6 +87,13 @@ public class ServerStartBootstrap<TStage, TStageUser, TContext> : IBootstrap
                 Path.GetFullPath(path)
             );
         }
+
+        if (_context is IGameContext game)
+            Task.WhenAll(game.Templates.ContiMove.RetrieveAll().Result
+                .Select(t => new ContiMove(_loggerFactory.CreateLogger<ContiMove>(), game.Managers.Field, t))
+                .Select(game.Managers.ContiMove.Insert)
+            ).Wait();
+
 
         await _pluginManager.Start();
         await _acceptor.Accept(_stageConfig.Host, _stageConfig.Port);

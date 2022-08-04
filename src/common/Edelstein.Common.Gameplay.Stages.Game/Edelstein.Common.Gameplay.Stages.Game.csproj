@@ -9,4 +9,8 @@
     <ProjectReference Include="..\Edelstein.Common.Util.Spatial\Edelstein.Common.Util.Spatial.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="stateless" Version="5.11.0" />
+  </ItemGroup>
+
 </Project>
