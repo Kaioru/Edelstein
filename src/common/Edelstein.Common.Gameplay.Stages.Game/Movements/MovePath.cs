@@ -15,7 +15,8 @@ public class MovePath : IMovePath
     public MovePath() => _fragments = new List<AbstractMovePathFragment>();
 
     public IPoint2D? Position { get; set; }
-    public int? FootholdID { get; set; }
+    public byte? Action { get; set; }
+    public int? Foothold { get; set; }
 
     public void ReadFrom(IPacketReader reader)
     {
