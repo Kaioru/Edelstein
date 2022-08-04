@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Characters;
+﻿using Edelstein.Common.Gameplay.Inventories.Items;
+using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Inventories;
 using Edelstein.Protocol.Gameplay.Inventories.Items;
 using Edelstein.Protocol.Util.Buffers.Packets;
@@ -49,11 +50,23 @@ public static class CharacterPackets
 
         if (flags.HasFlag(CharacterFlags.ItemSlotEquip))
         {
-            writer.WriteShort(0);
-            writer.WriteShort(0);
-            writer.WriteShort(0);
-            writer.WriteShort(0);
-            writer.WriteShort(0);
+            var inventory = character.Inventories[ItemInventoryType.Equip].Items;
+            var equip = inventory.Where(kv => kv.Key >= 0);
+            var equipped = inventory.Where(kv => kv.Key is >= -100 and < 0);
+            var equipped2 = inventory.Where(kv => kv.Key is >= -1000 and < -100);
+            var dragon = inventory.Where(kv => kv.Key is >= -1100 and < -1000);
+            var mechanic = inventory.Where(kv => kv.Key is >= -1200 and < -1100);
+
+            foreach (var items in new[] { equipped, equipped2, equip, dragon, mechanic })
+            {
+                foreach (var kv in items)
+                {
+                    writer.WriteShort((short)Math.Abs(kv.Key % 100));
+                    writer.WriteItemData(kv.Value);
+                }
+
+                writer.WriteShort(0);
+            }
         }
 
         foreach (var t in new List<(CharacterFlags, ItemInventoryType)>
@@ -64,7 +77,17 @@ public static class CharacterPackets
                          (CharacterFlags.ItemSlotCash, ItemInventoryType.Cash)
                      }
                      .Where(t => flags.HasFlag(t.Item1)))
+        {
+            var items = character.Inventories[t.Item2].Items;
+
+            foreach (var kv in items)
+            {
+                writer.WriteShort(kv.Key);
+                writer.WriteItemData(kv.Value);
+            }
+
             writer.WriteByte(0);
+        }
 
         if (flags.HasFlag(CharacterFlags.SkillRecord)) writer.WriteShort(0);
 
