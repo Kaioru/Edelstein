@@ -9,6 +9,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game;
 
 public interface IField : IIdentifiable<int>, IFieldObjectPool
 {
+    IFieldManager Manager { get; }
     IFieldTemplate Template { get; }
 
     IFieldSplit? GetSplit(IPoint2D position);

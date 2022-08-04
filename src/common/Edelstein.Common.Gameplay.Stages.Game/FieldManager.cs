@@ -37,7 +37,7 @@ public class FieldManager : IFieldManager
     }
 
     public IField CreateField(IFieldTemplate template) =>
-        new Field(template);
+        new Field(this, template);
 
     public IFieldUser? CreateUser(IGameStageUser user)
     {
