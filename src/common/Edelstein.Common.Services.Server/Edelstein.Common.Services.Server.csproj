@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Server\Edelstein.Protocol.Services.Server.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Repositories\Edelstein.Protocol.Util.Repositories.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Services.Server.Contracts\Edelstein.Common.Services.Server.Contracts.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Util.Serializers\Edelstein.Common.Util.Serializers.csproj" />
   </ItemGroup>
 
