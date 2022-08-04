@@ -30,11 +30,15 @@ public class FieldManager : IFieldManager
 
         if (field != null || template == null) return field;
 
-        field = new Field(template);
+        field = CreateField(template);
         _fields.Add(key, field);
 
         return field;
     }
+
+    public IField CreateField(IFieldTemplate template) =>
+        new Field(template);
+
     public IFieldUser? CreateUser(IGameStageUser user)
     {
         if (user.Account == null || user.AccountWorld == null || user.Character == null)
