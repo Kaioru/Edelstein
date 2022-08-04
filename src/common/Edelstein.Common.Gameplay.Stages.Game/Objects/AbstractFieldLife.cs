@@ -12,7 +12,7 @@ public abstract class AbstractFieldLife : AbstractFieldObject, IFieldLife
     {
     }
 
-    public byte Action { get; private set; }
+    public byte Action { get; protected set; }
     public IFieldFoothold? Foothold { get; private set; }
 
     public void SetPosition(IPoint2D position)
