@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continents;
 using Edelstein.Protocol.Util.Tickers;
@@ -31,6 +32,9 @@ public class ContiMoveManager : IContiMoveManager, ITickable
             c.MoveField == field ||
             c.CabinField == field
         ));
+
+    public Task<IEnumerable<IContiMove>> RetrieveAll() =>
+        Task.FromResult<IEnumerable<IContiMove>>(_conti.Values.ToImmutableList());
 
     public Task<IContiMove> Insert(IContiMove entry)
     {
