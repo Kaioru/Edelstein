@@ -89,10 +89,10 @@ public class ServerStartBootstrap<TStage, TStageUser, TContext> : IBootstrap
         }
 
         if (_context is IGameContext game)
-            Task.WhenAll(game.Templates.ContiMove.RetrieveAll().Result
+            await Task.WhenAll((await game.Templates.ContiMove.RetrieveAll())
                 .Select(t => new ContiMove(_loggerFactory.CreateLogger<ContiMove>(), game.Managers.Field, t))
                 .Select(game.Managers.ContiMove.Insert)
-            ).Wait();
+            );
 
 
         await _pluginManager.Start();
