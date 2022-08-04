@@ -225,7 +225,7 @@ public class ContiMove : AbstractFieldObjectPool, IContiMove, ITickable
             NextBoarding.Minute
         );
 
-        if (!Template.Event || random.Next(100) > 100) return;
+        if (!Template.Event || random.Next(100) > 30) return;
 
         NextEvent = NextBoarding
             .AddMinutes(Template.Wait)
