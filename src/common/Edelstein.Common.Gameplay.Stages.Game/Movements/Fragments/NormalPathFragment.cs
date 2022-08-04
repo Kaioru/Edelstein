@@ -4,7 +4,7 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments;
 
-public class NormalFragment : ActionFragment
+public class NormalPathFragment : ActionPathFragment
 {
     private short _fallStartFootholdID;
     private short _footholdID;
@@ -12,7 +12,7 @@ public class NormalFragment : ActionFragment
     private IPoint2D _position;
     private IPoint2D _vPosition;
 
-    public NormalFragment(MovePathFragmentType type) : base(type)
+    public NormalPathFragment(MovePathFragmentType type) : base(type)
     {
     }
 

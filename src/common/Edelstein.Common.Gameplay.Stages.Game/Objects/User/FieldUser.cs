@@ -1,6 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Stages.Game.Objects;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Common.Util.Spatial;
 using Edelstein.Protocol.Gameplay.Accounts;
@@ -8,10 +7,11 @@ using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Buffers.Packets;
 
-namespace Edelstein.Common.Gameplay.Stages.Game;
+namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 
 public class FieldUser : AbstractFieldLife, IFieldUser
 {

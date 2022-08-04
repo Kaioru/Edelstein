@@ -1,10 +1,11 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Util.Buffers.Packets;
 
-namespace Edelstein.Common.Gameplay.Stages.Game.Handlers;
+namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
 
-public abstract class AbstractFieldHandler : IPacketHandler<IGameStageUser>
+public abstract class AbstractFieldUserHandler : IPacketHandler<IGameStageUser>
 {
     public abstract short Operation { get; }
 

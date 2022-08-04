@@ -36,7 +36,7 @@ public class MovePath : IMovePath
                 case MovePathFragmentType.Wings:
                 case MovePathFragmentType.MobAttackRush:
                 case MovePathFragmentType.MobAttackRushStop:
-                    _fragments.Add(reader.Read(new NormalFragment(attribute)));
+                    _fragments.Add(reader.Read(new NormalPathFragment(attribute)));
                     break;
                 case MovePathFragmentType.Jump:
                 case MovePathFragmentType.Impact:
@@ -47,7 +47,7 @@ public class MovePath : IMovePath
                 case MovePathFragmentType.MobRightAngle:
                 case MovePathFragmentType.MobStopNodeStart:
                 case MovePathFragmentType.MobBeforeNode:
-                    _fragments.Add(reader.Read(new JumpFragment(attribute)));
+                    _fragments.Add(reader.Read(new JumpPathFragment(attribute)));
                     break;
                 case MovePathFragmentType.FlashJump:
                 case MovePathFragmentType.RocketBooster:
@@ -60,7 +60,7 @@ public class MovePath : IMovePath
                 case MovePathFragmentType.TimeBombAttack:
                 case MovePathFragmentType.SnowballTouch:
                 case MovePathFragmentType.BuffZoneEffect:
-                    _fragments.Add(reader.Read(new ActionFragment(attribute)));
+                    _fragments.Add(reader.Read(new ActionPathFragment(attribute)));
                     break;
                 case MovePathFragmentType.Immediate:
                 case MovePathFragmentType.Teleport:
@@ -68,16 +68,16 @@ public class MovePath : IMovePath
                 case MovePathFragmentType.Assassination:
                 case MovePathFragmentType.Rush:
                 case MovePathFragmentType.SitDown:
-                    _fragments.Add(reader.Read(new TeleportFragment(attribute)));
+                    _fragments.Add(reader.Read(new TeleportPathFragment(attribute)));
                     break;
                 case MovePathFragmentType.StartFallDown:
-                    _fragments.Add(reader.Read(new StartFallDownFragment(attribute)));
+                    _fragments.Add(reader.Read(new StartFallDownPathFragment(attribute)));
                     break;
                 case MovePathFragmentType.FlyingBlock:
-                    _fragments.Add(reader.Read(new FlyingBlockFragment(attribute)));
+                    _fragments.Add(reader.Read(new FlyingBlockPathFragment(attribute)));
                     break;
                 case MovePathFragmentType.StatChange:
-                    _fragments.Add(reader.Read(new StatChangeFragment(attribute)));
+                    _fragments.Add(reader.Read(new StatChangePathFragment(attribute)));
                     break;
             }
         }

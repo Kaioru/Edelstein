@@ -2,11 +2,11 @@
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments;
 
-public class StatChangeFragment : AbstractMovePathFragment
+public class StatChangePathFragment : AbstractMovePathFragment
 {
     private bool _stat;
 
-    public StatChangeFragment(MovePathFragmentType type) : base(type)
+    public StatChangePathFragment(MovePathFragmentType type) : base(type)
     {
     }
 

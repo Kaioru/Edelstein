@@ -1,6 +1,7 @@
 ﻿using Edelstein.Common.Gameplay.Stages.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Buffers.Packets;
 
