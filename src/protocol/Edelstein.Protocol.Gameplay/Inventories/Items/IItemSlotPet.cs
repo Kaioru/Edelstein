@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Inventories.Items;
 
-public interface IItemSlotPet : IItemSlot
+public interface IItemSlotPet : IItemSlotBase
 {
     string PetName { get; set; }
     short PetAttribute { get; set; }

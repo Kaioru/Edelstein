@@ -2,7 +2,7 @@
 
 namespace Edelstein.Common.Gameplay.Inventories.Items;
 
-public class ItemSlot : IItemSlot
+public record ItemSlot : IItemSlot
 {
     public int ID { get; set; }
 }

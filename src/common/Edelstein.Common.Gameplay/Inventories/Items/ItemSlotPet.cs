@@ -2,10 +2,8 @@
 
 namespace Edelstein.Common.Gameplay.Inventories.Items;
 
-public record ItemSlotPet : IItemSlotPet
+public record ItemSlotPet : ItemSlotBase, IItemSlotPet
 {
-    public int ID { get; set; }
-
     public string PetName { get; set; }
     public short PetAttribute { get; set; }
     public short PetSkill { get; set; }

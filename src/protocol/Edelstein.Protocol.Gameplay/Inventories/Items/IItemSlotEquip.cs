@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Inventories.Items;
 
-public interface IItemSlotEquip : IItemSlot
+public interface IItemSlotEquip : IItemSlotBase
 {
     byte RUC { get; set; }
     byte CUC { get; set; }

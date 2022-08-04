@@ -28,8 +28,19 @@ public static class ItemPackets
     private static void WriteItemBase(this IPacketWriter writer, IItemSlot item)
     {
         writer.WriteInt(item.ID);
-        writer.WriteBool(false); // TODO: cash item SN
-        writer.WriteDateTime(DateTime.FromFileTimeUtc(150842304000000000)); // TODO: constants
+
+        if (item is IItemSlotBase slot)
+        {
+            writer.WriteBool(slot.CashItemSN.HasValue);
+            if (slot.CashItemSN.HasValue)
+                writer.WriteLong(slot.CashItemSN.Value);
+            writer.WriteDateTime(slot.DateExpire ?? DateTime.FromFileTimeUtc(150842304000000000));
+        }
+        else
+        {
+            writer.WriteBool(false);
+            writer.WriteDateTime(DateTime.FromFileTimeUtc(150842304000000000));
+        }
     }
 
     public static void WriteItemEquipData(this IPacketWriter writer, IItemSlotEquip equip)
