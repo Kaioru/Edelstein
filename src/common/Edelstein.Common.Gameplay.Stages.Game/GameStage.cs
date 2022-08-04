@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Stages.Game;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game;
 
 namespace Edelstein.Common.Gameplay.Stages.Game;
 
@@ -13,19 +12,16 @@ public class GameStage : IGameStage
 
     public async Task Enter(IGameStageUser user)
     {
-        var fieldUser = new FieldUser(
-            user,
-            user.Account!,
-            user.AccountWorld!,
-            user.Character!
-        );
-        var field = await _fieldManager.Retrieve(fieldUser.Character.FieldID);
+        if (user.Character == null) return;
+
+        var field = await _fieldManager.Retrieve(user.Character.FieldID);
+        var fieldUser = field?.CreateUser(user);
+
+        if (field == null || fieldUser == null) return;
 
         user.Stage = this;
         user.FieldUser = fieldUser;
-
-        if (field != null)
-            await field.Enter(fieldUser);
+        await field.Enter(fieldUser);
     }
 
     public async Task Leave(IGameStageUser user)
