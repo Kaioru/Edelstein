@@ -27,7 +27,8 @@ public class NXDataNode : IDataNode
     {
         try
         {
-            return new NXDataNode(_node.ResolvePath(path));
+            var sub = _node.ResolvePath(path);
+            return sub == null ? null : new NXDataNode(sub);
         }
         catch (Exception)
         {
