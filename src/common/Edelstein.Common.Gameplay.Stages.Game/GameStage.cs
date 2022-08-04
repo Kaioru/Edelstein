@@ -15,7 +15,7 @@ public class GameStage : IGameStage
         if (user.Character == null) return;
 
         var field = await _fieldManager.Retrieve(user.Character.FieldID);
-        var fieldUser = field?.CreateUser(user);
+        var fieldUser = _fieldManager.CreateUser(user);
 
         if (field == null || fieldUser == null) return;
 
