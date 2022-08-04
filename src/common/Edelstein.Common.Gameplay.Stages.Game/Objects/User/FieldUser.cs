@@ -1,9 +1,11 @@
 ﻿using Edelstein.Common.Gameplay.Characters;
+using Edelstein.Common.Gameplay.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Common.Util.Spatial;
 using Edelstein.Protocol.Gameplay.Accounts;
 using Edelstein.Protocol.Gameplay.Characters;
+using Edelstein.Protocol.Gameplay.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
@@ -156,6 +158,22 @@ public class FieldUser : AbstractFieldLife, IFieldUser
         packet.WriteString(message);
 
         await StageUser.Dispatch(packet);
+    }
+
+    public async Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
+    {
+        var context = new ModifyInventoryGroupContext(Character.Inventories, StageUser.Context.Templates.Item);
+        var packet = new PacketWriter(PacketSendOperations.InventoryOperation);
+
+        action?.Invoke(context);
+
+        packet.WriteBool(exclRequest);
+        packet.Write(context);
+        packet.WriteBool(false);
+
+        await Dispatch(packet);
+
+        // TODO update stats
     }
 
     public Task OnPacket(IPacket packet) => StageUser.OnPacket(packet);
