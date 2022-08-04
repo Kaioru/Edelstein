@@ -2,10 +2,8 @@
 
 namespace Edelstein.Common.Gameplay.Inventories.Items;
 
-public record ItemSlotEquip : IItemSlotEquip
+public record ItemSlotEquip : ItemSlotBase, IItemSlotEquip
 {
-    public int ID { get; set; }
-
     public byte RUC { get; set; }
     public byte CUC { get; set; }
 
@@ -31,7 +29,7 @@ public record ItemSlotEquip : IItemSlotEquip
     public byte LevelUpType { get; set; }
     public byte Level { get; set; }
     public int EXP { get; set; }
-    public int? Durability { get; set; } 
+    public int? Durability { get; set; }
 
     public int IUC { get; set; }
 

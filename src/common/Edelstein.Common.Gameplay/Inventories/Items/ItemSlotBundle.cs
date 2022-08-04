@@ -2,12 +2,12 @@
 
 namespace Edelstein.Common.Gameplay.Inventories.Items;
 
-public record ItemSlotBundle : IItemSlotBundle
+public record ItemSlotBundle : ItemSlotBase, IItemSlotBundle
 {
-    public int ID { get; set; }
-
     public short Number { get; set; }
     public short Attribute { get; set; }
 
     public string Title { get; set; }
+
+    public bool MergeableWith(IItemSlotBundle bundle) => throw new NotImplementedException();
 }

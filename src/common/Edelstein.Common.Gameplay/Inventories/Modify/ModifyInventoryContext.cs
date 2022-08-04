@@ -48,7 +48,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
                 var mergeable = _inventory.Items
                     .Where(kv => kv.Value is IItemSlotBundle b && b.Number < template.MaxPerSlot)
                     .Select(kv => Tuple.Create(kv.Key, (IItemSlotBundle)kv.Value))
-                    .FirstOrDefault(t => t.Item2.Equals(bundle));
+                    .FirstOrDefault(t => t.Item2.MergeableWith(bundle));
 
                 if (mergeable != null)
                 {
