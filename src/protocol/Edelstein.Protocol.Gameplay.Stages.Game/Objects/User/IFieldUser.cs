@@ -1,5 +1,6 @@
 ﻿using Edelstein.Protocol.Gameplay.Accounts;
 using Edelstein.Protocol.Gameplay.Characters;
+using Edelstein.Protocol.Gameplay.Inventories.Modify;
 using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Commands;
 
@@ -16,4 +17,6 @@ public interface IFieldUser : IFieldLife, IFieldSplitObserver, IFieldController,
     bool IsInstantiated { get; set; }
 
     IPacket GetSetFieldPacket();
+
+    Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false);
 }
