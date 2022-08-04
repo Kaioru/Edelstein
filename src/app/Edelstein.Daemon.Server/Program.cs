@@ -133,6 +133,7 @@ await Host.CreateDefaultBuilder(args)
                         scope.AddSingleton<ILoginContext, LoginContext>();
                         scope.AddSingleton<ILoginContextPipelines, LoginContextPipelines>();
                         scope.AddSingleton<ILoginContextServices, LoginContextServices>();
+                        scope.AddSingleton<ILoginContextManagers, LoginContextManagers>();
                         scope.AddSingleton<ILoginContextTemplates, LoginContextTemplates>();
                         scope.AddSingleton<IAdapterInitializer, LoginStageUserInitializer>();
                         scope.AddSingleton<ILoginStage, LoginStage>();
@@ -155,6 +156,7 @@ await Host.CreateDefaultBuilder(args)
                         scope.AddSingleton(options);
                         scope.AddSingleton<IGameContext, GameContext>();
                         scope.AddSingleton<IGameContextPipelines, GameContextPipelines>();
+                        scope.AddSingleton<IGameContextServices, GameContextServices>();
                         scope.AddSingleton<IGameContextManagers, GameContextManagers>();
                         scope.AddSingleton<IGameContextTemplates, GameContextTemplates>();
                         scope.AddSingleton<IAdapterInitializer, GameStageUserInitializer>();

@@ -6,5 +6,6 @@ public record LoginContext(
     ILoginContextOptions Options,
     ILoginContextPipelines Pipelines,
     ILoginContextServices Services,
+    ILoginContextManagers Managers,
     ILoginContextTemplates Templates
 ) : ILoginContext;
