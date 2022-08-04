@@ -6,6 +6,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game;
 
 public interface IFieldManager :
     IRepositoryMethodRetrieve<int, IField>,
+    IRepositoryMethodRetrieveAll<int, IField>,
     IFieldFactory,
     IFieldUserFactory,
     IFieldNPCFactory
