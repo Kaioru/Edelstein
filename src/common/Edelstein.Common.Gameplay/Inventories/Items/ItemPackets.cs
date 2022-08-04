@@ -63,7 +63,7 @@ public static class ItemPackets
         writer.WriteByte(equip.LevelUpType);
         writer.WriteByte(equip.Level);
         writer.WriteInt(equip.EXP);
-        writer.WriteInt(equip.Durability);
+        writer.WriteInt(equip.Durability ?? 100);
 
         writer.WriteInt(equip.IUC);
 

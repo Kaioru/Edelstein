@@ -27,7 +27,7 @@ public interface IItemSlotEquip : IItemSlot
     byte LevelUpType { get; set; }
     byte Level { get; set; }
     int EXP { get; set; }
-    int Durability { get; set; }
+    int? Durability { get; set; }
 
     int IUC { get; set; }
 
