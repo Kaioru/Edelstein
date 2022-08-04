@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game;
@@ -35,6 +36,9 @@ public class FieldManager : IFieldManager
 
         return field;
     }
+
+    public Task<IEnumerable<IField>> RetrieveAll() =>
+        Task.FromResult<IEnumerable<IField>>(_fields.Values.ToImmutableList());
 
     public IField CreateField(IFieldTemplate template) =>
         new Field(this, template);
