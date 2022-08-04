@@ -10,7 +10,7 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC;
 
-public class FieldNPC : AbstractFieldLife, IFieldNPC, IPacketWritable
+public class FieldNPC : AbstractFieldControllable, IFieldNPC, IPacketWritable
 {
     public FieldNPC(
         INPCTemplate template,
@@ -72,4 +72,17 @@ public class FieldNPC : AbstractFieldLife, IFieldNPC, IPacketWritable
     }
 
     protected override IPacket GetMovePacket(IMovePath ctx) => throw new NotImplementedException();
+
+    protected override IPacket GetControlPacket(IFieldController? controller = null)
+    {
+        var packet = new PacketWriter(PacketSendOperations.NpcChangeController);
+
+        packet.WriteBool(controller != null);
+        packet.WriteInt(ObjectID ?? 0);
+
+        if (controller != null)
+            packet.Write(this);
+
+        return packet;
+    }
 }

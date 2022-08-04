@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 
-public interface IFieldNPC : IFieldLife
+public interface IFieldNPC : IFieldLife, IFieldControllable
 {
     INPCTemplate Template { get; }
 
