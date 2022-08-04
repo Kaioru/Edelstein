@@ -7,6 +7,7 @@ using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages;
 using Edelstein.Common.Gameplay.Stages.Game;
 using Edelstein.Common.Gameplay.Stages.Game.Contexts;
+using Edelstein.Common.Gameplay.Stages.Game.Continents;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
@@ -24,6 +25,7 @@ using Edelstein.Daemon.Server.Configs;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
+using Edelstein.Protocol.Gameplay.Stages.Game.Continents;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Network;
@@ -151,6 +153,7 @@ await Host.CreateDefaultBuilder(args)
                         );
 
                         scope.AddSingleton<IFieldManager, FieldManager>();
+                        scope.AddSingleton<IContiMoveManager, ContiMoveManager>();
                         scope.AddSingleton(typeof(ICommandManager<>), typeof(CommandManager<>));
 
                         scope.AddSingleton(options);
