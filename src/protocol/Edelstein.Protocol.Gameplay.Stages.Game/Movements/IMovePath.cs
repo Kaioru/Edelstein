@@ -5,6 +5,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 
 public interface IMovePath : IPacketReadable, IPacketWritable
 {
+    byte? Action { get; }
     IPoint2D? Position { get; }
-    int? FootholdID { get; }
+    int? Foothold { get; }
 }

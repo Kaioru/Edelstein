@@ -12,6 +12,7 @@ public abstract class AbstractFieldLife : AbstractFieldObject, IFieldLife
     {
     }
 
+    public byte Action { get; private set; }
     public IFieldFoothold? Foothold { get; private set; }
 
     public void SetPosition(IPoint2D position)
@@ -31,8 +32,9 @@ public abstract class AbstractFieldLife : AbstractFieldObject, IFieldLife
     {
         if (Field == null) return;
 
-        await Move(ctx.Position, ctx.FootholdID.HasValue
-            ? Field.Template.Footholds.FindByID(ctx.FootholdID.Value)
+        if (ctx.Action != null) Action = ctx.Action.Value;
+        await Move(ctx.Position, ctx.Foothold.HasValue
+            ? Field.Template.Footholds.FindByID(ctx.Foothold.Value)
             : null
         );
 

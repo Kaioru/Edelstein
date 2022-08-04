@@ -6,6 +6,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 
 public interface IFieldLife : IFieldObject
 {
+    byte Action { get; }
     IFieldFoothold? Foothold { get; }
 
     void SetPosition(IPoint2D position);

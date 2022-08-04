@@ -32,6 +32,6 @@ public class TeleportPathFragment : ActionPathFragment
     public override void Apply(MovePath path)
     {
         path.Position = _position;
-        path.FootholdID = _footholdID;
+        path.Foothold = _footholdID;
     }
 }

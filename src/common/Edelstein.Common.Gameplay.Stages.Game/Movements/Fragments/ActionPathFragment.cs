@@ -23,7 +23,6 @@ public class ActionPathFragment : AbstractMovePathFragment
         writer.WriteShort(_elapse);
     }
 
-    public override void Apply(MovePath path)
-    {
-    }
+    public override void Apply(MovePath path) =>
+        path.Action = _action;
 }

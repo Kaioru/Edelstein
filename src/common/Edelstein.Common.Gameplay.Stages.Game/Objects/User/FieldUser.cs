@@ -114,7 +114,7 @@ public class FieldUser : AbstractFieldLife, IFieldUser
         packet.WriteInt(0);
 
         packet.WritePoint2D(Position);
-        packet.WriteByte(0); // Action?
+        packet.WriteByte(Action);
         packet.WriteShort((short)(Foothold?.ID ?? 0));
         packet.WriteByte(0);
 
