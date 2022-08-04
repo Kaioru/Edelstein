@@ -70,6 +70,12 @@ public class ServerStartBootstrap<TStage, TStageUser, TContext> : IBootstrap
 
         _contexts.Add(_ticker.Schedule(new AliveTicker(_acceptor)));
 
+        if (_context is IGameContext game)
+            await Task.WhenAll((await game.Templates.ContiMove.RetrieveAll())
+                .Select(t => new ContiMove(_loggerFactory.CreateLogger<ContiMove>(), game.Managers.Field, t))
+                .Select(game.Managers.ContiMove.Insert)
+            );
+
         foreach (var path in _config.Plugins)
         {
             if (!Directory.Exists(path))
@@ -87,13 +93,6 @@ public class ServerStartBootstrap<TStage, TStageUser, TContext> : IBootstrap
                 Path.GetFullPath(path)
             );
         }
-
-        if (_context is IGameContext game)
-            await Task.WhenAll((await game.Templates.ContiMove.RetrieveAll())
-                .Select(t => new ContiMove(_loggerFactory.CreateLogger<ContiMove>(), game.Managers.Field, t))
-                .Select(game.Managers.ContiMove.Insert)
-            );
-
 
         await _pluginManager.Start();
         await _acceptor.Accept(_stageConfig.Host, _stageConfig.Port);
