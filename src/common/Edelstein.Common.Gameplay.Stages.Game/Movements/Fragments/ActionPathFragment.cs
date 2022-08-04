@@ -2,12 +2,12 @@
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments;
 
-public class ActionFragment : AbstractMovePathFragment
+public class ActionPathFragment : AbstractMovePathFragment
 {
     private byte _action;
     private short _elapse;
 
-    public ActionFragment(MovePathFragmentType type) : base(type)
+    public ActionPathFragment(MovePathFragmentType type) : base(type)
     {
     }
 

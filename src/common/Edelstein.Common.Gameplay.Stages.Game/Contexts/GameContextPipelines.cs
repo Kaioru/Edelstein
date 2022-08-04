@@ -1,6 +1,6 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
-using Edelstein.Protocol.Gameplay.Stages.Game.Messages;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Stages.Messages;
 using Edelstein.Protocol.Util.Pipelines;
 

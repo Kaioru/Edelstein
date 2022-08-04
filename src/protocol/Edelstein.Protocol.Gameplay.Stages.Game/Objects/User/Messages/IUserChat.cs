@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Messages;
+﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 
 public interface IUserChat : IFieldUserMessage
 {

@@ -2,6 +2,7 @@
 using System.Collections.Immutable;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects;
 

@@ -1,19 +1,19 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Stages.Game.Messages;
 using Edelstein.Common.Gameplay.Stages.Game.Movements;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Common.Util.Buffers.Packets;
-using Edelstein.Protocol.Gameplay.Stages.Game;
-using Edelstein.Protocol.Gameplay.Stages.Game.Messages;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Pipelines;
 
-namespace Edelstein.Common.Gameplay.Stages.Game.Handlers;
+namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
 
-public class UserMoveHandler : AbstractFieldHandler
+public class UserMoveUserHandler : AbstractFieldUserHandler
 {
     private readonly IPipeline<IUserMove> _pipeline;
 
-    public UserMoveHandler(IPipeline<IUserMove> pipeline) => _pipeline = pipeline;
+    public UserMoveUserHandler(IPipeline<IUserMove> pipeline) => _pipeline = pipeline;
 
     public override short Operation => (short)PacketRecvOperations.UserMove;
 

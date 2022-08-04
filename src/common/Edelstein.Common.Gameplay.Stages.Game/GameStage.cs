@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Game;
+﻿using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Stages.Game;
 
 namespace Edelstein.Common.Gameplay.Stages.Game;
 

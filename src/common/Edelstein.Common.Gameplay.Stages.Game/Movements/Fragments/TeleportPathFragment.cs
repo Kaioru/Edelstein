@@ -4,12 +4,12 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments;
 
-public class TeleportFragment : ActionFragment
+public class TeleportPathFragment : ActionPathFragment
 {
     private short _footholdID;
     private IPoint2D _position;
 
-    public TeleportFragment(MovePathFragmentType type) : base(type)
+    public TeleportPathFragment(MovePathFragmentType type) : base(type)
     {
     }
 
