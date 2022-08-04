@@ -19,8 +19,9 @@ public class Field : AbstractFieldObjectPool, IField
     private readonly IDictionary<FieldObjectType, FieldObjectPool> _pools;
     private readonly IFieldSplit[,] _splits;
 
-    public Field(IFieldTemplate template)
+    public Field(IFieldManager manager, IFieldTemplate template)
     {
+        Manager = manager;
         Template = template;
         _pools = new Dictionary<FieldObjectType, FieldObjectPool>();
         foreach (var type in Enum.GetValues<FieldObjectType>())
@@ -37,6 +38,8 @@ public class Field : AbstractFieldObjectPool, IField
     }
 
     public int ID => Template.ID;
+
+    public IFieldManager Manager { get; }
     public IFieldTemplate Template { get; }
 
     public override IReadOnlyCollection<IFieldObject> Objects =>
