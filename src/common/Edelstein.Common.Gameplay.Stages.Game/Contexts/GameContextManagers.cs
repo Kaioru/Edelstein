@@ -10,5 +10,6 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Contexts;
 public record GameContextManagers(
     IDataManager Data,
     ITickerManager Ticker,
+    IFieldManager Field,
     ICommandManager<IFieldUser> Command
 ) : IGameContextManagers;
