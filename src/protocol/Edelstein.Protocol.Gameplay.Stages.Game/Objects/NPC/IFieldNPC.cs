@@ -8,6 +8,6 @@ public interface IFieldNPC : IFieldLife
 
     bool IsEnabled { get; }
 
-    int RX0 { get; set; }
-    int RX1 { get; set; }
+    int RX0 { get; }
+    int RX1 { get; }
 }

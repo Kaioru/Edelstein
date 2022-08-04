@@ -8,9 +8,8 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects;
 
 public abstract class AbstractFieldLife : AbstractFieldObject, IFieldLife
 {
-    protected AbstractFieldLife(IPoint2D position) : base(position)
-    {
-    }
+    protected AbstractFieldLife(IPoint2D position, IFieldFoothold? foothold = null) : base(position) =>
+        Foothold = foothold;
 
     public byte Action { get; protected set; }
     public IFieldFoothold? Foothold { get; private set; }
