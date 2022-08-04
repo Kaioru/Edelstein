@@ -9,5 +9,6 @@ public interface IGameContextManagers
 {
     IDataManager Data { get; }
     ITickerManager Ticker { get; }
+    IFieldManager Field { get; }
     ICommandManager<IFieldUser> Command { get; }
 }
