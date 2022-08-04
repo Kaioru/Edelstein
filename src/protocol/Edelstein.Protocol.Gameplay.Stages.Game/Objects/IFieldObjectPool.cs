@@ -1,8 +1,12 @@
-﻿using Edelstein.Protocol.Util.Buffers.Packets;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
+using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 
-public interface IFieldObjectPool
+public interface IFieldObjectPool :
+    IFieldUserFactory,
+    IFieldNPCFactory
 {
     IReadOnlyCollection<IFieldObject> Objects { get; }
 
