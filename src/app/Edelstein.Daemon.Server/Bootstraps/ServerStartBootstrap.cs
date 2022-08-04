@@ -20,7 +20,6 @@ public class ServerStartBootstrap<TStage, TStageUser, TContext> : IBootstrap
     private readonly ICollection<ITickerManagerContext> _contexts;
     private readonly ILogger _logger;
     private readonly IPluginManager<TContext> _pluginManager;
-    private readonly TStage _stage;
     private readonly AbstractProgramConfigStage _stageConfig;
     private readonly ICollection<ITemplateLoader> _templateLoaders;
     private readonly ICollection<ITickable> _tickables;
@@ -30,7 +29,6 @@ public class ServerStartBootstrap<TStage, TStageUser, TContext> : IBootstrap
         ILogger<ServerStartBootstrap<TStage, TStageUser, TContext>> logger,
         ProgramConfig config,
         AbstractProgramConfigStage stageConfig,
-        TStage stage,
         ITransportAcceptor acceptor,
         ITickerManager ticker,
         IPluginManager<TContext> pluginManager,
@@ -41,7 +39,6 @@ public class ServerStartBootstrap<TStage, TStageUser, TContext> : IBootstrap
         _logger = logger;
         _config = config;
         _stageConfig = stageConfig;
-        _stage = stage;
         _acceptor = acceptor;
         _ticker = ticker;
         _pluginManager = pluginManager;
