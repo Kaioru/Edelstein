@@ -4,4 +4,5 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 
 public interface IFieldMessage : IPacketWritable
 {
+    FieldMessageType Type { get; }
 }

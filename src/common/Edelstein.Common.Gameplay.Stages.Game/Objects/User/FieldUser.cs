@@ -165,6 +165,7 @@ public class FieldUser : AbstractFieldLife, IFieldUser
     {
         var packet = new PacketWriter(PacketSendOperations.Message);
 
+        packet.WriteByte((byte)message.Type);
         packet.Write(message);
 
         await Dispatch(packet);

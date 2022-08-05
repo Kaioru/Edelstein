@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
+﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 
 public enum FieldMessageType
 {
