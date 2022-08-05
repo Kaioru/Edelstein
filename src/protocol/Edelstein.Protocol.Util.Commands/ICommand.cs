@@ -7,7 +7,4 @@ public interface ICommand<in TContext> : ICommandExecutable<TContext>
     string Description { get; }
 
     IEnumerable<string> Aliases { get; }
-
-    void AddAlias(string alias);
-    void RemoveAlias(string alias);
 }
