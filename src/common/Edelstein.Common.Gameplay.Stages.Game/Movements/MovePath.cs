@@ -18,7 +18,7 @@ public class MovePath : IMovePath
     public byte? Action { get; set; }
     public int? Foothold { get; set; }
 
-    public void ReadFrom(IPacketReader reader)
+    public virtual void ReadFrom(IPacketReader reader)
     {
         _position = reader.ReadPoint2D();
         _vPosition = reader.ReadPoint2D();
@@ -87,7 +87,7 @@ public class MovePath : IMovePath
             fragment.Apply(this);
     }
 
-    public void WriteTo(IPacketWriter writer)
+    public virtual void WriteTo(IPacketWriter writer)
     {
         writer.WritePoint2D(_position);
         writer.WritePoint2D(_vPosition);

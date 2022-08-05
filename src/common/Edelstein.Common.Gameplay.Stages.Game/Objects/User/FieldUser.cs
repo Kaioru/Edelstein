@@ -17,7 +17,7 @@ using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 
-public class FieldUser : AbstractFieldLife, IFieldUser
+public class FieldUser : AbstractFieldLife<IMovePath>, IFieldUser
 {
     public FieldUser(
         IGameStageUser user,
