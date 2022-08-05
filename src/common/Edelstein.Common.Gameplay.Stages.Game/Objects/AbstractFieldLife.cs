@@ -34,8 +34,9 @@ public abstract class AbstractFieldLife<TMovePath> :
     {
         if (Field == null) return;
 
-        Action = ctx.Action ?? Action;
-        Position = ctx.Position ?? Position;
+        if (ctx.Action.HasValue) Action = ctx.Action.Value;
+        if (ctx.Position != null) Position = ctx.Position;
+
         Foothold = Field.Template.Footholds
             .Find(Position)
             .FirstOrDefault(f => f.Line.Intersects(Position));

@@ -29,5 +29,10 @@ public class FlyingBlockPathFragment : ActionPathFragment
         base.WriteBody(writer);
     }
 
-    public override void Apply(MovePath path) => path.Position = _position;
+    public override void Apply(MovePath path)
+    {
+        path.Position = _position;
+
+        base.Apply(path);
+    }
 }

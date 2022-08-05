@@ -44,5 +44,7 @@ public class NormalPathFragment : ActionPathFragment
     {
         path.Position = _position;
         path.Foothold = _footholdID;
+
+        base.Apply(path);
     }
 }
