@@ -1,3 +1,4 @@
+using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Spatial;
 using Edelstein.Protocol.Util.Buffers.Packets;
@@ -5,7 +6,9 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects;
 
-public abstract class AbstractFieldControllable : AbstractFieldLife, IFieldControllable
+public abstract class AbstractFieldControllable<TMovePath> :
+    AbstractFieldLife<TMovePath>, IFieldControllable
+    where TMovePath : IMovePath
 {
     protected AbstractFieldControllable(IPoint2D position, IFieldFoothold? foothold = null) : base(position, foothold)
     {

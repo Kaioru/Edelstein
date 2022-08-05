@@ -6,7 +6,9 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects;
 
-public abstract class AbstractFieldLife : AbstractFieldObject, IFieldLife
+public abstract class AbstractFieldLife<TMovePath> :
+    AbstractFieldObject, IFieldLife<TMovePath>
+    where TMovePath : IMovePath
 {
     protected AbstractFieldLife(IPoint2D position, IFieldFoothold? foothold = null) : base(position) =>
         Foothold = foothold;
@@ -27,7 +29,7 @@ public abstract class AbstractFieldLife : AbstractFieldObject, IFieldLife
             .Find(Position)
             .FirstOrDefault(f => f.Line.Intersects(Position)));
 
-    public async Task Move(IMovePath ctx)
+    public virtual async Task Move(TMovePath ctx)
     {
         if (Field == null) return;
 

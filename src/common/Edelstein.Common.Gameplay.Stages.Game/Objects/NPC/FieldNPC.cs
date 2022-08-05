@@ -3,6 +3,7 @@ using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Spatial;
 using Edelstein.Protocol.Util.Buffers.Packets;
@@ -10,7 +11,7 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC;
 
-public class FieldNPC : AbstractFieldControllable, IFieldNPC, IPacketWritable
+public class FieldNPC : AbstractFieldControllable<INPCMovePath>, IFieldNPC, IPacketWritable
 {
     public FieldNPC(
         INPCTemplate template,
@@ -71,7 +72,15 @@ public class FieldNPC : AbstractFieldControllable, IFieldNPC, IPacketWritable
         writer.WriteBool(IsEnabled);
     }
 
-    protected override IPacket GetMovePacket(IMovePath ctx) => throw new NotImplementedException();
+    protected override IPacket GetMovePacket(IMovePath ctx)
+    {
+        var packet = new PacketWriter(PacketSendOperations.NpcMove);
+
+        packet.WriteInt(ObjectID ?? 0);
+        packet.Write(ctx);
+
+        return packet;
+    }
 
     protected override IPacket GetControlPacket(IFieldController? controller = null)
     {
