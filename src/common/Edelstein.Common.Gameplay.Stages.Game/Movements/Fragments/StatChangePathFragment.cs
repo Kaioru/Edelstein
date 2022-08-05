@@ -1,8 +1,10 @@
-﻿using Edelstein.Protocol.Util.Buffers.Packets;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
+using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments;
 
-public class StatChangePathFragment : AbstractMovePathFragment
+public class StatChangePathFragment<TMoveAction> : AbstractMovePathFragment<TMoveAction>
+    where TMoveAction : IMoveAction
 {
     private bool _stat;
 
@@ -16,7 +18,7 @@ public class StatChangePathFragment : AbstractMovePathFragment
     protected override void WriteBody(IPacketWriter writer) =>
         writer.WriteBool(_stat);
 
-    public override void Apply(MovePath path)
+    public override void Apply(AbstractMovePath<TMoveAction> path)
     {
     }
 }

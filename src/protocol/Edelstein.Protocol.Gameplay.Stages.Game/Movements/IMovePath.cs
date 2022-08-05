@@ -3,9 +3,10 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 
-public interface IMovePath : IPacketReadable, IPacketWritable
+public interface IMovePath<out TMoveAction> : IPacketReadable, IPacketWritable
+    where TMoveAction : IMoveAction
 {
-    byte? Action { get; }
+    TMoveAction? Action { get; }
     IPoint2D? Position { get; }
     int? Foothold { get; }
 }

@@ -1,14 +1,16 @@
 ﻿using Edelstein.Protocol.Gameplay.Accounts;
 using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Inventories.Modify;
-using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Movements;
 using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Commands;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 
-public interface IFieldUser : IFieldLife<IMovePath>, IFieldSplitObserver, IFieldController, ICommandContext
+public interface IFieldUser :
+    IFieldLife<IUserMovePath, IUserMoveAction>,
+    IFieldSplitObserver, IFieldController, ICommandContext
 {
     IGameStageUser StageUser { get; }
 

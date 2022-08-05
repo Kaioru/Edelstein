@@ -6,11 +6,14 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects;
 
-public abstract class AbstractFieldControllable<TMovePath> :
-    AbstractFieldLife<TMovePath>, IFieldControllable
-    where TMovePath : IMovePath
+public abstract class AbstractFieldControllable<TMovePath, TMoveAction> :
+    AbstractFieldLife<TMovePath, TMoveAction>, IFieldControllable
+    where TMovePath : IMovePath<TMoveAction>
+    where TMoveAction : IMoveAction
 {
-    protected AbstractFieldControllable(IPoint2D position, IFieldFoothold? foothold = null) : base(position, foothold)
+    protected AbstractFieldControllable(
+        TMoveAction action, IPoint2D position, IFieldFoothold? foothold = null
+    ) : base(action, position, foothold)
     {
     }
 

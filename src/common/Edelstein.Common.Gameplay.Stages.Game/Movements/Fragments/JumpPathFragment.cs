@@ -1,10 +1,12 @@
 ﻿using Edelstein.Common.Util.Buffers.Packets;
+using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments;
 
-public class JumpPathFragment : ActionPathFragment
+public class JumpPathFragment<TMoveAction> : ActionPathFragment<TMoveAction>
+    where TMoveAction : IMoveAction
 {
     private IPoint2D _vPosition;
 

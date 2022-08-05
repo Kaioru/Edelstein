@@ -1,10 +1,12 @@
 ﻿using Edelstein.Common.Util.Buffers.Packets;
+using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments;
 
-public class FlyingBlockPathFragment : ActionPathFragment
+public class FlyingBlockPathFragment<TMoveAction> : ActionPathFragment<TMoveAction>
+    where TMoveAction : IMoveAction
 {
     private IPoint2D _position;
     private IPoint2D _vPosition;
@@ -29,7 +31,7 @@ public class FlyingBlockPathFragment : ActionPathFragment
         base.WriteBody(writer);
     }
 
-    public override void Apply(MovePath path)
+    public override void Apply(AbstractMovePath<TMoveAction> path)
     {
         path.Position = _position;
 

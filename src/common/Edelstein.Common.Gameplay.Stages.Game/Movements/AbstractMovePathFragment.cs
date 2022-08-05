@@ -1,8 +1,10 @@
-﻿using Edelstein.Protocol.Util.Buffers.Packets;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
+using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements;
 
-public abstract class AbstractMovePathFragment : IPacketReadable, IPacketWritable
+public abstract class AbstractMovePathFragment<TMoveAction> : IPacketReadable, IPacketWritable
+    where TMoveAction : IMoveAction
 {
     protected AbstractMovePathFragment(MovePathFragmentType type) => Type = type;
 
@@ -21,5 +23,5 @@ public abstract class AbstractMovePathFragment : IPacketReadable, IPacketWritabl
     protected abstract void ReadBody(IPacketReader reader);
     protected abstract void WriteBody(IPacketWriter writer);
 
-    public abstract void Apply(MovePath path);
+    public abstract void Apply(AbstractMovePath<TMoveAction> path);
 }

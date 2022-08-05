@@ -4,9 +4,11 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 
-public interface IFieldLife<in TMovePath> : IFieldObject where TMovePath : IMovePath
+public interface IFieldLife<in TMovePath, out TMoveAction> : IFieldObject
+    where TMovePath : IMovePath<TMoveAction>
+    where TMoveAction : IMoveAction
 {
-    byte Action { get; }
+    TMoveAction Action { get; }
     IFieldFoothold? Foothold { get; }
 
     void SetPosition(IPoint2D position);
