@@ -1,8 +1,8 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Movements;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts;
 
 public interface IUserMove : IFieldUserContract
 {
-    IMovePath Path { get; }
+    IUserMovePath Path { get; }
 }

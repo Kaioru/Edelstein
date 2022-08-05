@@ -6,16 +6,18 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements;
 
-public class MovePath : IMovePath
+public abstract class AbstractMovePath<TMoveAction> : IMovePath<TMoveAction> where TMoveAction : IMoveAction
 {
-    private readonly ICollection<AbstractMovePathFragment> _fragments;
+    private readonly ICollection<AbstractMovePathFragment<TMoveAction>> _fragments;
     private IPoint2D _position;
     private IPoint2D _vPosition;
 
-    public MovePath() => _fragments = new List<AbstractMovePathFragment>();
+    public AbstractMovePath() => _fragments = new List<AbstractMovePathFragment<TMoveAction>>();
 
+    public byte? ActionRaw { get; set; }
+
+    public TMoveAction? Action { get; set; }
     public IPoint2D? Position { get; set; }
-    public byte? Action { get; set; }
     public int? Foothold { get; set; }
 
     public virtual void ReadFrom(IPacketReader reader)
@@ -37,7 +39,7 @@ public class MovePath : IMovePath
                 case MovePathFragmentType.Wings:
                 case MovePathFragmentType.MobAttackRush:
                 case MovePathFragmentType.MobAttackRushStop:
-                    _fragments.Add(reader.Read(new NormalPathFragment(attribute)));
+                    _fragments.Add(reader.Read(new NormalPathFragment<TMoveAction>(attribute)));
                     break;
                 case MovePathFragmentType.Jump:
                 case MovePathFragmentType.Impact:
@@ -48,7 +50,7 @@ public class MovePath : IMovePath
                 case MovePathFragmentType.MobRightAngle:
                 case MovePathFragmentType.MobStopNodeStart:
                 case MovePathFragmentType.MobBeforeNode:
-                    _fragments.Add(reader.Read(new JumpPathFragment(attribute)));
+                    _fragments.Add(reader.Read(new JumpPathFragment<TMoveAction>(attribute)));
                     break;
                 case MovePathFragmentType.FlashJump:
                 case MovePathFragmentType.RocketBooster:
@@ -61,7 +63,7 @@ public class MovePath : IMovePath
                 case MovePathFragmentType.TimeBombAttack:
                 case MovePathFragmentType.SnowballTouch:
                 case MovePathFragmentType.BuffZoneEffect:
-                    _fragments.Add(reader.Read(new ActionPathFragment(attribute)));
+                    _fragments.Add(reader.Read(new ActionPathFragment<TMoveAction>(attribute)));
                     break;
                 case MovePathFragmentType.Immediate:
                 case MovePathFragmentType.Teleport:
@@ -69,22 +71,25 @@ public class MovePath : IMovePath
                 case MovePathFragmentType.Assassination:
                 case MovePathFragmentType.Rush:
                 case MovePathFragmentType.SitDown:
-                    _fragments.Add(reader.Read(new TeleportPathFragment(attribute)));
+                    _fragments.Add(reader.Read(new TeleportPathFragment<TMoveAction>(attribute)));
                     break;
                 case MovePathFragmentType.StartFallDown:
-                    _fragments.Add(reader.Read(new StartFallDownPathFragment(attribute)));
+                    _fragments.Add(reader.Read(new StartFallDownPathFragment<TMoveAction>(attribute)));
                     break;
                 case MovePathFragmentType.FlyingBlock:
-                    _fragments.Add(reader.Read(new FlyingBlockPathFragment(attribute)));
+                    _fragments.Add(reader.Read(new FlyingBlockPathFragment<TMoveAction>(attribute)));
                     break;
                 case MovePathFragmentType.StatChange:
-                    _fragments.Add(reader.Read(new StatChangePathFragment(attribute)));
+                    _fragments.Add(reader.Read(new StatChangePathFragment<TMoveAction>(attribute)));
                     break;
             }
         }
 
         foreach (var fragment in _fragments)
             fragment.Apply(this);
+
+        if (ActionRaw.HasValue)
+            Action = GetActionFromRaw(ActionRaw.Value);
     }
 
     public virtual void WriteTo(IPacketWriter writer)
@@ -96,4 +101,6 @@ public class MovePath : IMovePath
         foreach (var fragment in _fragments)
             writer.Write(fragment);
     }
+
+    protected abstract TMoveAction GetActionFromRaw(byte raw);
 }

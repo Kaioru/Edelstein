@@ -1,6 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Stages.Game.Movements;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Contracts;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Movements;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts;
@@ -26,7 +26,7 @@ public class UserMoveUserHandler : AbstractFieldUserHandler
         _ = reader.ReadInt();
         _ = reader.ReadInt();
 
-        var message = new UserMove(user, reader.Read(new MovePath()));
+        var message = new UserMove(user, reader.Read(new UserMovePath()));
 
         return _pipeline.Process(message);
     }

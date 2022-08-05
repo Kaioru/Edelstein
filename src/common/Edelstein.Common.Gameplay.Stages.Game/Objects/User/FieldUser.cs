@@ -2,29 +2,30 @@
 using Edelstein.Common.Gameplay.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Movements;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Common.Util.Spatial;
 using Edelstein.Protocol.Gameplay.Accounts;
 using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Stages.Game;
-using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Movements;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 
-public class FieldUser : AbstractFieldLife<IMovePath>, IFieldUser
+public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFieldUser
 {
     public FieldUser(
         IGameStageUser user,
         IAccount account,
         IAccountWorld accountWorld,
         ICharacter character
-    ) : base(new Point2D(0, 0))
+    ) : base(new UserMoveAction(0), new Point2D(0, 0))
     {
         StageUser = user;
         Account = account;
@@ -119,7 +120,7 @@ public class FieldUser : AbstractFieldLife<IMovePath>, IFieldUser
         packet.WriteInt(0);
 
         packet.WritePoint2D(Position);
-        packet.WriteByte(Action);
+        packet.WriteByte(Action.Raw);
         packet.WriteShort((short)(Foothold?.ID ?? 0));
         packet.WriteByte(0);
 
@@ -187,7 +188,7 @@ public class FieldUser : AbstractFieldLife<IMovePath>, IFieldUser
         // TODO update stats
     }
 
-    protected override IPacket GetMovePacket(IMovePath ctx)
+    protected override IPacket GetMovePacket(IUserMovePath ctx)
     {
         var packet = new PacketWriter(PacketSendOperations.UserMove);
 

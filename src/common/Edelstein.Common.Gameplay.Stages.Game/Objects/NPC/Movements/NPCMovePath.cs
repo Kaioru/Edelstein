@@ -4,7 +4,7 @@ using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Movements;
 
-public class NPCMovePath : MovePath, INPCMovePath
+public class NPCMovePath : AbstractMovePath<INPCMoveAction>, INPCMovePath
 {
     public NPCMovePath(bool isMove) => IsMove = isMove;
 
@@ -30,4 +30,6 @@ public class NPCMovePath : MovePath, INPCMovePath
         if (IsMove)
             base.WriteTo(writer);
     }
+
+    protected override INPCMoveAction GetActionFromRaw(byte raw) => new NPCMoveAction(raw);
 }

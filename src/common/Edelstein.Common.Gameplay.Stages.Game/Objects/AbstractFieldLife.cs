@@ -6,14 +6,18 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects;
 
-public abstract class AbstractFieldLife<TMovePath> :
-    AbstractFieldObject, IFieldLife<TMovePath>
-    where TMovePath : IMovePath
+public abstract class AbstractFieldLife<TMovePath, TMoveAction> :
+    AbstractFieldObject, IFieldLife<TMovePath, TMoveAction>
+    where TMovePath : IMovePath<TMoveAction>
+    where TMoveAction : IMoveAction
 {
-    protected AbstractFieldLife(IPoint2D position, IFieldFoothold? foothold = null) : base(position) =>
+    protected AbstractFieldLife(TMoveAction action, IPoint2D position, IFieldFoothold? foothold = null) : base(position)
+    {
+        Action = action;
         Foothold = foothold;
+    }
 
-    public byte Action { get; protected set; }
+    public TMoveAction Action { get; protected set; }
     public IFieldFoothold? Foothold { get; private set; }
 
     public void SetPosition(IPoint2D position)
@@ -34,7 +38,7 @@ public abstract class AbstractFieldLife<TMovePath> :
     {
         if (Field == null) return;
 
-        if (ctx.Action.HasValue) Action = ctx.Action.Value;
+        if (ctx.Action != null) Action = ctx.Action;
         if (ctx.Position != null) Position = ctx.Position;
 
         Foothold = Field.Template.Footholds
@@ -60,5 +64,5 @@ public abstract class AbstractFieldLife<TMovePath> :
         if (FieldSplit != split) await split.Enter(this);
     }
 
-    protected abstract IPacket GetMovePacket(IMovePath ctx);
+    protected abstract IPacket GetMovePacket(TMovePath ctx);
 }

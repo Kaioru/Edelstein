@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Movements;
 
-public interface INPCMovePath : IMovePath
+public interface INPCMovePath : IMovePath<INPCMoveAction>
 {
     byte Act { get; }
     byte Chat { get; }

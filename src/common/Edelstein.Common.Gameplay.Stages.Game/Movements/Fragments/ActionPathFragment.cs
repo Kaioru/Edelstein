@@ -1,8 +1,10 @@
-﻿using Edelstein.Protocol.Util.Buffers.Packets;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
+using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments;
 
-public class ActionPathFragment : AbstractMovePathFragment
+public class ActionPathFragment<TMoveAction> : AbstractMovePathFragment<TMoveAction>
+    where TMoveAction : IMoveAction
 {
     private byte _action;
     private short _elapse;
@@ -23,6 +25,6 @@ public class ActionPathFragment : AbstractMovePathFragment
         writer.WriteShort(_elapse);
     }
 
-    public override void Apply(MovePath path) =>
-        path.Action = _action;
+    public override void Apply(AbstractMovePath<TMoveAction> path) =>
+        path.ActionRaw = _action;
 }

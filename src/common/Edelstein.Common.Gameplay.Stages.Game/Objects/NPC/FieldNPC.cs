@@ -1,7 +1,7 @@
 using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Movements;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Common.Util.Spatial;
-using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Movements;
@@ -12,7 +12,7 @@ using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC;
 
-public class FieldNPC : AbstractFieldControllable<INPCMovePath>, IFieldNPC, IPacketWritable
+public class FieldNPC : AbstractFieldControllable<INPCMovePath, INPCMoveAction>, IFieldNPC, IPacketWritable
 {
     public FieldNPC(
         INPCTemplate template,
@@ -21,11 +21,10 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath>, IFieldNPC, IPac
         IRectangle2D? bounds = null,
         bool isFacingLeft = true,
         bool isEnabled = true
-    ) : base(position, foothold)
+    ) : base(new NPCMoveAction(Convert.ToByte(isFacingLeft)), position, foothold)
     {
         Template = template;
         Bounds = bounds ?? new Rectangle2D(Position, Position);
-        Action = Convert.ToByte(isFacingLeft);
         IsEnabled = isEnabled;
     }
 
@@ -60,7 +59,7 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath>, IFieldNPC, IPac
         writer.WriteInt(Template.ID);
 
         writer.WritePoint2D(Position);
-        writer.WriteByte(Action);
+        writer.WriteByte(Action.Raw);
         writer.WriteShort((short)(Foothold?.ID ?? 0));
 
         writer.WriteShort((short)Bounds.Left);
@@ -69,7 +68,7 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath>, IFieldNPC, IPac
         writer.WriteBool(IsEnabled);
     }
 
-    protected override IPacket GetMovePacket(IMovePath ctx)
+    protected override IPacket GetMovePacket(INPCMovePath ctx)
     {
         var packet = new PacketWriter(PacketSendOperations.NpcMove);
 
