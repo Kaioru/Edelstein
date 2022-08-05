@@ -1,9 +1,8 @@
-name: Publish (Dev Builds)
+name: Publish (Nightly)
 
-on:
-  push:
-    branches:
-      - dev
+on: 
+  schedule:
+   - cron: "0 0 * * *"
 
 jobs:
   publish:
@@ -16,6 +15,6 @@ jobs:
       with:
         dotnet-version: '6.0.x'
     - name: Pack
-      run: dotnet pack --configuration Release --version-suffix "dev.$GITHUB_RUN_NUMBER" --output artifacts
+      run: dotnet pack --configuration Release --version-suffix "nightly.$GITHUB_RUN_NUMBER" --output artifacts
     - name: Publish
       run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
