@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Util.Buffers.Packets;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
+using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
 
@@ -8,7 +9,7 @@ public class SystemMessage : AbstractFieldMessage
 
     public SystemMessage(string message) => _message = message;
 
-    protected override FieldMessageType Type => FieldMessageType.SystemMessage;
+    public override FieldMessageType Type => FieldMessageType.SystemMessage;
 
-    protected override void WriteData(IPacketWriter writer) => writer.WriteString(_message);
+    public override void WriteTo(IPacketWriter writer) => writer.WriteString(_message);
 }
