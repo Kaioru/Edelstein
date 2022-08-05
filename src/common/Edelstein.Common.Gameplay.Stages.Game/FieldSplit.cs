@@ -71,6 +71,8 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
             await Task.WhenAll(oldSplits.Select(s => s!.Unobserve(observer)));
             await Task.WhenAll(newSplits.Select(s => s!.Observe(observer)));
         }
+
+        await UpdateControllableObjects();
     }
 
     public async Task Leave(IFieldObject obj, Func<IPacket>? getLeavePacket)
@@ -79,6 +81,7 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
 
         await MigrateOut(obj);
         await Dispatch(getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket(), obj);
+        await UpdateControllableObjects();
     }
 
     public Task MigrateIn(IFieldObject obj)
@@ -101,6 +104,7 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
         await Task.WhenAll(GetObjects()
             .Where(o => o != observer)
             .Select(o => observer.Dispatch(o.GetEnterFieldPacket())));
+        await UpdateControllableObjects();
     }
 
     public async Task Unobserve(IFieldSplitObserver observer)
@@ -111,6 +115,7 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
         await Task.WhenAll(GetObjects()
             .Where(o => o != observer)
             .Select(o => observer.Dispatch(o.GetLeaveFieldPacket())));
+        await UpdateControllableObjects();
     }
 
     public override Task Dispatch(IPacket packet) =>
@@ -126,4 +131,19 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
 
     public override IFieldObject? GetObject(int id) => Objects.FirstOrDefault(o => o.ObjectID == id);
     public override IEnumerable<IFieldObject> GetObjects() => Objects;
+
+    private async Task UpdateControllableObjects()
+    {
+        var controllers = Observers
+            .OfType<IFieldController>()
+            .OrderBy(u => u.Controlled.Count)
+            .ToImmutableList();
+        var controllables = GetObjects()
+            .OfType<IFieldControllable>()
+            .ToImmutableList();
+
+        await Task.WhenAll(controllables
+            .Where(c => c.Controller == null || !controllers.Contains(c.Controller))
+            .Select(c => c.Control(controllers.FirstOrDefault())));
+    }
 }
