@@ -66,7 +66,7 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath>, IFieldNPC, IPac
         writer.WriteByte(Action);
         writer.WriteShort((short)(Foothold?.ID ?? 0));
 
-        writer.WriteShort((short)RX0);
+        writer.WriteShort((short)RX0); // TODO: Range min X, max X for movements
         writer.WriteShort((short)RX1);
 
         writer.WriteBool(IsEnabled);
