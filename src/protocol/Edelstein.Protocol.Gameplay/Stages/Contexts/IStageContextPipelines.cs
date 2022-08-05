@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Messages;
+﻿using Edelstein.Protocol.Gameplay.Stages.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Protocol.Gameplay.Stages.Contexts;

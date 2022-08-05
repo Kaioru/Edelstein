@@ -1,7 +1,7 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Stages.Login.Messages;
+using Edelstein.Common.Gameplay.Stages.Login.Contracts;
 using Edelstein.Protocol.Gameplay.Stages.Login;
-using Edelstein.Protocol.Gameplay.Stages.Login.Messages;
+using Edelstein.Protocol.Gameplay.Stages.Login.Contracts;
 using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Pipelines;
 

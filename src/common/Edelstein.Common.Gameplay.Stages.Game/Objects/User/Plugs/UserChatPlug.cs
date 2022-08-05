@@ -2,7 +2,7 @@
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts;
 using Edelstein.Protocol.Util.Commands;
 using Edelstein.Protocol.Util.Pipelines;
 

@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Stages.Messages;
+﻿using Edelstein.Common.Gameplay.Stages.Contracts;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Network;

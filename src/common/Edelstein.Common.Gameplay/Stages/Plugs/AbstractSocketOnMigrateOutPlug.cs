@@ -2,7 +2,7 @@
 using Edelstein.Common.Services.Server.Types;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Contexts;
-using Edelstein.Protocol.Gameplay.Stages.Messages;
+using Edelstein.Protocol.Gameplay.Stages.Contracts;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Migration.Contracts;
 using Edelstein.Protocol.Util.Pipelines;

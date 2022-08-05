@@ -1,7 +1,7 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Game;
+﻿using Edelstein.Protocol.Gameplay.Stages.Contracts;
+using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
-using Edelstein.Protocol.Gameplay.Stages.Messages;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Contexts;
