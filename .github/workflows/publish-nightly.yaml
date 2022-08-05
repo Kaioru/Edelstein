@@ -31,7 +31,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
+    - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
     - name: Pack
-      run: dotnet pack --configuration Release --version-suffix "nightly.$GITHUB_RUN_NUMBER" --output artifacts
+      run: dotnet pack --configuration Release --version-suffix "nightly.${{ steps.date.outputs.date }}" --output artifacts
     - name: Publish
       run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
