@@ -76,7 +76,7 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath>, IFieldNPC, IPac
     {
         var packet = new PacketWriter(PacketSendOperations.NpcMove);
 
-        packet.WriteInt(ObjectID ?? 0);
+        packet.WriteInt(ObjectID!.Value);
         packet.Write(ctx);
 
         return packet;
@@ -87,7 +87,7 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath>, IFieldNPC, IPac
         var packet = new PacketWriter(PacketSendOperations.NpcChangeController);
 
         packet.WriteBool(controller != null);
-        packet.WriteInt(ObjectID ?? 0);
+        packet.WriteInt(ObjectID!.Value);
 
         if (controller != null)
             packet.Write(this);

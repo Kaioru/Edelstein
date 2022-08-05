@@ -24,30 +24,30 @@ public abstract class AbstractFieldLife<TMovePath> :
             .FirstOrDefault(f => f.Line.Intersects(Position));
     }
 
-    public Task Move(IPoint2D position) =>
-        Move(position, Field?.Template.Footholds
-            .Find(Position)
-            .FirstOrDefault(f => f.Line.Intersects(Position)));
+    public Task Move(IPoint2D position)
+    {
+        Position = position;
+        return UpdateFieldSplit();
+    }
 
     public virtual async Task Move(TMovePath ctx)
     {
         if (Field == null) return;
 
-        if (ctx.Action != null) Action = ctx.Action.Value;
-        await Move(ctx.Position, ctx.Foothold.HasValue
-            ? Field.Template.Footholds.FindByID(ctx.Foothold.Value)
-            : null
-        );
+        Action = ctx.Action ?? Action;
+        Position = ctx.Position ?? Position;
+        Foothold = Field.Template.Footholds
+            .Find(Position)
+            .FirstOrDefault(f => f.Line.Intersects(Position));
+
+        await UpdateFieldSplit();
 
         if (FieldSplit != null)
             await FieldSplit.Dispatch(GetMovePacket(ctx), this);
     }
 
-    private async Task Move(IPoint2D? position, IFieldFoothold? foothold)
+    private async Task UpdateFieldSplit()
     {
-        if (position != null) Position = position;
-        Foothold = foothold;
-
         var split = Field?.GetSplit(Position);
 
         if (split == null)
