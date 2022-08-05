@@ -8,7 +8,7 @@ public readonly struct UserMoveAction : IUserMoveAction
     public UserMoveAction(byte raw) => Raw = raw;
 
     public MoveActionType Type => (MoveActionType)((Raw >> 1) & 0x1F);
-    public bool IsFacingLeft => (Raw & 1) != 0;
+    public MoveActionDirection Direction => (MoveActionDirection)(Raw & 1);
 
     public byte Raw { get; }
 }
