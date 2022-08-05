@@ -54,9 +54,8 @@ public class FieldManager : IFieldManager
         INPCTemplate template,
         IPoint2D position,
         IFieldFoothold? foothold = null,
-        int rx0 = 0,
-        int rx1 = 0,
+        IRectangle2D? bounds = null,
         bool isFacingLeft = true,
         bool isEnabled = true
-    ) => new FieldNPC(template, position, foothold, rx0, rx1, isFacingLeft, isEnabled);
+    ) => new FieldNPC(template, position, foothold, bounds, isFacingLeft, isEnabled);
 }
