@@ -6,5 +6,5 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Plugs;
 public class NPCMovePlug : IPipelinePlug<INPCMove>
 {
     public Task Handle(IPipelineContext ctx, INPCMove message) =>
-        message.User.Move(message.Path);
+        message.NPC.Move(message.Path);
 }
