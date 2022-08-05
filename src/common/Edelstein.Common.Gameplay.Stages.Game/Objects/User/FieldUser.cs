@@ -1,7 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Common.Util.Spatial;
 using Edelstein.Protocol.Gameplay.Accounts;
@@ -11,7 +10,6 @@ using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Stats;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Buffers.Packets;
 
@@ -31,9 +29,6 @@ public class FieldUser : AbstractFieldLife, IFieldUser
         AccountWorld = accountWorld;
         Character = character;
 
-        Seeds = new CalculatedSeeds(0, 0, 0);
-        Stats = new CalculatedStats();
-
         Observing = new List<IFieldSplit>();
         Controlled = new List<IFieldControllable>();
     }
@@ -47,9 +42,6 @@ public class FieldUser : AbstractFieldLife, IFieldUser
     public IAccount Account { get; }
     public IAccountWorld AccountWorld { get; }
     public ICharacter Character { get; }
-
-    public ICalculatedSeeds Seeds { get; }
-    public ICalculatedStats Stats { get; }
 
     public bool IsInstantiated { get; set; }
 
@@ -71,9 +63,9 @@ public class FieldUser : AbstractFieldLife, IFieldUser
 
         if (!IsInstantiated)
         {
-            packet.WriteUInt(Seeds.Seed1);
-            packet.WriteUInt(Seeds.Seed2);
-            packet.WriteUInt(Seeds.Seed3);
+            packet.WriteUInt(0);
+            packet.WriteUInt(0);
+            packet.WriteUInt(0);
 
             packet.WriteCharacterData(Character);
 
