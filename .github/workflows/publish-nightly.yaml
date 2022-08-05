@@ -32,8 +32,8 @@ jobs:
       with:
         dotnet-version: '6.0.x'
     - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
     - name: Pack
       run: dotnet pack --configuration Release --version-suffix "nightly.${{ steps.date.outputs.date }}" --output artifacts
     - name: Publish
