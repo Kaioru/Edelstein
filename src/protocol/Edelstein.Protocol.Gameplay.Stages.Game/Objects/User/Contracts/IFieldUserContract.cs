@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts;
 
-public interface IFieldUserMessage
+public interface IFieldUserContract
 {
     IFieldUser User { get; }
 }

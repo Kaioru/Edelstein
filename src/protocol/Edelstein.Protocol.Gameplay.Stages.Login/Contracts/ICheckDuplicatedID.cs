@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Login.Contracts;
 
-public interface ICheckDuplicatedID : IStageUserMessage<ILoginStageUser>
+public interface ICheckDuplicatedID : IStageUserContract<ILoginStageUser>
 {
     string Name { get; }
 }

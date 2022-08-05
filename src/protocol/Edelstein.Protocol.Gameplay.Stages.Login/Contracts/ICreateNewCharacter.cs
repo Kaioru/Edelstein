@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Login.Contracts;
 
-public interface ICreateNewCharacter : IStageUserMessage<ILoginStageUser>
+public interface ICreateNewCharacter : IStageUserContract<ILoginStageUser>
 {
     string Name { get; }
     int Race { get; }
