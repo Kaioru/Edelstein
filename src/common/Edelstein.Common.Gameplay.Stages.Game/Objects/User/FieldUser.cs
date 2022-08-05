@@ -1,6 +1,7 @@
 ﻿using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Common.Util.Spatial;
 using Edelstein.Protocol.Gameplay.Accounts;
@@ -10,6 +11,7 @@ using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Util.Buffers.Packets;
 
@@ -151,14 +153,21 @@ public class FieldUser : AbstractFieldLife, IFieldUser
         new PacketWriter(PacketSendOperations.UserLeaveField)
             .WriteInt(Character.ID);
 
-    public async Task Message(string message)
+    public Task OnPacket(IPacket packet) => StageUser.OnPacket(packet);
+    public Task OnException(Exception exception) => StageUser.OnException(exception);
+    public Task OnDisconnect() => StageUser.OnDisconnect();
+    public Task Dispatch(IPacket packet) => StageUser.Dispatch(packet);
+    public Task Disconnect() => StageUser.Disconnect();
+
+    public Task Message(string message) => Message(new SystemMessage(message));
+
+    public async Task Message(IFieldMessage message)
     {
         var packet = new PacketWriter(PacketSendOperations.Message);
 
-        packet.WriteByte(0xA);
-        packet.WriteString(message);
+        packet.Write(message);
 
-        await StageUser.Dispatch(packet);
+        await Dispatch(packet);
     }
 
     public async Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
@@ -176,12 +185,6 @@ public class FieldUser : AbstractFieldLife, IFieldUser
 
         // TODO update stats
     }
-
-    public Task OnPacket(IPacket packet) => StageUser.OnPacket(packet);
-    public Task OnException(Exception exception) => StageUser.OnException(exception);
-    public Task OnDisconnect() => StageUser.OnDisconnect();
-    public Task Dispatch(IPacket packet) => StageUser.Dispatch(packet);
-    public Task Disconnect() => StageUser.Disconnect();
 
     protected override IPacket GetMovePacket(IMovePath ctx)
     {
