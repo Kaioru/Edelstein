@@ -1,6 +1,7 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Contracts;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Contracts;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
 
@@ -15,5 +16,6 @@ public record GameContextPipelines(
     IPipeline<ISocketOnDisconnect<IGameStageUser>> SocketOnDisconnect,
     IPipeline<IUserTransferChannelRequest> UserTransferChannelRequest,
     IPipeline<IUserMove> UserMove,
-    IPipeline<IUserChat> UserChat
+    IPipeline<IUserChat> UserChat,
+    IPipeline<INPCMove> NPCMove
 ) : IGameContextPipelines;

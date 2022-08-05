@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Contexts;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Contracts;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
 
@@ -9,4 +10,6 @@ public interface IGameContextPipelines : IStageContextPipelines<IGameStageUser>
     IPipeline<IUserTransferChannelRequest> UserTransferChannelRequest { get; }
     IPipeline<IUserMove> UserMove { get; }
     IPipeline<IUserChat> UserChat { get; }
+
+    IPipeline<INPCMove> NPCMove { get; }
 }
