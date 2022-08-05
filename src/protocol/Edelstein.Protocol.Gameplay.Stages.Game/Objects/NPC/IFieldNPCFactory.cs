@@ -10,8 +10,7 @@ public interface IFieldNPCFactory
         INPCTemplate template,
         IPoint2D position,
         IFieldFoothold? foothold = null,
-        int rx0 = 0,
-        int rx1 = 0,
+        IRectangle2D? bounds = null,
         bool isFacingLeft = true,
         bool isEnabled = true
     );

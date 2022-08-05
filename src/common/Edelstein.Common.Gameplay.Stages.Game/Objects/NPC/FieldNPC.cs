@@ -1,5 +1,6 @@
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Util.Buffers.Packets;
+using Edelstein.Common.Util.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game.Movements;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
@@ -17,15 +18,13 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath>, IFieldNPC, IPac
         INPCTemplate template,
         IPoint2D position,
         IFieldFoothold? foothold = null,
-        int rx0 = 0,
-        int rx1 = 0,
+        IRectangle2D? bounds = null,
         bool isFacingLeft = true,
         bool isEnabled = true
     ) : base(position, foothold)
     {
         Template = template;
-        RX0 = rx0;
-        RX1 = rx1;
+        Bounds = bounds ?? new Rectangle2D(Position, Position);
         Action = Convert.ToByte(isFacingLeft);
         IsEnabled = isEnabled;
     }
@@ -33,11 +32,9 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath>, IFieldNPC, IPac
     public override FieldObjectType Type => FieldObjectType.NPC;
 
     public INPCTemplate Template { get; }
+    public IRectangle2D Bounds { get; }
 
     public bool IsEnabled { get; }
-
-    public int RX0 { get; }
-    public int RX1 { get; }
 
     public override IPacket GetEnterFieldPacket()
     {
@@ -66,8 +63,8 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath>, IFieldNPC, IPac
         writer.WriteByte(Action);
         writer.WriteShort((short)(Foothold?.ID ?? 0));
 
-        writer.WriteShort((short)RX0); // TODO: Range min X, max X for movements
-        writer.WriteShort((short)RX1);
+        writer.WriteShort((short)Bounds.Left);
+        writer.WriteShort((short)Bounds.Right);
 
         writer.WriteBool(IsEnabled);
     }
