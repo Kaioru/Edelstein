@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Login.Contracts;
 
-public interface IEnableSPWRequest : IStageUserMessage<ILoginStageUser>
+public interface IEnableSPWRequest : IStageUserContract<ILoginStageUser>
 {
     int CharacterID { get; }
     string MacAddress { get; }

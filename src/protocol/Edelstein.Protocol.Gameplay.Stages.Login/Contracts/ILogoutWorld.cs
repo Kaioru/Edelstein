@@ -2,6 +2,6 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Login.Contracts;
 
-public interface ILogoutWorld : IStageUserMessage<ILoginStageUser>
+public interface ILogoutWorld : IStageUserContract<ILoginStageUser>
 {
 }

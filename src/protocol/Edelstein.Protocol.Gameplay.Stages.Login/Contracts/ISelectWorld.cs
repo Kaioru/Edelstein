@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Login.Contracts;
 
-public interface ISelectWorld : IStageUserMessage<ILoginStageUser>
+public interface ISelectWorld : IStageUserContract<ILoginStageUser>
 {
     int WorldID { get; }
     int ChannelID { get; }

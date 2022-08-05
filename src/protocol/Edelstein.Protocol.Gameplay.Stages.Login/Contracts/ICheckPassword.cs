@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Stages.Login.Contracts;
 
-public interface ICheckPassword : IStageUserMessage<ILoginStageUser>
+public interface ICheckPassword : IStageUserContract<ILoginStageUser>
 {
     string Username { get; }
     string Password { get; }
