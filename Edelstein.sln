@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{71E8FDEE-8F29-4294-8B21-97F367594BD3}"
+	ProjectSection(SolutionItems) = preProject
+		src\Source.targets = src\Source.targets
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{E8E4BA1B-1B13-4BD1-907D-BECBBF3F357B}"
 	ProjectSection(SolutionItems) = preProject
@@ -94,15 +97,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Plugin.G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Plugin", "src\common\Edelstein.Common.Plugin\Edelstein.Common.Plugin.csproj", "{A9B19E36-0C93-4015-9473-BF2417CCD32D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugin", "plugin", "{67E6F87D-53E1-4B7C-B9F5-6192D18FD4D1}"
-	ProjectSection(SolutionItems) = preProject
-		src\plugin\Plugin.targets = src\plugin\Plugin.targets
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Plugin.Login.Sample", "src\plugin\Edelstein.Plugin.Login.Sample\Edelstein.Plugin.Login.Sample.csproj", "{8AC1E252-495C-4F57-9782-93932A2267C5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Plugin.Login.Sample2", "src\plugin\Edelstein.Plugin.Login.Sample2\Edelstein.Plugin.Login.Sample2.csproj", "{0E8BB7E1-772C-47F2-9F13-77890832492A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Util.Commands", "src\protocol\Edelstein.Protocol.Util.Commands\Edelstein.Protocol.Util.Commands.csproj", "{9A03E55B-95ED-40A5-8397-1C5F515EE2E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Util.Commands", "src\common\Edelstein.Common.Util.Commands\Edelstein.Common.Util.Commands.csproj", "{7023EDE0-C407-4049-B3E5-85CC0FA0D336}"
@@ -160,9 +154,6 @@ Global
 		{66CF0D71-511A-4C54-BD7B-D45AD1CD9198} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{9C697E03-F93C-40E6-8819-11532CB91D78} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{A9B19E36-0C93-4015-9473-BF2417CCD32D} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
-		{67E6F87D-53E1-4B7C-B9F5-6192D18FD4D1} = {71E8FDEE-8F29-4294-8B21-97F367594BD3}
-		{8AC1E252-495C-4F57-9782-93932A2267C5} = {67E6F87D-53E1-4B7C-B9F5-6192D18FD4D1}
-		{0E8BB7E1-772C-47F2-9F13-77890832492A} = {67E6F87D-53E1-4B7C-B9F5-6192D18FD4D1}
 		{9A03E55B-95ED-40A5-8397-1C5F515EE2E8} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{7023EDE0-C407-4049-B3E5-85CC0FA0D336} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{FC149D76-94CD-4E32-95F0-3FD2E15CF402} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
@@ -317,14 +308,6 @@ Global
 		{A9B19E36-0C93-4015-9473-BF2417CCD32D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9B19E36-0C93-4015-9473-BF2417CCD32D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9B19E36-0C93-4015-9473-BF2417CCD32D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AC1E252-495C-4F57-9782-93932A2267C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AC1E252-495C-4F57-9782-93932A2267C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AC1E252-495C-4F57-9782-93932A2267C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AC1E252-495C-4F57-9782-93932A2267C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E8BB7E1-772C-47F2-9F13-77890832492A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E8BB7E1-772C-47F2-9F13-77890832492A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E8BB7E1-772C-47F2-9F13-77890832492A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E8BB7E1-772C-47F2-9F13-77890832492A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9A03E55B-95ED-40A5-8397-1C5F515EE2E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9A03E55B-95ED-40A5-8397-1C5F515EE2E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A03E55B-95ED-40A5-8397-1C5F515EE2E8}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,12 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <Import Project="..\Common.targets" />
 
-    <ItemGroup>
+  <ItemGroup>
       <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Data\Edelstein.Protocol.Data.csproj" />
     </ItemGroup>
 
