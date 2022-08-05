@@ -1,5 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Login;
-using Edelstein.Protocol.Gameplay.Stages.Messages;
+﻿using Edelstein.Protocol.Gameplay.Stages.Contracts;
+using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Util.Pipelines;
 using Microsoft.Extensions.Logging;
 

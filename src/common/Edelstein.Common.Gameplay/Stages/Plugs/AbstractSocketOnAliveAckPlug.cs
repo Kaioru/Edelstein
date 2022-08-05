@@ -1,5 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages;
-using Edelstein.Protocol.Gameplay.Stages.Messages;
+using Edelstein.Protocol.Gameplay.Stages.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Plugs;
