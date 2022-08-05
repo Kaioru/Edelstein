@@ -43,16 +43,23 @@ public class CommandManager<TContext> : ICommandManager<TContext>
         return Process(ctx, args);
     }
 
-    public virtual Task<bool> Process(TContext ctx, string[] args)
+    public virtual async Task<bool> Process(TContext ctx, string[] args)
     {
-        if (args.Length <= 0) return Task.FromResult(false);
+        if (args.Length <= 0) return false;
 
         var first = args[0];
         var command = GetCommand(first);
 
-        return command != null
-            ? command.Process(ctx, args[1..])
-            : Task.FromResult(false);
+        switch (command)
+        {
+            case ICommandManager<TContext> manager:
+                return await manager.Process(ctx, args[1..]);
+            case null:
+                return false;
+            default:
+                await command.Execute(ctx, args);
+                return true;
+        }
     }
 
     private ICommand<TContext>? GetCommand(string name) =>
