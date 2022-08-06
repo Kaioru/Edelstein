@@ -1,11 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="..\Common.targets"/>
-  
+
   <PropertyGroup>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.3.0"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
