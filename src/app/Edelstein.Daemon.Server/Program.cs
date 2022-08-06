@@ -63,6 +63,7 @@ await Host.CreateDefaultBuilder(args)
             o.UseNpgsql(ctx.Configuration.GetConnectionString(ServerDbContext.ConnectionStringKey)));
         services.AddPooledDbContextFactory<GameplayDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(GameplayDbContext.ConnectionStringKey)));
+        services.AddSingleton<IBootstrap, DatabaseBootstrap>();
 
         services.AddSingleton<ISerializer, BinarySerializer>();
 
