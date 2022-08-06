@@ -5,36 +5,79 @@ on:
    - cron: "0 0 * * *"
 
 jobs:
-  check_commit:
+  setup:
     runs-on: ubuntu-latest
-    name: Check latest commit
+    name: Setup
     outputs:
       should_run: ${{ steps.should_run.outputs.should_run }}
+      date:  ${{ steps.date.outputs.date }}
     steps:
       - uses: actions/checkout@v2
-      - name: Print latest commit
-        run: echo ${{ github.sha }}
+      - name: Check current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
       - id: should_run
         continue-on-error: true
-        name: Check new commits
+        name: Check for new commits
         if: ${{ github.event_name == 'schedule' }}
         run: test -z $(git rev-list --after="24 hours" ${{ github.sha }}) && echo "::set-output name=should_run::false"
 
-  publish:
-    needs: check_commit
-    if: ${{ needs.check_commit.outputs.should_run != 'false' }}
+  publish_nuget:
+    needs: setup
+    if: ${{ needs.setup.outputs.should_run != 'false' }}
     runs-on: ubuntu-latest
     name: Publish to Github NuGet Registry
     steps:
     - uses: actions/checkout@v1
-    - name: Setup .NET Core
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
-    - name: Get current date
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y%m%d')"
     - name: Pack
-      run: dotnet pack --configuration Release --version-suffix "nightly.${{ steps.date.outputs.date }}" --output artifacts
+      run: dotnet pack --configuration Release --version-suffix "nightly.${{ needs.setup.outputs.date }}" --output artifacts
     - name: Publish
       run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+
+  publish_artifacts:
+    needs: setup
+    if: ${{ needs.setup.outputs.should_run != 'false' }}
+    strategy:
+      matrix:
+        runtime: [win-x64, osx-x64, linux-x64]
+    runs-on: ubuntu-latest
+    name: Publish artifacts (${{ matrix.runtime }})
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+    - name: Publish
+      run: dotnet publish -c Release -r ${{ matrix.runtime }} --output artifacts-${{ matrix.runtime }} -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:SelfContained=true
+    - name: Add VERSION, COMMIT and LICENSE files
+      run: |
+        echo "nightly.${{ needs.setup.outputs.date }}" > artifacts-${{ matrix.runtime }}/VERSION
+        echo ${{ github.sha }} > artifacts-${{ matrix.runtime }}/COMMIT
+        cp LICENSE artifacts-${{ matrix.runtime }}
+    - name: Compress
+      run: zip -j ${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip artifacts-${{ matrix.runtime }}/*
+    - name: Store artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}
+        path: ${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip
+
+  publish_release:
+    needs: [setup, publish_artifacts]
+    runs-on: ubuntu-latest
+    name: Publish to Github releases
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "nightly.latest"
+        prerelease: true
+        title: "Nightly Build (${{ needs.setup.outputs.date }})"
+        files: "*/*.zip"
