@@ -66,11 +66,12 @@ jobs:
           ${{ runner.os }}-nuget
     - name: Publish
       run: dotnet publish -c Release -r ${{ matrix.runtime }} --output artifacts-${{ matrix.runtime }} -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:SelfContained=true
-    - name: Add VERSION, COMMIT and LICENSE files
+    - name: Add VERSION, COMMIT, LICENSE, and README files
       run: |
         echo "nightly.${{ needs.setup.outputs.date }}" > artifacts-${{ matrix.runtime }}/VERSION
         echo ${{ github.sha }} > artifacts-${{ matrix.runtime }}/COMMIT
         cp LICENSE artifacts-${{ matrix.runtime }}
+        cp README.md artifacts-${{ matrix.runtime }}
     - name: Create data, scripts, and plugins directories
       run: |
         mkdir artifacts-${{ matrix.runtime }}/data
