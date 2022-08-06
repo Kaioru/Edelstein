@@ -33,6 +33,12 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
+    - uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget
     - name: Pack
       run: dotnet pack --configuration Release --version-suffix "nightly.${{ needs.setup.outputs.date }}" --output artifacts
     - name: Publish
@@ -52,6 +58,12 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
+    - uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget
     - name: Publish
       run: dotnet publish -c Release -r ${{ matrix.runtime }} --output artifacts-${{ matrix.runtime }} -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:SelfContained=true
     - name: Add VERSION, COMMIT and LICENSE files
