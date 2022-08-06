@@ -13,8 +13,12 @@ A v.95.1 Mushroom game server emulator written in C#.
 3. Download the scripts from [Server.Scripts](https://github.com/Kaioru/Server.Scripts/releases)
 4. Unzip both into the `data` and `scripts` folder respectively
 
+#### Update configuration and migrations
+5. Edit the `appsettings.json` file to the appropriate settings
+6. Run the scripts in the `migrations` directory in sequence
+
 #### Running the server
-5. Run the `Edelstein.Daemon.Server` executable
+7. Run the `Edelstein.Daemon.Server` executable
 
 ### 🏗️ Builds
 A nightly build is published at 00:00 UTC when there are changes to the 'dev' branch.
