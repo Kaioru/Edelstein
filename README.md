@@ -22,7 +22,7 @@ A nightly build is published on Github Packages at 00:00 UTC when there are chan
 
 #### Setting up your project for Github Packages
 1. Create a Personal Access Token with the 'read:packages' scope
-2. Create a 'nuget.config' file on your project root with the following contents:
+2. Create a `nuget.config` file on your project root with the following contents:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
@@ -38,7 +38,7 @@ A nightly build is published on Github Packages at 00:00 UTC when there are chan
     </packageSourceCredentials>
 </configuration>
 ```
-3. Remember to se your Github Username and Personal Access Token!
+3. Remember to set your Github Username and Personal Access Token!
 
 Check the [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry) for more on how to setup the NuGet registry.
 
