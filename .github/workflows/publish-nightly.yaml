@@ -71,8 +71,10 @@ jobs:
         echo "nightly.${{ needs.setup.outputs.date }}" > artifacts-${{ matrix.runtime }}/VERSION
         echo ${{ github.sha }} > artifacts-${{ matrix.runtime }}/COMMIT
         cp LICENSE artifacts-${{ matrix.runtime }}
+    - name: Create data directory
+      run: mkdir artifacts-${{ matrix.runtime }}/data
     - name: Compress
-      run: zip -j ${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip artifacts-${{ matrix.runtime }}/*
+      run: zip ${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip artifacts-${{ matrix.runtime }}/*
     - name: Store artifacts
       uses: actions/upload-artifact@v3
       with:
