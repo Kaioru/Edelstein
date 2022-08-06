@@ -3,22 +3,24 @@ A v.95.1 Mushroom game server emulator written in C#.
 
 ## 🚀 Getting started
 
-### 👨🏼‍💻 Developers
-This project is built on .NET! make sure you have it installed before continuing.
+### ✨ Usage
 
-#### Downloading required assets
-1. Download the scripts from [Server.Scripts](https://github.com/kaioru/server.scripts/releases)
-2. Download the data from [Server.NX](https://github.com/kaioru/server.nx/releases)
-3. Unzip both into their own folders
+#### Download a release
+1. Check the [releases](https://github.com/Kaioru/Edelstein/releases) tab and download the correct bundle based on your OS!
+
+#### Download required assets 
+2. Download the data from [Server.NX](https://github.com/Kaioru/Server.NX/releases)
+3. Download the scripts from [Server.Scripts](https://github.com/Kaioru/Server.Scripts/releases)
+4. Unzip both into the `data` and `scripts` folder respectively
 
 #### Running the server
-1. ```cd src/app/Edelstein.Daemon.Server```
-2. ```cp appsettings.json appsettings.Production.json```
-3. Edit the appsettings.Production.json appropriately (remember to set the scripts and data path!)
-4. ```dotnet run```
+5. Run the `Edelstein.Daemon.Server` executable
 
 ### 🏗️ Builds
-A nightly build is published on Github Packages at 00:00 UTC when there are changes to the 'dev' branch.
+A nightly build is published at 00:00 UTC when there are changes to the 'dev' branch.
+
+* Executables are available under [releases](https://github.com/Kaioru/Edelstein/releases/tag/nightly) tab with the `nightly` tag
+* Protocol and Common libraries are pushed to [packages](https://github.com/Kaioru?tab=packages&repo_name=Edelstein)
 
 #### Setting up your project for Github Packages
 1. Create a Personal Access Token with the 'read:packages' scope
@@ -41,11 +43,6 @@ A nightly build is published on Github Packages at 00:00 UTC when there are chan
 3. Remember to set your Github Username and Personal Access Token!
 
 Check the [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry) for more on how to setup the NuGet registry.
-
-#### Installing packages
-Now that your NuGet sources is all set up and authenticated, you can now install nightly builds of Edelstein.
-
-See the [packages](https://github.com/Kaioru?tab=packages&repo_name=Edelstein) tab for an index of the packages!
 
 ## 📦 Extra Stuff
 * [Server.NX](https://github.com/kaioru/server.nx) - the source for the Server.nx file.
