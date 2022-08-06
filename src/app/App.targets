@@ -11,9 +11,4 @@
     <IsPublishable>true</IsPublishable>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <DebugSymbols>False</DebugSymbols>
-    <DebugType>None</DebugType>
-  </PropertyGroup>
-
 </Project>
