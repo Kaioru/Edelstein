@@ -5,6 +5,10 @@ A v.95.1 Mushroom game server emulator written in C#.
 
 ### ✨ Usage
 
+#### Prerequisites
+* A running [PostgreSQL](https://www.postgresql.org) server!
+* That's mostly it..
+
 #### Download a release
 1. Check the [releases](https://github.com/Kaioru/Edelstein/releases) tab and download the correct bundle based on your OS!
 
