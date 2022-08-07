@@ -98,8 +98,10 @@ public class ServerStartBootstrap<TStage, TStageUser, TContext> : IBootstrap
         await _acceptor.Accept(_stageConfig.Host, _stageConfig.Port);
 
         _logger.LogInformation(
-            "{ID} socket acceptor bound at {Host}:{Port}",
-            _stageConfig.ID, _stageConfig.Host, _stageConfig.Port
+            "{ID} socket acceptor for v{Version}.{Patch} (Locale {Locale}) bound at {Host}:{Port}",
+            _stageConfig.ID,
+            _stageConfig.Version, _stageConfig.Patch, _stageConfig.Locale,
+            _stageConfig.Host, _stageConfig.Port
         );
     }
 
