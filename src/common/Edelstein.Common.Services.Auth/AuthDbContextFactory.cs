@@ -10,6 +10,7 @@ public class AuthDbContextFactory : IDesignTimeDbContextFactory<AuthDbContext>
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json", true)
             .AddJsonFile("devsettings.json", true)
             .AddJsonFile("devsettings.Development.json", true)
             .Build();
