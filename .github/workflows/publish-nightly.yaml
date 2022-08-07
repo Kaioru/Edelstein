@@ -85,7 +85,7 @@ jobs:
         mkdir artifacts-${{ matrix.runtime }}/scripts
         mkdir artifacts-${{ matrix.runtime }}/plugins
     - name: Compress
-      run: cd artifacts-${{ matrix.runtime }}; zip ${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip *; cd ..
+      run: cd artifacts-${{ matrix.runtime }}; zip ../${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip *; cd ..
     - name: Store artifacts
       uses: actions/upload-artifact@v3
       with:
