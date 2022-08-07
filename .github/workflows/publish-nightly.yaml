@@ -6,6 +6,7 @@ on:
 
 jobs:
   setup:
+    if: github.repository == 'Kaioru/Edelstein'
     runs-on: ubuntu-latest
     name: Setup
     outputs:
