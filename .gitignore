@@ -8,6 +8,7 @@
 !*.wz/
 !**/*.example.json
 !**/appsettings.json
+!**/devsettings.json
 
 .env
 scripts.zip

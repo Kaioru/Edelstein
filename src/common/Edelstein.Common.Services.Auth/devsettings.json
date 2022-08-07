@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "Auth": "host=localhost;database=edelstein;"
+  }
+}
