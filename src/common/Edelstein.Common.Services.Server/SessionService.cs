@@ -1,6 +1,6 @@
 ﻿using Edelstein.Common.Services.Server.Contracts;
+using Edelstein.Common.Services.Server.Contracts.Types;
 using Edelstein.Common.Services.Server.Models;
-using Edelstein.Common.Services.Server.Types;
 using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Services.Session.Contracts;
 using Mapster;

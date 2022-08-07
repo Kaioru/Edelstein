@@ -1,5 +1,5 @@
 ﻿using Edelstein.Common.Services.Server.Contracts;
-using Edelstein.Common.Services.Server.Types;
+using Edelstein.Common.Services.Server.Contracts.Types;
 using Edelstein.Protocol.Gameplay.Stages;
 using Edelstein.Protocol.Gameplay.Stages.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Contracts;

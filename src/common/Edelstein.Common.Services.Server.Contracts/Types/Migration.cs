@@ -2,7 +2,7 @@
 using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Services.Migration.Types;
 
-namespace Edelstein.Common.Services.Server.Types;
+namespace Edelstein.Common.Services.Server.Contracts.Types;
 
 public record Migration : IMigration
 {

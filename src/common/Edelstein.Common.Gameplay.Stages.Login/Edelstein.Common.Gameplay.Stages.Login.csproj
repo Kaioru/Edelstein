@@ -8,12 +8,13 @@
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Pipelines\Edelstein.Protocol.Util.Pipelines.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
-    <ProjectReference Include="..\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Services.Auth.Contracts\Edelstein.Common.Services.Auth.Contracts.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Util.Templates\Edelstein.Common.Util.Templates.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
   </ItemGroup>
 

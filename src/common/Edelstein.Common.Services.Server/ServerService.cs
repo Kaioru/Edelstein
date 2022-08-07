@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Services.Server.Contracts;
+using Edelstein.Common.Services.Server.Contracts.Types;
 using Edelstein.Common.Services.Server.Models;
-using Edelstein.Common.Services.Server.Types;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
 using Edelstein.Protocol.Services.Server.Types;
@@ -79,7 +79,7 @@ public class ServerService : IServerService
             if (existing == null || existing.DateExpire < now)
                 return new ServerGetOneResponse<IServer>(ServerResult.FailedNotFound);
 
-            return new ServerGetOneResponse<IServer>(ServerResult.Success, existing.Adapt<Types.Server>());
+            return new ServerGetOneResponse<IServer>(ServerResult.Success, existing.Adapt<Contracts.Types.Server>());
         }
         catch (Exception)
         {
@@ -139,7 +139,7 @@ public class ServerService : IServerService
 
             return new ServerGetAllResponse<IServer>(ServerResult.Success, existing
                 .Where(s => s.DateExpire > now)
-                .Select(s => s.Adapt<Types.Server>())
+                .Select(s => s.Adapt<Contracts.Types.Server>())
                 .ToImmutableList());
         }
         catch (Exception)

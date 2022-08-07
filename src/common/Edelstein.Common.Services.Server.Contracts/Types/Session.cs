@@ -1,6 +1,6 @@
 ﻿using Edelstein.Protocol.Services.Session.Types;
 
-namespace Edelstein.Common.Services.Server.Types;
+namespace Edelstein.Common.Services.Server.Contracts.Types;
 
 public record Session : ISession
 {

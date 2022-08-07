@@ -1,6 +1,6 @@
 ﻿using Edelstein.Common.Services.Server.Contracts;
+using Edelstein.Common.Services.Server.Contracts.Types;
 using Edelstein.Common.Services.Server.Models;
-using Edelstein.Common.Services.Server.Types;
 using Edelstein.Common.Util.Serializers;
 using Edelstein.Protocol.Gameplay.Accounts;
 using Edelstein.Protocol.Gameplay.Characters;
