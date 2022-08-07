@@ -64,6 +64,8 @@ jobs:
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
           ${{ runner.os }}-nuget
+    - name: Install EntityFramework Core tools
+      run: dotnet tool install --global dotnet-ef
     - name: Publish
       run: dotnet publish -c Release -r ${{ matrix.runtime }} --output artifacts-${{ matrix.runtime }} -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:SelfContained=true
     - name: Bundle migrations
