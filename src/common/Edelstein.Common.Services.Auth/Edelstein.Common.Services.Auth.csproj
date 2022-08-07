@@ -1,27 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\Common.targets"/>
+  <Import Project="..\Common.targets" />
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Auth\Edelstein.Protocol.Services.Auth.csproj"/>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Repositories\Edelstein.Protocol.Util.Repositories.csproj"/>
-    <ProjectReference Include="..\Edelstein.Common.Services.Auth.Contracts\Edelstein.Common.Services.Auth.Contracts.csproj"/>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Auth\Edelstein.Protocol.Services.Auth.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Repositories\Edelstein.Protocol.Util.Repositories.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Services.Auth.Contracts\Edelstein.Common.Services.Auth.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5" />
   </ItemGroup>
 
 </Project>

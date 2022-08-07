@@ -1,26 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\Common.targets"/>
+  <Import Project="..\Common.targets" />
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj"/>
-    <ProjectReference Include="..\Edelstein.Common.Util.Serializers\Edelstein.Common.Util.Serializers.csproj"/>
+    <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Util.Serializers\Edelstein.Common.Util.Serializers.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mapster" Version="7.3.0"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
+    <PackageReference Include="Mapster" Version="7.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5" />
   </ItemGroup>
 
 </Project>

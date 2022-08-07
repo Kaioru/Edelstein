@@ -7,4 +7,11 @@
     <IsPublishable>false</IsPublishable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="devsettings*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

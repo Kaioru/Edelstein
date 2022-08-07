@@ -1,30 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\Common.targets"/>
+  <Import Project="..\Common.targets" />
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mapster" Version="7.3.0"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
+    <PackageReference Include="Mapster" Version="7.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Migration\Edelstein.Protocol.Services.Migration.csproj"/>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Server\Edelstein.Protocol.Services.Server.csproj"/>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj"/>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Repositories\Edelstein.Protocol.Util.Repositories.csproj"/>
-    <ProjectReference Include="..\Edelstein.Common.Services.Server.Contracts\Edelstein.Common.Services.Server.Contracts.csproj"/>
-    <ProjectReference Include="..\Edelstein.Common.Util.Serializers\Edelstein.Common.Util.Serializers.csproj"/>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Migration\Edelstein.Protocol.Services.Migration.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Server\Edelstein.Protocol.Services.Server.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Repositories\Edelstein.Protocol.Util.Repositories.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Services.Server.Contracts\Edelstein.Common.Services.Server.Contracts.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Util.Serializers\Edelstein.Common.Util.Serializers.csproj" />
   </ItemGroup>
 
 </Project>

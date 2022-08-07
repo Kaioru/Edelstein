@@ -10,8 +10,8 @@ public class GameplayDbContextFactory : IDesignTimeDbContextFactory<GameplayDbCo
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json", true)
-            .AddJsonFile("appsettings.Development.json", true)
+            .AddJsonFile("devsettings.json", true)
+            .AddJsonFile("devsettings.Development.json", true)
             .Build();
         var connection = configuration.GetConnectionString(GameplayDbContext.ConnectionStringKey);
         var builder = new DbContextOptionsBuilder<GameplayDbContext>().UseNpgsql(connection);

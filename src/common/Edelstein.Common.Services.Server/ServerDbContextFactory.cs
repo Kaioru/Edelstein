@@ -10,8 +10,8 @@ public class ServerDbContextFactory : IDesignTimeDbContextFactory<ServerDbContex
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json", true)
-            .AddJsonFile("appsettings.Development.json", true)
+            .AddJsonFile("devsettings.json", true)
+            .AddJsonFile("devsettings.Development.json", true)
             .Build();
         var connection = configuration.GetConnectionString(ServerDbContext.ConnectionStringKey);
         var builder = new DbContextOptionsBuilder<ServerDbContext>().UseNpgsql(connection);
