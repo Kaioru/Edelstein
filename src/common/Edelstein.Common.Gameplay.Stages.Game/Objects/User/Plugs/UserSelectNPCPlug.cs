@@ -18,7 +18,7 @@ public class UserSelectNPCPlug : IPipelinePlug<IUserSelectNPC>
         if (script == null) return;
         var conversation = await _manager.Create(script);
 
-        await message.User.Converse(
+        _ = message.User.Converse(
             conversation,
             c => new ConversationSpeaker(c, message.NPC.Template.ID),
             c => new ConversationSpeaker(c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
