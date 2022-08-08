@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Stages.Game.Generators;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game;
@@ -10,28 +11,47 @@ using Edelstein.Protocol.Gameplay.Stages.Game.Spatial;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
 using Edelstein.Protocol.Util.Spatial;
 using Edelstein.Protocol.Util.Templates;
+using Edelstein.Protocol.Util.Tickers;
 
 namespace Edelstein.Common.Gameplay.Stages.Game;
 
-public class FieldManager : IFieldManager
+public class FieldManager : IFieldManager, ITickable
 {
     private readonly IDictionary<int, IField> _fields;
-    private readonly ITemplateManager<IFieldTemplate> _templates;
+    private readonly ITemplateManager<IFieldTemplate> _fieldTemplates;
+    private readonly ITemplateManager<INPCTemplate> _npcTemplates;
 
-    public FieldManager(ITemplateManager<IFieldTemplate> templates)
+    public FieldManager(
+        ITickerManager tickerManager,
+        ITemplateManager<IFieldTemplate> fieldTemplates,
+        ITemplateManager<INPCTemplate> npcTemplates
+    )
     {
         _fields = new ConcurrentDictionary<int, IField>();
-        _templates = templates;
+        _fieldTemplates = fieldTemplates;
+        _npcTemplates = npcTemplates;
+
+        tickerManager.Schedule(new FieldGeneratorTicker(this), TimeSpan.FromSeconds(7));
     }
 
     public async Task<IField?> Retrieve(int key)
     {
         var field = _fields.TryGetValue(key, out var result) ? result : null;
-        var template = await _templates.Retrieve(key);
+        var template = await _fieldTemplates.Retrieve(key);
 
         if (field != null || template == null) return field;
 
         field = CreateField(template);
+
+        foreach (var life in template.Life)
+        {
+            if (life.Type != FieldLifeType.NPC) continue;
+
+            var npc = await _npcTemplates.Retrieve(life.ID);
+            if (npc == null) continue;
+            field.Generators.Add(new FieldNPCGenerator(field, life, npc));
+        }
+
         _fields.Add(key, field);
 
         return field;
@@ -58,4 +78,6 @@ public class FieldManager : IFieldManager
         bool isFacingLeft = true,
         bool isEnabled = true
     ) => new FieldNPC(template, position, foothold, bounds, isFacingLeft, isEnabled);
+
+    public Task OnTick(DateTime now) => throw new NotImplementedException();
 }

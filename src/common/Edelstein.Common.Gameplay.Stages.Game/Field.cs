@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
@@ -23,6 +24,9 @@ public class Field : AbstractFieldObjectPool, IField
     {
         Manager = manager;
         Template = template;
+
+        Generators = new List<IFieldGenerator>();
+
         _pools = new Dictionary<FieldObjectType, FieldObjectPool>();
         foreach (var type in Enum.GetValues<FieldObjectType>())
             _pools[type] = new FieldObjectPool();
@@ -41,6 +45,8 @@ public class Field : AbstractFieldObjectPool, IField
 
     public IFieldManager Manager { get; }
     public IFieldTemplate Template { get; }
+
+    public ICollection<IFieldGenerator> Generators { get; }
 
     public override IReadOnlyCollection<IFieldObject> Objects =>
         _pools.Values.SelectMany(p => p.Objects).ToImmutableList();
