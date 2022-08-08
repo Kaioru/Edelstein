@@ -15,7 +15,7 @@ public record FieldTemplate : IFieldTemplate
         IDataNode foothold,
         IDataNode portal,
         IDataProperty ladderRope,
-        IDataProperty life,
+        IDataNode life,
         IDataProperty info
     )
     {
@@ -71,6 +71,10 @@ public record FieldTemplate : IFieldTemplate
         Portals = new FieldSpace<IFieldPortal>(Bounds);
         Portals.BulkInsert(portals);
 
+        Life = life.Children
+            .Select(p => new FieldTemplateLife(p.ResolveAll()))
+            .ToImmutableList<IFieldTemplateLife>();
+
         MobRate = info.Resolve<double>("mobRate") ?? 1.0;
 
         var mobCapacity = Bounds.Height * Bounds.Width * MobRate * 0.0000078125;
@@ -97,6 +101,8 @@ public record FieldTemplate : IFieldTemplate
 
     public string? ScriptFirstUserEnter { get; }
     public string? ScriptUserEnter { get; }
+
+    public ICollection<IFieldTemplateLife> Life { get; }
 
     public double MobRate { get; }
     public int MobCapacityMin { get; }

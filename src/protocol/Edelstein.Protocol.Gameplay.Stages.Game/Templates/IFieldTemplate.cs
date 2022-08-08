@@ -19,6 +19,8 @@ public interface IFieldTemplate : ITemplate
     string? ScriptFirstUserEnter { get; }
     string? ScriptUserEnter { get; }
 
+    ICollection<IFieldTemplateLife> Life { get; }
+
     double MobRate { get; }
     int MobCapacityMin { get; }
     int MobCapacityMax { get; }
