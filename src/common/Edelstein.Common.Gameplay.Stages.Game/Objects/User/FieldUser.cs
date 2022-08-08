@@ -227,7 +227,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
     }
 
     public IConversationSpeaker GetSpeaker(IConversationContext ctx) =>
-        new ConversationSpeaker(ctx);
+        new ConversationSpeaker(ctx, flags: ConversationSpeakerFlags.NPCReplacedByUser);
 
     protected override IPacket GetMovePacket(IUserMovePath ctx)
     {

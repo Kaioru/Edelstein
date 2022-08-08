@@ -8,10 +8,12 @@ using Edelstein.Common.Gameplay.Stages;
 using Edelstein.Common.Gameplay.Stages.Game;
 using Edelstein.Common.Gameplay.Stages.Game.Contexts;
 using Edelstein.Common.Gameplay.Stages.Game.Continents;
+using Edelstein.Common.Gameplay.Stages.Game.Conversations;
 using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Plugin;
+using Edelstein.Common.Scripting.NLua;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Server;
 using Edelstein.Common.Util.Commands;
@@ -26,11 +28,13 @@ using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continents;
+using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
+using Edelstein.Protocol.Scripting;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
@@ -83,6 +87,7 @@ await Host.CreateDefaultBuilder(args)
             p.GetRequiredService<ProgramConfig>().TicksPerSecond
         ));
         services.AddSingleton<IDataManager>(new NXDataManager(ctx.Configuration.GetSection("Data")["Directory"]));
+        services.AddSingleton<IScriptEngine>(new LuaScriptEngine(ctx.Configuration.GetSection("Scripts")["Directory"]));
         services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));
         services.AddSingleton(typeof(IPluginManager<>), typeof(PluginManager<>));
     })
@@ -156,6 +161,7 @@ await Host.CreateDefaultBuilder(args)
                         scope.AddSingleton<IFieldManager, FieldManager>();
                         scope.AddSingleton<IContiMoveManager, ContiMoveManager>();
                         scope.AddSingleton(typeof(ICommandManager<>), typeof(CommandManager<>));
+                        scope.AddSingleton<IConversationManager, ScriptedConversationManager>();
 
                         scope.AddSingleton(options);
                         scope.AddSingleton<IGameContext, GameContext>();

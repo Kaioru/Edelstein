@@ -1,5 +1,6 @@
 ﻿using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continents;
+using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Util.Commands;
 using Edelstein.Protocol.Util.Tickers;
@@ -13,4 +14,5 @@ public interface IGameContextManagers
     IFieldManager Field { get; }
     IContiMoveManager ContiMove { get; }
     ICommandManager<IFieldUser> Command { get; }
+    IConversationManager Conversation { get; }
 }
