@@ -17,5 +17,11 @@ public record GameContextPipelines(
     IPipeline<IUserTransferChannelRequest> UserTransferChannelRequest,
     IPipeline<IUserMove> UserMove,
     IPipeline<IUserChat> UserChat,
+    IPipeline<IUserEmotion> UserEmotion,
+    IPipeline<IUserSelectNPC> UserSelectNPC,
+    IPipeline<IUserGatherItemRequest> UserGatherItemRequest,
+    IPipeline<IUserSortItemRequest> UserSortItemRequest,
+    IPipeline<IUserChangeSlotPositionRequest> UserChangeSlotPositionRequest,
+    IPipeline<IUserCharacterInfoRequest> UserCharacterInfoRequest,
     IPipeline<INPCMove> NPCMove
 ) : IGameContextPipelines;
