@@ -32,8 +32,8 @@ public interface IFieldUser :
 
     Task Converse(
         IConversation conversation,
-        IConversationSpeaker? speaker1 = null,
-        IConversationSpeaker? speaker2 = null
+        Func<IConversationContext, IConversationSpeaker>? getSpeaker1 = null,
+        Func<IConversationContext, IConversationSpeaker>? getSpeaker2 = null
     );
 
     Task EndConversation();

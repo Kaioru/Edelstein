@@ -180,16 +180,16 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
     public async Task Converse(
         IConversation conversation,
-        IConversationSpeaker? speaker1 = null,
-        IConversationSpeaker? speaker2 = null
+        Func<IConversationContext, IConversationSpeaker>? getSpeaker1 = null,
+        Func<IConversationContext, IConversationSpeaker>? getSpeaker2 = null
     )
     {
         if (IsConversing) return;
 
         var ctx = new ConversationContext(this);
+        var speaker1 = getSpeaker1?.Invoke(ctx) ?? GetSpeaker(ctx);
+        var speaker2 = getSpeaker2?.Invoke(ctx) ?? GetSpeaker(ctx);
 
-        speaker1 ??= GetSpeaker(ctx);
-        speaker2 ??= GetSpeaker(ctx);
         Conversation = ctx;
 
         await Task.Run(() => conversation
@@ -228,6 +228,30 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
     public IConversationSpeaker GetSpeaker(IConversationContext ctx) =>
         new ConversationSpeaker(ctx, flags: ConversationSpeakerFlags.NPCReplacedByUser);
+
+    public async Task Converse(
+        IConversation conversation,
+        IConversationSpeaker? speaker1 = null,
+        IConversationSpeaker? speaker2 = null
+    )
+    {
+        if (IsConversing) return;
+
+        var ctx = new ConversationContext(this);
+
+        speaker1 ??= GetSpeaker(ctx);
+        speaker2 ??= GetSpeaker(ctx);
+        Conversation = ctx;
+
+        await Task.Run(() => conversation
+            .Start(ctx, speaker1, speaker2)
+            .ContinueWith(async t =>
+                {
+                    await EndConversation();
+                    await ModifyInventory(exclRequest: true); // TODO: change to modify stats
+                }
+            ), ctx.TokenSource.Token);
+    }
 
     protected override IPacket GetMovePacket(IUserMovePath ctx)
     {
