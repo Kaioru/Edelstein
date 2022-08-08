@@ -1,6 +1,8 @@
 ﻿using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Stages.Game.Conversations;
+using Edelstein.Common.Gameplay.Stages.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Movements;
 using Edelstein.Common.Util.Buffers.Packets;
@@ -9,6 +11,8 @@ using Edelstein.Protocol.Gameplay.Accounts;
 using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Stages.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Messages;
@@ -45,8 +49,10 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
     public IAccount Account { get; }
     public IAccountWorld AccountWorld { get; }
     public ICharacter Character { get; }
+    public IConversationContext? Conversation { get; private set; }
 
     public bool IsInstantiated { get; set; }
+    public bool IsConversing => Conversation != null;
 
     public ICollection<IFieldSplit> Observing { get; }
     public ICollection<IFieldControllable> Controlled { get; }
@@ -172,6 +178,38 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
         await Dispatch(packet);
     }
 
+    public async Task Converse(
+        IConversation conversation,
+        IConversationSpeaker? speaker1 = null,
+        IConversationSpeaker? speaker2 = null
+    )
+    {
+        if (IsConversing) return;
+
+        var ctx = new ConversationContext(this);
+
+        speaker1 ??= GetSpeaker(ctx);
+        speaker2 ??= GetSpeaker(ctx);
+        Conversation = ctx;
+
+        await Task.Run(() => conversation
+            .Start(ctx, speaker1, speaker2)
+            .ContinueWith(async t =>
+                {
+                    await EndConversation();
+                    await ModifyInventory(exclRequest: true); // TODO: change to modify stats
+                }
+            ), ctx.TokenSource.Token);
+    }
+
+    public Task EndConversation()
+    {
+        if (!IsConversing) return Task.CompletedTask;
+        Conversation?.Dispose();
+        Conversation = null;
+        return Task.CompletedTask;
+    }
+
     public async Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
     {
         var context = new ModifyInventoryGroupContext(Character.Inventories, StageUser.Context.Templates.Item);
@@ -187,6 +225,9 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
         // TODO update stats
     }
+
+    public IConversationSpeaker GetSpeaker(IConversationContext ctx) =>
+        new ConversationSpeaker(ctx);
 
     protected override IPacket GetMovePacket(IUserMovePath ctx)
     {
