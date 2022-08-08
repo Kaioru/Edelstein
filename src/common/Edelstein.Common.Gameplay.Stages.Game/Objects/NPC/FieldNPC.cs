@@ -1,10 +1,7 @@
 using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Stages.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Movements;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Common.Util.Spatial;
-using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
-using Edelstein.Protocol.Gameplay.Stages.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Movements;
@@ -56,9 +53,6 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath, INPCMoveAction>,
 
         return packet;
     }
-
-    public IConversationSpeaker GetSpeaker(IConversationContext ctx) =>
-        new ConversationSpeaker(ctx, Template.ID);
 
     public void WriteTo(IPacketWriter writer)
     {

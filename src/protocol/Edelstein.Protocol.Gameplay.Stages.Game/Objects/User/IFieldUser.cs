@@ -13,7 +13,7 @@ namespace Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 public interface IFieldUser :
     IFieldLife<IUserMovePath, IUserMoveAction>,
     IFieldSplitObserver, IFieldController,
-    ICommandContext, ISpeakable
+    ICommandContext
 {
     IGameStageUser StageUser { get; }
 

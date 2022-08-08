@@ -1,4 +1,6 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
+﻿using Edelstein.Common.Gameplay.Stages.Game.Conversations.Speakers;
+using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Stages.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts;
 using Edelstein.Protocol.Util.Pipelines;
 
@@ -18,7 +20,8 @@ public class UserSelectNPCPlug : IPipelinePlug<IUserSelectNPC>
 
         await message.User.Converse(
             conversation,
-            c => message.NPC.GetSpeaker(c)
+            c => new ConversationSpeaker(c, message.NPC.Template.ID),
+            c => new ConversationSpeaker(c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
         );
     }
 }
