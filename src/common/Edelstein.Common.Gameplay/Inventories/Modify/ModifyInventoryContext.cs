@@ -194,7 +194,15 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
 
     public void MoveSlot(short from, short to)
     {
-        (_inventory.Items[from], _inventory.Items[to]) = (_inventory.Items[to], _inventory.Items[from]);
+        var itemFrom = this[from];
+        var itemTo = this[to];
+
+        _inventory.Items.Remove(from);
+        _inventory.Items.Remove(to);
+
+        if (itemTo != null) _inventory.Items[from] = itemTo;
+        if (itemFrom != null) _inventory.Items[to] = itemFrom;
+
         _operations.Enqueue(new MoveModifyInventoryOperation(_type, from, to));
     }
 
