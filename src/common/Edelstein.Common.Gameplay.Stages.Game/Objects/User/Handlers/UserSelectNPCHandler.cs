@@ -23,7 +23,7 @@ public class UserSelectNPCHandler : AbstractFieldUserHandler
         var obj = user.Field?.GetPool(FieldObjectType.NPC)?.GetObject(objID);
 
         if (obj is not IFieldNPC npc) return;
-        if (npc.Controller != user) return;
+        if (npc.FieldSplit != null && !user.Observing.Contains(npc.FieldSplit)) return;
 
         var message = new UserSelectNPC(
             user,
