@@ -7,11 +7,11 @@ using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
 
-public class UserChatUserHandler : AbstractFieldUserHandler
+public class UserChatHandler : AbstractFieldUserHandler
 {
     private readonly IPipeline<IUserChat> _pipeline;
 
-    public UserChatUserHandler(IPipeline<IUserChat> pipeline) => _pipeline = pipeline;
+    public UserChatHandler(IPipeline<IUserChat> pipeline) => _pipeline = pipeline;
 
     public override short Operation => (short)PacketRecvOperations.UserChat;
 

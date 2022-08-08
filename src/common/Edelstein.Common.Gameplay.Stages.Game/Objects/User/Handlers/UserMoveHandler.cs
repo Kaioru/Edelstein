@@ -9,11 +9,11 @@ using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
 
-public class UserMoveUserHandler : AbstractFieldUserHandler
+public class UserMoveHandler : AbstractFieldUserHandler
 {
     private readonly IPipeline<IUserMove> _pipeline;
 
-    public UserMoveUserHandler(IPipeline<IUserMove> pipeline) => _pipeline = pipeline;
+    public UserMoveHandler(IPipeline<IUserMove> pipeline) => _pipeline = pipeline;
 
     public override short Operation => (short)PacketRecvOperations.UserMove;
 

@@ -8,11 +8,11 @@ using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
 
-public class UserTransferChannelRequestUserHandler : AbstractFieldUserHandler
+public class UserTransferChannelRequestHandler : AbstractFieldUserHandler
 {
     private readonly IPipeline<IUserTransferChannelRequest> _pipeline;
 
-    public UserTransferChannelRequestUserHandler(IPipeline<IUserTransferChannelRequest> pipeline) => _pipeline = pipeline;
+    public UserTransferChannelRequestHandler(IPipeline<IUserTransferChannelRequest> pipeline) => _pipeline = pipeline;
 
     public override short Operation => (short)PacketRecvOperations.UserTransferChannelRequest;
 
