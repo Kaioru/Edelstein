@@ -30,6 +30,9 @@ public interface IFieldUser :
 
     Task Message(IFieldMessage message);
 
+    Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt);
+    Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt);
+
     Task Converse(
         IConversation conversation,
         Func<IConversationContext, IConversationSpeaker>? getSpeaker1 = null,

@@ -178,6 +178,19 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
         await Dispatch(packet);
     }
 
+    public Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt) =>
+        Prompt((s1, s2) => prompt.Invoke(s1));
+
+    public async Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt)
+    {
+        var result = default(T);
+        var conversation = new PromptConversation((self, target) => result = prompt.Invoke(self, target));
+
+        await Converse(conversation);
+
+        return result;
+    }
+
     public async Task Converse(
         IConversation conversation,
         Func<IConversationContext, IConversationSpeaker>? getSpeaker1 = null,
@@ -194,14 +207,22 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
         Conversation = ctx;
 
-        await Task.Run(() => conversation
-            .Start(ctx, speaker1, speaker2)
-            .ContinueWith(async t =>
-                {
-                    await EndConversation();
-                    await ModifyInventory(exclRequest: true); // TODO: change to modify stats
-                }
-            ), ctx.TokenSource.Token);
+        try
+        {
+            await Task.Run(
+                () => conversation.Start(ctx, speaker1, speaker2),
+                ctx.TokenSource.Token
+            );
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
+        finally
+        {
+            await EndConversation();
+            await ModifyInventory(exclRequest: true);
+        }
     }
 
     public Task EndConversation()
