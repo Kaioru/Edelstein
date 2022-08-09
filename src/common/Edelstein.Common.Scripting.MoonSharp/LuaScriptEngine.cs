@@ -17,6 +17,7 @@ public class LuaScriptEngine : IScriptEngine
         {
             ModulePaths = new[] { Path.Join(directory, "?"), Path.Join(directory, $"?.{Extension}") }
         };
+        Script.WarmUp();
     }
 
     public string Extension => "lua";
