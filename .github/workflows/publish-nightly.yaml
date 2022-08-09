@@ -44,6 +44,12 @@ jobs:
       run: dotnet pack --configuration Release --version-suffix "nightly.${{ needs.setup.outputs.date }}" --output artifacts
     - name: Publish
       run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+    - name: Add VERSION, COMMIT, LICENSE, and README files
+      run: |
+        echo "nightly.${{ needs.setup.outputs.date }}" > artifacts/VERSION
+        echo ${{ github.sha }} > artifacts/COMMIT
+        cp LICENSE artifacts
+        cp README.md artifacts
     - name: Compress
       run: cd artifacts; zip ../packages-nightly.${{ needs.setup.outputs.date }}.zip *; cd ..
     - name: Store artifacts
