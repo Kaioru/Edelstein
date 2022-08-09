@@ -13,7 +13,6 @@ public class FieldNPCGenerator : IFieldGenerator
     private readonly IFieldTemplateLife _life;
     private readonly INPCTemplate _template;
 
-
     public FieldNPCGenerator(IField field, IFieldTemplateLife life, INPCTemplate template)
     {
         _field = field;
@@ -22,6 +21,8 @@ public class FieldNPCGenerator : IFieldGenerator
     }
 
     private IFieldNPC? NPC { get; set; }
+
+    public bool IsGenerateOnInit => true;
 
     public IFieldObject? Generate()
     {

@@ -49,7 +49,16 @@ public class FieldManager : IFieldManager, ITickable
 
             var npc = await _npcTemplates.Retrieve(life.ID);
             if (npc == null) continue;
-            field.Generators.Add(new FieldNPCGenerator(field, life, npc));
+            var generator = new FieldNPCGenerator(field, life, npc);
+
+            field.Generators.Add(generator);
+        }
+
+        foreach (var generator in field.Generators.Where(g => g.IsGenerateOnInit))
+        {
+            var obj = generator.Generate();
+            if (obj == null) continue;
+            await field.Enter(obj);
         }
 
         _fields.Add(key, field);
