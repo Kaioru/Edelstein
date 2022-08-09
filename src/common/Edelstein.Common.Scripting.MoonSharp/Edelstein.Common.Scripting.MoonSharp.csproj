@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+  
   <Import Project="..\Common.targets" />
 
   <ItemGroup>
@@ -7,7 +7,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLua" Version="1.6.0" />
+    <PackageReference Include="MoonSharp" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

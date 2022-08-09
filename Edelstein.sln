@@ -103,7 +103,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Services.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Scripting", "src\protocol\Edelstein.Protocol.Scripting\Edelstein.Protocol.Scripting.csproj", "{F2BF9C00-010F-46D5-9CAC-472853B47DAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Scripting.NLua", "src\common\Edelstein.Common.Scripting.NLua\Edelstein.Common.Scripting.NLua.csproj", "{CD83A634-A960-4518-8D38-B184FFC439AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Scripting.MoonSharp", "src\common\Edelstein.Common.Scripting.MoonSharp\Edelstein.Common.Scripting.MoonSharp.csproj", "{CD83A634-A960-4518-8D38-B184FFC439AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

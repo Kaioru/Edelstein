@@ -35,7 +35,7 @@
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Login\Edelstein.Common.Gameplay.Stages.Login.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Plugin\Edelstein.Common.Plugin.csproj" />
-    <ProjectReference Include="..\..\common\Edelstein.Common.Scripting.NLua\Edelstein.Common.Scripting.NLua.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Scripting.MoonSharp\Edelstein.Common.Scripting.MoonSharp.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Util.Commands\Edelstein.Common.Util.Commands.csproj" />

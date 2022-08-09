@@ -13,7 +13,7 @@ using Edelstein.Common.Gameplay.Stages.Login;
 using Edelstein.Common.Gameplay.Stages.Login.Contexts;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Plugin;
-using Edelstein.Common.Scripting.NLua;
+using Edelstein.Common.Scripting.MoonSharp;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Server;
 using Edelstein.Common.Util.Commands;
