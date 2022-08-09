@@ -44,6 +44,13 @@ jobs:
       run: dotnet pack --configuration Release --version-suffix "nightly.${{ needs.setup.outputs.date }}" --output artifacts
     - name: Publish
       run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+    - name: Compress
+      run: cd artifacts; zip ../packages-nightly.${{ needs.setup.outputs.date }}.zip *; cd ..
+    - name: Store artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: packages-nightly.${{ needs.setup.outputs.date }}
+        path: packages-nightly.${{ needs.setup.outputs.date }}.zip
 
   publish_artifacts:
     needs: setup
@@ -86,12 +93,12 @@ jobs:
         mkdir artifacts-${{ matrix.runtime }}/scripts
         mkdir artifacts-${{ matrix.runtime }}/plugins
     - name: Compress
-      run: cd artifacts-${{ matrix.runtime }}; zip ../${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip *; cd ..
+      run: cd artifacts-${{ matrix.runtime }}; zip ../server-${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip *; cd ..
     - name: Store artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}
-        path: ${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip
+        name: server-${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}
+        path: server-${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip
 
   publish_release:
     needs: [setup, publish_artifacts]
