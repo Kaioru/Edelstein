@@ -2,7 +2,6 @@
 using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Services.Server.Contracts;
 using Edelstein.Protocol.Gameplay.Stages;
-using Edelstein.Protocol.Gameplay.Stages.Contracts;
 using Edelstein.Protocol.Gameplay.Stages.Contracts.Pipelines;
 using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Util.Pipelines;

@@ -19,17 +19,14 @@ public class NXDataManager : IDataManager
     public T? Resolve<T>(string? path = null) where T : struct
     {
         var node = Resolve(path);
-        if (node == null) return null;
-        return node.Resolve<T>();
+        return node?.Resolve<T>();
     }
 
     public T? ResolveOrDefault<T>(string? path = null) where T : class
     {
         var node = Resolve(path);
-        if (node == null) return null;
-        return node.ResolveOrDefault<T>();
+        return node?.ResolveOrDefault<T>();
     }
-
 
     public IDataNode? Resolve(string? path = null)
     {

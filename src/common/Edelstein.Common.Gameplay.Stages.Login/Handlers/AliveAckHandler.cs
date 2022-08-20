@@ -1,5 +1,4 @@
 ﻿using Edelstein.Common.Gameplay.Stages.Handlers;
-using Edelstein.Protocol.Gameplay.Stages.Contracts;
 using Edelstein.Protocol.Gameplay.Stages.Contracts.Pipelines;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Util.Pipelines;

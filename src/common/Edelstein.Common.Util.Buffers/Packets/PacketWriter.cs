@@ -76,11 +76,9 @@ public class PacketWriter : IPacketWriter
 
     public IPacketWriter WriteString(string value, short? length = null)
     {
-        value ??= string.Empty;
-
         if (length.HasValue)
         {
-            if (value.Length > length) value = value.Substring(0, length.Value);
+            if (value.Length > length) value = value[..length.Value];
             WriteBytes(_encoding.GetBytes(value.PadRight(length.Value, '\0')));
         }
         else

@@ -6,7 +6,6 @@ using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Inventories.Templates;
-using Edelstein.Protocol.Gameplay.Stages.Login.Contracts;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contracts.Pipelines;
 using Edelstein.Protocol.Util.Pipelines;
 using Edelstein.Protocol.Util.Templates;

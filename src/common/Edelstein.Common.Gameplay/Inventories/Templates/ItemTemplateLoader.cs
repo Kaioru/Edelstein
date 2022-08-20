@@ -66,7 +66,7 @@ public class ItemTemplateLoader : ITemplateLoader
             .ToImmutableList();
         var loadBundle = nodesBundle
             .Where(n => n != null)
-            .SelectMany(n => n.Children)
+            .SelectMany(n => n!.Children)
             .SelectMany(n => n.Children)
             .Select(async n =>
             {
