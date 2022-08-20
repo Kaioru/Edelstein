@@ -15,6 +15,8 @@ public interface IFieldObject
 
     bool IsVisibleTo(IFieldSplitObserver observer);
 
+    Task Hide(bool hidden = true);
+
     IPacket GetEnterFieldPacket();
     IPacket GetLeaveFieldPacket();
 }

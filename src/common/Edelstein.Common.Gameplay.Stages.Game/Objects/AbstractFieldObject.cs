@@ -8,6 +8,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Objects;
 public abstract class AbstractFieldObject : IFieldObject
 {
     protected AbstractFieldObject(IPoint2D position) => Position = position;
+    private bool IsHidden { get; set; }
 
     public abstract FieldObjectType Type { get; }
 
@@ -17,7 +18,18 @@ public abstract class AbstractFieldObject : IFieldObject
     public IFieldSplit? FieldSplit { get; set; }
     public IPoint2D Position { get; protected set; }
 
-    public bool IsVisibleTo(IFieldSplitObserver observer) => true;
+    public bool IsVisibleTo(IFieldSplitObserver observer) => !IsHidden;
+
+    public async Task Hide(bool hidden = true)
+    {
+        if (IsHidden == hidden) return;
+
+        IsHidden = hidden;
+
+        if (FieldSplit == null) return;
+        if (IsHidden) await FieldSplit.Dispatch(GetLeaveFieldPacket(), this);
+        else await FieldSplit.Dispatch(GetEnterFieldPacket(), this);
+    }
 
     public abstract IPacket GetEnterFieldPacket();
     public abstract IPacket GetLeaveFieldPacket();

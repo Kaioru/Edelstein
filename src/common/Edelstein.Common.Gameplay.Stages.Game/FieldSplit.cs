@@ -105,6 +105,7 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
 
         await Task.WhenAll(GetObjects()
             .Where(o => o != observer)
+            .Where(o => o.IsVisibleTo(observer))
             .Select(o => observer.Dispatch(o.GetEnterFieldPacket())));
         await UpdateControllableObjects();
     }
@@ -116,6 +117,7 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
 
         await Task.WhenAll(GetObjects()
             .Where(o => o != observer)
+            .Where(o => o.IsVisibleTo(observer))
             .Select(o => observer.Dispatch(o.GetLeaveFieldPacket())));
         await UpdateControllableObjects();
     }
