@@ -105,6 +105,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Scriptin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Scripting.MoonSharp", "src\common\Edelstein.Common.Scripting.MoonSharp\Edelstein.Common.Scripting.MoonSharp.csproj", "{CD83A634-A960-4518-8D38-B184FFC439AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Util.Events", "src\protocol\Edelstein.Protocol.Util.Events\Edelstein.Protocol.Util.Events.csproj", "{A71C9479-F9EF-40A3-9BEC-71A3DED2702B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Util.Events", "src\common\Edelstein.Common.Util.Events\Edelstein.Common.Util.Events.csproj", "{6EEE5B7F-6065-449A-B11D-AE85942DFF14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -158,6 +162,8 @@ Global
 		{17171BBB-A04E-40F2-BF5E-5C1FE5C4CECF} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{F2BF9C00-010F-46D5-9CAC-472853B47DAF} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{CD83A634-A960-4518-8D38-B184FFC439AF} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
+		{A71C9479-F9EF-40A3-9BEC-71A3DED2702B} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{6EEE5B7F-6065-449A-B11D-AE85942DFF14} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0A5E0E60-9D2A-4CC2-97A1-E03263F41AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -324,5 +330,13 @@ Global
 		{CD83A634-A960-4518-8D38-B184FFC439AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD83A634-A960-4518-8D38-B184FFC439AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD83A634-A960-4518-8D38-B184FFC439AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A71C9479-F9EF-40A3-9BEC-71A3DED2702B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A71C9479-F9EF-40A3-9BEC-71A3DED2702B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A71C9479-F9EF-40A3-9BEC-71A3DED2702B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A71C9479-F9EF-40A3-9BEC-71A3DED2702B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EEE5B7F-6065-449A-B11D-AE85942DFF14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EEE5B7F-6065-449A-B11D-AE85942DFF14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EEE5B7F-6065-449A-B11D-AE85942DFF14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EEE5B7F-6065-449A-B11D-AE85942DFF14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

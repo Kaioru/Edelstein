@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Edelstein.Protocol.Util.Tickers\Edelstein.Protocol.Util.Tickers.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\Events" />
+  </ItemGroup>
+
 </Project>

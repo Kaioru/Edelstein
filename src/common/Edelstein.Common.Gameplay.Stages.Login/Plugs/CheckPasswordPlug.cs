@@ -7,6 +7,7 @@ using Edelstein.Common.Services.Server.Contracts.Types;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contracts;
+using Edelstein.Protocol.Gameplay.Stages.Login.Contracts.Pipelines;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Auth.Contracts;
 using Edelstein.Protocol.Services.Session;

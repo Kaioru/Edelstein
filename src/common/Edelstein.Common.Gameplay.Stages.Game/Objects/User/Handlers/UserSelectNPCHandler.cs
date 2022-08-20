@@ -1,9 +1,11 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Contracts;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Contracts.Pipelines;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts.Pipelines;
 using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Pipelines;
 
