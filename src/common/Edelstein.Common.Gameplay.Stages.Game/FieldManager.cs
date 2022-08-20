@@ -1,9 +1,11 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Stages.Game.Generators;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.MessageBox;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.MessageBox;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
@@ -88,5 +90,12 @@ public class FieldManager : IFieldManager, ITickable
         bool isEnabled = true
     ) => new FieldNPC(template, position, foothold, bounds, isFacingLeft, isEnabled);
 
-    public Task OnTick(DateTime now) => throw new NotImplementedException();
+    public IFieldMessageBox CreateMessageBox(
+        IPoint2D position,
+        int itemID,
+        string hope,
+        string name
+    ) => new FieldMessageBox(position, itemID, hope, name);
+
+    public Task OnTick(DateTime now) => Task.CompletedTask;
 }
