@@ -13,6 +13,8 @@ public interface IFieldObject
     IFieldSplit? FieldSplit { get; set; }
     IPoint2D Position { get; }
 
+    bool IsVisibleTo(IFieldSplitObserver observer);
+
     IPacket GetEnterFieldPacket();
     IPacket GetLeaveFieldPacket();
 }

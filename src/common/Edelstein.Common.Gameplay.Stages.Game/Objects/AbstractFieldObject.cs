@@ -17,6 +17,8 @@ public abstract class AbstractFieldObject : IFieldObject
     public IFieldSplit? FieldSplit { get; set; }
     public IPoint2D Position { get; protected set; }
 
+    public bool IsVisibleTo(IFieldSplitObserver observer) => true;
+
     public abstract IPacket GetEnterFieldPacket();
     public abstract IPacket GetLeaveFieldPacket();
 }

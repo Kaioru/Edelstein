@@ -43,10 +43,12 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
         var fromObservers = from?.Observers ?? new List<IFieldSplitObserver>();
         var newWatchers = toObservers
             .Where(w => w != obj)
+            .Where(obj.IsVisibleTo)
             .Except(fromObservers)
             .ToImmutableList();
         var oldWatchers = fromObservers
             .Where(w => w != obj)
+            .Where(obj.IsVisibleTo)
             .Except(toObservers)
             .ToImmutableList();
 
