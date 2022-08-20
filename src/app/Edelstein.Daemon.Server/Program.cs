@@ -17,6 +17,7 @@ using Edelstein.Common.Scripting.MoonSharp;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Server;
 using Edelstein.Common.Util.Commands;
+using Edelstein.Common.Util.Events;
 using Edelstein.Common.Util.Pipelines;
 using Edelstein.Common.Util.Serializers;
 using Edelstein.Common.Util.Templates;
@@ -40,6 +41,7 @@ using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Util.Commands;
+using Edelstein.Protocol.Util.Events;
 using Edelstein.Protocol.Util.Pipelines;
 using Edelstein.Protocol.Util.Templates;
 using Edelstein.Protocol.Util.Tickers;
@@ -117,6 +119,7 @@ await Host.CreateDefaultBuilder(args)
                 );
                 scope.AddSingleton(typeof(IPacketHandlerManager<>), typeof(PacketHandlerManager<>));
                 scope.AddSingleton(typeof(IPipeline<>), typeof(Pipeline<>));
+                scope.AddSingleton(typeof(IEvent<>), typeof(Event<>));
 
                 scope.AddSingleton<ITransportAcceptor>(p => new NettyTransportAcceptor(
                     p.GetRequiredService<IAdapterInitializer>(),
@@ -139,6 +142,7 @@ await Host.CreateDefaultBuilder(args)
 
                         scope.AddSingleton(options);
                         scope.AddSingleton<ILoginContext, LoginContext>();
+                        scope.AddSingleton<ILoginContextEvents, LoginContextEvents>();
                         scope.AddSingleton<ILoginContextPipelines, LoginContextPipelines>();
                         scope.AddSingleton<ILoginContextServices, LoginContextServices>();
                         scope.AddSingleton<ILoginContextManagers, LoginContextManagers>();
@@ -165,6 +169,7 @@ await Host.CreateDefaultBuilder(args)
 
                         scope.AddSingleton(options);
                         scope.AddSingleton<IGameContext, GameContext>();
+                        scope.AddSingleton<IGameContextEvents, GameContextEvents>();
                         scope.AddSingleton<IGameContextPipelines, GameContextPipelines>();
                         scope.AddSingleton<IGameContextServices, GameContextServices>();
                         scope.AddSingleton<IGameContextManagers, GameContextManagers>();

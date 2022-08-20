@@ -3,6 +3,7 @@
 public interface IGameContext
 {
     IGameContextOptions Options { get; }
+    IGameContextEvents Events { get; }
     IGameContextPipelines Pipelines { get; }
     IGameContextServices Services { get; }
     IGameContextManagers Managers { get; }

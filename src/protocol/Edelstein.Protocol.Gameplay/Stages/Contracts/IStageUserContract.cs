@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay.Stages.Contracts.Pipelines;
+﻿namespace Edelstein.Protocol.Gameplay.Stages.Contracts;
 
 public interface IStageUserContract<out TStageUser> where TStageUser : IStageUser<TStageUser>
 {

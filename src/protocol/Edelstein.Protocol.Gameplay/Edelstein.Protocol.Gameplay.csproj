@@ -4,6 +4,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Util.Events\Edelstein.Protocol.Util.Events.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Util.Pipelines\Edelstein.Protocol.Util.Pipelines.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Util.Templates\Edelstein.Protocol.Util.Templates.csproj" />
   </ItemGroup>

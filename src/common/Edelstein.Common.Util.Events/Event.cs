@@ -6,7 +6,7 @@ public class Event<TMessage> : IEvent<TMessage>
 {
     private readonly ICollection<IEventConsumer<TMessage>> _consumers;
 
-    public Event() => _consumers = new HashSet<IEventConsumer<TMessage>>();
+    public Event() => _consumers = new List<IEventConsumer<TMessage>>();
 
     public void Add(IEventConsumer<TMessage> consumer) =>
         _consumers.Add(consumer);
@@ -15,7 +15,7 @@ public class Event<TMessage> : IEvent<TMessage>
         _consumers.Remove(consumer);
 
     public Task Publish(TMessage message) =>
-        Task.WhenAll(_consumers
+        _ = Task.WhenAll(_consumers
             .AsParallel()
             .Select(h => h.Handle(message)));
 }
