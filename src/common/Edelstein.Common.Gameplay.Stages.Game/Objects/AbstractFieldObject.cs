@@ -24,12 +24,11 @@ public abstract class AbstractFieldObject : IFieldObject
     public async Task Hide(bool hidden = true)
     {
         if (IsHidden == hidden) return;
-
-        IsHidden = hidden;
-
         if (FieldSplit == null) return;
-        if (IsHidden) await FieldSplit.Dispatch(GetLeaveFieldPacket(), this);
-        else await FieldSplit.Dispatch(GetEnterFieldPacket(), this);
+
+        if (hidden) await FieldSplit.Dispatch(GetLeaveFieldPacket(), this);
+        IsHidden = hidden;
+        if (!hidden) await FieldSplit.Dispatch(GetEnterFieldPacket(), this);
 
         if (this is not IFieldController controller) return;
 
