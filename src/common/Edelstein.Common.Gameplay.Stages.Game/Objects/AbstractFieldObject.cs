@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Game;
+﻿using System.Collections.Immutable;
+using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Util.Buffers.Packets;
 using Edelstein.Protocol.Util.Spatial;
@@ -29,6 +30,11 @@ public abstract class AbstractFieldObject : IFieldObject
         if (FieldSplit == null) return;
         if (IsHidden) await FieldSplit.Dispatch(GetLeaveFieldPacket(), this);
         else await FieldSplit.Dispatch(GetEnterFieldPacket(), this);
+
+        if (this is not IFieldController controller) return;
+
+        foreach (var controlled in controller.Controlled.ToImmutableList())
+            await controlled.Control();
     }
 
     public abstract IPacket GetEnterFieldPacket();
