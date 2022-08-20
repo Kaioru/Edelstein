@@ -76,9 +76,9 @@ public class PluginManager<TContext> : IPluginManager<TContext>, IPluginCollecti
                     _loaded.Add(plugin.ID, plugin);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                _logger.LogError("Failed to load plugin assembly {Assembly}", assembly.Location);
+                _logger.LogError(e, "Failed to load plugin assembly {Assembly}", assembly.Location);
             }
         }
 
