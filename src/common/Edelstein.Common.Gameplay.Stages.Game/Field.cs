@@ -1,6 +1,8 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Stages.Game.Contracts.Events;
 using Edelstein.Common.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
@@ -17,13 +19,16 @@ public class Field : AbstractFieldObjectPool, IField
     private const int ScreenWidthOffset = ScreenWidth * 75 / 100;
     private const int ScreenHeightOffset = ScreenHeight * 75 / 100;
 
+    private readonly IGameContextEvents _events;
+
     private readonly IDictionary<FieldObjectType, FieldObjectPool> _pools;
     private readonly IFieldSplit[,] _splits;
 
-    public Field(IFieldManager manager, IFieldTemplate template)
+    public Field(IFieldManager manager, IFieldTemplate template, IGameContextEvents events)
     {
         Manager = manager;
         Template = template;
+        _events = events;
 
         Generators = new List<IFieldGenerator>();
 
@@ -119,6 +124,8 @@ public class Field : AbstractFieldObjectPool, IField
 
         if (pool != null) await pool.Enter(obj);
         if (split != null) await split.Enter(obj);
+
+        await _events.ObjectEnterField.Publish(new ObjectEnterField(obj, this));
     }
 
     public async Task Leave(IFieldObject obj, Func<IPacket>? getLeavePacket)
@@ -129,6 +136,8 @@ public class Field : AbstractFieldObjectPool, IField
 
         if (pool != null) await pool.Leave(obj);
         if (obj.FieldSplit != null) await obj.FieldSplit.Leave(obj);
+
+        await _events.ObjectLeaveField.Publish(new ObjectLeaveField(obj, this));
     }
 
     public override IFieldObject? GetObject(int id) => Objects.FirstOrDefault(o => o.ObjectID == id);

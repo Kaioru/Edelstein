@@ -5,6 +5,7 @@ using Edelstein.Common.Gameplay.Stages.Game.Objects.MessageBox;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.MessageBox;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
@@ -19,6 +20,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game;
 
 public class FieldManager : IFieldManager, ITickable
 {
+    private readonly IGameContextEvents _events;
     private readonly IDictionary<int, IField> _fields;
     private readonly ITemplateManager<IFieldTemplate> _fieldTemplates;
     private readonly ITemplateManager<INPCTemplate> _npcTemplates;
@@ -26,12 +28,14 @@ public class FieldManager : IFieldManager, ITickable
     public FieldManager(
         ITickerManager tickerManager,
         ITemplateManager<IFieldTemplate> fieldTemplates,
-        ITemplateManager<INPCTemplate> npcTemplates
+        ITemplateManager<INPCTemplate> npcTemplates,
+        IGameContextEvents events
     )
     {
         _fields = new ConcurrentDictionary<int, IField>();
         _fieldTemplates = fieldTemplates;
         _npcTemplates = npcTemplates;
+        _events = events;
 
         tickerManager.Schedule(new FieldGeneratorTicker(this), TimeSpan.FromSeconds(7));
     }
@@ -72,7 +76,7 @@ public class FieldManager : IFieldManager, ITickable
         Task.FromResult<IEnumerable<IField>>(_fields.Values.ToImmutableList());
 
     public IField CreateField(IFieldTemplate template) =>
-        new Field(this, template);
+        new Field(this, template, _events);
 
     public IFieldUser? CreateUser(IGameStageUser user)
     {
