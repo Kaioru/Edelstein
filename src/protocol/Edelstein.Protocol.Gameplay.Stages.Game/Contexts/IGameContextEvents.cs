@@ -8,4 +8,6 @@ public interface IGameContextEvents : IStageContextEvents<IGameStageUser>
 {
     IEvent<IObjectEnterField> ObjectEnterField { get; }
     IEvent<IObjectLeaveField> ObjectLeaveField { get; }
+    IEvent<IObjectEnterFieldSplit> ObjectEnterFieldSplit { get; }
+    IEvent<IObjectLeaveFieldSplit> ObjectLeaveFieldSplit { get; }
 }

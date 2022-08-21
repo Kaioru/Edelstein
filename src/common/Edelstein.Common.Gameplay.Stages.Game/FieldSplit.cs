@@ -1,6 +1,8 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Stages.Game.Contracts.Events;
 using Edelstein.Common.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game;
+using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Util.Buffers.Packets;
 
@@ -8,13 +10,15 @@ namespace Edelstein.Common.Gameplay.Stages.Game;
 
 public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
 {
+    private readonly IGameContextEvents _events;
     private readonly ICollection<IFieldObject> _objects;
     private readonly ICollection<IFieldSplitObserver> _observers;
 
-    public FieldSplit(int row, int col)
+    public FieldSplit(int row, int col, IGameContextEvents events)
     {
         Row = row;
         Col = col;
+        _events = events;
         _objects = new List<IFieldObject>();
         _observers = new List<IFieldSplitObserver>();
     }
@@ -74,6 +78,8 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
         }
 
         await UpdateControllableObjects();
+
+        await _events.ObjectEnterFieldSplit.Publish(new ObjectEnterFieldSplit(obj, this));
     }
 
     public async Task Leave(IFieldObject obj, Func<IPacket>? getLeavePacket)
@@ -83,6 +89,8 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
         await MigrateOut(obj);
         await Dispatch(getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket(), obj);
         await UpdateControllableObjects();
+
+        await _events.ObjectLeaveFieldSplit.Publish(new ObjectLeaveFieldSplit(obj, this));
     }
 
     public Task MigrateIn(IFieldObject obj)

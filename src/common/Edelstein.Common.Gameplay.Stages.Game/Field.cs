@@ -28,10 +28,10 @@ public class Field : AbstractFieldObjectPool, IField
     {
         Manager = manager;
         Template = template;
-        _events = events;
 
         Generators = new List<IFieldGenerator>();
 
+        _events = events;
         _pools = new Dictionary<FieldObjectType, FieldObjectPool>();
         foreach (var type in Enum.GetValues<FieldObjectType>())
             _pools[type] = new FieldObjectPool();
@@ -43,7 +43,7 @@ public class Field : AbstractFieldObjectPool, IField
 
         for (var row = 0; row < splitRowCount; row++)
         for (var col = 0; col < splitColCount; col++)
-            _splits[row, col] = new FieldSplit(row, col);
+            _splits[row, col] = new FieldSplit(row, col, _events);
     }
 
     public int ID => Template.ID;

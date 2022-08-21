@@ -10,5 +10,7 @@ public record GameContextEvents(
     IEvent<IUserEnterStage<IGameStageUser>> UserEnterStage,
     IEvent<IUserLeaveStage<IGameStageUser>> UserLeaveStage,
     IEvent<IObjectEnterField> ObjectEnterField,
-    IEvent<IObjectLeaveField> ObjectLeaveField
+    IEvent<IObjectLeaveField> ObjectLeaveField,
+    IEvent<IObjectEnterFieldSplit> ObjectEnterFieldSplit,
+    IEvent<IObjectLeaveFieldSplit> ObjectLeaveFieldSplit
 ) : IGameContextEvents;
