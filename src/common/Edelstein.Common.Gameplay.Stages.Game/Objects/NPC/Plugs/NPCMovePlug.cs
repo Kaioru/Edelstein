@@ -1,5 +1,4 @@
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Contracts;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Contracts.Pipelines;
+﻿using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Contracts.Pipelines;
 using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Plugs;

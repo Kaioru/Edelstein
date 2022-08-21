@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Stages.Contracts;
-using Edelstein.Common.Gameplay.Stages.Contracts.Pipelines;
+﻿using Edelstein.Common.Gameplay.Stages.Contracts.Pipelines;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
