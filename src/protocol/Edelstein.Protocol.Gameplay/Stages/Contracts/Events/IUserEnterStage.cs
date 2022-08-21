@@ -1,6 +1,8 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Stages.Contracts.Events;
 
-public interface IUserEnterStage<out TStageUser> : IStageUserContract<TStageUser>
+public interface IUserEnterStage<TStageUser> :
+    IStageUserContract<TStageUser>,
+    IStageContract<TStageUser>
     where TStageUser : IStageUser<TStageUser>
 {
 }

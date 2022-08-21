@@ -37,7 +37,7 @@ public class GameStage : IGameStage
         user.FieldUser = fieldUser;
 
         await field.Enter(fieldUser);
-        await _enterEvent.Publish(new UserEnterStage<IGameStageUser>(user));
+        await _enterEvent.Publish(new UserEnterStage<IGameStageUser>(user, this));
     }
 
     public async Task Leave(IGameStageUser user)
@@ -46,7 +46,7 @@ public class GameStage : IGameStage
 
         if (user.Field != null && user.FieldUser != null)
             await user.Field.Leave(user.FieldUser);
-        await _leaveEvent.Publish(new UserLeaveStage<IGameStageUser>(user));
+        await _leaveEvent.Publish(new UserLeaveStage<IGameStageUser>(user, this));
     }
 
     public Task OnTick(DateTime now) => Task.CompletedTask;

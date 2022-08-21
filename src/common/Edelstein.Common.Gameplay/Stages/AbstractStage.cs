@@ -29,7 +29,7 @@ public abstract class AbstractStage<TStageUser> : IStage<TStageUser> where TStag
         user.Stage = this;
         _users.Add(user);
 
-        await _enterEvent.Publish(new UserEnterStage<TStageUser>(user));
+        await _enterEvent.Publish(new UserEnterStage<TStageUser>(user, this));
     }
 
     public async Task Leave(TStageUser user)
@@ -37,6 +37,6 @@ public abstract class AbstractStage<TStageUser> : IStage<TStageUser> where TStag
         user.Stage = null;
         _users.Remove(user);
 
-        await _leaveEvent.Publish(new UserLeaveStage<TStageUser>(user));
+        await _leaveEvent.Publish(new UserLeaveStage<TStageUser>(user, this));
     }
 }
