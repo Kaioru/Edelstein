@@ -100,9 +100,12 @@ public class ServerUpdateBootstrap<TConfig> : IBootstrap, ITickable where TConfi
                 if (IsRegistered)
                 {
                     _logger.LogWarning(
-                        "Failed to updated stage {ID} in server registry due to {Reason} retrying at {Next}",
+                        "Failed to update stage {ID} in server registry due to {Reason} retrying at {Next}",
                         _config.ID, response.Result, Context?.TickNext
                     );
+
+                    if (response.Result == ServerResult.FailedNotRegistered)
+                        IsRegistered = false;
                     return;
                 }
 
