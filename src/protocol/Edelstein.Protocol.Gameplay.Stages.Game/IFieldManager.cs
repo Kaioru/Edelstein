@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Game.Objects.MessageBox;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Util.Repositories.Methods;
@@ -11,6 +12,7 @@ public interface IFieldManager :
     IFieldFactory,
     IFieldUserFactory,
     IFieldNPCFactory,
+    IFieldMobFactory,
     IFieldMessageBoxFactory
 {
 }

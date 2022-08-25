@@ -2,11 +2,14 @@
 using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Stages.Game.Generators;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.MessageBox;
+using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.MessageBox;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
@@ -93,6 +96,14 @@ public class FieldManager : IFieldManager, ITickable
         bool isFacingLeft = true,
         bool isEnabled = true
     ) => new FieldNPC(template, position, foothold, bounds, isFacingLeft, isEnabled);
+
+
+    public IFieldMob CreateMob(
+        IMobTemplate template,
+        IPoint2D position,
+        IFieldFoothold? foothold = null,
+        bool isFacingLeft = true
+    ) => new FieldMob(template, position, foothold, isFacingLeft);
 
     public IFieldMessageBox CreateMessageBox(
         IPoint2D position,
