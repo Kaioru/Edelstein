@@ -14,9 +14,8 @@ public class FieldGeneratorTicker : ITickable
         var fields = await _manager.RetrieveAll();
 
         foreach (var field in fields)
-        foreach (var obj in field.Generators
-                     .Select(g => g.Generate())
-                     .Where(obj => obj != null))
+        foreach (var objs in field.Generators.Select(g => g.Generate()))
+        foreach (var obj in objs)
             await field.Enter(obj!);
     }
 }

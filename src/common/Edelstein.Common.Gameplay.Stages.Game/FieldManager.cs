@@ -55,6 +55,9 @@ public class FieldManager : IFieldManager, ITickable
 
         field = CreateField(template);
 
+        var npcUnits = new List<IFieldGeneratorUnit>();
+        var mobUnits = new List<IFieldGeneratorUnit>();
+
         foreach (var life in template.Life)
             switch (life.Type)
             {
@@ -62,28 +65,27 @@ public class FieldManager : IFieldManager, ITickable
                 {
                     var npc = await _npcTemplates.Retrieve(life.ID);
                     if (npc == null) continue;
-                    var generator = new FieldNPCGenerator(field, life, npc);
-
-                    field.Generators.Add(generator);
+                    npcUnits.Add(new FieldGeneratorNPCUnit(field, life, npc));
                     break;
                 }
                 case FieldLifeType.Monster:
                 {
                     var mob = await _mobTemplates.Retrieve(life.ID);
                     if (mob == null) continue;
-                    var generator = new FieldMobNormalGenerator(field, life, mob);
-
-                    field.Generators.Add(generator);
+                    mobUnits.Add(life.MobTime > 0
+                        ? new FieldGeneratorMobTimedUnit(field, life, mob)
+                        : new FieldGeneratorMobNormalUnit(field, life, mob)
+                    );
                     break;
                 }
             }
 
-        foreach (var generator in field.Generators.Where(g => g.IsGenerateOnInit))
-        {
-            var obj = generator.Generate();
-            if (obj == null) continue;
+        field.Generators.Add(new FieldGeneratorNPC(npcUnits));
+        field.Generators.Add(new FieldGeneratorMob(field, mobUnits));
+
+        foreach (var generator in field.Generators)
+        foreach (var obj in generator.Generate())
             await field.Enter(obj);
-        }
 
         _fields.Add(key, field);
 

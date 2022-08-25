@@ -1,19 +1,19 @@
 ﻿using Edelstein.Protocol.Gameplay.Stages.Game;
-using Edelstein.Protocol.Gameplay.Stages.Game.Generators;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Stages.Game.Templates;
+using Edelstein.Protocol.Util.Spatial;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Generators;
 
-public class FieldNPCGenerator : IFieldGenerator
+public class FieldGeneratorNPCUnit : IFieldGeneratorUnit
 {
     private readonly IField _field;
     private readonly IFieldTemplateLife _life;
     private readonly INPCTemplate _template;
 
-    public FieldNPCGenerator(IField field, IFieldTemplateLife life, INPCTemplate template)
+    public FieldGeneratorNPCUnit(IField field, IFieldTemplateLife life, INPCTemplate template)
     {
         _field = field;
         _life = life;
@@ -22,7 +22,7 @@ public class FieldNPCGenerator : IFieldGenerator
 
     private IFieldNPC? NPC { get; set; }
 
-    public bool IsGenerateOnInit => true;
+    public IPoint2D Position => _life.Position;
 
     public IFieldObject? Generate()
     {
