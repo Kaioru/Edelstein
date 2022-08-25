@@ -17,6 +17,7 @@ public class FieldGeneratorMob : IFieldGenerator
 
     public IEnumerable<IFieldObject> Generate()
     {
+        var random = new Random();
         var userCount = _field.GetPool(FieldObjectType.User)?.Objects.Count ?? 0;
         var mobCount = _field.GetPool(FieldObjectType.Mob)?.Objects.Count ?? 0;
         var mobCapacity = _field.Template.MobCapacityMin;
@@ -33,7 +34,7 @@ public class FieldGeneratorMob : IFieldGenerator
         if (mobGenCount == 0) yield break;
 
         foreach (var unit in _units
-                     .OrderByDescending(u => _field.GetSplit(u.Position)?.Observers.Count ?? 0)
+                     .OrderByDescending(u => random.Next())
                      .Take(mobGenCount))
         {
             var obj = unit.Generate();
