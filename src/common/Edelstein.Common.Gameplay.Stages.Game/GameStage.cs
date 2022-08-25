@@ -26,25 +26,26 @@ public class GameStage : IGameStage
 
     public async Task Enter(IGameStageUser user)
     {
-        try
+        if (user.Character == null)
         {
-            if (user.Character == null) return;
-
-            var field = await _fieldManager.Retrieve(user.Character.FieldID);
-            var fieldUser = _fieldManager.CreateUser(user);
-
-            if (field == null || fieldUser == null) return;
-
-            user.Stage = this;
-            user.FieldUser = fieldUser;
-
-            await field.Enter(fieldUser);
-            await _enterEvent.Publish(new UserEnterStage<IGameStageUser>(user, this));
+            await user.Disconnect();
+            return;
         }
-        catch (Exception e)
+
+        var field = await _fieldManager.Retrieve(user.Character.FieldID);
+        var fieldUser = _fieldManager.CreateUser(user);
+
+        if (field == null || fieldUser == null)
         {
-            Console.WriteLine(e);
+            await user.Disconnect();
+            return;
         }
+
+        user.Stage = this;
+        user.FieldUser = fieldUser;
+
+        await field.Enter(fieldUser);
+        await _enterEvent.Publish(new UserEnterStage<IGameStageUser>(user, this));
     }
 
     public async Task Leave(IGameStageUser user)
