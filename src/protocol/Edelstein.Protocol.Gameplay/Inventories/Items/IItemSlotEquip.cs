@@ -22,7 +22,7 @@ public interface IItemSlotEquip : IItemSlotBase
     short Speed { get; set; }
     short Jump { get; set; }
 
-    string Title { get; set; }
+    string? Title { get; set; }
     short Attribute { get; set; }
     byte LevelUpType { get; set; }
     byte Level { get; set; }

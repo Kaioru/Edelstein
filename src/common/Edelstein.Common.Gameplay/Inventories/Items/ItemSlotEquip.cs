@@ -24,7 +24,7 @@ public record ItemSlotEquip : ItemSlotBase, IItemSlotEquip
     public short Speed { get; set; }
     public short Jump { get; set; }
 
-    public string Title { get; set; }
+    public string? Title { get; set; }
     public short Attribute { get; set; }
     public byte LevelUpType { get; set; }
     public byte Level { get; set; }

@@ -26,18 +26,21 @@ public class FieldManager : IFieldManager, ITickable
     private readonly IGameContextEvents _events;
     private readonly IDictionary<int, IField> _fields;
     private readonly ITemplateManager<IFieldTemplate> _fieldTemplates;
+    private readonly ITemplateManager<IMobTemplate> _mobTemplates;
     private readonly ITemplateManager<INPCTemplate> _npcTemplates;
 
     public FieldManager(
         ITickerManager tickerManager,
         ITemplateManager<IFieldTemplate> fieldTemplates,
         ITemplateManager<INPCTemplate> npcTemplates,
+        ITemplateManager<IMobTemplate> mobTemplates,
         IGameContextEvents events
     )
     {
         _fields = new ConcurrentDictionary<int, IField>();
         _fieldTemplates = fieldTemplates;
         _npcTemplates = npcTemplates;
+        _mobTemplates = mobTemplates;
         _events = events;
 
         tickerManager.Schedule(new FieldGeneratorTicker(this), TimeSpan.FromSeconds(7));
@@ -53,15 +56,27 @@ public class FieldManager : IFieldManager, ITickable
         field = CreateField(template);
 
         foreach (var life in template.Life)
-        {
-            if (life.Type != FieldLifeType.NPC) continue;
+            switch (life.Type)
+            {
+                case FieldLifeType.NPC:
+                {
+                    var npc = await _npcTemplates.Retrieve(life.ID);
+                    if (npc == null) continue;
+                    var generator = new FieldNPCGenerator(field, life, npc);
 
-            var npc = await _npcTemplates.Retrieve(life.ID);
-            if (npc == null) continue;
-            var generator = new FieldNPCGenerator(field, life, npc);
+                    field.Generators.Add(generator);
+                    break;
+                }
+                case FieldLifeType.Monster:
+                {
+                    var mob = await _mobTemplates.Retrieve(life.ID);
+                    if (mob == null) continue;
+                    var generator = new FieldMobNormalGenerator(field, life, mob);
 
-            field.Generators.Add(generator);
-        }
+                    field.Generators.Add(generator);
+                    break;
+                }
+            }
 
         foreach (var generator in field.Generators.Where(g => g.IsGenerateOnInit))
         {

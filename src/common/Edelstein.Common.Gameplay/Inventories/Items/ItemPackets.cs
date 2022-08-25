@@ -68,7 +68,7 @@ public static class ItemPackets
         writer.WriteShort(equip.Craft);
         writer.WriteShort(equip.Speed);
         writer.WriteShort(equip.Jump);
-        writer.WriteString(equip.Title);
+        writer.WriteString(equip.Title ?? string.Empty);
         writer.WriteShort(equip.Attribute);
 
         writer.WriteByte(equip.LevelUpType);
