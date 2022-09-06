@@ -66,8 +66,8 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
         if (handler.Check(user)) await handler.Handle(user, reader);
 
         _logger.LogDebug(
-            "Handled packet operation 0x{Operation:X} ({OperationName}) with {Available} available bytes left",
-            operation, Enum.GetName((PacketRecvOperations)operation), reader.Available
+            "Handled packet operation 0x{Operation:X} ({Operation} {OperationName}) with {Available} available bytes left",
+            operation, operation, Enum.GetName((PacketRecvOperations)operation), reader.Available
         );
     }
 }
