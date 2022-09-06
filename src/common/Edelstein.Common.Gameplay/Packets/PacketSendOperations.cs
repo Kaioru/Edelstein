@@ -2,4 +2,5 @@
 
 public enum PacketSendOperations : short
 {
+    AliveReq = 18
 }

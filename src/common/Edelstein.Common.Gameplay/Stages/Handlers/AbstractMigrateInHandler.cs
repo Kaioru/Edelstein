@@ -14,7 +14,7 @@ public abstract class AbstractMigrateInHandler<TStageUser> : IPacketHandler<TSta
 
     protected AbstractMigrateInHandler(IPipeline<ISocketOnMigrateIn<TStageUser>> pipeline) => _pipeline = pipeline;
 
-    public short Operation => 110;
+    public short Operation => (short)PacketRecvOperations.MigrateIn;
 
     public bool Check(TStageUser user) =>
         !user.IsMigrating &&

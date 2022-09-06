@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Util.Buffers.Packets;
+﻿using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Util.Tickers;
 
@@ -29,7 +30,7 @@ public class AliveTicker : ITickable
                 if (now - socket.LastAliveSent > _aliveFrequency)
                 {
                     socket.LastAliveSent = now;
-                    await socket.Dispatch(new PacketWriter().WriteShort(18));
+                    await socket.Dispatch(new PacketWriter(PacketSendOperations.AliveReq));
                 }
         }
     }

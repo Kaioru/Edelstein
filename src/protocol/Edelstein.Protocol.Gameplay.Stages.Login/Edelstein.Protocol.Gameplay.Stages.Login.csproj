@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Contracts\Events" />
-    <Folder Include="Contracts\Pipelines" />
   </ItemGroup>
 
 </Project>
