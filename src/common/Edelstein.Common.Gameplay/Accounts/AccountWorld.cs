@@ -19,5 +19,5 @@ public record AccountWorld : IAccountWorld
     public IItemLocker Locker { get; set; }
     public IItemTrunk Trunk { get; set; }
 
-    public int CharacterSlotMax { get; set; } = 3;
+    public int CharacterSlotMax { get; set; } = 4;
 }
