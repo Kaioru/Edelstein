@@ -43,7 +43,8 @@ public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
             {
                 dataLen ^= rawSeq;
 
-                ShandaCipher.EncryptTransform(buffer);
+                // ShandaCipher.EncryptTransform(buffer);
+
                 _aesCipher.Transform(buffer, seqSend);
             }
 

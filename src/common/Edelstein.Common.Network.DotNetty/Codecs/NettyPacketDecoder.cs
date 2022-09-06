@@ -85,11 +85,8 @@ public class NettyPacketDecoder : ReplayingDecoder<NettyPacketState>
                     if (!(version == -(_transport.Version + 1) ||
                           version == _transport.Version)) return;
 
-                    if (socket.IsDataEncrypted)
-                    {
-                        _aesCipher.Transform(buffer, seqRecv);
-                        ShandaCipher.DecryptTransform(buffer);
-                    }
+                    if (socket.IsDataEncrypted) _aesCipher.Transform(buffer, seqRecv);
+                    // ShandaCipher.DecryptTransform(buffer);
 
                     socket.SeqRecv = _igCipher.Hash(seqRecv, 4, 0);
                 }

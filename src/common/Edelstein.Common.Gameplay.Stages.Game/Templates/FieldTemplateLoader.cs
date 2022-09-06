@@ -37,8 +37,7 @@ public class FieldTemplateLoader : ITemplateLoader
                         n.Resolve("ladderRope")!.ResolveAll(),
                         n.Resolve("life")!.ResolveAll(),
                         n.Resolve("info")!.ResolveAll()
-                    )
-                ));
+                    )));
             }));
 
         return _manager.Count;

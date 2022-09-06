@@ -42,8 +42,8 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
     public void Remove(IPacketHandler<TStageUser> handler)
     {
         _logger.LogWarning(
-            "Removing packet handler for operation 0x{Operation:X} ({OperationName})",
-            handler.Operation, Enum.GetName((PacketRecvOperations)handler.Operation)
+            "Removing packet handler for operation 0x{Operation:X} ({Operation}, {OperationName})",
+            handler.Operation, handler.Operation, Enum.GetName((PacketRecvOperations)handler.Operation)
         );
         _handlers.Remove(handler.Operation);
     }
