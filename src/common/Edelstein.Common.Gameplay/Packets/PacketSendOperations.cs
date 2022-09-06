@@ -2,5 +2,6 @@
 
 public enum PacketSendOperations : short
 {
+    CheckPasswordResult = 0,
     AliveReq = 18
 }
