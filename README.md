@@ -1,5 +1,5 @@
 # Edelstein [![Build](https://github.com/Kaioru/Edelstein/actions/workflows/build.yaml/badge.svg)](https://github.com/Kaioru/Edelstein/actions/workflows/build.yaml)
-A v.95.1 Mushroom game server emulator written in C#.
+A v.176.1 Mushroom game server emulator written in C#.
 
 ## 🚀 Getting started
 
