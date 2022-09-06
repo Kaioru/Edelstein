@@ -79,6 +79,11 @@ public class WorldRequestPlug : IPipelinePlug<IWorldRequest>
             new PacketWriter(PacketSendOperations.WorldInformation)
                 .WriteInt(0xFF)
         );
-        // TODO: WorldRecommendation
+
+        if (message.User.Account?.LatestConnectedWorld != null)
+            await message.User.Dispatch(
+                new PacketWriter(PacketSendOperations.LatestConnectedWorld)
+                    .WriteInt((int)message.User.Account.LatestConnectedWorld)
+            );
     }
 }
