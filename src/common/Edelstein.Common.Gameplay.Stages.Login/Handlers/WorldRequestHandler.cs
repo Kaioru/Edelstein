@@ -66,7 +66,7 @@ public class WorldRequestHandler : AbstractLoginPacketHandler
             foreach (var stage in gameStages)
             {
                 packet.WriteString(stage.ID);
-                packet.WriteInt(0); // TODO: UserNo
+                packet.WriteInt(1); // TODO: UserNo
                 packet.WriteByte((byte)stage.WorldID);
                 packet.WriteByte((byte)stage.ChannelID);
                 packet.WriteBool(stage.IsAdultChannel);

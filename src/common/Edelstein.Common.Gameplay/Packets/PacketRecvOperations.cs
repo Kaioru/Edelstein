@@ -2,5 +2,7 @@
 
 public enum PacketRecvOperations : short
 {
-    DUMMY_CODE = 100
+    DUMMY_CODE = 100,
+
+    BEGIN_SOCKET = 101
 }
