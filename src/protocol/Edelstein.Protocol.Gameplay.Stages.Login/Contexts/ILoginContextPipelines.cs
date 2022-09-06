@@ -7,4 +7,6 @@ namespace Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 public interface ILoginContextPipelines : IStageContextPipelines<ILoginStageUser>
 {
     IPipeline<ICheckLoginAuthInfo> CheckLoginAuthInfo { get; }
+    IPipeline<ILogoutWorld> LogoutWorld { get; }
+    IPipeline<IWorldRequest> WorldRequest { get; }
 }

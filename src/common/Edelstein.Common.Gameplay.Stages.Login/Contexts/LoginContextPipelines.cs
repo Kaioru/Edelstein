@@ -13,5 +13,7 @@ public record LoginContextPipelines(
     IPipeline<ISocketOnPacket<ILoginStageUser>> SocketOnPacket,
     IPipeline<ISocketOnException<ILoginStageUser>> SocketOnException,
     IPipeline<ISocketOnDisconnect<ILoginStageUser>> SocketOnDisconnect,
-    IPipeline<ICheckLoginAuthInfo> CheckLoginAuthInfo
+    IPipeline<ICheckLoginAuthInfo> CheckLoginAuthInfo,
+    IPipeline<ILogoutWorld> LogoutWorld,
+    IPipeline<IWorldRequest> WorldRequest
 ) : ILoginContextPipelines;
