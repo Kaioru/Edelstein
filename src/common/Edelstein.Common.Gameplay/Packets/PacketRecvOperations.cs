@@ -7,5 +7,8 @@ public enum PacketRecvOperations : short
     BEGIN_SOCKET = 101,
     CheckLoginAuthInfo = 105,
     MigrateIn = 110,
-    AliveAck = 147
+    WorldInfoRequest = 114,
+    LogoutWorld = 117,
+    AliveAck = 147,
+    WorldRequest = 160
 }
