@@ -12,7 +12,7 @@ public class NettyPacketDecoder : ReplayingDecoder<NettyPacketState>
     private readonly AESCipher _aesCipher;
     private readonly IGCipher _igCipher;
     private readonly ITransport _transport;
-    private short _length;
+    private int _length;
 
     private short _sequence;
 
@@ -22,9 +22,9 @@ public class NettyPacketDecoder : ReplayingDecoder<NettyPacketState>
         IGCipher igCipher
     ) : base(NettyPacketState.DecodingHeader)
     {
-        _transport = transport ?? throw new ArgumentNullException(nameof(transport));
-        _aesCipher = aesCipher ?? throw new ArgumentNullException(nameof(aesCipher));
-        _igCipher = igCipher ?? throw new ArgumentNullException(nameof(igCipher));
+        _transport = transport;
+        _aesCipher = aesCipher;
+        _igCipher = igCipher;
     }
 
     protected override void Decode(IChannelHandlerContext context, IByteBuffer input, List<object> output)
@@ -43,9 +43,21 @@ public class NettyPacketDecoder : ReplayingDecoder<NettyPacketState>
                     }
 
                     var sequence = input.ReadShortLE();
-                    var length = input.ReadShortLE();
+                    var length = (int)input.ReadShortLE();
 
                     if (socket.IsDataEncrypted) length ^= sequence;
+                    if (length > 0xFF00)
+                    {
+                        if (input.ReadableBytes < 4)
+                        {
+                            RequestReplay();
+                            return;
+                        }
+
+                        length = input.ReadIntLE();
+
+                        if (socket.IsDataEncrypted) length ^= sequence;
+                    }
 
                     _sequence = sequence;
                     _length = length;
