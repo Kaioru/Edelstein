@@ -52,8 +52,8 @@ public class WorldRequestHandler : AbstractLoginPacketHandler
             packet.WriteString(template.Name);
             packet.WriteByte(template.State);
             packet.WriteString(""); // WorldEventDesc
-            packet.WriteShort(0); // WorldEventEXP_WSE, WorldSpecificEvent
-            packet.WriteShort(0); // WorldEventDrop_WSE, WorldSpecificEvent
+            packet.WriteShort(100); // WorldEventEXP_WSE, WorldSpecificEvent
+            packet.WriteShort(100); // WorldEventDrop_WSE, WorldSpecificEvent
             packet.WriteBool(template.BlockCharCreation);
 
             var gameStages =
