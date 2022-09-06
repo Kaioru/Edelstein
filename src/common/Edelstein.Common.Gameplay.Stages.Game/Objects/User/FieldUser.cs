@@ -1,6 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Inventories.Modify;
-using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Game.Conversations;
 using Edelstein.Common.Gameplay.Stages.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
@@ -59,7 +58,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
     public IPacket GetSetFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.SetField);
+        var packet = new PacketWriter();
 
         packet.WriteShort(0); // ClientOpt
 
@@ -97,7 +96,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
     public override IPacket GetEnterFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.UserEnterField);
+        var packet = new PacketWriter();
 
         packet.WriteInt(Character.ID);
 
@@ -157,7 +156,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
     }
 
     public override IPacket GetLeaveFieldPacket() =>
-        new PacketWriter(PacketSendOperations.UserLeaveField)
+        new PacketWriter()
             .WriteInt(Character.ID);
 
     public Task OnPacket(IPacket packet) => StageUser.OnPacket(packet);
@@ -170,7 +169,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
     public async Task Message(IFieldMessage message)
     {
-        var packet = new PacketWriter(PacketSendOperations.Message);
+        var packet = new PacketWriter();
 
         packet.WriteByte((byte)message.Type);
         packet.Write(message);
@@ -236,7 +235,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
     public async Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
     {
         var context = new ModifyInventoryGroupContext(Character.Inventories, StageUser.Context.Templates.Item);
-        var packet = new PacketWriter(PacketSendOperations.InventoryOperation);
+        var packet = new PacketWriter();
 
         action?.Invoke(context);
 
@@ -251,7 +250,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
     protected override IPacket GetMovePacket(IUserMovePath ctx)
     {
-        var packet = new PacketWriter(PacketSendOperations.UserMove);
+        var packet = new PacketWriter();
 
         packet.WriteInt(Character.ID);
         packet.Write(ctx);

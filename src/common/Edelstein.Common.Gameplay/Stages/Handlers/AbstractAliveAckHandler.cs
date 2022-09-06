@@ -12,9 +12,9 @@ public abstract class AbstractAliveAckHandler<TStageUser> : IPacketHandler<TStag
 {
     private readonly IPipeline<ISocketOnAliveAck<TStageUser>> _pipeline;
 
-    public AbstractAliveAckHandler(IPipeline<ISocketOnAliveAck<TStageUser>> pipeline) => _pipeline = pipeline;
+    protected AbstractAliveAckHandler(IPipeline<ISocketOnAliveAck<TStageUser>> pipeline) => _pipeline = pipeline;
 
-    public short Operation => (short)PacketRecvOperations.AliveAck;
+    public short Operation => 147;
 
     public bool Check(TStageUser user) => user.Stage != null;
 

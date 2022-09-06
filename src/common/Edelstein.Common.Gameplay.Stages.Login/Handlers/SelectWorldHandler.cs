@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Accounts;
 using Edelstein.Common.Gameplay.Characters;
-using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Services.Server.Contracts;
 using Edelstein.Common.Util.Buffers.Packets;
@@ -29,7 +28,7 @@ public class SelectWorldHandler : AbstractLoginPacketHandler
         _server = server;
     }
 
-    public override short Operation => (short)PacketRecvOperations.SelectWorld;
+    public override short Operation => 106;
 
     public override bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
 

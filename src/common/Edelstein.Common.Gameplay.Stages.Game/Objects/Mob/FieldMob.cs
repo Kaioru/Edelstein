@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Movements;
+﻿using Edelstein.Common.Gameplay.Stages.Game.Objects.Mob.Movements;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.Mob;
@@ -29,7 +28,7 @@ public class FieldMob : AbstractFieldControllable<IMobMovePath, IMobMoveAction>,
 
     public override IPacket GetLeaveFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.MobLeaveField);
+        var packet = new PacketWriter();
 
         packet.WriteInt(ObjectID ?? 0);
         packet.WriteInt(1); // m_tLastUpdateAmbush?
@@ -40,7 +39,7 @@ public class FieldMob : AbstractFieldControllable<IMobMovePath, IMobMoveAction>,
 
     private IPacket GetEnterFieldPacket(FieldMobAppearType appear, int? appearOption = null)
     {
-        var packet = new PacketWriter(PacketSendOperations.MobEnterField);
+        var packet = new PacketWriter();
 
         packet.WriteInt(ObjectID ?? 0);
         WriteTo(packet, appear, appearOption);
@@ -73,7 +72,7 @@ public class FieldMob : AbstractFieldControllable<IMobMovePath, IMobMoveAction>,
 
     protected override IPacket GetControlPacket(IFieldController? controller = null)
     {
-        var packet = new PacketWriter(PacketSendOperations.MobChangeController);
+        var packet = new PacketWriter();
 
         packet.WriteBool(controller != null);
         packet.WriteInt(ObjectID ?? 0);

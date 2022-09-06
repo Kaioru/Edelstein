@@ -1,5 +1,4 @@
 ﻿using Edelstein.Common.Gameplay.Characters;
-using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Login;
@@ -14,7 +13,7 @@ public class DeleteCharacterHandler : AbstractLoginPacketHandler
     public DeleteCharacterHandler(ICharacterRepository characterRepository) =>
         _characterRepository = characterRepository;
 
-    public override short Operation => (short)PacketRecvOperations.DeleteCharacter;
+    public override short Operation => 128;
 
     public override bool Check(ILoginStageUser user) =>
         user.State == LoginState.SelectCharacter && user.Account!.SPW != null;

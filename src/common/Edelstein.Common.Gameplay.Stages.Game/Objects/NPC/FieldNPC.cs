@@ -1,4 +1,3 @@
-using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.NPC.Movements;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Common.Util.Spatial;
@@ -37,7 +36,7 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath, INPCMoveAction>,
 
     public override IPacket GetEnterFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.NpcEnterField);
+        var packet = new PacketWriter();
 
         packet.WriteInt(ObjectID!.Value);
         packet.Write(this);
@@ -47,7 +46,7 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath, INPCMoveAction>,
 
     public override IPacket GetLeaveFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.NpcLeaveField);
+        var packet = new PacketWriter();
 
         packet.WriteInt(ObjectID!.Value);
 
@@ -70,7 +69,7 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath, INPCMoveAction>,
 
     protected override IPacket GetMovePacket(INPCMovePath ctx)
     {
-        var packet = new PacketWriter(PacketSendOperations.NpcMove);
+        var packet = new PacketWriter();
 
         packet.WriteInt(ObjectID!.Value);
         packet.Write(ctx);
@@ -80,7 +79,7 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath, INPCMoveAction>,
 
     protected override IPacket GetControlPacket(IFieldController? controller = null)
     {
-        var packet = new PacketWriter(PacketSendOperations.NpcChangeController);
+        var packet = new PacketWriter();
 
         packet.WriteBool(controller != null);
         packet.WriteInt(ObjectID!.Value);

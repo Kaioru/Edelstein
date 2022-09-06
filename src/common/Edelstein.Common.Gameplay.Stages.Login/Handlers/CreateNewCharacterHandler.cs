@@ -1,5 +1,4 @@
 ﻿using Edelstein.Common.Gameplay.Characters;
-using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Characters;
@@ -29,7 +28,7 @@ public class CreateNewCharacterHandler : AbstractLoginPacketHandler
         _templateManager = templateManager;
     }
 
-    public override short Operation => (short)PacketRecvOperations.CreateNewCharacter;
+    public override short Operation => 125;
 
     public override bool Check(ILoginStageUser user) => user.State == LoginState.SelectCharacter;
 

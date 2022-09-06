@@ -1,5 +1,4 @@
 ﻿using Edelstein.Common.Gameplay.Accounts;
-using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Login.Types;
 using Edelstein.Common.Services.Auth.Contracts;
 using Edelstein.Common.Services.Server.Contracts;
@@ -38,7 +37,7 @@ public class CheckLoginAuthInfoHandler : AbstractLoginPacketHandler
         _stage = stage;
     }
 
-    public override short Operation => (short)PacketRecvOperations.CheckLoginAuthInfo;
+    public override short Operation => 105;
 
     public override bool Check(ILoginStageUser user) => user.State == LoginState.CheckPassword;
 

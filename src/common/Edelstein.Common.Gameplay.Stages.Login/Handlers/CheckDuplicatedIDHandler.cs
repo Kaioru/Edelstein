@@ -1,5 +1,4 @@
 ﻿using Edelstein.Common.Gameplay.Characters;
-using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Login;
 using Edelstein.Protocol.Util.Buffers.Packets;
@@ -13,7 +12,7 @@ public class CheckDuplicatedIDHandler : AbstractLoginPacketHandler
     public CheckDuplicatedIDHandler(ICharacterRepository characterRepository) =>
         _characterRepository = characterRepository;
 
-    public override short Operation => (short)PacketRecvOperations.CheckDuplicatedID;
+    public override short Operation => 116;
 
     public override bool Check(ILoginStageUser user) => user.State == LoginState.SelectCharacter;
 
