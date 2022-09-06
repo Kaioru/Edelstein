@@ -9,6 +9,8 @@ public class CheckHotfixHandler : AbstractLoginPacketHandler
 {
     public override short Operation => (short)PacketRecvOperations.CheckHotfix;
 
+    public override bool Check(ILoginStageUser user) => user.State == LoginState.CheckPassword;
+
     public override Task Handle(ILoginStageUser user, IPacketReader reader)
     {
         var packet = new PacketWriter();
