@@ -134,15 +134,17 @@ public static class CharacterPackets
     )
     {
         writer.WriteInt(character.ID);
+        writer.WriteInt(character.ID);
+        writer.WriteInt(0);
         writer.WriteString(character.Name, 13);
 
         writer.WriteByte(character.Gender);
         writer.WriteByte(character.Skin);
         writer.WriteInt(character.Face);
         writer.WriteInt(character.Hair);
-
-        foreach (var sn in character.Pets)
-            writer.WriteLong(sn);
+        writer.WriteByte(0);
+        writer.WriteByte(0);
+        writer.WriteByte(0);
 
         writer.WriteByte(character.Level);
         writer.WriteShort(character.Job);
@@ -156,16 +158,58 @@ public static class CharacterPackets
         writer.WriteInt(character.MaxMP);
 
         writer.WriteShort(character.AP);
-        writer.WriteShort(character.SP); // TODO: extendSP
+        writer.WriteByte(0); // TODO: extendSP
 
-        writer.WriteInt(character.EXP);
-        writer.WriteShort(character.POP);
+        writer.WriteLong(character.EXP);
+        writer.WriteInt(character.POP);
 
+        writer.WriteInt(0);
         writer.WriteInt(character.TempEXP);
         writer.WriteInt(character.FieldID);
         writer.WriteByte(character.FieldPortal);
         writer.WriteInt(character.PlayTime);
         writer.WriteShort(character.SubJob);
+
+        writer.WriteByte(0);
+        writer.WriteInt(0);
+        writer.WriteInt(0);
+        writer.WriteInt(0);
+        writer.WriteInt(0);
+        writer.WriteInt(0);
+        writer.WriteInt(0);
+        writer.WriteInt(0);
+
+        // NonCombatStatDay
+        writer.WriteShort(0);
+        writer.WriteShort(0);
+        writer.WriteShort(0);
+        writer.WriteShort(0);
+        writer.WriteShort(0);
+        writer.WriteShort(0);
+        writer.WriteByte(0);
+        writer.WriteLong(0);
+
+        writer.WriteInt(0);
+        writer.WriteByte(0);
+        writer.WriteInt(0);
+        writer.WriteByte(2);
+        writer.WriteByte(0);
+
+        writer.WriteInt(0);
+        writer.WriteByte(0);
+        writer.WriteLong(0);
+        writer.WriteInt(0);
+        writer.WriteByte(0);
+
+        for (var i = 0; i < 9; i++)
+        {
+            writer.WriteInt(0);
+            writer.WriteByte(0);
+            writer.WriteInt(0);
+        }
+
+        writer.WriteLong(0);
+        writer.WriteBool(false);
     }
 
     public static void WriteCharacterLooks(
@@ -176,7 +220,7 @@ public static class CharacterPackets
         writer.WriteByte(character.Gender);
         writer.WriteByte(character.Skin);
         writer.WriteInt(character.Face);
-
+        writer.WriteInt(character.Job);
         writer.WriteBool(false);
         writer.WriteInt(character.Hair);
 
@@ -216,17 +260,27 @@ public static class CharacterPackets
 
         writer.WriteByte(0xFF);
 
+        writer.WriteByte(0xFF);
+
         var item = character.Inventories[ItemInventoryType.Equip].Items;
 
         writer.WriteInt(
             item.ContainsKey(-111)
                 ? item[-111].ID
-                : item.ContainsKey(-11)
-                    ? item[-11].ID
-                    : 0
+                : 0
         );
+        writer.WriteInt(
+            item.ContainsKey(-11)
+                ? item[-11].ID
+                : 0
+        );
+        writer.WriteInt(0);
+        writer.WriteBool(false);
 
         for (var i = 0; i < 3; i++)
             writer.WriteInt(0);
+
+        writer.WriteByte(0);
+        writer.WriteByte(0);
     }
 }

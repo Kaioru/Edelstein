@@ -84,8 +84,7 @@ public class SelectWorldHandler : AbstractLoginPacketHandler
                 packet.WriteBool(false);
 
                 packet.WriteInt(0);
-                packet.WriteByte(0);
-                /*
+
                 packet.WriteByte((byte)characters.Count);
 
                 foreach (var character in characters)
@@ -96,7 +95,6 @@ public class SelectWorldHandler : AbstractLoginPacketHandler
                     packet.WriteBool(false);
                     packet.WriteBool(false);
                 }
-                */
 
                 packet.WriteBool(!string.IsNullOrEmpty(user.Account.SPW));
                 packet.WriteBool(false);
