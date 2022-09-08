@@ -60,12 +60,20 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
     {
         var packet = new PacketWriter();
 
+        packet.WriteShort(428);
+
         packet.WriteShort(0); // ClientOpt
 
         packet.WriteInt(StageUser.Context.Options.ChannelID);
-        packet.WriteInt(StageUser.Context.Options.WorldID);
 
-        packet.WriteBool(true); // sNotifierMessage._m_pStr
+        packet.WriteBool(false); // sNotifierMessage._m_pStr
+
+        packet.WriteInt(0);
+        packet.WriteByte((byte)(!IsInstantiated ? 1 : 2));
+        packet.WriteInt(0);
+        packet.WriteInt((int)(Field?.Template.Bounds.Width ?? 0));
+        packet.WriteInt((int)(Field?.Template.Bounds.Height ?? 0));
+
         packet.WriteBool(!IsInstantiated);
         packet.WriteShort(0); // nNotifierCheck, loops
 
@@ -77,8 +85,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
             packet.WriteCharacterData(Character);
 
-            packet.WriteInt(0);
-            for (var i = 0; i < 3; i++) packet.WriteInt(0);
+            packet.WriteInt(0); // LogoutEvent
         }
         else
         {
@@ -89,7 +96,23 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
             packet.WriteBool(false);
         }
 
+        packet.WriteBool(false);
+        packet.WriteBool(false);
         packet.WriteDateTime(DateTime.Now);
+        packet.WriteInt(0);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteInt(0);
+        packet.WriteByte(0);
+        packet.WriteInt(Account.ID);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+
 
         return packet;
     }

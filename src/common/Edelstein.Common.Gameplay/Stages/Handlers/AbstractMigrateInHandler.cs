@@ -24,9 +24,11 @@ public abstract class AbstractMigrateInHandler<TStageUser> : IPacketHandler<TSta
 
     public Task Handle(TStageUser user, IPacketReader reader)
     {
+        _ = reader.ReadInt();
         var character = reader.ReadInt();
         _ = reader.ReadBytes(18);
         var key = reader.ReadLong();
+
         var message = new SocketOnMigrateIn<TStageUser>(
             user,
             character,

@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Inventories.Items;
-using Edelstein.Protocol.Gameplay.Characters;
+﻿using Edelstein.Protocol.Gameplay.Characters;
 using Edelstein.Protocol.Gameplay.Inventories;
 using Edelstein.Protocol.Gameplay.Inventories.Items;
 using Edelstein.Protocol.Util.Buffers.Packets;
@@ -14,8 +13,18 @@ public static class CharacterPackets
         CharacterFlags flags = CharacterFlags.All
     )
     {
+        flags = CharacterFlags.Character;
+
         writer.WriteLong((long)flags);
         writer.WriteByte(0);
+
+        writer.WriteInt(0);
+        writer.WriteInt(0);
+        writer.WriteInt(0);
+
+        writer.WriteByte(0);
+        writer.WriteByte(0);
+        writer.WriteInt(0);
         writer.WriteByte(0);
 
         if (flags.HasFlag(CharacterFlags.Character))
@@ -23,109 +32,27 @@ public static class CharacterPackets
             writer.WriteCharacterStats(character);
 
             writer.WriteByte(250); // nFriendMax
+
+            writer.WriteBool(false);
+            writer.WriteBool(false);
             writer.WriteBool(false);
         }
 
-        if (flags.HasFlag(CharacterFlags.Money)) writer.WriteInt(character.Money);
+        writer.WriteInt(0);
+        writer.WriteByte(0);
 
-        if (flags.HasFlag(CharacterFlags.InventorySize))
-        {
-            if (flags.HasFlag(CharacterFlags.ItemSlotEquip))
-                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Equip].SlotMax);
-            if (flags.HasFlag(CharacterFlags.ItemSlotConsume))
-                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Consume].SlotMax);
-            if (flags.HasFlag(CharacterFlags.ItemSlotInstall))
-                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Install].SlotMax);
-            if (flags.HasFlag(CharacterFlags.ItemSlotEtc))
-                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Etc].SlotMax);
-            if (flags.HasFlag(CharacterFlags.ItemSlotCash))
-                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Cash].SlotMax);
-        }
-
-        if (flags.HasFlag(CharacterFlags.AdminShopCount))
+        if (flags.HasFlag(CharacterFlags.Character))
         {
             writer.WriteInt(0);
             writer.WriteInt(0);
         }
 
-        if (flags.HasFlag(CharacterFlags.ItemSlotEquip))
-        {
-            var inventory = character.Inventories[ItemInventoryType.Equip].Items;
-            var equip = inventory.Where(kv => kv.Key >= 0);
-            var equipped = inventory.Where(kv => kv.Key is >= -100 and < 0);
-            var equipped2 = inventory.Where(kv => kv.Key is >= -1000 and < -100);
-            var dragon = inventory.Where(kv => kv.Key is >= -1100 and < -1000);
-            var mechanic = inventory.Where(kv => kv.Key is >= -1200 and < -1100);
+        writer.WriteShort(0);
 
-            foreach (var items in new[] { equipped, equipped2, equip, dragon, mechanic })
-            {
-                foreach (var kv in items)
-                {
-                    writer.WriteShort((short)Math.Abs(kv.Key % 100));
-                    writer.WriteItemData(kv.Value);
-                }
+        writer.WriteBool(false);
+        writer.WriteInt(0);
 
-                writer.WriteShort(0);
-            }
-        }
-
-        foreach (var t in new List<(CharacterFlags, ItemInventoryType)>
-                     {
-                         (CharacterFlags.ItemSlotConsume, ItemInventoryType.Consume),
-                         (CharacterFlags.ItemSlotInstall, ItemInventoryType.Install),
-                         (CharacterFlags.ItemSlotEtc, ItemInventoryType.Etc),
-                         (CharacterFlags.ItemSlotCash, ItemInventoryType.Cash)
-                     }
-                     .Where(t => flags.HasFlag(t.Item1)))
-        {
-            var items = character.Inventories[t.Item2].Items;
-
-            foreach (var kv in items)
-            {
-                writer.WriteShort(kv.Key);
-                writer.WriteItemData(kv.Value);
-            }
-
-            writer.WriteByte(0);
-        }
-
-        if (flags.HasFlag(CharacterFlags.SkillRecord)) writer.WriteShort(0);
-
-        if (flags.HasFlag(CharacterFlags.SkillCooltime)) writer.WriteShort(0);
-
-        if (flags.HasFlag(CharacterFlags.QuestRecord)) writer.WriteShort(0);
-
-        if (flags.HasFlag(CharacterFlags.QuestComplete)) writer.WriteShort(0);
-
-        if (flags.HasFlag(CharacterFlags.MinigameRecord)) writer.WriteShort(0);
-
-        if (flags.HasFlag(CharacterFlags.CoupleRecord))
-        {
-            writer.WriteShort(0); // Couple
-            writer.WriteShort(0); // Friend
-            writer.WriteShort(0); // Marriage
-        }
-
-        if (flags.HasFlag(CharacterFlags.MapTransfer))
-        {
-            for (var i = 0; i < 5; i++) writer.WriteInt(0);
-            for (var i = 0; i < 10; i++) writer.WriteInt(0);
-        }
-
-        if (flags.HasFlag(CharacterFlags.NewYearCard)) writer.WriteShort(0);
-
-        if (flags.HasFlag(CharacterFlags.QuestRecordEx)) writer.WriteShort(0);
-
-        if (flags.HasFlag(CharacterFlags.WildHunterInfo))
-            if (character.Job / 100 == 33)
-            {
-                writer.WriteByte(0);
-                for (var i = 0; i < 5; i++) writer.WriteInt(0);
-            }
-
-        if (flags.HasFlag(CharacterFlags.QuestCompleteOld)) writer.WriteShort(0);
-
-        if (flags.HasFlag(CharacterFlags.VisitorLog)) writer.WriteShort(0);
+        writer.WriteBytes(new byte[32]);
     }
 
     public static void WriteCharacterStats(

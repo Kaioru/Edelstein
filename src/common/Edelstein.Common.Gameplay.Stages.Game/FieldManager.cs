@@ -80,8 +80,8 @@ public class FieldManager : IFieldManager, ITickable
                 }
             }
 
-        field.Generators.Add(new FieldGeneratorNPC(npcUnits));
-        field.Generators.Add(new FieldGeneratorMob(field, mobUnits));
+        //field.Generators.Add(new FieldGeneratorNPC(npcUnits));
+        //field.Generators.Add(new FieldGeneratorMob(field, mobUnits));
 
         foreach (var generator in field.Generators)
         foreach (var obj in generator.Generate())
