@@ -60,7 +60,7 @@ public class SelectCharacterHandler : AbstractLoginPacketHandler
 
             var gameEndpoint = new IPEndPoint(IPAddress.Parse("8.31.99.141"), response.Server.Port);
             var gameAddress = gameEndpoint.Address.MapToIPv4().GetAddressBytes();
-            var chatEndpoint = new IPEndPoint(IPAddress.Parse("8.31.99.131"), response.Server.Port);
+            var chatEndpoint = new IPEndPoint(IPAddress.Parse("8.31.99.131"), 1337);
             var chatAddress = gameEndpoint.Address.MapToIPv4().GetAddressBytes();
             var packet = new PacketWriter();
 

@@ -13,8 +13,6 @@ public static class CharacterPackets
         CharacterFlags flags = CharacterFlags.All
     )
     {
-        flags = CharacterFlags.Character;
-
         writer.WriteLong((long)flags);
         writer.WriteByte(0);
 
@@ -38,6 +36,152 @@ public static class CharacterPackets
             writer.WriteBool(false);
         }
 
+        if (flags.HasFlag(CharacterFlags.Money)) writer.WriteLong(character.Money);
+
+        if (flags.HasFlag(CharacterFlags.ItemSlotConsume)) writer.WriteInt(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotConsume)) writer.WriteInt(0);
+
+        if (flags.HasFlag((CharacterFlags)0x800000000000))
+        {
+            writer.WriteInt(0);
+            writer.WriteInt(character.ID);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+
+            writer.WriteByte(0);
+            writer.WriteByte(0);
+            writer.WriteByte(0);
+        }
+
+        if (flags.HasFlag(CharacterFlags.InventorySize))
+        {
+            if (flags.HasFlag(CharacterFlags.ItemSlotEquip))
+                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Equip].SlotMax);
+            if (flags.HasFlag(CharacterFlags.ItemSlotConsume))
+                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Consume].SlotMax);
+            if (flags.HasFlag(CharacterFlags.ItemSlotInstall))
+                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Install].SlotMax);
+            if (flags.HasFlag(CharacterFlags.ItemSlotEtc))
+                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Etc].SlotMax);
+            if (flags.HasFlag(CharacterFlags.ItemSlotCash))
+                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Cash].SlotMax);
+        }
+
+        if (flags.HasFlag(CharacterFlags.AdminShopCount))
+        {
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+        }
+
+        if (flags.HasFlag(CharacterFlags.ItemSlotEquip))
+        {
+            writer.WriteByte(0);
+
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+        }
+
+        if (flags.HasFlag(CharacterFlags.ItemSlotConsume)) writer.WriteByte(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotInstall)) writer.WriteByte(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotEtc)) writer.WriteByte(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotCash)) writer.WriteByte(0);
+
+        if (flags.HasFlag(CharacterFlags.ItemSlotConsume)) writer.WriteInt(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotInstall)) writer.WriteInt(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotEtc)) writer.WriteInt(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotCash)) writer.WriteInt(0);
+
+        if (flags.HasFlag((CharacterFlags)0x1000000)) writer.WriteInt(0);
+        if (flags.HasFlag((CharacterFlags)0x800000)) writer.WriteByte(0);
+
+        if (flags.HasFlag(CharacterFlags.SkillRecord))
+        {
+            writer.WriteBool(true);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+        }
+
+        if (flags.HasFlag(CharacterFlags.SkillCooltime)) writer.WriteShort(0);
+
+        if (flags.HasFlag(CharacterFlags.QuestRecord))
+        {
+            writer.WriteBool(true);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+        }
+
+        if (flags.HasFlag(CharacterFlags.QuestComplete))
+        {
+            writer.WriteBool(true);
+            writer.WriteShort(0);
+        }
+
+        if (flags.HasFlag(CharacterFlags.MinigameRecord)) writer.WriteShort(0);
+
+        if (flags.HasFlag(CharacterFlags.CoupleRecord))
+        {
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+        }
+
+        if (flags.HasFlag(CharacterFlags.MapTransfer))
+        {
+            for (var i = 0; i < 5; i++) writer.WriteInt(0);
+            for (var i = 0; i < 10; i++) writer.WriteInt(0);
+            for (var i = 0; i < 13; i++) writer.WriteInt(0);
+            for (var i = 0; i < 13; i++) writer.WriteInt(0);
+        }
+
+        if (flags.HasFlag(CharacterFlags.MonsterBookCover)) writer.WriteInt(0);
+        if (flags.HasFlag(CharacterFlags.MonsterBookCard))
+        {
+            writer.WriteBool(false);
+            writer.WriteShort(0);
+            writer.WriteInt(0);
+        }
+
+        if (flags.HasFlag(CharacterFlags.QuestCompleteOld)) writer.WriteShort(0);
+        if (flags.HasFlag((CharacterFlags)0x800000)) writer.WriteInt(0);
+        if (flags.HasFlag(CharacterFlags.NewYearCard)) writer.WriteShort(0);
+        if (flags.HasFlag(CharacterFlags.QuestRecordEx)) writer.WriteShort(0);
+        if (flags.HasFlag(CharacterFlags.Avatar)) writer.WriteShort(0);
+        if (flags.HasFlag(CharacterFlags.MapTransfer)) writer.WriteInt(0);
+
+        // WildHunterInfo
+        // ZeroInfo
+
+        if (flags.HasFlag((CharacterFlags)0x4000000)) writer.WriteShort(0);
+
+        if (flags.HasFlag((CharacterFlags)0x20000000))
+            for (var i = 0; i < 15; i++)
+                writer.WriteInt(0);
+
+        if (flags.HasFlag((CharacterFlags)0x10000000))
+            for (var i = 0; i < 5; i++)
+                writer.WriteInt(0);
+
+        if (flags.HasFlag((CharacterFlags)0x80000000)) writer.WriteShort(0);
+        if (flags.HasFlag((CharacterFlags)0x1000000000000)) writer.WriteShort(0);
+
         writer.WriteInt(0);
         writer.WriteByte(0);
 
@@ -47,10 +191,139 @@ public static class CharacterPackets
             writer.WriteInt(0);
         }
 
+        if (flags.HasFlag(CharacterFlags.Money))
+        {
+            writer.WriteBool(true);
+            writer.WriteShort(0);
+        }
+
+        if (flags.HasFlag((CharacterFlags)0x400000000)) writer.WriteByte(0);
+        if (flags.HasFlag((CharacterFlags)0x800000000))
+        {
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteByte(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+        }
+
+        if (flags.HasFlag((CharacterFlags)0x4000000000000))
+        {
+            writer.WriteInt(1);
+            writer.WriteInt(0);
+            writer.WriteLong(0);
+            writer.WriteString("");
+            writer.WriteInt(0);
+        }
+
+        if (flags.HasFlag((CharacterFlags)0x1000000000))
+        {
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+        }
+
+        if (flags.HasFlag((CharacterFlags)0x2000000000)) writer.WriteInt(0);
+
+        if (flags.HasFlag((CharacterFlags)0x4000000000))
+        {
+            writer.WriteString("");
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteByte(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+        }
+
+        if (flags.HasFlag((CharacterFlags)0x8000000000)) writer.WriteByte(0);
+
+        if (flags.HasFlag((CharacterFlags)0x40000000000))
+        {
+            writer.WriteInt(0);
+            writer.WriteLong(0);
+            writer.WriteInt(0);
+        }
+
+        if (flags.HasFlag((CharacterFlags)0x2000000000000))
+        {
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteLong(0);
+            writer.WriteInt(0);
+        }
+
         writer.WriteShort(0);
+
+        if (flags.HasFlag((CharacterFlags)0x4000000000000)) writer.WriteShort(0);
 
         writer.WriteBool(false);
         writer.WriteInt(0);
+
+        if (flags.HasFlag((CharacterFlags)0x8000000))
+        {
+            writer.WriteByte(1);
+            writer.WriteByte(0);
+            writer.WriteInt(1);
+            writer.WriteInt(0);
+            writer.WriteInt(100);
+            writer.WriteLong(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+        }
+
+        if (flags.HasFlag((CharacterFlags)0x100000000000)) writer.WriteByte(0);
+
+        if (flags.HasFlag((CharacterFlags)0x200000000000))
+        {
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+        }
+
+        if (flags.HasFlag((CharacterFlags)0x1000000))
+        {
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+
+            writer.WriteLong(0);
+            writer.WriteByte(0);
+
+            writer.WriteByte(1);
+        }
+
+        if (flags.HasFlag((CharacterFlags)0x100000)) writer.WriteShort(0);
+
+        if (flags.HasFlag((CharacterFlags)0x2000000))
+        {
+            writer.WriteInt(character.ID);
+            writer.WriteInt(character.ID);
+            writer.WriteInt(0);
+            writer.WriteInt(0);
+        }
 
         writer.WriteBytes(new byte[32]);
     }
