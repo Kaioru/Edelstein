@@ -11,5 +11,7 @@ public enum PacketSendOperations : short
     SetField = 428,
 
     UserEnterField = 516,
-    UserLeaveField = 517
+    UserLeaveField = 517,
+
+    UserMove = 633
 }

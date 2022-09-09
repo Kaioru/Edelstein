@@ -11,5 +11,7 @@ public enum PacketRecvOperations : short
     LogoutWorld = 117,
     PrivateServerPacket = 134,
     AliveAck = 147,
-    WorldRequest = 160
+    WorldRequest = 160,
+
+    UserMove = 190
 }

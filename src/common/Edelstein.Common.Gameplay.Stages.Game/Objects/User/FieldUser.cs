@@ -345,7 +345,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
     protected override IPacket GetMovePacket(IUserMovePath ctx)
     {
-        var packet = new PacketWriter();
+        var packet = new PacketWriter(PacketSendOperations.UserMove);
 
         packet.WriteInt(Character.ID);
         packet.Write(ctx);
