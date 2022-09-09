@@ -20,6 +20,9 @@ public class ServerService : IServerService
     public Task<IServerResponse> RegisterLogin(IServerRegisterRequest<IServerLogin> request) =>
         Register(request.Server.Adapt<ServerLoginModel>());
 
+    public Task<IServerResponse> RegisterChat(IServerRegisterRequest<IServerChat> request) =>
+        Register(request.Server.Adapt<ServerChatModel>());
+
     public Task<IServerResponse> RegisterGame(IServerRegisterRequest<IServerGame> request) =>
         Register(request.Server.Adapt<ServerGameModel>());
 
@@ -84,6 +87,27 @@ public class ServerService : IServerService
         catch (Exception)
         {
             return new ServerGetOneResponse<IServer>(ServerResult.FailedUnknown);
+        }
+    }
+
+    public async Task<IServerGetAllResponse<IServerChat>> GetChatByWorld(IServerGetChatByWorldRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            var now = DateTime.UtcNow;
+            var existing = await db.ChatServers
+                .Where(s => s.WorldID == request.WorldID)
+                .ToListAsync();
+
+            return new ServerGetAllResponse<IServerChat>(ServerResult.Success, existing
+                .Where(s => s.DateExpire > now)
+                .Select(s => s.Adapt<ServerChat>())
+                .ToImmutableList());
+        }
+        catch (Exception)
+        {
+            return new ServerGetAllResponse<IServerChat>(ServerResult.FailedUnknown, Enumerable.Empty<IServerChat>());
         }
     }
 

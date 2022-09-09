@@ -33,9 +33,12 @@ public class SelectCharacterHandler : AbstractLoginPacketHandler
                 user.AccountWorld!.ID,
                 characterID
             );
-            var response = await _servers.GetGameByWorldAndChannel(new ServerGetGameByWorldAndChannelRequest(
+            var gameResponse = await _servers.GetGameByWorldAndChannel(new ServerGetGameByWorldAndChannelRequest(
                 (int)user.SelectedWorldID!,
                 (int)user.SelectedChannelID!
+            ));
+            var chatResponse = await _servers.GetChatByWorld(new ServerGetChatByWorldRequest(
+                (int)user.SelectedWorldID!
             ));
 
             if (character == null)
@@ -48,7 +51,8 @@ public class SelectCharacterHandler : AbstractLoginPacketHandler
                 return;
             }
 
-            if (response.Result != ServerResult.Success || response.Server == null)
+            if (gameResponse.Result != ServerResult.Success || gameResponse.Server == null ||
+                chatResponse.Result != ServerResult.Success || !chatResponse.Servers.Any())
             {
                 await user.Dispatch(new PacketWriter()
                     .WriteShort(7)
@@ -58,9 +62,9 @@ public class SelectCharacterHandler : AbstractLoginPacketHandler
                 return;
             }
 
-            var gameEndpoint = new IPEndPoint(IPAddress.Parse("8.31.99.141"), response.Server.Port);
+            var gameEndpoint = new IPEndPoint(IPAddress.Parse("8.31.99.141"), gameResponse.Server.Port);
             var gameAddress = gameEndpoint.Address.MapToIPv4().GetAddressBytes();
-            var chatEndpoint = new IPEndPoint(IPAddress.Parse("8.31.99.131"), 1337);
+            var chatEndpoint = new IPEndPoint(IPAddress.Parse("8.31.99.131"), chatResponse.Servers.First().Port);
             var chatAddress = gameEndpoint.Address.MapToIPv4().GetAddressBytes();
             var packet = new PacketWriter();
 
@@ -87,7 +91,7 @@ public class SelectCharacterHandler : AbstractLoginPacketHandler
             packet.WriteInt(0);
             packet.WriteByte(0);
 
-            await user.OnMigrateOut(response.Server.ID);
+            await user.OnMigrateOut(gameResponse.Server.ID);
             await user.Dispatch(packet);
         }
         catch (Exception)
