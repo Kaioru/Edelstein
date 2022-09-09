@@ -13,5 +13,7 @@ public enum PacketRecvOperations : short
     AliveAck = 147,
     WorldRequest = 160,
 
-    UserMove = 190
+    UserMove = 190,
+
+    NpcMove = 851
 }

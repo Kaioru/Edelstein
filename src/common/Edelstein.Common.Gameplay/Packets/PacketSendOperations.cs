@@ -13,5 +13,10 @@ public enum PacketSendOperations : short
     UserEnterField = 516,
     UserLeaveField = 517,
 
-    UserMove = 633
+    UserMove = 633,
+
+    NpcEnterField = 984,
+    NpcLeaveField = 985,
+    NpcChangeController = 987,
+    NpcMove = 988
 }
