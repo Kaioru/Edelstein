@@ -1,5 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Inventories.Modify;
+using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Game.Conversations;
 using Edelstein.Common.Gameplay.Stages.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Messages;
@@ -58,9 +59,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
     public IPacket GetSetFieldPacket()
     {
-        var packet = new PacketWriter();
-
-        packet.WriteShort(428);
+        var packet = new PacketWriter(PacketSendOperations.SetField);
 
         packet.WriteShort(0); // ClientOpt
 
@@ -113,13 +112,12 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
         packet.WriteInt(0);
         packet.WriteInt(0);
 
-
         return packet;
     }
 
     public override IPacket GetEnterFieldPacket()
     {
-        var packet = new PacketWriter();
+        var packet = new PacketWriter(PacketSendOperations.UserEnterField);
 
         packet.WriteInt(Character.ID);
 
@@ -127,17 +125,35 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
         packet.WriteString(Character.Name);
 
         packet.WriteString("");
+
+        packet.WriteString("");
         packet.WriteShort(0);
         packet.WriteByte(0);
         packet.WriteShort(0);
         packet.WriteByte(0);
 
-        packet.WriteLong(0); // secondary stats
-        packet.WriteLong(0);
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+        packet.WriteInt(10);
+        packet.WriteInt(0);
+
+        for (var i = 0; i < 17; i++)
+            packet.WriteInt(0);
         packet.WriteByte(0);
         packet.WriteByte(0);
+        packet.WriteByte(0);
+
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+
+        packet.WriteInt(0);
 
         packet.WriteShort(Character.Job);
+        packet.WriteShort(0);
+        packet.WriteInt(0);
+
         packet.WriteCharacterLooks(Character);
 
         packet.WriteInt(0);
@@ -146,40 +162,96 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
         packet.WriteInt(0);
         packet.WriteInt(0);
         packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteShort(-1);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
 
+        packet.WriteInt(0);
+        packet.WriteInt(0);
         packet.WritePoint2D(Position);
         packet.WriteByte(Action.Raw);
         packet.WriteShort((short)(Foothold?.ID ?? 0));
         packet.WriteByte(0);
 
+        packet.WriteByte(0);
+
+        packet.WriteBool(false);
+        packet.WriteBool(true);
+
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+
         packet.WriteBool(false);
         packet.WriteBool(false);
         packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+
+        // FARM
+        packet.WriteString("");
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+
+        for (var i = 0; i < 5; i++)
+            packet.WriteByte(255); // Event Tag Title
+
+        packet.WriteInt(0);
+        packet.WriteByte(0);
+
+        packet.WriteByte(0);
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+
+        // FREEZE HOT EVENT
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+
+        packet.WriteInt(0);
+        packet.WriteByte(0);
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteString("");
+        packet.WriteInt(0);
 
         packet.WriteBool(false);
 
         packet.WriteInt(0);
         packet.WriteInt(0);
-        packet.WriteInt(0);
-
-        packet.WriteByte(0);
-
-        packet.WriteBool(false);
-
-        packet.WriteBool(false);
-        packet.WriteBool(false);
-        packet.WriteBool(false);
-
-        packet.WriteByte(0);
-
-        packet.WriteByte(0);
         packet.WriteInt(0);
 
         return packet;
     }
 
     public override IPacket GetLeaveFieldPacket() =>
-        new PacketWriter()
+        new PacketWriter(PacketSendOperations.UserLeaveField)
             .WriteInt(Character.ID);
 
     public Task OnPacket(IPacket packet) => StageUser.OnPacket(packet);

@@ -5,7 +5,7 @@ using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Stages.Handlers;
 
-public class AbstractPrivateServerPacketHandler<TStageUser> : IPacketHandler<TStageUser>
+public abstract class AbstractPrivateServerPacketHandler<TStageUser> : IPacketHandler<TStageUser>
     where TStageUser : IStageUser<TStageUser>
 {
     public short Operation => (short)PacketRecvOperations.PrivateServerPacket;
