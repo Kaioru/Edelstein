@@ -14,7 +14,7 @@ public abstract class AbstractMovePath<TMoveAction> : IMovePath<TMoveAction> whe
     private byte _state;
     private IPoint2D _vPosition;
 
-    public AbstractMovePath() => _fragments = new List<AbstractMovePathFragment<TMoveAction>>();
+    protected AbstractMovePath() => _fragments = new List<AbstractMovePathFragment<TMoveAction>>();
 
     public byte? ActionRaw { get; set; }
 
