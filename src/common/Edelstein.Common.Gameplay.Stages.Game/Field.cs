@@ -14,7 +14,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game;
 
 public class Field : AbstractFieldObjectPool, IField
 {
-    private const int ScreenWidth = 1024;
+    private const int ScreenWidth = 1366;
     private const int ScreenHeight = 768;
     private const int ScreenWidthOffset = ScreenWidth * 75 / 100;
     private const int ScreenHeightOffset = ScreenHeight * 75 / 100;
