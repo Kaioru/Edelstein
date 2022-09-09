@@ -23,5 +23,8 @@ public enum MoveActionType : byte
     Fly2_Move = 0x12,
     Dash2 = 0x13,
     RocketBooster = 0x14,
-    TeslaCoilTriangle = 0x15
+    TeslaCoilTriangle = 0x15,
+    BackWalk = 0x16,
+    BladeStance = 0x17,
+    FeverMode = 0x18
 }
