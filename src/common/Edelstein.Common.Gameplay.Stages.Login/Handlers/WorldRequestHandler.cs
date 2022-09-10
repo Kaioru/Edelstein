@@ -14,6 +14,7 @@ public class WorldRequestHandler : AbstractLoginPacketHandler
     public WorldRequestHandler(IPipeline<IWorldRequest> pipeline) => _pipeline = pipeline;
 
     public override short Operation => (short)PacketRecvOperations.WorldRequest;
+
     public override bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
 
     public override Task Handle(ILoginStageUser user, IPacketReader reader)

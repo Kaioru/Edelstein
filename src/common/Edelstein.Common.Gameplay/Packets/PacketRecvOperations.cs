@@ -14,6 +14,7 @@ public enum PacketRecvOperations : short
     WorldRequest = 160,
 
     UserMove = 190,
+    UserChat = 203,
 
     NpcMove = 851
 }
