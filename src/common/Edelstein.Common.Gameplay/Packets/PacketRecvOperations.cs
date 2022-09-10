@@ -14,6 +14,7 @@ public enum PacketRecvOperations : short
     MigrateIn = 110,
     WorldInfoRequest = 114,
     LogoutWorld = 117,
+    DeleteCharacter = 128,
     PrivateServerPacket = 134,
     AliveAck = 147,
     CheckHotfix = 152,
