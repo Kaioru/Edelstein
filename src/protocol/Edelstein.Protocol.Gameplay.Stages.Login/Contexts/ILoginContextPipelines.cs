@@ -15,6 +15,6 @@ public interface ILoginContextPipelines : IStageContextPipelines<ILoginStageUser
     IPipeline<ISPWChange> SPWChange { get; }
     IPipeline<ICharacterSelect> CharacterSelect { get; }
     IPipeline<ICharacterCreate> CharacterCreate { get; }
-    IPipeline<ICharacterCreateCheckDuplicatedID> CharacterCreateCheckDuplicatedID { get; }
+    IPipeline<ICharacterCheckDuplicatedID> CharacterCheckDuplicatedID { get; }
     IPipeline<ICharacterDelete> CharacterDelete { get; }
 }

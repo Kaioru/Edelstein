@@ -6,13 +6,13 @@ using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Login.Plugs;
 
-public class CharacterCreateCheckDuplicatedIDPlug : IPipelinePlug<ICharacterCreateCheckDuplicatedID>
+public class CharacterCreateCheckDuplicatedIDPlug : IPipelinePlug<ICharacterCheckDuplicatedID>
 {
     private readonly ICharacterRepository _characters;
 
     public CharacterCreateCheckDuplicatedIDPlug(ICharacterRepository characters) => _characters = characters;
 
-    public async Task Handle(IPipelineContext ctx, ICharacterCreateCheckDuplicatedID message)
+    public async Task Handle(IPipelineContext ctx, ICharacterCheckDuplicatedID message)
     {
         var result = await _characters.CheckExistsByName(message.Name);
         var packet = new PacketWriter(PacketSendOperations.CheckDuplicatedIDResult);

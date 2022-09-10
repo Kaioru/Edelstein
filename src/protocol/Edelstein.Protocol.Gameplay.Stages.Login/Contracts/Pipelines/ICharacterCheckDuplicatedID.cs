@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Stages.Login.Contracts.Pipelines;
 
-public interface ICharacterCreateCheckDuplicatedID : ILoginStageUserContract
+public interface ICharacterCheckDuplicatedID : ILoginStageUserContract
 {
     string Name { get; }
 }

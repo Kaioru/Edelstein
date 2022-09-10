@@ -22,6 +22,6 @@ public record LoginContextPipelines(
     IPipeline<ISPWChange> SPWChange,
     IPipeline<ICharacterSelect> CharacterSelect,
     IPipeline<ICharacterCreate> CharacterCreate,
-    IPipeline<ICharacterCreateCheckDuplicatedID> CharacterCreateCheckDuplicatedID,
+    IPipeline<ICharacterCheckDuplicatedID> CharacterCheckDuplicatedID,
     IPipeline<ICharacterDelete> CharacterDelete
 ) : ILoginContextPipelines;
