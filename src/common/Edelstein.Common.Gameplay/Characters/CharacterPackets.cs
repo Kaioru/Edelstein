@@ -34,6 +34,9 @@ public static class CharacterPackets
             writer.WriteBool(false);
         }
 
+        if (flags.HasFlag(CharacterFlags.Money))
+            writer.WriteLong(character.Money);
+
         writer.WriteInt(0);
         writer.WriteByte(0);
 
@@ -41,6 +44,12 @@ public static class CharacterPackets
         {
             writer.WriteInt(0);
             writer.WriteInt(0);
+        }
+
+        if (flags.HasFlag(CharacterFlags.Money))
+        {
+            writer.WriteBool(false);
+            writer.WriteShort(0);
         }
 
         writer.WriteShort(0);

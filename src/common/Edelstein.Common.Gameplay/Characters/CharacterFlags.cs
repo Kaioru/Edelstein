@@ -28,6 +28,6 @@ public enum CharacterFlags : long
     WildHunterInfo = 0x200000,
     QuestCompleteOld = 0x400000,
 
-    All = Character,
+    All = Character | Money,
     ItemSlot = ItemSlotEquip | ItemSlotConsume | ItemSlotInstall | ItemSlotEtc | ItemSlotCash
 }
