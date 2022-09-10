@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Stages.Login.Contracts.Pipelines;
 
-public interface IAuthToken
+public interface ISPWCheck : ILoginStageUserContract
 {
-    string Token { get; }
+    string SPW { get; }
 }

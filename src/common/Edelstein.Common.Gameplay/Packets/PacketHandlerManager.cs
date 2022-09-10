@@ -63,7 +63,14 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
             return;
         }
 
-        if (handler.Check(user)) await handler.Handle(user, reader);
+        try
+        {
+            if (handler.Check(user)) await handler.Handle(user, reader);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
 
         _logger.LogDebug(
             "Handled packet operation {Operation} ({OperationName}) with {Available} available bytes left",

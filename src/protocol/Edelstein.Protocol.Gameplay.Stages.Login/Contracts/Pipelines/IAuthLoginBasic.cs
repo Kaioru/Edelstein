@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Stages.Login.Contracts.Pipelines;
 
-public interface IAuthBasic
+public interface IAuthLoginBasic : ILoginStageUserContract
 {
     string Username { get; }
     string Password { get; }

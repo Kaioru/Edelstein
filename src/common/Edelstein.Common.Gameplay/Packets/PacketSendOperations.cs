@@ -5,8 +5,14 @@ public enum PacketSendOperations : short
     CheckPasswordResult = 0,
     WorldInformation = 1,
     LatestConnectedWorld = 2,
+    SelectWorldResult = 6,
+    SelectCharacterResult = 7,
     AliveReq = 18,
     PrivateServerPacket = 23,
+    ChangeSPWResult = 24,
+    ApplyHotfix = 36,
+    CheckUserLimitResult = 38,
+    CheckNMCOServerResult = 47,
 
     SetField = 428,
 
