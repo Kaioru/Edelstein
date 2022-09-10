@@ -10,6 +10,7 @@ public enum PacketSendOperations : short
     CheckDuplicatedIDResult = 10,
     CreateNewCharacterResult = 11,
     DeleteCharacterResult = 12,
+    MigrateCommand = 17,
     AliveReq = 18,
     PrivateServerPacket = 23,
     ChangeSPWResult = 24,

@@ -26,6 +26,7 @@ public enum PacketRecvOperations : short
     ChangeSPWRequest = 170,
     CheckNMCOServer = 171,
 
+    UserTransferChannelRequest = 176,
     UserMove = 190,
     UserChat = 203,
     UserSelectNPC = 221,
