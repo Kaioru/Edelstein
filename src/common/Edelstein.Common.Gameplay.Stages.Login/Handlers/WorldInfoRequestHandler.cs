@@ -15,7 +15,7 @@ public class WorldInfoRequestHandler : AbstractLoginPacketHandler
 
     public override short Operation => (short)PacketRecvOperations.WorldInfoRequest;
 
-    public override bool Check(ILoginStageUser user) => user.State == LoginState.CheckToken;
+    public override bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
 
     public override Task Handle(ILoginStageUser user, IPacketReader reader) =>
         _pipeline.Process(new WorldList(user));
