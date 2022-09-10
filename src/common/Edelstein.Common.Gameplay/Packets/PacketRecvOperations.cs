@@ -28,6 +28,8 @@ public enum PacketRecvOperations : short
 
     UserMove = 190,
     UserChat = 203,
+    UserSelectNPC = 221,
+    UserScriptMessageAnswer = 223,
 
     NpcMove = 851
 }

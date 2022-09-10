@@ -29,5 +29,6 @@ public class SayRequest : AbstractConversationMessageRequest<byte>
         writer.WriteString(_text);
         writer.WriteBool(_isPrevEnabled);
         writer.WriteBool(_isNextEnabled);
+        writer.WriteInt(0); // Delay
     }
 }

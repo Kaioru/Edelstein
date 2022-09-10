@@ -28,5 +28,7 @@ public enum PacketSendOperations : short
     NpcEnterField = 984,
     NpcLeaveField = 985,
     NpcChangeController = 987,
-    NpcMove = 988
+    NpcMove = 988,
+
+    ScriptMessage = 1281
 }

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Channels;
+using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Stages.Game.Conversations.Messages;
@@ -24,7 +25,10 @@ public class ConversationContext : IConversationContext
 
     public async Task<T> Request<T>(IConversationMessageRequest<T> messageRequest)
     {
-        await _adapter.Dispatch(new PacketWriter().Write(messageRequest));
+        await _adapter.Dispatch(
+            new PacketWriter(PacketSendOperations.ScriptMessage)
+                .Write(messageRequest)
+        );
 
         if (await _channel.Reader.ReadAsync(TokenSource.Token) is not IConversationMessageResponse<T> response)
             throw new InvalidDataException("Invalid response");
