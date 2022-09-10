@@ -7,6 +7,10 @@ namespace Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 public interface ILoginContextPipelines : IStageContextPipelines<ILoginStageUser>
 {
     IPipeline<IAuthLoginBasic> AuthLoginBasic { get; }
-    IPipeline<IAuthLoginToken> AuthLoginToken { get; }
     IPipeline<IWorldList> WorldList { get; }
+    IPipeline<IWorldSelect> WorldSelect { get; }
+    IPipeline<ISPWCheck> SPWCheck { get; }
+    IPipeline<ISPWCreate> SPWCreate { get; }
+    IPipeline<ISPWChange> SPWChange { get; }
+    IPipeline<ICharacterSelect> CharacterSelect { get; }
 }

@@ -14,6 +14,10 @@ public record LoginContextPipelines(
     IPipeline<ISocketOnException<ILoginStageUser>> SocketOnException,
     IPipeline<ISocketOnDisconnect<ILoginStageUser>> SocketOnDisconnect,
     IPipeline<IAuthLoginBasic> AuthLoginBasic,
-    IPipeline<IAuthLoginToken> AuthLoginToken,
-    IPipeline<IWorldList> WorldList
+    IPipeline<IWorldList> WorldList,
+    IPipeline<IWorldSelect> WorldSelect,
+    IPipeline<ISPWCheck> SPWCheck,
+    IPipeline<ISPWCreate> SPWCreate,
+    IPipeline<ISPWChange> SPWChange,
+    IPipeline<ICharacterSelect> CharacterSelect
 ) : ILoginContextPipelines;
