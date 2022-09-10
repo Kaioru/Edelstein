@@ -16,8 +16,12 @@ public record LoginContextPipelines(
     IPipeline<IAuthLoginBasic> AuthLoginBasic,
     IPipeline<IWorldList> WorldList,
     IPipeline<IWorldSelect> WorldSelect,
+    IPipeline<IWorldSelectReset> WorldSelectReset,
     IPipeline<ISPWCheck> SPWCheck,
     IPipeline<ISPWCreate> SPWCreate,
     IPipeline<ISPWChange> SPWChange,
-    IPipeline<ICharacterSelect> CharacterSelect
+    IPipeline<ICharacterSelect> CharacterSelect,
+    IPipeline<ICharacterCreate> CharacterCreate,
+    IPipeline<ICharacterCreateCheckDuplicatedID> CharacterCreateCheckDuplicatedID,
+    IPipeline<ICharacterDelete> CharacterDelete
 ) : ILoginContextPipelines;

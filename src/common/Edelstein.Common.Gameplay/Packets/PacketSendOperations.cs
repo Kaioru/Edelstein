@@ -7,6 +7,8 @@ public enum PacketSendOperations : short
     LatestConnectedWorld = 2,
     SelectWorldResult = 6,
     SelectCharacterResult = 7,
+    CheckDuplicatedIDResult = 10,
+    CreateNewCharacterResult = 11,
     DeleteCharacterResult = 12,
     AliveReq = 18,
     PrivateServerPacket = 23,

@@ -9,8 +9,12 @@ public interface ILoginContextPipelines : IStageContextPipelines<ILoginStageUser
     IPipeline<IAuthLoginBasic> AuthLoginBasic { get; }
     IPipeline<IWorldList> WorldList { get; }
     IPipeline<IWorldSelect> WorldSelect { get; }
+    IPipeline<IWorldSelectReset> WorldSelectReset { get; }
     IPipeline<ISPWCheck> SPWCheck { get; }
     IPipeline<ISPWCreate> SPWCreate { get; }
     IPipeline<ISPWChange> SPWChange { get; }
     IPipeline<ICharacterSelect> CharacterSelect { get; }
+    IPipeline<ICharacterCreate> CharacterCreate { get; }
+    IPipeline<ICharacterCreateCheckDuplicatedID> CharacterCreateCheckDuplicatedID { get; }
+    IPipeline<ICharacterDelete> CharacterDelete { get; }
 }

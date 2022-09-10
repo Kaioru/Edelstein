@@ -24,7 +24,6 @@ public class CheckSPWRequestHandler : AbstractLoginPacketHandler
 
     public override Task Handle(ILoginStageUser user, IPacketReader reader)
     {
-        Console.WriteLine("EXECUTING");
         var spw = reader.ReadString();
 
         return _pipeline.Process(new SPWCheck(user, spw));
