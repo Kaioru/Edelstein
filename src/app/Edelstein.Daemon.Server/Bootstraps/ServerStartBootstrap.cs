@@ -1,11 +1,9 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
-using Edelstein.Common.Gameplay.Stages.Game.Continents;
 using Edelstein.Common.Util.Templates;
 using Edelstein.Daemon.Server.Configs;
 using Edelstein.Daemon.Server.Tickers;
 using Edelstein.Protocol.Gameplay.Stages;
-using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Util.Tickers;
@@ -70,11 +68,13 @@ public class ServerStartBootstrap<TStage, TStageUser, TContext> : IBootstrap
 
         _contexts.Add(_ticker.Schedule(new AliveTicker(_acceptor)));
 
+        /*
         if (_context is IGameContext game)
             await Task.WhenAll((await game.Templates.ContiMove.RetrieveAll())
                 .Select(t => new ContiMove(_loggerFactory.CreateLogger<ContiMove>(), game.Managers.Field, t))
                 .Select(game.Managers.ContiMove.Insert)
             );
+        */
 
         foreach (var path in _config.Plugins)
         {

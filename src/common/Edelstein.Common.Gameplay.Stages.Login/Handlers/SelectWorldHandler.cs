@@ -9,9 +9,9 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers;
 
 public class SelectWorldHandler : AbstractLoginPacketHandler
 {
-    private readonly IPipeline<ISelectWorld> _pipeline;
+    private readonly IPipeline<IWorldSelect> _pipeline;
 
-    public SelectWorldHandler(IPipeline<ISelectWorld> pipeline) => _pipeline = pipeline;
+    public SelectWorldHandler(IPipeline<IWorldSelect> pipeline) => _pipeline = pipeline;
 
     public override short Operation => (short)PacketRecvOperations.SelectWorld;
 
@@ -19,14 +19,10 @@ public class SelectWorldHandler : AbstractLoginPacketHandler
 
     public override Task Handle(ILoginStageUser user, IPacketReader reader)
     {
-        _ = reader.ReadByte(); // Unknown1
+        _ = reader.ReadByte();
+        var worldID = reader.ReadByte();
+        var channelID = reader.ReadByte();
 
-        var message = new SelectWorld(
-            user,
-            reader.ReadByte(),
-            reader.ReadByte()
-        );
-
-        return _pipeline.Process(message);
+        return _pipeline.Process(new WorldSelect(user, worldID, channelID));
     }
 }

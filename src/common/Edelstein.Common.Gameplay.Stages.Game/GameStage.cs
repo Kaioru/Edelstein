@@ -1,4 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Stages.Contracts.Events;
+using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Contracts.Events;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Util.Events;
@@ -46,6 +47,19 @@ public class GameStage : IGameStage
 
         await field.Enter(fieldUser);
         await _enterEvent.Publish(new UserEnterStage<IGameStageUser>(user, this));
+
+        _ = user.Dispatch(new PacketWriter() // temp fix to remove event titles
+            .WriteShort(280)
+            .WriteString("")
+            .WriteByte(255)
+            .WriteString("")
+            .WriteByte(255)
+            .WriteString("")
+            .WriteByte(255)
+            .WriteString("")
+            .WriteByte(255)
+            .WriteString("")
+            .WriteByte(255));
     }
 
     public async Task Leave(IGameStageUser user)

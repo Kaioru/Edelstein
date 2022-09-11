@@ -59,6 +59,7 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath, INPCMoveAction>,
         writer.WriteInt(Template.ID);
 
         writer.WritePoint2D(Position);
+        writer.WriteBool(Template.Move);
         writer.WriteByte(Action.Raw);
         writer.WriteShort((short)(Foothold?.ID ?? 0));
 
@@ -66,6 +67,15 @@ public class FieldNPC : AbstractFieldControllable<INPCMovePath, INPCMoveAction>,
         writer.WriteShort((short)Bounds.Right);
 
         writer.WriteBool(IsEnabled);
+
+        writer.WriteInt(0);
+        writer.WriteInt(0);
+        writer.WriteByte(0);
+        writer.WriteInt(0);
+        writer.WriteInt(0);
+        writer.WriteInt(0);
+        writer.WriteString("");
+        writer.WriteBool(false);
     }
 
     protected override IPacket GetMovePacket(INPCMovePath ctx)

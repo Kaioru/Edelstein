@@ -5,6 +5,8 @@ using Edelstein.Common.Gameplay.Database;
 using Edelstein.Common.Gameplay.Database.Repositories;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages;
+using Edelstein.Common.Gameplay.Stages.Chat;
+using Edelstein.Common.Gameplay.Stages.Chat.Contexts;
 using Edelstein.Common.Gameplay.Stages.Game;
 using Edelstein.Common.Gameplay.Stages.Game.Contexts;
 using Edelstein.Common.Gameplay.Stages.Game.Continents;
@@ -26,6 +28,8 @@ using Edelstein.Daemon.Server;
 using Edelstein.Daemon.Server.Bootstraps;
 using Edelstein.Daemon.Server.Configs;
 using Edelstein.Protocol.Data;
+using Edelstein.Protocol.Gameplay.Stages.Chat;
+using Edelstein.Protocol.Gameplay.Stages.Chat.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Game;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Game.Continents;
@@ -100,6 +104,7 @@ await Host.CreateDefaultBuilder(args)
 
         services.AddSingleton(config);
         stages.AddRange(config.LoginStages);
+        stages.AddRange(config.ChatStages);
         stages.AddRange(config.GameStages);
 
         foreach (var stage in stages)
@@ -150,6 +155,25 @@ await Host.CreateDefaultBuilder(args)
                         scope.AddSingleton<IAdapterInitializer, LoginStageUserInitializer>();
                         scope.AddSingleton<ILoginStage, LoginStage>();
                         break;
+                    case IChatContextOptions options:
+
+                        scope.Scan(s => s
+                            .FromAssembliesOf(typeof(AbstractStage<>), typeof(ChatStage))
+                            .AddClasses(c => c.AssignableTo<ITemplateLoader>())
+                            .AsImplementedInterfaces()
+                            .WithSingletonLifetime()
+                            .FromAssembliesOf(typeof(AbstractStage<>), typeof(ChatStage))
+                            .AddClasses(c => c.AssignableTo<ITickable>())
+                            .AsImplementedInterfaces()
+                            .WithSingletonLifetime()
+                        );
+
+                        scope.AddSingleton(options);
+                        scope.AddSingleton<IChatContext, ChatContext>();
+                        scope.AddSingleton<IChatContextPipelines, ChatContextPipelines>();
+                        scope.AddSingleton<IAdapterInitializer, ChatStageUserInitializer>();
+                        scope.AddSingleton<IChatStage, ChatStage>();
+                        break;
                     case IGameContextOptions options:
                         scope.Scan(s => s
                             .FromAssembliesOf(typeof(AbstractStage<>), typeof(GameStage))
@@ -191,6 +215,11 @@ await Host.CreateDefaultBuilder(args)
                         ILoginStageUser,
                         ILoginContext
                     >>(),
+                    IChatContextOptions => provider.GetRequiredService<ServerStartBootstrap<
+                        IChatStage,
+                        IChatStageUser,
+                        IChatContext
+                    >>(),
                     IGameContextOptions => provider.GetRequiredService<ServerStartBootstrap<
                         IGameStage,
                         IGameStageUser,
@@ -205,6 +234,15 @@ await Host.CreateDefaultBuilder(args)
                 new ServerUpdateBootstrap<ProgramConfigStageLogin>(
                     p.GetRequiredService<ILogger<ServerUpdateBootstrap<ProgramConfigStageLogin>>>(),
                     login,
+                    p.GetRequiredService<IServerService>(),
+                    p.GetRequiredService<ITickerManager>()
+                )
+            );
+        foreach (var chat in config.ChatStages)
+            services.AddSingleton<IBootstrap>(p =>
+                new ServerUpdateBootstrap<ProgramConfigStageChat>(
+                    p.GetRequiredService<ILogger<ServerUpdateBootstrap<ProgramConfigStageChat>>>(),
+                    chat,
                     p.GetRequiredService<IServerService>(),
                     p.GetRequiredService<ITickerManager>()
                 )

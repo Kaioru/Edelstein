@@ -1,7 +1,7 @@
 ﻿namespace Edelstein.Common.Gameplay.Characters;
 
 [Flags]
-public enum CharacterFlags
+public enum CharacterFlags : long
 {
     Character = 0x1,
     Money = 0x2,
@@ -21,18 +21,13 @@ public enum CharacterFlags
     SkillCooltime = 0x8000,
     MonsterBookCard = 0x10000,
     MonsterBookCover = 0x20000,
-    NewYearCard = 0x40000,
-    QuestRecordEx = 0x80000,
+    QuestRecordEx = 0x40000,
+    NewYearCard = 0x80000,
     AdminShopCount = 0x100000,
     EquipExt = 0x100000,
     WildHunterInfo = 0x200000,
     QuestCompleteOld = 0x400000,
-    VisitorLog = 0x800000,
-    VisitorLog1 = 0x1000000,
-    VisitorLog2 = 0x2000000,
-    VisitorLog3 = 0x4000000,
-    VisitorLog4 = 0x8000000,
 
-    All = int.MaxValue,
+    All = Character | Money,
     ItemSlot = ItemSlotEquip | ItemSlotConsume | ItemSlotInstall | ItemSlotEtc | ItemSlotCash
 }

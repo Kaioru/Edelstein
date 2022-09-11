@@ -8,6 +8,7 @@ public class ActionPathFragment<TMoveAction> : AbstractMovePathFragment<TMoveAct
 {
     private byte _action;
     private short _elapse;
+    private bool _forcedStop;
 
     public ActionPathFragment(MovePathFragmentType type) : base(type)
     {
@@ -17,12 +18,14 @@ public class ActionPathFragment<TMoveAction> : AbstractMovePathFragment<TMoveAct
     {
         _action = reader.ReadByte();
         _elapse = reader.ReadShort();
+        _forcedStop = reader.ReadBool();
     }
 
     protected override void WriteBody(IPacketWriter writer)
     {
         writer.WriteByte(_action);
         writer.WriteShort(_elapse);
+        writer.WriteBool(_forcedStop);
     }
 
     public override void Apply(AbstractMovePath<TMoveAction> path) =>

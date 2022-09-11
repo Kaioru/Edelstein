@@ -57,16 +57,23 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
         if (handler == null)
         {
             _logger.LogWarning(
-                "Unhandled packet operation 0x{Operation:X} ({OperationName})",
+                "Unhandled packet operation {Operation} ({OperationName})",
                 operation, Enum.GetName((PacketRecvOperations)operation)
             );
             return;
         }
 
-        if (handler.Check(user)) await handler.Handle(user, reader);
+        try
+        {
+            if (handler.Check(user)) await handler.Handle(user, reader);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
 
         _logger.LogDebug(
-            "Handled packet operation 0x{Operation:X} ({OperationName}) with {Available} available bytes left",
+            "Handled packet operation {Operation} ({OperationName}) with {Available} available bytes left",
             operation, Enum.GetName((PacketRecvOperations)operation), reader.Available
         );
     }

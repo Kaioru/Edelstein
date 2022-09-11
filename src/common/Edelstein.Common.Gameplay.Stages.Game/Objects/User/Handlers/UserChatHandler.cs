@@ -1,26 +1,40 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Contracts.Pipelines;
+using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts.Pipelines;
 using Edelstein.Protocol.Util.Buffers.Packets;
-using Edelstein.Protocol.Util.Pipelines;
+using Edelstein.Protocol.Util.Commands;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
 
 public class UserChatHandler : AbstractFieldUserHandler
 {
-    private readonly IPipeline<IUserChat> _pipeline;
+    private readonly ICommandManager<IFieldUser> _commandManager;
 
-    public UserChatHandler(IPipeline<IUserChat> pipeline) => _pipeline = pipeline;
+    public UserChatHandler(ICommandManager<IFieldUser> commandManager) => _commandManager = commandManager;
 
     public override short Operation => (short)PacketRecvOperations.UserChat;
 
-    protected override Task Handle(IFieldUser user, IPacketReader reader)
+    protected override async Task Handle(IFieldUser user, IPacketReader reader)
     {
         _ = reader.ReadInt();
+        var message = reader.ReadString();
+        var isOnlyBalloon = reader.ReadBool();
 
-        var message = new UserChat(user, reader.ReadString(), reader.ReadBool());
+        if (message.StartsWith("!") || message.StartsWith("@")) // TODO: config?
+        {
+            await _commandManager.Process(user, message[1..]);
+            return;
+        }
 
-        return _pipeline.Process(message);
+        var packet = new PacketWriter(PacketSendOperations.UserChat);
+
+        packet.WriteInt(user.Character.ID);
+        packet.WriteBool(user.Account.GradeCode > 0 || user.Account.SubGradeCode > 0);
+        packet.WriteString(message);
+        packet.WriteBool(isOnlyBalloon);
+        packet.WriteBool(false);
+        packet.WriteByte((byte)user.StageUser.Context.Options.WorldID);
+
+        await user.FieldSplit!.Dispatch(packet);
     }
 }

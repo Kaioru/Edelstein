@@ -1,21 +1,21 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Contracts.Pipelines;
+using Edelstein.Common.Gameplay.Stages.Game.Conversations.Speakers;
+using Edelstein.Protocol.Gameplay.Stages.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Stages.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts.Pipelines;
 using Edelstein.Protocol.Util.Buffers.Packets;
-using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
 
 public class UserSelectNPCHandler : AbstractFieldUserHandler
 {
-    private readonly IPipeline<IUserSelectNPC> _pipeline;
+    private readonly IConversationManager _manager;
 
-    public UserSelectNPCHandler(IPipeline<IUserSelectNPC> pipeline) => _pipeline = pipeline;
+    public UserSelectNPCHandler(IConversationManager manager) => _manager = manager;
 
-    public override short Operation => (short)PacketRecvOperations.UserSelectNpc;
+    public override short Operation => (short)PacketRecvOperations.UserSelectNPC;
 
     protected override async Task Handle(IFieldUser user, IPacketReader reader)
     {
@@ -25,11 +25,14 @@ public class UserSelectNPCHandler : AbstractFieldUserHandler
         if (obj is not IFieldNPC npc) return;
         if (npc.FieldSplit != null && !user.Observing.Contains(npc.FieldSplit)) return;
 
-        var message = new UserSelectNPC(
-            user,
-            npc
-        );
+        var script = npc.Template.Scripts.FirstOrDefault()?.Script;
+        if (script == null) return;
+        var conversation = await _manager.Create(script);
 
-        await _pipeline.Process(message);
+        _ = user.Converse(
+            conversation,
+            c => new ConversationSpeaker(c, npc.Template.ID),
+            c => new ConversationSpeaker(c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
+        );
     }
 }

@@ -31,6 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\common\Edelstein.Common.Data.NX\Edelstein.Common.Data.NX.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Database\Edelstein.Common.Gameplay.Database.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Chat\Edelstein.Common.Gameplay.Stages.Chat.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Game\Edelstein.Common.Gameplay.Stages.Game.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Stages.Login\Edelstein.Common.Gameplay.Stages.Login.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
@@ -44,6 +45,7 @@
     <ProjectReference Include="..\..\common\Edelstein.Common.Util.Templates\Edelstein.Common.Util.Templates.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Util.Tickers\Edelstein.Common.Util.Tickers.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Data\Edelstein.Protocol.Data.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Chat\Edelstein.Protocol.Gameplay.Stages.Chat.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Stages.Game\Edelstein.Protocol.Gameplay.Stages.Game.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin\Edelstein.Protocol.Plugin.csproj" />
   </ItemGroup>

@@ -9,9 +9,12 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers;
 
 public class CheckSPWRequestHandler : AbstractLoginPacketHandler
 {
-    private readonly IPipeline<ICheckSPWRequest> _pipeline;
+    private readonly IPipeline<ISPWCheck> _pipeline;
 
-    public CheckSPWRequestHandler(IPipeline<ICheckSPWRequest> pipeline) => _pipeline = pipeline;
+    public CheckSPWRequestHandler(
+        IPipeline<ISPWCheck> pipeline
+    ) =>
+        _pipeline = pipeline;
 
     public override short Operation => (short)PacketRecvOperations.CheckSPWRequest;
 
@@ -21,14 +24,8 @@ public class CheckSPWRequestHandler : AbstractLoginPacketHandler
 
     public override Task Handle(ILoginStageUser user, IPacketReader reader)
     {
-        var message = new CheckSPWRequest(
-            user,
-            reader.ReadString(),
-            reader.ReadInt(),
-            reader.ReadString(),
-            reader.ReadString()
-        );
+        var spw = reader.ReadString();
 
-        return _pipeline.Process(message);
+        return _pipeline.Process(new SPWCheck(user, spw));
     }
 }

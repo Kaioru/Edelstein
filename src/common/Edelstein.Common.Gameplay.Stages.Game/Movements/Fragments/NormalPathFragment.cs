@@ -23,7 +23,7 @@ public class NormalPathFragment<TMoveAction> : ActionPathFragment<TMoveAction>
         _position = reader.ReadPoint2D();
         _vPosition = reader.ReadPoint2D();
         _footholdID = reader.ReadShort();
-        if (Type == MovePathFragmentType.FallDown)
+        if (Type is MovePathFragmentType.FallDown or MovePathFragmentType.DragDown)
             _fallStartFootholdID = reader.ReadShort();
         _offset = reader.ReadPoint2D();
 
@@ -35,7 +35,7 @@ public class NormalPathFragment<TMoveAction> : ActionPathFragment<TMoveAction>
         writer.WritePoint2D(_position);
         writer.WritePoint2D(_vPosition);
         writer.WriteShort(_footholdID);
-        if (Type == MovePathFragmentType.FallDown)
+        if (Type is MovePathFragmentType.FallDown or MovePathFragmentType.DragDown)
             writer.WriteShort(_fallStartFootholdID);
         writer.WritePoint2D(_offset);
 

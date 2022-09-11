@@ -10,6 +10,7 @@ public class NPCMovePath : AbstractMovePath<INPCMoveAction>, INPCMovePath
 
     public byte Act { get; private set; }
     public byte Chat { get; private set; }
+    public int Duration { get; private set; }
 
     public bool IsMove { get; }
 
@@ -17,6 +18,7 @@ public class NPCMovePath : AbstractMovePath<INPCMoveAction>, INPCMovePath
     {
         Act = reader.ReadByte();
         Chat = reader.ReadByte();
+        Duration = reader.ReadInt();
 
         if (IsMove)
             base.ReadFrom(reader);
@@ -26,6 +28,7 @@ public class NPCMovePath : AbstractMovePath<INPCMoveAction>, INPCMovePath
     {
         writer.WriteByte(Act);
         writer.WriteByte(Chat);
+        writer.WriteInt(Duration);
 
         if (IsMove)
             base.WriteTo(writer);

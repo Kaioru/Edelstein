@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Stages.Game.Objects;
 using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Game;
@@ -65,7 +64,7 @@ public class ContiMove : AbstractFieldObjectPool, IContiMove, ITickable
             {
                 await Move(WaitField, MoveField);
                 await StartShipMoveField.Dispatch(
-                    new PacketWriter(PacketSendOperations.CONTIMOVE)
+                    new PacketWriter()
                         .WriteByte((byte)ContiMoveTarget.TargetStartShipMoveField)
                         .WriteByte((byte)ContiMoveStateTrigger.Start)
                 );
@@ -77,7 +76,7 @@ public class ContiMove : AbstractFieldObjectPool, IContiMove, ITickable
                     await Move(CabinField, EndField);
 
                 await EndShipMoveField.Dispatch(
-                    new PacketWriter(PacketSendOperations.CONTIMOVE)
+                    new PacketWriter()
                         .WriteByte((byte)ContiMoveTarget.TargetEndShipMoveField)
                         .WriteByte((byte)ContiMoveStateTrigger.End)
                 );
@@ -102,7 +101,7 @@ public class ContiMove : AbstractFieldObjectPool, IContiMove, ITickable
                 // TODO: Mobspawns
 
                 await MoveField.Dispatch(
-                    new PacketWriter(PacketSendOperations.CONTIMOVE)
+                    new PacketWriter()
                         .WriteByte((byte)ContiMoveTarget.TargetMoveField)
                         .WriteByte((byte)ContiMoveStateTrigger.MobGen)
                 );
@@ -117,7 +116,7 @@ public class ContiMove : AbstractFieldObjectPool, IContiMove, ITickable
                 // TODO: Mobspawns
 
                 await MoveField.Dispatch(
-                    new PacketWriter(PacketSendOperations.CONTIMOVE)
+                    new PacketWriter()
                         .WriteByte((byte)ContiMoveTarget.TargetMoveField)
                         .WriteByte((byte)ContiMoveStateTrigger.MobDestroy)
                 );

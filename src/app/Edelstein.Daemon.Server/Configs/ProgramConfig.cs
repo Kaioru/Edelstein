@@ -5,6 +5,7 @@
 public record ProgramConfig
 {
     public ICollection<ProgramConfigStageLogin> LoginStages { get; set; } = new List<ProgramConfigStageLogin>();
+    public ICollection<ProgramConfigStageChat> ChatStages { get; set; } = new List<ProgramConfigStageChat>();
     public ICollection<ProgramConfigStageGame> GameStages { get; set; } = new List<ProgramConfigStageGame>();
 
     public int TicksPerSecond { get; set; } = 4;

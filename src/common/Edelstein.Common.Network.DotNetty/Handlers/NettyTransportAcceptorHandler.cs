@@ -28,6 +28,7 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
         handshake.WriteInt((int)newSocket.SeqRecv);
         handshake.WriteInt((int)newSocket.SeqSend);
         handshake.WriteByte(_acceptor.Locale);
+        handshake.WriteBool(false);
 
         _ = newSocket.Dispatch(handshake);
 

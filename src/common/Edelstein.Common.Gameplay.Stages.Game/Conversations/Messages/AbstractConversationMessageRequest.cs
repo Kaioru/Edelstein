@@ -22,8 +22,12 @@ public abstract class AbstractConversationMessageRequest<T> : IConversationMessa
     {
         writer.WriteByte(0); // SpeakerTypeID
         writer.WriteInt(Speaker.ID);
+
+        writer.WriteBool(false);
+
         writer.WriteByte((byte)Type);
         writer.WriteByte((byte)Speaker.Flags);
+        writer.WriteByte(0); // Color
     }
 
     protected abstract void WriteData(IPacketWriter writer);

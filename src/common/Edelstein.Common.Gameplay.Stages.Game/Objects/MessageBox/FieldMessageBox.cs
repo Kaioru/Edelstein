@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Util.Buffers.Packets;
+﻿using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.MessageBox;
 using Edelstein.Protocol.Util.Buffers.Packets;
@@ -24,7 +23,7 @@ public class FieldMessageBox : AbstractFieldObject, IFieldMessageBox
 
     public override IPacket GetEnterFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.MessageBoxEnterField);
+        var packet = new PacketWriter();
 
         packet.WriteInt(ObjectID ?? 0);
 
@@ -41,7 +40,7 @@ public class FieldMessageBox : AbstractFieldObject, IFieldMessageBox
 
     private IPacket GetLeaveFieldPacket(bool isSplitMigrate)
     {
-        var packet = new PacketWriter(PacketSendOperations.MessageBoxLeaveField);
+        var packet = new PacketWriter();
 
         packet.WriteBool(isSplitMigrate);
         packet.WriteInt(ObjectID ?? 0);

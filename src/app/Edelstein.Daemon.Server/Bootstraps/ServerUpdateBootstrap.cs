@@ -1,6 +1,7 @@
 ﻿using Edelstein.Common.Services.Server.Contracts;
 using Edelstein.Common.Services.Server.Contracts.Types;
 using Edelstein.Daemon.Server.Configs;
+using Edelstein.Protocol.Gameplay.Stages.Chat.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Stages.Login.Contexts;
 using Edelstein.Protocol.Services.Server;
@@ -64,6 +65,15 @@ public class ServerUpdateBootstrap<TConfig> : IBootstrap, ITickable where TConfi
                             Host = _config.Host,
                             Port = _config.Port
                         })),
+                    IChatContextOptions chat => await _service.RegisterChat(new ServerRegisterRequest<IServerChat>(
+                        new ServerChat
+                        {
+                            ID = _config.ID,
+                            Host = _config.Host,
+                            Port = _config.Port,
+                            WorldID = chat.WorldID
+                        }
+                    )),
                     IGameContextOptions game => await _service.RegisterGame(new ServerRegisterRequest<IServerGame>(
                         new ServerGame
                         {

@@ -9,9 +9,9 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers;
 
 public class CheckDuplicatedIDHandler : AbstractLoginPacketHandler
 {
-    private readonly IPipeline<ICheckDuplicatedID> _pipeline;
+    private IPipeline<ICharacterCheckDuplicatedID> _pipeline;
 
-    public CheckDuplicatedIDHandler(IPipeline<ICheckDuplicatedID> pipeline) => _pipeline = pipeline;
+    public CheckDuplicatedIDHandler(IPipeline<ICharacterCheckDuplicatedID> pipeline) => _pipeline = pipeline;
 
     public override short Operation => (short)PacketRecvOperations.CheckDuplicatedID;
 
@@ -19,11 +19,8 @@ public class CheckDuplicatedIDHandler : AbstractLoginPacketHandler
 
     public override Task Handle(ILoginStageUser user, IPacketReader reader)
     {
-        var message = new CheckDuplicatedID(
-            user,
-            reader.ReadString()
-        );
+        var name = reader.ReadString();
 
-        return _pipeline.Process(message);
+        return _pipeline.Process(new CharacterCheckDuplicatedID(user, name));
     }
 }

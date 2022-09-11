@@ -9,9 +9,9 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers;
 
 public class DeleteCharacterHandler : AbstractLoginPacketHandler
 {
-    private readonly IPipeline<IDeleteCharacter> _pipeline;
+    private readonly IPipeline<ICharacterDelete> _pipeline;
 
-    public DeleteCharacterHandler(IPipeline<IDeleteCharacter> pipeline) => _pipeline = pipeline;
+    public DeleteCharacterHandler(IPipeline<ICharacterDelete> pipeline) => _pipeline = pipeline;
 
     public override short Operation => (short)PacketRecvOperations.DeleteCharacter;
 
@@ -21,12 +21,9 @@ public class DeleteCharacterHandler : AbstractLoginPacketHandler
 
     public override Task Handle(ILoginStageUser user, IPacketReader reader)
     {
-        var message = new DeleteCharacter(
-            user,
-            reader.ReadString(),
-            reader.ReadInt()
-        );
+        var spw = reader.ReadString();
+        var characterID = reader.ReadInt();
 
-        return _pipeline.Process(message);
+        return _pipeline.Process(new CharacterDelete(user, spw, characterID));
     }
 }

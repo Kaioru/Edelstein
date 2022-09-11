@@ -13,6 +13,7 @@ public class ServerDbContext : DbContext
 
     public DbSet<ServerModel> Servers { get; set; }
     public DbSet<ServerLoginModel> LoginServers { get; set; }
+    public DbSet<ServerChatModel> ChatServers { get; set; }
     public DbSet<ServerGameModel> GameServers { get; set; }
 
     public DbSet<SessionModel> Sessions { get; set; }
@@ -22,6 +23,7 @@ public class ServerDbContext : DbContext
     {
         builder.Entity<ServerModel>().HasDiscriminator().HasValue("Server");
         builder.Entity<ServerLoginModel>().HasDiscriminator().HasValue("Login");
+        builder.Entity<ServerChatModel>().HasDiscriminator().HasValue("Chat");
         builder.Entity<ServerGameModel>().HasDiscriminator().HasValue("Game");
 
         builder.Entity<SessionModel>().HasKey(m => m.ActiveAccount);

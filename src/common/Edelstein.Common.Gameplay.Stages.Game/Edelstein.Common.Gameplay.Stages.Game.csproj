@@ -14,4 +14,11 @@
     <PackageReference Include="stateless" Version="5.11.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Objects\NPC\Contracts\Pipelines" />
+    <Folder Include="Objects\NPC\Plugs" />
+    <Folder Include="Objects\User\Contracts\Pipelines" />
+    <Folder Include="Objects\User\Plugs" />
+  </ItemGroup>
+
 </Project>

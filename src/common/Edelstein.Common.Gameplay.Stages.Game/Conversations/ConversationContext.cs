@@ -25,7 +25,10 @@ public class ConversationContext : IConversationContext
 
     public async Task<T> Request<T>(IConversationMessageRequest<T> messageRequest)
     {
-        await _adapter.Dispatch(new PacketWriter(PacketSendOperations.ScriptMessage).Write(messageRequest));
+        await _adapter.Dispatch(
+            new PacketWriter(PacketSendOperations.ScriptMessage)
+                .Write(messageRequest)
+        );
 
         if (await _channel.Reader.ReadAsync(TokenSource.Token) is not IConversationMessageResponse<T> response)
             throw new InvalidDataException("Invalid response");

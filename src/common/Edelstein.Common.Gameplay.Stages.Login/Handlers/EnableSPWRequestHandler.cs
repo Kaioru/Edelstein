@@ -9,9 +9,12 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers;
 
 public class EnableSPWRequestHandler : AbstractLoginPacketHandler
 {
-    private readonly IPipeline<IEnableSPWRequest> _pipeline;
+    private readonly IPipeline<ISPWCreate> _pipeline;
 
-    public EnableSPWRequestHandler(IPipeline<IEnableSPWRequest> pipeline) => _pipeline = pipeline;
+    public EnableSPWRequestHandler(
+        IPipeline<ISPWCreate> pipeline
+    ) =>
+        _pipeline = pipeline;
 
     public override short Operation => (short)PacketRecvOperations.EnableSPWRequest;
 
@@ -21,16 +24,12 @@ public class EnableSPWRequestHandler : AbstractLoginPacketHandler
 
     public override Task Handle(ILoginStageUser user, IPacketReader reader)
     {
-        _ = reader.ReadBool(); // Unknown1
+        _ = reader.ReadShort();
+        _ = reader.ReadInt();
+        _ = reader.ReadString();
+        _ = reader.ReadString();
+        var spw = reader.ReadString();
 
-        var message = new EnableSPWRequest(
-            user,
-            reader.ReadInt(),
-            reader.ReadString(),
-            reader.ReadString(),
-            reader.ReadString()
-        );
-
-        return _pipeline.Process(message);
+        return _pipeline.Process(new SPWCreate(user, spw));
     }
 }

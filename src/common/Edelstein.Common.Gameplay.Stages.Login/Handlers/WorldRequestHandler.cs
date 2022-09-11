@@ -9,14 +9,14 @@ namespace Edelstein.Common.Gameplay.Stages.Login.Handlers;
 
 public class WorldRequestHandler : AbstractLoginPacketHandler
 {
-    private readonly IPipeline<IWorldRequest> _pipeline;
+    private readonly IPipeline<IWorldList> _pipeline;
 
-    public WorldRequestHandler(IPipeline<IWorldRequest> pipeline) => _pipeline = pipeline;
+    public WorldRequestHandler(IPipeline<IWorldList> pipeline) => _pipeline = pipeline;
 
     public override short Operation => (short)PacketRecvOperations.WorldRequest;
 
     public override bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
 
     public override Task Handle(ILoginStageUser user, IPacketReader reader) =>
-        _pipeline.Process(new WorldRequest(user));
+        _pipeline.Process(new WorldList(user));
 }

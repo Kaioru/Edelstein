@@ -3,8 +3,9 @@
 public enum LoginState
 {
     CheckPassword = 0x0,
-    SelectGender = 0x1,
-    SelectWorld = 0x2,
-    SelectCharacter = 0x3,
-    Connecting = 0x4
+    CheckToken = 0x1,
+    SelectGender = 0x2,
+    SelectWorld = 0x3,
+    SelectCharacter = 0x4,
+    Completed = 0x5
 }

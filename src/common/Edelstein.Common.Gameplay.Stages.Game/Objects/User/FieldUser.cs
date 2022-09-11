@@ -64,9 +64,15 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
         packet.WriteShort(0); // ClientOpt
 
         packet.WriteInt(StageUser.Context.Options.ChannelID);
-        packet.WriteInt(StageUser.Context.Options.WorldID);
 
-        packet.WriteBool(true); // sNotifierMessage._m_pStr
+        packet.WriteBool(false); // sNotifierMessage._m_pStr
+
+        packet.WriteInt(0);
+        packet.WriteByte((byte)(!IsInstantiated ? 1 : 2));
+        packet.WriteInt(0);
+        packet.WriteInt((int)(Field?.Template.Bounds.Width ?? 0));
+        packet.WriteInt((int)(Field?.Template.Bounds.Height ?? 0));
+
         packet.WriteBool(!IsInstantiated);
         packet.WriteShort(0); // nNotifierCheck, loops
 
@@ -78,8 +84,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
             packet.WriteCharacterData(Character);
 
-            packet.WriteInt(0);
-            for (var i = 0; i < 3; i++) packet.WriteInt(0);
+            packet.WriteInt(0); // LogoutEvent
         }
         else
         {
@@ -90,7 +95,22 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
             packet.WriteBool(false);
         }
 
+        packet.WriteBool(false);
+        packet.WriteBool(false);
         packet.WriteDateTime(DateTime.Now);
+        packet.WriteInt(0);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteInt(0);
+        packet.WriteByte(0);
+        packet.WriteInt(Account.ID);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
 
         return packet;
     }
@@ -105,17 +125,35 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
         packet.WriteString(Character.Name);
 
         packet.WriteString("");
+
+        packet.WriteString("");
         packet.WriteShort(0);
         packet.WriteByte(0);
         packet.WriteShort(0);
         packet.WriteByte(0);
 
-        packet.WriteLong(0); // secondary stats
-        packet.WriteLong(0);
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+        packet.WriteInt(10);
+        packet.WriteInt(0);
+
+        for (var i = 0; i < 17; i++)
+            packet.WriteInt(0);
         packet.WriteByte(0);
         packet.WriteByte(0);
+        packet.WriteByte(0);
+
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+
+        packet.WriteInt(0);
 
         packet.WriteShort(Character.Job);
+        packet.WriteShort(0);
+        packet.WriteInt(0);
+
         packet.WriteCharacterLooks(Character);
 
         packet.WriteInt(0);
@@ -124,33 +162,89 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
         packet.WriteInt(0);
         packet.WriteInt(0);
         packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteShort(-1);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
 
+        packet.WriteInt(0);
+        packet.WriteInt(0);
         packet.WritePoint2D(Position);
         packet.WriteByte(Action.Raw);
         packet.WriteShort((short)(Foothold?.ID ?? 0));
         packet.WriteByte(0);
 
+        packet.WriteByte(0);
+
+        packet.WriteBool(false);
+        packet.WriteBool(true);
+
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+
         packet.WriteBool(false);
         packet.WriteBool(false);
         packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+
+        // FARM
+        packet.WriteString("");
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+
+        for (var i = 0; i < 5; i++)
+            packet.WriteByte(255); // Event Tag Title
+
+        packet.WriteInt(0);
+        packet.WriteByte(0);
+
+        packet.WriteByte(0);
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+
+        // FREEZE HOT EVENT
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+
+        packet.WriteInt(0);
+        packet.WriteByte(0);
+        packet.WriteByte(0);
+        packet.WriteInt(0);
+
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteString("");
+        packet.WriteInt(0);
 
         packet.WriteBool(false);
 
         packet.WriteInt(0);
         packet.WriteInt(0);
-        packet.WriteInt(0);
-
-        packet.WriteByte(0);
-
-        packet.WriteBool(false);
-
-        packet.WriteBool(false);
-        packet.WriteBool(false);
-        packet.WriteBool(false);
-
-        packet.WriteByte(0);
-
-        packet.WriteByte(0);
         packet.WriteInt(0);
 
         return packet;
@@ -170,7 +264,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
 
     public async Task Message(IFieldMessage message)
     {
-        var packet = new PacketWriter(PacketSendOperations.Message);
+        var packet = new PacketWriter();
 
         packet.WriteByte((byte)message.Type);
         packet.Write(message);
@@ -236,7 +330,7 @@ public class FieldUser : AbstractFieldLife<IUserMovePath, IUserMoveAction>, IFie
     public async Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
     {
         var context = new ModifyInventoryGroupContext(Character.Inventories, StageUser.Context.Templates.Item);
-        var packet = new PacketWriter(PacketSendOperations.InventoryOperation);
+        var packet = new PacketWriter();
 
         action?.Invoke(context);
 

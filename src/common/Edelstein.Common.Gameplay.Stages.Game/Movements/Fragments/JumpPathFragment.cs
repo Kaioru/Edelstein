@@ -8,6 +8,7 @@ namespace Edelstein.Common.Gameplay.Stages.Game.Movements.Fragments;
 public class JumpPathFragment<TMoveAction> : ActionPathFragment<TMoveAction>
     where TMoveAction : IMoveAction
 {
+    private short _fallStartFootholdID;
     private IPoint2D _vPosition;
 
     public JumpPathFragment(MovePathFragmentType type) : base(type)
@@ -18,12 +19,18 @@ public class JumpPathFragment<TMoveAction> : ActionPathFragment<TMoveAction>
     {
         _vPosition = reader.ReadPoint2D();
 
+        if (Type is MovePathFragmentType.MobToss or MovePathFragmentType.MobTossSlowdown)
+            _fallStartFootholdID = reader.ReadShort();
+
         base.ReadBody(reader);
     }
 
     protected override void WriteBody(IPacketWriter writer)
     {
         writer.WritePoint2D(_vPosition);
+
+        if (Type is MovePathFragmentType.MobToss or MovePathFragmentType.MobTossSlowdown)
+            writer.WriteShort(_fallStartFootholdID);
 
         base.WriteBody(writer);
     }

@@ -1,30 +1,47 @@
-﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Stages.Game.Objects.User.Contracts.Pipelines;
-using Edelstein.Protocol.Gameplay.Stages.Game;
+﻿using System.Net;
+using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Services.Server.Contracts;
+using Edelstein.Common.Util.Buffers.Packets;
 using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Stages.Game.Objects.User.Contracts.Pipelines;
+using Edelstein.Protocol.Services.Server;
+using Edelstein.Protocol.Services.Server.Contracts;
 using Edelstein.Protocol.Util.Buffers.Packets;
-using Edelstein.Protocol.Util.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Stages.Game.Objects.User.Handlers;
 
 public class UserTransferChannelRequestHandler : AbstractFieldUserHandler
 {
-    private readonly IPipeline<IUserTransferChannelRequest> _pipeline;
+    private IServerService _servers;
 
-    public UserTransferChannelRequestHandler(IPipeline<IUserTransferChannelRequest> pipeline) => _pipeline = pipeline;
+    public UserTransferChannelRequestHandler(IServerService servers) => _servers = servers;
 
     public override short Operation => (short)PacketRecvOperations.UserTransferChannelRequest;
 
-    public override bool Check(IGameStageUser user) => base.Check(user) && !user.IsMigrating;
-
-    protected override Task Handle(IFieldUser user, IPacketReader reader)
+    protected override async Task Handle(IFieldUser user, IPacketReader reader)
     {
-        var message = new UserTransferChannelRequest(
-            user,
-            reader.ReadByte()
-        );
+        var channelID = reader.ReadByte();
 
-        return _pipeline.Process(message);
+        var response = await _servers.GetGameByWorldAndChannel(new ServerGetGameByWorldAndChannelRequest(
+            user.StageUser.Context.Options.WorldID,
+            channelID
+        ));
+
+        if (response.Result != ServerResult.Success || response.Server == null) return;
+
+        var packet = new PacketWriter(PacketSendOperations.MigrateCommand);
+
+        var endpoint = new IPEndPoint(IPAddress.Parse("8.31.99.141"), response.Server.Port);
+        var address = endpoint.Address.MapToIPv4().GetAddressBytes();
+        var port = endpoint.Port;
+
+        packet.WriteBool(true);
+
+        foreach (var b in address)
+            packet.WriteByte(b);
+        packet.WriteShort((short)port);
+        packet.WriteInt(0);
+
+        await user.StageUser.OnMigrateOut(response.Server.ID);
+        await user.Dispatch(packet);
     }
 }

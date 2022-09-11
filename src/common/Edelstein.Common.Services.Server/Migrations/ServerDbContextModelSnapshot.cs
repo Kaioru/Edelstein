@@ -122,6 +122,17 @@ namespace Edelstein.Common.Services.Server.Migrations
                     b.ToTable("Sessions");
                 });
 
+            modelBuilder.Entity("Edelstein.Common.Services.Server.Models.ServerChatModel", b =>
+                {
+                    b.HasBaseType("Edelstein.Common.Services.Server.Models.ServerModel");
+
+                    b.Property<int>("WorldID")
+                        .HasColumnType("integer")
+                        .HasColumnName("ServerChatModel_WorldID");
+
+                    b.HasDiscriminator().HasValue("Chat");
+                });
+
             modelBuilder.Entity("Edelstein.Common.Services.Server.Models.ServerGameModel", b =>
                 {
                     b.HasBaseType("Edelstein.Common.Services.Server.Models.ServerModel");

@@ -1,5 +1,5 @@
 # Edelstein [![Build](https://github.com/Kaioru/Edelstein/actions/workflows/build.yaml/badge.svg)](https://github.com/Kaioru/Edelstein/actions/workflows/build.yaml)
-A v.95.1 Mushroom game server emulator written in C#.
+A v.176.1 Mushroom game server emulator written in C#.
 
 ## 🚀 Getting started
 
@@ -57,5 +57,7 @@ Check the [here](https://docs.github.com/en/packages/working-with-a-github-packa
 * [Server.Scripts](https://github.com/kaioru/server.scripts) - various scripts for use with Edelstein.
 
 ## ⭐️ Acknowledgements
-* [Rebirth](https://github.com/RajanGrewal/Rebirth) - lot's of referencing from here.
-* [Destiny](https://github.com/Fraysa/Destiny) - even more referencing from here.
+* [Darter](https://github.com/RajanGrewal) - for the amazing support and reference point for mushroom game-related stuff!
+* [Fraysa](https://github.com/gilmatok) - the inspiration of creating a mushroom game server in C# and help on Discord
+* [pokiuwu](https://github.com/pokiuwu) - great resource of auth hooks, mushroom game-related information
+* [swordie](https://bitbucket.org/swordiemen/swordie/src/master/) - really cool open source v176.1 mushroom game server in Java, alot of referencing done from there
