@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Characters;
+using Edelstein.Protocol.Gameplay.Inventories;
 using Edelstein.Protocol.Util.Buffers.Packets;
 
 namespace Edelstein.Common.Gameplay.Characters;
@@ -36,6 +37,54 @@ public static class CharacterPackets
 
         if (flags.HasFlag(CharacterFlags.Money))
             writer.WriteLong(character.Money);
+
+        if (flags.HasFlag(CharacterFlags.ItemSlotConsume)) writer.WriteInt(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotConsume)) writer.WriteInt(0);
+
+        if (flags.HasFlag(CharacterFlags.InventorySize))
+        {
+            if (flags.HasFlag(CharacterFlags.ItemSlotEquip))
+                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Equip].SlotMax);
+            if (flags.HasFlag(CharacterFlags.ItemSlotConsume))
+                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Consume].SlotMax);
+            if (flags.HasFlag(CharacterFlags.ItemSlotInstall))
+                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Install].SlotMax);
+            if (flags.HasFlag(CharacterFlags.ItemSlotEtc))
+                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Etc].SlotMax);
+            if (flags.HasFlag(CharacterFlags.ItemSlotCash))
+                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Cash].SlotMax);
+        }
+
+        if (flags.HasFlag(CharacterFlags.ItemSlotEquip))
+        {
+            writer.WriteByte(0);
+
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+            writer.WriteShort(0);
+        }
+
+        if (flags.HasFlag(CharacterFlags.ItemSlotConsume)) writer.WriteByte(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotInstall)) writer.WriteByte(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotEtc)) writer.WriteByte(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotCash)) writer.WriteByte(0);
+
+        if (flags.HasFlag(CharacterFlags.ItemSlotConsume)) writer.WriteInt(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotInstall)) writer.WriteInt(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotEtc)) writer.WriteInt(0);
+        if (flags.HasFlag(CharacterFlags.ItemSlotCash)) writer.WriteInt(0);
 
         writer.WriteInt(0);
         writer.WriteByte(0);
