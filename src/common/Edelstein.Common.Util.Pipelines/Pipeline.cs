@@ -7,7 +7,9 @@ public class Pipeline<TMessage> : IPipeline<TMessage>
     private readonly ICollection<PipelinePart<TMessage>> _parts;
 
     public Pipeline() => _parts = new SortedSet<PipelinePart<TMessage>>();
-    public Pipeline(IPipelinePlug<TMessage> @default) : this() => Add(PipelinePriority.Default, @default);
+
+    public Pipeline(IPipelinePlug<TMessage> @default) : this() =>
+        _parts.Add(new PipelinePart<TMessage>(PipelinePriority.Default, @default, true));
 
     public void Add(int priority, IPipelinePlug<TMessage> plug) =>
         _parts.Add(new PipelinePart<TMessage>(priority, plug));
@@ -27,6 +29,7 @@ public class Pipeline<TMessage> : IPipeline<TMessage>
 
         foreach (var part in _parts)
         {
+            if (part.IsDefault && ctx.IsRequestedCancellationDefault) continue;
             await part.Plug.Handle(ctx, message);
             if (ctx.IsRequestedCancellation) break;
         }
