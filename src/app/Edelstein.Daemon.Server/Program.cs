@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Data.NX;
+﻿using System.Collections.Generic;
+using Edelstein.Common.Data.NX;
 using Edelstein.Common.Gameplay.Accounts;
 using Edelstein.Common.Gameplay.Characters;
 using Edelstein.Common.Gameplay.Database;

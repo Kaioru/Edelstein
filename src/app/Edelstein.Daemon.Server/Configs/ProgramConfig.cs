@@ -1,4 +1,6 @@
-﻿namespace Edelstein.Daemon.Server.Configs;
+﻿using System.Collections.Generic;
+
+namespace Edelstein.Daemon.Server.Configs;
 
 #pragma warning disable CS8618
 

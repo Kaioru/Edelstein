@@ -1,4 +1,6 @@
-﻿namespace Edelstein.Daemon.Server.Bootstraps;
+﻿using System.Threading.Tasks;
+
+namespace Edelstein.Daemon.Server.Bootstraps;
 
 public class ServerVoidBootstrap : IBootstrap
 {
