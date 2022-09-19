@@ -7,6 +7,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>None</DebugType>
+  </PropertyGroup>
+
   <PropertyGroup>
     <RepositoryUrl>https://github.com/Kaioru/Edelstein</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
