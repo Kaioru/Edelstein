@@ -23,6 +23,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protocol", "protocol", "{7F
 		src\protocol\Protocol.targets = src\protocol\Protocol.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Network", "src\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj", "{D05AF54B-A42E-48B6-9691-C7F653A4A2DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Util", "src\protocol\Edelstein.Protocol.Util\Edelstein.Protocol.Util.csproj", "{6624560D-8B68-4F8A-93BE-D2384AC8766F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,7 +39,17 @@ Global
 		{E8E4BA1B-1B13-4BD1-907D-BECBBF3F357B} = {71E8FDEE-8F29-4294-8B21-97F367594BD3}
 		{52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504} = {71E8FDEE-8F29-4294-8B21-97F367594BD3}
 		{7F8DD283-A64C-40EC-98F2-84FA38716C28} = {71E8FDEE-8F29-4294-8B21-97F367594BD3}
+		{D05AF54B-A42E-48B6-9691-C7F653A4A2DE} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{6624560D-8B68-4F8A-93BE-D2384AC8766F} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D05AF54B-A42E-48B6-9691-C7F653A4A2DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D05AF54B-A42E-48B6-9691-C7F653A4A2DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D05AF54B-A42E-48B6-9691-C7F653A4A2DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D05AF54B-A42E-48B6-9691-C7F653A4A2DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6624560D-8B68-4F8A-93BE-D2384AC8766F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6624560D-8B68-4F8A-93BE-D2384AC8766F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6624560D-8B68-4F8A-93BE-D2384AC8766F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6624560D-8B68-4F8A-93BE-D2384AC8766F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
