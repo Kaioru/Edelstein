@@ -21,9 +21,8 @@ public class NettyTransportConnector : ITransportConnector
     public string Patch { get; }
     public byte Locale { get; }
 
-    public ISocket? Socket { get; }
+    public ISocket? Socket { get; set; }
 
-    private IChannel? Channel { get; set; }
     private IEventLoopGroup? WorkerGroup { get; set; }
 
     public NettyTransportConnector(INetworkAdapterInitializer initializer, short version, string patch, byte locale)
@@ -41,7 +40,8 @@ public class NettyTransportConnector : ITransportConnector
         var igCipher = new IGCipher();
 
         WorkerGroup = new MultithreadEventLoopGroup();
-        Channel = await new Bootstrap()
+
+        await new Bootstrap()
             .Group(WorkerGroup)
             .Channel<TcpSocketChannel>()
             .Option(ChannelOption.TcpNodelay, true)

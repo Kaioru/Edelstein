@@ -49,6 +49,8 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
 
             context.Channel.GetAttribute(NettyAttributes.SocketKey).Set(newSocket);
             context.Channel.GetAttribute(NettyAttributes.AdapterKey).Set(newAdapter);
+
+            _connector.Socket = newSocket;
         }
     }
 
@@ -58,5 +60,7 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
 
         adapter?.OnDisconnect();
         base.ChannelInactive(context);
+
+        _connector.Socket = null;
     }
 }
