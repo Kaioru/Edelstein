@@ -2,7 +2,7 @@ using Edelstein.Protocol.Util.Storages;
 
 namespace Edelstein.Protocol.Network.Transport;
 
-public interface ITransportAcceptor
+public interface ITransportAcceptor : ITransport
 {
     IStorage<string, ISocket> Sockets { get; }
 

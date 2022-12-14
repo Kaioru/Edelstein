@@ -10,7 +10,7 @@ public interface ISocket : IIdentifiable<string>
     EndPoint AddressLocal { get; }
     EndPoint AddressRemote { get; }
 
-    bool IsDataEncrypted { get; set; }
+    bool IsDataEncrypted { get; }
     uint SeqSend { get; set; }
     uint SeqRecv { get; set; }
 

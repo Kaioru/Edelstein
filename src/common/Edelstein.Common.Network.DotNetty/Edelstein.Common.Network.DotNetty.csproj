@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  
+  <Import Project="..\Common.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Cryptography\Edelstein.Common.Cryptography.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Util\Edelstein.Common.Util.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetty.Codecs" Version="0.7.2" />
+    <PackageReference Include="DotNetty.Common" Version="0.7.2" />
+    <PackageReference Include="DotNetty.Handlers" Version="0.7.2" />
+  </ItemGroup>
+
+</Project>
