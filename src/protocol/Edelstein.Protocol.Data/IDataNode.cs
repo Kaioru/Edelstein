@@ -3,6 +3,7 @@
 public interface IDataNode : IEnumerable<IDataNode>, IDataProperty
 {
     string Name { get; }
+    string File { get; }
     string Path { get; }
 
     IDataNode Parent { get; }

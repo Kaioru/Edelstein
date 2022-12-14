@@ -25,24 +25,15 @@ public class NXDataManager : IDataManager
             : new Dictionary<string, object>();
     }
 
-    public T? Resolve<T>(string? path = null) where T : struct
-    {
-        var node = ResolvePath(path);
-        return node?.Resolve<T>();
-    }
+    public T? Resolve<T>(string? path = null) where T : struct => Resolve(path)?.Resolve<T>();
+    public T? ResolveOrDefault<T>(string? path = null) where T : class => Resolve(path)?.ResolveOrDefault<T>();
 
-    public T? ResolveOrDefault<T>(string? path = null) where T : class
-    {
-        var node = ResolvePath(path);
-        return node?.ResolveOrDefault<T>();
-    }
-
-    public IDataNode? ResolvePath(string? path = null)
+    public IDataNode? Resolve(string? path = null)
     {
         if (string.IsNullOrEmpty(path)) return null;
         var split = path.Split('/');
         return _nodes.TryGetValue(split[0], out var value)
-            ? new NXDataNode(value.ResolvePath(string.Join("/", split.Skip(1).ToArray())), _hotfix)
+            ? new NXDataNode(split[0], value, _hotfix).Resolve(string.Join("/", split.Skip(1).ToArray()))
             : null;
     }
 }
