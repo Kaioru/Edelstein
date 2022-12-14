@@ -3,10 +3,6 @@
   <Import Project="..\Source.targets"/>
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <IsPackable>true</IsPackable>
     <IsPublishable>false</IsPublishable>
   </PropertyGroup>
