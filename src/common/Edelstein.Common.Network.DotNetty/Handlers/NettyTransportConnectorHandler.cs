@@ -17,7 +17,6 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
         _initializer = initializer;
     }
 
-
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
