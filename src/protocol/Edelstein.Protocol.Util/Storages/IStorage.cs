@@ -3,8 +3,7 @@ using Edelstein.Protocol.Util.Storages.Methods;
 namespace Edelstein.Protocol.Util.Storages;
 
 public interface IStorage<in TKey, TEntry> :
-    IStorageMethodRetrieve<TKey, TEntry>,
-    IStorageMethodRetrieveAll<TKey, TEntry>,
+    IReadOnlyStorage<TKey, TEntry>,
     IStorageMethodInsert<TKey, TEntry>,
     IStorageMethodDelete<TKey, TEntry>
     where TKey : notnull
