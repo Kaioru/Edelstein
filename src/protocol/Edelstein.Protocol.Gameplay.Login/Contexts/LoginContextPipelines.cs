@@ -15,7 +15,6 @@ public record LoginContextPipelines(
     IPipeline<UserOnException<ILoginStageUser>> UserOnException,
     IPipeline<UserOnDisconnect<ILoginStageUser>> UserOnDisconnect,
     
-    IPipeline<UserOnPacketMigrateIn<ILoginStageUser>> UserOnPacketMigrateIn,
     IPipeline<UserOnPacketAliveAck<ILoginStageUser>> UserOnPacketAliveAck,
     IPipeline<OnUserPacketCheckPassword> OnUserPacketCheckPassword,
     IPipeline<OnUserPacketSelectWorld> OnUserPacketSelectWorld,
