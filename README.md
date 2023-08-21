@@ -5,6 +5,10 @@ A v.95.1 Mushroom game server emulator written in C#.
 
 ### ✨ Usage
 
+#### PSA
+* Please do use the 'main' branch for a consistent set-up process
+* The 'dev' branch goes through many major changes all the time
+
 #### Prerequisites
 * A running [PostgreSQL](https://www.postgresql.org) server!
 * That's mostly it..
