@@ -1,6 +1,16 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
+﻿using Autofac.Extensions.DependencyInjection;
+using Edelstein.Application.Server;
+using Edelstein.Application.Server.Configs;
 using Edelstein.Common.Database;
+using Edelstein.Common.Database.Repositories;
+using Edelstein.Common.Services.Auth;
+using Edelstein.Common.Services.Server;
+using Edelstein.Protocol.Gameplay.Models.Accounts;
+using Edelstein.Protocol.Gameplay.Models.Characters;
+using Edelstein.Protocol.Services.Auth;
+using Edelstein.Protocol.Services.Migration;
+using Edelstein.Protocol.Services.Server;
+using Edelstein.Protocol.Services.Session;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,15 +28,23 @@ await Host.CreateDefaultBuilder(args)
     .UseSerilog((ctx, logger) => logger.ReadFrom.Configuration(ctx.Configuration))
     .ConfigureServices((ctx, services) =>
     {
-        services.AddPooledDbContextFactory<GameplayDbContext>(o 
-            => o.UseNpgsql(ctx.Configuration.GetConnectionString(GameplayDbContext.ConnectionStringKey)));
-    })
-    .ConfigureContainer<ContainerBuilder>(builder =>
-    {
-        var container = builder.Build();
+        services.AddSingleton(ctx.Configuration.GetSection("Host").Get<ProgramConfig>()!);
         
-        // TODO: Scoped for each stage
-        // Register Stage
-        // Register Startup Tasks
+        services.AddPooledDbContextFactory<AuthDbContext>(o =>
+            o.UseNpgsql(ctx.Configuration.GetConnectionString(AuthDbContext.ConnectionStringKey)));
+        services.AddPooledDbContextFactory<ServerDbContext>(o =>
+            o.UseNpgsql(ctx.Configuration.GetConnectionString(ServerDbContext.ConnectionStringKey)));
+        services.AddPooledDbContextFactory<GameplayDbContext>(o =>
+            o.UseNpgsql(ctx.Configuration.GetConnectionString(GameplayDbContext.ConnectionStringKey)));
+        
+        services.AddSingleton<IAccountRepository, AccountRepository>();
+        services.AddSingleton<IAccountWorldRepository, AccountWorldRepository>();
+        services.AddSingleton<ICharacterRepository, CharacterRepository>();
+
+        services.AddSingleton<IAuthService, AuthService>();
+        services.AddSingleton<IServerService, ServerService>();
+        services.AddSingleton<ISessionService, SessionService>();
+        services.AddSingleton<IMigrationService, MigrationService>();
     })
+    .ConfigureServices((ctx, services) => { services.AddHostedService<ProgramHost>(); })
     .RunConsoleAsync();

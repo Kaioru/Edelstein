@@ -1,6 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Protocol.Gameplay;
-using Edelstein.Protocol.Gameplay.Contracts.Pipelines;
+using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Plugs;

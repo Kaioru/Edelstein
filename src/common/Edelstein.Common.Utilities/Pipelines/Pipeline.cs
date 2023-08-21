@@ -5,10 +5,9 @@ namespace Edelstein.Common.Utilities.Pipelines;
 public class Pipeline<TMessage> : IPipeline<TMessage>
 {
     private readonly ICollection<PipelinePart<TMessage>> _parts;
-    private readonly IPipelinePlug<TMessage>? _default;
 
     public Pipeline() => _parts = new SortedSet<PipelinePart<TMessage>>();
-    public Pipeline(IPipelinePlug<TMessage> @default) : this() => _default = @default;
+    public Pipeline(IPipelinePlug<TMessage> @default) : this() => Add(PipelinePriority.Default, @default);
 
     public void Add(int priority, IPipelinePlug<TMessage> plug) =>
         _parts.Add(new PipelinePart<TMessage>(priority, plug));
@@ -28,15 +27,13 @@ public class Pipeline<TMessage> : IPipeline<TMessage>
 
         foreach (var part in _parts)
         {
+            if (ctx.IsRequestedDefaultAction && part.Priority != PipelinePriority.Default)
+                continue;
             await part.Plug.Handle(ctx, message);
             if (ctx.IsRequestedCancellation || ctx.IsRequestedDefaultAction) 
                 break;
         }
-
-        if (_default == null || ctx.IsRequestedCancellation) 
-            return ctx; 
         
-        await _default.Handle(ctx, message);
         return ctx;
     }
 }

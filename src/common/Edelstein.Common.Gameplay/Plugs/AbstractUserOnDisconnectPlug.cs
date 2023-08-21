@@ -1,5 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay;
-using Edelstein.Protocol.Gameplay.Contracts.Pipelines;
+using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Services.Session;

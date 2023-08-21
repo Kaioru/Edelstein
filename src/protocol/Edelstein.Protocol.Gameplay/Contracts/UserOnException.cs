@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay.Contracts.Pipelines;
+﻿namespace Edelstein.Protocol.Gameplay.Contracts;
 
 public record UserOnException<TStageUser>(
     TStageUser User,

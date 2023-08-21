@@ -68,7 +68,6 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
-
         adapter?.OnPacket((IPacket)message);
     }
 

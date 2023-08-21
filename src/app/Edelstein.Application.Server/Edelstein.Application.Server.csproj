@@ -22,6 +22,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\common\Edelstein.Common.Database\Edelstein.Common.Database.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Login\Edelstein.Common.Gameplay.Login.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Login\Edelstein.Protocol.Gameplay.Login.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

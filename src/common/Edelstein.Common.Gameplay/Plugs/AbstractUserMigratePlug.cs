@@ -1,5 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay;
-using Edelstein.Protocol.Gameplay.Contracts.Pipelines;
+using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Migration.Contracts;
 using Edelstein.Protocol.Utilities.Pipelines;
