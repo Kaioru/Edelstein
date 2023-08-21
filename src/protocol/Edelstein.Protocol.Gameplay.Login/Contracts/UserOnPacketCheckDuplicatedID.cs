@@ -1,7 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Login.Contracts;
 
-public record OnUserPacketCheckPassword(
+public record UserOnPacketCheckDuplicatedID(
     ILoginStageUser User,
-    string Username,
-    string Password
+    string Name
 );

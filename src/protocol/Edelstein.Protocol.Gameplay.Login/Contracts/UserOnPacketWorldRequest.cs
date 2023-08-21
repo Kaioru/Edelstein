@@ -1,5 +1,5 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Login.Contracts;
 
-public record OnUserPacketWorldRequest(
+public record UserOnPacketWorldRequest(
     ILoginStageUser User
 );

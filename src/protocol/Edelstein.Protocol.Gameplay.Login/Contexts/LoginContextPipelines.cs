@@ -16,14 +16,14 @@ public record LoginContextPipelines(
     IPipeline<UserOnDisconnect<ILoginStageUser>> UserOnDisconnect,
     
     IPipeline<UserOnPacketAliveAck<ILoginStageUser>> UserOnPacketAliveAck,
-    IPipeline<OnUserPacketCheckPassword> OnUserPacketCheckPassword,
-    IPipeline<OnUserPacketSelectWorld> OnUserPacketSelectWorld,
-    IPipeline<OnUserPacketCheckUserLimit> OnUserPacketCheckUserLimit,
-    IPipeline<OnUserPacketWorldRequest> OnUserPacketWorldRequest,
-    IPipeline<OnUserPacketLogoutWorld> OnUserPacketLogoutWorld,
-    IPipeline<OnUserPacketCheckDuplicatedID> OnUserPacketCheckDuplicatedID,
-    IPipeline<OnUserPacketCreateNewCharacter> OnUserPacketCreateNewCharacter,
-    IPipeline<OnUserPacketDeleteCharacter> OnUserPacketDeleteCharacter,
-    IPipeline<OnUserPacketEnableSPWRequest> OnUserPacketEnableSPWRequest,
-    IPipeline<OnUserPacketCheckSPWRequest> OnUserPacketCheckSPWRequest
+    IPipeline<UserOnPacketCheckPassword> UserOnPacketCheckPassword,
+    IPipeline<UserOnPacketSelectWorld> UserOnPacketSelectWorld,
+    IPipeline<UserOnPacketCheckUserLimit> UserOnPacketCheckUserLimit,
+    IPipeline<UserOnPacketWorldRequest> UserOnPacketWorldRequest,
+    IPipeline<UserOnPacketLogoutWorld> UserOnPacketLogoutWorld,
+    IPipeline<UserOnPacketCheckDuplicatedID> UserOnPacketCheckDuplicatedID,
+    IPipeline<UserOnPacketCreateNewCharacter> UserOnPacketCreateNewCharacter,
+    IPipeline<UserOnPacketDeleteCharacter> UserOnPacketDeleteCharacter,
+    IPipeline<UserOnPacketEnableSPWRequest> UserOnPacketEnableSPWRequest,
+    IPipeline<UserOnPacketCheckSPWRequest> UserOnPacketCheckSPWRequest
 );

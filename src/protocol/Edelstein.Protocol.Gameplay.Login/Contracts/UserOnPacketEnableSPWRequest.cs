@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Login.Contracts;
 
-public record OnUserPacketEnableSPWRequest(
+public record UserOnPacketEnableSPWRequest(
     ILoginStageUser User,
     int CharacterID,
     string MacAddress,

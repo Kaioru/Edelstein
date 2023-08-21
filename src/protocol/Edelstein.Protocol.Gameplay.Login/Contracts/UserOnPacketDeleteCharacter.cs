@@ -1,7 +1,7 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Login.Contracts;
 
-public record OnUserPacketSelectWorld(
+public record UserOnPacketDeleteCharacter(
     ILoginStageUser User,
-    int WorldID,
-    int ChannelID
+    string SPW,
+    int CharacterID
 );

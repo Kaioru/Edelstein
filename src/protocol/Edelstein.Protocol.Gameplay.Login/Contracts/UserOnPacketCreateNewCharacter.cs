@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Login.Contracts;
 
-public record OnUserPacketCreateNewCharacter(
+public record UserOnPacketCreateNewCharacter(
     ILoginStageUser User,
     string Name,
     int Race,

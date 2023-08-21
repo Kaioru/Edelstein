@@ -1,7 +1,7 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Login.Contracts;
 
-public record OnUserPacketDeleteCharacter(
+public record UserOnPacketCheckPassword(
     ILoginStageUser User,
-    string SPW,
-    int CharacterID
+    string Username,
+    string Password
 );

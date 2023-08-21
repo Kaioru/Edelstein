@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Login.Contracts;
 
-public record OnUserPacketCheckUserLimit(
+public record UserOnPacketCheckUserLimit(
     ILoginStageUser User,
     int WorldID
 );

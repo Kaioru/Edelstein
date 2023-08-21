@@ -1,6 +1,7 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Login.Contracts;
 
-public record OnUserPacketCheckDuplicatedID(
+public record UserOnPacketSelectWorld(
     ILoginStageUser User,
-    string Name
+    int WorldID,
+    int ChannelID
 );
