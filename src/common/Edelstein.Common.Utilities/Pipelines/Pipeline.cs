@@ -7,7 +7,11 @@ public class Pipeline<TMessage> : IPipeline<TMessage>
     private readonly ICollection<PipelinePart<TMessage>> _parts;
 
     public Pipeline() => _parts = new SortedSet<PipelinePart<TMessage>>();
-    public Pipeline(IPipelinePlug<TMessage> @default) : this() => Add(PipelinePriority.Default, @default);
+    public Pipeline(IEnumerable<IPipelinePlug<TMessage>> plugs) : this()
+    {
+        foreach (var plug in plugs)
+            Add(PipelinePriority.Default, plug);
+    }
 
     public void Add(int priority, IPipelinePlug<TMessage> plug) =>
         _parts.Add(new PipelinePart<TMessage>(priority, plug));
