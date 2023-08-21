@@ -1,3 +1,3 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Contracts;
 
-public record ServerStop();
+public record StageStop();
