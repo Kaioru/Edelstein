@@ -16,12 +16,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: Check current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
       - id: should_run
         continue-on-error: true
         name: Check for new commits
         if: ${{ github.event_name == 'schedule' }}
-        run: test -z $(git rev-list --after="24 hours" ${{ github.sha }}) && echo "::set-output name=should_run::false"
+        run: test -z $(git rev-list --after="24 hours" ${{ github.sha }}) && echo "should_run=false" >> $GITHUB_OUTPUT
 
   publish_nuget:
     needs: setup
