@@ -6,7 +6,7 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Handlers;
 
-public class AbstractAliveAckHandler<TStageUser>: IPacketHandler<TStageUser>
+public abstract class AbstractAliveAckHandler<TStageUser>: IPacketHandler<TStageUser>
     where TStageUser : IStageUser<TStageUser>
 {
     private readonly IPipeline<UserOnPacketAliveAck<TStageUser>> _pipeline;

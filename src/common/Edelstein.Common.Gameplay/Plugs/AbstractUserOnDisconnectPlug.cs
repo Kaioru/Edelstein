@@ -8,7 +8,7 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Plugs;
 
-public class AbstractUserOnDisconnectPlug<TStageUser> : IPipelinePlug<UserOnDisconnect<TStageUser>> 
+public abstract class AbstractUserOnDisconnectPlug<TStageUser> : IPipelinePlug<UserOnDisconnect<TStageUser>> 
     where TStageUser : IStageUser<TStageUser>
 {
     private readonly IAccountRepository _accountRepository;

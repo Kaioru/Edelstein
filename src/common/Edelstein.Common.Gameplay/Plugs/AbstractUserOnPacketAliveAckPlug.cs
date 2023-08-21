@@ -4,7 +4,7 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Plugs;
 
-public class AbstractUserOnPacketAliveAckPlug<TStageUser> : IPipelinePlug<UserOnPacketAliveAck<TStageUser>>
+public abstract class AbstractUserOnPacketAliveAckPlug<TStageUser> : IPipelinePlug<UserOnPacketAliveAck<TStageUser>>
     where TStageUser : IStageUser<TStageUser>
 {
     public virtual Task Handle(IPipelineContext ctx, UserOnPacketAliveAck<TStageUser> message)

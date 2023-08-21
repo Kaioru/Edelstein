@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Plugs;
 
-public class AbstractUserOnPacketMigrateInPlug<TStage, TStageUser> : IPipelinePlug<UserOnPacketMigrateIn<TStageUser>>
+public abstract class AbstractUserOnPacketMigrateInPlug<TStage, TStageUser> : IPipelinePlug<UserOnPacketMigrateIn<TStageUser>>
     where TStage : IStage<TStageUser>
     where TStageUser : class, IStageUser<TStageUser>
 {

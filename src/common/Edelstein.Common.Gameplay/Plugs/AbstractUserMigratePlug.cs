@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Plugs;
 
-public class AbstractUserMigratePlug<TStage, TStageUser> : IPipelinePlug<UserMigrate<TStageUser>> 
+public abstract class AbstractUserMigratePlug<TStage, TStageUser> : IPipelinePlug<UserMigrate<TStageUser>> 
     where TStage : IStage<TStageUser>
     where TStageUser : class, IStageUser<TStageUser>
 {

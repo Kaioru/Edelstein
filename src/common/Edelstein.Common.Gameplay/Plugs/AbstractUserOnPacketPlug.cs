@@ -5,7 +5,7 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Plugs;
 
-public class AbstractUserOnPacketPlug<TStageUser> : IPipelinePlug<UserOnPacket<TStageUser>> 
+public abstract class AbstractUserOnPacketPlug<TStageUser> : IPipelinePlug<UserOnPacket<TStageUser>> 
     where TStageUser : IStageUser<TStageUser>
 {
     private readonly IPacketHandlerManager<TStageUser> _handler;
