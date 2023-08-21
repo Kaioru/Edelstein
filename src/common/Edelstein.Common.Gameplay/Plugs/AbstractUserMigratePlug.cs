@@ -9,7 +9,7 @@ namespace Edelstein.Common.Gameplay.Plugs;
 
 public class AbstractUserMigratePlug<TStage, TStageUser> : IPipelinePlug<UserMigrate<TStageUser>> 
     where TStage : IStage<TStageUser>
-    where TStageUser : IStageUser<TStageUser>
+    where TStageUser : class, IStageUser<TStageUser>
 {
     private readonly ILogger _logger;
     private readonly TStage _stage;

@@ -10,8 +10,8 @@ using Microsoft.Extensions.Logging;
 namespace Edelstein.Common.Gameplay.Plugs;
 
 public class AbstractUserOnPacketMigrateInPlug<TStage, TStageUser> : IPipelinePlug<UserOnPacketMigrateIn<TStageUser>>
-    where TStageUser : IStageUser<TStageUser>
     where TStage : IStage<TStageUser>
+    where TStageUser : class, IStageUser<TStageUser>
 {
     private readonly ILogger _logger;
     private readonly TStage _stage;
