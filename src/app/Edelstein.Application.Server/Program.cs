@@ -30,11 +30,11 @@ await Host.CreateDefaultBuilder(args)
     {
         services.AddSingleton(ctx.Configuration.GetSection("Host").Get<ProgramConfig>()!);
         
-        services.AddPooledDbContextFactory<AuthDbContext>(o =>
+        services.AddDbContextFactory<AuthDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(AuthDbContext.ConnectionStringKey)));
-        services.AddPooledDbContextFactory<ServerDbContext>(o =>
+        services.AddDbContextFactory<ServerDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(ServerDbContext.ConnectionStringKey)));
-        services.AddPooledDbContextFactory<GameplayDbContext>(o =>
+        services.AddDbContextFactory<GameplayDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(GameplayDbContext.ConnectionStringKey)));
         
         services.AddSingleton<IAccountRepository, AccountRepository>();

@@ -3,5 +3,5 @@
 public record Session(
     string ServerID, 
     int ActiveAccount, 
-    int? ActiveCharacter
+    int? ActiveCharacter = null
 ) : ISession;
