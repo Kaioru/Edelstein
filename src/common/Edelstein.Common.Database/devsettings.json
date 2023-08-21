@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "Gameplay": "host=localhost;database=edelstein;"
+  }
+}
