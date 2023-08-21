@@ -2,4 +2,8 @@
 
   <Import Project="..\Protocol.targets" />
 
+  <ItemGroup>
+    <Folder Include="Pipelines" />
+  </ItemGroup>
+
 </Project>

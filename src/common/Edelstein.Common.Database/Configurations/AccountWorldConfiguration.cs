@@ -1,7 +1,6 @@
 ﻿using Edelstein.Common.Database.Converters;
 using Edelstein.Common.Database.Entities;
-using Edelstein.Common.Gameplay.Inventories;
-using Edelstein.Protocol.Gameplay.Inventories;
+using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

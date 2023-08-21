@@ -21,4 +21,6 @@ public interface IPacketReader : IDisposable
 
     string ReadString(short? length = null);
     byte[] ReadBytes(short length);
+
+    IPacketReader Skip(short length);
 }

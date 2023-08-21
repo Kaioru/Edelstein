@@ -6,4 +6,8 @@
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pipelines" />
+  </ItemGroup>
+
 </Project>

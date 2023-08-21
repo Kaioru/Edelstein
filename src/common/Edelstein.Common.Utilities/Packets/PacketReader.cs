@@ -44,6 +44,12 @@ public class PacketReader : IPacketReader
     
     public byte[] ReadBytes(short length) => _reader.ReadBytes(length);
 
+    public IPacketReader Skip(short length)
+    {
+        ReadBytes(length);
+        return this;
+    }
+
     public void Dispose()
     {
         _reader.Dispose();

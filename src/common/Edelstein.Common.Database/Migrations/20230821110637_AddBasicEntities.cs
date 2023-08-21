@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Edelstein.Protocol.Gameplay.Inventories;
+using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Edelstein.Common.Database;
-using Edelstein.Protocol.Gameplay.Inventories;
+using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;

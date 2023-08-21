@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Characters;
+﻿using Edelstein.Common.Gameplay.Models.Characters;
 
 namespace Edelstein.Common.Database.Entities;
 

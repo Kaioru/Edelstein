@@ -3,11 +3,12 @@
   <Import Project="..\Protocol.targets" />
 
   <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Inventories" />
+    <Folder Include="Models" />
   </ItemGroup>
 
 </Project>
