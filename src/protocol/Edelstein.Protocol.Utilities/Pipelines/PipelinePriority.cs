@@ -8,7 +8,7 @@ public static class PipelinePriority
     public const int Low = 0x40;
     public const int Lowest = 0x50;
 
-    public const int Default = 0x100;
+    public const int Reserved = 0x100;
 
     public const int PostHighest = 0x150;
     public const int PostHigh = 0x160;

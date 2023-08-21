@@ -5,11 +5,13 @@ namespace Edelstein.Common.Utilities.Pipelines;
 internal class PipelinePart<TMessage> : IComparer<PipelinePart<TMessage>>
 {
     public int Priority { get; }
+    public bool IsDefaultAction { get; }
     internal IPipelinePlug<TMessage> Plug { get; }
     
-    public PipelinePart(int priority, IPipelinePlug<TMessage> plug)
+    public PipelinePart(int priority, bool isDefaultAction, IPipelinePlug<TMessage> plug)
     {
         Priority = priority;
+        IsDefaultAction = isDefaultAction;
         Plug = plug;
     }
 

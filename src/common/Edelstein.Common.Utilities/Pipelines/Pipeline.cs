@@ -10,11 +10,11 @@ public class Pipeline<TMessage> : IPipeline<TMessage>
     public Pipeline(IEnumerable<IPipelinePlug<TMessage>> plugs) : this()
     {
         foreach (var plug in plugs)
-            Add(PipelinePriority.Default, plug);
+            _parts.Add(new PipelinePart<TMessage>(PipelinePriority.Reserved, true, plug));
     }
 
     public void Add(int priority, IPipelinePlug<TMessage> plug) =>
-        _parts.Add(new PipelinePart<TMessage>(priority, plug));
+        _parts.Add(new PipelinePart<TMessage>(priority, false, plug));
 
     public void Add(IPipelinePlug<TMessage> plug) =>
         Add(PipelinePriority.Normal, plug);
@@ -31,7 +31,7 @@ public class Pipeline<TMessage> : IPipeline<TMessage>
 
         foreach (var part in _parts)
         {
-            if (ctx.IsRequestedDefaultAction && part.Priority != PipelinePriority.Default)
+            if (ctx.IsRequestedDefaultAction && !part.IsDefaultAction) 
                 continue;
             await part.Plug.Handle(ctx, message);
             if (ctx.IsRequestedCancellation || ctx.IsRequestedDefaultAction) 
