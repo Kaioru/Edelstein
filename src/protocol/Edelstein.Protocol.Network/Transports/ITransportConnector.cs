@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Network.Transports;
 
-public interface ITransportConnector : ITransport
+public interface ITransportConnector
 {
-    Task Connect(string host, int port);
+    Task<ITransportContext> Connect(string host, int port);
 }

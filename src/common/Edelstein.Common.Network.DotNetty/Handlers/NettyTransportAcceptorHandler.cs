@@ -1,16 +1,24 @@
 ﻿using DotNetty.Transport.Channels;
-using Edelstein.Common.Util.Buffers.Packets;
+using Edelstein.Common.Utilities.Packets;
+using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
-using Edelstein.Protocol.Util.Buffers.Packets;
+using Edelstein.Protocol.Utilities.Packets;
+using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Common.Network.DotNetty.Handlers;
 
 public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
 {
-    private readonly ITransportAcceptor _acceptor;
-
-    public NettyTransportAcceptorHandler(ITransportAcceptor acceptor) =>
-        _acceptor = acceptor ?? throw new ArgumentNullException(nameof(acceptor));
+    private readonly TransportVersion _version;
+    private readonly IAdapterInitializer _initializer;
+    private readonly IRepository<string, ISocket> _sockets;
+    
+    public NettyTransportAcceptorHandler(TransportVersion version, IAdapterInitializer initializer, IRepository<string, ISocket> sockets)
+    {
+        _version = version;
+        _initializer = initializer;
+        _sockets = sockets;
+    }
 
     public override void ChannelActive(IChannelHandlerContext context)
     {
@@ -20,21 +28,29 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
             (uint)random.Next(),
             (uint)random.Next()
         );
-        var newAdapter = _acceptor.Initializer.Initialize(newSocket);
-        var handshake = new PacketWriter();
+        var newAdapter = _initializer.Initialize(newSocket);
+        using var handshake = new PacketWriter();
 
-        handshake.WriteShort(_acceptor.Version);
-        handshake.WriteString(_acceptor.Patch);
+        handshake.WriteShort(_version.Major);
+        handshake.WriteString(_version.Patch);
         handshake.WriteInt((int)newSocket.SeqRecv);
         handshake.WriteInt((int)newSocket.SeqSend);
-        handshake.WriteByte(_acceptor.Locale);
+        handshake.WriteByte(_version.Locale);
 
-        _ = newSocket.Dispatch(handshake);
+        _ = newSocket.Dispatch(
+            new PacketWriter()  
+                .WriteShort(_version.Major)
+                .WriteString(_version.Patch)
+                .WriteInt((int)newSocket.SeqRecv)
+                .WriteInt((int)newSocket.SeqSend)
+                .WriteByte(_version.Locale)
+                .Build()
+        );
 
         context.Channel.GetAttribute(NettyAttributes.SocketKey).Set(newSocket);
         context.Channel.GetAttribute(NettyAttributes.AdapterKey).Set(newAdapter);
 
-        _acceptor.Sockets.Add(newSocket.ID, newSocket);
+        _ = _sockets.Insert(newSocket);
     }
 
     public override void ChannelInactive(IChannelHandlerContext context)
@@ -45,14 +61,15 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
         base.ChannelInactive(context);
 
         if (adapter == null) return;
-        _acceptor.Sockets.Remove(adapter.Socket.ID);
+        
+        _ = _sockets.Delete(adapter.Socket);
     }
 
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
 
-        adapter?.OnPacket((IPacketReader)message);
+        adapter?.OnPacket((IPacket)message);
     }
 
     public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)

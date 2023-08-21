@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <Import Project="..\Common.targets" />
-
-  <ItemGroup>
-    <PackageReference Include="Ceras" Version="4.1.7" />
-  </ItemGroup>
-
-</Project>

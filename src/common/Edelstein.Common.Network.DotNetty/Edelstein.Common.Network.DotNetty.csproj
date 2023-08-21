@@ -5,13 +5,19 @@
   <ItemGroup>
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Crypto\Edelstein.Common.Crypto.csproj" />
-    <ProjectReference Include="..\Edelstein.Common.Util.Buffers\Edelstein.Common.Util.Buffers.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Utilities\Edelstein.Common.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetty.Codecs" Version="0.7.2" />
-    <PackageReference Include="DotNetty.Common" Version="0.7.2" />
-    <PackageReference Include="DotNetty.Handlers" Version="0.7.2" />
+    <PackageReference Include="DotNetty.Buffers" Version="0.7.5" />
+    <PackageReference Include="DotNetty.Codecs" Version="0.7.5" />
+    <PackageReference Include="DotNetty.Common" Version="0.7.5" />
+    <PackageReference Include="DotNetty.Handlers" Version="0.7.5" />
+    <PackageReference Include="DotNetty.Transport" Version="0.7.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Codecs" />
   </ItemGroup>
 
 </Project>
