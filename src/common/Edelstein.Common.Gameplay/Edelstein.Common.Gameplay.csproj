@@ -3,6 +3,7 @@
   <Import Project="..\Common.targets" />
 
   <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Data\Edelstein.Protocol.Data.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Migration\Edelstein.Protocol.Services.Migration.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
@@ -11,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="Models" />
+    <Folder Include="Models\Inventories\Templates" />
     <Folder Include="Packets" />
   </ItemGroup>
 

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Pipelines" />
+    <Folder Include="Templates" />
     <Folder Include="Tickers" />
   </ItemGroup>
 

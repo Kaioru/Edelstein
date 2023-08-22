@@ -2,6 +2,9 @@
 
 public record LoginContext(
     ILoginStageOptions Options,
-    LoginContextPipelines Pipelines,
-    LoginContextServices Services
+    LoginContextManagers Managers,
+    LoginContextServices Services,
+    LoginContextRepositories Repositories,
+    LoginContextTemplates Templates,
+    LoginContextPipelines Pipelines
 );
