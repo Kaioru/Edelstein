@@ -3,6 +3,7 @@ version: "3.8"
 services:
   db:
     image: postgres:14.1-alpine
+    restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
@@ -17,6 +18,7 @@ services:
     build:
       context: .
       dockerfile: src/app/Edelstein.Application.Server/Dockerfile
+    restart: always
     depends_on:
       db:
         condition: service_healthy
