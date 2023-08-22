@@ -5,6 +5,7 @@ using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Utilities.Pipelines;
+using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Network;
@@ -82,9 +83,14 @@ public class ProgramHost : IHostedService
                         b.RegisterType<LoginContextServices>().SingleInstance();
 
                         b.RegisterType<LoginStageUserInitializer>().As<IAdapterInitializer>().SingleInstance();
-                        b.RegisterInstance(new LoginStage(stage.ID)).As<ILoginStage>().SingleInstance();
+                        b.RegisterInstance(new LoginStage(stage.ID))
+                            .As<IStage<ILoginStageUser>>()
+                            .As<ILoginStage>()
+                            .SingleInstance();
 
-                        b.RegisterType<StartServerUpdateBootstrap<ProgramConfigStageLogin>>().As<IBootstrap>().SingleInstance();
+                        b.RegisterType<StartServerUpdateBootstrap<ProgramConfigStageLogin>>()
+                            .As<IBootstrap>()
+                            .SingleInstance();
                         break;
                 }
             });
