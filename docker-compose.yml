@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:14.1-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=edelstein
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: .
+      dockerfile: src/app/Edelstein.Application.Server/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+      - ./scripts:/app/scripts
+    ports:
+      - 8484:8484
+      - "7575-7577:7575-7577"
+    environment:
+      - HOST__LOGINSTAGES__0__HOST=${HOST:-127.0.0.1}
+      - HOST__GAMESTAGES__0__HOST=${HOST:-127.0.0.1}
+      - HOST__MIGRATEDATABASEONINIT=true
+      - CONNECTIONSTRINGS__AUTH=host=db;username=postgres;password=password;database=edelstein
+      - CONNECTIONSTRINGS__SERVER=host=db;username=postgres;password=password;database=edelstein
+      - CONNECTIONSTRINGS__GAMEPLAY=host=db;username=postgres;password=password;database=edelstein

@@ -30,11 +30,4 @@
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Login\Edelstein.Protocol.Gameplay.Login.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="appsettings.Production.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

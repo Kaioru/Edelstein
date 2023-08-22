@@ -2,10 +2,13 @@
 using Autofac;
 using Edelstein.Application.Server.Bootstraps;
 using Edelstein.Application.Server.Configs;
+using Edelstein.Common.Database;
 using Edelstein.Common.Gameplay;
 using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Network.DotNetty.Transports;
+using Edelstein.Common.Services.Auth;
+using Edelstein.Common.Services.Server;
 using Edelstein.Common.Utilities.Pipelines;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay;
@@ -15,6 +18,8 @@ using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Tickers;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -118,6 +123,13 @@ public class ProgramHost : IHostedService
                 _bootstraps.Add(bootstrap);
         }
         
+        _bootstraps.Add(new InitDatabaseBootstrap(
+            programScope.Resolve<ILogger<InitDatabaseBootstrap>>(),
+            programScope.Resolve<IDbContextFactory<GameplayDbContext>>(),
+            programScope.Resolve<IDbContextFactory<AuthDbContext>>(),
+            programScope.Resolve<IDbContextFactory<ServerDbContext>>(),
+            _config
+        ));
         _bootstraps.Add(new InitTickerBootstrap(programScope.Resolve<ITickerManager>()));
         _bootstraps.Add(new LoadTemplateBootstrap(
             programScope.Resolve<ILogger<LoadTemplateBootstrap>>(), 

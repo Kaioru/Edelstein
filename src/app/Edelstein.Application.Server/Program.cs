@@ -30,6 +30,7 @@ await Host.CreateDefaultBuilder(args)
     {
         builder.AddJsonFile("appsettings.json", true);
         builder.AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true);
+        builder.AddEnvironmentVariables();
         builder.AddCommandLine(args);
     })
     .UseSerilog((ctx, logger) => logger.ReadFrom.Configuration(ctx.Configuration))
