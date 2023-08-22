@@ -1,6 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Models.Inventories;
-using Edelstein.Protocol.Gameplay.Models.Characters;
-using Edelstein.Protocol.Gameplay.Models.Inventories;
+﻿using Edelstein.Protocol.Gameplay.Models.Characters;
 
 namespace Edelstein.Common.Gameplay.Models.Characters;
 
@@ -43,12 +41,5 @@ public record Character : ICharacter
 
     public short SubJob { get; set; }
 
-    public IDictionary<ItemInventoryType, IItemInventory> Inventories { get; set; } = new Dictionary<ItemInventoryType, IItemInventory>
-    {
-        [ItemInventoryType.Equip] = new ItemInventory(),
-        [ItemInventoryType.Consume] = new ItemInventory(),
-        [ItemInventoryType.Install] = new ItemInventory(),
-        [ItemInventoryType.Etc] = new ItemInventory(),
-        [ItemInventoryType.Cash] = new ItemInventory()
-    };
+    public ICharacterInventories Inventories { get; set; } = new CharacterInventories();
 }

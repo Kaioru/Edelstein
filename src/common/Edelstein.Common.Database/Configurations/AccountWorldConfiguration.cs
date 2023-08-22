@@ -1,5 +1,6 @@
 ﻿using Edelstein.Common.Database.Converters;
 using Edelstein.Common.Database.Entities;
+using Edelstein.Common.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,11 +21,11 @@ public class AccountWorldConfiguration : IEntityTypeConfiguration<AccountWorldEn
 
         builder
             .Property(e => e.Locker)
-            .HasColumnType("jsonb")
+            .HasColumnType("json")
             .HasConversion<JsonConverter<IItemLocker>>();
         builder
             .Property(e => e.Trunk)
-            .HasColumnType("jsonb")
+            .HasColumnType("json")
             .HasConversion<JsonConverter<IItemTrunk>>();
     }
 }

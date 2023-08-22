@@ -76,7 +76,7 @@ public class UserOnPacketCheckPasswordPlug : IPipelinePlug<UserOnPacketCheckPass
                     result = LoginResult.AlreadyConnected;
             }
 
-            var packet = new PacketWriter(PacketSendOperations.CheckPasswordResult);
+            using var packet = new PacketWriter(PacketSendOperations.CheckPasswordResult);
 
             packet.WriteByte((byte)result);
             packet.WriteByte(0);
@@ -114,7 +114,7 @@ public class UserOnPacketCheckPasswordPlug : IPipelinePlug<UserOnPacketCheckPass
         catch (Exception e)
         {
             Console.WriteLine(e);
-            var packet = new PacketWriter(PacketSendOperations.CheckPasswordResult);
+            using var packet = new PacketWriter(PacketSendOperations.CheckPasswordResult);
 
             packet.WriteByte((byte)LoginResult.DBFail);
             packet.WriteByte(0);

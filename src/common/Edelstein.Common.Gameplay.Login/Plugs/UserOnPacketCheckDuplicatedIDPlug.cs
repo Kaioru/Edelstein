@@ -16,7 +16,7 @@ public class UserOnPacketCheckDuplicatedIDPlug : IPipelinePlug<UserOnPacketCheck
     public async Task Handle(IPipelineContext ctx, UserOnPacketCheckDuplicatedID message)
     {
         var result = await _characterRepository.CheckExistsByName(message.Name);
-        var packet = new PacketWriter(PacketSendOperations.CheckDuplicatedIDResult);
+        using var packet = new PacketWriter(PacketSendOperations.CheckDuplicatedIDResult);
 
         packet.WriteString(message.Name);
         packet.WriteBool(result);

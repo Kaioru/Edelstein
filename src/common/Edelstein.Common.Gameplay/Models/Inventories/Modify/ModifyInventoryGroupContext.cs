@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Models.Inventories;
+﻿using Edelstein.Protocol.Gameplay.Models.Characters;
+using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
@@ -17,8 +18,23 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
         _contexts.GetValueOrDefault(type);
 
     public ModifyInventoryGroupContext(
-        IDictionary<ItemInventoryType,
-        IItemInventory> inventories,
+        ICharacterInventories inventories,
+        ITemplateManager<IItemTemplate> manager
+    ) : this(
+        new Dictionary<ItemInventoryType, IItemInventory>()
+        {
+            { ItemInventoryType.Equip, inventories.Equip },
+            { ItemInventoryType.Consume, inventories.Consume },
+            { ItemInventoryType.Install, inventories.Install },
+            { ItemInventoryType.Etc, inventories.Etc },
+            { ItemInventoryType.Cash, inventories.Cash }
+        }, 
+        manager)
+    {
+    }
+
+    private ModifyInventoryGroupContext(
+        IDictionary<ItemInventoryType, IItemInventory> inventories,
         ITemplateManager<IItemTemplate> manager
     ) =>
         _contexts = inventories.ToDictionary(

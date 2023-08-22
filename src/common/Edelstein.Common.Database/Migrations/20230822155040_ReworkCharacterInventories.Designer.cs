@@ -3,6 +3,7 @@ using System;
 using Edelstein.Common.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Edelstein.Common.Database.Migrations
 {
     [DbContext(typeof(GameplayDbContext))]
-    partial class GameplayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230822155040_ReworkCharacterInventories")]
+    partial class ReworkCharacterInventories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,11 +76,11 @@ namespace Edelstein.Common.Database.Migrations
 
                     b.Property<string>("Locker")
                         .IsRequired()
-                        .HasColumnType("json");
+                        .HasColumnType("jsonb");
 
                     b.Property<string>("Trunk")
                         .IsRequired()
-                        .HasColumnType("json");
+                        .HasColumnType("jsonb");
 
                     b.Property<int>("WorldID")
                         .HasColumnType("integer");
@@ -132,7 +135,7 @@ namespace Edelstein.Common.Database.Migrations
 
                     b.Property<string>("Inventories")
                         .IsRequired()
-                        .HasColumnType("json");
+                        .HasColumnType("jsonb");
 
                     b.Property<short>("Job")
                         .HasColumnType("smallint");

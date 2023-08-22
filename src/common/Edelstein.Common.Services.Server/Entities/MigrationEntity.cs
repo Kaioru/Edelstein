@@ -17,9 +17,9 @@ public record MigrationEntity : IMigration
 
     public long Key { get; set; }
     
-    public IAccount Account { get; }
-    public IAccountWorld AccountWorld { get; }
-    public ICharacter Character { get; }
+    public IAccount Account { get; set; }
+    public IAccountWorld AccountWorld { get; set; }
+    public ICharacter Character { get; set; }
 
     public DateTime DateUpdated { get; set; }
     public DateTime DateExpire { get; set; }

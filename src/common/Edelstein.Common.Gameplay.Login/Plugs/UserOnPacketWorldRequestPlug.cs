@@ -41,7 +41,7 @@ public class UserOnPacketWorldRequestPlug : IPipelinePlug<UserOnPacketWorldReque
                 continue;
             }
 
-            var packet = new PacketWriter(PacketSendOperations.WorldInformation);
+            using var packet = new PacketWriter(PacketSendOperations.WorldInformation);
 
             packet.WriteByte(worldID);
             packet.WriteString(template.Name);

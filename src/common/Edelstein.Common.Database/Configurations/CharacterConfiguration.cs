@@ -1,6 +1,6 @@
 ﻿using Edelstein.Common.Database.Converters;
 using Edelstein.Common.Database.Entities;
-using Edelstein.Protocol.Gameplay.Models.Inventories;
+using Edelstein.Protocol.Gameplay.Models.Characters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,7 +20,7 @@ public class CharacterConfiguration : IEntityTypeConfiguration<CharacterEntity>
 
         builder
             .Property(e => e.Inventories)
-            .HasColumnType("jsonb")
-            .HasConversion<JsonConverter<IDictionary<ItemInventoryType, IItemInventory>>>();
+            .HasColumnType("json")
+            .HasConversion<JsonConverter<ICharacterInventories>>();
     }
 }

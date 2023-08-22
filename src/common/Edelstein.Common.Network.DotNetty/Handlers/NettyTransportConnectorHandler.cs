@@ -31,7 +31,7 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
         }
         else
         {
-            var reader = new PacketReader(packet);
+            using var reader = new PacketReader(packet);
             var version = reader.ReadShort();
             var patch = reader.ReadString();
             var seqSend = reader.ReadUInt();

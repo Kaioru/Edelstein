@@ -52,10 +52,11 @@ public class UserOnPacketSelectWorldPlug : IPipelinePlug<UserOnPacketSelectWorld
                 AccountID = message.User.Account.ID,
                 WorldID = gameStage.Server!.WorldID
             });
+            
             var characters = (await _characterRepository
                     .RetrieveAllByAccountWorld(accountWorld.ID))
                 .ToImmutableList();
-            var packet = new PacketWriter(PacketSendOperations.SelectWorldResult);
+            using var packet = new PacketWriter(PacketSendOperations.SelectWorldResult);
 
             packet.WriteByte((byte)result);
 
@@ -86,7 +87,7 @@ public class UserOnPacketSelectWorldPlug : IPipelinePlug<UserOnPacketSelectWorld
         }
         catch (Exception)
         {
-            var packet = new PacketWriter(PacketSendOperations.SelectWorldResult);
+            using var packet = new PacketWriter(PacketSendOperations.SelectWorldResult);
 
             packet.WriteByte((byte)LoginResult.DBFail);
 

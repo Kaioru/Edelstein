@@ -41,5 +41,5 @@ public interface ICharacter : IIdentifiable<int>
 
     short SubJob { get; set; }
 
-    IDictionary<ItemInventoryType, IItemInventory> Inventories { get; }
+    ICharacterInventories Inventories { get; set; }
 }
