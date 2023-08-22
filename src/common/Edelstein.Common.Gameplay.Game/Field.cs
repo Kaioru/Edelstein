@@ -123,7 +123,8 @@ public class Field : AbstractFieldObjectPool, IField
                 Template.Portals.FindClosest(obj.Position).FirstOrDefault();
 
             user.Character.FieldID = ID;
-            if (portal != null) await user.Move(portal.Position);
+            if (portal != null)
+                await user.Move(portal.Position, true);
 
             await user.Dispatch(user.GetSetFieldPacket());
 
