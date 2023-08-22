@@ -5,16 +5,19 @@ using Edelstein.Common.Database;
 using Edelstein.Common.Database.Repositories;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Server;
+using Edelstein.Common.Utilities.Tickers;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Session;
+using Edelstein.Protocol.Utilities.Tickers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 await Host.CreateDefaultBuilder(args)
@@ -45,6 +48,13 @@ await Host.CreateDefaultBuilder(args)
         services.AddSingleton<IServerService, ServerService>();
         services.AddSingleton<ISessionService, SessionService>();
         services.AddSingleton<IMigrationService, MigrationService>();
+    })
+    .ConfigureServices((ctx, services) =>
+    {
+        services.AddSingleton<ITickerManager, TickerManager>(p => new TickerManager(
+            p.GetRequiredService<ILogger<TickerManager>>(),
+            p.GetRequiredService<ProgramConfig>().TicksPerSecond
+        ));
     })
     .ConfigureServices((ctx, services) => { services.AddHostedService<ProgramHost>(); })
     .RunConsoleAsync();

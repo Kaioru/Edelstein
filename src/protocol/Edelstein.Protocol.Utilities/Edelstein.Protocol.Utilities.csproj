@@ -4,6 +4,7 @@
 
   <ItemGroup>
     <Folder Include="Pipelines" />
+    <Folder Include="Tickers" />
   </ItemGroup>
 
 </Project>

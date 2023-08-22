@@ -33,7 +33,7 @@ public class NettyTransportAcceptorState : ITransportContext
     {
         await Task.WhenAll((await Sockets.RetrieveAll()).Select(s => s.Close()));
         await _channel.CloseAsync();
-        await _group0.ShutdownGracefullyAsync();
-        await _group1.ShutdownGracefullyAsync();
+        await _group0.ShutdownGracefullyAsync(TimeSpan.Zero, TimeSpan.FromSeconds(5));
+        await _group1.ShutdownGracefullyAsync(TimeSpan.Zero, TimeSpan.FromSeconds(5));
     }
 }
