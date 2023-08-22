@@ -48,6 +48,8 @@ public class ProgramHost : IHostedService
             
             if (_config.LoginStages.Count > 0)
                 assemblies.Add(Assembly.GetAssembly(typeof(LoginStage))!);
+            if (_config.GameStages.Count > 0)
+                assemblies.Add(Assembly.GetAssembly(typeof(GameStage))!);
             
             b
                 .RegisterAssemblyTypes(assemblies.ToArray())
@@ -130,6 +132,8 @@ public class ProgramHost : IHostedService
                             .Where(t => t.IsClass)
                             .AsClosedTypesOf(typeof(IPipelinePlug<>))
                             .SingleInstance();
+
+                        b.RegisterType<FieldManager>().As<IFieldManager>().SingleInstance();
                         
                         b
                             .RegisterInstance(options)
@@ -144,7 +148,7 @@ public class ProgramHost : IHostedService
                         b.RegisterType<GameContextPipelines>().SingleInstance();
 
                         b.RegisterType<GameStageUserInitializer>().As<IAdapterInitializer>().SingleInstance();
-                        b.RegisterInstance(new GameStage(stage.ID))
+                        b.Register(c => new GameStage(stage.ID, c.Resolve<IFieldManager>()))
                             .As<IStage<IGameStageUser>>()
                             .As<IGameStage>()
                             .SingleInstance();

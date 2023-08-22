@@ -1,6 +1,7 @@
 ﻿using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contexts;
+using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Utilities.Packets;
 
@@ -9,6 +10,9 @@ namespace Edelstein.Common.Gameplay.Game;
 public class GameStageUser : AbstractStageUser<IGameStageUser>, IGameStageUser
 {
     public GameContext Context { get; }
+
+    public IField? Field => FieldUser?.Field;
+    public IFieldUser? FieldUser { get; set; }
 
     public GameStageUser(
         ISocket socket,

@@ -1,4 +1,6 @@
-﻿using Edelstein.Protocol.Utilities.Packets;
+﻿using Edelstein.Common.Utilities.Spatial;
+using Edelstein.Protocol.Utilities.Packets;
+using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Common.Utilities.Packets;
 
@@ -12,6 +14,14 @@ public static class PacketReaderExtensions
         readable.ReadFrom(reader);
         return readable;
     }
+    
+    public static IPoint2D ReadPoint2D(
+        this IPacketReader reader
+    ) =>
+        new Point2D(
+            reader.ReadShort(),
+            reader.ReadShort()
+        );
 
     public static DateTime ReadDateTime(
         this IPacketReader reader

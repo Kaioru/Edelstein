@@ -11,4 +11,8 @@
     <ProjectReference Include="..\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Movements" />
+  </ItemGroup>
+
 </Project>

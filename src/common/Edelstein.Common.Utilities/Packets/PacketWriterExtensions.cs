@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Utilities.Packets;
+using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Common.Utilities.Packets;
 
@@ -10,6 +11,16 @@ public static class PacketWriterExtensions
     )
     {
         writable.WriteTo(writer);
+        return writer;
+    }
+    
+    public static IPacketWriter WritePoint2D(
+        this IPacketWriter writer,
+        IPoint2D point
+    )
+    {
+        writer.WriteShort((short)point.X);
+        writer.WriteShort((short)point.Y);
         return writer;
     }
 
