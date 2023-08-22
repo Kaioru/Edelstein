@@ -1,7 +1,7 @@
-﻿using Edelstein.Common.Services.Server.Entities;
+﻿using AutoMapper;
+using Edelstein.Common.Services.Server.Entities;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Migration.Contracts;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Services.Server;
@@ -10,9 +10,13 @@ public class MigrationService : IMigrationService
 {
     private static readonly TimeSpan Expiry = TimeSpan.FromMinutes(1);
     private readonly IDbContextFactory<ServerDbContext> _dbFactory;
+    private readonly IMapper _mapper;
 
-    public MigrationService(IDbContextFactory<ServerDbContext> dbFactory)
-        => _dbFactory = dbFactory;
+    public MigrationService(IDbContextFactory<ServerDbContext> dbFactory, IMapper mapper)
+    {
+        _dbFactory = dbFactory;
+        _mapper = mapper;
+    }
 
     public async Task<MigrationResponse> Start(MigrationStartRequest request)
     {
@@ -29,12 +33,12 @@ public class MigrationService : IMigrationService
                 else return new MigrationResponse(MigrationResult.FailedAlreadyStarted);
             }
 
-            var model = request.Migration.Adapt<MigrationEntity>();
+            var entity = _mapper.Map<MigrationEntity>(request.Migration);
 
-            model.DateUpdated = now;
-            model.DateExpire = now.Add(Expiry);
+            entity.DateUpdated = now;
+            entity.DateExpire = now.Add(Expiry);
 
-            db.Migrations.Add(model);
+            db.Migrations.Add(entity);
             await db.SaveChangesAsync();
             return new MigrationResponse(MigrationResult.Success);
         }
@@ -64,7 +68,7 @@ public class MigrationService : IMigrationService
             db.Migrations.Remove(existing);
             await db.SaveChangesAsync();
 
-            var migration = existing.Adapt<Migration>();
+            var migration = _mapper.Map<Migration>(existing);
 
             return new MigrationClaimResponse(MigrationResult.Success, migration);
         }

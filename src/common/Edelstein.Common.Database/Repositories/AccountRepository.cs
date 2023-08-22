@@ -1,7 +1,7 @@
-﻿using Edelstein.Common.Database.Entities;
+﻿using AutoMapper;
+using Edelstein.Common.Database.Entities;
 using Edelstein.Common.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Database.Repositories;
@@ -9,33 +9,38 @@ namespace Edelstein.Common.Database.Repositories;
 public class AccountRepository : IAccountRepository
 {
     private readonly IDbContextFactory<GameplayDbContext> _dbFactory;
+    private readonly IMapper _mapper;
 
-    public AccountRepository(IDbContextFactory<GameplayDbContext> dbFactory) 
-        => _dbFactory = dbFactory;
+    public AccountRepository(IDbContextFactory<GameplayDbContext> dbFactory, IMapper mapper)
+    {
+        _dbFactory = dbFactory;
+        _mapper = mapper;
+    }
 
 
     public async Task<IAccount?> Retrieve(int key)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        return (await db.Accounts.FindAsync(key))?.Adapt<Account>();
+        var entity = await db.Accounts.FindAsync(key);
+        return entity != null ? _mapper.Map<Account>(entity) : null;
     }
 
     public async Task<IAccount> Insert(IAccount entry)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        var model = entry.Adapt<AccountEntity>();
-        db.Accounts.Add(model);
+        var entity = _mapper.Map<AccountEntity>(entry);
+        db.Accounts.Add(entity);
         await db.SaveChangesAsync();
-        return model.Adapt<Account>();
+        return _mapper.Map<Account>(entity);
     }
 
     public async Task<IAccount> Update(IAccount entry)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        var model = entry.Adapt<AccountEntity>();
-        db.Accounts.Update(model);
+        var entity = _mapper.Map<AccountEntity>(entry);
+        db.Accounts.Update(entity);
         await db.SaveChangesAsync();
-        return model.Adapt<Account>();
+        return _mapper.Map<Account>(entity);
     }
 
     public async Task Delete(int key)
@@ -55,8 +60,8 @@ public class AccountRepository : IAccountRepository
     public async Task<IAccount?> RetrieveByUsername(string username)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        return (await db.Accounts
-            .FirstOrDefaultAsync(a => a.Username.Equals(username)))?
-            .Adapt<Account>();
+        var entity = await db.Accounts
+            .FirstOrDefaultAsync(a => a.Username.Equals(username));
+        return entity != null ?_mapper.Map<Account>(entity) : null;
     }
 }

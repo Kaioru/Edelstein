@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Protocol.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Data\Edelstein.Protocol.Data.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Services.Auth\Edelstein.Protocol.Services.Auth.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Services.Migration\Edelstein.Protocol.Services.Migration.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Services.Server\Edelstein.Protocol.Services.Server.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
+  </ItemGroup>
+
+</Project>

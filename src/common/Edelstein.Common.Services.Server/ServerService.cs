@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
+using AutoMapper;
 using Edelstein.Common.Services.Server.Entities;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Services.Server;
@@ -11,14 +11,19 @@ public class ServerService : IServerService
 {
     private static readonly TimeSpan Expiry = TimeSpan.FromMinutes(5);
     private readonly IDbContextFactory<ServerDbContext> _dbFactory;
+    private readonly IMapper _mapper;
 
-    public ServerService(IDbContextFactory<ServerDbContext> dbFactory) => _dbFactory = dbFactory;
+    public ServerService(IDbContextFactory<ServerDbContext> dbFactory, IMapper mapper)
+    {
+        _dbFactory = dbFactory;
+        _mapper = mapper;
+    }
 
     public Task<ServerResponse> RegisterLogin(ServerRegisterRequest<IServerLogin> request) =>
-        Register(request.Server.Adapt<ServerLoginEntity>());
+        Register(_mapper.Map<ServerLoginEntity>(request.Server));
 
     public Task<ServerResponse> RegisterGame(ServerRegisterRequest<IServerGame> request) =>
-        Register(request.Server.Adapt<ServerGameEntity>());
+        Register(_mapper.Map<ServerGameEntity>(request.Server));
 
     public async Task<ServerResponse> Ping(ServerPingRequest request)
     {
@@ -76,7 +81,7 @@ public class ServerService : IServerService
             if (existing == null || existing.DateExpire < now)
                 return new ServerGetOneResponse<IServer>(ServerResult.FailedNotFound);
 
-            return new ServerGetOneResponse<IServer>(ServerResult.Success, existing.Adapt<Protocol.Services.Server.Contracts.Server>());
+            return new ServerGetOneResponse<IServer>(ServerResult.Success, _mapper.Map<Protocol.Services.Server.Contracts.Server>(existing));
         }
         catch (Exception)
         {
@@ -97,7 +102,7 @@ public class ServerService : IServerService
             if (existing == null || existing.DateExpire < now)
                 return new ServerGetOneResponse<IServerGame>(ServerResult.FailedNotFound);
 
-            return new ServerGetOneResponse<IServerGame>(ServerResult.Success, existing.Adapt<ServerGame>());
+            return new ServerGetOneResponse<IServerGame>(ServerResult.Success, _mapper.Map<ServerGame>(existing));
         }
         catch (Exception)
         {
@@ -117,7 +122,7 @@ public class ServerService : IServerService
 
             return new ServerGetAllResponse<IServerGame>(ServerResult.Success, existing
                 .Where(s => s.DateExpire > now)
-                .Select(s => s.Adapt<ServerGame>())
+                .Select(s => _mapper.Map<ServerGame>(s))
                 .ToImmutableList());
         }
         catch (Exception)
@@ -136,7 +141,7 @@ public class ServerService : IServerService
 
             return new ServerGetAllResponse<IServer>(ServerResult.Success, existing
                 .Where(s => s.DateExpire > now)
-                .Select(s => s.Adapt<Protocol.Services.Server.Contracts.Server>())
+                .Select(s => _mapper.Map<Protocol.Services.Server.Contracts.Server>(s))
                 .ToImmutableList());
         }
         catch (Exception)
@@ -145,13 +150,13 @@ public class ServerService : IServerService
         }
     }
 
-    private async Task<ServerResponse> Register(ServerEntity model)
+    private async Task<ServerResponse> Register(ServerEntity entity)
     {
         try
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
             var now = DateTime.UtcNow;
-            var existing = await db.Servers.FindAsync(model.ID);
+            var existing = await db.Servers.FindAsync(entity.ID);
 
             if (existing != null)
             {
@@ -159,10 +164,10 @@ public class ServerService : IServerService
                 else return new ServerResponse(ServerResult.FailedAlreadyRegistered);
             }
 
-            model.DateUpdated = now;
-            model.DateExpire = now.Add(Expiry);
+            entity.DateUpdated = now;
+            entity.DateExpire = now.Add(Expiry);
 
-            switch (model)
+            switch (entity)
             {
                 case ServerLoginEntity login:
                     await db.LoginServers.AddAsync(login);
@@ -174,7 +179,7 @@ public class ServerService : IServerService
                     await db.GameServers.AddAsync(game);
                     break;
                 default:
-                    await db.Servers.AddAsync(model);
+                    await db.Servers.AddAsync(entity);
                     break;
             }
 

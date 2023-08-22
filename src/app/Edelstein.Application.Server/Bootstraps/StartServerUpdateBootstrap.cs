@@ -1,4 +1,5 @@
 ﻿using Edelstein.Application.Server.Configs;
+using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
@@ -56,6 +57,8 @@ public class StartServerUpdateBootstrap<TConfig> : IBootstrap, ITickable
                 {
                     ILoginStageOptions login => await _service.RegisterLogin(new ServerRegisterRequest<IServerLogin>(
                         new ServerLogin(_config.ID, _config.Host, _config.Port))),
+                    IGameStageOptions game => await _service.RegisterGame(new ServerRegisterRequest<IServerGame>(
+                        new ServerGame(_config.ID, _config.Host, _config.Port, game.WorldID, game.ChannelID, game.IsAdultChannel))),
                     _ => throw new ArgumentOutOfRangeException()
                 };
 

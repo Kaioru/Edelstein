@@ -4,6 +4,7 @@ using Edelstein.Application.Server.Bootstraps;
 using Edelstein.Application.Server.Configs;
 using Edelstein.Common.Database;
 using Edelstein.Common.Gameplay;
+using Edelstein.Common.Gameplay.Game;
 using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Network.DotNetty.Transports;
@@ -12,6 +13,8 @@ using Edelstein.Common.Services.Server;
 using Edelstein.Common.Utilities.Pipelines;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay;
+using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Network;
@@ -19,7 +22,6 @@ using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Tickers;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -56,22 +58,12 @@ public class ProgramHost : IHostedService
         var stages = new List<ProgramConfigStage>();
         
         stages.AddRange(_config.LoginStages);
+        stages.AddRange(_config.GameStages);
         
         foreach (var stage in stages)
         {
             await using var stageScope = programScope.BeginLifetimeScope(b =>
             {
-                b
-                    .RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
-                    .Where(t => t.IsClass)
-                    .AsClosedTypesOf(typeof(IPacketHandler<>))
-                    .SingleInstance();
-                b
-                    .RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
-                    .Where(t => t.IsClass)
-                    .AsClosedTypesOf(typeof(IPipelinePlug<>))
-                    .SingleInstance();
-                
                 b.RegisterGeneric(typeof(PacketHandlerManager<>)).As(typeof(IPacketHandlerManager<>)).SingleInstance();
                 b.RegisterGeneric(typeof(Pipeline<>)).As(typeof(IPipeline<>)).SingleInstance();
                 
@@ -95,6 +87,17 @@ public class ProgramHost : IHostedService
                 {
                     case ILoginStageOptions options:
                         b
+                            .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(LoginStage))!)
+                            .Where(t => t.IsClass)
+                            .AsClosedTypesOf(typeof(IPacketHandler<>))
+                            .SingleInstance();
+                        b
+                            .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(LoginStage))!)
+                            .Where(t => t.IsClass)
+                            .AsClosedTypesOf(typeof(IPipelinePlug<>))
+                            .SingleInstance();
+                        
+                        b
                             .RegisterInstance(options)
                             .As<ILoginStageOptions>()
                             .As<ProgramConfigStageLogin>()
@@ -113,6 +116,40 @@ public class ProgramHost : IHostedService
                             .SingleInstance();
 
                         b.RegisterType<StartServerUpdateBootstrap<ProgramConfigStageLogin>>()
+                            .As<IBootstrap>()
+                            .SingleInstance();
+                        break;
+                    case IGameStageOptions options:
+                        b
+                            .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(GameStage))!)
+                            .Where(t => t.IsClass)
+                            .AsClosedTypesOf(typeof(IPacketHandler<>))
+                            .SingleInstance();
+                        b
+                            .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(GameStage))!)
+                            .Where(t => t.IsClass)
+                            .AsClosedTypesOf(typeof(IPipelinePlug<>))
+                            .SingleInstance();
+                        
+                        b
+                            .RegisterInstance(options)
+                            .As<IGameStageOptions>()
+                            .As<ProgramConfigStageGame>()
+                            .SingleInstance();
+                        b.RegisterType<GameContext>().SingleInstance();
+                        b.RegisterType<GameContextManagers>().SingleInstance();
+                        b.RegisterType<GameContextServices>().SingleInstance();
+                        b.RegisterType<GameContextRepositories>().SingleInstance();
+                        b.RegisterType<GameContextTemplates>().SingleInstance();
+                        b.RegisterType<GameContextPipelines>().SingleInstance();
+
+                        b.RegisterType<GameStageUserInitializer>().As<IAdapterInitializer>().SingleInstance();
+                        b.RegisterInstance(new GameStage(stage.ID))
+                            .As<IStage<IGameStageUser>>()
+                            .As<IGameStage>()
+                            .SingleInstance();
+
+                        b.RegisterType<StartServerUpdateBootstrap<ProgramConfigStageGame>>()
                             .As<IBootstrap>()
                             .SingleInstance();
                         break;

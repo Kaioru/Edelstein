@@ -37,7 +37,8 @@ await Host.CreateDefaultBuilder(args)
     .ConfigureServices((ctx, services) =>
     {
         services.AddSingleton(ctx.Configuration.GetSection("Host").Get<ProgramConfig>()!);
-        
+
+        services.AddAutoMapper(typeof(AuthDbContext), typeof(ServerDbContext), typeof(GameplayDbContext));
         services.AddDbContextFactory<AuthDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(AuthDbContext.ConnectionStringKey)));
         services.AddDbContextFactory<ServerDbContext>(o =>

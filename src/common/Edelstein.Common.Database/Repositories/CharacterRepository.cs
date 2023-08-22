@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
+using AutoMapper;
 using Edelstein.Common.Database.Entities;
 using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Database.Repositories;
@@ -10,34 +10,37 @@ namespace Edelstein.Common.Database.Repositories;
 public class CharacterRepository : ICharacterRepository
 {
     private readonly IDbContextFactory<GameplayDbContext> _dbFactory;
+    private readonly IMapper _mapper;
     
-    public CharacterRepository(IDbContextFactory<GameplayDbContext> dbFactory)
+    public CharacterRepository(IDbContextFactory<GameplayDbContext> dbFactory, IMapper mapper)
     {
         _dbFactory = dbFactory;
+        _mapper = mapper;
     }
 
     public async Task<ICharacter?> Retrieve(int key)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        return (await db.Characters.FindAsync(key))?.Adapt<Character>();
+        var entity = await db.Characters.FindAsync(key);
+        return entity != null ? _mapper.Map<Character>(entity) : null;
     }
 
     public async Task<ICharacter> Insert(ICharacter entry)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        var model = entry.Adapt<CharacterEntity>();
-        db.Characters.Add(model);
+        var entity = _mapper.Map<CharacterEntity>(entry);
+        db.Characters.Add(entity);
         await db.SaveChangesAsync();
-        return model.Adapt<Character>();
+        return _mapper.Map<Character>(entity);
     }
 
     public async Task<ICharacter> Update(ICharacter entry)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        var model = entry.Adapt<CharacterEntity>();
-        db.Characters.Update(model);
+        var entity = _mapper.Map<CharacterEntity>(entry);
+        db.Characters.Update(entity);
         await db.SaveChangesAsync();
-        return model.Adapt<Character>();
+        return _mapper.Map<Character>(entity);
     }
 
     public async Task Delete(int key)
@@ -63,15 +66,15 @@ public class CharacterRepository : ICharacterRepository
     public async Task<ICharacter?> RetrieveByName(string name)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        var model = await db.Characters.FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
-        return model?.Adapt<Character>();
+        var entity = await db.Characters.FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
+        return entity != null ? _mapper.Map<Character>(entity) : null;
     }
 
     public async Task<ICharacter?> RetrieveByAccountWorldAndCharacter(int accountWorld, int character)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        var model = await db.Characters.FirstOrDefaultAsync(c => c.AccountWorldID == accountWorld && c.ID == character);
-        return model?.Adapt<Character>();
+        var entity = await db.Characters.FirstOrDefaultAsync(c => c.AccountWorldID == accountWorld && c.ID == character);
+        return entity != null ? _mapper.Map<Character>(entity) : null;
     }
 
     public async Task<IEnumerable<ICharacter>> RetrieveAllByAccountWorld(int accountWorld)
@@ -79,7 +82,7 @@ public class CharacterRepository : ICharacterRepository
         await using var db = await _dbFactory.CreateDbContextAsync();
         var results = await db.Characters.Where(c => c.AccountWorldID == accountWorld).ToListAsync();
         return results
-            .Select(m => m.Adapt<Character>())
+            .Select(m => _mapper.Map<Character>(m))
             .ToImmutableList();
     }
 }
