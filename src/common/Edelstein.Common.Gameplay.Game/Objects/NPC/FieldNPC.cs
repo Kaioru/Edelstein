@@ -35,7 +35,7 @@ public class FieldNPC : AbstractFieldControllable<IFieldNPCMovePath, IFieldNPCMo
 
     public override IPacket GetEnterFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.NpcEnterField);
+        using var packet = new PacketWriter(PacketSendOperations.NpcEnterField);
 
         packet.WriteInt(ObjectID!.Value);
         packet.Write(this);
@@ -45,7 +45,7 @@ public class FieldNPC : AbstractFieldControllable<IFieldNPCMovePath, IFieldNPCMo
 
     public override IPacket GetLeaveFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.NpcLeaveField);
+        using var packet = new PacketWriter(PacketSendOperations.NpcLeaveField);
 
         packet.WriteInt(ObjectID!.Value);
 
@@ -68,7 +68,7 @@ public class FieldNPC : AbstractFieldControllable<IFieldNPCMovePath, IFieldNPCMo
 
     protected override IPacket GetMovePacket(IFieldNPCMovePath ctx)
     {
-        var packet = new PacketWriter(PacketSendOperations.NpcMove);
+        using var packet = new PacketWriter(PacketSendOperations.NpcMove);
 
         packet.WriteInt(ObjectID!.Value);
         packet.Write(ctx);
@@ -78,7 +78,7 @@ public class FieldNPC : AbstractFieldControllable<IFieldNPCMovePath, IFieldNPCMo
 
     protected override IPacket GetControlPacket(IFieldController? controller = null)
     {
-        var packet = new PacketWriter(PacketSendOperations.NpcChangeController);
+        using var packet = new PacketWriter(PacketSendOperations.NpcChangeController);
 
         packet.WriteBool(controller != null);
         packet.WriteInt(ObjectID!.Value);

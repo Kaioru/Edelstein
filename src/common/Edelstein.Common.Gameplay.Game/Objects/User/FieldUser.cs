@@ -49,7 +49,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
     public IPacket GetSetFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.SetField);
+        using var packet = new PacketWriter(PacketSendOperations.SetField);
 
         packet.WriteShort(0); // ClientOpt
 
@@ -87,7 +87,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
     public override IPacket GetEnterFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.UserEnterField);
+        using var packet = new PacketWriter(PacketSendOperations.UserEnterField);
 
         packet.WriteInt(Character.ID);
 
@@ -160,7 +160,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public async Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
     {
         var context = new ModifyInventoryGroupContext(Character.Inventories, StageUser.Context.Templates.Item);
-        var packet = new PacketWriter(PacketSendOperations.InventoryOperation);
+        using var packet = new PacketWriter(PacketSendOperations.InventoryOperation);
 
         action?.Invoke(context);
 
@@ -175,7 +175,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
     protected override IPacket GetMovePacket(IFieldUserMovePath ctx)
     {
-        var packet = new PacketWriter(PacketSendOperations.UserMove);
+        using var packet = new PacketWriter(PacketSendOperations.UserMove);
 
         packet.WriteInt(Character.ID);
         packet.Write(ctx);

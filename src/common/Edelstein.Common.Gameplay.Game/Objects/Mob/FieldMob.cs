@@ -27,7 +27,7 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
 
     public override IPacket GetLeaveFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.MobLeaveField);
+        using var packet = new PacketWriter(PacketSendOperations.MobLeaveField);
 
         packet.WriteInt(ObjectID ?? 0);
         packet.WriteInt(1); // m_tLastUpdateAmbush?
@@ -38,7 +38,7 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
 
     private IPacket GetEnterFieldPacket(FieldMobAppearType appear, int? appearOption = null)
     {
-        var packet = new PacketWriter(PacketSendOperations.MobEnterField);
+        using var packet = new PacketWriter(PacketSendOperations.MobEnterField);
 
         packet.WriteInt(ObjectID ?? 0);
         WriteTo(packet, appear, appearOption);
@@ -71,7 +71,7 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
 
     protected override IPacket GetControlPacket(IFieldController? controller = null)
     {
-        var packet = new PacketWriter(PacketSendOperations.MobChangeController);
+        using var packet = new PacketWriter(PacketSendOperations.MobChangeController);
 
         packet.WriteBool(controller != null);
         packet.WriteInt(ObjectID ?? 0);
