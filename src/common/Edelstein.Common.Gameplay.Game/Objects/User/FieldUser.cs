@@ -1,9 +1,13 @@
-﻿using Edelstein.Common.Gameplay.Models.Characters;
+﻿using Edelstein.Common.Gameplay.Game.Conversations;
+using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Gameplay.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
@@ -16,6 +20,24 @@ namespace Edelstein.Common.Gameplay.Game.Objects.User;
 
 public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAction>, IFieldUser
 {
+    public override FieldObjectType Type => FieldObjectType.User;
+
+    public ISocket Socket => StageUser.Socket;
+
+    public IGameStageUser StageUser { get; }
+
+    public IAccount Account { get; }
+    public IAccountWorld AccountWorld { get; }
+    public ICharacter Character { get; }
+    
+    public IConversationContext? Conversation { get; private set; }
+    
+    public bool IsInstantiated { get; set; }
+    public bool IsConversing => Conversation != null;
+    
+    public ICollection<IFieldSplit> Observing { get; }
+    public ICollection<IFieldControllable> Controlled { get; }
+    
     public FieldUser(
         IGameStageUser user,
         IAccount account,
@@ -32,20 +54,6 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         Controlled = new List<IFieldControllable>();
     }
 
-    public override FieldObjectType Type => FieldObjectType.User;
-
-    public ISocket Socket => StageUser.Socket;
-
-    public IGameStageUser StageUser { get; }
-
-    public IAccount Account { get; }
-    public IAccountWorld AccountWorld { get; }
-    public ICharacter Character { get; }
-    
-    public bool IsInstantiated { get; set; }
-    
-    public ICollection<IFieldSplit> Observing { get; }
-    public ICollection<IFieldControllable> Controlled { get; }
 
     public IPacket GetSetFieldPacket()
     {
@@ -84,7 +92,6 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
         return packet.Build();
     }
-
     public override IPacket GetEnterFieldPacket()
     {
         using var packet = new PacketWriter(PacketSendOperations.UserEnterField);
@@ -156,6 +163,61 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public Task OnDisconnect() => StageUser.OnDisconnect();
     public Task Dispatch(IPacket packet) => StageUser.Dispatch(packet);
     public Task Disconnect() => StageUser.Disconnect();
+    
+    public Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt) =>
+        Prompt((s1, s2) => prompt.Invoke(s1));
+
+    public async Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt)
+    {
+        var result = default(T);
+        var conversation = new PromptConversation((self, target) => result = prompt.Invoke(self, target));
+
+        await Converse(conversation);
+
+        return result;
+    }
+
+    public async Task Converse(
+        IConversation conversation,
+        Func<IConversationContext, IConversationSpeaker>? getSpeaker1 = null,
+        Func<IConversationContext, IConversationSpeaker>? getSpeaker2 = null
+    )
+    {
+        if (IsConversing) return;
+
+        var ctx = new ConversationContext(this);
+        var speaker1 = getSpeaker1?.Invoke(ctx) ??
+                       new ConversationSpeaker(ctx, flags: ConversationSpeakerFlags.NPCReplacedByUser);
+        var speaker2 = getSpeaker2?.Invoke(ctx) ??
+                       new ConversationSpeaker(ctx, flags: ConversationSpeakerFlags.NPCReplacedByUser);
+
+        Conversation = ctx;
+
+        try
+        {
+            await Task.Run(
+                () => conversation.Start(ctx, speaker1, speaker2),
+                ctx.TokenSource.Token
+            );
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
+        finally
+        {
+            await EndConversation();
+            await ModifyInventory(exclRequest: true);
+        }
+    }
+
+    public Task EndConversation()
+    {
+        if (!IsConversing) return Task.CompletedTask;
+        Conversation?.Dispose();
+        Conversation = null;
+        return Task.CompletedTask;
+    }
     
     public async Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
     {
