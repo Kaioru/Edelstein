@@ -9,9 +9,9 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 public class WorldInfoRequestHandler : IPacketHandler<ILoginStageUser>
 {
     private readonly IPipeline<UserOnPacketWorldRequest> _pipeline;
-    public short Operation => (short)PacketRecvOperations.WorldInfoRequest;
 
     public WorldInfoRequestHandler(IPipeline<UserOnPacketWorldRequest> pipeline) => _pipeline = pipeline;
+    public short Operation => (short)PacketRecvOperations.WorldInfoRequest;
 
     public bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
 

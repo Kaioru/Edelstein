@@ -9,10 +9,10 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 public class CheckSPWRequestHandler : IPacketHandler<ILoginStageUser>
 {
     private readonly IPipeline<UserOnPacketCheckSPWRequest> _pipeline;
-    
-    public short Operation => (short)PacketRecvOperations.CheckSPWRequest;
 
     public CheckSPWRequestHandler(IPipeline<UserOnPacketCheckSPWRequest> pipeline) => _pipeline = pipeline;
+
+    public short Operation => (short)PacketRecvOperations.CheckSPWRequest;
 
     public bool Check(ILoginStageUser user) =>
         user.State == LoginState.SelectCharacter &&

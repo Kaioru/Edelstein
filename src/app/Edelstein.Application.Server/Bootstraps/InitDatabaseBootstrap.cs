@@ -9,17 +9,17 @@ namespace Edelstein.Application.Server.Bootstraps;
 
 public class InitDatabaseBootstrap : IBootstrap
 {
-    private ILogger _logger;
-    private IDbContextFactory<GameplayDbContext> _gameContext;
-    private IDbContextFactory<AuthDbContext> _authContext;
-    private IDbContextFactory<ServerDbContext> _serverContext;
-    private ProgramConfig _config;
+    private readonly IDbContextFactory<AuthDbContext> _authContext;
+    private readonly ProgramConfig _config;
+    private readonly IDbContextFactory<GameplayDbContext> _gameContext;
+    private readonly ILogger _logger;
+    private readonly IDbContextFactory<ServerDbContext> _serverContext;
 
     public InitDatabaseBootstrap(
         ILogger<InitDatabaseBootstrap> logger,
         IDbContextFactory<GameplayDbContext> gameContext,
-        IDbContextFactory<AuthDbContext> authContext, 
-        IDbContextFactory<ServerDbContext> serverContext, 
+        IDbContextFactory<AuthDbContext> authContext,
+        IDbContextFactory<ServerDbContext> serverContext,
         ProgramConfig config
     )
     {
@@ -43,7 +43,7 @@ public class InitDatabaseBootstrap : IBootstrap
         await db0.Database.MigrateAsync();
         await db1.Database.MigrateAsync();
         await db2.Database.MigrateAsync();
-        
+
         _logger.LogWarning("Migrated databases, this option is not recommended on production!");
     }
     public Task Stop() => Task.CompletedTask;

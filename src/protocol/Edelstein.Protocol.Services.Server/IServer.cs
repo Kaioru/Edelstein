@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Services.Server;
 
-public interface IServer: IIdentifiable<string>
+public interface IServer : IIdentifiable<string>
 {
     string Host { get; }
     int Port { get; }

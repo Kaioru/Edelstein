@@ -8,9 +8,6 @@ public class ConversationSpeaker : IConversationSpeaker
 {
     private readonly IConversationContext _context;
 
-    public int ID { get; }
-    public ConversationSpeakerFlags Flags { get; }
-    
     public ConversationSpeaker(
         IConversationContext context,
         int id = 9010000, ConversationSpeakerFlags flags = 0
@@ -20,6 +17,9 @@ public class ConversationSpeaker : IConversationSpeaker
         Flags = flags;
         _context = context;
     }
+
+    public int ID { get; }
+    public ConversationSpeakerFlags Flags { get; }
 
     public byte Say(string text, bool prev = false, bool next = true) =>
         _context.Request(new SayRequest(this, text, prev, next)).Result;

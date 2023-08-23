@@ -11,15 +11,15 @@ public abstract class AbstractFieldLife<TMovePath, TMoveAction> :
     where TMovePath : IMovePath<TMoveAction>
     where TMoveAction : IMoveAction
 {
-    public TMoveAction Action { get; protected set; }
-    public IFieldFoothold? Foothold { get; private set; }
 
     protected AbstractFieldLife(TMoveAction action, IPoint2D position, IFieldFoothold? foothold = null) : base(position)
     {
         Action = action;
         Foothold = foothold;
     }
-    
+    public TMoveAction Action { get; protected set; }
+    public IFieldFoothold? Foothold { get; private set; }
+
     public async Task Move(IPoint2D position, bool init = false)
     {
         Position = position;

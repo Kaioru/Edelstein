@@ -6,19 +6,7 @@ namespace Edelstein.Common.Gameplay.Game.Objects.NPC.Templates;
 
 public record NPCTemplate : INPCTemplate
 {
-    public int ID { get; }
 
-    public bool Move { get; }
-
-    public bool IsTrunk => TrunkPut > 0 || TrunkGet > 0;
-    public bool IsStoreBank { get; }
-    public bool IsParcel { get; }
-
-    public int TrunkPut { get; }
-    public int TrunkGet { get; }
-
-    public IReadOnlyCollection<INPCTemplateScript> Scripts { get; }
-    
     public NPCTemplate(int id, IDataProperty property, IDataProperty info)
     {
         ID = id;
@@ -37,5 +25,16 @@ public record NPCTemplate : INPCTemplate
                       .ToImmutableList()
                   ?? ImmutableList<NPCTemplateScript>.Empty;
     }
+    public int ID { get; }
 
+    public bool Move { get; }
+
+    public bool IsTrunk => TrunkPut > 0 || TrunkGet > 0;
+    public bool IsStoreBank { get; }
+    public bool IsParcel { get; }
+
+    public int TrunkPut { get; }
+    public int TrunkGet { get; }
+
+    public IReadOnlyCollection<INPCTemplateScript> Scripts { get; }
 }

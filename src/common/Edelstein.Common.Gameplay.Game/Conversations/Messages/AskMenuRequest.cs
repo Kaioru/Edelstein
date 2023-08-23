@@ -9,8 +9,6 @@ public class AskMenuRequest : AbstractConversationMessageRequest<int>
     private readonly IDictionary<int, string> _menu;
     private readonly string _text;
 
-    public override ConversationMessageType Type => ConversationMessageType.AskMenu;
-
     public AskMenuRequest(
         IConversationSpeaker speaker,
         string text, IDictionary<int, string> menu
@@ -19,6 +17,8 @@ public class AskMenuRequest : AbstractConversationMessageRequest<int>
         _text = text;
         _menu = menu;
     }
+
+    public override ConversationMessageType Type => ConversationMessageType.AskMenu;
 
     public override bool Check(int response) => _menu.ContainsKey(response);
 

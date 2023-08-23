@@ -9,10 +9,10 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 public class DeleteCharacterHandler : IPacketHandler<ILoginStageUser>
 {
     private readonly IPipeline<UserOnPacketDeleteCharacter> _pipeline;
-   
-    public short Operation => (short)PacketRecvOperations.DeleteCharacter;
-    
+
     public DeleteCharacterHandler(IPipeline<UserOnPacketDeleteCharacter> pipeline) => _pipeline = pipeline;
+
+    public short Operation => (short)PacketRecvOperations.DeleteCharacter;
 
     public bool Check(ILoginStageUser user) =>
         user.State == LoginState.SelectCharacter &&

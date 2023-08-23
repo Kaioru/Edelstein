@@ -11,8 +11,6 @@ public class AskBoxTextRequest : AbstractConversationMessageRequest<string>
     private readonly short _rows;
     private readonly string _text;
 
-    public override ConversationMessageType Type => ConversationMessageType.AskBoxText;
-
     public AskBoxTextRequest(
         IConversationSpeaker speaker,
         string text, string @default, short rows, short cols
@@ -23,6 +21,8 @@ public class AskBoxTextRequest : AbstractConversationMessageRequest<string>
         _rows = rows;
         _cols = cols;
     }
+
+    public override ConversationMessageType Type => ConversationMessageType.AskBoxText;
 
     protected override void WriteData(IPacketWriter writer)
     {

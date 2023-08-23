@@ -6,15 +6,15 @@ namespace Edelstein.Common.Gameplay.Game;
 public class GameStage : AbstractStage<IGameStageUser>, IGameStage
 {
     private readonly IFieldManager _fieldManager;
-    
-    public override string ID { get; }
-    
+
     public GameStage(string id, IFieldManager fieldManager)
     {
         ID = id;
         _fieldManager = fieldManager;
     }
-    
+
+    public override string ID { get; }
+
     public async Task Enter(IGameStageUser user)
     {
         if (user.Account == null || user.AccountWorld == null || user.Character == null)

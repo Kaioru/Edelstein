@@ -45,7 +45,7 @@ await Host.CreateDefaultBuilder(args)
             o.UseNpgsql(ctx.Configuration.GetConnectionString(ServerDbContext.ConnectionStringKey)));
         services.AddDbContextFactory<GameplayDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(GameplayDbContext.ConnectionStringKey)));
-        
+
         services.AddSingleton<IAccountRepository, AccountRepository>();
         services.AddSingleton<IAccountWorldRepository, AccountWorldRepository>();
         services.AddSingleton<ICharacterRepository, CharacterRepository>();
@@ -61,7 +61,7 @@ await Host.CreateDefaultBuilder(args)
             p.GetRequiredService<ILogger<TickerManager>>(),
             p.GetRequiredService<ProgramConfig>().TicksPerSecond
         ));
-        
+
         services.AddSingleton<IDataManager>(new NXDataManager(ctx.Configuration.GetSection("Data")["Directory"]));
         services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));
     })

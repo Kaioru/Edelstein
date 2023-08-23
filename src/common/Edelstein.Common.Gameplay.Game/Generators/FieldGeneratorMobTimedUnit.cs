@@ -43,7 +43,7 @@ public class FieldGeneratorMobTimedUnit : IFieldGeneratorUnit
     {
         if (Mob == null) return NextRegen < now;
         if (Mob.Field != null) return false;
-        
+
         var random = new Random();
         var buffer = 7 * _life.MobTime / 10;
         var interval = TimeSpan.FromSeconds(

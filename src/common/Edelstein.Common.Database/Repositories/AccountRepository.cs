@@ -17,7 +17,6 @@ public class AccountRepository : IAccountRepository
         _mapper = mapper;
     }
 
-
     public async Task<IAccount?> Retrieve(int key)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
@@ -62,6 +61,6 @@ public class AccountRepository : IAccountRepository
         await using var db = await _dbFactory.CreateDbContextAsync();
         var entity = await db.Accounts
             .FirstOrDefaultAsync(a => a.Username.Equals(username));
-        return entity != null ?_mapper.Map<Account>(entity) : null;
+        return entity != null ? _mapper.Map<Account>(entity) : null;
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Edelstein.Common.Services.Server.Configurations;
 
-public class ServerGameConfiguration: IEntityTypeConfiguration<ServerGameEntity>
+public class ServerGameConfiguration : IEntityTypeConfiguration<ServerGameEntity>
 {
     public void Configure(EntityTypeBuilder<ServerGameEntity> builder)
     {

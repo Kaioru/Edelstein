@@ -11,11 +11,6 @@ public class NettyTransportConnectorState : ITransportContext
     private readonly IChannel _channel;
     private readonly IEventLoopGroup _group0;
 
-    public TransportState State => _channel.Active ? TransportState.Opened : TransportState.Closed;
-    public TransportVersion Version { get; }
-    
-    public IReadOnlyRepository<string, ISocket> Sockets { get; }
-    
     public NettyTransportConnectorState(IChannel channel, IEventLoopGroup group0, TransportVersion version, IReadOnlyRepository<string, ISocket> sockets)
     {
         _channel = channel;
@@ -24,7 +19,12 @@ public class NettyTransportConnectorState : ITransportContext
         Sockets = sockets;
     }
 
-    public async Task Dispatch(IPacket packet) 
+    public TransportState State => _channel.Active ? TransportState.Opened : TransportState.Closed;
+    public TransportVersion Version { get; }
+
+    public IReadOnlyRepository<string, ISocket> Sockets { get; }
+
+    public async Task Dispatch(IPacket packet)
         => await Task.WhenAll((await Sockets.RetrieveAll()).Select(s => s.Dispatch(packet)));
 
     public async Task Close()

@@ -8,7 +8,7 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Plugs;
 
-public abstract class AbstractUserOnDisconnectPlug<TStageUser> : IPipelinePlug<UserOnDisconnect<TStageUser>> 
+public abstract class AbstractUserOnDisconnectPlug<TStageUser> : IPipelinePlug<UserOnDisconnect<TStageUser>>
     where TStageUser : IStageUser<TStageUser>
 {
     private readonly IAccountRepository _accountRepository;
@@ -33,13 +33,13 @@ public abstract class AbstractUserOnDisconnectPlug<TStageUser> : IPipelinePlug<U
     {
         if (message.User.Stage != null)
             await message.User.Stage.Leave(message.User);
-        
+
         if (message.User.AccountWorld != null)
             await _accountWorldRepository.Update(message.User.AccountWorld);
-        
+
         if (message.User.Character != null)
             await _characterRepository.Update(message.User.Character);
-        
+
         if (message.User.Account != null)
         {
             await _accountRepository.Update(message.User.Account);

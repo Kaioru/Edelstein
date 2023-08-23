@@ -1,5 +1,4 @@
-﻿
-using Edelstein.Common.Gameplay.Login.Types;
+﻿using Edelstein.Common.Gameplay.Login.Types;
 using Edelstein.Common.Gameplay.Models.Accounts;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
@@ -17,10 +16,10 @@ namespace Edelstein.Common.Gameplay.Login.Plugs;
 
 public class UserOnPacketCheckPasswordPlug : IPipelinePlug<UserOnPacketCheckPassword>
 {
-    private readonly ILogger _logger;
     private readonly IAuthService _auth;
-    private readonly ISessionService _session;
+    private readonly ILogger _logger;
     private readonly IAccountRepository _repository;
+    private readonly ISessionService _session;
     private readonly ILoginStage _stage;
 
     public UserOnPacketCheckPasswordPlug(

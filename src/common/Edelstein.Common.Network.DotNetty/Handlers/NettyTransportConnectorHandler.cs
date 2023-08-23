@@ -9,9 +9,9 @@ namespace Edelstein.Common.Network.DotNetty.Handlers;
 
 public class NettyTransportConnectorHandler : ChannelHandlerAdapter
 {
-    private readonly TransportVersion _version;
     private readonly IAdapterInitializer _initializer;
     private readonly IRepository<string, ISocket> _sockets;
+    private readonly TransportVersion _version;
 
     public NettyTransportConnectorHandler(TransportVersion version, IAdapterInitializer initializer, IRepository<string, ISocket> sockets)
     {
@@ -51,7 +51,7 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
 
             context.Channel.GetAttribute(NettyAttributes.SocketKey).Set(newSocket);
             context.Channel.GetAttribute(NettyAttributes.AdapterKey).Set(newAdapter);
-            
+
             _ = _sockets.Insert(newSocket);
         }
     }
@@ -62,9 +62,9 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
 
         adapter?.OnDisconnect();
         base.ChannelInactive(context);
-        
+
         if (adapter == null) return;
-        
+
         _ = _sockets.Delete(adapter.Socket);
     }
 

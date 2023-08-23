@@ -9,9 +9,6 @@ public class PacketReader : IPacketReader
     private readonly BinaryReader _reader;
     private readonly MemoryStream _stream;
 
-    public long Cursor { get; }
-    public long Available { get; }
-
     public PacketReader(byte[] buffer)
     {
         _stream = new MemoryStream(buffer);
@@ -25,23 +22,26 @@ public class PacketReader : IPacketReader
     public PacketReader() : this(Array.Empty<byte>())
     {
     }
-    
+
+    public long Cursor { get; }
+    public long Available { get; }
+
     public byte ReadByte() => _reader.ReadByte();
     public bool ReadBool() => _reader.ReadBoolean();
-    
+
     public short ReadShort() => _reader.ReadInt16();
     public ushort ReadUShort() => _reader.ReadUInt16();
-    
+
     public int ReadInt() => _reader.ReadInt32();
     public uint ReadUInt() => _reader.ReadUInt32();
-    
+
     public long ReadLong() => _reader.ReadInt64();
     public ulong ReadULong() => _reader.ReadUInt64();
-    
+
     public double ReadDouble() => _reader.ReadDouble();
-    
+
     public string ReadString(short? length = null) => _encoding.GetString(_reader.ReadBytes(length ?? ReadShort()));
-    
+
     public byte[] ReadBytes(short length) => _reader.ReadBytes(length);
 
     public IPacketReader Skip(short length)

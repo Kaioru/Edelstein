@@ -3,4 +3,3 @@
 public interface IServerLogin : IServer
 {
 }
-

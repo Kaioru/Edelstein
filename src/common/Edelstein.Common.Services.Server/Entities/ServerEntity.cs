@@ -5,10 +5,6 @@ namespace Edelstein.Common.Services.Server.Entities;
 
 public record ServerEntity : IIdentifiable<string>, IServer
 {
-    public string ID { get; set; }
-    
-    public string Host { get; set; }
-    public int Port { get; set; }
 
     public DateTime DateUpdated { get; set; }
     public DateTime DateExpire { get; set; }
@@ -17,4 +13,8 @@ public record ServerEntity : IIdentifiable<string>, IServer
 
     public ICollection<MigrationEntity> MigrationOut { get; set; } = new List<MigrationEntity>();
     public ICollection<MigrationEntity> MigrationIn { get; set; } = new List<MigrationEntity>();
+    public string ID { get; set; }
+
+    public string Host { get; set; }
+    public int Port { get; set; }
 }

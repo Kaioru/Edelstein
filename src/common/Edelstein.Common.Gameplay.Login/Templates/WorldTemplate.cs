@@ -5,12 +5,7 @@ namespace Edelstein.Common.Gameplay.Login.Templates;
 
 public record WorldTemplate : IWorldTemplate
 {
-    public int ID { get; }
 
-    public string Name { get; }
-    public byte State { get; }
-    public bool BlockCharCreation { get; }
-    
     public WorldTemplate(int id, IDataProperty property)
     {
         ID = id;
@@ -19,5 +14,9 @@ public record WorldTemplate : IWorldTemplate
         State = property.Resolve<byte>("state") ?? 0;
         BlockCharCreation = property.Resolve<bool>("blockCharCreation") ?? false;
     }
+    public int ID { get; }
 
+    public string Name { get; }
+    public byte State { get; }
+    public bool BlockCharCreation { get; }
 }

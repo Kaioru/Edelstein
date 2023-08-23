@@ -10,4 +10,3 @@ public interface ILoginStageUser : IStageUser<ILoginStageUser>
     byte? SelectedWorldID { get; set; }
     byte? SelectedChannelID { get; set; }
 }
-

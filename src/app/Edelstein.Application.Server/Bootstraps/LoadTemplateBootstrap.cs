@@ -7,8 +7,8 @@ namespace Edelstein.Application.Server.Bootstraps;
 
 public class LoadTemplateBootstrap : IBootstrap
 {
-    private readonly ILogger _logger;
     private readonly ICollection<ITemplateLoader> _loaders;
+    private readonly ILogger _logger;
 
     public LoadTemplateBootstrap(
         ILogger<LoadTemplateBootstrap> logger,
@@ -26,9 +26,9 @@ public class LoadTemplateBootstrap : IBootstrap
         foreach (var loader in _loaders)
         {
             var stopwatch = new Stopwatch();
-            
+
             stopwatch.Start();
-            
+
             var count = await loader.Load();
 
             _logger.LogInformation(
@@ -37,6 +37,6 @@ public class LoadTemplateBootstrap : IBootstrap
             );
         }
     }
-    
+
     public Task Stop() => Task.CompletedTask;
 }

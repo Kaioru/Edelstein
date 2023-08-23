@@ -14,16 +14,16 @@ public class FieldGeneratorNPCUnit : IFieldGeneratorUnit
     private readonly IFieldTemplateLife _life;
     private readonly INPCTemplate _template;
 
-    private IFieldNPC? NPC { get; set; }
-
-    public IPoint2D Position => _life.Position;
-
     public FieldGeneratorNPCUnit(IField field, IFieldTemplateLife life, INPCTemplate template)
     {
         _field = field;
         _life = life;
         _template = template;
     }
+
+    private IFieldNPC? NPC { get; set; }
+
+    public IPoint2D Position => _life.Position;
 
     public IFieldObject? Generate()
     {

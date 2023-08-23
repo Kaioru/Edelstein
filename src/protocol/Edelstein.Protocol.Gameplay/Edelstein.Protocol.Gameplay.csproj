@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\Protocol.targets" />
+  <Import Project="..\Protocol.targets"/>
 
   <ItemGroup>
-    <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
-    <ProjectReference Include="..\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj"/>
+    <ProjectReference Include="..\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models" />
-    <Folder Include="Models\Inventories\Modify" />
+    <Folder Include="Models"/>
+    <Folder Include="Models\Inventories\Modify"/>
   </ItemGroup>
 
 </Project>

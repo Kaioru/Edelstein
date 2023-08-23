@@ -97,7 +97,7 @@ public class PacketWriter : IPacketWriter
     }
 
     public IPacket Build() => new Packet(_stream.ToArray());
-    
+
     public void Dispose()
     {
         _writer.Dispose();

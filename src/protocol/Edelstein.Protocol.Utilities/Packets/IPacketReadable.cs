@@ -4,4 +4,3 @@ public interface IPacketReadable
 {
     void ReadFrom(IPacketReader reader);
 }
-

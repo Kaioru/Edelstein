@@ -8,6 +8,10 @@ namespace Edelstein.Common.Gameplay.Game.Objects;
 
 public abstract class AbstractFieldObject : IFieldObject
 {
+
+    protected AbstractFieldObject(IPoint2D position) => Position = position;
+
+    private bool IsHidden { get; set; }
     public abstract FieldObjectType Type { get; }
 
     public int? ObjectID { get; set; }
@@ -15,10 +19,6 @@ public abstract class AbstractFieldObject : IFieldObject
     public IField? Field { get; set; }
     public IFieldSplit? FieldSplit { get; set; }
     public IPoint2D Position { get; protected set; }
-    
-    private bool IsHidden { get; set; }
-    
-    protected AbstractFieldObject(IPoint2D position) => Position = position;
 
     public bool IsVisibleTo(IFieldSplitObserver observer) => !IsHidden;
 

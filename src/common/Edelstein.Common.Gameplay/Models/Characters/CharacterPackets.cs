@@ -6,7 +6,6 @@ using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Common.Gameplay.Models.Characters;
 
-
 public static class CharacterPackets
 {
     public static void WriteCharacterData(
@@ -32,15 +31,15 @@ public static class CharacterPackets
         if (flags.HasFlag(DbFlags.InventorySize))
         {
             if (flags.HasFlag(DbFlags.ItemSlotEquip))
-                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Equip].SlotMax);
+                writer.WriteByte((byte)(character.Inventories[ItemInventoryType.Equip]?.SlotMax ?? 24));
             if (flags.HasFlag(DbFlags.ItemSlotConsume))
-                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Consume].SlotMax);
+                writer.WriteByte((byte)(character.Inventories[ItemInventoryType.Consume]?.SlotMax ?? 24));
             if (flags.HasFlag(DbFlags.ItemSlotInstall))
-                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Install].SlotMax);
+                writer.WriteByte((byte)(character.Inventories[ItemInventoryType.Install]?.SlotMax ?? 24));
             if (flags.HasFlag(DbFlags.ItemSlotEtc))
-                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Etc].SlotMax);
+                writer.WriteByte((byte)(character.Inventories[ItemInventoryType.Etc]?.SlotMax ?? 24));
             if (flags.HasFlag(DbFlags.ItemSlotCash))
-                writer.WriteByte((byte)character.Inventories[ItemInventoryType.Cash].SlotMax);
+                writer.WriteByte((byte)(character.Inventories[ItemInventoryType.Cash]?.SlotMax ?? 24));
         }
 
         if (flags.HasFlag(DbFlags.AdminShopCount))
@@ -51,7 +50,7 @@ public static class CharacterPackets
 
         if (flags.HasFlag(DbFlags.ItemSlotEquip))
         {
-            var inventory = character.Inventories[ItemInventoryType.Equip].Items;
+            var inventory = character.Inventories[ItemInventoryType.Equip]?.Items ?? new Dictionary<short, IItemSlot>();
             var equip = inventory.Where(kv => kv.Key >= 0);
             var equipped = inventory.Where(kv => kv.Key is >= -100 and < 0);
             var equipped2 = inventory.Where(kv => kv.Key is >= -1000 and < -100);
@@ -79,7 +78,7 @@ public static class CharacterPackets
                      }
                      .Where(t => flags.HasFlag(t.Item1)))
         {
-            var items = character.Inventories[t.Item2].Items;
+            var items = character.Inventories[t.Item2]?.Items ?? new Dictionary<short, IItemSlot>();
 
             foreach (var kv in items)
             {
@@ -183,10 +182,10 @@ public static class CharacterPackets
         writer.WriteInt(character.Hair);
 
         var inventory = character.Inventories[ItemInventoryType.Equip];
-        var equipped = inventory.Items
+        var equipped = inventory?.Items
             .Where(kv => kv.Key < 0)
             .Select(kv => Tuple.Create(Math.Abs(kv.Key), kv.Value))
-            .ToList();
+            .ToList() ?? new List<Tuple<short, IItemSlot>>();
         var stickers = equipped
             .Where(t => t.Item1 > 100)
             .Select(t => Tuple.Create(t.Item1 - 100, t.Item2))
@@ -218,14 +217,13 @@ public static class CharacterPackets
 
         writer.WriteByte(0xFF);
 
-        var item = character.Inventories[ItemInventoryType.Equip].Items;
+        var item = character.Inventories[ItemInventoryType.Equip]?.Items ?? new Dictionary<short, IItemSlot>();
 
-        writer.WriteInt(
-            item.ContainsKey(-111)
-                ? item[-111].ID
-                : item.ContainsKey(-11)
-                    ? item[-11].ID
-                    : 0
+        writer.WriteInt(item.TryGetValue(-111, out var v1) 
+            ? v1.ID
+            : item.TryGetValue(-11, out var v2) 
+                ? v2.ID
+                : 0
         );
 
         for (var i = 0; i < 3; i++)

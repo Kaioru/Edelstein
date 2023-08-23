@@ -12,13 +12,7 @@ namespace Edelstein.Common.Gameplay.Game.Objects.NPC;
 
 public class FieldNPC : AbstractFieldControllable<IFieldNPCMovePath, IFieldNPCMoveAction>, IFieldNPC, IPacketWritable
 {
-    public override FieldObjectType Type => FieldObjectType.NPC;
 
-    public INPCTemplate Template { get; }
-    public IRectangle2D Bounds { get; }
-
-    public bool IsEnabled { get; }
-    
     public FieldNPC(
         INPCTemplate template,
         IPoint2D position,
@@ -32,6 +26,12 @@ public class FieldNPC : AbstractFieldControllable<IFieldNPCMovePath, IFieldNPCMo
         Bounds = bounds ?? new Rectangle2D(Position, Position);
         IsEnabled = isEnabled;
     }
+    public override FieldObjectType Type => FieldObjectType.NPC;
+
+    public INPCTemplate Template { get; }
+    public IRectangle2D Bounds { get; }
+
+    public bool IsEnabled { get; }
 
     public override IPacket GetEnterFieldPacket()
     {

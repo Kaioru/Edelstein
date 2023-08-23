@@ -17,7 +17,7 @@ public interface IModifyInventoryGroupContext :
     bool CheckEquipped(BodyPart part);
     bool CheckEquipped(int templateID);
     bool CheckEquipped(IItemTemplate template);
-    
+
     void SetEquipped(BodyPart part, int templateID);
     void SetEquipped(BodyPart part, int templateID, short count);
     void SetEquipped(BodyPart part, IItemTemplate template);

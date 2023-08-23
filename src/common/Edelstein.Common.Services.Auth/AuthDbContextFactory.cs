@@ -20,4 +20,3 @@ public class AuthDbContextFactory : IDesignTimeDbContextFactory<AuthDbContext>
         return new AuthDbContext(builder.Options);
     }
 }
-

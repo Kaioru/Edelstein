@@ -8,8 +8,8 @@ namespace Edelstein.Common.Gameplay.Login.Plugs;
 public class UserMigratePlug : AbstractUserMigratePlug<ILoginStage, ILoginStageUser>
 {
     public UserMigratePlug(
-        ILogger<AbstractUserMigratePlug<ILoginStage, ILoginStageUser>> logger, 
-        ILoginStage stage, 
+        ILogger<AbstractUserMigratePlug<ILoginStage, ILoginStageUser>> logger,
+        ILoginStage stage,
         IMigrationService migrationService
     ) : base(logger, stage, migrationService)
     {

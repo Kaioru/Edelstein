@@ -13,14 +13,14 @@ public class FieldGeneratorMobNormalUnit : IFieldGeneratorUnit
     private readonly IFieldTemplateLife _life;
     private readonly IMobTemplate _template;
 
-    public IPoint2D Position => _life.Position;
-
     public FieldGeneratorMobNormalUnit(IField field, IFieldTemplateLife life, IMobTemplate template)
     {
         _field = field;
         _life = life;
         _template = template;
     }
+
+    public IPoint2D Position => _life.Position;
 
     public IFieldObject Generate() =>
         new FieldMob(

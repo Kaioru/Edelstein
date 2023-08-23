@@ -10,7 +10,7 @@
     <IsPackable>false</IsPackable>
     <IsPublishable>true</IsPublishable>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <None Update="appsettings*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

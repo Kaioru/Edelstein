@@ -7,18 +7,7 @@ namespace Edelstein.Common.Gameplay.Game.Templates;
 
 public record FieldTemplateLife : IFieldTemplateLife
 {
-    public int ID { get; }
 
-    public FieldLifeType Type { get; }
-
-    public int MobTime { get; }
-
-    public bool IsFacingLeft { get; }
-    public IPoint2D Position { get; }
-    public IRectangle2D Bounds { get; }
-    
-    public int FootholdID { get; }
-    
     public FieldTemplateLife(IDataProperty property)
     {
         ID = property.Resolve<int>("id") ?? -1;
@@ -40,5 +29,15 @@ public record FieldTemplateLife : IFieldTemplateLife
         );
         FootholdID = property.Resolve<int>("fh") ?? 0;
     }
+    public int ID { get; }
 
+    public FieldLifeType Type { get; }
+
+    public int MobTime { get; }
+
+    public bool IsFacingLeft { get; }
+    public IPoint2D Position { get; }
+    public IRectangle2D Bounds { get; }
+
+    public int FootholdID { get; }
 }

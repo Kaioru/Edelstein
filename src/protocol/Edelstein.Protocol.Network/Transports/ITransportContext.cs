@@ -7,7 +7,7 @@ public interface ITransportContext
 {
     TransportState State { get; }
     TransportVersion Version { get; }
-    
+
     IReadOnlyRepository<string, ISocket> Sockets { get; }
 
     Task Dispatch(IPacket packet);

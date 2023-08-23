@@ -11,20 +11,15 @@ namespace Edelstein.Application.Server.Bootstraps;
 public class StartServerUpdateBootstrap<TConfig> : IBootstrap, ITickable
     where TConfig : ProgramConfigStage
 {
-    private readonly ILogger _logger;
     private readonly TConfig _config;
+    private readonly ILogger _logger;
     private readonly IServerService _service;
     private readonly ITickerManager _ticker;
 
-    public int Priority => BootstrapPriority.Start;
-    
-    private ITickerManagerContext? Context { get; set; }
-    private bool IsRegistered { get; set; }
-
     public StartServerUpdateBootstrap(
-        ILogger<StartServerUpdateBootstrap<TConfig>> logger, 
-        TConfig config, 
-        IServerService service, 
+        ILogger<StartServerUpdateBootstrap<TConfig>> logger,
+        TConfig config,
+        IServerService service,
         ITickerManager ticker
     )
     {
@@ -34,8 +29,13 @@ public class StartServerUpdateBootstrap<TConfig> : IBootstrap, ITickable
         _ticker = ticker;
     }
 
-    
-    public async Task Start() => Context = _ticker.Schedule(this, TimeSpan.FromMinutes(2), TimeSpan.Zero);
+    private ITickerManagerContext? Context { get; set; }
+    private bool IsRegistered { get; set; }
+
+    public int Priority => BootstrapPriority.Start;
+
+
+    public Task Start() => Task.FromResult(Context = _ticker.Schedule(this, TimeSpan.FromMinutes(2), TimeSpan.Zero));
 
     public async Task Stop()
     {

@@ -1,6 +1,5 @@
 ﻿namespace Edelstein.Common.Gameplay.Models.Characters;
 
-
 [Flags]
 public enum DbFlags
 {

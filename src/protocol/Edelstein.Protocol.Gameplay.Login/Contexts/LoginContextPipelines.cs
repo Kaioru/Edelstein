@@ -7,12 +7,10 @@ namespace Edelstein.Protocol.Gameplay.Login.Contexts;
 public record LoginContextPipelines(
     IPipeline<StageStart> StageStart,
     IPipeline<StageStop> StageStop,
-    
     IPipeline<UserMigrate<ILoginStageUser>> UserMigrate,
     IPipeline<UserOnPacket<ILoginStageUser>> UserOnPacket,
     IPipeline<UserOnException<ILoginStageUser>> UserOnException,
     IPipeline<UserOnDisconnect<ILoginStageUser>> UserOnDisconnect,
-    
     IPipeline<UserOnPacketAliveAck<ILoginStageUser>> UserOnPacketAliveAck,
     IPipeline<UserOnPacketCheckPassword> UserOnPacketCheckPassword,
     IPipeline<UserOnPacketSelectWorld> UserOnPacketSelectWorld,

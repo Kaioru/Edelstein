@@ -11,9 +11,6 @@ public class FieldSpace<TObject> : IFieldSpace<TObject> where TObject : IFieldSp
 {
     private readonly IDictionary<int, TObject> _objects;
     private readonly ISpace2D<TObject> _space;
-    
-    public IReadOnlyCollection<TObject> Objects => _objects.Values.ToImmutableList();
-    public IRectangle2D Bounds { get; }
 
     public FieldSpace(IRectangle2D bounds)
     {
@@ -21,6 +18,9 @@ public class FieldSpace<TObject> : IFieldSpace<TObject> where TObject : IFieldSp
         _objects = new Dictionary<int, TObject>();
         _space = new RBushSpace2D<TObject>();
     }
+
+    public IReadOnlyCollection<TObject> Objects => _objects.Values.ToImmutableList();
+    public IRectangle2D Bounds { get; }
 
 
     public void Insert(IEnumerable<TObject> obj)
@@ -30,13 +30,13 @@ public class FieldSpace<TObject> : IFieldSpace<TObject> where TObject : IFieldSp
             _objects.Add(o.ID, o);
         _space.Insert(objects);
     }
-    
+
     public TObject? FindByID(int id) => _objects.TryGetValue(id, out var obj)
         ? obj
         : default;
-    
+
     public IEnumerable<TObject> Find(IObject2D obj) => _space.Find(obj);
-    
+
     public IEnumerable<TObject> FindClosest(IPoint2D point, int n = 1) => _space.FindClosest(point, n);
 
     public IEnumerable<TObject> FindBelow(IPoint2D point) => _space.Find(

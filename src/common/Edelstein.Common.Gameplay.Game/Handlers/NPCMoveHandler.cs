@@ -12,10 +12,10 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 public class NPCMoveHandler : AbstractFieldNPCHandler
 {
     private readonly IPipeline<FieldOnPacketNPCMove> _pipeline;
-    
-    public override short Operation => (short)PacketRecvOperations.NpcMove;
 
     public NPCMoveHandler(IPipeline<FieldOnPacketNPCMove> pipeline) => _pipeline = pipeline;
+
+    public override short Operation => (short)PacketRecvOperations.NpcMove;
 
     protected override Task Handle(IFieldUser user, IFieldNPC npc, IPacketReader reader)
     {

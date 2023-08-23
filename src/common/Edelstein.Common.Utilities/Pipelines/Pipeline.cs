@@ -31,13 +31,13 @@ public class Pipeline<TMessage> : IPipeline<TMessage>
 
         foreach (var part in _parts)
         {
-            if (ctx.IsRequestedDefaultAction && !part.IsDefaultAction) 
+            if (ctx.IsRequestedDefaultAction && !part.IsDefaultAction)
                 continue;
             await part.Plug.Handle(ctx, message);
-            if (ctx.IsRequestedCancellation || ctx.IsRequestedDefaultAction) 
+            if (ctx.IsRequestedCancellation || ctx.IsRequestedDefaultAction)
                 break;
         }
-        
+
         return ctx;
     }
 }

@@ -10,7 +10,7 @@ public class AccountWorldRepository : IAccountWorldRepository
 {
     private readonly IDbContextFactory<GameplayDbContext> _dbFactory;
     private readonly IMapper _mapper;
-    
+
     public AccountWorldRepository(IDbContextFactory<GameplayDbContext> dbFactory, IMapper mapper)
     {
         _dbFactory = dbFactory;

@@ -1,14 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Generators;
-using Edelstein.Common.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
-using Edelstein.Protocol.Gameplay.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Game.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Templates;
-using Edelstein.Protocol.Utilities.Spatial;
 using Edelstein.Protocol.Utilities.Templates;
 using Edelstein.Protocol.Utilities.Tickers;
 
@@ -23,8 +19,8 @@ public class FieldManager : IFieldManager
 
     public FieldManager(
         ITickerManager tickerManager,
-        ITemplateManager<IFieldTemplate> fieldTemplates, 
-        ITemplateManager<IMobTemplate> mobTemplates, 
+        ITemplateManager<IFieldTemplate> fieldTemplates,
+        ITemplateManager<IMobTemplate> mobTemplates,
         ITemplateManager<INPCTemplate> npcTemplates
     )
     {
@@ -42,7 +38,7 @@ public class FieldManager : IFieldManager
         if (field != null || template == null) return field;
 
         field = new Field(this, template);
-        
+
         var npcUnits = new List<IFieldGeneratorUnit>();
         var mobUnits = new List<IFieldGeneratorUnit>();
 
@@ -74,7 +70,7 @@ public class FieldManager : IFieldManager
         foreach (var generator in await field.Generators.RetrieveAll())
         foreach (var obj in generator.Generate())
             await field.Enter(obj);
-        
+
         _fields.Add(key, field);
 
         return field;

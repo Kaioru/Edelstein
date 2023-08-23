@@ -15,8 +15,8 @@ namespace Edelstein.Common.Network.DotNetty.Transports;
 public class NettyTransportAcceptor : ITransportAcceptor
 {
     private readonly IAdapterInitializer _initializer;
-    private readonly TransportVersion _version;
     private readonly IRepository<string, ISocket> _sockets;
+    private readonly TransportVersion _version;
 
     public NettyTransportAcceptor(IAdapterInitializer initializer, TransportVersion version)
     {
@@ -29,7 +29,7 @@ public class NettyTransportAcceptor : ITransportAcceptor
     {
         var aesCipher = new AESCipher();
         var igCipher = new IGCipher();
-        
+
         var group0 = new MultithreadEventLoopGroup();
         var group1 = new MultithreadEventLoopGroup();
         var channel = await new ServerBootstrap()

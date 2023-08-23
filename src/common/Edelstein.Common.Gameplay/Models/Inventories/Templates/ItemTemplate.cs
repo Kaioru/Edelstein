@@ -5,26 +5,7 @@ namespace Edelstein.Common.Gameplay.Models.Inventories.Templates;
 
 public record ItemTemplate : IItemTemplate
 {
-    public int ID { get; }
 
-    public int SellPrice { get; }
-    public bool TimeLimited { get; }
-
-    public int ReplaceTemplateID { get; }
-    public int ReplaceMsg { get; }
-    public int ReplacePeriod { get; }
-
-    public bool Quest { get; }
-    public bool PartyQuest { get; }
-    public bool Only { get; }
-    public bool TradeBlock { get; }
-    public bool NotSale { get; }
-    public bool BigSize { get; }
-    public bool ExpireOnLogout { get; }
-    public bool AccountSharable { get; }
-
-    public bool Cash { get; }
-    
     public ItemTemplate(int id, IDataProperty info)
     {
         ID = id;
@@ -45,4 +26,23 @@ public record ItemTemplate : IItemTemplate
 
         Cash = info.Resolve<bool>("cash") ?? false;
     }
+    public int ID { get; }
+
+    public int SellPrice { get; }
+    public bool TimeLimited { get; }
+
+    public int ReplaceTemplateID { get; }
+    public int ReplaceMsg { get; }
+    public int ReplacePeriod { get; }
+
+    public bool Quest { get; }
+    public bool PartyQuest { get; }
+    public bool Only { get; }
+    public bool TradeBlock { get; }
+    public bool NotSale { get; }
+    public bool BigSize { get; }
+    public bool ExpireOnLogout { get; }
+    public bool AccountSharable { get; }
+
+    public bool Cash { get; }
 }

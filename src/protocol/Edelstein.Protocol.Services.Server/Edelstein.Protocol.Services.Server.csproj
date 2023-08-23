@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\Protocol.targets" />
+  <Import Project="..\Protocol.targets"/>
 
   <ItemGroup>
-    <ProjectReference Include="..\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj" />
+    <ProjectReference Include="..\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj"/>
   </ItemGroup>
 
 </Project>

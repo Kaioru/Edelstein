@@ -2,6 +2,6 @@
 
 public record Server(
     string ID,
-    string Host, 
+    string Host,
     int Port
 ) : IServer;

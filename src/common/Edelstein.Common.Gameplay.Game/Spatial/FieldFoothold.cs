@@ -7,19 +7,7 @@ namespace Edelstein.Common.Gameplay.Game.Spatial;
 
 public record FieldFoothold : IFieldFoothold
 {
-    public int ID { get; }
 
-    public int MinX => Line.MinX;
-    public int MinY => Line.MinY;
-
-    public int MaxX => Line.MaxX;
-    public int MaxY => Line.MaxY;
-
-    public int NextID { get; }
-    public int PrevID { get; }
-
-    public ISegment2D Line { get; }
-    
     public FieldFoothold(int id, IDataProperty property)
     {
         ID = id;
@@ -32,5 +20,16 @@ public record FieldFoothold : IFieldFoothold
             new Point2D(property.Resolve<int>("x2") ?? 0, property.Resolve<int>("y2") ?? 0)
         );
     }
-}
+    public int ID { get; }
 
+    public int MinX => Line.MinX;
+    public int MinY => Line.MinY;
+
+    public int MaxX => Line.MaxX;
+    public int MaxY => Line.MaxY;
+
+    public int NextID { get; }
+    public int PrevID { get; }
+
+    public ISegment2D Line { get; }
+}

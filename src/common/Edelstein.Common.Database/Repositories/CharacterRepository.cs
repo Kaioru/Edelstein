@@ -11,7 +11,7 @@ public class CharacterRepository : ICharacterRepository
 {
     private readonly IDbContextFactory<GameplayDbContext> _dbFactory;
     private readonly IMapper _mapper;
-    
+
     public CharacterRepository(IDbContextFactory<GameplayDbContext> dbFactory, IMapper mapper)
     {
         _dbFactory = dbFactory;

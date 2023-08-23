@@ -9,7 +9,7 @@ public class IdentityConfiguration : IEntityTypeConfiguration<IdentityEntity>
     public void Configure(EntityTypeBuilder<IdentityEntity> builder)
     {
         builder.ToTable("identities");
-        
+
         builder.HasKey(e => e.ID);
         builder.HasIndex(e => e.Username).IsUnique();
     }

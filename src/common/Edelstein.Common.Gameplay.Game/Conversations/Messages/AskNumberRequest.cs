@@ -11,8 +11,6 @@ public class AskNumberRequest : AbstractConversationMessageRequest<int>
     private readonly int _minNumber;
     private readonly string _text;
 
-    public override ConversationMessageType Type => ConversationMessageType.AskNumber;
-
     public AskNumberRequest(
         IConversationSpeaker speaker,
         string text, int @default, int minNumber, int maxNumber
@@ -23,6 +21,8 @@ public class AskNumberRequest : AbstractConversationMessageRequest<int>
         _minNumber = minNumber;
         _maxNumber = maxNumber;
     }
+
+    public override ConversationMessageType Type => ConversationMessageType.AskNumber;
 
     public override bool Check(int response) => response >= _minNumber && response <= _maxNumber;
 

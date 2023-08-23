@@ -10,9 +10,9 @@ public class CheckPasswordHandler : IPacketHandler<ILoginStageUser>
 {
     private readonly IPipeline<UserOnPacketCheckPassword> _pipeline;
 
-    public short Operation => (short)PacketRecvOperations.CheckPassword;
-    
     public CheckPasswordHandler(IPipeline<UserOnPacketCheckPassword> pipeline) => _pipeline = pipeline;
+
+    public short Operation => (short)PacketRecvOperations.CheckPassword;
 
     public bool Check(ILoginStageUser user) => user.State == LoginState.CheckPassword;
 

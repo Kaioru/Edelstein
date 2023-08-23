@@ -8,10 +8,10 @@ public class AskYesNoRequest : AbstractConversationMessageRequest<bool>
 {
     private readonly string _text;
 
-    public override ConversationMessageType Type => ConversationMessageType.AskYesNo;
-
     public AskYesNoRequest(IConversationSpeaker speaker, string text) : base(speaker) =>
         _text = text;
+
+    public override ConversationMessageType Type => ConversationMessageType.AskYesNo;
 
     protected override void WriteData(IPacketWriter writer) =>
         writer.WriteString(_text);

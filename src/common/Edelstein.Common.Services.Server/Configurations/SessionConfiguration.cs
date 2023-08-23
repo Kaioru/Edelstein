@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Edelstein.Common.Services.Server.Configurations;
 
-public class SessionConfiguration: IEntityTypeConfiguration<SessionEntity>
+public class SessionConfiguration : IEntityTypeConfiguration<SessionEntity>
 {
     public void Configure(EntityTypeBuilder<SessionEntity> builder)
     {
         builder.ToTable("sessions");
-        
+
         builder.HasKey(m => m.ActiveAccount);
         builder
             .HasOne(m => m.Server)

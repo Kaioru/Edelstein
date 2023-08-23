@@ -52,7 +52,7 @@ public class UserOnPacketSelectWorldPlug : IPipelinePlug<UserOnPacketSelectWorld
                 AccountID = message.User.Account.ID,
                 WorldID = gameStage.Server!.WorldID
             });
-            
+
             var characters = (await _characterRepository
                     .RetrieveAllByAccountWorld(accountWorld.ID))
                 .ToImmutableList();

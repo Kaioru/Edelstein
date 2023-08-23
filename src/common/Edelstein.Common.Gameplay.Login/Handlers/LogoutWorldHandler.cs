@@ -9,10 +9,10 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 public class LogoutWorldHandler : IPacketHandler<ILoginStageUser>
 {
     private readonly IPipeline<UserOnPacketLogoutWorld> _pipeline;
-    public short Operation => (short)PacketRecvOperations.LogoutWorld;
 
 
     public LogoutWorldHandler(IPipeline<UserOnPacketLogoutWorld> pipeline) => _pipeline = pipeline;
+    public short Operation => (short)PacketRecvOperations.LogoutWorld;
 
     public bool Check(ILoginStageUser user) => user.State == LoginState.SelectCharacter;
 

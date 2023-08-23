@@ -16,14 +16,6 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
     private readonly ITemplateManager<IItemTemplate> _manager;
     private readonly Queue<AbstractModifyInventoryOperation> _operations;
     private readonly ItemInventoryType _type;
-    
-    public override IEnumerable<AbstractModifyInventoryOperation> Operations => _operations.AsEnumerable();
-
-    public IItemSlot? this[short slot] => _inventory.Items.TryGetValue(slot, out var item)
-        ? item
-        : null;
-
-    public IReadOnlyDictionary<short, IItemSlot> Items => _inventory.Items.ToImmutableDictionary();
 
     public ModifyInventoryContext(
         ItemInventoryType type,
@@ -36,6 +28,14 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         _manager = manager;
         _operations = new Queue<AbstractModifyInventoryOperation>();
     }
+
+    public override IEnumerable<AbstractModifyInventoryOperation> Operations => _operations.AsEnumerable();
+
+    public IItemSlot? this[short slot] => _inventory.Items.TryGetValue(slot, out var item)
+        ? item
+        : null;
+
+    public IReadOnlyDictionary<short, IItemSlot> Items => _inventory.Items.ToImmutableDictionary();
 
     public override bool Check(int templateID) =>
         Check(templateID, 1);

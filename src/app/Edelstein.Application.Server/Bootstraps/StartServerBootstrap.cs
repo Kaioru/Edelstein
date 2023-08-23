@@ -7,19 +7,15 @@ namespace Edelstein.Application.Server.Bootstraps;
 
 public class StartServerBootstrap : IBootstrap, ITickable
 {
-    private readonly ILogger _logger;
-    private readonly ITickerManager _ticker;
     private readonly ITransportAcceptor _acceptor;
     private readonly ProgramConfigStage _config;
-    
-    public int Priority => BootstrapPriority.Start;
-    private ITickerManagerContext? TickerContext { get; set; }
-    private ITransportContext? TransportContext { get; set; }
+    private readonly ILogger _logger;
+    private readonly ITickerManager _ticker;
 
     public StartServerBootstrap(
         ILogger<StartServerBootstrap> logger,
-        ITickerManager ticker, 
-        ITransportAcceptor acceptor, 
+        ITickerManager ticker,
+        ITransportAcceptor acceptor,
         ProgramConfigStage config)
     {
         _logger = logger;
@@ -27,8 +23,12 @@ public class StartServerBootstrap : IBootstrap, ITickable
         _acceptor = acceptor;
         _config = config;
     }
+    private ITickerManagerContext? TickerContext { get; set; }
+    private ITransportContext? TransportContext { get; set; }
 
-    public async Task Start() => TickerContext = _ticker.Schedule(this, TimeSpan.FromMinutes(10), TimeSpan.Zero);
+    public int Priority => BootstrapPriority.Start;
+
+    public Task Start() => Task.FromResult(TickerContext = _ticker.Schedule(this, TimeSpan.FromMinutes(10), TimeSpan.Zero));
 
     public async Task Stop()
     {

@@ -14,13 +14,13 @@ public abstract class AbstractUserOnPacketMigrateInPlug<TStage, TStageUser> : IP
     where TStageUser : class, IStageUser<TStageUser>
 {
     private readonly ILogger _logger;
-    private readonly TStage _stage;
     private readonly IMigrationService _migrationService;
     private readonly ISessionService _sessionService;
-    
+    private readonly TStage _stage;
+
     public AbstractUserOnPacketMigrateInPlug(
-        ILogger<AbstractUserOnPacketMigrateInPlug<TStage, TStageUser>> logger, 
-        TStage stage, 
+        ILogger<AbstractUserOnPacketMigrateInPlug<TStage, TStageUser>> logger,
+        TStage stage,
         IMigrationService migrationService,
         ISessionService sessionService
     )

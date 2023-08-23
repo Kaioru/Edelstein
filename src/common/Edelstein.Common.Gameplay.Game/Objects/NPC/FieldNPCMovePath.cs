@@ -6,13 +6,13 @@ namespace Edelstein.Common.Gameplay.Game.Objects.NPC;
 
 public class FieldNPCMovePath : AbstractMovePath<IFieldNPCMoveAction>, IFieldNPCMovePath
 {
+
+    public FieldNPCMovePath(bool isMove) => IsMove = isMove;
     public byte Act { get; private set; }
     public byte Chat { get; private set; }
 
     public bool IsMove { get; }
-    
-    public FieldNPCMovePath(bool isMove) => IsMove = isMove;
-    
+
     public override void ReadFrom(IPacketReader reader)
     {
         Act = reader.ReadByte();

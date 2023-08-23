@@ -6,24 +6,7 @@ namespace Edelstein.Common.Gameplay.Game.Objects.Mob.Templates;
 
 public class MobTemplate : IMobTemplate
 {
-    public int ID { get; }
 
-    public MobMoveAbilityType MoveAbility { get; }
-
-    public short Level { get; }
-
-    public int MaxHP { get; }
-    public int MaxMP { get; }
-
-    public int PAD { get; }
-    public int PDR { get; }
-    public int MAD { get; }
-    public int MDR { get; }
-    public int ACC { get; }
-    public int EVA { get; }
-
-    public int EXP { get; }
-    
     public MobTemplate(int id, IDataProperty property, IDataProperty info)
     {
         ID = id;
@@ -47,5 +30,21 @@ public class MobTemplate : IMobTemplate
 
         EXP = info.Resolve<int>("exp") ?? 0;
     }
+    public int ID { get; }
 
+    public MobMoveAbilityType MoveAbility { get; }
+
+    public short Level { get; }
+
+    public int MaxHP { get; }
+    public int MaxMP { get; }
+
+    public int PAD { get; }
+    public int PDR { get; }
+    public int MAD { get; }
+    public int MDR { get; }
+    public int ACC { get; }
+    public int EVA { get; }
+
+    public int EXP { get; }
 }

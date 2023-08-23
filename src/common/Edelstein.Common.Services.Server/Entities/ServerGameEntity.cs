@@ -8,4 +8,3 @@ public record ServerGameEntity : ServerEntity, IServerGame
     public int ChannelID { get; set; }
     public bool IsAdultChannel { get; set; }
 }
-

@@ -8,17 +8,17 @@ namespace Edelstein.Common.Gameplay.Login;
 
 public class LoginStageUser : AbstractStageUser<ILoginStageUser>, ILoginStageUser
 {
-    public LoginContext Context { get; }
 
-    public LoginState State { get; set; }
-    public byte? SelectedWorldID { get; set; }
-    public byte? SelectedChannelID { get; set; }
-    
     public LoginStageUser(
         ISocket socket,
         LoginContext context
     ) : base(socket) =>
         Context = context;
+    public LoginContext Context { get; }
+
+    public LoginState State { get; set; }
+    public byte? SelectedWorldID { get; set; }
+    public byte? SelectedChannelID { get; set; }
 
     public override Task Migrate(string serverID, IPacket? packet = null)
         => Context.Pipelines.UserMigrate.Process(new UserMigrate<ILoginStageUser>(this, serverID, packet));

@@ -7,7 +7,7 @@ using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.User;
 
-public interface IFieldUser:
+public interface IFieldUser :
     IFieldLife<IFieldUserMovePath, IFieldUserMoveAction>,
     IFieldSplitObserver, IFieldController
 {
@@ -18,12 +18,12 @@ public interface IFieldUser:
     ICharacter Character { get; }
 
     IConversationContext Conversation { get; }
-    
+
     bool IsInstantiated { get; set; }
     bool IsConversing { get; }
 
     IPacket GetSetFieldPacket();
-    
+
     Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt);
     Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt);
 
@@ -34,6 +34,6 @@ public interface IFieldUser:
     );
 
     Task EndConversation();
-    
+
     Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false);
 }

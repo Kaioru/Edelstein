@@ -9,10 +9,10 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 public class SelectWorldHandler : IPacketHandler<ILoginStageUser>
 {
     private readonly IPipeline<UserOnPacketSelectWorld> _pipeline;
-    public short Operation => (short)PacketRecvOperations.SelectWorld;
-    
+
 
     public SelectWorldHandler(IPipeline<UserOnPacketSelectWorld> pipeline) => _pipeline = pipeline;
+    public short Operation => (short)PacketRecvOperations.SelectWorld;
 
     public bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
 

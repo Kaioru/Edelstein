@@ -6,7 +6,7 @@ namespace Edelstein.Common.Gameplay.Login.Plugs;
 
 public class UserOnPacketLogoutWorldPlug : IPipelinePlug<UserOnPacketLogoutWorld>
 {
-    public Task Handle(IPipelineContext ctx, UserOnPacketLogoutWorld message) 
+    public Task Handle(IPipelineContext ctx, UserOnPacketLogoutWorld message)
     {
         message.User.State = LoginState.SelectWorld;
         message.User.AccountWorld = null;

@@ -9,9 +9,9 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 public class CheckDuplicatedIDHandler : IPacketHandler<ILoginStageUser>
 {
     private readonly IPipeline<UserOnPacketCheckDuplicatedID> _pipeline;
-    public short Operation => (short)PacketRecvOperations.CheckDuplicatedID;
-    
+
     public CheckDuplicatedIDHandler(IPipeline<UserOnPacketCheckDuplicatedID> pipeline) => _pipeline = pipeline;
+    public short Operation => (short)PacketRecvOperations.CheckDuplicatedID;
 
     public bool Check(ILoginStageUser user) => user.State == LoginState.SelectCharacter;
 

@@ -9,14 +9,14 @@ public class FieldObjectPool : AbstractFieldObjectPool, IFieldObjectPool
 {
     private readonly IDictionary<int, IFieldObject> _objects;
     private readonly Queue<int> _runningObjectID;
-    
-    public override IReadOnlyCollection<IFieldObject> Objects => _objects.Values.ToImmutableList();
-    
+
     public FieldObjectPool()
     {
         _objects = new ConcurrentDictionary<int, IFieldObject>();
         _runningObjectID = new Queue<int>(Enumerable.Range(1, 30_000));
     }
+
+    public override IReadOnlyCollection<IFieldObject> Objects => _objects.Values.ToImmutableList();
 
     public override Task Enter(IFieldObject obj)
     {

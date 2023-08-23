@@ -11,24 +11,18 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
 {
     private readonly Dictionary<ItemInventoryType, ModifyInventoryContext> _contexts;
 
-    public override IEnumerable<AbstractModifyInventoryOperation> Operations =>
-        _contexts.Values.SelectMany(c => c.Operations);
-
-    public IModifyInventoryContext? this[ItemInventoryType type] =>
-        _contexts.GetValueOrDefault(type);
-
     public ModifyInventoryGroupContext(
         ICharacterInventories inventories,
         ITemplateManager<IItemTemplate> manager
     ) : this(
-        new Dictionary<ItemInventoryType, IItemInventory>()
+        new Dictionary<ItemInventoryType, IItemInventory>
         {
             { ItemInventoryType.Equip, inventories.Equip },
             { ItemInventoryType.Consume, inventories.Consume },
             { ItemInventoryType.Install, inventories.Install },
             { ItemInventoryType.Etc, inventories.Etc },
             { ItemInventoryType.Cash, inventories.Cash }
-        }, 
+        },
         manager)
     {
     }
@@ -42,11 +36,17 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
             kv => new ModifyInventoryContext(kv.Key, kv.Value, manager)
         );
 
+    public override IEnumerable<AbstractModifyInventoryOperation> Operations =>
+        _contexts.Values.SelectMany(c => c.Operations);
+
+    public IModifyInventoryContext? this[ItemInventoryType type] =>
+        _contexts.GetValueOrDefault(type);
+
     public override bool Check(int templateID) =>
         this[GetTypeByID(templateID)]?.Check(templateID) ?? false;
     public override bool Check(int templateID, short count) =>
         this[GetTypeByID(templateID)]?.Check(templateID, count) ?? false;
-    
+
     public override bool Check(IItemTemplate template) =>
         this[GetTypeByID(template.ID)]?.Check(template) ?? false;
     public override bool Check(IItemTemplate template, short count) =>

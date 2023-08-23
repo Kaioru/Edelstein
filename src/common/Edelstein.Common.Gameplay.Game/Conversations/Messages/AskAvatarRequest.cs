@@ -9,8 +9,6 @@ public class AskAvatarRequest : AbstractConversationMessageRequest<byte>
     private readonly int[] _styles;
     private readonly string _text;
 
-    public override ConversationMessageType Type => ConversationMessageType.AskAvatar;
-
     public AskAvatarRequest(
         IConversationSpeaker speaker,
         string text, int[] styles
@@ -19,6 +17,8 @@ public class AskAvatarRequest : AbstractConversationMessageRequest<byte>
         _text = text;
         _styles = styles;
     }
+
+    public override ConversationMessageType Type => ConversationMessageType.AskAvatar;
 
     public override bool Check(byte response) => response < _styles.Length;
 

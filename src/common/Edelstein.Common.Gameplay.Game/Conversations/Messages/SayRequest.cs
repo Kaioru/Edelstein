@@ -10,8 +10,6 @@ public class SayRequest : AbstractConversationMessageRequest<byte>
     private readonly bool _isPrevEnabled;
     private readonly string _text;
 
-    public override ConversationMessageType Type => ConversationMessageType.Say;
-
     public SayRequest(
         IConversationSpeaker speaker,
         string text, bool isPrevEnabled, bool isNextEnabled
@@ -21,6 +19,8 @@ public class SayRequest : AbstractConversationMessageRequest<byte>
         _isPrevEnabled = isPrevEnabled;
         _isNextEnabled = isNextEnabled;
     }
+
+    public override ConversationMessageType Type => ConversationMessageType.Say;
 
     protected override void WriteData(IPacketWriter writer)
     {

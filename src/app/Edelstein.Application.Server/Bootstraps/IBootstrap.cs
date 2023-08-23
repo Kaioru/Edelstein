@@ -3,7 +3,7 @@
 public interface IBootstrap
 {
     int Priority { get; }
-    
+
     Task Start();
     Task Stop();
 }

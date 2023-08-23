@@ -11,7 +11,7 @@ public class CharacterConfiguration : IEntityTypeConfiguration<CharacterEntity>
     public void Configure(EntityTypeBuilder<CharacterEntity> builder)
     {
         builder.ToTable("characters");
-        
+
         builder.HasKey(e => e.ID);
         builder.HasOne(e => e.AccountWorld)
             .WithMany(p => p.Characters)

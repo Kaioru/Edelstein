@@ -32,9 +32,9 @@ public class MigrationService : IMigrationService
                 if (existing.DateExpire < now) db.Migrations.Remove(existing);
                 else return new MigrationResponse(MigrationResult.FailedAlreadyStarted);
             }
-            
+
             var entity = _mapper.Map<MigrationEntity>(request.Migration);
-            
+
             entity.DateUpdated = now;
             entity.DateExpire = now.Add(Expiry);
 

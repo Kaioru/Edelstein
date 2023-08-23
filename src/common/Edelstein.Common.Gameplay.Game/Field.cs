@@ -21,21 +21,11 @@ public class Field : AbstractFieldObjectPool, IField
     private readonly IDictionary<FieldObjectType, FieldObjectPool> _pools;
     private readonly IFieldSplit[,] _splits;
 
-    public int ID => Template.ID;
-
-    public IFieldManager Manager { get; }
-    public IFieldTemplate Template { get; }
-    
-    public IFieldGeneratorRegistry Generators { get; }
-
-    public override IReadOnlyCollection<IFieldObject> Objects =>
-        _pools.Values.SelectMany(p => p.Objects).ToImmutableList();
-
     public Field(IFieldManager manager, IFieldTemplate template)
     {
         Manager = manager;
         Template = template;
-        
+
         Generators = new FieldGeneratorRegistry();
 
         _pools = new Dictionary<FieldObjectType, FieldObjectPool>();
@@ -51,7 +41,17 @@ public class Field : AbstractFieldObjectPool, IField
         for (var col = 0; col < splitColCount; col++)
             _splits[row, col] = new FieldSplit(row, col);
     }
-    
+
+    public int ID => Template.ID;
+
+    public IFieldManager Manager { get; }
+    public IFieldTemplate Template { get; }
+
+    public IFieldGeneratorRegistry Generators { get; }
+
+    public override IReadOnlyCollection<IFieldObject> Objects =>
+        _pools.Values.SelectMany(p => p.Objects).ToImmutableList();
+
     public IFieldSplit? GetSplit(IPoint2D position)
     {
         var row = (position.Y - Template.Bounds.Top) / ScreenHeightOffset;
@@ -68,26 +68,6 @@ public class Field : AbstractFieldObjectPool, IField
 
     public IFieldSplit?[] GetEnclosingSplits(IFieldSplit split) =>
         GetEnclosingSplits(split.Row, split.Col);
-    
-
-    private IFieldSplit?[] GetEnclosingSplits(int row, int col)
-    {
-        var splits = new IFieldSplit?[9];
-
-        splits[0] = GetSplit(row - 1, col - 1);
-        splits[1] = GetSplit(row - 1, col);
-        splits[2] = GetSplit(row - 1, col + 1);
-
-        splits[3] = GetSplit(row, col - 1);
-        splits[4] = GetSplit(row, col);
-        splits[5] = GetSplit(row, col + 1);
-
-        splits[6] = GetSplit(row + 1, col - 1);
-        splits[7] = GetSplit(row + 1, col);
-        splits[8] = GetSplit(row + 1, col + 1);
-
-        return splits;
-    }
 
     public IFieldObjectPool? GetPool(FieldObjectType type) =>
         _pools.TryGetValue(type, out var pool)
@@ -161,6 +141,26 @@ public class Field : AbstractFieldObjectPool, IField
 
     public override IFieldObject? GetObject(int id) => Objects.FirstOrDefault(o => o.ObjectID == id);
     public T? GetObject<T>(int id) where T : IFieldObject => Objects.OfType<T>().FirstOrDefault(o => o.ObjectID == id);
+
+
+    private IFieldSplit?[] GetEnclosingSplits(int row, int col)
+    {
+        var splits = new IFieldSplit?[9];
+
+        splits[0] = GetSplit(row - 1, col - 1);
+        splits[1] = GetSplit(row - 1, col);
+        splits[2] = GetSplit(row - 1, col + 1);
+
+        splits[3] = GetSplit(row, col - 1);
+        splits[4] = GetSplit(row, col);
+        splits[5] = GetSplit(row, col + 1);
+
+        splits[6] = GetSplit(row + 1, col - 1);
+        splits[7] = GetSplit(row + 1, col);
+        splits[8] = GetSplit(row + 1, col + 1);
+
+        return splits;
+    }
 
     private IFieldSplit? GetSplit(int row, int col)
     {

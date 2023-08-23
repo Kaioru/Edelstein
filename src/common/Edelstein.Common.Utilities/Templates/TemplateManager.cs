@@ -12,10 +12,10 @@ public class TemplateManager<TTemplate> : ITemplateManager<TTemplate> where TTem
 
     public async Task<TTemplate?> Retrieve(int key) =>
         _providers.TryGetValue(key, out var provider) ? await provider.Provide() : default;
-    
+
     public Task<ITemplateProvider<TTemplate>> Insert(ITemplateProvider<TTemplate> entry) =>
         Task.FromResult(_providers[entry.ID] = entry);
-    
+
     public async Task<ICollection<TTemplate>> RetrieveAll() =>
         await Task.WhenAll(_providers.Values.Select(p => p.Provide()));
 }

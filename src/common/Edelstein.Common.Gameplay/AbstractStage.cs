@@ -7,14 +7,14 @@ namespace Edelstein.Common.Gameplay;
 public abstract class AbstractStage<TStageUser> : IStage<TStageUser>
     where TStageUser : IStageUser<TStageUser>
 {
-    public abstract string ID { get; }
-    
+
     private readonly IRepository<int, TStageUser> _users;
 
-    public IReadOnlyRepository<int, TStageUser> Users => _users;
-    
     protected AbstractStage()
         => _users = new Repository<int, TStageUser>();
+    public abstract string ID { get; }
+
+    public IReadOnlyRepository<int, TStageUser> Users => _users;
 
     public async Task Enter(TStageUser user)
     {

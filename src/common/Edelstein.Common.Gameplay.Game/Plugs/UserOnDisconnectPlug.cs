@@ -9,9 +9,9 @@ namespace Edelstein.Common.Gameplay.Game.Plugs;
 public class UserOnDisconnectPlug : AbstractUserOnDisconnectPlug<IGameStageUser>
 {
     public UserOnDisconnectPlug(
-        ISessionService session, 
-        IAccountRepository accountRepository, 
-        IAccountWorldRepository accountWorldRepository, 
+        ISessionService session,
+        IAccountRepository accountRepository,
+        IAccountWorldRepository accountWorldRepository,
         ICharacterRepository characterRepository
     ) : base(session, accountRepository, accountWorldRepository, characterRepository)
     {

@@ -6,7 +6,7 @@ namespace Edelstein.Common.Gameplay.Models.Characters;
 
 public record CharacterInventories : ICharacterInventories
 {
-    public IItemInventory? this[ItemInventoryType type] => new Dictionary<ItemInventoryType, IItemInventory>()
+    public IItemInventory? this[ItemInventoryType type] => new Dictionary<ItemInventoryType, IItemInventory>
     {
         { ItemInventoryType.Equip, Equip },
         { ItemInventoryType.Consume, Consume },
@@ -14,7 +14,7 @@ public record CharacterInventories : ICharacterInventories
         { ItemInventoryType.Etc, Etc },
         { ItemInventoryType.Cash, Cash }
     }.TryGetValue(type, out var result) ? result : null;
-    
+
     public IItemInventory Equip { get; set; } = new ItemInventory();
     public IItemInventory Consume { get; set; } = new ItemInventory();
     public IItemInventory Install { get; set; } = new ItemInventory();

@@ -9,7 +9,7 @@ public class AccountConfiguration : IEntityTypeConfiguration<AccountEntity>
     public void Configure(EntityTypeBuilder<AccountEntity> builder)
     {
         builder.ToTable("accounts");
-        
+
         builder.HasKey(e => e.ID);
         builder.HasIndex(e => e.Username).IsUnique();
     }

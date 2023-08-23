@@ -1,6 +1,5 @@
 ﻿using Edelstein.Common.Database.Converters;
 using Edelstein.Common.Database.Entities;
-using Edelstein.Common.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,7 +11,7 @@ public class AccountWorldConfiguration : IEntityTypeConfiguration<AccountWorldEn
     public void Configure(EntityTypeBuilder<AccountWorldEntity> builder)
     {
         builder.ToTable("account_worlds");
-        
+
         builder.HasKey(e => e.ID);
         builder.HasOne(e => e.Account)
             .WithMany(p => p.AccountWorlds)

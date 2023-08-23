@@ -9,10 +9,10 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 public class CreateNewCharacterHandler : IPacketHandler<ILoginStageUser>
 {
     private readonly IPipeline<UserOnPacketCreateNewCharacter> _pipeline;
-    
-    public short Operation => (short)PacketRecvOperations.CreateNewCharacter;
 
     public CreateNewCharacterHandler(IPipeline<UserOnPacketCreateNewCharacter> pipeline) => _pipeline = pipeline;
+
+    public short Operation => (short)PacketRecvOperations.CreateNewCharacter;
 
     public bool Check(ILoginStageUser user) => user.State == LoginState.SelectCharacter;
 

@@ -9,9 +9,9 @@ namespace Edelstein.Common.Network.DotNetty.Codecs;
 
 public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
 {
-    private readonly TransportVersion _version;
     private readonly AESCipher _aesCipher;
     private readonly IGCipher _igCipher;
+    private readonly TransportVersion _version;
 
     public NettyPacketEncoder(
         TransportVersion version,
@@ -37,7 +37,7 @@ public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
         if (socket != null)
         {
             var seqSend = socket.SeqSend;
-            var rawSeq = (short)((seqSend >> 16) ^ -(_version.Major + 1));
+            var rawSeq = (short)(seqSend >> 16 ^ -(_version.Major + 1));
 
             if (socket.IsDataEncrypted)
             {

@@ -13,7 +13,7 @@ public static class PacketWriterExtensions
         writable.WriteTo(writer);
         return writer;
     }
-    
+
     public static IPacketWriter WritePoint2D(
         this IPacketWriter writer,
         IPoint2D point

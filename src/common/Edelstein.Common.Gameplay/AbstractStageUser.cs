@@ -6,13 +6,16 @@ using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Common.Gameplay;
 
-public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser> 
+public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser>
     where TStageUser : IStageUser<TStageUser>
 {
+
+    protected AbstractStageUser(ISocket socket)
+        => Socket = socket;
     public int ID => Character?.ID ?? -1;
 
     public ISocket Socket { get; }
-    
+
     public IStage<TStageUser>? Stage { get; set; }
 
     public IAccount? Account { get; set; }
@@ -22,15 +25,12 @@ public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser>
     public long Key { get; set; }
 
     public bool IsMigrating { get; set; }
-    
-    protected AbstractStageUser(ISocket socket)
-        => Socket = socket;
 
     public abstract Task Migrate(string serverID, IPacket? packet = null);
     public abstract Task OnPacket(IPacket packet);
     public abstract Task OnException(Exception exception);
     public abstract Task OnDisconnect();
-    
+
     public Task Dispatch(IPacket packet) => Socket.Dispatch(packet);
 
     public Task Disconnect() => Socket.Close();

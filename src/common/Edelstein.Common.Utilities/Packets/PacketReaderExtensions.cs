@@ -14,7 +14,7 @@ public static class PacketReaderExtensions
         readable.ReadFrom(reader);
         return readable;
     }
-    
+
     public static IPoint2D ReadPoint2D(
         this IPacketReader reader
     ) =>

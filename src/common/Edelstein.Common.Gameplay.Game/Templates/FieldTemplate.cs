@@ -10,28 +10,7 @@ namespace Edelstein.Common.Gameplay.Game.Templates;
 
 public record FieldTemplate : IFieldTemplate
 {
-    public int ID { get; }
 
-    public FieldLimitType Limit { get; }
-
-    public IRectangle2D Bounds { get; }
-
-    public IFieldSpace<IFieldFoothold> Footholds { get; }
-    public IFieldSpace<IFieldPortal> StartPoints { get; }
-    public IFieldSpace<IFieldPortal> Portals { get; }
-
-    public int? FieldReturn { get; }
-    public int? ForcedReturn { get; }
-
-    public string? ScriptFirstUserEnter { get; }
-    public string? ScriptUserEnter { get; }
-
-    public ICollection<IFieldTemplateLife> Life { get; }
-
-    public double MobRate { get; }
-    public int MobCapacityMin { get; }
-    public int MobCapacityMax { get; }
-    
     public FieldTemplate(
         int id,
         IDataNode foothold,
@@ -107,4 +86,25 @@ public record FieldTemplate : IFieldTemplate
         MobCapacityMin = (int)mobCapacity;
         MobCapacityMax = (int)mobCapacity * 2;
     }
+    public int ID { get; }
+
+    public FieldLimitType Limit { get; }
+
+    public IRectangle2D Bounds { get; }
+
+    public IFieldSpace<IFieldFoothold> Footholds { get; }
+    public IFieldSpace<IFieldPortal> StartPoints { get; }
+    public IFieldSpace<IFieldPortal> Portals { get; }
+
+    public int? FieldReturn { get; }
+    public int? ForcedReturn { get; }
+
+    public string? ScriptFirstUserEnter { get; }
+    public string? ScriptUserEnter { get; }
+
+    public ICollection<IFieldTemplateLife> Life { get; }
+
+    public double MobRate { get; }
+    public int MobCapacityMin { get; }
+    public int MobCapacityMax { get; }
 }

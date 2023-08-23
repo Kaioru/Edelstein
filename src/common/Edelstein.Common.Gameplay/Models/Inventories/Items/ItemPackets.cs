@@ -4,7 +4,6 @@ using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Common.Gameplay.Models.Inventories.Items;
 
-
 public static class ItemPackets
 {
     public static void WriteItemData(this IPacketWriter writer, IItemSlot item)

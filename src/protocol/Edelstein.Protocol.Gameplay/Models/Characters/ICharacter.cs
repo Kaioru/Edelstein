@@ -1,5 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Models.Inventories;
-using Edelstein.Protocol.Utilities.Repositories;
+﻿using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Models.Characters;
 

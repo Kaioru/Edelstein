@@ -20,24 +20,7 @@ namespace Edelstein.Common.Gameplay.Game.Objects.User;
 
 public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAction>, IFieldUser
 {
-    public override FieldObjectType Type => FieldObjectType.User;
 
-    public ISocket Socket => StageUser.Socket;
-
-    public IGameStageUser StageUser { get; }
-
-    public IAccount Account { get; }
-    public IAccountWorld AccountWorld { get; }
-    public ICharacter Character { get; }
-    
-    public IConversationContext? Conversation { get; private set; }
-    
-    public bool IsInstantiated { get; set; }
-    public bool IsConversing => Conversation != null;
-    
-    public ICollection<IFieldSplit> Observing { get; }
-    public ICollection<IFieldControllable> Controlled { get; }
-    
     public FieldUser(
         IGameStageUser user,
         IAccount account,
@@ -53,7 +36,23 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         Observing = new List<IFieldSplit>();
         Controlled = new List<IFieldControllable>();
     }
+    public override FieldObjectType Type => FieldObjectType.User;
 
+    public ISocket Socket => StageUser.Socket;
+
+    public IGameStageUser StageUser { get; }
+
+    public IAccount Account { get; }
+    public IAccountWorld AccountWorld { get; }
+    public ICharacter Character { get; }
+
+    public IConversationContext? Conversation { get; private set; }
+
+    public bool IsInstantiated { get; set; }
+    public bool IsConversing => Conversation != null;
+
+    public ICollection<IFieldSplit> Observing { get; }
+    public ICollection<IFieldControllable> Controlled { get; }
 
     public IPacket GetSetFieldPacket()
     {
@@ -163,7 +162,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public Task OnDisconnect() => StageUser.OnDisconnect();
     public Task Dispatch(IPacket packet) => StageUser.Dispatch(packet);
     public Task Disconnect() => StageUser.Disconnect();
-    
+
     public Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt) =>
         Prompt((s1, s2) => prompt.Invoke(s1));
 
@@ -218,7 +217,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         Conversation = null;
         return Task.CompletedTask;
     }
-    
+
     public async Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
     {
         var context = new ModifyInventoryGroupContext(Character.Inventories, StageUser.Context.Templates.Item);

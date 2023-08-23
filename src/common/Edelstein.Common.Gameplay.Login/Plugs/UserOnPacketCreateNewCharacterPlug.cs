@@ -15,8 +15,8 @@ namespace Edelstein.Common.Gameplay.Login.Plugs;
 
 public class UserOnPacketCreateNewCharacterPlug : IPipelinePlug<UserOnPacketCreateNewCharacter>
 {
-    private readonly ILogger _logger;
     private readonly ICharacterRepository _characterRepository;
+    private readonly ILogger _logger;
     private readonly ITemplateManager<IItemTemplate> _templateManager;
 
     public UserOnPacketCreateNewCharacterPlug(

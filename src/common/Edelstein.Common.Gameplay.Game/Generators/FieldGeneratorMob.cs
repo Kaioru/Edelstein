@@ -6,8 +6,7 @@ namespace Edelstein.Common.Gameplay.Game.Generators;
 
 public class FieldGeneratorMob : IFieldGenerator
 {
-    public string ID { get; }
-    
+
     private readonly IField _field;
     private readonly ICollection<IFieldGeneratorUnit> _units;
 
@@ -17,6 +16,7 @@ public class FieldGeneratorMob : IFieldGenerator
         _field = field;
         _units = units;
     }
+    public string ID { get; }
 
     public IEnumerable<IFieldObject> Generate()
     {

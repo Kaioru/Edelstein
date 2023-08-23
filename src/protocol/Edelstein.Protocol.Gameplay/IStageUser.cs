@@ -6,8 +6,7 @@ using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Protocol.Gameplay;
 
-
-public interface IStageUser<TStageUser> : IIdentifiable<int>, IAdapter 
+public interface IStageUser<TStageUser> : IIdentifiable<int>, IAdapter
     where TStageUser : IStageUser<TStageUser>
 {
     IStage<TStageUser>? Stage { get; set; }

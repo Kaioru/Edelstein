@@ -9,9 +9,9 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 public class CheckUserLimitHandler : IPacketHandler<ILoginStageUser>
 {
     private readonly IPipeline<UserOnPacketCheckUserLimit> _pipeline;
-    public short Operation => (short)PacketRecvOperations.CheckUserLimit;
 
     public CheckUserLimitHandler(IPipeline<UserOnPacketCheckUserLimit> pipeline) => _pipeline = pipeline;
+    public short Operation => (short)PacketRecvOperations.CheckUserLimit;
 
     public bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
 

@@ -9,19 +9,6 @@ public class NettySocket : ISocket
 {
     private readonly IChannel _channel;
 
-    public string ID => _channel.Id.AsLongText();
-    
-    public EndPoint AddressLocal => _channel.LocalAddress;
-    public EndPoint AddressRemote => _channel.RemoteAddress;
-    
-    public uint SeqSend { get; set; }
-    public uint SeqRecv { get; set; }
-    
-    public bool IsDataEncrypted { get; }
-    
-    public DateTime LastAliveSent { get; set; }
-    public DateTime LastAliveRecv { get; set; }
-
     public NettySocket(IChannel channel, uint seqSend, uint seqRecv, bool isDataEncrypted = true)
     {
         _channel = channel;
@@ -30,10 +17,24 @@ public class NettySocket : ISocket
         IsDataEncrypted = isDataEncrypted;
     }
 
-    public async Task Dispatch(IPacket packet) {
+    public string ID => _channel.Id.AsLongText();
+
+    public EndPoint AddressLocal => _channel.LocalAddress;
+    public EndPoint AddressRemote => _channel.RemoteAddress;
+
+    public uint SeqSend { get; set; }
+    public uint SeqRecv { get; set; }
+
+    public bool IsDataEncrypted { get; }
+
+    public DateTime LastAliveSent { get; set; }
+    public DateTime LastAliveRecv { get; set; }
+
+    public async Task Dispatch(IPacket packet)
+    {
         if (_channel.IsWritable)
             await _channel.WriteAndFlushAsync(packet);
     }
-    
+
     public Task Close() => _channel.DisconnectAsync();
 }

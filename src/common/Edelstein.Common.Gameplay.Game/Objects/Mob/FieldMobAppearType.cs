@@ -9,4 +9,3 @@ public enum FieldMobAppearType
     Delay = -0x5,
     Effect = 0x0
 }
-

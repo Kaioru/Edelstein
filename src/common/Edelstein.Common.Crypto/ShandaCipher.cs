@@ -77,13 +77,13 @@ public class ShandaCipher
 
     private static byte RollLeft(byte value, int shift)
     {
-        var num = (uint)(value << (shift % 8));
-        return (byte)((num & 0xff) | (num >> 8));
+        var num = (uint)(value << shift % 8);
+        return (byte)(num & 0xff | num >> 8);
     }
 
     private static byte RollRight(byte value, int shift)
     {
-        var num = (uint)((value << 8) >> (shift % 8));
-        return (byte)((num & 0xff) | (num >> 8));
+        var num = (uint)(value << 8 >> shift % 8);
+        return (byte)(num & 0xff | num >> 8);
     }
 }

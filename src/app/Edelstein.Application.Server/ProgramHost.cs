@@ -45,12 +45,12 @@ public class ProgramHost : IHostedService
         var programScope = _scope.BeginLifetimeScope(b =>
         {
             var assemblies = new List<Assembly> { Assembly.GetAssembly(typeof(AbstractStage<>))! };
-            
+
             if (_config.LoginStages.Count > 0)
                 assemblies.Add(Assembly.GetAssembly(typeof(LoginStage))!);
             if (_config.GameStages.Count > 0)
                 assemblies.Add(Assembly.GetAssembly(typeof(GameStage))!);
-            
+
             b
                 .RegisterAssemblyTypes(assemblies.ToArray())
                 .Where(t => t.IsClass && t.IsAssignableTo(typeof(ITemplateLoader)))
@@ -58,20 +58,20 @@ public class ProgramHost : IHostedService
                 .SingleInstance();
         });
         var stages = new List<ProgramConfigStage>();
-        
+
         stages.AddRange(_config.LoginStages);
         stages.AddRange(_config.GameStages);
-        
+
         foreach (var stage in stages)
         {
             await using var stageScope = programScope.BeginLifetimeScope(b =>
             {
                 b.RegisterGeneric(typeof(PacketHandlerManager<>)).As(typeof(IPacketHandlerManager<>)).SingleInstance();
                 b.RegisterGeneric(typeof(Pipeline<>)).As(typeof(IPipeline<>)).SingleInstance();
-                
+
                 b
                     .Register(c => new NettyTransportAcceptor(
-                        c.Resolve<IAdapterInitializer>(), 
+                        c.Resolve<IAdapterInitializer>(),
                         new TransportVersion(stage.Version, stage.Patch, stage.Locale))
                     )
                     .As<ITransportAcceptor>()
@@ -84,7 +84,7 @@ public class ProgramHost : IHostedService
                     c.Resolve<ITransportAcceptor>(),
                     stage
                 )).As<IBootstrap>().SingleInstance();
-                
+
                 switch (stage)
                 {
                     case ILoginStageOptions options:
@@ -98,7 +98,7 @@ public class ProgramHost : IHostedService
                             .Where(t => t.IsClass)
                             .AsClosedTypesOf(typeof(IPipelinePlug<>))
                             .SingleInstance();
-                        
+
                         b
                             .RegisterInstance(options)
                             .As<ILoginStageOptions>()
@@ -134,7 +134,7 @@ public class ProgramHost : IHostedService
                             .SingleInstance();
 
                         b.RegisterType<FieldManager>().As<IFieldManager>().SingleInstance();
-                        
+
                         b
                             .RegisterInstance(options)
                             .As<IGameStageOptions>()
@@ -159,11 +159,11 @@ public class ProgramHost : IHostedService
                         break;
                 }
             });
-            
+
             foreach (var bootstrap in stageScope.Resolve<IEnumerable<IBootstrap>>())
                 _bootstraps.Add(bootstrap);
         }
-        
+
         _bootstraps.Add(new InitDatabaseBootstrap(
             programScope.Resolve<ILogger<InitDatabaseBootstrap>>(),
             programScope.Resolve<IDbContextFactory<GameplayDbContext>>(),
@@ -173,10 +173,10 @@ public class ProgramHost : IHostedService
         ));
         _bootstraps.Add(new InitTickerBootstrap(programScope.Resolve<ITickerManager>()));
         _bootstraps.Add(new LoadTemplateBootstrap(
-            programScope.Resolve<ILogger<LoadTemplateBootstrap>>(), 
+            programScope.Resolve<ILogger<LoadTemplateBootstrap>>(),
             programScope.Resolve<IEnumerable<ITemplateLoader>>())
         );
-        
+
         foreach (var bootstrap in _bootstraps.OrderBy(b => b.Priority))
             await bootstrap.Start();
     }

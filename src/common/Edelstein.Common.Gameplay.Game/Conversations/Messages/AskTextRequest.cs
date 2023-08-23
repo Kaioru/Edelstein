@@ -11,8 +11,6 @@ public class AskTextRequest : AbstractConversationMessageRequest<string>
     private readonly short _minLength;
     private readonly string _text;
 
-    public override ConversationMessageType Type => ConversationMessageType.AskText;
-
     public AskTextRequest(
         IConversationSpeaker speaker,
         string text, string @default, short minLength, short maxLength
@@ -23,6 +21,8 @@ public class AskTextRequest : AbstractConversationMessageRequest<string>
         _minLength = minLength;
         _maxLength = maxLength;
     }
+
+    public override ConversationMessageType Type => ConversationMessageType.AskText;
 
     protected override void WriteData(IPacketWriter writer)
     {

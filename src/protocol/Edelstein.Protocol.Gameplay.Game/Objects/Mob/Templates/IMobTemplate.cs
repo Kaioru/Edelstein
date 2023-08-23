@@ -20,4 +20,3 @@ public interface IMobTemplate : ITemplate
 
     int EXP { get; }
 }
-

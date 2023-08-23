@@ -11,13 +11,13 @@ public abstract class AbstractFieldControllable<TMovePath, TMoveAction> :
     where TMovePath : IMovePath<TMoveAction>
     where TMoveAction : IMoveAction
 {
-    public IFieldController? Controller { get; private set; }
 
     protected AbstractFieldControllable(
         TMoveAction action, IPoint2D position, IFieldFoothold? foothold = null
     ) : base(action, position, foothold)
     {
     }
+    public IFieldController? Controller { get; private set; }
 
     public async Task Control(IFieldController? controller = null)
     {

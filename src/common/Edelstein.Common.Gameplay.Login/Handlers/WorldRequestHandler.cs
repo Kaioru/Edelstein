@@ -6,12 +6,12 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Login.Handlers;
 
-public class WorldRequestHandler: IPacketHandler<ILoginStageUser>
+public class WorldRequestHandler : IPacketHandler<ILoginStageUser>
 {
     private readonly IPipeline<UserOnPacketWorldRequest> _pipeline;
-    public short Operation => (short)PacketRecvOperations.WorldRequest;
 
     public WorldRequestHandler(IPipeline<UserOnPacketWorldRequest> pipeline) => _pipeline = pipeline;
+    public short Operation => (short)PacketRecvOperations.WorldRequest;
 
     public bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
 

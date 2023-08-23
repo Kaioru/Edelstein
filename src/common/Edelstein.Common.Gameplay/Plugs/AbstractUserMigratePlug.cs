@@ -7,17 +7,17 @@ using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Plugs;
 
-public abstract class AbstractUserMigratePlug<TStage, TStageUser> : IPipelinePlug<UserMigrate<TStageUser>> 
+public abstract class AbstractUserMigratePlug<TStage, TStageUser> : IPipelinePlug<UserMigrate<TStageUser>>
     where TStage : IStage<TStageUser>
     where TStageUser : class, IStageUser<TStageUser>
 {
     private readonly ILogger _logger;
-    private readonly TStage _stage;
     private readonly IMigrationService _migrationService;
+    private readonly TStage _stage;
 
     public AbstractUserMigratePlug(
         ILogger<AbstractUserMigratePlug<TStage, TStageUser>> logger,
-        TStage stage, 
+        TStage stage,
         IMigrationService migrationService
     )
     {
@@ -28,7 +28,7 @@ public abstract class AbstractUserMigratePlug<TStage, TStageUser> : IPipelinePlu
 
     public async Task Handle(IPipelineContext ctx, UserMigrate<TStageUser> message)
     {
-        
+
         if (message.User.Account == null || message.User.AccountWorld == null || message.User.Character == null)
         {
             await message.User.Disconnect();
@@ -58,7 +58,7 @@ public abstract class AbstractUserMigratePlug<TStage, TStageUser> : IPipelinePlu
         }
 
         message.User.IsMigrating = true;
-        if (message.Packet != null) 
+        if (message.Packet != null)
             await message.User.Dispatch(message.Packet);
         _logger.LogDebug(
             "Migrated out character {Name} from service {From} to service {To} ",

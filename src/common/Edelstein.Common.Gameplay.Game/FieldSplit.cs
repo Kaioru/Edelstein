@@ -11,12 +11,6 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
     private readonly ICollection<IFieldObject> _objects;
     private readonly ICollection<IFieldSplitObserver> _observers;
 
-    public int Row { get; }
-    public int Col { get; }
-
-    public override IReadOnlyCollection<IFieldObject> Objects => _objects.ToImmutableList();
-    public IReadOnlyCollection<IFieldSplitObserver> Observers => _observers.ToImmutableList();
-
     public FieldSplit(int row, int col)
     {
         Row = row;
@@ -24,6 +18,12 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
         _objects = new List<IFieldObject>();
         _observers = new List<IFieldSplitObserver>();
     }
+
+    public int Row { get; }
+    public int Col { get; }
+
+    public override IReadOnlyCollection<IFieldObject> Objects => _objects.ToImmutableList();
+    public IReadOnlyCollection<IFieldSplitObserver> Observers => _observers.ToImmutableList();
 
     public override Task Enter(IFieldObject obj) => Enter(obj, null);
     public override Task Leave(IFieldObject obj) => Leave(obj, null);

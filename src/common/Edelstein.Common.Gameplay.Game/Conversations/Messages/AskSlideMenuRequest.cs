@@ -10,8 +10,6 @@ public class AskSlideMenuRequest : AbstractConversationMessageRequest<int>
     private readonly int _selected;
     private readonly int _slideMenuType;
 
-    public override ConversationMessageType Type => ConversationMessageType.AskSlideMenu;
-
     public AskSlideMenuRequest(
         IConversationSpeaker speaker,
         int slideMenuType, int selected, IDictionary<int, string> menu
@@ -21,6 +19,8 @@ public class AskSlideMenuRequest : AbstractConversationMessageRequest<int>
         _selected = selected;
         _menu = menu;
     }
+
+    public override ConversationMessageType Type => ConversationMessageType.AskSlideMenu;
 
     public override bool Check(int response) => _menu.ContainsKey(response);
 

@@ -26,7 +26,7 @@ public class UserOnPacketWorldRequestPlug : IPipelinePlug<UserOnPacketWorldReque
         _templates = templates;
         _serverService = serverService;
     }
-    
+
     public async Task Handle(IPipelineContext ctx, UserOnPacketWorldRequest message)
     {
         var worlds = message.User.Context.Options.Worlds;

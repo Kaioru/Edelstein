@@ -9,4 +9,3 @@ public enum ServerResult
     FailedNotRegistered = 0x4,
     FailedNotFound = 0x5
 }
-

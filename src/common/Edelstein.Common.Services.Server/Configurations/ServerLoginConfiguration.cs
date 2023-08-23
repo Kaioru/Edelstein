@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Edelstein.Common.Services.Server.Configurations;
 
-public class ServerLoginConfiguration: IEntityTypeConfiguration<ServerLoginEntity>
+public class ServerLoginConfiguration : IEntityTypeConfiguration<ServerLoginEntity>
 {
     public void Configure(EntityTypeBuilder<ServerLoginEntity> builder)
     {

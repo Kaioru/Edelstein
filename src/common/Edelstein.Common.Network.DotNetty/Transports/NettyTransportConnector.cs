@@ -14,8 +14,8 @@ namespace Edelstein.Common.Network.DotNetty.Transports;
 public class NettyTransportConnector : ITransportConnector
 {
     private readonly IAdapterInitializer _initializer;
-    private readonly TransportVersion _version;
     private readonly IRepository<string, ISocket> _sockets;
+    private readonly TransportVersion _version;
 
     public NettyTransportConnector(IAdapterInitializer initializer, TransportVersion version)
     {
@@ -24,11 +24,11 @@ public class NettyTransportConnector : ITransportConnector
         _sockets = new Repository<string, ISocket>();
     }
 
-    public async Task<ITransportContext> Connect(string host, int port) 
+    public async Task<ITransportContext> Connect(string host, int port)
     {
         var aesCipher = new AESCipher();
         var igCipher = new IGCipher();
-        
+
         var group0 = new MultithreadEventLoopGroup();
         var channel = await new Bootstrap()
             .Group(group0)

@@ -9,9 +9,9 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 public class UserChatHandler : AbstractFieldHandler
 {
     private readonly IPipeline<FieldOnPacketUserChat> _pipeline;
-    public override short Operation => (short)PacketRecvOperations.UserChat;
 
     public UserChatHandler(IPipeline<FieldOnPacketUserChat> pipeline) => _pipeline = pipeline;
+    public override short Operation => (short)PacketRecvOperations.UserChat;
 
     protected override Task Handle(IFieldUser user, IPacketReader reader)
     {

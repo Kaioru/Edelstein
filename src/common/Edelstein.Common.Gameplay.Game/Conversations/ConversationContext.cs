@@ -11,7 +11,6 @@ public class ConversationContext : IConversationContext
 {
     private readonly IAdapter _adapter;
     private readonly Channel<object> _channel;
-    public CancellationTokenSource TokenSource { get; }
 
     public ConversationContext(IAdapter adapter)
     {
@@ -22,6 +21,7 @@ public class ConversationContext : IConversationContext
             FullMode = BoundedChannelFullMode.DropWrite
         });
     }
+    public CancellationTokenSource TokenSource { get; }
 
     public async Task<T> Request<T>(IConversationMessageRequest<T> messageRequest)
     {

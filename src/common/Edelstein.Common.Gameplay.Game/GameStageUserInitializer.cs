@@ -3,7 +3,7 @@ using Edelstein.Protocol.Network;
 
 namespace Edelstein.Common.Gameplay.Game;
 
-public class GameStageUserInitializer: IAdapterInitializer
+public class GameStageUserInitializer : IAdapterInitializer
 {
     private readonly GameContext _context;
 

@@ -12,7 +12,7 @@ public interface IField : IIdentifiable<int>, IFieldObjectPool
 {
     IFieldManager Manager { get; }
     IFieldTemplate Template { get; }
-    
+
     IFieldGeneratorRegistry Generators { get; }
 
     IFieldSplit? GetSplit(IPoint2D position);

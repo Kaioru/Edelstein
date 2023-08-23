@@ -9,10 +9,10 @@ namespace Edelstein.Common.Network.DotNetty.Handlers;
 
 public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
 {
-    private readonly TransportVersion _version;
     private readonly IAdapterInitializer _initializer;
     private readonly IRepository<string, ISocket> _sockets;
-    
+    private readonly TransportVersion _version;
+
     public NettyTransportAcceptorHandler(TransportVersion version, IAdapterInitializer initializer, IRepository<string, ISocket> sockets)
     {
         _version = version;
@@ -38,7 +38,7 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
         handshake.WriteByte(_version.Locale);
 
         _ = newSocket.Dispatch(
-            new PacketWriter()  
+            new PacketWriter()
                 .WriteShort(_version.Major)
                 .WriteString(_version.Patch)
                 .WriteInt((int)newSocket.SeqRecv)
@@ -61,7 +61,7 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
         base.ChannelInactive(context);
 
         if (adapter == null) return;
-        
+
         _ = _sockets.Delete(adapter.Socket);
     }
 

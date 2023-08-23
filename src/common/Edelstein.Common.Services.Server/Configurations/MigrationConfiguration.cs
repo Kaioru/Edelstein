@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Edelstein.Common.Services.Server.Configurations;
 
-public class MigrationConfiguration: IEntityTypeConfiguration<MigrationEntity>
+public class MigrationConfiguration : IEntityTypeConfiguration<MigrationEntity>
 {
     public void Configure(EntityTypeBuilder<MigrationEntity> builder)
     {
         builder.ToTable("migrations");
-        
+
         builder.HasKey(m => m.AccountID);
         builder.HasKey(m => m.CharacterID);
         builder
@@ -28,7 +28,7 @@ public class MigrationConfiguration: IEntityTypeConfiguration<MigrationEntity>
             .OnDelete(DeleteBehavior.Cascade);
 
         var serializer = new CerasSerializer();
-        
+
         builder
             .Property(e => e.Account)
             .HasConversion(new BinaryConverter<IAccount>(serializer));

@@ -10,8 +10,8 @@ namespace Edelstein.Common.Gameplay.Plugs;
 public abstract class AbstractStageStartAliveTickerPlug<TStageUser> : IPipelinePlug<StageStart>, ITickable
     where TStageUser : class, IStageUser<TStageUser>
 {
-    private readonly ITickerManager _ticker;
     private readonly IStage<TStageUser> _stage;
+    private readonly ITickerManager _ticker;
 
     public AbstractStageStartAliveTickerPlug(ITickerManager ticker, IStage<TStageUser> stage)
     {

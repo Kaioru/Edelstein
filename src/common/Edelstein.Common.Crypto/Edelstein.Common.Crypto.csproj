@@ -4,6 +4,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <Import Project="..\Common.targets" />
+  <Import Project="..\Common.targets"/>
 
 </Project>

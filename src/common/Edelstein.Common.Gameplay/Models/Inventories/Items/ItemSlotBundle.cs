@@ -9,7 +9,7 @@ public record ItemSlotBundle : ItemSlotBase, IItemSlotBundle
 
     public string Title { get; set; }
 
-    public bool MergeableWith(IItemSlotBundle bundle) => 
+    public bool MergeableWith(IItemSlotBundle bundle) =>
         Number == bundle.Number &&
         Attribute == bundle.Attribute &&
         Title == bundle.Title &&

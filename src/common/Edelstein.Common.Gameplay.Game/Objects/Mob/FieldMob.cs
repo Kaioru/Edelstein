@@ -11,10 +11,7 @@ namespace Edelstein.Common.Gameplay.Game.Objects.Mob;
 
 public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMoveAction>, IFieldMob, IPacketWritable
 {
-    public override FieldObjectType Type => FieldObjectType.Mob;
 
-    public IMobTemplate Template { get; }
-    
     public FieldMob(
         IMobTemplate template,
         IPoint2D position,
@@ -22,6 +19,9 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
         bool isFacingLeft = true
     ) : base(new FieldMobMoveAction(template.MoveAbility, isFacingLeft), position, foothold) =>
         Template = template;
+    public override FieldObjectType Type => FieldObjectType.Mob;
+
+    public IMobTemplate Template { get; }
 
     public override IPacket GetEnterFieldPacket() => GetEnterFieldPacket(FieldMobAppearType.Normal);
 

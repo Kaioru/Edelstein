@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\Common.targets" />
+  <Import Project="..\Common.targets"/>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Login\Edelstein.Protocol.Gameplay.Login.csproj" />
-    <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Login\Edelstein.Protocol.Gameplay.Login.csproj"/>
+    <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
   </ItemGroup>
 
 </Project>
