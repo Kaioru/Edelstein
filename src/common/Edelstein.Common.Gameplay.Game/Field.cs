@@ -1,6 +1,8 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Game.Generators;
 using Edelstein.Common.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Gameplay.Game.Generators;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Templates;
@@ -23,6 +25,8 @@ public class Field : AbstractFieldObjectPool, IField
 
     public IFieldManager Manager { get; }
     public IFieldTemplate Template { get; }
+    
+    public IFieldGeneratorRegistry Generators { get; }
 
     public override IReadOnlyCollection<IFieldObject> Objects =>
         _pools.Values.SelectMany(p => p.Objects).ToImmutableList();
@@ -31,6 +35,8 @@ public class Field : AbstractFieldObjectPool, IField
     {
         Manager = manager;
         Template = template;
+        
+        Generators = new FieldGeneratorRegistry();
 
         _pools = new Dictionary<FieldObjectType, FieldObjectPool>();
         foreach (var type in Enum.GetValues<FieldObjectType>())
@@ -144,7 +150,13 @@ public class Field : AbstractFieldObjectPool, IField
         obj.Field = null;
 
         if (pool != null) await pool.Leave(obj);
-        if (obj.FieldSplit != null) await obj.FieldSplit.Leave(obj);
+        if (obj.FieldSplit != null)
+        {
+            if (obj is IFieldSplitObserver observer)
+                foreach (var split in observer.Observing.ToImmutableList())
+                    await split.Unobserve(observer);
+            await obj.FieldSplit.Leave(obj);
+        }
     }
 
     public override IFieldObject? GetObject(int id) => Objects.FirstOrDefault(o => o.ObjectID == id);

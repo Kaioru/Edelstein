@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Objects;
+﻿using Edelstein.Protocol.Gameplay.Game.Generators;
+using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Packets;
@@ -11,6 +12,8 @@ public interface IField : IIdentifiable<int>, IFieldObjectPool
 {
     IFieldManager Manager { get; }
     IFieldTemplate Template { get; }
+    
+    IFieldGeneratorRegistry Generators { get; }
 
     IFieldSplit? GetSplit(IPoint2D position);
     IFieldSplit?[] GetEnclosingSplits(IPoint2D position);

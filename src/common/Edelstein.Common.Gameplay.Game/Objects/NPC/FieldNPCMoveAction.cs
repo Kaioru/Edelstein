@@ -1,14 +1,14 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Movements;
-using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 
-namespace Edelstein.Common.Gameplay.Game.Objects.User;
+namespace Edelstein.Common.Gameplay.Game.Objects.NPC;
 
-public readonly struct FieldUserMoveAction : IFieldUserMoveAction
+public class FieldNPCMoveAction : IFieldNPCMoveAction
 {
     public MoveActionType Type => (MoveActionType)((Raw >> 1) & 0x1F);
     public MoveActionDirection Direction => (MoveActionDirection)(Raw & 1);
 
     public byte Raw { get; }
     
-    public FieldUserMoveAction(byte raw) => Raw = raw;
+    public FieldNPCMoveAction(byte raw) => Raw = raw;
 }

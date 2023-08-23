@@ -23,12 +23,12 @@ public class LoadTemplateBootstrap : IBootstrap
 
     public async Task Start()
     {
-        var stopwatch = new Stopwatch();
-
         foreach (var loader in _loaders)
         {
+            var stopwatch = new Stopwatch();
+            
             stopwatch.Start();
-
+            
             var count = await loader.Load();
 
             _logger.LogInformation(

@@ -12,13 +12,13 @@ public abstract class AbstractMovePath<TMoveAction> : IMovePath<TMoveAction> whe
     private IPoint2D _position;
     private IPoint2D _vPosition;
 
-    protected AbstractMovePath() => _fragments = new List<AbstractMovePathFragment<TMoveAction>>();
-
     public byte? ActionRaw { get; set; }
 
     public TMoveAction? Action { get; set; }
     public IPoint2D? Position { get; set; }
     public int? FootholdID { get; set; }
+    
+    protected AbstractMovePath() => _fragments = new List<AbstractMovePathFragment<TMoveAction>>();
 
     public virtual void ReadFrom(IPacketReader reader)
     {

@@ -32,18 +32,16 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
             return;
         }
 
-        user.Stage = this;
         user.FieldUser = fieldUser;
 
         await field.Enter(fieldUser);
+        await base.Enter(user);
     }
 
     public async Task Leave(IGameStageUser user)
     {
-        user.Stage = null;
-
         if (user.Field != null && user.FieldUser != null)
             await user.Field.Leave(user.FieldUser);
+        await base.Leave(user);
     }
-
 }
