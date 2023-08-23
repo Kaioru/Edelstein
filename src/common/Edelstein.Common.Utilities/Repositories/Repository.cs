@@ -11,21 +11,21 @@ public class Repository<TKey, TEntry> : IRepository<TKey, TEntry>
 
     public Repository() => _dictionary = new ConcurrentDictionary<TKey, TEntry>();
 
-    public Task<TEntry?> Retrieve(TKey key)
+    public virtual Task<TEntry?> Retrieve(TKey key)
         => Task.FromResult(_dictionary.TryGetValue(key, out var result) ? result : default);
 
-    public Task<TEntry> Insert(TEntry entry)
+    public virtual Task<TEntry> Insert(TEntry entry)
         => Task.FromResult(_dictionary[entry.ID] = entry);
 
-    public Task<TEntry> Update(TEntry entry)
+    public virtual Task<TEntry> Update(TEntry entry)
         => Task.FromResult(_dictionary[entry.ID] = entry);
 
-    public Task Delete(TKey key)
+    public virtual Task Delete(TKey key)
         => Task.FromResult(_dictionary.Remove(key));
 
-    public Task Delete(TEntry entry)
+    public virtual Task Delete(TEntry entry)
         => Task.FromResult(_dictionary.Remove(entry.ID));
 
-    public Task<ICollection<TEntry>> RetrieveAll()
+    public virtual Task<ICollection<TEntry>> RetrieveAll()
         => Task.FromResult(_dictionary.Values);
 }

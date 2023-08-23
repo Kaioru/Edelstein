@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
+﻿using Edelstein.Common.Gameplay.Game.Conversations;
+using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
@@ -8,15 +9,15 @@ namespace Edelstein.Common.Gameplay.Game.Plugs;
 
 public class FieldOnPacketUserSelectNPCPlug : IPipelinePlug<FieldOnPacketUserSelectNPC>
 {
-    private readonly IConversationManager _manager;
+    private readonly INamedConversationManager _manager;
     
-    public FieldOnPacketUserSelectNPCPlug(IConversationManager manager) => _manager = manager;
+    public FieldOnPacketUserSelectNPCPlug(INamedConversationManager manager) => _manager = manager;
 
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserSelectNPC message)
     {
         var script = message.NPC.Template.Scripts.FirstOrDefault()?.Script;
         if (script == null) return;
-        var conversation = await _manager.Create(script);
+        var conversation = await _manager.Retrieve(script) as IConversation ?? new FallbackConversation(script);
 
         _ = message.User.Converse(
             conversation,
