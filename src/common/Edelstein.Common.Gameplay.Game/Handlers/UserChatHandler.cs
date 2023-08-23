@@ -6,19 +6,14 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Handlers;
 
-public class UserChatHandler : AbstractFieldHandler
+public class UserChatHandler : AbstractPipedFieldHandler<FieldOnPacketUserChat>
 {
-    private readonly IPipeline<FieldOnPacketUserChat> _pipeline;
-
-    public UserChatHandler(IPipeline<FieldOnPacketUserChat> pipeline) => _pipeline = pipeline;
+    public UserChatHandler(IPipeline<FieldOnPacketUserChat?> pipeline) : base(pipeline)
+    {
+    }
+    
     public override short Operation => (short)PacketRecvOperations.UserChat;
 
-    protected override Task Handle(IFieldUser user, IPacketReader reader)
-    {
-        _ = reader.ReadInt();
-
-        var message = new FieldOnPacketUserChat(user, reader.ReadString(), reader.ReadBool());
-
-        return _pipeline.Process(message);
-    }
+    protected override FieldOnPacketUserChat? Serialize(IFieldUser user, IPacketReader reader)
+        => new(user, reader.ReadString(), reader.ReadBool());
 }

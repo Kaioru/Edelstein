@@ -9,18 +9,14 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Handlers;
 
-public class NPCMoveHandler : AbstractFieldNPCHandler
+public class NPCMoveHandler : AbstractPipedFieldNPCHandler<FieldOnPacketNPCMove>
 {
-    private readonly IPipeline<FieldOnPacketNPCMove> _pipeline;
-
-    public NPCMoveHandler(IPipeline<FieldOnPacketNPCMove> pipeline) => _pipeline = pipeline;
-
+    public NPCMoveHandler(IPipeline<FieldOnPacketNPCMove?> pipeline) : base(pipeline)
+    {
+    }
+    
     public override short Operation => (short)PacketRecvOperations.NpcMove;
 
-    protected override Task Handle(IFieldUser user, IFieldNPC npc, IPacketReader reader)
-    {
-        var message = new FieldOnPacketNPCMove(user, npc, reader.Read(new FieldNPCMovePath(npc.Template.Move)));
-
-        return _pipeline.Process(message);
-    }
+    protected override FieldOnPacketNPCMove? Serialize(IFieldUser user, IFieldNPC npc, IPacketReader reader)
+        => new(user, npc, reader.Read(new FieldNPCMovePath(npc.Template.Move)));
 }

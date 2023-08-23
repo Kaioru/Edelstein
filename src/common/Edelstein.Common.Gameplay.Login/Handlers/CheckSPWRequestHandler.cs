@@ -6,28 +6,23 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Login.Handlers;
 
-public class CheckSPWRequestHandler : IPacketHandler<ILoginStageUser>
+public class CheckSPWRequestHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketCheckSPWRequest>
 {
-    private readonly IPipeline<UserOnPacketCheckSPWRequest> _pipeline;
-
-    public CheckSPWRequestHandler(IPipeline<UserOnPacketCheckSPWRequest> pipeline) => _pipeline = pipeline;
-
-    public short Operation => (short)PacketRecvOperations.CheckSPWRequest;
-
-    public bool Check(ILoginStageUser user) =>
-        user.State == LoginState.SelectCharacter &&
-        user.Account?.SPW != null;
-
-    public Task Handle(ILoginStageUser user, IPacketReader reader)
+    public CheckSPWRequestHandler(IPipeline<UserOnPacketCheckSPWRequest?> pipeline) : base(pipeline)
     {
-        var message = new UserOnPacketCheckSPWRequest(
+    }
+    
+    public override short Operation => (short)PacketRecvOperations.CheckSPWRequest;
+
+    public override bool Check(ILoginStageUser user) =>
+        user is { State: LoginState.SelectCharacter, Account.SPW: { } };
+
+    public override UserOnPacketCheckSPWRequest Serialize(ILoginStageUser user, IPacketReader reader)
+        => new(
             user,
             reader.ReadString(),
             reader.ReadInt(),
             reader.ReadString(),
             reader.ReadString()
         );
-
-        return _pipeline.Process(message);
-    }
 }

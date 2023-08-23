@@ -6,17 +6,19 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Handlers;
 
-public abstract class AbstractAliveAckHandler<TStageUser> : IPacketHandler<TStageUser>
+public abstract class AbstractAliveAckHandler<TStageUser> : 
+    AbstractPipedPacketHandler<TStageUser, UserOnPacketAliveAck<TStageUser>>, 
+    IPacketHandler<TStageUser>
     where TStageUser : IStageUser<TStageUser>
 {
-    private readonly IPipeline<UserOnPacketAliveAck<TStageUser>> _pipeline;
+    protected AbstractAliveAckHandler(IPipeline<UserOnPacketAliveAck<TStageUser>?> pipeline) : base(pipeline)
+    {
+    }
+    
+    public override short Operation => (short)PacketRecvOperations.AliveAck;
 
-    protected AbstractAliveAckHandler(IPipeline<UserOnPacketAliveAck<TStageUser>> pipeline) => _pipeline = pipeline;
-
-    public short Operation => (short)PacketRecvOperations.AliveAck;
-
-    public bool Check(TStageUser user) => user.Stage != null;
-
-    public Task Handle(TStageUser user, IPacketReader reader) =>
-        _pipeline.Process(new UserOnPacketAliveAck<TStageUser>(user, DateTime.UtcNow));
+    public override bool Check(TStageUser user) => user.Stage != null;
+    
+    public override UserOnPacketAliveAck<TStageUser> Serialize(TStageUser user, IPacketReader reader) 
+        => new(user, DateTime.UtcNow);
 }

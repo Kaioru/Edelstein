@@ -8,25 +8,14 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Handlers;
 
-public class UserMoveHandler : AbstractFieldHandler
+public class UserMoveHandler : AbstractPipedFieldHandler<FieldOnPacketUserMove>
 {
-    private readonly IPipeline<FieldOnPacketUserMove> _pipeline;
-
-    public UserMoveHandler(IPipeline<FieldOnPacketUserMove> pipeline) => _pipeline = pipeline;
-
+    public UserMoveHandler(IPipeline<FieldOnPacketUserMove?> pipeline) : base(pipeline)
+    {
+    }
+    
     public override short Operation => (short)PacketRecvOperations.UserMove;
 
-    protected override Task Handle(IFieldUser user, IPacketReader reader)
-    {
-        _ = reader.ReadLong();
-        _ = reader.ReadByte();
-        _ = reader.ReadLong();
-        _ = reader.ReadInt();
-        _ = reader.ReadInt();
-        _ = reader.ReadInt();
-
-        var message = new FieldOnPacketUserMove(user, reader.Read(new FieldUserMovePath()));
-
-        return _pipeline.Process(message);
-    }
+    protected override FieldOnPacketUserMove? Serialize(IFieldUser user, IPacketReader reader)
+        => new(user, reader.Skip(29).Read(new FieldUserMovePath()));
 }

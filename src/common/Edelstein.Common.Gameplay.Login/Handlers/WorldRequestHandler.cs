@@ -6,15 +6,16 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Login.Handlers;
 
-public class WorldRequestHandler : IPacketHandler<ILoginStageUser>
+public class WorldRequestHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketWorldRequest>
 {
-    private readonly IPipeline<UserOnPacketWorldRequest> _pipeline;
+    public WorldRequestHandler(IPipeline<UserOnPacketWorldRequest?> pipeline) : base(pipeline)
+    {
+    }
+    
+    public override short Operation => (short)PacketRecvOperations.WorldRequest;
 
-    public WorldRequestHandler(IPipeline<UserOnPacketWorldRequest> pipeline) => _pipeline = pipeline;
-    public short Operation => (short)PacketRecvOperations.WorldRequest;
+    public override bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
 
-    public bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
-
-    public Task Handle(ILoginStageUser user, IPacketReader reader) =>
-        _pipeline.Process(new UserOnPacketWorldRequest(user));
+    public override UserOnPacketWorldRequest Serialize(ILoginStageUser user, IPacketReader reader) 
+        => new(user);
 }

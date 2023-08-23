@@ -6,24 +6,20 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Login.Handlers;
 
-public class CheckPasswordHandler : IPacketHandler<ILoginStageUser>
-{
-    private readonly IPipeline<UserOnPacketCheckPassword> _pipeline;
-
-    public CheckPasswordHandler(IPipeline<UserOnPacketCheckPassword> pipeline) => _pipeline = pipeline;
-
-    public short Operation => (short)PacketRecvOperations.CheckPassword;
-
-    public bool Check(ILoginStageUser user) => user.State == LoginState.CheckPassword;
-
-    public Task Handle(ILoginStageUser user, IPacketReader reader)
+public class CheckPasswordHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketCheckPassword>
+{    
+    public CheckPasswordHandler(IPipeline<UserOnPacketCheckPassword?> pipeline) : base(pipeline)
     {
-        var message = new UserOnPacketCheckPassword(
+    }
+    
+    public override short Operation => (short)PacketRecvOperations.CheckPassword;
+
+    public override bool Check(ILoginStageUser user) => user.State == LoginState.CheckPassword;
+
+    public override UserOnPacketCheckPassword Serialize(ILoginStageUser user, IPacketReader reader)
+        => new(
             user,
             reader.ReadString(),
             reader.ReadString()
         );
-
-        return _pipeline.Process(message);
-    }
 }

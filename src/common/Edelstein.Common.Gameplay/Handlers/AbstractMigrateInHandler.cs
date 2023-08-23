@@ -6,32 +6,27 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Handlers;
 
-public abstract class AbstractMigrateInHandler<TStageUser> : IPacketHandler<TStageUser>
+public abstract class AbstractMigrateInHandler<TStageUser> : 
+    AbstractPipedPacketHandler<TStageUser, UserOnPacketMigrateIn<TStageUser>>, 
+    IPacketHandler<TStageUser>
     where TStageUser : IStageUser<TStageUser>
 {
-    private readonly IPipeline<UserOnPacketMigrateIn<TStageUser>> _pipeline;
+    protected AbstractMigrateInHandler(IPipeline<UserOnPacketMigrateIn<TStageUser>?> pipeline) : base(pipeline)
+    {
+    }
+    
+    public override short Operation => (short)PacketRecvOperations.MigrateIn;
 
-    protected AbstractMigrateInHandler(IPipeline<UserOnPacketMigrateIn<TStageUser>> pipeline) => _pipeline = pipeline;
-
-    public short Operation => (short)PacketRecvOperations.MigrateIn;
-
-    public bool Check(TStageUser user) =>
+    public override bool Check(TStageUser user) =>
         !user.IsMigrating &&
         user.Account == null &&
         user.AccountWorld == null &&
         user.Character == null;
-
-    public Task Handle(TStageUser user, IPacketReader reader)
-    {
-        var character = reader.ReadInt();
-        _ = reader.ReadBytes(18);
-        var key = reader.ReadLong();
-        var message = new UserOnPacketMigrateIn<TStageUser>(
+    
+    public override UserOnPacketMigrateIn<TStageUser> Serialize(TStageUser user, IPacketReader reader) 
+        => new(
             user,
-            character,
-            key
+            reader.ReadInt(),
+            reader.Skip(18).ReadLong()
         );
-
-        return _pipeline.Process(message);
-    }
 }

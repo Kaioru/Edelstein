@@ -6,26 +6,20 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Login.Handlers;
 
-public class SelectWorldHandler : IPacketHandler<ILoginStageUser>
+public class SelectWorldHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketSelectWorld>
 {
-    private readonly IPipeline<UserOnPacketSelectWorld> _pipeline;
-
-
-    public SelectWorldHandler(IPipeline<UserOnPacketSelectWorld> pipeline) => _pipeline = pipeline;
-    public short Operation => (short)PacketRecvOperations.SelectWorld;
-
-    public bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
-
-    public Task Handle(ILoginStageUser user, IPacketReader reader)
+    public SelectWorldHandler(IPipeline<UserOnPacketSelectWorld?> pipeline) : base(pipeline)
     {
-        _ = reader.ReadByte(); // Unknown1
+    }
+    
+    public override short Operation => (short)PacketRecvOperations.SelectWorld;
 
-        var message = new UserOnPacketSelectWorld(
+    public override bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
+
+    public override UserOnPacketSelectWorld Serialize(ILoginStageUser user, IPacketReader reader)
+        => new UserOnPacketSelectWorld(
             user,
-            reader.ReadByte(),
+            reader.Skip(1).ReadByte(),
             reader.ReadByte()
         );
-
-        return _pipeline.Process(message);
-    }
 }

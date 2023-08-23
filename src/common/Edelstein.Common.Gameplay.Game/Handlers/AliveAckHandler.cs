@@ -7,7 +7,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class AliveAckHandler : AbstractAliveAckHandler<IGameStageUser>
 {
-    public AliveAckHandler(IPipeline<UserOnPacketAliveAck<IGameStageUser>> pipeline) : base(pipeline)
+    public AliveAckHandler(IPipeline<UserOnPacketAliveAck<IGameStageUser>?> pipeline) : base(pipeline)
     {
     }
 }
