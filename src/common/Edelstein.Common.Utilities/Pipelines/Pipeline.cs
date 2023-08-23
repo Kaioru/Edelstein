@@ -6,7 +6,9 @@ public class Pipeline<TMessage> : IPipeline<TMessage>
 {
     private readonly ICollection<PipelinePart<TMessage>> _parts;
 
-    public Pipeline() => _parts = new SortedSet<PipelinePart<TMessage>>();
+    public Pipeline() 
+        => _parts = new SortedSet<PipelinePart<TMessage>>(new PipelinePartComparer<TMessage>());
+    
     public Pipeline(IEnumerable<IPipelinePlug<TMessage>> plugs) : this()
     {
         foreach (var plug in plugs)
