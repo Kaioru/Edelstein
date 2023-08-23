@@ -17,7 +17,7 @@ public interface IFieldUser :
     IAccountWorld AccountWorld { get; }
     ICharacter Character { get; }
 
-    IConversationContext Conversation { get; }
+    IConversationContext? Conversation { get; }
 
     bool IsInstantiated { get; set; }
     bool IsConversing { get; }

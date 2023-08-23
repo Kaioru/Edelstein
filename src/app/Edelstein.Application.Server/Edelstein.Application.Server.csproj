@@ -1,36 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\App.targets"/>
+  <Import Project="..\App.targets" />
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="7.1.0"/>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0"/>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1"/>
-    <PackageReference Include="Serilog" Version="3.0.1"/>
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="7.0.0"/>
-    <PackageReference Include="Serilog.Settings.Configuration" Version="7.0.0"/>
-    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0"/>
+    <PackageReference Include="Autofac" Version="7.1.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Data.NX\Edelstein.Common.Data.NX.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Database\Edelstein.Common.Database.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Game\Edelstein.Common.Gameplay.Game.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Login\Edelstein.Common.Gameplay.Login.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj"/>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj"/>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Game\Edelstein.Protocol.Gameplay.Game.csproj"/>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Login\Edelstein.Protocol.Gameplay.Login.csproj"/>
+    <ProjectReference Include="..\..\common\Edelstein.Common.Data.NX\Edelstein.Common.Data.NX.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Database\Edelstein.Common.Database.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Game\Edelstein.Common.Gameplay.Game.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Login\Edelstein.Common.Gameplay.Login.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Scripting.Lua\Edelstein.Common.Scripting.Lua.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Game\Edelstein.Protocol.Gameplay.Game.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Login\Edelstein.Protocol.Gameplay.Login.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,6 +6,7 @@ using Edelstein.Common.Database;
 using Edelstein.Common.Gameplay;
 using Edelstein.Common.Gameplay.Game;
 using Edelstein.Common.Gameplay.Game.Continents;
+using Edelstein.Common.Gameplay.Game.Conversations.Scripted;
 using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Network.DotNetty.Transports;
@@ -17,6 +18,7 @@ using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Game.Continents;
+using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Network;
@@ -137,6 +139,7 @@ public class ProgramHost : IHostedService
 
                         b.RegisterType<FieldManager>().As<IFieldManager>().SingleInstance();
                         b.RegisterType<ContiMoveManager>().As<IContiMoveManager>().SingleInstance();
+                        b.RegisterType<ScriptedConversationManager>().As<IConversationManager>().SingleInstance();
 
                         b
                             .RegisterInstance(options)

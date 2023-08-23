@@ -65,6 +65,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Gameplay
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Gameplay.Game", "src\common\Edelstein.Common.Gameplay.Game\Edelstein.Common.Gameplay.Game.csproj", "{C124BBAE-A5BE-491E-AF7B-C55396F5EC1A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Scripting", "src\protocol\Edelstein.Protocol.Scripting\Edelstein.Protocol.Scripting.csproj", "{9A544A78-841F-4259-9088-0AE637FBA25A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Scripting.Lua", "src\common\Edelstein.Common.Scripting.Lua\Edelstein.Common.Scripting.Lua.csproj", "{10FB2E9D-032A-4504-99E5-841EB533DE6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,6 +102,8 @@ Global
 		{42EC73E4-8B41-4753-8F36-DCA17F9C0992} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{E5001CBD-3BC5-49CD-B254-257B74A4B427} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{C124BBAE-A5BE-491E-AF7B-C55396F5EC1A} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
+		{9A544A78-841F-4259-9088-0AE637FBA25A} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{10FB2E9D-032A-4504-99E5-841EB533DE6F} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{23073F7B-2195-482E-B3E8-DBCB6BEB587A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -184,5 +190,13 @@ Global
 		{C124BBAE-A5BE-491E-AF7B-C55396F5EC1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C124BBAE-A5BE-491E-AF7B-C55396F5EC1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C124BBAE-A5BE-491E-AF7B-C55396F5EC1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A544A78-841F-4259-9088-0AE637FBA25A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A544A78-841F-4259-9088-0AE637FBA25A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A544A78-841F-4259-9088-0AE637FBA25A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A544A78-841F-4259-9088-0AE637FBA25A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10FB2E9D-032A-4504-99E5-841EB533DE6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10FB2E9D-032A-4504-99E5-841EB533DE6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10FB2E9D-032A-4504-99E5-841EB533DE6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10FB2E9D-032A-4504-99E5-841EB533DE6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

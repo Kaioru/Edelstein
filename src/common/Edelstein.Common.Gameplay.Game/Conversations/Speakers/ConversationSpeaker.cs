@@ -21,8 +21,11 @@ public class ConversationSpeaker : IConversationSpeaker
     public int ID { get; }
     public ConversationSpeakerFlags Flags { get; }
 
-    public byte Say(string text, bool prev = false, bool next = true) =>
-        _context.Request(new SayRequest(this, text, prev, next)).Result;
+    public byte Say(string text, bool prev = false, bool next = true)
+    {
+        Console.WriteLine("ASKED");
+        return _context.Request(new SayRequest(this, text, prev, next)).Result;
+    }
 
     public bool AskYesNo(string text) =>
         _context.Request(new AskYesNoRequest(this, text)).Result;

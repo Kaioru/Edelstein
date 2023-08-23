@@ -4,6 +4,7 @@ using Edelstein.Application.Server.Configs;
 using Edelstein.Common.Data.NX;
 using Edelstein.Common.Database;
 using Edelstein.Common.Database.Repositories;
+using Edelstein.Common.Scripting.Lua;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Server;
 using Edelstein.Common.Utilities.Templates;
@@ -11,6 +12,7 @@ using Edelstein.Common.Utilities.Tickers;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
+using Edelstein.Protocol.Scripting;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
@@ -63,6 +65,7 @@ await Host.CreateDefaultBuilder(args)
         ));
 
         services.AddSingleton<IDataManager>(new NXDataManager(ctx.Configuration.GetSection("Data")["Directory"]));
+        services.AddSingleton<IScriptEngine>(new LuaScriptEngine(ctx.Configuration.GetSection("Scripts")["Directory"]));
         services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));
     })
     .ConfigureServices((ctx, services) => { services.AddHostedService<ProgramHost>(); })
