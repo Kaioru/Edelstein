@@ -1,6 +1,7 @@
 ﻿using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Models.Characters;
+using Edelstein.Common.Gameplay.Models.Characters.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
@@ -12,9 +13,11 @@ using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
+using Edelstein.Protocol.Gameplay.Models.Characters.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Utilities.Packets;
+using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.User;
 
@@ -206,7 +209,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         finally
         {
             await EndConversation();
-            await ModifyInventory(exclRequest: true);
+            await ModifyStats(exclRequest: true);
         }
     }
 
@@ -216,6 +219,26 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         Conversation?.Dispose();
         Conversation = null;
         return Task.CompletedTask;
+    }
+    
+    public async Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false)
+    {
+        var context = new ModifyStatContext(Character);
+
+        action?.Invoke(context);
+        
+        // TODO update stats
+        
+        if (!IsInstantiated) return;
+        
+        var packet = new PacketWriter(PacketSendOperations.StatChanged);
+
+        packet.WriteBool(exclRequest);
+        packet.Write(context);
+        packet.WriteBool(false);
+        packet.WriteBool(false);
+        
+        await Dispatch(packet.Build());
     }
 
     public async Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)

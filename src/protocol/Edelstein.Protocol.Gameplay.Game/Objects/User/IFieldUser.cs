@@ -2,6 +2,7 @@
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
+using Edelstein.Protocol.Gameplay.Models.Characters.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Utilities.Packets;
 
@@ -35,5 +36,6 @@ public interface IFieldUser :
 
     Task EndConversation();
 
+    Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false);
     Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false);
 }
