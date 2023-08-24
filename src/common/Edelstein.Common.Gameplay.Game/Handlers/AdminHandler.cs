@@ -55,7 +55,6 @@ public class AdminHandler : AbstractFieldHandler
                         .WriteBool(hidden)
                         .Build());
                 }
-
                 break;
             case 0x1F: // /job <arg1>
                 if (subGradeCode.HasFlag(AccountSubGradeCode.TesterAccount))
