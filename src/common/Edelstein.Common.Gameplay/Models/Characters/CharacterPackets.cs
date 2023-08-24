@@ -82,7 +82,7 @@ public static class CharacterPackets
 
             foreach (var kv in items)
             {
-                writer.WriteShort(kv.Key);
+                writer.WriteByte((byte)kv.Key);
                 writer.WriteItemData(kv.Value);
             }
 

@@ -5,7 +5,7 @@ public interface IItemSlotBundle : IItemSlotBase
     short Number { get; set; }
     short Attribute { get; set; }
 
-    string Title { get; set; }
+    string? Title { get; set; }
 
     bool MergeableWith(IItemSlotBundle bundle);
 }

@@ -97,7 +97,7 @@ public static class ItemPackets
         writer.WriteItemBase(bundle);
 
         writer.WriteShort(bundle.Number);
-        writer.WriteString(bundle.Title);
+        writer.WriteString(bundle.Title ?? string.Empty);
         writer.WriteShort(bundle.Attribute);
 
         if (bundle.ID / 10000 == 207 || bundle.ID / 10000 == 233) // TODO: constants, recharge items

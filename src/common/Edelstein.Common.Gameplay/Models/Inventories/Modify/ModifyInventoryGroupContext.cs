@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Models.Characters;
+﻿using System.Collections.Immutable;
+using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
@@ -42,15 +43,44 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
     public IModifyInventoryContext? this[ItemInventoryType type] =>
         _contexts.GetValueOrDefault(type);
 
-    public override bool Check(int templateID) =>
-        this[GetTypeByID(templateID)]?.Check(templateID) ?? false;
-    public override bool Check(int templateID, short count) =>
-        this[GetTypeByID(templateID)]?.Check(templateID, count) ?? false;
+    public override bool HasItem(int templateID) =>
+        this[GetTypeByID(templateID)]?.HasItem(templateID) ?? false;
+    public override bool HasItem(int templateID, short count) =>
+        this[GetTypeByID(templateID)]?.HasItem(templateID, count) ?? false;
 
-    public override bool Check(IItemTemplate template) =>
-        this[GetTypeByID(template.ID)]?.Check(template) ?? false;
-    public override bool Check(IItemTemplate template, short count) =>
-        this[GetTypeByID(template.ID)]?.Check(template, count) ?? false;
+    public override bool HasItem(IItemTemplate template) =>
+        this[GetTypeByID(template.ID)]?.HasItem(template) ?? false;
+    public override bool HasItem(IItemTemplate template, short count) =>
+        this[GetTypeByID(template.ID)]?.HasItem(template, count) ?? false;
+    
+    public override bool HasSlotFor(int templateID) => 
+        this[GetTypeByID(templateID)]?.HasSlotFor(templateID) ?? false;
+    public override bool HasSlotFor(int templateID, short count) =>
+        this[GetTypeByID(templateID)]?.HasSlotFor(templateID, count) ?? false;
+    public override bool HasSlotFor(ICollection<Tuple<int, short>> templates) =>
+        templates
+            .GroupBy(t => GetTypeByID(t.Item1))
+            .All(g => this[g.Key]?.HasSlotFor(g.ToImmutableList()) ?? false);
+    
+    public override bool HasSlotFor(IItemTemplate template) =>
+        this[GetTypeByID(template.ID)]?.HasSlotFor(template) ?? false;
+    
+    public override bool HasSlotFor(IItemTemplate template, short count) =>
+        this[GetTypeByID(template.ID)]?.HasSlotFor(template, count) ?? false;
+    
+    public override bool HasSlotFor(ICollection<Tuple<IItemTemplate, short>> templates) =>
+        templates
+            .GroupBy(t => GetTypeByID(t.Item1.ID))
+            .All(g => this[g.Key]?.HasSlotFor(g.ToImmutableList()) ?? false);
+    
+    public override bool HasSlotFor(IItemSlot item) =>
+        this[GetTypeByID(item.ID)]?.HasSlotFor(item) ?? false;
+    
+    public override bool HasSlotFor(ICollection<IItemSlot> items) => 
+        items
+            .GroupBy(t => GetTypeByID(t.ID))
+            .All(g => this[g.Key]?.HasSlotFor(g.ToImmutableList()) ?? false);
+
 
     public override void Add(IItemSlot item) =>
         this[GetTypeByID(item.ID)]?.Add(item);
@@ -97,16 +127,16 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
     public override void Add(IItemTemplate template, short count) =>
         this[GetTypeByID(template.ID)]?.Add(template, count);
 
-    public bool CheckEquipped(BodyPart part) =>
+    public bool HasEquipped(BodyPart part) =>
         this[ItemInventoryType.Equip]?[(short)-(short)part] != null;
 
-    public bool CheckEquipped(int templateID) =>
+    public bool HasEquipped(int templateID) =>
         this[ItemInventoryType.Equip]?.Items
             .Where(kv => kv.Key < 0)
             .Count(kv => kv.Value.ID == templateID) > 0;
 
-    public bool CheckEquipped(IItemTemplate template) =>
-        CheckEquipped(template.ID);
+    public bool HasEquipped(IItemTemplate template) =>
+        HasEquipped(template.ID);
 
     public void SetEquipped(BodyPart part, int templateID) =>
         this[ItemInventoryType.Equip]?.SetSlot((short)-(short)part, templateID);

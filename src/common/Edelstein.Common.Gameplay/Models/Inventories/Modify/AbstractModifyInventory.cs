@@ -15,10 +15,21 @@ public abstract class AbstractModifyInventory : IModifyInventory
     public bool IsUpdated => Operations.Any();
     public bool IsUpdatedAvatar => Operations.Any(o => o.Inventory == ItemInventoryType.Equip && o.Slot < 0);
 
-    public abstract bool Check(int templateID);
-    public abstract bool Check(int templateID, short count);
-    public abstract bool Check(IItemTemplate template);
-    public abstract bool Check(IItemTemplate template, short count);
+    public abstract bool HasItem(int templateID);
+    public abstract bool HasItem(int templateID, short count);
+    public abstract bool HasItem(IItemTemplate template);
+    public abstract bool HasItem(IItemTemplate template, short count);
+    
+    public abstract bool HasSlotFor(int templateID);
+    public abstract bool HasSlotFor(int templateID, short count);
+    public abstract bool HasSlotFor(ICollection<Tuple<int, short>> templates);
+    
+    public abstract bool HasSlotFor(IItemTemplate template);
+    public abstract bool HasSlotFor(IItemTemplate template, short count);
+    public abstract bool HasSlotFor(ICollection<Tuple<IItemTemplate, short>> templates);
+        
+    public abstract bool HasSlotFor(IItemSlot item);
+    public abstract bool HasSlotFor(ICollection<IItemSlot> items);
 
     public abstract void Add(IItemSlot item);
 

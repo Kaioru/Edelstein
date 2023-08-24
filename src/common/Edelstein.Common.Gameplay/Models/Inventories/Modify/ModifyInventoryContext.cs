@@ -37,17 +37,117 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
 
     public IReadOnlyDictionary<short, IItemSlot> Items => _inventory.Items.ToImmutableDictionary();
 
-    public override bool Check(int templateID) =>
-        Check(templateID, 1);
+    public override bool HasItem(int templateID) =>
+        HasItem(templateID, 1);
 
-    public override bool Check(int templateID, short count) =>
+    public override bool HasItem(int templateID, short count) =>
         _inventory.Items.Count(i => i.Value.ID == templateID) >= count;
 
-    public override bool Check(IItemTemplate template) =>
-        Check(template.ID);
+    public override bool HasItem(IItemTemplate template) =>
+        HasItem(template.ID);
 
-    public override bool Check(IItemTemplate template, short count) =>
-        Check(template.ID, count);
+    public override bool HasItem(IItemTemplate template, short count) =>
+        HasItem(template.ID, count);
+
+    public override bool HasSlotFor(int templateID) =>
+        HasSlotFor(templateID, 1);
+
+    public override bool HasSlotFor(int templateID, short count) =>
+        HasSlotFor(ImmutableList.Create(Tuple.Create(templateID, count)));
+    
+    public override bool HasSlotFor(ICollection<Tuple<int, short>> templates) =>
+        HasSlotFor(templates
+            .Select(t => Tuple.Create(_manager.Retrieve(t.Item1).Result!, t.Item2))
+            .ToImmutableList());
+    
+    public override bool HasSlotFor(IItemTemplate template) =>
+        HasItem(template, 1);
+    
+    public override bool HasSlotFor(IItemTemplate template, short count) => 
+        HasSlotFor(ImmutableList.Create(Tuple.Create(template, count)));
+    
+    public override bool HasSlotFor(ICollection<Tuple<IItemTemplate, short>> templates) =>
+        HasSlotFor(templates
+            .Select(t =>
+            {
+                var items = new List<IItemSlot>();
+
+                if (t.Item1 is IItemBundleTemplate bundle)
+                {
+                    var total = t.Item2;
+
+                    while (total > 0)
+                    {
+                        var count = Math.Min(total, bundle.MaxPerSlot);
+                        
+                        total -= count;
+                        items.Add(bundle.ToItemSlotBundle(count));
+                    }
+                }
+                else
+                    for (var i = 0; i < t.Item2; i++)
+                        items.Add(t.Item1.ToItemSlot());
+                
+                return items;
+            })
+            .SelectMany(i => i)
+            .ToImmutableList());
+    
+    public override bool HasSlotFor(IItemSlot item) =>
+        HasSlotFor(ImmutableList.Create(item));
+
+    public override bool HasSlotFor(ICollection<IItemSlot> items)
+    {
+        var bundles = items
+            .OfType<IItemSlotBundle>()
+            .ToImmutableList();
+        var bundlesMerged = new List<IItemSlotBundle>();
+        
+        foreach (var bundle in bundles)
+        {
+            var mergeable = bundlesMerged
+                .FirstOrDefault(i => i.MergeableWith(bundle));
+
+            if (mergeable == null)
+            {
+                bundlesMerged.Add(new ItemSlotBundle
+                {
+                    ID = bundle.ID,
+                    DateExpire = bundle.DateExpire,
+                    Number = bundle.Number,
+                    Attribute = bundle.Attribute,
+                    Title = bundle.Title
+                });
+                continue;
+            }
+
+            mergeable.Number += bundle.Number;
+        }
+
+        var cache = new Dictionary<IItemSlotBundle, int>();
+        var totalSlots = items
+            .Except(bundles)
+            .Count();
+
+        foreach (var bundle in bundlesMerged)
+        {
+            var count = (int)bundle.Number;
+            var template = (IItemBundleTemplate)_manager.Retrieve(bundle.ID).Result!;
+            
+            count = _inventory.Items.Values
+                .OfType<IItemSlotBundle>()
+                .Where(i => i.MergeableWith(bundle))
+                .Where(i => (cache.TryGetValue(i, out var number) ? number : i.Number) < template.MaxPerSlot)
+                .Aggregate(count, (current, merge) =>
+                {
+                    cache.Add(merge, template.MaxPerSlot);
+                    return current - Math.Min(current, template.MaxPerSlot - merge.Number);
+                });
+            totalSlots += (int)Math.Ceiling(count / (double)template.MaxPerSlot);
+        }
+        
+        return _inventory.Items.Count + totalSlots <= _inventory.SlotMax;
+    }
 
     public override void Add(IItemSlot? item)
     {

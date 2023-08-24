@@ -4,15 +4,27 @@ using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 
-public interface IModifyInventory<in TSlot> : IPacketWritable where TSlot : IItemSlot
+public interface IModifyInventory<TSlot> : IPacketWritable where TSlot : IItemSlot
 {
     bool IsUpdated { get; }
     bool IsUpdatedAvatar { get; }
 
-    bool Check(int templateID);
-    bool Check(int templateID, short count);
-    bool Check(IItemTemplate template);
-    bool Check(IItemTemplate template, short count);
+    bool HasItem(int templateID);
+    bool HasItem(int templateID, short count);
+    bool HasItem(IItemTemplate template);
+    bool HasItem(IItemTemplate template, short count);
+
+    bool HasSlotFor(int templateID);
+    bool HasSlotFor(int templateID, short count);
+    
+    bool HasSlotFor(ICollection<Tuple<int, short>> templates);
+    
+    bool HasSlotFor(IItemTemplate template);
+    bool HasSlotFor(IItemTemplate template, short count);
+    bool HasSlotFor(ICollection<Tuple<IItemTemplate, short>> templates);
+
+    bool HasSlotFor(IItemSlot item);
+    bool HasSlotFor(ICollection<IItemSlot> items);
 
     void Add(TSlot item);
 
