@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Drop;
 
@@ -11,5 +12,5 @@ public interface IFieldDrop : IFieldObject
     int OwnerID { get; }
     int SourceID { get; }
 
-    Task Pickup(IFieldUser user);
+    Task PickUp(IFieldUser user);
 }

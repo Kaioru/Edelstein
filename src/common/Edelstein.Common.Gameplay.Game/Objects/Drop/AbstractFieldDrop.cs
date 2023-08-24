@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using System.Runtime.CompilerServices;
+using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
@@ -30,18 +31,18 @@ public abstract class AbstractFieldDrop : AbstractFieldObject, IFieldDrop
     public abstract bool IsMoney { get; }
     public abstract int Info { get; }
     
-    public DropOwnType OwnType { get; }
-    public int OwnerID { get; }
-    public int SourceID { get; }
+    public DropOwnType OwnType { get; set; }
+    public int OwnerID { get; set; }
+    public int SourceID { get; set; }
     
     private bool IsPickedUp { get; set; }
 
     public override IPacket GetEnterFieldPacket()
-        => GetEnterFieldPacket(2, Position, 0);
+        => GetEnterFieldPacket(2, Position);
     public override IPacket GetLeaveFieldPacket()
-        => GetLeaveFieldPacket(1, 0, 0, 0);
+        => GetLeaveFieldPacket(1);
 
-    private IPacket GetEnterFieldPacket(byte enterType, IPoint2D? sourcePosition = null, short z = 0)
+    public IPacket GetEnterFieldPacket(byte enterType, IPoint2D? sourcePosition = null, short z = 0)
     {
         using var packet = new PacketWriter(PacketSendOperations.DropEnterField);
 
@@ -64,12 +65,18 @@ public abstract class AbstractFieldDrop : AbstractFieldObject, IFieldDrop
             packet.WriteShort(z);
         }
 
+        if (!IsMoney) // TODO: handle this properly
+            packet.WriteDateTime(DateTime.FromFileTimeUtc(150842304000000000));
+
+        packet.WriteBool(false); // ByPet - allow pet pickup
+        packet.WriteBool(false); // Putz?
+        
         return packet.Build();
     }
 
-    private IPacket GetLeaveFieldPacket(byte leaveType, int pickupID = 0, short delay = 0, int petIndex = 0)
+    public IPacket GetLeaveFieldPacket(byte leaveType, int pickupID = 0, short delay = 0, int petIndex = 0)
     {
-        using var packet = new PacketWriter(PacketSendOperations.DropEnterField);
+        using var packet = new PacketWriter(PacketSendOperations.DropLeaveField);
 
         packet.WriteByte(leaveType);
         packet.WriteInt(ObjectID ?? 0);
@@ -83,12 +90,18 @@ public abstract class AbstractFieldDrop : AbstractFieldObject, IFieldDrop
         }
 
         if (leaveType == 4)
+        {
             packet.WriteShort(delay);
+            return packet.Build();
+        }
+
+        if (leaveType == 5)
+            packet.WriteInt(0);
 
         return packet.Build();
     }
 
-    public async Task Pickup(IFieldUser user)
+    public async Task PickUp(IFieldUser user)
     {
         await _lock.WaitAsync();
         
@@ -98,7 +111,7 @@ public abstract class AbstractFieldDrop : AbstractFieldObject, IFieldDrop
                 return;
             
             IsPickedUp = true;
-            
+
             if (Field != null)
                 await Field.Leave(this, () => GetLeaveFieldPacket(2, user.ObjectID ?? 0));
             await Update(user);

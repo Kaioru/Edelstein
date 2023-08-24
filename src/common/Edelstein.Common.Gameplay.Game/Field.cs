@@ -120,7 +120,7 @@ public class Field : AbstractFieldObjectPool, IField
         var split = GetSplit(obj.Position);
 
         if (pool != null) await pool.Enter(obj);
-        if (split != null) await split.Enter(obj);
+        if (split != null) await split.Enter(obj, getEnterPacket);
     }
 
     public async Task Leave(IFieldObject obj, Func<IPacket>? getLeavePacket)
@@ -129,14 +129,14 @@ public class Field : AbstractFieldObjectPool, IField
 
         obj.Field = null;
 
-        if (pool != null) await pool.Leave(obj);
         if (obj.FieldSplit != null)
         {
             if (obj is IFieldSplitObserver observer)
                 foreach (var split in observer.Observing.ToImmutableList())
                     await split.Unobserve(observer);
-            await obj.FieldSplit.Leave(obj);
+            await obj.FieldSplit.Leave(obj, getLeavePacket: getLeavePacket);
         }
+        if (pool != null) await pool.Leave(obj);
     }
 
     public override IFieldObject? GetObject(int id) => Objects.FirstOrDefault(o => o.ObjectID == id);
