@@ -23,8 +23,8 @@ public class PacketReader : IPacketReader
     {
     }
 
-    public long Cursor { get; }
-    public long Available { get; }
+    public long Cursor => _stream.Position;
+    public long Available => _stream.Length - _stream.Position;
 
     public byte ReadByte() => _reader.ReadByte();
     public bool ReadBool() => _reader.ReadBoolean();
