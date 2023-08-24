@@ -17,7 +17,6 @@ public class PacketWriter : IPacketWriter
 
     public PacketWriter(Enum operation) : this() => WriteShort(Convert.ToInt16(operation));
 
-    public byte[] Buffer => _stream.ToArray();
     public long Length => _stream.Length;
 
     public IPacketWriter WriteByte(byte value)
