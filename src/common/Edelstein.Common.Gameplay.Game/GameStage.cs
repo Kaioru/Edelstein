@@ -15,7 +15,7 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
 
     public override string ID { get; }
 
-    public async Task Enter(IGameStageUser user)
+    public new async Task Enter(IGameStageUser user)
     {
         if (user.Account == null || user.AccountWorld == null || user.Character == null)
         {
@@ -38,7 +38,7 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
         await base.Enter(user);
     }
 
-    public async Task Leave(IGameStageUser user)
+    public new async Task Leave(IGameStageUser user)
     {
         if (user.Field != null && user.FieldUser != null)
             await user.Field.Leave(user.FieldUser);

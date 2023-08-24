@@ -31,7 +31,7 @@ public abstract class AbstractUserOnPacketMigrateInPlug<TStage, TStageUser> : IP
         _sessionService = sessionService;
     }
 
-    public virtual async Task Handle(IPipelineContext ctx, UserOnPacketMigrateIn<TStageUser> message)
+    public async Task Handle(IPipelineContext ctx, UserOnPacketMigrateIn<TStageUser> message)
     {
         if (message.User.Account != null || message.User.AccountWorld != null || message.User.Character != null)
         {
