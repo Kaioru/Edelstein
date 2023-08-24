@@ -25,6 +25,7 @@ services:
     volumes:
       - ./data:/app/data
       - ./scripts:/app/scripts
+      - ./plugins:/app/plugins
     ports:
       - 8484:8484
       - "7575-7577:7575-7577"

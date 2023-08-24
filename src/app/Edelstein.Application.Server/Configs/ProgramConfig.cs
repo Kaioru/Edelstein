@@ -7,4 +7,6 @@ public class ProgramConfig
 
     public bool MigrateDatabaseOnInit { get; set; } = false;
     public int TicksPerSecond { get; set; } = 4;
+    
+    public ICollection<string> Plugins { get; set; } = new List<string>();
 }

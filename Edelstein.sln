@@ -69,6 +69,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Scriptin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Scripting.Lua", "src\common\Edelstein.Common.Scripting.Lua\Edelstein.Common.Scripting.Lua.csproj", "{10FB2E9D-032A-4504-99E5-841EB533DE6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Plugin", "src\protocol\Edelstein.Protocol.Plugin\Edelstein.Protocol.Plugin.csproj", "{1A1FEECB-1F02-45BF-BC74-7D8A9BC2E624}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Plugin.Game", "src\protocol\Edelstein.Protocol.Plugin.Game\Edelstein.Protocol.Plugin.Game.csproj", "{2D37B56C-BF8B-40D7-85F5-1CCE92F8EF84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Plugin.Login", "src\protocol\Edelstein.Protocol.Plugin.Login\Edelstein.Protocol.Plugin.Login.csproj", "{2ADD70D4-3A1F-4B3D-9BE4-97695A586DE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Plugin", "src\common\Edelstein.Common.Plugin\Edelstein.Common.Plugin.csproj", "{095B3B4E-BD00-415D-A4D4-3BC8D53459C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +112,10 @@ Global
 		{C124BBAE-A5BE-491E-AF7B-C55396F5EC1A} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 		{9A544A78-841F-4259-9088-0AE637FBA25A} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{10FB2E9D-032A-4504-99E5-841EB533DE6F} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
+		{1A1FEECB-1F02-45BF-BC74-7D8A9BC2E624} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{2D37B56C-BF8B-40D7-85F5-1CCE92F8EF84} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{2ADD70D4-3A1F-4B3D-9BE4-97695A586DE7} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{095B3B4E-BD00-415D-A4D4-3BC8D53459C4} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{23073F7B-2195-482E-B3E8-DBCB6BEB587A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -198,5 +210,21 @@ Global
 		{10FB2E9D-032A-4504-99E5-841EB533DE6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10FB2E9D-032A-4504-99E5-841EB533DE6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10FB2E9D-032A-4504-99E5-841EB533DE6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A1FEECB-1F02-45BF-BC74-7D8A9BC2E624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A1FEECB-1F02-45BF-BC74-7D8A9BC2E624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A1FEECB-1F02-45BF-BC74-7D8A9BC2E624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A1FEECB-1F02-45BF-BC74-7D8A9BC2E624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D37B56C-BF8B-40D7-85F5-1CCE92F8EF84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D37B56C-BF8B-40D7-85F5-1CCE92F8EF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D37B56C-BF8B-40D7-85F5-1CCE92F8EF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D37B56C-BF8B-40D7-85F5-1CCE92F8EF84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ADD70D4-3A1F-4B3D-9BE4-97695A586DE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ADD70D4-3A1F-4B3D-9BE4-97695A586DE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ADD70D4-3A1F-4B3D-9BE4-97695A586DE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ADD70D4-3A1F-4B3D-9BE4-97695A586DE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{095B3B4E-BD00-415D-A4D4-3BC8D53459C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{095B3B4E-BD00-415D-A4D4-3BC8D53459C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{095B3B4E-BD00-415D-A4D4-3BC8D53459C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{095B3B4E-BD00-415D-A4D4-3BC8D53459C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

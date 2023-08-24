@@ -10,6 +10,7 @@ using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Network.DotNetty.Transports;
+using Edelstein.Common.Plugin;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Server;
 using Edelstein.Common.Utilities.Pipelines;
@@ -23,6 +24,7 @@ using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
+using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Tickers;
 using Microsoft.EntityFrameworkCore;
@@ -70,6 +72,7 @@ public class ProgramHost : IHostedService
         {
             await using var stageScope = programScope.BeginLifetimeScope(b =>
             {
+                b.RegisterGeneric(typeof(PluginManager<>)).As(typeof(IPluginManager<>)).SingleInstance();
                 b.RegisterGeneric(typeof(PacketHandlerManager<>)).As(typeof(IPacketHandlerManager<>)).SingleInstance();
                 b.RegisterGeneric(typeof(Pipeline<>)).As(typeof(IPipeline<>)).SingleInstance();
 
@@ -120,6 +123,13 @@ public class ProgramHost : IHostedService
                             .As<IStage<ILoginStageUser>>()
                             .As<ILoginStage>()
                             .SingleInstance();
+                        
+                        b.RegisterType<InitPluginBootstrap<LoginContext>>()
+                            .As<IBootstrap>()
+                            .SingleInstance();
+                        b.RegisterType<StartPluginBootstrap<LoginContext>>()
+                            .As<IBootstrap>()
+                            .SingleInstance();
 
                         b.RegisterType<StartServerUpdateBootstrap<ProgramConfigStageLogin>>()
                             .As<IBootstrap>()
@@ -157,6 +167,13 @@ public class ProgramHost : IHostedService
                         b.Register(c => new GameStage(stage.ID, c.Resolve<IFieldManager>()))
                             .As<IStage<IGameStageUser>>()
                             .As<IGameStage>()
+                            .SingleInstance();
+                        
+                        b.RegisterType<InitPluginBootstrap<GameContext>>()
+                            .As<IBootstrap>()
+                            .SingleInstance();
+                        b.RegisterType<StartPluginBootstrap<GameContext>>()
+                            .As<IBootstrap>()
                             .SingleInstance();
 
                         b.RegisterType<StartServerUpdateBootstrap<ProgramConfigStageGame>>()
