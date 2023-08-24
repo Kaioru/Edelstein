@@ -6,5 +6,6 @@ namespace Edelstein.Protocol.Gameplay.Login.Contexts;
 
 public record LoginContextTemplates(
     ITemplateManager<IItemTemplate> Item,
+    ITemplateManager<IItemStringTemplate> ItemString,
     ITemplateManager<IWorldTemplate> World
 );

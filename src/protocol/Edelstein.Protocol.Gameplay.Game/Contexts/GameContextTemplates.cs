@@ -9,7 +9,9 @@ namespace Edelstein.Protocol.Gameplay.Game.Contexts;
 
 public record GameContextTemplates(
     ITemplateManager<IItemTemplate> Item,
+    ITemplateManager<IItemStringTemplate> ItemString,
     ITemplateManager<IFieldTemplate> Field,
+    ITemplateManager<IFieldStringTemplate> FieldString,
     ITemplateManager<INPCTemplate> NPC,
     ITemplateManager<IMobTemplate> Mob,
     ITemplateManager<IContiMoveTemplate> ContiMove
