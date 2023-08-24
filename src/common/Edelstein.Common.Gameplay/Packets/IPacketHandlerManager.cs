@@ -1,5 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Stages;
-using Edelstein.Protocol.Util.Buffers.Packets;
+﻿using Edelstein.Protocol.Gameplay;
+using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Common.Gameplay.Packets;
 

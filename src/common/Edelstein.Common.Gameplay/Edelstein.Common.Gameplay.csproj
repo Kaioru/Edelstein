@@ -5,16 +5,18 @@
   <ItemGroup>
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Data\Edelstein.Protocol.Data.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Migration\Edelstein.Protocol.Services.Migration.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Pipelines\Edelstein.Protocol.Util.Pipelines.csproj" />
-    <ProjectReference Include="..\Edelstein.Common.Services.Server.Contracts\Edelstein.Common.Services.Server.Contracts.csproj" />
-    <ProjectReference Include="..\Edelstein.Common.Util.Buffers\Edelstein.Common.Util.Buffers.csproj" />
-    <ProjectReference Include="..\Edelstein.Common.Util.Templates\Edelstein.Common.Util.Templates.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Utilities\Edelstein.Common.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mapster" Version="7.3.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <Folder Include="Models" />
+    <Folder Include="Models\Inventories\Modify" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
   </ItemGroup>
 
 </Project>

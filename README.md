@@ -24,6 +24,17 @@ A v.95.1 Mushroom game server emulator written in C#.
 #### Running the server
 7. Run the `Edelstein.Daemon.Server` executable
 
+### 📦 Docker
+
+#### Download required assets 
+1. Download the data from [Server.NX](https://github.com/Kaioru/Server.NX/releases)
+2. Download the scripts from [Server.Scripts](https://github.com/Kaioru/Server.Scripts/releases)
+3. Unzip both into the `data` and `scripts` folder respectively
+
+#### Running `docker compose up`
+4. Run the `HOST=127.0.0.1 docker compose up` command
+5. Do substitute or omit the HOST environment key accordingly
+
 ### 🏗️ Builds
 A nightly build is published at 00:00 UTC when there are changes to the 'dev' branch.
 

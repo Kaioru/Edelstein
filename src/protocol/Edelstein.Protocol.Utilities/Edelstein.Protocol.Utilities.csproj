@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Protocol.targets"/>
+
+  <ItemGroup>
+    <Folder Include="Pipelines"/>
+    <Folder Include="Templates"/>
+    <Folder Include="Tickers"/>
+  </ItemGroup>
+
+</Project>

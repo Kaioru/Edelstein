@@ -1,9 +1,7 @@
-﻿using Edelstein.Common.Services.Server.Contracts;
-using Edelstein.Common.Services.Server.Contracts.Types;
-using Edelstein.Common.Services.Server.Models;
+﻿using AutoMapper;
+using Edelstein.Common.Services.Server.Entities;
 using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Services.Session.Contracts;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Services.Server;
@@ -11,10 +9,15 @@ namespace Edelstein.Common.Services.Server;
 public class SessionService : ISessionService
 {
     private readonly IDbContextFactory<ServerDbContext> _dbFactory;
+    private readonly IMapper _mapper;
 
-    public SessionService(IDbContextFactory<ServerDbContext> dbFactory) => _dbFactory = dbFactory;
+    public SessionService(IDbContextFactory<ServerDbContext> dbFactory, IMapper mapper)
+    {
+        _dbFactory = dbFactory;
+        _mapper = mapper;
+    }
 
-    public async Task<ISessionResponse> Start(ISessionStartRequest request)
+    public async Task<SessionResponse> Start(SessionStartRequest request)
     {
         try
         {
@@ -34,7 +37,7 @@ public class SessionService : ISessionService
                 db.Migrations.Remove(migration);
             }
 
-            db.Sessions.Add(request.Session.Adapt<SessionModel>());
+            db.Sessions.Add(_mapper.Map<SessionEntity>(request.Session));
             await db.SaveChangesAsync();
             return new SessionResponse(SessionResult.Success);
         }
@@ -44,7 +47,7 @@ public class SessionService : ISessionService
         }
     }
 
-    public async Task<ISessionResponse> End(ISessionEndRequest request)
+    public async Task<SessionResponse> End(SessionEndRequest request)
     {
         try
         {
@@ -64,7 +67,7 @@ public class SessionService : ISessionService
         }
     }
 
-    public async Task<ISessionResponse> UpdateServer(ISessionUpdateServerRequest request)
+    public async Task<SessionResponse> UpdateServer(SessionUpdateServerRequest request)
     {
         try
         {
@@ -85,7 +88,7 @@ public class SessionService : ISessionService
         }
     }
 
-    public async Task<ISessionResponse> UpdateCharacter(ISessionUpdateCharacterRequest request)
+    public async Task<SessionResponse> UpdateCharacter(SessionUpdateCharacterRequest request)
     {
         try
         {
@@ -106,7 +109,7 @@ public class SessionService : ISessionService
         }
     }
 
-    public async Task<ISessionGetOneResponse> GetByActiveAccount(ISessionGetByActiveAccountRequest request)
+    public async Task<SessionGetOneResponse> GetByActiveAccount(SessionGetByActiveAccountRequest request)
     {
         try
         {
@@ -115,7 +118,7 @@ public class SessionService : ISessionService
 
             return session == null
                 ? new SessionGetOneResponse(SessionResult.FailedNotFound)
-                : new SessionGetOneResponse(SessionResult.Success, session.Adapt<Session>());
+                : new SessionGetOneResponse(SessionResult.Success, _mapper.Map<Session>(session));
         }
         catch (Exception)
         {
@@ -123,7 +126,7 @@ public class SessionService : ISessionService
         }
     }
 
-    public async Task<ISessionGetOneResponse> GetByActiveCharacter(ISessionGetByActiveCharacterRequest request)
+    public async Task<SessionGetOneResponse> GetByActiveCharacter(SessionGetByActiveCharacterRequest request)
     {
         try
         {
@@ -132,7 +135,7 @@ public class SessionService : ISessionService
 
             return session == null
                 ? new SessionGetOneResponse(SessionResult.FailedNotFound)
-                : new SessionGetOneResponse(SessionResult.Success, session.Adapt<Session>());
+                : new SessionGetOneResponse(SessionResult.Success, _mapper.Map<Session>(session));
         }
         catch (Exception)
         {

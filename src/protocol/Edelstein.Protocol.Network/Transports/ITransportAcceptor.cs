@@ -1,10 +1,6 @@
 ﻿namespace Edelstein.Protocol.Network.Transports;
 
-public interface ITransportAcceptor : ITransport
+public interface ITransportAcceptor
 {
-    IDictionary<string, ISocket> Sockets { get; }
-
-    TimeSpan Timeout { get; }
-
-    Task Accept(string host, int port);
+    Task<ITransportContext> Accept(string host, int port);
 }

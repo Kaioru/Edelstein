@@ -1,10 +1,12 @@
-﻿namespace Edelstein.Protocol.Plugin;
+﻿using Edelstein.Protocol.Utilities.Repositories.Methods;
 
-public interface IPluginManager<TContext>
+namespace Edelstein.Protocol.Plugin;
+
+public interface IPluginManager<TContext> : 
+    IRepositoryMethodRetrieve<string, IPlugin<TContext>>,
+    IRepositoryMethodRetrieveAll<string, IPlugin<TContext>>,
+    IRepositoryMethodInsert<string, IPlugin<TContext>>
 {
-    Task Load(string path);
-    Task LoadFrom(string directory);
-
-    Task Start();
-    Task Stop();
+    Task LoadFromFile(string path);
+    Task LoadFromDirectory(string directory);
 }

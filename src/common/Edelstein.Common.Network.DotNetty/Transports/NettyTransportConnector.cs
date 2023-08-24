@@ -1,61 +1,49 @@
-﻿using System.Net;
-using DotNetty.Transport.Bootstrapping;
+﻿using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using Edelstein.Common.Crypto;
 using Edelstein.Common.Network.DotNetty.Codecs;
 using Edelstein.Common.Network.DotNetty.Handlers;
+using Edelstein.Common.Utilities.Repositories;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
-using Edelstein.Protocol.Util.Buffers.Packets;
+using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Common.Network.DotNetty.Transports;
 
 public class NettyTransportConnector : ITransportConnector
 {
-    public NettyTransportConnector(IAdapterInitializer initializer, short version, string patch, byte locale)
+    private readonly IAdapterInitializer _initializer;
+    private readonly IRepository<string, ISocket> _sockets;
+    private readonly TransportVersion _version;
+
+    public NettyTransportConnector(IAdapterInitializer initializer, TransportVersion version)
     {
-        Initializer = initializer ?? throw new ArgumentNullException(nameof(initializer));
-        Version = version;
-        Patch = patch;
-        Locale = locale;
+        _initializer = initializer;
+        _version = version;
+        _sockets = new Repository<string, ISocket>();
     }
 
-    private IChannel? Channel { get; set; }
-    private IEventLoopGroup? WorkerGroup { get; set; }
-    public IAdapterInitializer Initializer { get; }
-
-    public short Version { get; }
-    public string Patch { get; }
-    public byte Locale { get; }
-
-    public async Task Connect(string host, int port)
+    public async Task<ITransportContext> Connect(string host, int port)
     {
-        if (host == null) throw new ArgumentNullException(nameof(host));
         var aesCipher = new AESCipher();
         var igCipher = new IGCipher();
 
-        WorkerGroup = new MultithreadEventLoopGroup();
-        Channel = await new Bootstrap()
-            .Group(WorkerGroup)
+        var group0 = new MultithreadEventLoopGroup();
+        var channel = await new Bootstrap()
+            .Group(group0)
             .Channel<TcpSocketChannel>()
             .Option(ChannelOption.TcpNodelay, true)
             .Handler(new ActionChannelInitializer<IChannel>(ch =>
             {
                 ch.Pipeline.AddLast(
-                    new NettyPacketDecoder(this, aesCipher, igCipher),
-                    new NettyTransportConnectorHandler(this),
-                    new NettyPacketEncoder(this, aesCipher, igCipher)
+                    new NettyPacketDecoder(_version, aesCipher, igCipher),
+                    new NettyTransportConnectorHandler(_version, _initializer, _sockets),
+                    new NettyPacketEncoder(_version, aesCipher, igCipher)
                 );
             }))
-            .ConnectAsync(IPAddress.Parse(host), port);
-    }
+            .BindAsync(port);
 
-    public Task Dispatch(IPacket packet) => Task.FromResult(Channel?.WriteAndFlushAsync(packet));
-
-    public async Task Close()
-    {
-        if (Channel != null) await Channel.CloseAsync();
-        if (WorkerGroup != null) await WorkerGroup.ShutdownGracefullyAsync();
+        return new NettyTransportConnectorState(channel, group0, _version, _sockets);
     }
 }

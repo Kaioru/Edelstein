@@ -2,8 +2,7 @@
 
 namespace Edelstein.Protocol.Plugin;
 
-public interface IPluginHost<TContext>
+public interface IPluginHost
 {
     ILogger Logger { get; }
-    IPluginCollection<TContext> Plugins { get; }
 }

@@ -4,6 +4,6 @@ namespace Edelstein.Protocol.Services.Migration;
 
 public interface IMigrationService
 {
-    Task<IMigrationResponse> Start(IMigrationStartRequest request);
-    Task<IMigrationClaimResponse> Claim(IMigrationClaimRequest request);
+    Task<MigrationResponse> Start(MigrationStartRequest request);
+    Task<MigrationClaimResponse> Claim(MigrationClaimRequest request);
 }

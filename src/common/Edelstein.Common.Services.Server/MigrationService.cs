@@ -1,29 +1,24 @@
-﻿using Edelstein.Common.Services.Server.Contracts;
-using Edelstein.Common.Services.Server.Contracts.Types;
-using Edelstein.Common.Services.Server.Models;
-using Edelstein.Common.Util.Serializers;
-using Edelstein.Protocol.Gameplay.Accounts;
-using Edelstein.Protocol.Gameplay.Characters;
+﻿using AutoMapper;
+using Edelstein.Common.Services.Server.Entities;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Migration.Contracts;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Services.Server;
 
 public class MigrationService : IMigrationService
 {
-    private static readonly TimeSpan _expiry = TimeSpan.FromMinutes(1);
+    private static readonly TimeSpan Expiry = TimeSpan.FromMinutes(1);
     private readonly IDbContextFactory<ServerDbContext> _dbFactory;
-    private readonly ISerializer _serializer;
+    private readonly IMapper _mapper;
 
-    public MigrationService(IDbContextFactory<ServerDbContext> dbFactory, ISerializer serializer)
+    public MigrationService(IDbContextFactory<ServerDbContext> dbFactory, IMapper mapper)
     {
         _dbFactory = dbFactory;
-        _serializer = serializer;
+        _mapper = mapper;
     }
 
-    public async Task<IMigrationResponse> Start(IMigrationStartRequest request)
+    public async Task<MigrationResponse> Start(MigrationStartRequest request)
     {
         try
         {
@@ -38,16 +33,12 @@ public class MigrationService : IMigrationService
                 else return new MigrationResponse(MigrationResult.FailedAlreadyStarted);
             }
 
-            var model = request.Migration.Adapt<MigrationModel>();
+            var entity = _mapper.Map<MigrationEntity>(request.Migration);
 
-            model.AccountBytes = _serializer.Serialize(request.Migration.Account);
-            model.AccountWorldBytes = _serializer.Serialize(request.Migration.AccountWorld);
-            model.CharacterBytes = _serializer.Serialize(request.Migration.Character);
+            entity.DateUpdated = now;
+            entity.DateExpire = now.Add(Expiry);
 
-            model.DateUpdated = now;
-            model.DateExpire = now.Add(_expiry);
-
-            db.Migrations.Add(model);
+            db.Migrations.Add(entity);
             await db.SaveChangesAsync();
             return new MigrationResponse(MigrationResult.Success);
         }
@@ -57,7 +48,7 @@ public class MigrationService : IMigrationService
         }
     }
 
-    public async Task<IMigrationClaimResponse> Claim(IMigrationClaimRequest request)
+    public async Task<MigrationClaimResponse> Claim(MigrationClaimRequest request)
     {
         try
         {
@@ -77,11 +68,7 @@ public class MigrationService : IMigrationService
             db.Migrations.Remove(existing);
             await db.SaveChangesAsync();
 
-            var migration = existing.Adapt<Migration>();
-
-            migration.Account = _serializer.Deserialize<IAccount>(existing.AccountBytes);
-            migration.AccountWorld = _serializer.Deserialize<IAccountWorld>(existing.AccountWorldBytes);
-            migration.Character = _serializer.Deserialize<ICharacter>(existing.CharacterBytes);
+            var migration = _mapper.Map<Migration>(existing);
 
             return new MigrationClaimResponse(MigrationResult.Success, migration);
         }

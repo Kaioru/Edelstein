@@ -1,83 +1,52 @@
-﻿using System.Collections.Concurrent;
-using DotNetty.Handlers.Timeout;
+﻿using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using Edelstein.Common.Crypto;
 using Edelstein.Common.Network.DotNetty.Codecs;
 using Edelstein.Common.Network.DotNetty.Handlers;
-using Edelstein.Common.Util.Buffers.Packets;
+using Edelstein.Common.Utilities.Repositories;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
-using Edelstein.Protocol.Util.Buffers.Packets;
+using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Common.Network.DotNetty.Transports;
 
 public class NettyTransportAcceptor : ITransportAcceptor
 {
-    public NettyTransportAcceptor(IAdapterInitializer initializer, short version, string patch, byte locale)
+    private readonly IAdapterInitializer _initializer;
+    private readonly IRepository<string, ISocket> _sockets;
+    private readonly TransportVersion _version;
+
+    public NettyTransportAcceptor(IAdapterInitializer initializer, TransportVersion version)
     {
-        Initializer = initializer ?? throw new ArgumentNullException(nameof(initializer));
-        Sockets = new ConcurrentDictionary<string, ISocket>();
-        Version = version;
-        Patch = patch;
-        Locale = locale;
+        _initializer = initializer;
+        _version = version;
+        _sockets = new Repository<string, ISocket>();
     }
 
-    private IChannel? Channel { get; set; }
-    private IEventLoopGroup? BossGroup { get; set; }
-    private IEventLoopGroup? WorkerGroup { get; set; }
-    public IAdapterInitializer Initializer { get; }
-    public IDictionary<string, ISocket> Sockets { get; }
-
-    public TimeSpan Timeout => TimeSpan.FromMinutes(4);
-
-    public short Version { get; }
-    public string Patch { get; }
-    public byte Locale { get; }
-
-    public async Task Accept(string host, int port)
+    public async Task<ITransportContext> Accept(string host, int port)
     {
-        if (host == null) throw new ArgumentNullException(nameof(host));
         var aesCipher = new AESCipher();
         var igCipher = new IGCipher();
 
-        BossGroup = new MultithreadEventLoopGroup();
-        WorkerGroup = new MultithreadEventLoopGroup();
-        Channel = await new ServerBootstrap()
-            .Group(BossGroup, WorkerGroup)
+        var group0 = new MultithreadEventLoopGroup();
+        var group1 = new MultithreadEventLoopGroup();
+        var channel = await new ServerBootstrap()
+            .Group(group0, group1)
             .Channel<TcpServerSocketChannel>()
             .Option(ChannelOption.SoBacklog, 1024)
             .ChildHandler(new ActionChannelInitializer<IChannel>(ch =>
             {
                 ch.Pipeline.AddLast(
-                    new ReadTimeoutHandler(Timeout),
-                    new NettyPacketDecoder(this, aesCipher, igCipher),
-                    new NettyTransportAcceptorHandler(this),
-                    new NettyPacketEncoder(this, aesCipher, igCipher)
+                    new ReadTimeoutHandler(TimeSpan.FromMinutes(5)),
+                    new NettyPacketDecoder(_version, aesCipher, igCipher),
+                    new NettyTransportAcceptorHandler(_version, _initializer, _sockets),
+                    new NettyPacketEncoder(_version, aesCipher, igCipher)
                 );
             }))
             .BindAsync(port);
-    }
 
-    public Task Dispatch(IPacket packet) =>
-        Task.FromResult(Sockets.Values.Select(s => s.Dispatch(new PacketReader(packet.Buffer))));
-
-    public async Task Close()
-    {
-        await Task.WhenAll(Sockets.Values.Select(s => s.Close()));
-        if (Channel != null) await Channel.CloseAsync();
-        await Task.WhenAll(
-            Task.Run(async () =>
-            {
-                if (BossGroup != null)
-                    await BossGroup.ShutdownGracefullyAsync(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3));
-            }),
-            Task.Run(async () =>
-            {
-                if (WorkerGroup != null)
-                    await WorkerGroup.ShutdownGracefullyAsync(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3));
-            })
-        );
+        return new NettyTransportAcceptorState(channel, group0, group1, _version, _sockets);
     }
 }

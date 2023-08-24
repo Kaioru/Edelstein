@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Util.Buffers.Packets;
+﻿using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Protocol.Network;
 

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using DotNetty.Transport.Channels;
 using Edelstein.Protocol.Network;
-using Edelstein.Protocol.Util.Buffers.Packets;
+using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Common.Network.DotNetty;
 
@@ -11,7 +11,7 @@ public class NettySocket : ISocket
 
     public NettySocket(IChannel channel, uint seqSend, uint seqRecv, bool isDataEncrypted = true)
     {
-        _channel = channel ?? throw new ArgumentNullException(nameof(channel));
+        _channel = channel;
         SeqSend = seqSend;
         SeqRecv = seqRecv;
         IsDataEncrypted = isDataEncrypted;
@@ -30,11 +30,11 @@ public class NettySocket : ISocket
     public DateTime LastAliveSent { get; set; }
     public DateTime LastAliveRecv { get; set; }
 
-    public Task Close() => _channel.DisconnectAsync();
-
     public async Task Dispatch(IPacket packet)
     {
         if (_channel.IsWritable)
             await _channel.WriteAndFlushAsync(packet);
     }
+
+    public Task Close() => _channel.DisconnectAsync();
 }

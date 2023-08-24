@@ -3,7 +3,7 @@ using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Crypto;
 using Edelstein.Protocol.Network.Transports;
-using Edelstein.Protocol.Util.Buffers.Packets;
+using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Common.Network.DotNetty.Codecs;
 
@@ -11,17 +11,17 @@ public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
 {
     private readonly AESCipher _aesCipher;
     private readonly IGCipher _igCipher;
-    private readonly ITransport _transport;
+    private readonly TransportVersion _version;
 
     public NettyPacketEncoder(
-        ITransport transport,
+        TransportVersion version,
         AESCipher aesCipher,
         IGCipher igCipher
     )
     {
-        _transport = transport ?? throw new ArgumentNullException(nameof(transport));
-        _aesCipher = aesCipher ?? throw new ArgumentNullException(nameof(aesCipher));
-        _igCipher = igCipher ?? throw new ArgumentNullException(nameof(igCipher));
+        _version = version;
+        _aesCipher = aesCipher;
+        _igCipher = igCipher;
     }
 
     protected override void Encode(
@@ -37,7 +37,7 @@ public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
         if (socket != null)
         {
             var seqSend = socket.SeqSend;
-            var rawSeq = (short)((seqSend >> 16) ^ -(_transport.Version + 1));
+            var rawSeq = (short)(seqSend >> 16 ^ -(_version.Major + 1));
 
             if (socket.IsDataEncrypted)
             {

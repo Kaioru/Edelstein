@@ -4,11 +4,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin\Edelstein.Protocol.Plugin.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Utilities\Edelstein.Common.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

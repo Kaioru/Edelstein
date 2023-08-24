@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Services.Auth.Models;
+﻿using Edelstein.Common.Services.Auth.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Services.Auth;
@@ -11,8 +11,8 @@ public class AuthDbContext : DbContext
     {
     }
 
-    public DbSet<IdentityModel> Identities { get; set; }
+    public DbSet<IdentityEntity> Identities { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder builder) =>
-        builder.Entity<IdentityModel>(entity => { entity.HasIndex(e => e.Username).IsUnique(); });
+    protected override void OnModelCreating(ModelBuilder builder)
+        => builder.ApplyConfigurationsFromAssembly(typeof(AuthDbContext).Assembly);
 }

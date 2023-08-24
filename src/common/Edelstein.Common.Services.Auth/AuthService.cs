@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Services.Auth.Contracts;
-using Edelstein.Common.Services.Auth.Models;
+﻿using Edelstein.Common.Services.Auth.Entities;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Auth.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +11,7 @@ public class AuthService : IAuthService
 
     public AuthService(IDbContextFactory<AuthDbContext> dbFactory) => _dbFactory = dbFactory;
 
-    public async Task<IAuthResponse> Login(IAuthRequest request)
+    public async Task<AuthResponse> Login(AuthRequest request)
     {
         try
         {
@@ -33,7 +32,7 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<IAuthResponse> Register(IAuthRequest request)
+    public async Task<AuthResponse> Register(AuthRequest request)
     {
         try
         {
@@ -42,7 +41,7 @@ public class AuthService : IAuthService
             if (await db.Identities.AnyAsync(i => i.Username.ToLower().Equals(request.Username.ToLower())))
                 return new AuthResponse(AuthResult.FailedUsernameExists);
 
-            db.Identities.Add(new IdentityModel
+            db.Identities.Add(new IdentityEntity
             {
                 Username = request.Username,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password)

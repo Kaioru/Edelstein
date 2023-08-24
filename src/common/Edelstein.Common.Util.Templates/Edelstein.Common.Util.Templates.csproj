@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <Import Project="..\Common.targets" />
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Util.Templates\Edelstein.Protocol.Util.Templates.csproj" />
-  </ItemGroup>
-
-</Project>

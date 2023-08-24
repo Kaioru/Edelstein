@@ -1,6 +1,6 @@
-﻿using Edelstein.Common.Util.Buffers.Packets;
-using Edelstein.Protocol.Gameplay.Stages;
-using Edelstein.Protocol.Util.Buffers.Packets;
+﻿using Edelstein.Common.Utilities.Packets;
+using Edelstein.Protocol.Gameplay;
+using Edelstein.Protocol.Utilities.Packets;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Packets;
@@ -50,7 +50,7 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
 
     public async Task Process(TStageUser user, IPacket packet)
     {
-        var reader = new PacketReader(packet.Buffer);
+        using var reader = new PacketReader(packet.Buffer);
         var operation = reader.ReadShort();
         var handler = _handlers.GetValueOrDefault(operation);
 
@@ -63,7 +63,8 @@ public class PacketHandlerManager<TStageUser> : IPacketHandlerManager<TStageUser
             return;
         }
 
-        if (handler.Check(user)) await handler.Handle(user, reader);
+        if (handler.Check(user)) 
+            await handler.Handle(user, reader);
 
         _logger.LogDebug(
             "Handled packet operation 0x{Operation:X} ({OperationName}) with {Available} available bytes left",

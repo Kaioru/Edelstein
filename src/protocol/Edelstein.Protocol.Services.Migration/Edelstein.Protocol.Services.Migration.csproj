@@ -4,7 +4,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj"/>
-    <ProjectReference Include="..\Edelstein.Protocol.Util.Repositories\Edelstein.Protocol.Util.Repositories.csproj"/>
   </ItemGroup>
 
 </Project>

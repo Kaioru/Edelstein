@@ -1,29 +1,31 @@
 ﻿using System.Collections.Immutable;
-using Edelstein.Common.Services.Server.Contracts;
-using Edelstein.Common.Services.Server.Contracts.Types;
-using Edelstein.Common.Services.Server.Models;
+using AutoMapper;
+using Edelstein.Common.Services.Server.Entities;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
-using Edelstein.Protocol.Services.Server.Types;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Services.Server;
 
 public class ServerService : IServerService
 {
-    private static readonly TimeSpan _expiry = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan Expiry = TimeSpan.FromMinutes(5);
     private readonly IDbContextFactory<ServerDbContext> _dbFactory;
+    private readonly IMapper _mapper;
 
-    public ServerService(IDbContextFactory<ServerDbContext> dbFactory) => _dbFactory = dbFactory;
+    public ServerService(IDbContextFactory<ServerDbContext> dbFactory, IMapper mapper)
+    {
+        _dbFactory = dbFactory;
+        _mapper = mapper;
+    }
 
-    public Task<IServerResponse> RegisterLogin(IServerRegisterRequest<IServerLogin> request) =>
-        Register(request.Server.Adapt<ServerLoginModel>());
+    public Task<ServerResponse> RegisterLogin(ServerRegisterRequest<IServerLogin> request) =>
+        Register(_mapper.Map<ServerLoginEntity>(request.Server));
 
-    public Task<IServerResponse> RegisterGame(IServerRegisterRequest<IServerGame> request) =>
-        Register(request.Server.Adapt<ServerGameModel>());
+    public Task<ServerResponse> RegisterGame(ServerRegisterRequest<IServerGame> request) =>
+        Register(_mapper.Map<ServerGameEntity>(request.Server));
 
-    public async Task<IServerResponse> Ping(IServerPingRequest request)
+    public async Task<ServerResponse> Ping(ServerPingRequest request)
     {
         try
         {
@@ -35,7 +37,7 @@ public class ServerService : IServerService
                 return new ServerResponse(ServerResult.FailedNotRegistered);
 
             existing.DateUpdated = now;
-            existing.DateExpire = now.Add(_expiry);
+            existing.DateExpire = now.Add(Expiry);
 
             db.Servers.Update(existing);
             await db.SaveChangesAsync();
@@ -48,7 +50,7 @@ public class ServerService : IServerService
         }
     }
 
-    public async Task<IServerResponse> Deregister(IServerDeregisterRequest request)
+    public async Task<ServerResponse> Deregister(ServerDeregisterRequest request)
     {
         try
         {
@@ -68,7 +70,7 @@ public class ServerService : IServerService
         }
     }
 
-    public async Task<IServerGetOneResponse<IServer>> GetByID(IServerGetByIDRequest request)
+    public async Task<ServerGetOneResponse<IServer>> GetByID(ServerGetByIDRequest request)
     {
         try
         {
@@ -79,7 +81,7 @@ public class ServerService : IServerService
             if (existing == null || existing.DateExpire < now)
                 return new ServerGetOneResponse<IServer>(ServerResult.FailedNotFound);
 
-            return new ServerGetOneResponse<IServer>(ServerResult.Success, existing.Adapt<Contracts.Types.Server>());
+            return new ServerGetOneResponse<IServer>(ServerResult.Success, _mapper.Map<Protocol.Services.Server.Contracts.Server>(existing));
         }
         catch (Exception)
         {
@@ -87,8 +89,8 @@ public class ServerService : IServerService
         }
     }
 
-    public async Task<IServerGetOneResponse<IServerGame>> GetGameByWorldAndChannel(
-        IServerGetGameByWorldAndChannelRequest request)
+    public async Task<ServerGetOneResponse<IServerGame>> GetGameByWorldAndChannel(
+        ServerGetGameByWorldAndChannelRequest request)
     {
         try
         {
@@ -100,7 +102,7 @@ public class ServerService : IServerService
             if (existing == null || existing.DateExpire < now)
                 return new ServerGetOneResponse<IServerGame>(ServerResult.FailedNotFound);
 
-            return new ServerGetOneResponse<IServerGame>(ServerResult.Success, existing.Adapt<ServerGame>());
+            return new ServerGetOneResponse<IServerGame>(ServerResult.Success, _mapper.Map<ServerGame>(existing));
         }
         catch (Exception)
         {
@@ -108,7 +110,7 @@ public class ServerService : IServerService
         }
     }
 
-    public async Task<IServerGetAllResponse<IServerGame>> GetGameByWorld(IServerGetGameByWorldRequest request)
+    public async Task<ServerGetAllResponse<IServerGame>> GetGameByWorld(ServerGetGameByWorldRequest request)
     {
         try
         {
@@ -120,7 +122,7 @@ public class ServerService : IServerService
 
             return new ServerGetAllResponse<IServerGame>(ServerResult.Success, existing
                 .Where(s => s.DateExpire > now)
-                .Select(s => s.Adapt<ServerGame>())
+                .Select(s => _mapper.Map<ServerGame>(s))
                 .ToImmutableList());
         }
         catch (Exception)
@@ -129,7 +131,7 @@ public class ServerService : IServerService
         }
     }
 
-    public async Task<IServerGetAllResponse<IServer>> GetAll()
+    public async Task<ServerGetAllResponse<IServer>> GetAll()
     {
         try
         {
@@ -139,7 +141,7 @@ public class ServerService : IServerService
 
             return new ServerGetAllResponse<IServer>(ServerResult.Success, existing
                 .Where(s => s.DateExpire > now)
-                .Select(s => s.Adapt<Contracts.Types.Server>())
+                .Select(s => _mapper.Map<Protocol.Services.Server.Contracts.Server>(s))
                 .ToImmutableList());
         }
         catch (Exception)
@@ -148,13 +150,13 @@ public class ServerService : IServerService
         }
     }
 
-    private async Task<IServerResponse> Register(ServerModel model)
+    private async Task<ServerResponse> Register(ServerEntity entity)
     {
         try
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
             var now = DateTime.UtcNow;
-            var existing = await db.Servers.FindAsync(model.ID);
+            var existing = await db.Servers.FindAsync(entity.ID);
 
             if (existing != null)
             {
@@ -162,22 +164,22 @@ public class ServerService : IServerService
                 else return new ServerResponse(ServerResult.FailedAlreadyRegistered);
             }
 
-            model.DateUpdated = now;
-            model.DateExpire = now.Add(_expiry);
+            entity.DateUpdated = now;
+            entity.DateExpire = now.Add(Expiry);
 
-            switch (model)
+            switch (entity)
             {
-                case ServerLoginModel login:
+                case ServerLoginEntity login:
                     await db.LoginServers.AddAsync(login);
                     break;
-                case ServerGameModel game:
+                case ServerGameEntity game:
                     if (db.GameServers.Any(s => s.WorldID == game.WorldID && s.ChannelID == game.ChannelID))
                         return new ServerResponse(ServerResult.FailedAlreadyRegistered);
 
                     await db.GameServers.AddAsync(game);
                     break;
                 default:
-                    await db.Servers.AddAsync(model);
+                    await db.Servers.AddAsync(entity);
                     break;
             }
 

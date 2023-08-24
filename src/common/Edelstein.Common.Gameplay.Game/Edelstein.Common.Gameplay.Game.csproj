@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Common.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Game\Edelstein.Protocol.Gameplay.Game.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Scripting\Edelstein.Protocol.Scripting.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Movements" />
+    <Folder Include="Objects\NPC\Templates" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Stateless" Version="5.13.0" />
+  </ItemGroup>
+
+</Project>

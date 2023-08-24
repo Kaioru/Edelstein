@@ -16,12 +16,12 @@ namespace Edelstein.Common.Services.Auth.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Edelstein.Common.Services.Auth.Models.IdentityModel", b =>
+            modelBuilder.Entity("Edelstein.Common.Services.Auth.Entities.IdentityEntity", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -42,7 +42,7 @@ namespace Edelstein.Common.Services.Auth.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Identities");
+                    b.ToTable("identities", (string)null);
                 });
 #pragma warning restore 612, 618
         }

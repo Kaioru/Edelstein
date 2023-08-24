@@ -1,7 +1,7 @@
-﻿using Edelstein.Protocol.Gameplay.Stages.Game.Contexts;
+﻿using Edelstein.Protocol.Gameplay.Game.Contexts;
 
 namespace Edelstein.Protocol.Plugin.Game;
 
-public interface IGamePlugin : IPlugin<IGameContext>
+public interface IGamePlugin : IPlugin<GameContext>
 {
 }

@@ -51,7 +51,7 @@ public class IGCipher
                     (byte)(*((byte*)ptrPSrc + i) + *(pShuffle + *((byte*)ptrDwKey + 3)));
                 *((byte*)ptrDwKey + 3) =
                     (byte)(*((byte*)ptrDwKey + 3) - *(byte*)ptrDwKey + *(pShuffle + *((byte*)ptrPSrc + i)));
-                *ptrDwKey = (*ptrDwKey << 3) | (*ptrDwKey >> 29);
+                *ptrDwKey = *ptrDwKey << 3 | *ptrDwKey >> 29;
             }
         }
 

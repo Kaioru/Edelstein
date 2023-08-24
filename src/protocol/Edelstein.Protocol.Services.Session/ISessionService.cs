@@ -4,12 +4,12 @@ namespace Edelstein.Protocol.Services.Session;
 
 public interface ISessionService
 {
-    Task<ISessionResponse> Start(ISessionStartRequest request);
-    Task<ISessionResponse> End(ISessionEndRequest request);
+    Task<SessionResponse> Start(SessionStartRequest request);
+    Task<SessionResponse> End(SessionEndRequest request);
 
-    Task<ISessionResponse> UpdateServer(ISessionUpdateServerRequest request);
-    Task<ISessionResponse> UpdateCharacter(ISessionUpdateCharacterRequest request);
+    Task<SessionResponse> UpdateServer(SessionUpdateServerRequest request);
+    Task<SessionResponse> UpdateCharacter(SessionUpdateCharacterRequest request);
 
-    Task<ISessionGetOneResponse> GetByActiveAccount(ISessionGetByActiveAccountRequest request);
-    Task<ISessionGetOneResponse> GetByActiveCharacter(ISessionGetByActiveCharacterRequest request);
+    Task<SessionGetOneResponse> GetByActiveAccount(SessionGetByActiveAccountRequest request);
+    Task<SessionGetOneResponse> GetByActiveCharacter(SessionGetByActiveCharacterRequest request);
 }
