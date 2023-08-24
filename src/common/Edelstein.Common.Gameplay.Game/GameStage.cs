@@ -36,19 +36,6 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
 
         await field.Enter(fieldUser);
         await base.Enter(user);
-
-        try
-        {
-            await fieldUser.ModifyInventory(i =>
-            {
-                i.HasSlotFor(4000000, 250);
-                i.HasSlotFor(4000000, 450);
-            });
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
     }
 
     public async Task Leave(IGameStageUser user)
