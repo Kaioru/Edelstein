@@ -274,6 +274,11 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         inventoryCopy.ForEach(kv => RemoveSlot(kv.Key));
         inventoryCopy.ForEach(kv => Add(kv.Value));
     }
+    public override void Clear() =>
+        _inventory.Items
+            .Where(kv => kv.Key > 0)
+            .ToList()
+            .ForEach(kv => RemoveSlot(kv.Key));
 
     public override void Add(int templateID) =>
         Add(templateID, 1);

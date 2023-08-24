@@ -38,6 +38,7 @@ public interface IModifyInventory<TSlot> : IPacketWritable where TSlot : IItemSl
 
     void Gather();
     void Sort();
+    void Clear();
 }
 
 public interface IModifyInventory : IModifyInventory<IItemSlot>

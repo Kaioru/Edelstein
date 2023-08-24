@@ -14,6 +14,6 @@ public class UserChatHandler : AbstractPipedFieldHandler<FieldOnPacketUserChat>
     
     public override short Operation => (short)PacketRecvOperations.UserChat;
 
-    protected override FieldOnPacketUserChat? Serialize(IFieldUser user, IPacketReader reader)
-        => new(user, reader.ReadString(), reader.ReadBool());
+    protected override FieldOnPacketUserChat? Serialize(IFieldUser user, IPacketReader reader) 
+        => new(user, reader.Skip(4).ReadString(), reader.ReadBool());
 }

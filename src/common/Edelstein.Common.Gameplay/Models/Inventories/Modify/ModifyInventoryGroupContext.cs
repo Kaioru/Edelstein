@@ -114,6 +114,12 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
         foreach (var context in _contexts.Values)
             context.Sort();
     }
+    
+    public override void Clear()
+    {
+        foreach (var context in _contexts.Values)
+            context.Clear();
+    }
 
     public override void Add(int templateID) =>
         this[GetTypeByID(templateID)]?.Add(templateID);

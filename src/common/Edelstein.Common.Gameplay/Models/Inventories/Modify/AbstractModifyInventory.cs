@@ -43,6 +43,7 @@ public abstract class AbstractModifyInventory : IModifyInventory
 
     public abstract void Gather();
     public abstract void Sort();
+    public abstract void Clear();
 
     public abstract void Add(int templateID);
     public abstract void Add(int templateID, short count);
