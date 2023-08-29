@@ -228,7 +228,13 @@ public class ModifyStatContext : IModifyStatContext
         if ((Flag & ModifyStatType.MaxMP) != 0) writer.WriteInt(MaxMP);
 
         if ((Flag & ModifyStatType.AP) != 0) writer.WriteShort(AP);
-        if ((Flag & ModifyStatType.SP) != 0) writer.WriteShort(SP);
+        if ((Flag & ModifyStatType.SP) != 0)
+        {
+            if (Job / 1000 == 3 || Job / 100 == 22 || Job == 2001)
+                writer.WriteCharacterExtendSP(_character.ExtendSP);
+            else 
+                writer.WriteShort(SP);
+        }
 
         if ((Flag & ModifyStatType.EXP) != 0) writer.WriteInt(EXP);
         if ((Flag & ModifyStatType.POP) != 0) writer.WriteShort(POP);
