@@ -4,6 +4,7 @@ using Edelstein.Protocol.Gameplay.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Modify;
+using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Utilities.Packets;
 
@@ -43,4 +44,5 @@ public interface IFieldUser :
 
     Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false);
     Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false);
+    Task ModifySkills(Action<IModifySkillContext>? action = null, bool exclRequest = false);
 }

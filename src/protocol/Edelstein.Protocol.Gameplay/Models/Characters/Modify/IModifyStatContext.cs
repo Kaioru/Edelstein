@@ -35,4 +35,6 @@ public interface IModifyStatContext : IPacketWritable
 
     int Money { get; set; }
     int TempEXP { get; set; }
+
+    void SetExtendSP(byte jobLevel, byte amount);
 }

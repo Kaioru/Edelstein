@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Models.Characters;
+﻿using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Modify;
 using Edelstein.Protocol.Utilities.Packets;
 
@@ -203,6 +204,15 @@ public class ModifyStatContext : IModifyStatContext
         }
     }
 
+    public void IncExtendSP(byte jobLevel, byte amount)
+        => SetExtendSP(jobLevel, (byte)((_character.ExtendSP[jobLevel] ?? 0) + amount));
+
+    public void SetExtendSP(byte jobLevel, byte amount)
+    {
+        Flag |= ModifyStatType.SP;
+        _character.ExtendSP.Records[jobLevel] = amount;
+    }
+
     public void WriteTo(IPacketWriter writer)
     {
         writer.WriteInt((int)Flag);
@@ -230,7 +240,7 @@ public class ModifyStatContext : IModifyStatContext
         if ((Flag & ModifyStatType.AP) != 0) writer.WriteShort(AP);
         if ((Flag & ModifyStatType.SP) != 0)
         {
-            if (Job / 1000 == 3 || Job / 100 == 22 || Job == 2001)
+            if (JobConstants.IsExtendSPJob(_character.Job))
                 writer.WriteCharacterExtendSP(_character.ExtendSP);
             else 
                 writer.WriteShort(SP);

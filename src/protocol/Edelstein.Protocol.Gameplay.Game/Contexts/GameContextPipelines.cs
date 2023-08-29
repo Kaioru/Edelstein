@@ -22,6 +22,7 @@ public record GameContextPipelines(
     IPipeline<FieldOnPacketUserGatherItemRequest> FieldOnPacketUserGatherItemRequest,
     IPipeline<FieldOnPacketUserSortItemRequest> FieldOnPacketUserSortItemRequest,
     IPipeline<FieldOnPacketUserChangeSlotPositionRequest> FieldOnPacketUserChangeSlotPositionRequest,
+    IPipeline<FieldOnPacketUserSkillUpRequest> FieldOnPacketUserSkillUpRequest,
     
     IPipeline<FieldOnPacketNPCMove> FieldOnPacketNPCMove,
     

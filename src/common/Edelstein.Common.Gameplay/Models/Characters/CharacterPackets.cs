@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Models.Inventories.Items;
+﻿using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
@@ -157,7 +158,7 @@ public static class CharacterPackets
         writer.WriteInt(character.MaxMP);
 
         writer.WriteShort(character.AP);
-        if (character.Job / 1000 == 3 || character.Job / 100 == 22 || character.Job == 2001)
+        if (JobConstants.IsExtendSPJob(character.Job))
             writer.WriteCharacterExtendSP(character.ExtendSP);
         else 
             writer.WriteShort(character.SP);
@@ -239,8 +240,8 @@ public static class CharacterPackets
         p.WriteByte((byte)extendSP.Records.Count);
         foreach (var kv in extendSP.Records)
         {
-            p.WriteByte((byte)kv.Key);
-            p.WriteByte((byte)kv.Value);
+            p.WriteByte(kv.Key);
+            p.WriteByte(kv.Value);
         }
     }
 }

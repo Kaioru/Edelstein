@@ -12,6 +12,7 @@ public class SkillTemplate : ISkillTemplate
     
     public bool IsPSD { get; }
     public bool IsSummon { get; }
+    public bool IsInvisible { get; }
     
     public IDictionary<int, int> ReqSkill { get; }
     public IDictionary<int, ISkillTemplateLevel> Levels { get; }
@@ -22,6 +23,7 @@ public class SkillTemplate : ISkillTemplate
 
         IsPSD = (property.Resolve<int>("psd") ?? 0) > 0;
         IsSummon = property.Resolve("summon") != null;
+        IsInvisible = (property.Resolve<int>("invisible") ?? 0) > 0;
 
         ReqSkill = property.Resolve("req")?.Children
             .ToImmutableDictionary(
