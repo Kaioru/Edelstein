@@ -11,6 +11,7 @@ using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Modify;
@@ -23,7 +24,6 @@ namespace Edelstein.Common.Gameplay.Game.Objects.User;
 
 public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAction>, IFieldUser
 {
-
     public FieldUser(
         IGameStageUser user,
         IAccount account,
@@ -38,7 +38,10 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
         Observing = new List<IFieldSplit>();
         Controlled = new List<IFieldControllable>();
+        
+        UpdateStats().Wait();
     }
+    
     public override FieldObjectType Type => FieldObjectType.User;
 
     public ISocket Socket => StageUser.Socket;
@@ -48,6 +51,8 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public IAccount Account { get; }
     public IAccountWorld AccountWorld { get; }
     public ICharacter Character { get; }
+    
+    public IFieldUserStats Stats { get; private set; }
 
     public IConversationContext? Conversation { get; private set; }
 
@@ -237,7 +242,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
         action?.Invoke(context);
         
-        // TODO update stats
+        await UpdateStats();
         
         if (!IsInstantiated) return;
         
@@ -262,9 +267,11 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         packet.Write(context);
         packet.WriteBool(false);
 
+        await UpdateStats();
         await Dispatch(packet.Build());
 
-        // TODO update stats
+        if (context.IsUpdatedAvatar)
+            await UpdateAvatar();
     }
 
     protected override IPacket GetMovePacket(IFieldUserMovePath ctx)
@@ -275,5 +282,32 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         packet.Write(ctx);
 
         return packet.Build();
+    }
+
+    private async Task UpdateStats()
+    {
+        Stats = await StageUser.Context.Managers.UserStats.Calculate(this);
+        
+        Console.WriteLine(Stats);
+
+        if (Character.HP > Stats.MaxHP) await ModifyStats(s => s.HP = Stats.MaxHP);
+        if (Character.MP > Stats.MaxMP) await ModifyStats(s => s.MP = Stats.MaxMP);
+    }
+    
+    private async Task UpdateAvatar()
+    {
+        var avatarPacket = new PacketWriter(PacketSendOperations.UserAvatarModified);
+
+        avatarPacket.WriteInt(Character.ID);
+        avatarPacket.WriteByte(0x1); // Flag
+        avatarPacket.WriteCharacterLooks(Character);
+
+        avatarPacket.WriteBool(false);
+        avatarPacket.WriteBool(false);
+        avatarPacket.WriteBool(false);
+        avatarPacket.WriteInt(0);
+
+        if (FieldSplit != null)
+            await FieldSplit.Dispatch(avatarPacket.Build(), this);
     }
 }

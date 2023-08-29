@@ -7,6 +7,7 @@ using Edelstein.Common.Gameplay;
 using Edelstein.Common.Gameplay.Game;
 using Edelstein.Common.Gameplay.Game.Continents;
 using Edelstein.Common.Gameplay.Game.Conversations;
+using Edelstein.Common.Gameplay.Game.Objects.User.Stats;
 using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Network.DotNetty.Transports;
@@ -20,6 +21,7 @@ using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Network;
@@ -150,6 +152,8 @@ public class ProgramHost : IHostedService
                         b.RegisterType<FieldManager>().As<IFieldManager>().SingleInstance();
                         b.RegisterType<ContiMoveManager>().As<IContiMoveManager>().SingleInstance();
                         b.RegisterType<ScriptedConversationManager>().As<INamedConversationManager>().SingleInstance();
+                        
+                        b.RegisterType<FieldUserStatsCalculator>().As<IFieldUserStatsCalculator>().SingleInstance();
 
                         b
                             .RegisterInstance(options)
