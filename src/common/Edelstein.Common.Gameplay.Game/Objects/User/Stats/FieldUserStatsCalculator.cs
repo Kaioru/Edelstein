@@ -2,6 +2,7 @@
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
+using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -19,10 +20,10 @@ public class FieldUserStatsCalculator : IFieldUserStatsCalculator
     public async Task<IFieldUserStats> Calculate(IFieldUser user)
     {
         var character = user.Character;
-        var str = character.STR;
-        var dex = character.DEX;
-        var @int = character.INT;
-        var luk = character.LUK;
+        var str = (int)character.STR;
+        var dex = (int)character.DEX;
+        var @int = (int)character.INT;
+        var luk = (int)character.LUK;
         var maxHP = character.MaxHP;
         var maxMP = character.MaxMP;
 
@@ -31,9 +32,19 @@ public class FieldUserStatsCalculator : IFieldUserStatsCalculator
         var mad = 0;
         var mdd = 0;
 
+        var acc = 0;
+        var eva = 0;
+
         var craft = @int + dex + luk;
         var speed = 100;
         var jump = 100;
+        
+        var strR = 0;
+        var dexR = 0;
+        var intR = 0;
+        var lukR = 0;
+        var maxHPr = 0;
+        var maxMPr = 0;
         
         var equippedItems = character.Inventories[ItemInventoryType.Equip]?.Items
             .Where(kv => kv.Key < 0)
@@ -55,34 +66,47 @@ public class FieldUserStatsCalculator : IFieldUserStatsCalculator
             maxHP += item.MaxHP;
             maxMP += item.MaxMP;
 
-            if ( // TODO use BodyPart
-                pos != -30 &&
-                pos != -38 &&
-                pos != -31 &&
-                pos != -39 &&
-                pos != -32 &&
-                pos != -40 &&
-                (item.ID / 10000 == 190 || pos != -18 && pos != -19 && pos != -20))
+            if (
+                pos != -(int)BodyPart.PetWear2 &&
+                pos != -(int)BodyPart.PetWear3 &&
+                pos != -(int)BodyPart.PetRingLabel2 &&
+                pos != -(int)BodyPart.PetRingLabel3 &&
+                pos != -(int)BodyPart.PetRingQuote2 &&
+                pos != -(int)BodyPart.PetRingQuote3 &&
+                (
+                    item.ID / 10000 == 190 || 
+                    pos != -(int)BodyPart.TamingMob && 
+                    pos != -(int)BodyPart.Saddle && 
+                    pos != -(int)BodyPart.MobEquip
+                )
+            )
             {
                 pad += item.PAD;
                 pdd += item.PDD;
                 mad += item.MAD;
                 mdd += item.MDD;
-                // ACC += item.ACC;
-                // EVA += item.EVA;
+                acc += item.ACC;
+                eva += item.EVA;
                 craft += item.Craft;
                 speed += item.Speed;
                 jump += item.Jump;
             }
 
-            // MaxHPr += equipTemplate.IncMaxHPr;
-            // MaxMPr += equipTemplate.IncMaxMPr;
+            maxHPr += equipTemplate.IncMaxHPr;
+            maxMPr += equipTemplate.IncMaxMPr;
 
             // TODO: and not Dragon or Mechanic
             // TODO: item options
         }
 
         // TODO: item sets
+        
+        str += (int)(str * (strR / 100d));
+        dex += (int)(dex * (dexR / 100d));
+        @int += (int)(@int * (intR / 100d));
+        luk += (int)(luk * (lukR / 100d));
+        maxHP += (int)(maxHP * (maxHPr / 100d));
+        maxMP += (int)(maxMP * (maxMPr / 100d));
         
         maxHP = Math.Min(maxHP, 99999);
         maxMP = Math.Min(maxMP, 99999);
@@ -104,6 +128,9 @@ public class FieldUserStatsCalculator : IFieldUserStatsCalculator
             MaxHP = maxHP,
             MaxMP = maxMP,
             
+            ACC = acc,
+            EVA = eva,
+            
             PAD = pad,
             PDD = pdd,
             MAD = mad,
@@ -111,7 +138,14 @@ public class FieldUserStatsCalculator : IFieldUserStatsCalculator
             
             Craft = craft,
             Speed = speed,
-            Jump = jump
+            Jump = jump,
+            
+            STRr = strR,
+            DEXr = dexR,
+            INTr = intR,
+            LUKr = lukR,
+            MaxHPr = maxHPr,
+            MaxMPr = maxMPr
         };
     }
 }

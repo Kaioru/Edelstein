@@ -17,7 +17,17 @@ public record FieldUserStats : IFieldUserStats
     public int MAD { get; init; }
     public int MDD { get; init; }
     
+    public int ACC { get; init; }
+    public int EVA { get; init; }
+    
     public int Craft { get; init; }
     public int Speed { get; init; }
     public int Jump { get; init; }
+    
+    public int STRr { get; init; }
+    public int DEXr { get; init; }
+    public int INTr { get; init; }
+    public int LUKr { get; init; }
+    public int MaxHPr { get; init; }
+    public int MaxMPr { get; init; }
 }

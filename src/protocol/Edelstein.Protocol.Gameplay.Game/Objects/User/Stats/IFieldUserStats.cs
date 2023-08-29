@@ -15,7 +15,17 @@ public interface IFieldUserStats
     int MAD { get; }
     int MDD { get; }
 
+    int ACC { get; }
+    int EVA { get; }
+
     int Craft { get; }
     int Speed { get; }
     int Jump { get; }
+    
+    int STRr { get; }
+    int DEXr { get; }
+    int INTr { get; }
+    int LUKr { get; }
+    int MaxHPr { get; }
+    int MaxMPr { get; }
 }
