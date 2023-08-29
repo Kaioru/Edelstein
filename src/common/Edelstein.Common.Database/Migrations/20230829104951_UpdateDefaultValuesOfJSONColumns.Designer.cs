@@ -5,6 +5,7 @@ using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Inventories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -13,9 +14,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Edelstein.Common.Database.Migrations
 {
     [DbContext(typeof(GameplayDbContext))]
-    partial class GameplayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230829104951_UpdateDefaultValuesOfJSONColumns")]
+    partial class UpdateDefaultValuesOfJSONColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,7 +122,7 @@ namespace Edelstein.Common.Database.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("json")
-                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Characters.CharacterExtendSP, Edelstein.Common.Gameplay\",\"Records\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.Byte, System.Private.CoreLib],[System.Byte, System.Private.CoreLib]], System.Private.CoreLib\"}}");
+                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Characters.CharacterExtendSP, Edelstein.Common.Gameplay\",\"Records\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Private.CoreLib\"}}");
 
                     b.Property<int>("Face")
                         .HasColumnType("integer");

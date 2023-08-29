@@ -26,6 +26,8 @@ public interface ICharacter : IIdentifiable<int>
 
     short AP { get; set; }
     short SP { get; set; }
+    
+    ICharacterExtendSP ExtendSP { get; set; }
 
     int EXP { get; set; }
     short POP { get; set; }
@@ -41,4 +43,5 @@ public interface ICharacter : IIdentifiable<int>
     short SubJob { get; set; }
 
     ICharacterInventories Inventories { get; set; }
+    ICharacterSkills Skills { get; set; }
 }

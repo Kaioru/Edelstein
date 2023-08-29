@@ -157,7 +157,10 @@ public static class CharacterPackets
         writer.WriteInt(character.MaxMP);
 
         writer.WriteShort(character.AP);
-        writer.WriteShort(character.SP); // TODO: extendSP
+        if (character.Job / 1000 == 3 || character.Job / 100 == 22 || character.Job == 2001)
+            writer.WriteCharacterExtendSP(character.ExtendSP);
+        else 
+            writer.WriteShort(character.SP);
 
         writer.WriteInt(character.EXP);
         writer.WriteShort(character.POP);
@@ -228,5 +231,16 @@ public static class CharacterPackets
 
         for (var i = 0; i < 3; i++)
             writer.WriteInt(0);
+    }
+    
+    
+    public static void WriteCharacterExtendSP(this IPacketWriter p, ICharacterExtendSP extendSP)
+    {
+        p.WriteByte((byte)extendSP.Records.Count);
+        foreach (var kv in extendSP.Records)
+        {
+            p.WriteByte((byte)kv.Key);
+            p.WriteByte((byte)kv.Value);
+        }
     }
 }
