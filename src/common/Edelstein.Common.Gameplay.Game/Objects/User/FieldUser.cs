@@ -267,11 +267,11 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         packet.Write(context);
         packet.WriteBool(false);
 
-        await UpdateStats();
+        if (context.IsUpdated) await UpdateStats();
+        
         await Dispatch(packet.Build());
 
-        if (context.IsUpdatedAvatar)
-            await UpdateAvatar();
+        if (context.IsUpdatedAvatar) await UpdateAvatar();
     }
 
     protected override IPacket GetMovePacket(IFieldUserMovePath ctx)
@@ -288,8 +288,6 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     {
         Stats = await StageUser.Context.Managers.UserStats.Calculate(this);
         
-        Console.WriteLine(Stats);
-
         if (Character.HP > Stats.MaxHP) await ModifyStats(s => s.HP = Stats.MaxHP);
         if (Character.MP > Stats.MaxMP) await ModifyStats(s => s.MP = Stats.MaxMP);
     }
