@@ -1,5 +1,4 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Objects.User;
-using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Drop;
 

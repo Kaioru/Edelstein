@@ -1,9 +1,7 @@
-﻿using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
-using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
-using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Game.Spatial;
 using Edelstein.Protocol.Utilities.Packets;
@@ -13,8 +11,6 @@ namespace Edelstein.Common.Gameplay.Game.Objects.Mob;
 
 public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMoveAction>, IFieldMob, IPacketWritable
 {
-    private readonly IFieldMobStatsCalculator _calculator;
-    
     public FieldMob(
         IMobTemplate template,
         IPoint2D position,
@@ -22,8 +18,6 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
         bool isFacingLeft = true
     ) : base(new FieldMobMoveAction(template.MoveAbility, isFacingLeft), position, foothold)
     {
-        _calculator = new FieldMobStatsCalculator();
-        
         Template = template;
         HP = template.MaxHP;
         MP = template.MaxMP;
@@ -105,6 +99,6 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
         return packet.Build();
     }
     
-    private async Task UpdateStats() 
-        => Stats = await _calculator.Calculate(this);
+    private Task UpdateStats() 
+        => Task.FromResult(Stats = new FieldMobStats(this));
 }

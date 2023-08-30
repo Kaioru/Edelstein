@@ -1,6 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
-using Edelstein.Protocol.Gameplay.Game.Objects.User.Stats;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Modify;

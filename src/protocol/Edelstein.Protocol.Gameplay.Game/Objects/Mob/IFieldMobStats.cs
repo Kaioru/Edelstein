@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
+﻿namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 
 public interface IFieldMobStats
 {
