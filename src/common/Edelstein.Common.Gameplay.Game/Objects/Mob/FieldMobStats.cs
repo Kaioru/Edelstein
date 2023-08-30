@@ -2,7 +2,7 @@
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob;
 
-public struct FieldMobStats : IFieldMobStats
+public record struct FieldMobStats : IFieldMobStats
 {
     public int Level { get; }
     

@@ -1,11 +1,15 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Objects.User;
+﻿using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Models.Inventories.Items;
+using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
+using Edelstein.Protocol.Gameplay.Models.Inventories;
+using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.User;
 
-public struct FieldUserStats : IFieldUserStats
+public record struct FieldUserStats : IFieldUserStats
 {
     public int Level { get; }
     
@@ -67,10 +71,12 @@ public struct FieldUserStats : IFieldUserStats
     public FieldUserStats(
         IFieldUser user, 
         ITemplateManager<IItemTemplate> itemTemplates,
-        ITemplateManager<ISkillTemplate> skillTemplate
+        ITemplateManager<ISkillTemplate> skillTemplates
     )
     {
         var character = user.Character;
+
+        Level = character.Level;
         
         STR = character.STR;
         DEX = character.DEX;
@@ -91,6 +97,61 @@ public struct FieldUserStats : IFieldUserStats
         
         DamageMin = 1;
         DamageMax = 1;
+        
+        var equippedItems = character.Inventories[ItemInventoryType.Equip]?.Items
+            .Where(kv => kv.Key < 0)
+            .Where(kv => kv.Value is ItemSlotEquip)
+            .Select(kv => (kv.Key, (ItemSlotEquip)kv.Value))
+            .ToList() ?? new List<(short Key, ItemSlotEquip)>();
+
+        foreach (var kv in equippedItems)
+        {
+            var (pos, item) = kv;
+            var template = itemTemplates.Retrieve(item.ID).Result;
+
+            if (template is not IItemEquipTemplate equipTemplate) continue;
+            
+            STR += item.STR;
+            DEX += item.DEX;
+            INT += item.INT;
+            LUK += item.LUK;
+            MaxHP += item.MaxHP;
+            MaxMP += item.MaxMP;
+
+            if (
+                pos != -(int)BodyPart.PetWear2 &&
+                pos != -(int)BodyPart.PetWear3 &&
+                pos != -(int)BodyPart.PetRingLabel2 &&
+                pos != -(int)BodyPart.PetRingLabel3 &&
+                pos != -(int)BodyPart.PetRingQuote2 &&
+                pos != -(int)BodyPart.PetRingQuote3 &&
+                (
+                    item.ID / 10000 == 190 || 
+                    pos != -(int)BodyPart.TamingMob && 
+                    pos != -(int)BodyPart.Saddle && 
+                    pos != -(int)BodyPart.MobEquip
+                )
+            )
+            {
+                PAD += item.PAD;
+                PDD += item.PDD;
+                MAD += item.MAD;
+                MDD += item.MDD;
+                ACC += item.ACC;
+                EVA += item.EVA;
+                Craft += item.Craft;
+                Speed += item.Speed;
+                Jump += item.Jump;
+            }
+
+            MaxHPr += equipTemplate.IncMaxHPr;
+            MaxMPr += equipTemplate.IncMaxMPr;
+
+            // TODO: and not Dragon or Mechanic
+            // TODO: item options
+        }
+
+        // TODO: item sets
         
         STR += (int)(STR * (STRr / 100d));
         DEX += (int)(DEX * (DEXr / 100d));
@@ -130,6 +191,113 @@ public struct FieldUserStats : IFieldUserStats
         Jump = Math.Min(Math.Max(Jump, 100), 123);
         
         CDMin = Math.Min(CDMin, CDMax);
+
+        var equipped = character.Inventories[ItemInventoryType.Equip];
+        var weapon = equipped != null
+            ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result) 
+                ? result.ID 
+                : 0
+            : 0;
+        var weaponType = ItemConstants.GetWeaponType(weapon);
+        var stat1 = 0;
+        var stat2 = 0;
+        var stat3 = 0;
+        var attack = PAD;
+        var multiplier = 0.0;
+        
+        if (JobConstants.GetJobLevel(character.Job) == 0)
+        {
+            stat1 = STR;
+            stat2 = DEX;
+            multiplier = 1.2;
+        }
+        else if (JobConstants.GetJobType(character.Job) == JobType.Magician)
+        {
+            stat1 = INT;
+            stat2 = LUK;
+            attack = MAD;
+            multiplier = 1.0;
+        }
+        else
+        {
+            switch (weaponType)
+            {
+                case WeaponType.OneHandedSword:
+                case WeaponType.OneHandedAxe:
+                case WeaponType.OneHandedMace:
+                    stat1 = STR;
+                    stat2 = DEX;
+                    multiplier = 1.20;
+                    break;
+                case WeaponType.TwoHandedSword:
+                case WeaponType.TwoHandedAxe:
+                case WeaponType.TwoHandedMace:
+                    stat1 = STR;
+                    stat2 = DEX;
+                    multiplier = 1.32;
+                    break;
+                case WeaponType.Dagger:
+                    stat1 = LUK;
+                    stat2 = DEX;
+                    stat3 = STR;
+                    multiplier = 1.30;
+                    break;
+                case WeaponType.Barehand:
+                    stat1 = STR;
+                    stat2 = DEX;
+                    attack = 1;
+                    multiplier = 1.43;
+                    break;
+                case WeaponType.Polearm:
+                case WeaponType.Spear:
+                    stat1 = STR;
+                    stat2 = DEX;
+                    multiplier = 1.49;
+                    break;
+                case WeaponType.Bow:
+                    stat1 = DEX;
+                    stat2 = STR;
+                    multiplier = 1.20;
+                    break;
+                case WeaponType.Crossbow:
+                    stat1 = DEX;
+                    stat2 = STR;
+                    multiplier = 1.35;
+                    break;
+                case WeaponType.ThrowingGlove:
+                    stat1 = LUK;
+                    stat2 = DEX;
+                    multiplier = 1.75;
+                    break;
+                case WeaponType.Knuckle:
+                    stat1 = STR;
+                    stat2 = DEX;
+                    multiplier = 1.70;
+                    break;
+                case WeaponType.Gun:
+                    stat1 = DEX;
+                    stat2 = STR;
+                    multiplier = 1.50;
+                    break;
+            }
+        }
+        
+        var masteryMultiplier = weaponType switch
+        {
+            WeaponType.Wand or
+            WeaponType.Staff => 0.25,
+            WeaponType.Bow or
+            WeaponType.Crossbow or
+            WeaponType.ThrowingGlove or
+            WeaponType.Gun => 0.15,
+            _ => 0.20,
+        };
+
+        masteryMultiplier += Mastery / 100d;
+        masteryMultiplier = Math.Min(masteryMultiplier, 0.95);
+
+        DamageMax = (int)((stat3 + stat2 + 4 * stat1) / 100d * attack * multiplier + 0.5);
+        DamageMin = (int)(DamageMax * masteryMultiplier + 0.5);
         
         DamageMin = Math.Min(DamageMin, DamageMax);
         DamageMin = Math.Min(Math.Max(DamageMin, 1), 999999);
