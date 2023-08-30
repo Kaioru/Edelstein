@@ -1,7 +1,7 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.User.Stats;
 
-namespace Edelstein.Protocol.Gameplay.Game.Combat;
+namespace Edelstein.Protocol.Gameplay.Game.Objects.User.Combat;
 
 public interface IDamageCalculator
 {
