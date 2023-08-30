@@ -13,7 +13,7 @@ public interface IFieldObject
     IFieldSplit? FieldSplit { get; set; }
     IPoint2D Position { get; }
 
-    bool IsVisibleTo(IFieldSplitObserver observer);
+    bool IsVisibleTo(IFieldObject obj);
 
     Task Hide(bool hidden = true);
 

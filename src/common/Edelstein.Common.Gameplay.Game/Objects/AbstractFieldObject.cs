@@ -20,7 +20,7 @@ public abstract class AbstractFieldObject : IFieldObject
     public IFieldSplit? FieldSplit { get; set; }
     public IPoint2D Position { get; protected set; }
 
-    public bool IsVisibleTo(IFieldSplitObserver observer) => !IsHidden;
+    public bool IsVisibleTo(IFieldObject obj) => !IsHidden;
 
     public async Task Hide(bool hidden = true)
     {

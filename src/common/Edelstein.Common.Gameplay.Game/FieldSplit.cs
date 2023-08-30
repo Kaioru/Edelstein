@@ -145,6 +145,7 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
 
         await Task.WhenAll(controlled
             .Where(c => c.Controller == null || !controllers.Contains(c.Controller))
-            .Select(c => c.Control(controllers.FirstOrDefault())));
+            .Select(c => c.Control(controllers
+                .FirstOrDefault(u => u.IsVisibleTo(c)))));
     }
 }
