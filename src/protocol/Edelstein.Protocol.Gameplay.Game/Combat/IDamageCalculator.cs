@@ -5,6 +5,10 @@ namespace Edelstein.Protocol.Gameplay.Game.Combat;
 
 public interface IDamageCalculator
 {
-    Task CalculatePDamage(IFieldUserStats attacker, IFieldMobStats target);
-    Task CalculateMDamage(IFieldUserStats attacker, IFieldMobStats target);
+    uint InitSeed1 { get; }
+    uint InitSeed2 { get; }
+    uint InitSeed3 { get; }
+    
+    Task<IUserDamage[]> CalculatePDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack);
+    Task<IUserDamage[]> CalculateMDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack);
 }

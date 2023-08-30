@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Conversations;
+﻿using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
@@ -20,6 +21,7 @@ public interface IFieldUser :
     ICharacter Character { get; }
     
     IFieldUserStats Stats { get; }
+    IDamageCalculator Damage { get; }
     
     IConversationContext? Conversation { get; }
 

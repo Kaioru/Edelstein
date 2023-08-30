@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Game.Conversations;
+﻿using Edelstein.Common.Gameplay.Game.Combat;
+using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Characters.Modify;
@@ -8,6 +9,7 @@ using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects;
@@ -36,6 +38,8 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         AccountWorld = accountWorld;
         Character = character;
 
+        Damage = new DamageCalculator();
+
         Observing = new List<IFieldSplit>();
         Controlled = new List<IFieldControllable>();
         
@@ -53,6 +57,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public ICharacter Character { get; }
     
     public IFieldUserStats Stats { get; private set; }
+    public IDamageCalculator Damage { get; }
 
     public IConversationContext? Conversation { get; private set; }
 
@@ -77,9 +82,9 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
         if (!IsInstantiated)
         {
-            packet.WriteUInt(0);
-            packet.WriteUInt(0);
-            packet.WriteUInt(0);
+            packet.WriteUInt(Damage.InitSeed1);
+            packet.WriteUInt(Damage.InitSeed2);
+            packet.WriteUInt(Damage.InitSeed3);
 
             packet.WriteCharacterData(Character);
 
