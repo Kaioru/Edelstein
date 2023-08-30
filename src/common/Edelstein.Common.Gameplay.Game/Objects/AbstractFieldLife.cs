@@ -30,7 +30,7 @@ public abstract class AbstractFieldLife<TMovePath, TMoveAction> :
             await UpdateFieldSplit();
     }
 
-    public async Task Move(TMovePath ctx)
+    public async Task Move(TMovePath ctx, IFieldObject? controller = null)
     {
         if (Field == null) return;
 
@@ -44,7 +44,7 @@ public abstract class AbstractFieldLife<TMovePath, TMoveAction> :
         await UpdateFieldSplit();
 
         if (FieldSplit != null)
-            await FieldSplit.Dispatch(GetMovePacket(ctx), this);
+            await FieldSplit.Dispatch(GetMovePacket(ctx), controller ?? this);
     }
 
     private async Task UpdateFieldSplit()

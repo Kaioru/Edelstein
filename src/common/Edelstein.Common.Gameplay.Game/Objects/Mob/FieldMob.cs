@@ -67,7 +67,15 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
         writer.WriteInt(0);
     }
 
-    protected override IPacket GetMovePacket(IFieldMobMovePath ctx) => throw new NotImplementedException();
+    protected override IPacket GetMovePacket(IFieldMobMovePath ctx)
+    {
+        using var packet = new PacketWriter(PacketSendOperations.MobMove);
+
+        packet.WriteInt(ObjectID!.Value);
+        packet.Write(ctx);
+
+        return packet.Build();
+    }
 
     protected override IPacket GetControlPacket(IFieldController? controller = null)
     {
