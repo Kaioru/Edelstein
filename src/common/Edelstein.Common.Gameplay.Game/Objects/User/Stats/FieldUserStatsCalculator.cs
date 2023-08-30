@@ -120,6 +120,8 @@ public class FieldUserStatsCalculator : IFieldUserStatsCalculator
         
         return new FieldUserStats
         {
+            Level = character.Level,
+            
             STR = str,
             DEX = dex,
             INT = @int,

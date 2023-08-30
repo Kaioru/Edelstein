@@ -6,7 +6,6 @@ namespace Edelstein.Common.Gameplay.Game.Objects.Mob.Templates;
 
 public class MobTemplate : IMobTemplate
 {
-
     public MobTemplate(int id, IDataProperty property, IDataProperty info)
     {
         ID = id;
@@ -21,10 +20,12 @@ public class MobTemplate : IMobTemplate
         MaxHP = info.Resolve<int>("maxHP") ?? 1;
         MaxMP = info.Resolve<int>("maxMP") ?? 0;
 
-        PAD = info.Resolve<int>("pad") ?? 0;
-        PDR = info.Resolve<int>("pdr") ?? 10;
-        MAD = info.Resolve<int>("mad") ?? 0;
-        MDR = info.Resolve<int>("mdr") ?? 10;
+        PAD = info.Resolve<int>("PADamage") ?? 0;
+        PDD = info.Resolve<int>("PDDamage") ?? 0;
+        PDR = info.Resolve<int>("PDRate") ?? 0;
+        MAD = info.Resolve<int>("MADamage") ?? 0;
+        MDD = info.Resolve<int>("PDDamage") ?? 0;
+        MDR = info.Resolve<int>("MDRate") ?? 0;
         ACC = info.Resolve<int>("acc") ?? 0;
         EVA = info.Resolve<int>("eva") ?? 0;
 
@@ -40,8 +41,10 @@ public class MobTemplate : IMobTemplate
     public int MaxMP { get; }
 
     public int PAD { get; }
+    public int PDD { get; }
     public int PDR { get; }
     public int MAD { get; }
+    public int MDD { get; }
     public int MDR { get; }
     public int ACC { get; }
     public int EVA { get; }

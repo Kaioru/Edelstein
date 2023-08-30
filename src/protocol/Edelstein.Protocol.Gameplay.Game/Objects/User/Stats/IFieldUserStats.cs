@@ -2,6 +2,8 @@
 
 public interface IFieldUserStats
 {
+    int Level { get; }
+    
     int STR { get; }
     int DEX { get; }
     int INT { get; }

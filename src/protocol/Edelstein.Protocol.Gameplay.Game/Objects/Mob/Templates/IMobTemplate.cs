@@ -11,9 +11,11 @@ public interface IMobTemplate : ITemplate
     int MaxHP { get; }
     int MaxMP { get; }
 
+    int PDD { get; }
     int PAD { get; }
     int PDR { get; }
     int MAD { get; }
+    int MDD { get; }
     int MDR { get; }
     int ACC { get; }
     int EVA { get; }

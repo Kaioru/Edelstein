@@ -12,7 +12,5 @@ public record GameContextManagers(
     
     IFieldManager Field,
     IContiMoveManager ContiMove,
-    INamedConversationManager Conversation,
-    
-    IFieldUserStatsCalculator UserStats
+    INamedConversationManager Conversation
 );

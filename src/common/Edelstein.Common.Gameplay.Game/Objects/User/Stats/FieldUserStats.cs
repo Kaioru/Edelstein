@@ -4,6 +4,8 @@ namespace Edelstein.Common.Gameplay.Game.Objects.User.Stats;
 
 public record FieldUserStats : IFieldUserStats
 {
+    public int Level { get; init; }
+    
     public int STR { get; init; }
     public int DEX { get; init; }
     public int INT { get; init; }

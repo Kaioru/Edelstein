@@ -1,5 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Common.Gameplay.Game.Objects.User.Stats;
 using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Characters.Modify;
 using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
@@ -25,6 +26,8 @@ namespace Edelstein.Common.Gameplay.Game.Objects.User;
 
 public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAction>, IFieldUser
 {
+    private readonly IFieldUserStatsCalculator _calculator;
+    
     public FieldUser(
         IGameStageUser user,
         IAccount account,
@@ -32,6 +35,8 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         ICharacter character
     ) : base(new FieldUserMoveAction(0), new Point2D(0, 0))
     {
+        _calculator = new FieldUserStatsCalculator(user.Context.Templates.Item);
+        
         StageUser = user;
         Account = account;
         AccountWorld = accountWorld;
@@ -304,7 +309,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
     private async Task UpdateStats()
     {
-        Stats = await StageUser.Context.Managers.UserStats.Calculate(this);
+        Stats = await _calculator.Calculate(this);
         
         if (Character.HP > Stats.MaxHP) await ModifyStats(s => s.HP = Stats.MaxHP);
         if (Character.MP > Stats.MaxMP) await ModifyStats(s => s.MP = Stats.MaxMP);
