@@ -34,6 +34,6 @@ public class DamageCalculator : IDamageCalculator
         _rndGenForMob = new DamageRand(s1, s2, s3);
     }
 
-    public Task<IUserDamage[]> CalculatePDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack) => throw new NotImplementedException();
-    public Task<IUserDamage[]> CalculateMDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack) => throw new NotImplementedException();
+    public Task<IUserAttackDamage[]> CalculatePDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack) => throw new NotImplementedException();
+    public Task<IUserAttackDamage[]> CalculateMDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack) => throw new NotImplementedException();
 }

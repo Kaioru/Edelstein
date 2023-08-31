@@ -2,7 +2,7 @@
 
 namespace Edelstein.Common.Gameplay.Game.Combat;
 
-public record UserDamage(
+public record UserAttackDamage(
     int Damage, 
     bool IsCritical
-) : IUserDamage;
+) : IUserAttackDamage;

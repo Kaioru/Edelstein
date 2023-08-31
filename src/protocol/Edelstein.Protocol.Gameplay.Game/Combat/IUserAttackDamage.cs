@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Game.Combat;
 
-public interface IUserDamage
+public interface IUserAttackDamage
 {
     int Damage { get; }
     bool IsCritical { get; }
