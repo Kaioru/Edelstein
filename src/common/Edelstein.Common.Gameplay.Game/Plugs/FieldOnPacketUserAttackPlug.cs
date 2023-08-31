@@ -1,6 +1,9 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using System.ComponentModel;
+using Edelstein.Common.Gameplay.Game.Combat;
+using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Plugs;
@@ -14,14 +17,14 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
 
         packet.WriteInt(message.User.Character.ID);
         packet.WriteByte((byte)(
-            message.Attack.DamagePerMob |
-            16 *  message.Attack.MobCount
+            0x1 * message.Attack.DamagePerMob |
+            0x10 *  message.Attack.MobCount
         ));
         packet.WriteByte(message.User.Character.Level);
 
         if (message.Attack.SkillID > 0)
         {
-            packet.WriteByte(1);
+            packet.WriteByte((byte)(message.User.Character.Skills[message.Attack.SkillID]?.Level ?? 1));
             packet.WriteInt(message.Attack.SkillID);
         }
         else packet.WriteByte(0);
@@ -38,26 +41,55 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             Convert.ToByte(message.Attack.IsLeft) << 15
         ));
 
-        if (message.Attack.Action <= 0x110)
+        packet.WriteByte((byte)message.Attack.SpeedDegree);
+        packet.WriteByte((byte)message.User.Stats.Mastery);
+        packet.WriteInt(0); // BulletCashItemID
+        
+        foreach (var entry in message.Attack.Entries)
         {
-            packet.WriteByte(0); // Mastery
-            packet.WriteByte(0); // v82
-            packet.WriteInt(0); // MovingShoot
+            var mob = message.User.Field?.GetObject<IFieldMob>(entry.MobID);
             
-            foreach (var entry in message.Attack.Entries)
+            if (mob == null) continue;
+            
+            var skillID = message.Attack.SkillID;
+            var skillLevel = skillID > 0 ? message.User.Character.Skills[skillID]?.Level ?? 0 : 0;
+            var damageSrv = await message.User.Damage.CalculatePDamage(
+                message.User.Stats,
+                mob.Stats,
+                new UserAttack(skillID, skillLevel, message.Attack.Keydown)
+            );
+            
+            packet.WriteInt(entry.MobID);
+            packet.WriteByte(entry.HitAction);
+
+            for (var i = 0; i < message.Attack.DamagePerMob; i++)
             {
-                packet.WriteInt(entry.MobID);
-                packet.WriteByte(entry.HitAction);
-                
-                foreach (var damage in entry.Damage)
-                {
-                    packet.WriteBool(false); // Critical
-                    packet.WriteInt(damage);
-                }
+                packet.WriteBool(damageSrv[i].IsCritical);
+                packet.WriteInt(entry.Damage[i]);
             }
         }
-
+        
         if (message.User.FieldSplit != null)
             await message.User.FieldSplit.Dispatch(packet.Build(), message.User);
+        
+        foreach (var entry in message.Attack.Entries)
+        {
+            var mob = message.User.Field?.GetObject<IFieldMob>(entry.MobID);
+            
+            if (mob == null) continue;
+            
+            var skillID = message.Attack.SkillID;
+            var skillLevel = skillID > 0 ? message.User.Character.Skills[skillID]?.Level ?? 0 : 0;
+            var damage = await message.User.Damage.CalculatePDamage(
+                message.User.Stats,
+                mob.Stats,
+                new UserAttack(skillID, skillLevel, message.Attack.Keydown)
+            );
+            
+            foreach (var d in damage)
+                Console.WriteLine($"Damage: {d.Damage}, Critical: {d.IsCritical}");
+            
+            await mob.Damage(entry.Damage.Sum(), message.User);
+        }
     }
 }

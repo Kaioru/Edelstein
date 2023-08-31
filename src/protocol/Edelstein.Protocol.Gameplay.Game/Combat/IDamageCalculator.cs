@@ -8,6 +8,8 @@ public interface IDamageCalculator
     uint InitSeed1 { get; }
     uint InitSeed2 { get; }
     uint InitSeed3 { get; }
+
+    void Skip();
     
     Task<IUserAttackDamage[]> CalculatePDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack);
     Task<IUserAttackDamage[]> CalculateMDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack);

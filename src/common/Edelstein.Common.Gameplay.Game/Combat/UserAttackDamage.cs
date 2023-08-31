@@ -4,5 +4,5 @@ namespace Edelstein.Common.Gameplay.Game.Combat;
 
 public record UserAttackDamage(
     int Damage, 
-    bool IsCritical
+    bool IsCritical = false
 ) : IUserAttackDamage;

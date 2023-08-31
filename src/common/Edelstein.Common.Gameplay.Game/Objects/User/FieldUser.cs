@@ -38,7 +38,9 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         AccountWorld = accountWorld;
         Character = character;
 
-        Damage = new DamageCalculator();
+        Damage = new DamageCalculator(
+            user.Context.Templates.Skill    
+        );
 
         Observing = new List<IFieldSplit>();
         Controlled = new List<IFieldControllable>();

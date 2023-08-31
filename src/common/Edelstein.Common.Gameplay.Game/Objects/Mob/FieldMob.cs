@@ -3,6 +3,7 @@ using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
+using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Spatial;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
@@ -11,6 +12,8 @@ namespace Edelstein.Common.Gameplay.Game.Objects.Mob;
 
 public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMoveAction>, IFieldMob, IPacketWritable
 {
+    private readonly SemaphoreSlim _lock;
+
     public FieldMob(
         IMobTemplate template,
         IPoint2D position,
@@ -18,6 +21,8 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
         bool isFacingLeft = true
     ) : base(new FieldMobMoveAction(template.MoveAbility, isFacingLeft), position, foothold)
     {
+        _lock = new SemaphoreSlim(1, 1);
+        
         Template = template;
         HP = template.MaxHP;
         MP = template.MaxMP;
@@ -30,8 +35,42 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
     public IMobTemplate Template { get; }
     
     public IFieldMobStats Stats { get; private set; }
-    public int HP { get; }
-    public int MP { get; }
+    public int HP { get; private set; }
+    public int MP { get; private set; }
+    
+    public async Task Damage(int damage, IFieldUser? attacker = null)
+    {
+        await _lock.WaitAsync();
+        
+        try
+        {
+            if (Field == null) return;
+            if (attacker != null) await Control(attacker);
+
+            HP -= damage;
+
+            if (attacker != null)
+            {
+                var indicatorPacket = new PacketWriter(PacketSendOperations.MobHPIndicator);
+                var indicator = HP / (float)Template.MaxHP * 100f;
+
+                indicator = Math.Min(100, indicator);
+                indicator = Math.Max(0, indicator);
+
+                indicatorPacket.WriteInt(ObjectID ?? 0);
+                indicatorPacket.WriteByte((byte)indicator);
+
+                await attacker.Dispatch(indicatorPacket.Build());
+            }
+
+            if (HP <= 0)
+                await Field.Leave(this);
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
 
     public override IPacket GetEnterFieldPacket() => GetEnterFieldPacket(FieldMobAppearType.Normal);
 
