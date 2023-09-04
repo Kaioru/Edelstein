@@ -17,6 +17,8 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             kv => kv.MobID,
             kv => message.User.Field?.GetObject<IFieldMob>(kv.MobID)
         );
+        var skillID = message.Attack.SkillID;
+        var skillLevel = skillID > 0 ? message.User.Character.Skills[skillID]?.Level ?? 0 : 0;
         var operation = (PacketSendOperations)((int)PacketSendOperations.UserMeleeAttack + (int)message.Attack.Type);
         var packet = new PacketWriter(operation);
 
@@ -54,8 +56,6 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         {
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;
-            var skillID = message.Attack.SkillID;
-            var skillLevel = skillID > 0 ? message.User.Character.Skills[skillID]?.Level ?? 0 : 0;
             var damageSrv = await message.User.Damage.CalculatePDamage(
                 message.User.Stats,
                 mob.Stats,
