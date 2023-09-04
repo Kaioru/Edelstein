@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Immutable;
+using System.ComponentModel;
 using Edelstein.Common.Gameplay.Game.Combat;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
@@ -12,6 +13,10 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
 {
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserAttack message)
     {
+        var mobs = message.Attack.Entries.ToImmutableDictionary(
+            kv => kv.MobID,
+            kv => message.User.Field?.GetObject<IFieldMob>(kv.MobID)
+        );
         var operation = (PacketSendOperations)((int)PacketSendOperations.UserMeleeAttack + (int)message.Attack.Type);
         var packet = new PacketWriter(operation);
 
@@ -47,10 +52,8 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         
         foreach (var entry in message.Attack.Entries)
         {
-            var mob = message.User.Field?.GetObject<IFieldMob>(entry.MobID);
-            
+            var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;
-            
             var skillID = message.Attack.SkillID;
             var skillLevel = skillID > 0 ? message.User.Character.Skills[skillID]?.Level ?? 0 : 0;
             var damageSrv = await message.User.Damage.CalculatePDamage(
@@ -58,7 +61,10 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                 mob.Stats,
                 new UserAttack(skillID, skillLevel, message.Attack.Keydown)
             );
-            
+
+            for (var i = 0; i < message.Attack.DamagePerMob; i++)
+                Console.WriteLine($"Client: {entry.Damage[i]}, Server: {damageSrv[i].Damage}, Critical: {damageSrv[i].IsCritical}");
+
             packet.WriteInt(entry.MobID);
             packet.WriteByte(entry.HitAction);
 
@@ -74,21 +80,8 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         
         foreach (var entry in message.Attack.Entries)
         {
-            var mob = message.User.Field?.GetObject<IFieldMob>(entry.MobID);
-            
+            var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;
-            
-            var skillID = message.Attack.SkillID;
-            var skillLevel = skillID > 0 ? message.User.Character.Skills[skillID]?.Level ?? 0 : 0;
-            var damage = await message.User.Damage.CalculatePDamage(
-                message.User.Stats,
-                mob.Stats,
-                new UserAttack(skillID, skillLevel, message.Attack.Keydown)
-            );
-            
-            foreach (var d in damage)
-                Console.WriteLine($"Damage: {d.Damage}, Critical: {d.IsCritical}");
-            
             await mob.Damage(entry.Damage.Sum(), message.User);
         }
     }
