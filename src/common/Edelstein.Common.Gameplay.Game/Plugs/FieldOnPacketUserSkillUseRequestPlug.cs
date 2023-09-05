@@ -36,6 +36,7 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
         if (level.MDD > 0)
             stats.Add(Tuple.Create(TemporaryStatType.MDD, level.MDD));
 
+        
         switch (skill.ID)
         {
             case 
@@ -43,6 +44,9 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
                 Skill.PageWeaponBooster or 
                 Skill.SpearmanWeaponBooster:
                 stats.Add(Tuple.Create(TemporaryStatType.Booster, level.X));
+                break;
+            case Skill.FighterPowerGuard:
+                stats.Add(Tuple.Create(TemporaryStatType.PowerGuard, level.X));
                 break;
             case Skill.CrusaderComboAttack or Skill.SoulmasterComboAttack:
                 stats.Add(Tuple.Create(TemporaryStatType.ComboCounter, (short)1));
