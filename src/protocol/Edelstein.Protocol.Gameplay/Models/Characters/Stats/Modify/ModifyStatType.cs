@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay.Models.Characters.Modify;
+﻿namespace Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 
 [Flags]
 public enum ModifyStatType

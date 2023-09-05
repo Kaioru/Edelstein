@@ -1,6 +1,6 @@
 ﻿using Edelstein.Protocol.Utilities.Packets;
 
-namespace Edelstein.Protocol.Gameplay.Models.Characters.Modify;
+namespace Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 
 public interface IModifyStatContext : IPacketWritable
 {

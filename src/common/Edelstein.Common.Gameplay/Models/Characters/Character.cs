@@ -45,4 +45,6 @@ public record Character : ICharacter
 
     public ICharacterInventories Inventories { get; set; } = new CharacterInventories();
     public ICharacterSkills Skills { get; set; } = new CharacterSkills();
+
+    public ICharacterTemporaryStats TemporaryStats { get; set; } = new CharacterTemporaryStats();
 }

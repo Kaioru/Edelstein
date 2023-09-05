@@ -1,9 +1,9 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Models.Characters;
-using Edelstein.Protocol.Gameplay.Models.Characters.Modify;
+using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Utilities.Packets;
 
-namespace Edelstein.Common.Gameplay.Models.Characters.Modify;
+namespace Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 
 public class ModifyStatContext : IModifyStatContext
 {

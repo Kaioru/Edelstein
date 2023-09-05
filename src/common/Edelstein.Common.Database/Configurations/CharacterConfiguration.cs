@@ -35,5 +35,11 @@ public class CharacterConfiguration : IEntityTypeConfiguration<CharacterEntity>
             .HasColumnType("json")
             .HasConversion<JsonConverter<ICharacterSkills>>()
             .HasDefaultValue(new CharacterSkills());
+
+        builder
+            .Property(e => e.TemporaryStats)
+            .HasColumnType("json")
+            .HasConversion<JsonConverter<ICharacterTemporaryStats>>()
+            .HasDefaultValue(new CharacterTemporaryStats());
     }
 }

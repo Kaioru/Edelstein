@@ -2,6 +2,7 @@
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
+using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
@@ -189,6 +190,19 @@ public record struct FieldUserStats : IFieldUserStats
             Jump += levelTemplate.PsdJump;
             Speed += levelTemplate.PsdSpeed;
         }
+
+        PAD += character.TemporaryStats[TemporaryStatType.PAD]?.Value ?? 0;
+        PDD += character.TemporaryStats[TemporaryStatType.PDD]?.Value ?? 0;
+        MAD += character.TemporaryStats[TemporaryStatType.MAD]?.Value ?? 0;
+        MDD += character.TemporaryStats[TemporaryStatType.MDD]?.Value ?? 0;
+        ACC += character.TemporaryStats[TemporaryStatType.ACC]?.Value ?? 0;
+        EVA += character.TemporaryStats[TemporaryStatType.EVA]?.Value ?? 0;
+        Craft += character.TemporaryStats[TemporaryStatType.Craft]?.Value ?? 0;
+        Speed += character.TemporaryStats[TemporaryStatType.Speed]?.Value ?? 0;
+        Jump += character.TemporaryStats[TemporaryStatType.Jump]?.Value ?? 0;
+        
+        MaxHP += character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
+        MaxMP += character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
         
         STR += (int)(STR * (STRr / 100d));
         DEX += (int)(DEX * (DEXr / 100d));

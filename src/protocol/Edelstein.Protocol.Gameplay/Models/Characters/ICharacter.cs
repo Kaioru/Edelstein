@@ -26,7 +26,7 @@ public interface ICharacter : IIdentifiable<int>
 
     short AP { get; set; }
     short SP { get; set; }
-    
+
     ICharacterExtendSP ExtendSP { get; set; }
 
     int EXP { get; set; }
@@ -44,4 +44,6 @@ public interface ICharacter : IIdentifiable<int>
 
     ICharacterInventories Inventories { get; set; }
     ICharacterSkills Skills { get; set; }
+
+    ICharacterTemporaryStats TemporaryStats { get; }
 }

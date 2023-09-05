@@ -2,8 +2,9 @@
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Models.Characters;
-using Edelstein.Common.Gameplay.Models.Characters.Modify;
 using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
+using Edelstein.Common.Gameplay.Models.Characters.Stats;
+using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
@@ -16,8 +17,8 @@ using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
-using Edelstein.Protocol.Gameplay.Models.Characters.Modify;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
+using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Utilities.Packets;
@@ -122,10 +123,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         packet.WriteShort(0);
         packet.WriteByte(0);
 
-        packet.WriteLong(0); // secondary stats
-        packet.WriteLong(0);
-        packet.WriteByte(0);
-        packet.WriteByte(0);
+        packet.WriteTemporaryStatsToRemote(Character.TemporaryStats);
 
         packet.WriteShort(Character.Job);
         packet.WriteCharacterLooks(Character);
@@ -296,6 +294,48 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         packet.WriteBool(true);
 
         await Dispatch(packet.Build());
+    }
+    
+    public async Task ModifyTemporaryStats(Action<IModifyTemporaryStatContext>? action = null, bool exclRequest = false)
+    {
+        var context = new ModifyTemporaryStatContext(Character.TemporaryStats);
+
+        action?.Invoke(context);
+        await UpdateStats();
+
+        if (context.HistoryReset.Records.Any())
+        {
+            var resetLocalPacket = new PacketWriter(PacketSendOperations.TemporaryStatReset);
+            var resetRemotePacket = new PacketWriter(PacketSendOperations.UserTemporaryStatReset);
+
+            resetLocalPacket.WriteTemporaryStatsFlag(context.HistoryReset);
+            resetLocalPacket.WriteBool(false); // IsMovementAffectingStat
+
+            resetRemotePacket.WriteInt(Character.ID);
+            resetRemotePacket.WriteTemporaryStatsFlag(context.HistoryReset);
+
+            await Dispatch(resetLocalPacket.Build());
+            if (FieldSplit != null) 
+                await FieldSplit.Dispatch(resetRemotePacket.Build());
+        }
+
+        if (context.HistorySet.Records.Any())
+        {
+            var setLocalPacket = new PacketWriter(PacketSendOperations.TemporaryStatSet);
+            var setRemotePacket = new PacketWriter(PacketSendOperations.UserTemporaryStatSet);
+
+            setLocalPacket.WriteTemporaryStatsToLocal(context.HistorySet);
+            setLocalPacket.WriteShort(0); // tDelay
+            setLocalPacket.WriteBool(false); // IsMovementAffectingStat
+
+            setRemotePacket.WriteInt(Character.ID);
+            setRemotePacket.WriteTemporaryStatsToLocal(context.HistorySet);
+            setRemotePacket.WriteShort(0); // tDelay
+
+            await Dispatch(setLocalPacket.Build());
+            if (FieldSplit != null) 
+                await FieldSplit.Dispatch(setRemotePacket.Build());
+        }
     }
 
     protected override IPacket GetMovePacket(IFieldUserMovePath ctx)
