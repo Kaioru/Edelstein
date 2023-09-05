@@ -38,7 +38,11 @@ public abstract class AbstractUserOnDisconnectPlug<TStageUser> : IPipelinePlug<U
             await _accountWorldRepository.Update(message.User.AccountWorld);
 
         if (message.User.Character != null)
+        {
+            if (!message.User.IsMigrating)
+                message.User.Character.TemporaryStats.Records.Clear();
             await _characterRepository.Update(message.User.Character);
+        }
 
         if (message.User.Account != null)
         {
