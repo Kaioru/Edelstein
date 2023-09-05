@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.ComponentModel;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Combat;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
@@ -94,20 +95,30 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             await mob.Damage(entry.Damage.Sum(), message.User);
         }
 
+        var random = new Random();
         var character = message.User.Character;
         var comboCounterStat = character.TemporaryStats[TemporaryStatType.ComboCounter];
         
-        if (comboCounterStat != null)
+        if (comboCounterStat != null && message.Attack.Entries.Count > 0)
         {
-            var skill = await _skillTemplates.Retrieve(comboCounterStat.Reason);
-            var level = skill?.Levels[character.Skills[comboCounterStat.Reason]?.Level ?? 0];
-            var maxOrbs = level?.X ?? 0;
+            var comboCounterSkill = await _skillTemplates.Retrieve(comboCounterStat.Reason);
+            var comboCounterLevel = comboCounterSkill?.Levels[character.Skills[comboCounterStat.Reason]?.Level ?? 0];
+            var maxOrbs = comboCounterLevel?.X ?? 0;
             var curOrbs = comboCounterStat.Value - 1;
 
+            var advComboCounterSkillID = JobConstants.GetJobRace(character.Job) == 0
+                ? Skill.HeroAdvancedCombo
+                : Skill.SoulmasterAdvancedCombo;
+            var advComboCounterSkill = await _skillTemplates.Retrieve(advComboCounterSkillID);
+            var advComboCounterLevel = advComboCounterSkill?.Levels[character.Skills[advComboCounterSkillID]?.Level ?? 0];
+            var doubleOrbsChance = advComboCounterLevel?.Prop ?? 0;
+            
+            maxOrbs = advComboCounterLevel?.X ?? maxOrbs;
+            
             if (curOrbs < maxOrbs)
                 await message.User.ModifyTemporaryStats(s => s.Set(
                     TemporaryStatType.ComboCounter,
-                    comboCounterStat.Value + 1,
+                    Math.Min(maxOrbs + 1, comboCounterStat.Value + (random.Next(0, 100) <= doubleOrbsChance ? 2 : 1)),
                     comboCounterStat.Reason,
                     comboCounterStat.DateExpire
                 ));

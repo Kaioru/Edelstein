@@ -133,8 +133,14 @@ public class DamageCalculator : IDamageCalculator
                 var comboCounterSkill = await _skills.Retrieve(comboCounterStat.Reason);
                 var comboCounterLevel = comboCounterSkill?.Levels[character.Skills[comboCounterStat.Reason]?.Level ?? 0];
                 var curOrbs = comboCounterStat.Value - 1;
-
-                damageR += (short)(curOrbs * (comboCounterLevel?.X ?? 0));
+                
+                var advComboCounterSkillID = JobConstants.GetJobRace(character.Job) == 0
+                    ? Skill.HeroAdvancedCombo
+                    : Skill.SoulmasterAdvancedCombo;
+                var advComboCounterSkill = await _skills.Retrieve(advComboCounterSkillID);
+                var advComboCounterLevel = advComboCounterSkill?.Levels[character.Skills[advComboCounterSkillID]?.Level ?? 0];
+                
+                damageR += (short)(curOrbs * (advComboCounterLevel?.X ?? comboCounterLevel?.X ?? 0));
             }
             
             if (stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= stats.Cr)
