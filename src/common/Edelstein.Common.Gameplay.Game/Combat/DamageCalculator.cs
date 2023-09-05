@@ -2,6 +2,7 @@
 using Edelstein.Common.Utilities;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
@@ -103,6 +104,17 @@ public class DamageCalculator : IDamageCalculator
 
             damage *= (100d - (mobStats.PDR * stats.IMDr / -100 + mobStats.PDR)) / 100d;
 
+            if (mob.TemporaryStats[MobTemporaryStatType.Stun] != null ||
+                mob.TemporaryStats[MobTemporaryStatType.Blind] != null ||
+                mob.TemporaryStats[MobTemporaryStatType.Freeze] != null)
+            {
+                var chanceAttackSkill = await _skills.Retrieve(Skill.CrusaderChanceAttack);
+                var chanceAttackLevel = chanceAttackSkill?.Levels[character.Skills[Skill.CrusaderChanceAttack]?.Level ?? 0];
+
+                if (chanceAttackLevel != null) 
+                    damage *= chanceAttackLevel.Damage / 100d;
+            }
+
             if (skill != null && skillLevel != null)
             {
                 var skillDamage = skillLevel.Damage;
@@ -128,7 +140,7 @@ public class DamageCalculator : IDamageCalculator
                         break;
                     }
                 }
-                
+
                 damage *= skillDamage / 100d;
             }
 
