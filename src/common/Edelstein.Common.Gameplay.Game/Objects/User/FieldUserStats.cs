@@ -190,6 +190,11 @@ public record struct FieldUserStats : IFieldUserStats
             Jump += levelTemplate.PsdJump;
             Speed += levelTemplate.PsdSpeed;
         }
+        
+        STRr += character.TemporaryStats[TemporaryStatType.BasicStatUp]?.Value ?? 0;
+        DEXr += character.TemporaryStats[TemporaryStatType.BasicStatUp]?.Value ?? 0;
+        INTr += character.TemporaryStats[TemporaryStatType.BasicStatUp]?.Value ?? 0;
+        LUKr += character.TemporaryStats[TemporaryStatType.BasicStatUp]?.Value ?? 0;
 
         PAD += character.TemporaryStats[TemporaryStatType.PAD]?.Value ?? 0;
         PDD += character.TemporaryStats[TemporaryStatType.PDD]?.Value ?? 0;

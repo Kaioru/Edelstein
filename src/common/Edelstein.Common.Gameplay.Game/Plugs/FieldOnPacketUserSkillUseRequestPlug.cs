@@ -47,6 +47,27 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
             case Skill.CrusaderComboAttack or Skill.SoulmasterComboAttack:
                 stats.Add(Tuple.Create(TemporaryStatType.ComboCounter, (short)1));
                 break;
+            case 
+                Skill.HeroMapleHero or 
+                Skill.PaladinMapleHero or
+                Skill.DarkknightMapleHero or 
+                Skill.Archmage1MapleHero or 
+                Skill.Archmage2MapleHero or 
+                Skill.BishopMapleHero or 
+                Skill.BowmasterMapleHero or 
+                Skill.CrossbowmasterMapleHero or 
+                Skill.NightlordMapleHero or 
+                Skill.ShadowerMapleHero or 
+                Skill.Dual5MapleHero or 
+                Skill.ViperMapleHero or 
+                Skill.CaptainMapleHero or 
+                Skill.AranMapleHero or 
+                Skill.EvanMapleHero or 
+                Skill.BmageMapleHero or 
+                Skill.WildhunterMapleHero or 
+                Skill.MechanicMapleHero:
+                stats.Add(Tuple.Create(TemporaryStatType.BasicStatUp, level.X));
+                break;
         }
 
         await message.User.ModifyStats(s =>
