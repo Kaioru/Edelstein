@@ -5,6 +5,7 @@ using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Utilities.Pipelines;
@@ -20,6 +21,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
     
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserAttack message)
     {
+        var random = new Random();
         var mobs = message.Attack.Entries.ToImmutableDictionary(
             kv => kv.MobID,
             kv => message.User.Field?.GetObject<IFieldMob>(kv.MobID)
@@ -92,9 +94,30 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;
             await mob.Damage(entry.Damage.Sum(), message.User);
+            
+            if (mob.HP <= 0) continue;
+            var skill = await _skillTemplates.Retrieve(skillID);
+            var level = skill?.Levels[message.User.Character.Skills[skillID]?.Level ?? 0];
+            if (skill == null || level == null) continue;
+            if (random.Next(0, 100) > level.Prop) continue;
+            var stats = new List<Tuple<MobTemporaryStatType, short>>();
+            var expire = DateTime.UtcNow.AddSeconds(level.Time);
+            
+            switch (skillID)
+            {
+                case Skill.CrusaderShout:
+                    stats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
+                    break;
+            }
+
+            await mob.ModifyTemporaryStats(s =>
+            {
+                s.ResetByReason(skillID);
+                foreach (var tuple in stats)
+                    s.Set(tuple.Item1, tuple.Item2, skillID, expire);
+            });
         }
 
-        var random = new Random();
         var character = message.User.Character;
         var comboCounterStat = character.TemporaryStats[TemporaryStatType.ComboCounter];
         

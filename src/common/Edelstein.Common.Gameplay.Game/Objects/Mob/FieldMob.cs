@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats.Modify;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
@@ -9,13 +10,13 @@ using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Spatial;
-using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
+using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob;
 
-public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMoveAction>, IFieldMob, IPacketWritable
+public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMoveAction>, IFieldMob, IPacketWritable, ITickable
 {
     private readonly SemaphoreSlim _lock;
 
@@ -89,8 +90,9 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
             var resetPacket = new PacketWriter(PacketSendOperations.MobStatReset);
 
             resetPacket.WriteInt(ObjectID ?? 0);
-            resetPacket.WriteMobStatsFlag(context.HistoryReset);
+            resetPacket.WriteMobTemporaryStatsFlag(context.HistoryReset);
             resetPacket.WriteByte(0); // CalcDamageStatIndex
+            resetPacket.WriteBool(false); // Movement stuff
 
             if (FieldSplit != null) 
                 await FieldSplit.Dispatch(resetPacket.Build());
@@ -101,9 +103,10 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
             var setPacket = new PacketWriter(PacketSendOperations.MobStatSet);
 
             setPacket.WriteInt(ObjectID ?? 0);
-            setPacket.WriteMobStats(context.HistorySet);
+            setPacket.WriteMobTemporaryStats(context.HistorySet);
             setPacket.WriteShort(0); // tDelay
             setPacket.WriteByte(0); // CalcDamageStatIndex
+            setPacket.WriteBool(false); // Movement stuff
 
             if (FieldSplit != null) 
                 await FieldSplit.Dispatch(setPacket.Build());
@@ -137,8 +140,7 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
         writer.WriteByte(1); // CalcDamageStatIndex
         writer.WriteInt(Template.ID);
 
-        writer.WriteLong(0);
-        writer.WriteLong(0);
+        writer.WriteMobTemporaryStats(TemporaryStats);
 
         writer.WritePoint2D(Position);
         writer.WriteByte(Action.Raw);
@@ -178,4 +180,20 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
     
     private Task UpdateStats() 
         => Task.FromResult(Stats = new FieldMobStats(this));
+
+    public async Task OnTick(DateTime now)
+    {
+        var expiredStats = TemporaryStats.Records
+            .Where(kv => kv.Value.DateExpire < now)
+            .ToImmutableList();
+
+        if (expiredStats.Count > 0)
+        {
+            await ModifyTemporaryStats(s =>
+            {
+                foreach (var kv in expiredStats)
+                    s.ResetByType(kv.Key);
+            });
+        }
+    }
 }

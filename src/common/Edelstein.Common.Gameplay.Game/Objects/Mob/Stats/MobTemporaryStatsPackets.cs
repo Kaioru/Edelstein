@@ -9,7 +9,7 @@ public static class MobTemporaryStatsPackets
 {
     private const int MobStatsFlagSize = 128;
 
-    internal static void WriteMobStatsFlag(this IPacketWriter writer, IDictionary<MobTemporaryStatType, IMobTemporaryStatRecord> stats)
+    internal static void WriteMobTemporaryStatsFlag(this IPacketWriter writer, IDictionary<MobTemporaryStatType, IMobTemporaryStatRecord> stats)
     {
         var flag = new Flags(MobStatsFlagSize);
 
@@ -19,15 +19,15 @@ public static class MobTemporaryStatsPackets
         writer.Write(flag);
     }
 
-    public static void WriteMobStatsFlag(this IPacketWriter writer, IMobTemporaryStats mobStats) 
-        => writer.WriteMobStatsFlag(mobStats.Records);
+    public static void WriteMobTemporaryStatsFlag(this IPacketWriter writer, IMobTemporaryStats mobStats) 
+        => writer.WriteMobTemporaryStatsFlag(mobStats.Records);
 
-    public static void WriteMobStats(this IPacketWriter writer, IMobTemporaryStats mobStats)
+    public static void WriteMobTemporaryStats(this IPacketWriter writer, IMobTemporaryStats mobStats)
     {
         var stats = mobStats.Records;
         var now = DateTime.UtcNow;
 
-        writer.WriteMobStatsFlag(mobStats);
+        writer.WriteMobTemporaryStatsFlag(mobStats);
         
         foreach (var t in MobTemporaryStatsOrder.WriteOrder)
         {
