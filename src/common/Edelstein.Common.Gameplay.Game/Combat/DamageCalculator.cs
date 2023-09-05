@@ -128,6 +128,8 @@ public class DamageCalculator : IDamageCalculator
 
             damage = Math.Min(Math.Max(damage, 1), 999999);
             result[i] = new UserAttackDamage((int)damage, critical);
+
+            random.Next();
         }
         
         return result;
