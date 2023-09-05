@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Game.Combat;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Game.Combat;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Models.Characters;
@@ -22,10 +23,11 @@ using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Utilities.Packets;
+using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.User;
 
-public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAction>, IFieldUser
+public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAction>, IFieldUser, ITickable
 {
     public FieldUser(
         IGameStageUser user,
@@ -376,5 +378,21 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
         if (FieldSplit != null)
             await FieldSplit.Dispatch(avatarPacket.Build(), this);
+    }
+
+    public async Task OnTick(DateTime now)
+    {
+        var expiredStats = Character.TemporaryStats.Records
+            .Where(kv => kv.Value.DateExpire < now)
+            .ToImmutableList();
+
+        if (expiredStats.Count > 0)
+        {
+            await ModifyTemporaryStats(s =>
+            {
+                foreach (var kv in expiredStats)
+                    s.ResetByType(kv.Key);
+            });
+        }
     }
 }
