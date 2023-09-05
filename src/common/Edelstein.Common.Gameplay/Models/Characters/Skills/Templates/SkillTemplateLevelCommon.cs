@@ -225,7 +225,7 @@ public class SkillTemplateLevelCommon : ISkillTemplateLevel
         DotInterval = ResolveExpression(property.ResolveOrDefault<string>("dotInterval"), x, u, d);
         DotTime = ResolveExpression(property.ResolveOrDefault<string>("dotTime"), x, u, d);
 
-        IMPr = ResolveExpression(property.ResolveOrDefault<string>("ignoreMobpdpR"), x, u, d);
+        //IMPr = ResolveExpression(property.ResolveOrDefault<string>("ignoreMobpdpR"), x, u, d);
         ASRr = ResolveExpression(property.ResolveOrDefault<string>("asrR"), x, u, d);
         TERr = ResolveExpression(property.ResolveOrDefault<string>("terR"), x, u, d);
 
@@ -234,7 +234,7 @@ public class SkillTemplateLevelCommon : ISkillTemplateLevel
         PADx = ResolveExpression(property.ResolveOrDefault<string>("padX"), x, u, d);
         MADx = ResolveExpression(property.ResolveOrDefault<string>("madX"), x, u, d);
 
-        IMDr = ResolveExpression(property.ResolveOrDefault<string>("ignoreMobDamR"), x, u, d);
+        IMDr = ResolveExpression(property.ResolveOrDefault<string>("ignoreMobpdpR"), x, u, d);
 
         PsdJump = ResolveExpression(property.ResolveOrDefault<string>("psdJump"), x, u, d);
         PsdSpeed = ResolveExpression(property.ResolveOrDefault<string>("psdSpeed"), x, u, d);

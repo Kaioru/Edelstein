@@ -3,7 +3,6 @@ using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
-using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Pipelines;

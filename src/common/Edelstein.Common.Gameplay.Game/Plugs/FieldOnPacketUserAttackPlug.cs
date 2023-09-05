@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.ComponentModel;
 using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Combat;
 using Edelstein.Common.Gameplay.Packets;

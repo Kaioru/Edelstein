@@ -1,6 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Generators;
-using Edelstein.Protocol.Gameplay.Game.Objects;
 
 namespace Edelstein.Common.Gameplay.Game.Generators;
 

@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Utilities.Tickers;
-using Edelstein.Protocol.Gameplay.Contracts;
+﻿using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Tickers;

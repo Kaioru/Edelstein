@@ -1,5 +1,4 @@
 ﻿using Edelstein.Common.Gameplay.Game.Objects.Drop;
-using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;

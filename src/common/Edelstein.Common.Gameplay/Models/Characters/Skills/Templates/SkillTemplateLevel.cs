@@ -219,7 +219,7 @@ public class SkillTemplateLevel : ISkillTemplateLevel
         DotInterval = property.Resolve<short>("dotInterval") ?? 0;
         DotTime = property.Resolve<short>("dotTime") ?? 0;
 
-        IMPr = property.Resolve<short>("ignoreMobpdpR") ?? 0;
+        //IMPr = property.Resolve<short>("ignoreMobpdpR") ?? 0;
         ASRr = property.Resolve<short>("asrR") ?? 0;
         TERr = property.Resolve<short>("terR") ?? 0;
 
@@ -228,7 +228,7 @@ public class SkillTemplateLevel : ISkillTemplateLevel
         PADx = property.Resolve<short>("padX") ?? 0;
         MADx = property.Resolve<short>("madX") ?? 0;
 
-        IMDr = property.Resolve<short>("ignoreMobDamR") ?? 0;
+        IMDr = property.Resolve<short>("ignoreMobpdpR") ?? 0;
 
         PsdJump = property.Resolve<short>("psdJump") ?? 0;
         PsdSpeed = property.Resolve<short>("psdSpeed") ?? 0;

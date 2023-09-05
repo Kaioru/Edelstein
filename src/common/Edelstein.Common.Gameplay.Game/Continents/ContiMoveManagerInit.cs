@@ -1,11 +1,9 @@
-﻿using Edelstein.Common.Utilities.Tickers;
-using Edelstein.Protocol.Gameplay.Contracts;
+﻿using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Gameplay.Game.Continents.Templates;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Templates;
-using Edelstein.Protocol.Utilities.Tickers;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Game.Continents;
