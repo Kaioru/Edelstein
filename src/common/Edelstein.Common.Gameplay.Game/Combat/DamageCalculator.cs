@@ -78,6 +78,17 @@ public class DamageCalculator : IDamageCalculator
         {
             random.Skip();
 
+            if (attack.SkillID is 
+                    Skill.HeroRush or 
+                    Skill.PaladinRush or 
+                    Skill.DarkknightRush or 
+                    Skill.Dual3HustleRush or 
+                    Skill.PaladinBlast or 
+                    Skill.Dual4FlyingAssaulter or
+                    Skill.Dual2SlashStorm or
+                    Skill.Dual4BloodyStorm
+            ) random.Skip();
+
             if (hitRate < GetRandomInRange(random.Next(), 0, 100))
             {
                 result[i] = new UserAttackDamage(0);
