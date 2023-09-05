@@ -203,7 +203,59 @@ public record struct FieldUserStats : IFieldUserStats
         
         MaxHP += character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
         MaxMP += character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
+
+        var equipped = character.Inventories[ItemInventoryType.Equip];
+        var weapon = equipped != null
+            ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
+                ? result1.ID 
+                : 0
+            : 0;
+        var subWeapon = equipped != null
+            ? equipped.Items.TryGetValue(-(short)BodyPart.Shield, out var result2) 
+                ? result2.ID 
+                : 0
+            : 0;
+        var weaponType = ItemConstants.GetWeaponType(weapon);
+        var subWeaponType = ItemConstants.GetWeaponType(subWeapon);
+
+        void GetMastery(int skillID, ref int mastery, ref int stat)
+        {
+            var skillLevel = character!.Skills[skillID]?.Level ?? 0;
+            if (skillLevel == 0) return;
+            var skillTemplate = skillTemplates.Retrieve(skillID).Result;
+            if (skillTemplate == null) return;
+            var skillLevelTemplate = skillTemplate.Levels[skillLevel];
+
+            mastery += skillLevelTemplate.Mastery;
+            stat += skillLevelTemplate.X;
+        }
+
+        var incMastery = 0;
+        var incACC = 0;
         
+        switch (weaponType)
+        {
+            case WeaponType.OneHandedSword:
+            case WeaponType.TwoHandedSword:
+                {
+                    var skills = new List<int>{
+                        Skill.FighterWeaponMastery,
+                        Skill.PageWeaponMastery,
+                        Skill.SoulmasterSwordMastery
+                    };
+
+                    foreach (var skill in skills.TakeWhile(skill => incMastery == 0))
+                    {
+                        GetMastery(skill, ref incMastery, ref incACC);
+                        break;
+                    }
+                    break;
+                }
+        }
+
+        Mastery += incMastery;
+        ACC += incACC;
+
         STR += (int)(STR * (STRr / 100d));
         DEX += (int)(DEX * (DEXr / 100d));
         INT += (int)(INT * (INTr / 100d));
@@ -243,13 +295,6 @@ public record struct FieldUserStats : IFieldUserStats
         
         CDMin = Math.Min(CDMin, CDMax);
 
-        var equipped = character.Inventories[ItemInventoryType.Equip];
-        var weapon = equipped != null
-            ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result) 
-                ? result.ID 
-                : 0
-            : 0;
-        var weaponType = ItemConstants.GetWeaponType(weapon);
         var stat1 = 0;
         var stat2 = 0;
         var stat3 = 0;
