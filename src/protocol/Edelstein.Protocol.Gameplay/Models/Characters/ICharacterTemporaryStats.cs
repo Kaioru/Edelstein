@@ -2,8 +2,6 @@
 
 namespace Edelstein.Protocol.Gameplay.Models.Characters;
 
-public interface ICharacterTemporaryStats
+public interface ICharacterTemporaryStats : ITemporaryStats
 {
-    ITemporaryStatRecord? this[TemporaryStatType type] { get; }
-    IDictionary<TemporaryStatType, ITemporaryStatRecord> Records { get; }
 }

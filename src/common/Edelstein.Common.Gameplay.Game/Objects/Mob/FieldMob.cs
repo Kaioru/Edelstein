@@ -1,10 +1,15 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
+using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats.Modify;
+using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Spatial;
+using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
 
@@ -24,6 +29,7 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
         _lock = new SemaphoreSlim(1, 1);
         
         Template = template;
+        TemporaryStats = new MobTemporaryStats();
         HP = template.MaxHP;
         MP = template.MaxMP;
 
@@ -35,6 +41,7 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
     public IMobTemplate Template { get; }
     
     public IFieldMobStats Stats { get; private set; }
+    public IMobTemporaryStats TemporaryStats { get; }
     public int HP { get; private set; }
     public int MP { get; private set; }
     
@@ -69,6 +76,37 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
         finally
         {
             _lock.Release();
+        }
+    }
+    public async Task ModifyTemporaryStats(Action<IModifyMobTemporaryStatContext> action)
+    {
+        var context = new ModifyMobTemporaryStatsContext(TemporaryStats);
+
+        action.Invoke(context);
+
+        if (context.HistoryReset.Records.Any())
+        {
+            var resetPacket = new PacketWriter(PacketSendOperations.MobStatReset);
+
+            resetPacket.WriteInt(ObjectID ?? 0);
+            resetPacket.WriteMobStatsFlag(context.HistoryReset);
+            resetPacket.WriteByte(0); // CalcDamageStatIndex
+
+            if (FieldSplit != null) 
+                await FieldSplit.Dispatch(resetPacket.Build());
+        }
+
+        if (context.HistorySet.Records.Any())
+        {
+            var setPacket = new PacketWriter(PacketSendOperations.MobStatSet);
+
+            setPacket.WriteInt(ObjectID ?? 0);
+            setPacket.WriteMobStats(context.HistorySet);
+            setPacket.WriteShort(0); // tDelay
+            setPacket.WriteByte(0); // CalcDamageStatIndex
+
+            if (FieldSplit != null) 
+                await FieldSplit.Dispatch(setPacket.Build());
         }
     }
 
