@@ -145,7 +145,7 @@ public class DamageCalculator : IDamageCalculator
             
             if (stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= stats.Cr)
             {
-                damageR += GetRandomInRange(random.Next(), stats.CDMin, stats.CDMax);
+                damageR += (int)GetRandomInRange(random.Next(), stats.CDMin, stats.CDMax);
                 critical = true;
             }
             
