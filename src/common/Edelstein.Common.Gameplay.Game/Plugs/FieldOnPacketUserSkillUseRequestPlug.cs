@@ -52,6 +52,14 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
                 stats.Add(Tuple.Create(TemporaryStatType.ComboCounter, (short)1));
                 break;
             case 
+                Skill.HeroStance or 
+                Skill.PaladinStance or 
+                Skill.DarkknightStance or 
+                Skill.AranFreezeStanding or
+                Skill.BmageStance:
+                stats.Add(Tuple.Create(TemporaryStatType.Stance, level.Prop));
+                break;
+            case 
                 Skill.HeroMapleHero or 
                 Skill.PaladinMapleHero or
                 Skill.DarkknightMapleHero or 
