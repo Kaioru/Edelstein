@@ -14,6 +14,7 @@ public class ServerDbContext : DbContext
     public DbSet<ServerEntity> Servers { get; set; }
     public DbSet<ServerLoginEntity> LoginServers { get; set; }
     public DbSet<ServerGameEntity> GameServers { get; set; }
+    public DbSet<ServerShopEntity> ShopServers { get; set; }
 
     public DbSet<SessionEntity> Sessions { get; set; }
     public DbSet<MigrationEntity> Migrations { get; set; }

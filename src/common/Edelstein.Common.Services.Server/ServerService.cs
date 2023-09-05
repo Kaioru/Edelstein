@@ -24,6 +24,9 @@ public class ServerService : IServerService
 
     public Task<ServerResponse> RegisterGame(ServerRegisterRequest<IServerGame> request) =>
         Register(_mapper.Map<ServerGameEntity>(request.Server));
+    
+    public Task<ServerResponse> RegisterShop(ServerRegisterRequest<IServerShop> request) =>
+        Register(_mapper.Map<ServerShopEntity>(request.Server));
 
     public async Task<ServerResponse> Ping(ServerPingRequest request)
     {
@@ -131,6 +134,26 @@ public class ServerService : IServerService
         }
     }
 
+    public async Task<ServerGetOneResponse<IServerShop>> GetShopByWorld(ServerGetShopByWorldRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            var now = DateTime.UtcNow;
+            var existing = await db.ShopServers
+                .FirstOrDefaultAsync(s => s.WorldID == request.WorldID);
+
+            if (existing == null || existing.DateExpire < now)
+                return new ServerGetOneResponse<IServerShop>(ServerResult.FailedNotFound);
+
+            return new ServerGetOneResponse<IServerShop>(ServerResult.Success, _mapper.Map<ServerShop>(existing));
+        }
+        catch (Exception)
+        {
+            return new ServerGetOneResponse<IServerShop>(ServerResult.FailedUnknown);
+        }
+    }
+
     public async Task<ServerGetAllResponse<IServer>> GetAll()
     {
         try
@@ -175,8 +198,12 @@ public class ServerService : IServerService
                 case ServerGameEntity game:
                     if (db.GameServers.Any(s => s.WorldID == game.WorldID && s.ChannelID == game.ChannelID))
                         return new ServerResponse(ServerResult.FailedAlreadyRegistered);
-
                     await db.GameServers.AddAsync(game);
+                    break;
+                case ServerShopEntity shop:
+                    if (db.ShopServers.Any(s => s.WorldID == shop.WorldID))
+                        return new ServerResponse(ServerResult.FailedAlreadyRegistered);
+                    await db.ShopServers.AddAsync(shop);
                     break;
                 default:
                     await db.Servers.AddAsync(entity);

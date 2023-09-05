@@ -77,6 +77,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Plugin.L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Plugin", "src\common\Edelstein.Common.Plugin\Edelstein.Common.Plugin.csproj", "{095B3B4E-BD00-415D-A4D4-3BC8D53459C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Gameplay.Shop", "src\protocol\Edelstein.Protocol.Gameplay.Shop\Edelstein.Protocol.Gameplay.Shop.csproj", "{BDA89887-0FD7-481E-9D99-1D98EABCE316}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Plugin.Shop", "src\protocol\Edelstein.Protocol.Plugin.Shop\Edelstein.Protocol.Plugin.Shop.csproj", "{93B1F3DE-FA14-4026-90C6-3D2DA03E150C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Gameplay.Shop", "src\common\Edelstein.Common.Gameplay.Shop\Edelstein.Common.Gameplay.Shop.csproj", "{E6F1BF3D-B5F1-4A25-9CC2-A929AEE1D581}"
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugin", "plugin", "{E655711B-D238-442F-9EE6-B31631095B75}"
 	ProjectSection(SolutionItems) = preProject
 		src\plugin\Plugin.targets = src\plugin\Plugin.targets
@@ -123,8 +128,14 @@ Global
 		{2D37B56C-BF8B-40D7-85F5-1CCE92F8EF84} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{2ADD70D4-3A1F-4B3D-9BE4-97695A586DE7} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
 		{095B3B4E-BD00-415D-A4D4-3BC8D53459C4} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
+<<<<<<< HEAD
 		{E655711B-D238-442F-9EE6-B31631095B75} = {71E8FDEE-8F29-4294-8B21-97F367594BD3}
 		{3700BA85-CE6F-439B-8056-FE1293E8A711} = {E655711B-D238-442F-9EE6-B31631095B75}
+=======
+		{BDA89887-0FD7-481E-9D99-1D98EABCE316} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{93B1F3DE-FA14-4026-90C6-3D2DA03E150C} = {7F8DD283-A64C-40EC-98F2-84FA38716C28}
+		{E6F1BF3D-B5F1-4A25-9CC2-A929AEE1D581} = {52AE6DEF-E54C-47DC-85F3-8AF3C6FCD504}
+>>>>>>> 262e9034 (Add shop server and plugin support)
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{23073F7B-2195-482E-B3E8-DBCB6BEB587A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -235,9 +246,24 @@ Global
 		{095B3B4E-BD00-415D-A4D4-3BC8D53459C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{095B3B4E-BD00-415D-A4D4-3BC8D53459C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{095B3B4E-BD00-415D-A4D4-3BC8D53459C4}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{3700BA85-CE6F-439B-8056-FE1293E8A711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3700BA85-CE6F-439B-8056-FE1293E8A711}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3700BA85-CE6F-439B-8056-FE1293E8A711}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3700BA85-CE6F-439B-8056-FE1293E8A711}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{BDA89887-0FD7-481E-9D99-1D98EABCE316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDA89887-0FD7-481E-9D99-1D98EABCE316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDA89887-0FD7-481E-9D99-1D98EABCE316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDA89887-0FD7-481E-9D99-1D98EABCE316}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93B1F3DE-FA14-4026-90C6-3D2DA03E150C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93B1F3DE-FA14-4026-90C6-3D2DA03E150C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93B1F3DE-FA14-4026-90C6-3D2DA03E150C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93B1F3DE-FA14-4026-90C6-3D2DA03E150C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6F1BF3D-B5F1-4A25-9CC2-A929AEE1D581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6F1BF3D-B5F1-4A25-9CC2-A929AEE1D581}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6F1BF3D-B5F1-4A25-9CC2-A929AEE1D581}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6F1BF3D-B5F1-4A25-9CC2-A929AEE1D581}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> 262e9034 (Add shop server and plugin support)
 	EndGlobalSection
 EndGlobal

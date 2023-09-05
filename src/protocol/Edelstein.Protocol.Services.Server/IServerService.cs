@@ -6,6 +6,7 @@ public interface IServerService
 {
     Task<ServerResponse> RegisterLogin(ServerRegisterRequest<IServerLogin> request);
     Task<ServerResponse> RegisterGame(ServerRegisterRequest<IServerGame> request);
+    Task<ServerResponse> RegisterShop(ServerRegisterRequest<IServerShop> request);
 
     Task<ServerResponse> Ping(ServerPingRequest request);
 
@@ -15,6 +16,8 @@ public interface IServerService
 
     Task<ServerGetOneResponse<IServerGame>> GetGameByWorldAndChannel(ServerGetGameByWorldAndChannelRequest request);
     Task<ServerGetAllResponse<IServerGame>> GetGameByWorld(ServerGetGameByWorldRequest request);
+
+    Task<ServerGetOneResponse<IServerShop>> GetShopByWorld(ServerGetShopByWorldRequest request);
 
     Task<ServerGetAllResponse<IServer>> GetAll();
 }

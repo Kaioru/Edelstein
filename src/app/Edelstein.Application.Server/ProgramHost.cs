@@ -10,6 +10,7 @@ using Edelstein.Common.Gameplay.Game.Continents;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Shop;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Plugin;
 using Edelstein.Common.Services.Auth;
@@ -24,6 +25,8 @@ using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
+using Edelstein.Protocol.Gameplay.Shop;
+using Edelstein.Protocol.Gameplay.Shop.Contexts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
@@ -69,6 +72,7 @@ public class ProgramHost : IHostedService
 
         stages.AddRange(_config.LoginStages);
         stages.AddRange(_config.GameStages);
+        stages.AddRange(_config.ShopStages);
 
         foreach (var stage in stages)
         {
@@ -186,6 +190,47 @@ public class ProgramHost : IHostedService
                             .SingleInstance();
 
                         b.RegisterType<StartServerUpdateBootstrap<ProgramConfigStageGame>>()
+                            .As<IBootstrap>()
+                            .SingleInstance();
+                        break;
+                    case IShopStageOptions options:
+                        b
+                            .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(ShopStage))!)
+                            .Where(t => t.IsClass)
+                            .AsClosedTypesOf(typeof(IPacketHandler<>))
+                            .SingleInstance();
+                        b
+                            .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(ShopStage))!)
+                            .Where(t => t.IsClass)
+                            .AsClosedTypesOf(typeof(IPipelinePlug<>))
+                            .SingleInstance();
+
+                        b
+                            .RegisterInstance(options)
+                            .As<IShopStageOptions>()
+                            .As<ProgramConfigStageShop>()
+                            .SingleInstance();
+                        b.RegisterType<ShopContext>().SingleInstance();
+                        b.RegisterType<ShopContextManagers>().SingleInstance();
+                        b.RegisterType<ShopContextServices>().SingleInstance();
+                        b.RegisterType<ShopContextRepositories>().SingleInstance();
+                        b.RegisterType<ShopContextTemplates>().SingleInstance();
+                        b.RegisterType<ShopContextPipelines>().SingleInstance();
+
+                        b.RegisterType<ShopStageUserInitializer>().As<IAdapterInitializer>().SingleInstance();
+                        b.Register(c => new ShopStage(stage.ID))
+                            .As<IStage<IShopStageUser>>()
+                            .As<IShopStage>()
+                            .SingleInstance();
+                        
+                        b.RegisterType<InitPluginBootstrap<ShopContext>>()
+                            .As<IBootstrap>()
+                            .SingleInstance();
+                        b.RegisterType<StartPluginBootstrap<ShopContext>>()
+                            .As<IBootstrap>()
+                            .SingleInstance();
+
+                        b.RegisterType<StartServerUpdateBootstrap<ProgramConfigStageShop>>()
                             .As<IBootstrap>()
                             .SingleInstance();
                         break;

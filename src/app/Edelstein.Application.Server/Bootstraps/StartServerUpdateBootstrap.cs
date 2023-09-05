@@ -1,6 +1,7 @@
 ﻿using Edelstein.Application.Server.Configs;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Login;
+using Edelstein.Protocol.Gameplay.Shop;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
 using Edelstein.Protocol.Utilities.Tickers;
@@ -59,6 +60,8 @@ public class StartServerUpdateBootstrap<TConfig> : IBootstrap, ITickable
                         new ServerLogin(_config.ID, _config.Host, _config.Port))),
                     IGameStageOptions game => await _service.RegisterGame(new ServerRegisterRequest<IServerGame>(
                         new ServerGame(_config.ID, _config.Host, _config.Port, game.WorldID, game.ChannelID, game.IsAdultChannel))),
+                    IShopStageOptions shop => await _service.RegisterShop(new ServerRegisterRequest<IServerShop>(
+                        new ServerShop(_config.ID, _config.Host, _config.Port, shop.WorldID))),
                     _ => throw new ArgumentOutOfRangeException()
                 };
 
