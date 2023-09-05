@@ -152,6 +152,43 @@ public record struct FieldUserStats : IFieldUserStats
         }
 
         // TODO: item sets
+
+        foreach (var kv in user.Character.Skills.Records)
+        {
+            var (id, record) = kv;
+            var skillTemplate = skillTemplates.Retrieve(id).Result;
+
+            if (skillTemplate is not { IsPSD: true }) continue;
+            if (!skillTemplate.Levels.ContainsKey(record.Level)) continue;
+            
+            var levelTemplate = skillTemplate.Levels[record.Level];
+            
+            // TODO: more psd handling
+            
+            MaxHPr += levelTemplate.MHPr;
+            MaxMPr += levelTemplate.MMPr;
+
+            Cr += levelTemplate.Cr;
+            CDMin += levelTemplate.CDMin;
+            CDMax += levelTemplate.CDMax;
+
+            ACCr += levelTemplate.ACCr;
+            EVAr += levelTemplate.EVAr;
+
+            Ar += levelTemplate.Ar;
+            Er += levelTemplate.Er;
+
+            PADr += levelTemplate.PADr;
+            MADr += levelTemplate.MADr;
+
+            PAD += levelTemplate.PADx;
+            MAD += levelTemplate.MADx;
+
+            IMDr += levelTemplate.IMDr;
+
+            Jump += levelTemplate.PsdJump;
+            Speed += levelTemplate.PsdSpeed;
+        }
         
         STR += (int)(STR * (STRr / 100d));
         DEX += (int)(DEX * (DEXr / 100d));

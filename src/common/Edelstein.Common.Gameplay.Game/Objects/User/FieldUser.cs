@@ -315,6 +315,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
             StageUser.Context.Templates.Item,
             StageUser.Context.Templates.Skill
         );
+        Console.WriteLine(Stats);
         
         if (Character.HP > Stats.MaxHP) await ModifyStats(s => s.HP = Stats.MaxHP);
         if (Character.MP > Stats.MaxMP) await ModifyStats(s => s.MP = Stats.MaxMP);
