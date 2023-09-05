@@ -98,26 +98,20 @@ public class DamageCalculator : IDamageCalculator
 
                 if (skill.ID is Skill.WarriorPowerStrike or Skill.WarriorSlashBlast)
                 {
-                    var incSkills = new List<int>{
-                        Skill.FighterImproveBasic,
-                        Skill.PageImproveBasic,
-                        Skill.SpearmanImproveBasic
-                    };
-
-                    foreach (var incSkill in incSkills)
+                    foreach (var skillID in new List<int>{
+                                 Skill.FighterImproveBasic,
+                                 Skill.PageImproveBasic,
+                                 Skill.SpearmanImproveBasic
+                    })
                     {
-                        var level = character.Skills[incSkill]?.Level ?? 0;
+                        var warriorImproveBasicSkill = await _skills.Retrieve(skillID);
+                        var warriorImproveBasicLevel = warriorImproveBasicSkill?.Levels[character.Skills[skillID]?.Level ?? 0];
 
-                        if (level <= 0) continue;
-                        
-                        var incSkillTemplate = await _skills.Retrieve(incSkill);
-                        var incSkillLevel = incSkillTemplate?.Levels[level];
-
-                        if (incSkillLevel == null) break;
+                        if (warriorImproveBasicLevel == null) break;
                         
                         skillDamage += skill.ID == Skill.WarriorPowerStrike 
-                            ? incSkillLevel.X 
-                            : incSkillLevel.Y;
+                            ? warriorImproveBasicLevel.X 
+                            : warriorImproveBasicLevel.Y;
                         break;
                     }
                 }
