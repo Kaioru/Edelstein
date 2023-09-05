@@ -244,102 +244,29 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         return Task.CompletedTask;
     }
     
-    public async Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false)
+    public async Task Modify(Action<IFieldUserModify> action)
     {
-        var context = new ModifyStatContext(Character);
+        var modify = new FieldUserModify(this);
+        
+        action.Invoke(modify);
 
-        action?.Invoke(context);
-        
-        await UpdateStats();
-        
-        if (!IsInstantiated) return;
-        
-        var packet = new PacketWriter(PacketSendOperations.StatChanged);
-
-        packet.WriteBool(exclRequest);
-        packet.Write(context);
-        packet.WriteBool(false);
-        packet.WriteBool(false);
-        
-        await Dispatch(packet.Build());
+        if (modify.IsRequireUpdate)
+            await UpdateStats();
+        if (modify.IsRequireUpdateAvatar) 
+            await UpdateAvatar();
     }
 
-    public async Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
-    {
-        var context = new ModifyInventoryGroupContext(Character.Inventories, StageUser.Context.Templates.Item);
-        using var packet = new PacketWriter(PacketSendOperations.InventoryOperation);
+    public Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false)
+        => Modify(m => m.Stats(action, exclRequest));
 
-        action?.Invoke(context);
-
-        packet.WriteBool(exclRequest);
-        packet.Write(context);
-        packet.WriteBool(false);
-
-        if (context.IsUpdated) await UpdateStats();
-        
-        await Dispatch(packet.Build());
-
-        if (context.IsUpdatedAvatar) await UpdateAvatar();
-    }
+    public Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
+        => Modify(m => m.Inventory(action, exclRequest));
     
-    public async Task ModifySkills(Action<IModifySkillContext>? action = null, bool exclRequest = false)
-    {
-        var context = new ModifySkillContext(Character);
-
-        action?.Invoke(context);
-        
-        await UpdateStats();
-
-        var packet = new PacketWriter(PacketSendOperations.ChangeSkillRecordResult);
-
-        packet.WriteBool(exclRequest);
-        packet.Write(context);
-        packet.WriteBool(true);
-
-        await Dispatch(packet.Build());
-    }
+    public Task ModifySkills(Action<IModifySkillContext>? action = null, bool exclRequest = false)
+        => Modify(m => m.Skills(action, exclRequest));
     
-    public async Task ModifyTemporaryStats(Action<IModifyTemporaryStatContext>? action = null, bool exclRequest = false)
-    {
-        var context = new ModifyTemporaryStatContext(Character.TemporaryStats);
-
-        action?.Invoke(context);
-        await UpdateStats();
-
-        if (context.HistoryReset.Records.Any())
-        {
-            var resetLocalPacket = new PacketWriter(PacketSendOperations.TemporaryStatReset);
-            var resetRemotePacket = new PacketWriter(PacketSendOperations.UserTemporaryStatReset);
-
-            resetLocalPacket.WriteTemporaryStatsFlag(context.HistoryReset);
-            resetLocalPacket.WriteBool(false); // IsMovementAffectingStat
-
-            resetRemotePacket.WriteInt(Character.ID);
-            resetRemotePacket.WriteTemporaryStatsFlag(context.HistoryReset);
-
-            await Dispatch(resetLocalPacket.Build());
-            if (FieldSplit != null) 
-                await FieldSplit.Dispatch(resetRemotePacket.Build());
-        }
-
-        if (context.HistorySet.Records.Any())
-        {
-            var setLocalPacket = new PacketWriter(PacketSendOperations.TemporaryStatSet);
-            var setRemotePacket = new PacketWriter(PacketSendOperations.UserTemporaryStatSet);
-
-            setLocalPacket.WriteTemporaryStatsToLocal(context.HistorySet);
-            setLocalPacket.WriteShort(0); // tDelay
-            setLocalPacket.WriteBool(false); // IsMovementAffectingStat
-
-            setRemotePacket.WriteInt(Character.ID);
-            setRemotePacket.WriteTemporaryStatsToLocal(context.HistorySet);
-            setRemotePacket.WriteShort(0); // tDelay
-
-            await Dispatch(setLocalPacket.Build());
-            if (FieldSplit != null) 
-                await FieldSplit.Dispatch(setRemotePacket.Build());
-        }
-    }
+    public Task ModifyTemporaryStats(Action<IModifyTemporaryStatContext>? action = null, bool exclRequest = false)
+        => Modify(m => m.TemporaryStats(action, exclRequest));
 
     protected override IPacket GetMovePacket(IFieldUserMovePath ctx)
     {

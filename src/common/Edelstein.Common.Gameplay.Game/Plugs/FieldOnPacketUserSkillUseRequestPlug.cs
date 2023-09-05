@@ -70,16 +70,18 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
                 break;
         }
 
-        await message.User.ModifyStats(s =>
+        await message.User.Modify(m =>
         {
-            if (level.MPCon > 0)
-                s.MP -= level.MPCon;
-        });
-        await message.User.ModifyTemporaryStats(s =>
-        {
-            s.ResetByReason(message.SkillID);
-            foreach (var tuple in stats)
-                s.Set(tuple.Item1, tuple.Item2, message.SkillID, expire);
+            m.Stats(s => {
+                if (level.MPCon > 0)
+                    s.MP -= level.MPCon;
+            });
+            m.TemporaryStats(s =>
+            {
+                s.ResetByReason(message.SkillID);
+                foreach (var tuple in stats)
+                    s.Set(tuple.Item1, tuple.Item2, message.SkillID, expire);
+            });
         });
         await message.User.Dispatch(new PacketWriter(PacketSendOperations.SkillUseResult)
             .WriteBool(true)

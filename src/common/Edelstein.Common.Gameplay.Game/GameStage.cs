@@ -37,7 +37,6 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
         user.FieldUser = fieldUser;
 
         await field.Enter(fieldUser);
-        await fieldUser.ModifySkills(s => s.Set(Skill.HeroMapleHero, 30, 30));
         await base.Enter(user);
     }
 

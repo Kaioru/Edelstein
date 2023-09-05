@@ -57,16 +57,19 @@ public class FieldOnPacketUserSkillUpRequestPlug : IPipelinePlug<FieldOnPacketUs
         if (JobConstants.IsExtendSPJob(job) && message.User.Character.ExtendSP[(byte)skillJobLevel] < increment) return;
         if (!JobConstants.IsExtendSPJob(job) && message.User.Character.SP < increment) return;
 
-        await message.User.ModifyStats(s =>
+        await message.User.Modify(m =>
         {
-            if (JobConstants.IsExtendSPJob(job))
-                s.SetExtendSP(
-                    skillJobLevel, 
-                    (byte)((message.User.Character.ExtendSP[skillJobLevel] ?? 0) - increment)
-                );
-            else 
-                s.SP -= increment;
+            m.Stats(s =>
+            {
+                if (JobConstants.IsExtendSPJob(job))
+                    s.SetExtendSP(
+                        skillJobLevel,
+                        (byte)((message.User.Character.ExtendSP[skillJobLevel] ?? 0) - increment)
+                    );
+                else
+                    s.SP -= increment;
+            });
+            m.Skills(s => s.Add(template.ID, increment), true);
         });
-        await message.User.ModifySkills(s => s.Add(template.ID, increment), true);
     }
 }

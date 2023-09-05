@@ -43,6 +43,7 @@ public interface IFieldUser :
 
     Task EndConversation();
 
+    Task Modify(Action<IFieldUserModify> action);
     Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false);
     Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false);
     Task ModifySkills(Action<IModifySkillContext>? action = null, bool exclRequest = false);
