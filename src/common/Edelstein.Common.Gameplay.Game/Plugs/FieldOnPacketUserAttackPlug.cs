@@ -99,13 +99,17 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             var skill = await _skillTemplates.Retrieve(skillID);
             var level = skill?.Levels[message.User.Character.Skills[skillID]?.Level ?? 0];
             if (skill == null || level == null) continue;
-            if (random.Next(0, 100) > level.Prop) continue;
+            if (level.Prop > 0 && random.Next(0, 100) > level.Prop) continue;
             var stats = new List<Tuple<MobTemporaryStatType, short>>();
             var expire = DateTime.UtcNow.AddSeconds(level.Time);
             
             switch (skillID)
             {
                 case Skill.CrusaderShout:
+                    stats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
+                    break;
+                case Skill.HeroMonsterMagnet:
+                case Skill.DarkknightMonsterMagnet:
                     stats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
                     break;
             }
