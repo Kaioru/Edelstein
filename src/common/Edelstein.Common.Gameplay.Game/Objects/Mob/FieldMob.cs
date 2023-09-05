@@ -49,7 +49,7 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
 
             HP -= damage;
 
-            if (attacker != null)
+            if (attacker != null && damage > 0)
             {
                 var indicatorPacket = new PacketWriter(PacketSendOperations.MobHPIndicator);
                 var indicator = HP / (float)Template.MaxHP * 100f;
