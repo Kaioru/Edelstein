@@ -57,6 +57,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;
             var damageSrv = await message.User.Damage.CalculatePDamage(
+                message.User.Character,
                 message.User.Stats,
                 mob.Stats,
                 new UserAttack(skillID, skillLevel, message.Attack.Keydown)

@@ -1,5 +1,6 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Models.Characters;
 
 namespace Edelstein.Protocol.Gameplay.Game.Combat;
 
@@ -11,6 +12,6 @@ public interface IDamageCalculator
 
     void Skip();
     
-    Task<IUserAttackDamage[]> CalculatePDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack);
-    Task<IUserAttackDamage[]> CalculateMDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack);
+    Task<IUserAttackDamage[]> CalculatePDamage(ICharacter character, IFieldUserStats stats, IFieldMobStats target, IUserAttack attack);
+    Task<IUserAttackDamage[]> CalculateMDamage(ICharacter character, IFieldUserStats stats, IFieldMobStats target, IUserAttack attack);
 }

@@ -1,7 +1,9 @@
-﻿using Edelstein.Common.Utilities;
+﻿using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Utilities;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -46,7 +48,7 @@ public class DamageCalculator : IDamageCalculator
     public void Skip()
         => _rndGenForCharacter.Next(new uint[RndSize]);
     
-    public async Task<IUserAttackDamage[]> CalculatePDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack)
+    public async Task<IUserAttackDamage[]> CalculatePDamage(ICharacter character, IFieldUserStats stats, IFieldMobStats target, IUserAttack attack)
     {
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
@@ -56,15 +58,14 @@ public class DamageCalculator : IDamageCalculator
 
         _rndGenForCharacter.Next(random.Array);
         
-        var sqrtACC = Math.Sqrt(attacker.PACC);
+        var sqrtACC = Math.Sqrt(stats.PACC);
         var sqrtEVA = Math.Sqrt(target.EVA);
-        var hitRate = sqrtACC - sqrtEVA + 100 + attacker.Ar * (sqrtACC - sqrtEVA + 100) / 100;
+        var hitRate = sqrtACC - sqrtEVA + 100 + stats.Ar * (sqrtACC - sqrtEVA + 100) / 100;
 
         hitRate = Math.Min(hitRate, 100);
 
-        if (target.Level > attacker.Level)
-            hitRate -= 5 * (target.Level - attacker.Level);
-        
+        if (target.Level > stats.Level)
+            hitRate -= 5 * (target.Level - stats.Level);
         
         for (var i = 0; i < attackCount; i++)
         {
@@ -76,20 +77,50 @@ public class DamageCalculator : IDamageCalculator
                 continue;
             }
 
-            var damage = GetRandomInRange(random.Next(), attacker.DamageMin, attacker.DamageMax);
+            var damage = GetRandomInRange(random.Next(), stats.DamageMin, stats.DamageMax);
             var critical = false;
 
-            if (target.Level > attacker.Level)
-                damage *= (100d - (target.Level - attacker.Level)) / 100d;
+            if (target.Level > stats.Level)
+                damage *= (100d - (target.Level - stats.Level)) / 100d;
 
-            damage *= (100d - (target.PDR * attacker.IMDr / -100 + target.PDR)) / 100d;
+            damage *= (100d - (target.PDR * stats.IMDr / -100 + target.PDR)) / 100d;
 
-            if (skillLevel != null)
-                damage *= skillLevel.Damage / 100d;
-
-            if (attacker.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= attacker.Cr)
+            if (skill != null && skillLevel != null)
             {
-                var cd = (int)GetRandomInRange(random.Next(), attacker.CDMin, attacker.CDMax) / 100d;
+                var skillDamage = skillLevel.Damage;
+
+                if (skill.ID is Skill.WarriorPowerStrike or Skill.WarriorSlashBlast)
+                {
+                    var incSkills = new List<int>{
+                        Skill.FighterImproveBasic,
+                        Skill.PageImproveBasic,
+                        Skill.SpearmanImproveBasic
+                    };
+
+                    foreach (var incSkill in incSkills)
+                    {
+                        var level = character.Skills[incSkill]?.Level ?? 0;
+
+                        if (level <= 0) continue;
+                        
+                        var incSkillTemplate = await _skills.Retrieve(incSkill);
+                        var incSkillLevel = incSkillTemplate?.Levels[level];
+
+                        if (incSkillLevel == null) break;
+                        
+                        skillDamage += skill.ID == Skill.WarriorPowerStrike 
+                            ? incSkillLevel.X 
+                            : incSkillLevel.Y;
+                        break;
+                    }
+                }
+                
+                damage *= skillDamage / 100d;
+            }
+
+            if (stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= stats.Cr)
+            {
+                var cd = (int)GetRandomInRange(random.Next(), stats.CDMin, stats.CDMax) / 100d;
 
                 damage += (int)damage * cd;
                 critical = true;
@@ -102,7 +133,7 @@ public class DamageCalculator : IDamageCalculator
         return result;
     }
     
-    public async Task<IUserAttackDamage[]> CalculateMDamage(IFieldUserStats attacker, IFieldMobStats target, IUserAttack attack)    
+    public async Task<IUserAttackDamage[]> CalculateMDamage(ICharacter character, IFieldUserStats stats, IFieldMobStats target, IUserAttack attack)    
     {
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
