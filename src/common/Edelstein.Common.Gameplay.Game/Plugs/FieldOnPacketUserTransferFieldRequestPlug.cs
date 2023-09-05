@@ -23,7 +23,7 @@ public class FieldOnPacketUserTransferFieldRequestPlug : IPipelinePlug<FieldOnPa
 
         var portal = message.User.Field?.Template.Portals.Objects
             .FirstOrDefault(o => o.Name == message.PortalID);
-        if (portal is not { Script: null }) return;
+        if (portal == null) return;
         var field = await _fieldManager.Retrieve(portal.ToMap);
         if (field == null) return;
         
