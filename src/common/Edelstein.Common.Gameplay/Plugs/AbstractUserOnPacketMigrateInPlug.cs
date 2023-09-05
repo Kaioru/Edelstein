@@ -81,6 +81,7 @@ public abstract class AbstractUserOnPacketMigrateInPlug<TStage, TStageUser> : IP
         message.User.Account = migrationResponse.Migration.Account;
         message.User.AccountWorld = migrationResponse.Migration.AccountWorld;
         message.User.Character = migrationResponse.Migration.Character;
+        SetValues(message.User, migrationResponse.Migration);
 
         _logger.LogDebug(
             "Migrated in character {Name} from service {From} to service {To} ",
@@ -91,4 +92,6 @@ public abstract class AbstractUserOnPacketMigrateInPlug<TStage, TStageUser> : IP
 
         await _stage.Enter(message.User);
     }
+    
+    public virtual void SetValues(TStageUser user, IMigration migration) {}
 }

@@ -12,7 +12,8 @@ public class ShopStageUser : AbstractStageUser<IShopStageUser>, IShopStageUser
         => Context = context;
 
     public ShopContext Context { get; }
-    
+    public string? FromServerID { get; set; }
+
     public override Task Migrate(string serverID, IPacket? packet = null)
         => Context.Pipelines.UserMigrate.Process(new UserMigrate<IShopStageUser>(this, serverID, packet));
 
