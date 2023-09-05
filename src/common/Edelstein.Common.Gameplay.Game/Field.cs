@@ -8,10 +8,11 @@ using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
+using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Common.Gameplay.Game;
 
-public class Field : AbstractFieldObjectPool, IField
+public class Field : AbstractFieldObjectPool, IField, ITickable
 {
     private const int ScreenWidth = 1024;
     private const int ScreenHeight = 768;
@@ -48,6 +49,8 @@ public class Field : AbstractFieldObjectPool, IField
     public IFieldTemplate Template { get; }
 
     public IFieldGeneratorRegistry Generators { get; }
+    
+    private DateTime NextGeneratorTick { get; set; }
 
     public override IReadOnlyCollection<IFieldObject> Objects =>
         _pools.Values.SelectMany(p => p.Objects).ToImmutableList();
@@ -169,5 +172,23 @@ public class Field : AbstractFieldObjectPool, IField
             col < 0 || col >= _splits.GetLength(1)
         ) return null;
         return _splits[row, col];
+    }
+    
+    public async Task OnTick(DateTime now)
+    {
+        if (!Objects.OfType<IFieldUser>().Any()) return;
+
+        await Task.WhenAll(
+            Objects
+                .OfType<ITickable>()
+                .Select(o => o.OnTick(now))
+        );
+
+        if (now > NextGeneratorTick)
+        {
+            NextGeneratorTick = NextGeneratorTick.AddSeconds(7);
+            await Task.WhenAll((await Generators.RetrieveAll())
+                .Select(g => g.Generate()));
+        }
     }
 }

@@ -85,7 +85,7 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
 
     public void WriteTo(IPacketWriter writer) => WriteTo(writer, FieldMobAppearType.Normal);
 
-    private IPacket GetEnterFieldPacket(FieldMobAppearType appear, int? appearOption = null)
+    public IPacket GetEnterFieldPacket(FieldMobAppearType appear, int? appearOption = null)
     {
         using var packet = new PacketWriter(PacketSendOperations.MobEnterField);
 

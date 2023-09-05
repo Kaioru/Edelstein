@@ -64,12 +64,8 @@ public class FieldManager : IFieldManager
                 }
             }
 
-        await field.Generators.Insert(new FieldGeneratorNPC("default-npc", npcUnits));
+        await field.Generators.Insert(new FieldGeneratorNPC("default-npc", field, npcUnits));
         await field.Generators.Insert(new FieldGeneratorMob("default-mob", field, mobUnits));
-
-        foreach (var generator in await field.Generators.RetrieveAll())
-        foreach (var obj in generator.Generate())
-            await field.Enter(obj);
 
         _fields.Add(key, field);
 

@@ -30,8 +30,6 @@ public class ContiMoveManagerInit : IPipelinePlug<StageStart>
         _templates = templates;
     }
     
-    private TickerManagerContext? Context { get; set; }
-
     public async Task Handle(IPipelineContext ctx, StageStart message)
     {
         await Task.WhenAll((await _templates.RetrieveAll())
