@@ -353,16 +353,12 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
     private async Task UpdateStats()
     {
-        var stopwatch = new Stopwatch();
-        
-        stopwatch.Start();
         Stats = new FieldUserStats(
             this, 
             StageUser.Context.Templates.Item,
             StageUser.Context.Templates.Skill
         );
         Console.WriteLine(Stats);
-        Console.WriteLine(stopwatch.ElapsedMilliseconds);
         
         if (Character.HP > Stats.MaxHP) await ModifyStats(s => s.HP = Stats.MaxHP);
         if (Character.MP > Stats.MaxMP) await ModifyStats(s => s.MP = Stats.MaxMP);
