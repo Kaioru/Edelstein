@@ -103,6 +103,7 @@ public class DamageCalculator : IDamageCalculator
                 damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
 
             damage *= (100d - (mobStats.PDR * stats.IMDr / -100 + mobStats.PDR)) / 100d;
+            damage += damage * stats.PDamR / 100d;
 
             if (mob.TemporaryStats[MobTemporaryStatType.Stun] != null ||
                 mob.TemporaryStats[MobTemporaryStatType.Blind] != null ||
@@ -140,11 +141,11 @@ public class DamageCalculator : IDamageCalculator
                         break;
                     }
                 }
-
+                
                 damage *= skillDamage / 100d;
             }
 
-            var damageR = 0.0;
+            var finalDamageR = 0.0;
             var comboCounterStat = character.TemporaryStats[TemporaryStatType.ComboCounter];
             
             if (comboCounterStat != null)
@@ -173,16 +174,16 @@ public class DamageCalculator : IDamageCalculator
                     damagePerCombo += comboAttackLevel?.Y ?? 0;
                 }
                 
-                damageR += (short)(comboCounter * damagePerCombo);
+                finalDamageR += (short)(comboCounter * damagePerCombo);
             }
             
             if (stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= stats.Cr)
             {
-                damageR += (int)GetRandomInRange(random.Next(), stats.CDMin, stats.CDMax);
+                finalDamageR += (int)GetRandomInRange(random.Next(), stats.CDMin, stats.CDMax);
                 critical = true;
             }
             
-            damage += damage * damageR / 100d;
+            damage += damage * finalDamageR / 100d;
             damage = Math.Min(Math.Max(damage, 1), 999999);
             result[i] = new UserAttackDamage((int)damage, critical);
         }

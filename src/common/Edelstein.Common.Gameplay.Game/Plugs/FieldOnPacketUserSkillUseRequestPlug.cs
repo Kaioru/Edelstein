@@ -52,14 +52,6 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
                 stats.Add(Tuple.Create(TemporaryStatType.ComboCounter, (short)1));
                 break;
             case 
-                Skill.HeroStance or 
-                Skill.PaladinStance or 
-                Skill.DarkknightStance or 
-                Skill.AranFreezeStanding or
-                Skill.BmageStance:
-                stats.Add(Tuple.Create(TemporaryStatType.Stance, level.Prop));
-                break;
-            case 
                 Skill.HeroMapleHero or 
                 Skill.PaladinMapleHero or
                 Skill.DarkknightMapleHero or 
@@ -80,6 +72,18 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
                 Skill.MechanicMapleHero:
                 stats.Add(Tuple.Create(TemporaryStatType.BasicStatUp, level.X));
                 break;
+            case 
+                Skill.HeroStance or 
+                Skill.PaladinStance or 
+                Skill.DarkknightStance or 
+                Skill.AranFreezeStanding or
+                Skill.BmageStance:
+                stats.Add(Tuple.Create(TemporaryStatType.Stance, level.Prop));
+                break;
+            case Skill.HeroEnrage:
+                stats.Add(Tuple.Create(TemporaryStatType.DamR, level.X));
+                stats.Add(Tuple.Create(TemporaryStatType.Enrage, (short)1));
+                break;
         }
 
         await message.User.Modify(m =>
@@ -90,6 +94,18 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
             });
             m.TemporaryStats(s =>
             {
+                if (skill.ID == Skill.HeroEnrage)
+                {
+                    var comboCounterStat = message.User.Character.TemporaryStats[TemporaryStatType.ComboCounter];
+                    if (comboCounterStat != null)
+                        s.Set(
+                            TemporaryStatType.ComboCounter,
+                            1,
+                            comboCounterStat.Reason,
+                            comboCounterStat.DateExpire
+                        );
+                }
+                
                 s.ResetByReason(message.SkillID);
                 foreach (var tuple in stats)
                     s.Set(tuple.Item1, tuple.Item2, message.SkillID, expire);

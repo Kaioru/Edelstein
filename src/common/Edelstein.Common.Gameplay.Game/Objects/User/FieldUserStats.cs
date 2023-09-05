@@ -205,9 +205,12 @@ public record struct FieldUserStats : IFieldUserStats
         Craft += character.TemporaryStats[TemporaryStatType.Craft]?.Value ?? 0;
         Speed += character.TemporaryStats[TemporaryStatType.Speed]?.Value ?? 0;
         Jump += character.TemporaryStats[TemporaryStatType.Jump]?.Value ?? 0;
-        
+
         MaxHP += character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
         MaxMP += character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
+        
+        PDamR += character.TemporaryStats[TemporaryStatType.DamR]?.Value ?? 0;
+        MDamR += character.TemporaryStats[TemporaryStatType.DamR]?.Value ?? 0;
 
         var equipped = character.Inventories[ItemInventoryType.Equip];
         var weapon = equipped != null
