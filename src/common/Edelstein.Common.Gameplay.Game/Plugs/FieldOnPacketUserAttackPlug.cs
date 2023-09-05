@@ -105,6 +105,15 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             
             switch (skillID)
             {
+                case Skill.CrusaderPanic:
+                case Skill.SoulmasterPanicSword:
+                    // TODO: not working?
+                    stats.Add(Tuple.Create(MobTemporaryStatType.Darkness, level.X));
+                    break;
+                case Skill.CrusaderComa:
+                case Skill.SoulmasterComaSword:
+                    stats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
+                    break;
                 case Skill.CrusaderShout:
                     stats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
                     break;
@@ -124,27 +133,40 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
 
         var character = message.User.Character;
         var comboCounterStat = character.TemporaryStats[TemporaryStatType.ComboCounter];
-        
-        if (comboCounterStat != null && message.Attack.Entries.Count > 0)
+
+        if (comboCounterStat != null && skillID is
+            Skill.CrusaderPanic or
+            Skill.CrusaderComa or
+            Skill.SoulmasterPanicSword or
+            Skill.SoulmasterComaSword)
+        {
+            await message.User.ModifyTemporaryStats(s => s.Set(
+                TemporaryStatType.ComboCounter,
+                1,
+                comboCounterStat.Reason,
+                comboCounterStat.DateExpire
+            ));
+        }
+        else if (comboCounterStat != null && message.Attack.Entries.Count > 0)
         {
             var comboCounterSkill = await _skillTemplates.Retrieve(comboCounterStat.Reason);
             var comboCounterLevel = comboCounterSkill?.Levels[character.Skills[comboCounterStat.Reason]?.Level ?? 0];
-            var maxOrbs = comboCounterLevel?.X ?? 0;
-            var curOrbs = comboCounterStat.Value - 1;
+            var comboCounter = comboCounterStat.Value - 1;
+            var comboMax = comboCounterLevel?.X ?? 0;
 
             var advComboCounterSkillID = JobConstants.GetJobRace(character.Job) == 0
                 ? Skill.HeroAdvancedCombo
                 : Skill.SoulmasterAdvancedCombo;
             var advComboCounterSkill = await _skillTemplates.Retrieve(advComboCounterSkillID);
             var advComboCounterLevel = advComboCounterSkill?.Levels[character.Skills[advComboCounterSkillID]?.Level ?? 0];
-            var doubleOrbsChance = advComboCounterLevel?.Prop ?? 0;
+            var comboDoubleChance = advComboCounterLevel?.Prop ?? 0;
             
-            maxOrbs = advComboCounterLevel?.X ?? maxOrbs;
+            comboMax = advComboCounterLevel?.X ?? comboMax;
             
-            if (curOrbs < maxOrbs)
+            if (comboCounter < comboMax)
                 await message.User.ModifyTemporaryStats(s => s.Set(
                     TemporaryStatType.ComboCounter,
-                    Math.Min(maxOrbs + 1, comboCounterStat.Value + (random.Next(0, 100) <= doubleOrbsChance ? 2 : 1)),
+                    Math.Min(comboMax + 1, comboCounterStat.Value + (random.Next(0, 100) <= comboDoubleChance ? 2 : 1)),
                     comboCounterStat.Reason,
                     comboCounterStat.DateExpire
                 ));

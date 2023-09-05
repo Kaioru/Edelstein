@@ -117,7 +117,7 @@ public class DamageCalculator : IDamageCalculator
 
             if (skill != null && skillLevel != null)
             {
-                var skillDamage = skillLevel.Damage;
+                var skillDamage = (int)skillLevel.Damage;
 
                 if (skill.ID is Skill.WarriorPowerStrike or Skill.WarriorSlashBlast)
                 {
@@ -151,7 +151,7 @@ public class DamageCalculator : IDamageCalculator
             {
                 var comboCounterSkill = await _skills.Retrieve(comboCounterStat.Reason);
                 var comboCounterLevel = comboCounterSkill?.Levels[character.Skills[comboCounterStat.Reason]?.Level ?? 0];
-                var curOrbs = comboCounterStat.Value - 1;
+                var comboCounter = comboCounterStat.Value - 1;
                 
                 var advComboCounterSkillID = JobConstants.GetJobRace(character.Job) == 0
                     ? Skill.HeroAdvancedCombo
@@ -159,7 +159,21 @@ public class DamageCalculator : IDamageCalculator
                 var advComboCounterSkill = await _skills.Retrieve(advComboCounterSkillID);
                 var advComboCounterLevel = advComboCounterSkill?.Levels[character.Skills[advComboCounterSkillID]?.Level ?? 0];
                 
-                damageR += (short)(curOrbs * (advComboCounterLevel?.X ?? comboCounterLevel?.X ?? 0));
+                var damagePerCombo = advComboCounterLevel?.X ?? comboCounterLevel?.X ?? 0;
+                    
+                if (attack.SkillID is 
+                    Skill.CrusaderPanic or 
+                    Skill.CrusaderComa or
+                    Skill.SoulmasterPanicSword or 
+                    Skill.SoulmasterComaSword)
+                {
+                    var comboAttackSkill = await _skills.Retrieve(attack.SkillID);
+                    var comboAttackLevel = comboAttackSkill?.Levels[character.Skills[attack.SkillID]?.Level ?? 0];
+
+                    damagePerCombo += comboAttackLevel?.Y ?? 0;
+                }
+                
+                damageR += (short)(comboCounter * damagePerCombo);
             }
             
             if (stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= stats.Cr)
