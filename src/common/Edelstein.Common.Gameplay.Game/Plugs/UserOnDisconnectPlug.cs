@@ -24,7 +24,7 @@ public class UserOnDisconnectPlug : AbstractUserOnDisconnectPlug<IGameStageUser>
         if (message.User is { Field: { }, FieldUser: { }, Character: { } })
         {
             message.User.Character.FieldID = message.User.Field.Template.ForcedReturn ?? message.User.Field.Template.ID;
-            message.User.Character.FieldPortal = (byte)(message.User.Field.Template.ForcedReturn == null
+            message.User.Character.FieldPortal = (byte)(message.User.Field.Template.ForcedReturn != null
                 ? 0
                 : message.User.Field.Template.StartPoints
                     .FindClosest(message.User.FieldUser.Position)
