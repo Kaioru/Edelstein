@@ -5,12 +5,19 @@ using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
+using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Utilities.Pipelines;
+using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Plugs;
 
 public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack>
 {
+    private ITemplateManager<ISkillTemplate> _skillTemplates;
+    
+    public FieldOnPacketUserAttackPlug(ITemplateManager<ISkillTemplate> skillTemplates) => _skillTemplates = skillTemplates;
+    
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserAttack message)
     {
         var mobs = message.Attack.Entries.ToImmutableDictionary(
@@ -59,6 +66,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             var damageSrv = await message.User.Damage.CalculatePDamage(
                 message.User.Character,
                 message.User.Stats,
+                mob,
                 mob.Stats,
                 new UserAttack(skillID, skillLevel, message.Attack.Keydown)
             );
@@ -84,6 +92,25 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;
             await mob.Damage(entry.Damage.Sum(), message.User);
+        }
+
+        var character = message.User.Character;
+        var comboCounterStat = character.TemporaryStats[TemporaryStatType.ComboCounter];
+        
+        if (comboCounterStat != null)
+        {
+            var skill = await _skillTemplates.Retrieve(comboCounterStat.Reason);
+            var level = skill?.Levels[character.Skills[comboCounterStat.Reason]?.Level ?? 0];
+            var maxOrbs = level?.X ?? 0;
+            var curOrbs = comboCounterStat.Value - 1;
+
+            if (curOrbs < maxOrbs)
+                await message.User.ModifyTemporaryStats(s => s.Set(
+                    TemporaryStatType.ComboCounter,
+                    comboCounterStat.Value + 1,
+                    comboCounterStat.Reason,
+                    comboCounterStat.DateExpire
+                ));
         }
     }
 }

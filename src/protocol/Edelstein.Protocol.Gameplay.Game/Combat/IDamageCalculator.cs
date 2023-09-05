@@ -12,6 +12,18 @@ public interface IDamageCalculator
 
     void Skip();
     
-    Task<IUserAttackDamage[]> CalculatePDamage(ICharacter character, IFieldUserStats stats, IFieldMobStats target, IUserAttack attack);
-    Task<IUserAttackDamage[]> CalculateMDamage(ICharacter character, IFieldUserStats stats, IFieldMobStats target, IUserAttack attack);
+    Task<IUserAttackDamage[]> CalculatePDamage(
+        ICharacter character, 
+        IFieldUserStats stats, 
+        IFieldMob mob, 
+        IFieldMobStats mobStats, 
+        IUserAttack attack
+    );
+    Task<IUserAttackDamage[]> CalculateMDamage(
+        ICharacter character, 
+        IFieldUserStats stats, 
+        IFieldMob mob, 
+        IFieldMobStats mobStats, 
+        IUserAttack attack
+    );
 }

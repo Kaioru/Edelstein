@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
@@ -20,7 +21,7 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
         var skill = await _skillTemplates.Retrieve(message.SkillID);
         var level = skill?.Levels[message.User.Character.Skills[message.SkillID]?.Level ?? 0];
 
-        if (level == null) return;
+        if (skill == null || level == null) return;
         if (level.MPCon > message.User.Character.MaxMP) return;
 
         var stats = new List<Tuple<TemporaryStatType, short>>();
@@ -34,6 +35,9 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
             stats.Add(Tuple.Create(TemporaryStatType.MAD, level.MAD));
         if (level.MDD > 0)
             stats.Add(Tuple.Create(TemporaryStatType.MDD, level.MDD));
+
+        if (skill.ID is Skill.CrusaderComboAttack or Skill.SoulmasterComboAttack)
+            stats.Add(Tuple.Create(TemporaryStatType.ComboCounter, (short)1));
         
         await message.User.ModifyStats(s =>
         {
@@ -42,6 +46,7 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
         });
         await message.User.ModifyTemporaryStats(s =>
         {
+            s.ResetByReason(message.SkillID);
             foreach (var tuple in stats)
                 s.Set(tuple.Item1, tuple.Item2, message.SkillID, expire);
         });

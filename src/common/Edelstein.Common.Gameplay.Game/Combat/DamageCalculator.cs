@@ -5,6 +5,7 @@ using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
+using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Combat;
@@ -48,7 +49,13 @@ public class DamageCalculator : IDamageCalculator
     public void Skip()
         => _rndGenForCharacter.Next(new uint[RndSize]);
     
-    public async Task<IUserAttackDamage[]> CalculatePDamage(ICharacter character, IFieldUserStats stats, IFieldMobStats target, IUserAttack attack)
+    public async Task<IUserAttackDamage[]> CalculatePDamage(
+        ICharacter character, 
+        IFieldUserStats stats, 
+        IFieldMob mob,
+        IFieldMobStats mobStats,
+        IUserAttack attack
+    )
     {
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
@@ -59,13 +66,13 @@ public class DamageCalculator : IDamageCalculator
         _rndGenForCharacter.Next(random.Array);
         
         var sqrtACC = Math.Sqrt(stats.PACC);
-        var sqrtEVA = Math.Sqrt(target.EVA);
+        var sqrtEVA = Math.Sqrt(mobStats.EVA);
         var hitRate = sqrtACC - sqrtEVA + 100 + stats.Ar * (sqrtACC - sqrtEVA + 100) / 100;
 
         hitRate = Math.Min(hitRate, 100);
 
-        if (target.Level > stats.Level)
-            hitRate -= 5 * (target.Level - stats.Level);
+        if (mobStats.Level > stats.Level)
+            hitRate -= 5 * (mobStats.Level - stats.Level);
         
         for (var i = 0; i < attackCount; i++)
         {
@@ -80,10 +87,10 @@ public class DamageCalculator : IDamageCalculator
             var damage = GetRandomInRange(random.Next(), stats.DamageMin, stats.DamageMax);
             var critical = false;
 
-            if (target.Level > stats.Level)
-                damage *= (100d - (target.Level - stats.Level)) / 100d;
+            if (mobStats.Level > stats.Level)
+                damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
 
-            damage *= (100d - (target.PDR * stats.IMDr / -100 + target.PDR)) / 100d;
+            damage *= (100d - (mobStats.PDR * stats.IMDr / -100 + mobStats.PDR)) / 100d;
 
             if (skill != null && skillLevel != null)
             {
@@ -118,24 +125,39 @@ public class DamageCalculator : IDamageCalculator
                 damage *= skillDamage / 100d;
             }
 
+            var damageR = 0.0;
+            var comboCounterStat = character.TemporaryStats[TemporaryStatType.ComboCounter];
+            
+            if (comboCounterStat != null)
+            {
+                var comboCounterSkill = await _skills.Retrieve(comboCounterStat.Reason);
+                var comboCounterLevel = comboCounterSkill?.Levels[character.Skills[comboCounterStat.Reason]?.Level ?? 0];
+                var curOrbs = comboCounterStat.Value - 1;
+
+                damageR += (short)(curOrbs * (comboCounterLevel?.X ?? 0));
+            }
+            
             if (stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= stats.Cr)
             {
-                var cd = (int)GetRandomInRange(random.Next(), stats.CDMin, stats.CDMax) / 100d;
-
-                damage += (int)damage * cd;
+                damageR += GetRandomInRange(random.Next(), stats.CDMin, stats.CDMax);
                 critical = true;
             }
-
+            
+            damage += damage * damageR / 100d;
             damage = Math.Min(Math.Max(damage, 1), 999999);
             result[i] = new UserAttackDamage((int)damage, critical);
-
-            random.Next();
         }
         
         return result;
     }
     
-    public async Task<IUserAttackDamage[]> CalculateMDamage(ICharacter character, IFieldUserStats stats, IFieldMobStats target, IUserAttack attack)    
+    public async Task<IUserAttackDamage[]> CalculateMDamage(
+        ICharacter character, 
+        IFieldUserStats stats,
+        IFieldMob mob,
+        IFieldMobStats mobStats, 
+        IUserAttack attack
+    )    
     {
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
