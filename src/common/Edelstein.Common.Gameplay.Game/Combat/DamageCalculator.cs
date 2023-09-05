@@ -104,6 +104,8 @@ public class DamageCalculator : IDamageCalculator
                                  Skill.SpearmanImproveBasic
                     })
                     {
+                        if (character.Skills[skillID]?.Level <= 0) continue;
+                        
                         var warriorImproveBasicSkill = await _skills.Retrieve(skillID);
                         var warriorImproveBasicLevel = warriorImproveBasicSkill?.Levels[character.Skills[skillID]?.Level ?? 0];
 
