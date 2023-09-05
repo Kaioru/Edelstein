@@ -103,6 +103,8 @@ public abstract class AbstractFieldDrop : AbstractFieldObject, IFieldDrop
 
     public async Task PickUp(IFieldUser user)
     {
+        if (IsPickedUp) return;
+        
         await _lock.WaitAsync();
         
         try

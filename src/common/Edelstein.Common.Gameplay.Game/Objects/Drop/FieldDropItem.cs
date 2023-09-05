@@ -28,6 +28,6 @@ public class FieldDropItem : AbstractFieldDrop
         return check;
     }
     
-    protected override Task Update(IFieldUser user) =>
-        user.ModifyInventory(i => i.Add(_item));
+    protected override Task Update(IFieldUser user) 
+        => user.ModifyInventory(i => i.Add(_item));
 }
