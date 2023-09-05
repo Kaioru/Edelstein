@@ -88,7 +88,7 @@ public class Field : AbstractFieldObjectPool, IField
 
     public async Task Enter(IFieldUser user, string portal, Func<IPacket>? getEnterPacket = null)
     {
-        user.Character.FieldPortal = (byte)(Template.StartPoints.Objects
+        user.Character.FieldPortal = (byte)(Template.Portals.Objects
             .FirstOrDefault(o => o.Name == portal)?
             .ID ?? 0);
         await Enter((IFieldObject)user, null);

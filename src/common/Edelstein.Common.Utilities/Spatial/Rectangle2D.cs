@@ -2,7 +2,7 @@
 
 namespace Edelstein.Common.Utilities.Spatial;
 
-public readonly struct Rectangle2D : IRectangle2D
+public readonly record struct Rectangle2D : IRectangle2D
 {
     public int MinX => Left;
     public int MinY => Top;

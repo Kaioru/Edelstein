@@ -2,7 +2,7 @@
 
 namespace Edelstein.Common.Utilities.Spatial;
 
-public readonly struct Segment2D : ISegment2D
+public readonly record struct Segment2D : ISegment2D
 {
     public int MinX => Math.Min(P1.X, P2.X);
     public int MinY => Math.Min(P1.Y, P2.Y);
