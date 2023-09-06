@@ -68,6 +68,7 @@ public static class SkillConstants
             Skill.KnightFireCharge => Element.Fire,
             Skill.KnightIceCharge => Element.Ice,
             Skill.KnightLightningCharge => Element.Light,
+            Skill.PaladinDivineCharge => Element.Holy,
             _ => Element.Physical
         };
 }

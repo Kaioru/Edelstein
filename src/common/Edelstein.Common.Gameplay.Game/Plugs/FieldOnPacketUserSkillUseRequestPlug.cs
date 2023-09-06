@@ -56,6 +56,7 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
             case Skill.KnightFireCharge:
             case Skill.KnightIceCharge:
             case Skill.KnightLightningCharge:
+            case Skill.PaladinDivineCharge:
                 stats.Add(Tuple.Create(TemporaryStatType.WeaponCharge, level.X));
                 break;
             case Skill.HeroMapleHero:
