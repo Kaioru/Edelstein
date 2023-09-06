@@ -2,6 +2,7 @@
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Utilities.Pipelines;
@@ -50,6 +51,15 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
                 break;
             case Skill.CrusaderComboAttack or Skill.SoulmasterComboAttack:
                 stats.Add(Tuple.Create(TemporaryStatType.ComboCounter, (short)1));
+                break;
+            case Skill.KnightFireCharge:
+                stats.Add(Tuple.Create(TemporaryStatType.WeaponCharge, (short)Element.Fire));
+                break;
+            case Skill.KnightIceCharge:
+                stats.Add(Tuple.Create(TemporaryStatType.WeaponCharge, (short)Element.Ice));
+                break;
+            case Skill.KnightLightningCharge:
+                stats.Add(Tuple.Create(TemporaryStatType.WeaponCharge, (short)Element.Light));
                 break;
             case Skill.HeroMapleHero:
             case Skill.PaladinMapleHero:

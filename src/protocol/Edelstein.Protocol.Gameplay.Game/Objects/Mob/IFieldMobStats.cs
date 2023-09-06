@@ -1,4 +1,6 @@
-﻿namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob;
+﻿using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
+
+namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 
 public interface IFieldMobStats
 {
@@ -13,4 +15,6 @@ public interface IFieldMobStats
 
     int ACC { get; }
     int EVA { get; }
+    
+    IDictionary<Element, ElementAttribute> ElementAttributes { get; }
 }

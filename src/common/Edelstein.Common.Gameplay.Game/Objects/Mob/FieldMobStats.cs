@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob;
 
@@ -14,6 +15,8 @@ public record struct FieldMobStats : IFieldMobStats
     public int MDR { get; }
     public int ACC { get; }
     public int EVA { get; }
+    
+    public IDictionary<Element, ElementAttribute> ElementAttributes { get; }
 
     public FieldMobStats(IFieldMob mob)
     {
@@ -27,6 +30,10 @@ public record struct FieldMobStats : IFieldMobStats
         MDR = mob.Template.MDR;
         ACC = mob.Template.ACC;
         EVA = mob.Template.EVA;
+
+        ElementAttributes = new Dictionary<Element, ElementAttribute>();
+        foreach (var kv in mob.Template.ElementAttributes)
+            ElementAttributes[kv.Key] = kv.Value;
         
         PAD = Math.Min(PAD, 29999);
         PDD = Math.Min(PDD, 30000);

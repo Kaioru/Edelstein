@@ -23,4 +23,6 @@ public interface IMobTemplate : ITemplate
     int EVA { get; }
 
     int EXP { get; }
+    
+    IDictionary<Element, ElementAttribute> ElementAttributes { get; }
 }

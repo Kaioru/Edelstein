@@ -32,7 +32,41 @@ public class MobTemplate : IMobTemplate
         EVA = info.Resolve<int>("eva") ?? 0;
 
         EXP = info.Resolve<int>("exp") ?? 0;
+
+        ElementAttributes = new Dictionary<Element, ElementAttribute>
+        {
+            { Element.Physical, ElementAttribute.None },
+            { Element.Ice, ElementAttribute.None },
+            { Element.Fire, ElementAttribute.None },
+            { Element.Light, ElementAttribute.None },
+            { Element.Holy, ElementAttribute.None },
+            { Element.Dark, ElementAttribute.None },
+            { Element.Undead, ElementAttribute.None }
+        };
+
+        var elemCount = 0;
+        var elemAttrs = info.ResolveOrDefault<string>("elemAttr") ?? string.Empty;
+        
+        foreach (var group in elemAttrs.GroupBy(_ => elemCount++ / 2).ToList())
+        {
+            var groupList = group.ToList();
+            var elem = groupList[0] switch
+            {
+                'P' => Element.Physical,
+                'I' => Element.Ice,
+                'F' => Element.Fire,
+                'L' => Element.Light,
+                'H' => Element.Holy,
+                'D' => Element.Dark,
+                'S' => Element.Undead,
+                _ => Element.Physical
+            };
+            var elemAttr = (ElementAttribute)Convert.ToInt32(groupList[1].ToString());
+
+            ElementAttributes[elem] = elemAttr;
+        }
     }
+    
     public int ID { get; }
 
     public MobMoveAbilityType MoveAbility { get; }
@@ -54,4 +88,6 @@ public class MobTemplate : IMobTemplate
     public int EVA { get; }
 
     public int EXP { get; }
+    
+    public IDictionary<Element, ElementAttribute> ElementAttributes { get; }
 }
