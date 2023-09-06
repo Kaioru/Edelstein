@@ -191,6 +191,29 @@ public record struct FieldUserStats : IFieldUserStats
             Speed += levelTemplate.PsdSpeed;
         }
         
+        var equipped = character.Inventories[ItemInventoryType.Equip];
+        var weapon = equipped != null
+            ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
+                ? result1.ID 
+                : 0
+            : 0;
+        var subWeapon = equipped != null
+            ? equipped.Items.TryGetValue(-(short)BodyPart.Shield, out var result2) 
+                ? result2.ID 
+                : 0
+            : 0;
+        var weaponType = ItemConstants.GetWeaponType(weapon);
+        var subWeaponType = ItemConstants.GetWeaponType(subWeapon);
+
+        if (subWeapon > 0 && character.Skills[Skill.KnightShieldMastery]?.Level > 0)
+        {
+            var shieldMasterySkill = skillTemplates.Retrieve(Skill.KnightShieldMastery).Result;
+            var shieldMasteryLevel = shieldMasterySkill?[character.Skills[Skill.KnightShieldMastery]?.Level ?? 0];
+
+            PDDr += shieldMasteryLevel?.X ?? 0;
+            MDDr += shieldMasteryLevel?.X ?? 0;
+        }
+        
         STRr += character.TemporaryStats[TemporaryStatType.BasicStatUp]?.Value ?? 0;
         DEXr += character.TemporaryStats[TemporaryStatType.BasicStatUp]?.Value ?? 0;
         INTr += character.TemporaryStats[TemporaryStatType.BasicStatUp]?.Value ?? 0;
@@ -208,20 +231,6 @@ public record struct FieldUserStats : IFieldUserStats
 
         MaxHP += character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
         MaxMP += character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
-        
-        var equipped = character.Inventories[ItemInventoryType.Equip];
-        var weapon = equipped != null
-            ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
-                ? result1.ID 
-                : 0
-            : 0;
-        var subWeapon = equipped != null
-            ? equipped.Items.TryGetValue(-(short)BodyPart.Shield, out var result2) 
-                ? result2.ID 
-                : 0
-            : 0;
-        var weaponType = ItemConstants.GetWeaponType(weapon);
-        var subWeaponType = ItemConstants.GetWeaponType(subWeapon);
 
         void GetMastery(int skillID, ref int mastery, ref int stat)
         {
