@@ -31,7 +31,8 @@ public class SkillTemplate : ISkillTemplate
         IsInvisible = (property.Resolve<int>("invisible") ?? 0) > 0;
 
         var elemAttr = property.ResolveOrDefault<string>("elemAttr") ?? string.Empty;
-        
+
+        Element = Element.Physical;
         if (elemAttr.Length > 0)
             Element = elemAttr[0] switch
             {

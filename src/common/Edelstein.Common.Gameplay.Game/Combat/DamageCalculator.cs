@@ -5,6 +5,7 @@ using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters;
+using Edelstein.Protocol.Gameplay.Models.Characters.Skills;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Utilities.Templates;
@@ -103,8 +104,40 @@ public class DamageCalculator : IDamageCalculator
                 damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
 
             damage += damage * stats.PDamR / 100d;
-            // get_damage_adjusted_by_elemAttr
-            // get_damage_adjusted_by_assist_charged_elemAttr
+
+            // ElemBoost
+            // Mage1 MagicComposition
+            // Mage2 MagicComposition
+            // Ranger FireShot
+            // Sniper IceShot
+            var damageAdjustedByElemAttr = skill != null
+                ? GetDamageAdjustedByElemAttr(damage, mobStats.ElementAttributes[skill.Element], 1.0, 0.0)
+                : damage;
+
+            damage = damageAdjustedByElemAttr;
+
+            var weaponChargeStat = character.TemporaryStats[TemporaryStatType.WeaponCharge];
+            if (weaponChargeStat != null)
+            {
+                var weaponChargeSkill = await _skills.Retrieve(weaponChargeStat.Reason);
+                var weaponChargeLevel = weaponChargeSkill?[character.Skills[weaponChargeStat.Reason]?.Level ?? 0];
+
+                if (weaponChargeLevel != null)
+                {
+                    var adjust = weaponChargeLevel.Z / 100d;
+                    var amp = weaponChargeLevel.Damage / 100d;
+                    var damageAdjustedByChargedElemAttr = GetDamageAdjustedByElemAttr(
+                        amp * damage,
+                        mobStats.ElementAttributes[(Element)weaponChargeStat.Value],
+                        adjust,
+                        0.0
+                    );
+                    var damageAdjustedByAssistChargedElemAttr = 0;
+
+                    damage = damageAdjustedByChargedElemAttr + damageAdjustedByAssistChargedElemAttr;
+                }
+            }
+
             damage *= (100d - (mobStats.PDR * stats.IMDr / -100 + mobStats.PDR)) / 100d;
 
             var skillDamageR = skillLevel?.Damage ?? 100d;
@@ -227,7 +260,7 @@ public class DamageCalculator : IDamageCalculator
         return result;
     }
     
-    private double GetRandomInRange(uint rand, double f0, double f1)
+    private static double GetRandomInRange(uint rand, double f0, double f1)
     {
         if (Math.Abs(f0 - f1) < 0.0001) return f0;
         if (f0 > f1)
@@ -239,4 +272,13 @@ public class DamageCalculator : IDamageCalculator
         
         return f0 + rand % 10000000 * (f1 - f0) / 9999999.0;
     }
+
+    private static double GetDamageAdjustedByElemAttr(double damage, ElementAttribute attr, double adjust, double boost) 
+        => attr switch
+        {
+            ElementAttribute.Damage0 => (1.0 - adjust) * damage,
+            ElementAttribute.Damage50 => (1.0 - (adjust * 0.5 + boost)) * damage,
+            ElementAttribute.Damage150 => (adjust * 0.5 + boost + 1.0) * damage,
+            _ => damage
+        };
 }
