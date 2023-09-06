@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Protocol.Data;
+using Edelstein.Protocol.Gameplay.Models.Characters.Skills;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
 namespace Edelstein.Common.Gameplay.Models.Characters.Skills.Templates;
@@ -16,6 +17,8 @@ public class SkillTemplate : ISkillTemplate
     public bool IsSummon { get; }
     public bool IsInvisible { get; }
     
+    public Element Element { get; }
+
     public IDictionary<int, int> ReqSkill { get; }
     public IDictionary<int, ISkillTemplateLevel> Levels { get; }
     
@@ -26,6 +29,21 @@ public class SkillTemplate : ISkillTemplate
         IsPSD = (property.Resolve<int>("psd") ?? 0) > 0;
         IsSummon = property.Resolve("summon") != null;
         IsInvisible = (property.Resolve<int>("invisible") ?? 0) > 0;
+
+        var elemAttr = property.ResolveOrDefault<string>("elemAttr") ?? string.Empty;
+        
+        if (elemAttr.Length > 0)
+            Element = elemAttr[0] switch
+            {
+                'P' => Element.Physical,
+                'I' => Element.Ice,
+                'F' => Element.Fire,
+                'L' => Element.Light,
+                'H' => Element.Holy,
+                'D' => Element.Dark,
+                'S' => Element.Undead,
+                _ => Element.Physical
+            };
 
         ReqSkill = property.Resolve("req")?.Children
             .ToImmutableDictionary(

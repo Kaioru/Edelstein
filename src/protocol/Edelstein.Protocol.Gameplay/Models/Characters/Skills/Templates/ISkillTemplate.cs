@@ -11,6 +11,8 @@ public interface ISkillTemplate : ITemplate
     bool IsPSD { get; }
     bool IsSummon { get; }
     bool IsInvisible { get; }
+    
+    Element Element { get; }
 
     IDictionary<int, int> ReqSkill { get; } 
     IDictionary<int, ISkillTemplateLevel> Levels { get; }

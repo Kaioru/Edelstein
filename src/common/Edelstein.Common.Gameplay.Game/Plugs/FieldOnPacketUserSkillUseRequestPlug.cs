@@ -3,6 +3,7 @@ using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
+using Edelstein.Protocol.Gameplay.Models.Characters.Skills;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Utilities.Pipelines;
