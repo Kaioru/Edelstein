@@ -176,7 +176,7 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
     
     public async Task OnTick(DateTime now)
     {
-        if (!Objects.OfType<IFieldUser>().Any()) return;
+        if (GetPool(FieldObjectType.User)?.Objects.Count == 0) return;
 
         await Task.WhenAll(
             Objects
@@ -186,7 +186,7 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
 
         if (now > NextGeneratorTick)
         {
-            NextGeneratorTick = NextGeneratorTick.AddSeconds(7);
+            NextGeneratorTick = now.AddSeconds(7);
             await Task.WhenAll((await Generators.RetrieveAll())
                 .Select(g => g.Generate()));
         }
