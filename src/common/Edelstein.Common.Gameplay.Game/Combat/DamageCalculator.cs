@@ -128,7 +128,7 @@ public class DamageCalculator : IDamageCalculator
                     var amp = weaponChargeLevel.Damage / 100d;
                     var damageAdjustedByChargedElemAttr = GetDamageAdjustedByElemAttr(
                         amp * damage,
-                        mobStats.ElementAttributes[(Element)weaponChargeStat.Value],
+                        mobStats.ElementAttributes[SkillConstants.GetElementByChargedSkill(weaponChargeStat.Reason)],
                         adjust,
                         0.0
                     );

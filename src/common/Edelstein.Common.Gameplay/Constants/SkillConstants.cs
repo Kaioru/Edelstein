@@ -1,4 +1,6 @@
-﻿namespace Edelstein.Common.Gameplay.Constants;
+﻿using Edelstein.Protocol.Gameplay.Models.Characters.Skills;
+
+namespace Edelstein.Common.Gameplay.Constants;
 
 public static class SkillConstants
 {
@@ -59,4 +61,13 @@ public static class SkillConstants
         if (job == 100 * (job / 100)) return false;
         return JobConstants.GetJobLevel(job) == 4;
     }
+
+    public static Element GetElementByChargedSkill(int skillID) 
+        => skillID switch
+        {
+            Skill.KnightFireCharge => Element.Fire,
+            Skill.KnightIceCharge => Element.Ice,
+            Skill.KnightLightningCharge => Element.Light,
+            _ => Element.Physical
+        };
 }

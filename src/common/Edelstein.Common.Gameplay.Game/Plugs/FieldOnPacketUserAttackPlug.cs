@@ -96,12 +96,28 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             await mob.Damage(entry.Damage.Sum(), message.User);
             
             if (mob.HP <= 0) continue;
+            
+            var weaponChargeStat = message.User.Character.TemporaryStats[TemporaryStatType.WeaponCharge];
+            if (weaponChargeStat?.Reason == Skill.KnightIceCharge)
+            {
+                var weaponChargeSkill = await _skillTemplates.Retrieve(weaponChargeStat.Reason);
+                var weaponChargeLevel = weaponChargeSkill?[message.User.Character.Skills[weaponChargeStat.Reason]?.Level ?? 0];
+
+                await mob.ModifyTemporaryStats(m => m.Set(
+                    MobTemporaryStatType.Freeze,
+                    1,
+                    weaponChargeStat.Reason,
+                    DateTime.UtcNow.AddSeconds(weaponChargeLevel?.Y ?? 0)));
+            }
+            
             var skill = await _skillTemplates.Retrieve(skillID);
             var level = skill?[message.User.Character.Skills[skillID]?.Level ?? 0];
             if (skill == null || level == null) continue;
             if (level.Prop > 0 && random.Next(0, 100) > level.Prop) continue;
             var stats = new List<Tuple<MobTemporaryStatType, short>>();
-            var expire = DateTime.UtcNow.AddSeconds(level.Time);
+            var reason = skill.ID;
+            var time = level.Time;
+
             
             switch (skillID)
             {
@@ -117,17 +133,22 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                 case Skill.CrusaderShout:
                     stats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
                     break;
+                case Skill.KnightChargeBlow:
+                    stats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
+                    break;
                 case Skill.HeroMonsterMagnet:
                 case Skill.DarkknightMonsterMagnet:
                     stats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
                     break;
             }
 
+            var dateExpire = DateTime.UtcNow.AddSeconds(time);
+
             await mob.ModifyTemporaryStats(s =>
             {
                 s.ResetByReason(skillID);
                 foreach (var tuple in stats)
-                    s.Set(tuple.Item1, tuple.Item2, skillID, expire);
+                    s.Set(tuple.Item1, tuple.Item2, skillID, dateExpire);
             });
         }
 

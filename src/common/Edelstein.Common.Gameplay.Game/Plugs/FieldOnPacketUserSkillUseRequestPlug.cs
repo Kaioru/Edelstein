@@ -54,13 +54,9 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
                 stats.Add(Tuple.Create(TemporaryStatType.ComboCounter, (short)1));
                 break;
             case Skill.KnightFireCharge:
-                stats.Add(Tuple.Create(TemporaryStatType.WeaponCharge, (short)Element.Fire));
-                break;
             case Skill.KnightIceCharge:
-                stats.Add(Tuple.Create(TemporaryStatType.WeaponCharge, (short)Element.Ice));
-                break;
             case Skill.KnightLightningCharge:
-                stats.Add(Tuple.Create(TemporaryStatType.WeaponCharge, (short)Element.Light));
+                stats.Add(Tuple.Create(TemporaryStatType.WeaponCharge, level.X));
                 break;
             case Skill.HeroMapleHero:
             case Skill.PaladinMapleHero:
