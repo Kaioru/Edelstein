@@ -97,7 +97,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             
             if (mob.HP <= 0) continue;
             var skill = await _skillTemplates.Retrieve(skillID);
-            var level = skill?.Levels[message.User.Character.Skills[skillID]?.Level ?? 0];
+            var level = skill?[message.User.Character.Skills[skillID]?.Level ?? 0];
             if (skill == null || level == null) continue;
             if (level.Prop > 0 && random.Next(0, 100) > level.Prop) continue;
             var stats = new List<Tuple<MobTemporaryStatType, short>>();
@@ -149,8 +149,11 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         }
         else if (comboCounterStat != null && message.Attack.Entries.Count > 0)
         {
-            var comboCounterSkill = await _skillTemplates.Retrieve(comboCounterStat.Reason);
-            var comboCounterLevel = comboCounterSkill?.Levels[character.Skills[comboCounterStat.Reason]?.Level ?? 0];
+            var comboCounterSkillID = JobConstants.GetJobRace(character.Job) == 0
+                ? Skill.CrusaderComboAttack
+                : Skill.SoulmasterComboAttack;
+            var comboCounterSkill = await _skillTemplates.Retrieve(comboCounterSkillID);
+            var comboCounterLevel = comboCounterSkill?[character.Skills[comboCounterStat.Reason]?.Level ?? 0];
             var comboCounter = comboCounterStat.Value - 1;
             var comboMax = comboCounterLevel?.X ?? 0;
 
@@ -158,7 +161,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                 ? Skill.HeroAdvancedCombo
                 : Skill.SoulmasterAdvancedCombo;
             var advComboCounterSkill = await _skillTemplates.Retrieve(advComboCounterSkillID);
-            var advComboCounterLevel = advComboCounterSkill?.Levels[character.Skills[advComboCounterSkillID]?.Level ?? 0];
+            var advComboCounterLevel = advComboCounterSkill?[character.Skills[advComboCounterSkillID]?.Level ?? 0];
             var comboDoubleChance = advComboCounterLevel?.Prop ?? 0;
             
             comboMax = advComboCounterLevel?.X ?? comboMax;

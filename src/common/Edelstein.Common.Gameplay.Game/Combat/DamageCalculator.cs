@@ -24,9 +24,9 @@ public class DamageCalculator : IDamageCalculator
     public DamageCalculator(ITemplateManager<ISkillTemplate> skills)
     {
         var random = new Random();
-        var s1 = (uint)random.Next();
-        var s2 = (uint)random.Next();
-        var s3 = (uint)random.Next();
+        var s1 = (uint)0;
+        var s2 = (uint)0;
+        var s3 = (uint)0;
         
         InitSeed1 = s1;
         InitSeed2 = s2;
@@ -60,7 +60,7 @@ public class DamageCalculator : IDamageCalculator
     {
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
-        var skillLevel = skill?.Levels[attack.SkillLevel];
+        var skillLevel = skill?[attack.SkillLevel];
         var attackCount = skillLevel?.AttackCount ?? 1;
         var result = new IUserAttackDamage[attackCount];
 
@@ -74,21 +74,10 @@ public class DamageCalculator : IDamageCalculator
 
         if (mobStats.Level > stats.Level)
             hitRate -= 5 * (mobStats.Level - stats.Level);
-        
+
         for (var i = 0; i < attackCount; i++)
         {
-            random.Skip();
-
-            if (attack.SkillID is 
-                    Skill.HeroRush or 
-                    Skill.PaladinRush or 
-                    Skill.DarkknightRush or 
-                    Skill.Dual3HustleRush or 
-                    Skill.PaladinBlast or 
-                    Skill.Dual4FlyingAssaulter or
-                    Skill.Dual2SlashStorm or
-                    Skill.Dual4BloodyStorm
-            ) random.Skip();
+            random.Skip(); // CalcPImmune
 
             if (hitRate < GetRandomInRange(random.Next(), 0, 100))
             {
@@ -96,94 +85,119 @@ public class DamageCalculator : IDamageCalculator
                 continue;
             }
 
+            if (attack.SkillID is
+                Skill.HeroRush or
+                Skill.PaladinRush or
+                Skill.DarkknightRush or
+                Skill.Dual3HustleRush or
+                Skill.PaladinBlast or
+                Skill.Dual4FlyingAssaulter or
+                Skill.Dual2SlashStorm or
+                Skill.Dual4BloodyStorm)
+                random.Skip();
+
             var damage = GetRandomInRange(random.Next(), stats.DamageMin, stats.DamageMax);
             var critical = false;
 
             if (mobStats.Level > stats.Level)
                 damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
 
-            damage *= (100d - (mobStats.PDR * stats.IMDr / -100 + mobStats.PDR)) / 100d;
             damage += damage * stats.PDamR / 100d;
+            // get_damage_adjusted_by_elemAttr
+            // get_damage_adjusted_by_assist_charged_elemAttr
+            damage *= (100d - (mobStats.PDR * stats.IMDr / -100 + mobStats.PDR)) / 100d;
 
-            if (mob.TemporaryStats[MobTemporaryStatType.Stun] != null ||
-                mob.TemporaryStats[MobTemporaryStatType.Blind] != null ||
-                mob.TemporaryStats[MobTemporaryStatType.Freeze] != null)
+            var skillDamageR = skillLevel?.Damage ?? 100d;
+
+            if (attack.SkillID is Skill.WarriorPowerStrike or Skill.WarriorSlashBlast)
             {
-                var chanceAttackSkill = await _skills.Retrieve(Skill.CrusaderChanceAttack);
-                var chanceAttackLevel = chanceAttackSkill?.Levels[character.Skills[Skill.CrusaderChanceAttack]?.Level ?? 0];
-
-                if (chanceAttackLevel != null) 
-                    damage *= chanceAttackLevel.Damage / 100d;
-            }
-
-            if (skill != null && skillLevel != null)
-            {
-                var skillDamage = (int)skillLevel.Damage;
-
-                if (skill.ID is Skill.WarriorPowerStrike or Skill.WarriorSlashBlast)
+                foreach (var skillID in new List<int>
+                         {
+                             Skill.FighterImproveBasic,
+                             Skill.PageImproveBasic,
+                             Skill.SpearmanImproveBasic
+                         })
                 {
-                    foreach (var skillID in new List<int>{
-                                 Skill.FighterImproveBasic,
-                                 Skill.PageImproveBasic,
-                                 Skill.SpearmanImproveBasic
-                    })
-                    {
-                        if (character.Skills[skillID]?.Level <= 0) continue;
-                        
-                        var warriorImproveBasicSkill = await _skills.Retrieve(skillID);
-                        var warriorImproveBasicLevel = warriorImproveBasicSkill?.Levels[character.Skills[skillID]?.Level ?? 0];
+                    if ((character.Skills[skillID]?.Level ?? 0) <= 0) continue;
 
-                        if (warriorImproveBasicLevel == null) break;
-                        
-                        skillDamage += skill.ID == Skill.WarriorPowerStrike 
-                            ? warriorImproveBasicLevel.X 
-                            : warriorImproveBasicLevel.Y;
-                        break;
-                    }
+                    var warriorImproveBasicSkill = await _skills.Retrieve(skillID);
+                    var warriorImproveBasicLevel = warriorImproveBasicSkill?[character.Skills[skillID]?.Level ?? 0];
+
+                    if (warriorImproveBasicLevel == null) break;
+
+                    skillDamageR += attack.SkillID == Skill.WarriorPowerStrike
+                        ? warriorImproveBasicLevel.X
+                        : warriorImproveBasicLevel.Y;
+                    break;
                 }
-                
-                damage *= skillDamage / 100d;
             }
 
-            var finalDamageR = 0.0;
+            damage *= skillDamageR / 100d;
+
+            var damageBefore = damage;
             var comboCounterStat = character.TemporaryStats[TemporaryStatType.ComboCounter];
-            
             if (comboCounterStat != null)
             {
-                var comboCounterSkill = await _skills.Retrieve(comboCounterStat.Reason);
-                var comboCounterLevel = comboCounterSkill?.Levels[character.Skills[comboCounterStat.Reason]?.Level ?? 0];
+                var comboCounterSkillID = JobConstants.GetJobRace(character.Job) == 0
+                    ? Skill.CrusaderComboAttack
+                    : Skill.SoulmasterComboAttack;
+                var comboCounterSkill = await _skills.Retrieve(comboCounterSkillID);
+                var comboCounterLevel = comboCounterSkill?[character.Skills[comboCounterSkillID]?.Level ?? 0];
                 var comboCounter = comboCounterStat.Value - 1;
-                
                 var advComboCounterSkillID = JobConstants.GetJobRace(character.Job) == 0
                     ? Skill.HeroAdvancedCombo
                     : Skill.SoulmasterAdvancedCombo;
                 var advComboCounterSkill = await _skills.Retrieve(advComboCounterSkillID);
-                var advComboCounterLevel = advComboCounterSkill?.Levels[character.Skills[advComboCounterSkillID]?.Level ?? 0];
-                
-                var damagePerCombo = advComboCounterLevel?.X ?? comboCounterLevel?.X ?? 0;
-                    
-                if (attack.SkillID is 
-                    Skill.CrusaderPanic or 
+                var advComboCounterLevel = advComboCounterSkill?[character.Skills[advComboCounterSkillID]?.Level ?? 0];
+
+                var damagePerCombo = (advComboCounterLevel?.DIPr ?? 0) + (comboCounterLevel?.DIPr ?? 0);
+
+                if (attack.SkillID is
+                    Skill.CrusaderPanic or
                     Skill.CrusaderComa or
-                    Skill.SoulmasterPanicSword or 
+                    Skill.SoulmasterPanicSword or
                     Skill.SoulmasterComaSword)
                 {
                     var comboAttackSkill = await _skills.Retrieve(attack.SkillID);
-                    var comboAttackLevel = comboAttackSkill?.Levels[character.Skills[attack.SkillID]?.Level ?? 0];
+                    var comboAttackLevel = comboAttackSkill?[character.Skills[attack.SkillID]?.Level ?? 0];
 
                     damagePerCombo += comboAttackLevel?.Y ?? 0;
                 }
-                
-                finalDamageR += (short)(comboCounter * damagePerCombo);
+
+                damage += damage * (comboCounter * damagePerCombo) / 100d;
             }
-            
+
+            var enrageStat = character.TemporaryStats[TemporaryStatType.Enrage];
+            if (enrageStat?.Value / 100 > 0)
+                damage *= ((enrageStat?.Value ?? 100) / 100 + 100) / 100d;
+
             if (stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= stats.Cr)
             {
-                finalDamageR += (int)GetRandomInRange(random.Next(), stats.CDMin, stats.CDMax);
+                var criticalDamageR = (int)GetRandomInRange(random.Next(), stats.CDMin, stats.CDMax);
+
                 critical = true;
+                damage += (int)damageBefore * criticalDamageR / 100d;
+            }
+
+            if (mob.TemporaryStats[MobTemporaryStatType.Stun] != null ||
+                mob.TemporaryStats[MobTemporaryStatType.Blind] != null)
+            {
+                var chanceAttackSkill = await _skills.Retrieve(Skill.CrusaderChanceAttack);
+                var chanceAttackLevel = chanceAttackSkill?[character.Skills[Skill.CrusaderChanceAttack]?.Level ?? 0];
+
+                if (chanceAttackLevel != null)
+                    damage *= chanceAttackLevel.Damage / 100d;
+            }
+
+            if (mob.Template.IsBoss)
+                random.Skip();
+
+            if (!mob.Template.IsBoss)
+            {
+                if (mob.Template.MaxHP > damage && i == 0)
+                    random.Skip();
             }
             
-            damage += damage * finalDamageR / 100d;
             damage = Math.Min(Math.Max(damage, 1), 999999);
             result[i] = new UserAttackDamage((int)damage, critical);
         }
@@ -215,17 +229,14 @@ public class DamageCalculator : IDamageCalculator
     
     private double GetRandomInRange(uint rand, double f0, double f1)
     {
-        if (f1 != f0)
+        if (Math.Abs(f0 - f1) < 0.0001) return f0;
+        if (f0 > f1)
         {
-            if (f0 > f1)
-            {
-                var tmp = f1;
-                f0 = f1;
-                f1 = tmp;
-            }
-
-            return f0 + rand % 10000000 * (f1 - f0) / 9999999.0;
+            var tmp = f1;
+            f0 = f1;
+            f1 = tmp;
         }
-        else return f0;
+        
+        return f0 + rand % 10000000 * (f1 - f0) / 9999999.0;
     }
 }

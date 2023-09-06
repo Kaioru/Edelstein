@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Constants;
-using Edelstein.Common.Gameplay.Game.Objects.User;
+﻿using Edelstein.Common.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game;
 
 namespace Edelstein.Common.Gameplay.Game;

@@ -17,6 +17,8 @@ public class MobTemplate : IMobTemplate
 
         Level = info.Resolve<short>("level") ?? 0;
 
+        IsBoss = (info.Resolve<int>("boss") ?? 0) > 0;
+
         MaxHP = info.Resolve<int>("maxHP") ?? 1;
         MaxMP = info.Resolve<int>("maxMP") ?? 0;
 
@@ -36,6 +38,8 @@ public class MobTemplate : IMobTemplate
     public MobMoveAbilityType MoveAbility { get; }
 
     public short Level { get; }
+    
+    public bool IsBoss { get; }
 
     public int MaxHP { get; }
     public int MaxMP { get; }

@@ -81,8 +81,10 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
                 stats.Add(Tuple.Create(TemporaryStatType.Stance, level.Prop));
                 break;
             case Skill.HeroEnrage:
-                stats.Add(Tuple.Create(TemporaryStatType.DamR, level.X));
-                stats.Add(Tuple.Create(TemporaryStatType.Enrage, (short)1));
+                stats.Add(Tuple.Create(TemporaryStatType.Enrage, (short)(
+                    level.X * 100 +
+                    level.MobCount
+                )));
                 break;
         }
 

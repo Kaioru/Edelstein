@@ -7,6 +7,8 @@ public interface IMobTemplate : ITemplate
     MobMoveAbilityType MoveAbility { get; }
 
     short Level { get; }
+    
+    bool IsBoss { get; }
 
     int MaxHP { get; }
     int MaxMP { get; }

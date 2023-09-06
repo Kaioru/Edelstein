@@ -7,7 +7,9 @@ namespace Edelstein.Common.Gameplay.Models.Characters.Skills.Templates;
 public class SkillTemplate : ISkillTemplate
 {
     public int ID { get; }
-    
+
+    public ISkillTemplateLevel? this[int level] => Levels.TryGetValue(level, out var result) ? result : null;
+
     public short MaxLevel { get; }
     
     public bool IsPSD { get; }

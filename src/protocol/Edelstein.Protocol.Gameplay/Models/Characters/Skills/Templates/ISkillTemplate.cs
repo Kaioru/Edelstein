@@ -4,6 +4,8 @@ namespace Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
 public interface ISkillTemplate : ITemplate
 {
+    ISkillTemplateLevel? this[int level] { get; }
+
     short MaxLevel { get; }
 
     bool IsPSD { get; }

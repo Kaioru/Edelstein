@@ -209,9 +209,6 @@ public record struct FieldUserStats : IFieldUserStats
         MaxHP += character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
         MaxMP += character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
         
-        PDamR += character.TemporaryStats[TemporaryStatType.DamR]?.Value ?? 0;
-        MDamR += character.TemporaryStats[TemporaryStatType.DamR]?.Value ?? 0;
-
         var equipped = character.Inventories[ItemInventoryType.Equip];
         var weapon = equipped != null
             ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
