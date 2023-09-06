@@ -256,6 +256,22 @@ public record struct FieldUserStats : IFieldUserStats
                     }
                     break;
                 }
+            case WeaponType.OneHandedAxe:
+            case WeaponType.TwoHandedAxe:
+                GetMastery(Skill.FighterWeaponMastery, ref incMastery, ref incACC);
+                break;
+            case WeaponType.OneHandedMace:
+            case WeaponType.TwoHandedMace:
+            {
+                GetMastery(Skill.PageWeaponMastery, ref incMastery, ref incACC);
+                break;
+            }
+            case WeaponType.Spear:
+            case WeaponType.Polearm:
+            {
+                GetMastery(Skill.SpearmanWeaponMastery, ref incMastery, ref incACC);
+                break;
+            }
         }
 
         Mastery += incMastery;

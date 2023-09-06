@@ -39,45 +39,43 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
         
         switch (skill.ID)
         {
-            case 
-                Skill.FighterWeaponBooster or 
-                Skill.PageWeaponBooster or 
-                Skill.SpearmanWeaponBooster:
+            case Skill.FighterWeaponBooster:
+            case Skill.PageWeaponBooster:
+            case Skill.SpearmanWeaponBooster:
                 stats.Add(Tuple.Create(TemporaryStatType.Booster, level.X));
                 break;
             case Skill.FighterPowerGuard:
+            case Skill.PagePowerGuard:
                 stats.Add(Tuple.Create(TemporaryStatType.PowerGuard, level.X));
                 break;
             case Skill.CrusaderComboAttack or Skill.SoulmasterComboAttack:
                 stats.Add(Tuple.Create(TemporaryStatType.ComboCounter, (short)1));
                 break;
-            case 
-                Skill.HeroMapleHero or 
-                Skill.PaladinMapleHero or
-                Skill.DarkknightMapleHero or 
-                Skill.Archmage1MapleHero or 
-                Skill.Archmage2MapleHero or 
-                Skill.BishopMapleHero or 
-                Skill.BowmasterMapleHero or 
-                Skill.CrossbowmasterMapleHero or 
-                Skill.NightlordMapleHero or 
-                Skill.ShadowerMapleHero or 
-                Skill.Dual5MapleHero or 
-                Skill.ViperMapleHero or 
-                Skill.CaptainMapleHero or 
-                Skill.AranMapleHero or 
-                Skill.EvanMapleHero or 
-                Skill.BmageMapleHero or 
-                Skill.WildhunterMapleHero or 
-                Skill.MechanicMapleHero:
+            case Skill.HeroMapleHero:
+            case Skill.PaladinMapleHero:
+            case Skill.DarkknightMapleHero:
+            case Skill.Archmage1MapleHero:
+            case Skill.Archmage2MapleHero:
+            case Skill.BishopMapleHero:
+            case Skill.BowmasterMapleHero:
+            case Skill.CrossbowmasterMapleHero:
+            case Skill.NightlordMapleHero:
+            case Skill.ShadowerMapleHero:
+            case Skill.Dual5MapleHero:
+            case Skill.ViperMapleHero:
+            case Skill.CaptainMapleHero:
+            case Skill.AranMapleHero:
+            case Skill.EvanMapleHero:
+            case Skill.BmageMapleHero:
+            case Skill.WildhunterMapleHero:
+            case Skill.MechanicMapleHero:
                 stats.Add(Tuple.Create(TemporaryStatType.BasicStatUp, level.X));
                 break;
-            case 
-                Skill.HeroStance or 
-                Skill.PaladinStance or 
-                Skill.DarkknightStance or 
-                Skill.AranFreezeStanding or
-                Skill.BmageStance:
+            case Skill.HeroStance:
+            case Skill.PaladinStance:
+            case Skill.DarkknightStance:
+            case Skill.AranFreezeStanding:
+            case Skill.BmageStance:
                 stats.Add(Tuple.Create(TemporaryStatType.Stance, level.Prop));
                 break;
             case Skill.HeroEnrage:
