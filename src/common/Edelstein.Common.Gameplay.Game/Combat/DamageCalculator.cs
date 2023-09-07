@@ -160,7 +160,10 @@ public class DamageCalculator : IDamageCalculator
                 }
             }
 
-            damage *= (100d - (mobStats.PDR * totalIMDr / -100 + mobStats.PDR)) / 100d;
+            if (attack.SkillID != Skill.DragonknightSacrifice &&
+                attack.SkillID != Skill.ThiefmasterAssaulter &&
+                attack.SkillID != Skill.ViperDemolition)
+                damage *= (100d - (mobStats.PDR * totalIMDr / -100 + mobStats.PDR)) / 100d;
 
             var skillDamageR = skillLevel?.Damage ?? 100d;
 
