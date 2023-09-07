@@ -1,6 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
-using Edelstein.Protocol.Gameplay.Models.Characters.Skills;
-using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
+﻿using Edelstein.Protocol.Gameplay.Models.Characters.Skills;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 

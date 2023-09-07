@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Constants;
-using Edelstein.Common.Gameplay.Game.Objects.User;
+﻿using Edelstein.Common.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game;
 
 namespace Edelstein.Common.Gameplay.Game;
@@ -36,9 +35,6 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
         user.FieldUser = fieldUser;
 
         await field.Enter(fieldUser);
-        await fieldUser.ModifySkills(s => s.Set(Skill.KnightRestoration, 5));
-        await fieldUser.ModifySkills(s => s.Set(Skill.KnightCombatOrders, 20));
-        await fieldUser.ModifySkills(s => s.Set(Skill.PaladinBlast, 30, 30));
         await base.Enter(user);
     }
 

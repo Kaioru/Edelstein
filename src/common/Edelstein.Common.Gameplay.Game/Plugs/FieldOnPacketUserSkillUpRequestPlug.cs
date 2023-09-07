@@ -45,7 +45,7 @@ public class FieldOnPacketUserSkillUpRequestPlug : IPipelinePlug<FieldOnPacketUs
 
             if (sp < increment) return;
 
-            await message.User.ModifySkills(s => s.Add(template.ID));
+            await message.User.ModifySkills(s => s.Add(template.ID), true);
             return;
         }
 
@@ -54,7 +54,7 @@ public class FieldOnPacketUserSkillUpRequestPlug : IPipelinePlug<FieldOnPacketUs
             JobConstants.GetJobLevel(job) < JobConstants.GetJobLevel(skillJob)) 
             return;
         
-        if (JobConstants.IsExtendSPJob(job) && message.User.Character.ExtendSP[(byte)skillJobLevel] < increment) return;
+        if (JobConstants.IsExtendSPJob(job) && message.User.Character.ExtendSP[skillJobLevel] < increment) return;
         if (!JobConstants.IsExtendSPJob(job) && message.User.Character.SP < increment) return;
 
         await message.User.Modify(m =>
