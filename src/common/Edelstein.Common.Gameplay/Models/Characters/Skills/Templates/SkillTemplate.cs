@@ -16,6 +16,7 @@ public class SkillTemplate : ISkillTemplate
     public bool IsPSD { get; }
     public bool IsSummon { get; }
     public bool IsInvisible { get; }
+    public bool IsCombatOrders { get; }
     
     public Element Element { get; }
 
@@ -29,6 +30,7 @@ public class SkillTemplate : ISkillTemplate
         IsPSD = (property.Resolve<int>("psd") ?? 0) > 0;
         IsSummon = property.Resolve("summon") != null;
         IsInvisible = (property.Resolve<int>("invisible") ?? 0) > 0;
+        IsCombatOrders = (property.Resolve<int>("combatOrders") ?? 0) > 0;
 
         var elemAttr = property.ResolveOrDefault<string>("elemAttr") ?? string.Empty;
 
@@ -57,9 +59,9 @@ public class SkillTemplate : ISkillTemplate
         if (common != null)
         {
             var maxLevel = common.Resolve<int>("maxLevel") ?? 0;
-
+            
             Levels = Enumerable
-                .Range(1, maxLevel)
+                .Range(1, maxLevel + (IsCombatOrders ? 2 : 0))
                 .ToImmutableDictionary(
                     i => i,
                     i => (ISkillTemplateLevel)new SkillTemplateLevelCommon(i, common.ResolveAll())
@@ -76,6 +78,6 @@ public class SkillTemplate : ISkillTemplate
                 );
         }
 
-        MaxLevel = (short)Levels.Count;
+        MaxLevel = (short)(Levels?.Count ?? 0);
     }
 }

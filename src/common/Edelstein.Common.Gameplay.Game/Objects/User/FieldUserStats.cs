@@ -68,6 +68,8 @@ public record struct FieldUserStats : IFieldUserStats
 
     public int DamageMin { get; }
     public int DamageMax { get; }
+    
+    public IFieldUserStatsSkillLevels SkillLevels { get; }
 
     public FieldUserStats(
         IFieldUser user, 
@@ -98,6 +100,8 @@ public record struct FieldUserStats : IFieldUserStats
         
         DamageMin = 1;
         DamageMax = 1;
+
+        SkillLevels = new FieldUserStatsSkillLevels();
         
         var equippedItems = character.Inventories[ItemInventoryType.Equip]?.Items
             .Where(kv => kv.Key < 0)
@@ -158,11 +162,25 @@ public record struct FieldUserStats : IFieldUserStats
         {
             var (id, record) = kv;
             var skillTemplate = skillTemplates.Retrieve(id).Result;
-
-            if (skillTemplate is not { IsPSD: true }) continue;
-            if (!skillTemplate.Levels.ContainsKey(record.Level)) continue;
             
-            var levelTemplate = skillTemplate.Levels[record.Level];
+            if (skillTemplate == null) continue;
+            
+            var level = kv.Value.Level;
+            
+            if (JobConstants.GetJobLevel(id / 10000) > 0 && id != Skill.KnightCombatOrders && level > 0)
+            {
+                var maxLevel = skillTemplate.MaxLevel;
+                if (skillTemplate.IsCombatOrders) maxLevel += 2;
+
+                level += character.TemporaryStats[TemporaryStatType.CombatOrders]?.Value ?? 0;
+                level = Math.Min(maxLevel, level);
+            }
+            SkillLevels.Records[kv.Key] = level;
+
+            var levelTemplate = skillTemplate[level];
+            if (levelTemplate == null) continue;
+            
+            if (skillTemplate is not { IsPSD: true }) continue;
             
             // TODO: more psd handling
             
@@ -205,10 +223,10 @@ public record struct FieldUserStats : IFieldUserStats
         var weaponType = ItemConstants.GetWeaponType(weapon);
         var subWeaponType = ItemConstants.GetWeaponType(subWeapon);
 
-        if (subWeapon > 0 && character.Skills[Skill.KnightShieldMastery]?.Level > 0)
+        if (subWeapon > 0 && SkillLevels[Skill.KnightShieldMastery] > 0)
         {
             var shieldMasterySkill = skillTemplates.Retrieve(Skill.KnightShieldMastery).Result;
-            var shieldMasteryLevel = shieldMasterySkill?[character.Skills[Skill.KnightShieldMastery]?.Level ?? 0];
+            var shieldMasteryLevel = shieldMasterySkill?[SkillLevels[Skill.KnightShieldMastery]];
 
             PDDr += shieldMasteryLevel?.X ?? 0;
             MDDr += shieldMasteryLevel?.X ?? 0;
@@ -232,13 +250,11 @@ public record struct FieldUserStats : IFieldUserStats
         MaxHP += character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
         MaxMP += character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
 
-        void GetMastery(int skillID, ref int mastery, ref int stat)
+        void GetMastery(IFieldUserStatsSkillLevels skillLevels, int skillID, ref int mastery, ref int stat)
         {
-            var skillLevel = character!.Skills[skillID]?.Level ?? 0;
-            if (skillLevel == 0) return;
             var skillTemplate = skillTemplates.Retrieve(skillID).Result;
-            if (skillTemplate == null) return;
-            var skillLevelTemplate = skillTemplate.Levels[skillLevel];
+            var skillLevelTemplate = skillTemplate?[skillLevels[skillID]];
+            if (skillLevelTemplate == null) return;
 
             mastery += skillLevelTemplate.Mastery;
             stat += skillLevelTemplate.X;
@@ -252,33 +268,28 @@ public record struct FieldUserStats : IFieldUserStats
             case WeaponType.OneHandedSword:
             case WeaponType.TwoHandedSword:
                 {
-                    var skills = new List<int>{
-                        Skill.FighterWeaponMastery,
-                        Skill.PageWeaponMastery,
-                        Skill.SoulmasterSwordMastery
-                    };
-
-                    foreach (var skill in skills.TakeWhile(skill => incMastery == 0))
-                    {
-                        GetMastery(skill, ref incMastery, ref incACC);
-                        break;
-                    }
+                    foreach (var skill in new List<int>{
+                                 Skill.FighterWeaponMastery,
+                                 Skill.PageWeaponMastery,
+                                 Skill.SoulmasterSwordMastery
+                             }.TakeWhile(_ => incMastery == 0)) 
+                        GetMastery(SkillLevels, skill, ref incMastery, ref incACC);
                     break;
                 }
             case WeaponType.OneHandedAxe:
             case WeaponType.TwoHandedAxe:
-                GetMastery(Skill.FighterWeaponMastery, ref incMastery, ref incACC);
+                GetMastery(SkillLevels, Skill.FighterWeaponMastery, ref incMastery, ref incACC);
                 break;
             case WeaponType.OneHandedMace:
             case WeaponType.TwoHandedMace:
             {
-                GetMastery(Skill.PageWeaponMastery, ref incMastery, ref incACC);
+                GetMastery(SkillLevels, Skill.PageWeaponMastery, ref incMastery, ref incACC);
                 break;
             }
             case WeaponType.Spear:
             case WeaponType.Polearm:
             {
-                GetMastery(Skill.SpearmanWeaponMastery, ref incMastery, ref incACC);
+                GetMastery(SkillLevels, Skill.SpearmanWeaponMastery, ref incMastery, ref incACC);
                 break;
             }
         }

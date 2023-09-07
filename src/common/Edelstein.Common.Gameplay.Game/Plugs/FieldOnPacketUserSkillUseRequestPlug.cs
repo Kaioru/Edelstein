@@ -2,8 +2,6 @@
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
-using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
-using Edelstein.Protocol.Gameplay.Models.Characters.Skills;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Utilities.Pipelines;
@@ -21,7 +19,7 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserSkillUseRequest message)
     {
         var skill = await _skillTemplates.Retrieve(message.SkillID);
-        var level = skill?.Levels[message.User.Character.Skills[message.SkillID]?.Level ?? 0];
+        var level = skill?.Levels[message.User.Stats.SkillLevels[message.SkillID]];
 
         if (skill == null || level == null) return;
         if (level.MPCon > message.User.Character.MaxMP) return;
@@ -58,6 +56,9 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
             case Skill.KnightLightningCharge:
             case Skill.PaladinDivineCharge:
                 stats.Add(Tuple.Create(TemporaryStatType.WeaponCharge, level.X));
+                break;
+            case Skill.KnightCombatOrders:
+                stats.Add(Tuple.Create(TemporaryStatType.CombatOrders, level.X));
                 break;
             case Skill.HeroMapleHero:
             case Skill.PaladinMapleHero:

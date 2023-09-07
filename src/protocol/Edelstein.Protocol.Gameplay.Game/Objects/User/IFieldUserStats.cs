@@ -59,4 +59,6 @@ public interface IFieldUserStats
 
     int DamageMin { get; }
     int DamageMax { get; }
+    
+    IFieldUserStatsSkillLevels SkillLevels { get; }
 }

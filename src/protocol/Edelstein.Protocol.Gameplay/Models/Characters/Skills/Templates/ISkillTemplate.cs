@@ -11,6 +11,7 @@ public interface ISkillTemplate : ITemplate
     bool IsPSD { get; }
     bool IsSummon { get; }
     bool IsInvisible { get; }
+    bool IsCombatOrders { get; }
     
     Element Element { get; }
 

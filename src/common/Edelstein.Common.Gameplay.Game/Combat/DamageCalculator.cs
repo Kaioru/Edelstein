@@ -120,7 +120,7 @@ public class DamageCalculator : IDamageCalculator
             if (weaponChargeStat != null)
             {
                 var weaponChargeSkill = await _skills.Retrieve(weaponChargeStat.Reason);
-                var weaponChargeLevel = weaponChargeSkill?[character.Skills[weaponChargeStat.Reason]?.Level ?? 0];
+                var weaponChargeLevel = weaponChargeSkill?[stats.SkillLevels[weaponChargeStat.Reason]];
 
                 if (weaponChargeLevel != null)
                 {

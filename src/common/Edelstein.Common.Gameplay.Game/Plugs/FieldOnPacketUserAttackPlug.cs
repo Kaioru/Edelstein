@@ -27,7 +27,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             kv => message.User.Field?.GetObject<IFieldMob>(kv.MobID)
         );
         var skillID = message.Attack.SkillID;
-        var skillLevel = skillID > 0 ? message.User.Character.Skills[skillID]?.Level ?? 0 : 0;
+        var skillLevel = skillID > 0 ? message.User.Stats.SkillLevels[skillID] : 0;
         var operation = (PacketSendOperations)((int)PacketSendOperations.UserMeleeAttack + (int)message.Attack.Type);
         var packet = new PacketWriter(operation);
 
@@ -115,9 +115,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             if (skill == null || level == null) continue;
             if (level.Prop > 0 && random.Next(0, 100) > level.Prop) continue;
             var stats = new List<Tuple<MobTemporaryStatType, short>>();
-            var reason = skill.ID;
             var time = level.Time;
-
             
             switch (skillID)
             {
