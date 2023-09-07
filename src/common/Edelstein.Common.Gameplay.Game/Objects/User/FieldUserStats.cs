@@ -249,8 +249,8 @@ public record struct FieldUserStats : IFieldUserStats
         Speed += character.TemporaryStats[TemporaryStatType.Speed]?.Value ?? 0;
         Jump += character.TemporaryStats[TemporaryStatType.Jump]?.Value ?? 0;
 
-        MaxHP += character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
-        MaxMP += character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
+        MaxHPr += character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
+        MaxMPr += character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
 
         void GetMastery(IFieldUserStatsSkillLevels skillLevels, int skillID, ref int mastery, ref int stat)
         {

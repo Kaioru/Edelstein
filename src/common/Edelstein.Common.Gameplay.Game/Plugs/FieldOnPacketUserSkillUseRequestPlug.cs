@@ -48,6 +48,10 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
             case Skill.PagePowerGuard:
                 stats.Add(Tuple.Create(TemporaryStatType.PowerGuard, level.X));
                 break;
+            case Skill.SpearmanHyperBody:
+                stats.Add(Tuple.Create(TemporaryStatType.MaxHP, level.X));
+                stats.Add(Tuple.Create(TemporaryStatType.MaxMP, level.Y));
+                break;
             case Skill.CrusaderComboAttack or Skill.SoulmasterComboAttack:
                 stats.Add(Tuple.Create(TemporaryStatType.ComboCounter, (short)1));
                 break;
