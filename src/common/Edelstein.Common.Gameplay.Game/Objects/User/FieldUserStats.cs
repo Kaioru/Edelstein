@@ -457,7 +457,6 @@ public record struct FieldUserStats : IFieldUserStats
         masteryMultiplier += masteryConst;
         masteryMultiplier = Math.Min(0.95, masteryMultiplier);
 
-        Console.WriteLine(masteryMultiplier);
         DamageMax = (int)((stat3 + stat2 + 4 * stat1) / 100d * attack * multiplier + 0.5);
         DamageMin = (int)(masteryMultiplier * DamageMax + 0.5);
 
