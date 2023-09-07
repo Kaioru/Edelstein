@@ -91,6 +91,9 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
             case Skill.BmageStance:
                 stats.Add(Tuple.Create(TemporaryStatType.Stance, level.Prop));
                 break;
+            case Skill.DarkknightBeholder:
+                stats.Add(Tuple.Create(TemporaryStatType.Beholder, level.X));
+                break;
             case Skill.HeroEnrage:
                 stats.Add(Tuple.Create(TemporaryStatType.Enrage, (short)(
                     level.X * 100 +

@@ -36,6 +36,7 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
         user.FieldUser = fieldUser;
 
         await field.Enter(fieldUser);
+        await fieldUser.ModifySkills(s => s.Set(Skill.DarkknightBeholder, 10, 10));
         await base.Enter(user);
     }
 

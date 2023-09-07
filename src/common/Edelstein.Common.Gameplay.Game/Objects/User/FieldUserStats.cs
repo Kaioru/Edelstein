@@ -315,6 +315,9 @@ public record struct FieldUserStats : IFieldUserStats
             case WeaponType.Polearm:
             {
                 GetMastery(SkillLevels, Skill.SpearmanWeaponMastery, ref incMastery, ref incACC);
+                
+                if (character.TemporaryStats[TemporaryStatType.Beholder] != null)
+                    GetMastery(SkillLevels, Skill.DarkknightBeholder, ref incMastery, ref incNone);
                 break;
             }
         }
