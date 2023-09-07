@@ -36,6 +36,10 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
         user.FieldUser = fieldUser;
 
         await field.Enter(fieldUser);
+        await fieldUser.ModifySkills(s => s.Set(Skill.KnightCombatOrders, 20));
+        await fieldUser.ModifySkills(s => s.Set(Skill.KnightFireCharge, 20));
+        await fieldUser.ModifySkills(s => s.Set(Skill.KnightChargeBlow, 30));
+        await fieldUser.ModifySkills(s => s.Set(Skill.PaladinAdvancedCharge, 10, 10));
         await base.Enter(user);
     }
 

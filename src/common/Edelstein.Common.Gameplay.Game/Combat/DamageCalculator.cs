@@ -165,6 +165,14 @@ public class DamageCalculator : IDamageCalculator
                 }
             }
 
+            if (attack.SkillID == Skill.KnightChargeBlow)
+            {
+                var advancedChargeSkill = await _skills.Retrieve(Skill.PaladinAdvancedCharge);
+                var advancedChargeLevel = advancedChargeSkill?[stats.SkillLevels[Skill.PaladinAdvancedCharge]];
+
+                skillDamageR = advancedChargeLevel?.Damage ?? skillDamageR;
+            }
+
             damage *= skillDamageR / 100d;
 
             var damageBefore = damage;

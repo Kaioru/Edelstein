@@ -261,6 +261,7 @@ public record struct FieldUserStats : IFieldUserStats
         }
 
         var incMastery = 0;
+        var incNone = 0;
         var incACC = 0;
         
         switch (weaponType)
@@ -268,12 +269,25 @@ public record struct FieldUserStats : IFieldUserStats
             case WeaponType.OneHandedSword:
             case WeaponType.TwoHandedSword:
                 {
-                    foreach (var skill in new List<int>{
+                    foreach (var skill in new List<int>
+                             {
                                  Skill.FighterWeaponMastery,
                                  Skill.PageWeaponMastery,
                                  Skill.SoulmasterSwordMastery
-                             }.TakeWhile(_ => incMastery == 0)) 
+                             }.TakeWhile(_ => incMastery == 0))
+                    {
                         GetMastery(SkillLevels, skill, ref incMastery, ref incACC);
+
+                        if (skill != Skill.PageWeaponMastery ||
+                            incMastery <= 0 ||
+                            character.TemporaryStats[TemporaryStatType.WeaponCharge] == null) continue;
+                        
+                        var incMastery2 = 0;
+                            
+                        GetMastery(SkillLevels, Skill.PaladinAdvancedCharge, ref incMastery2, ref incNone);
+                        if (incMastery2 > 0)
+                            incMastery = incMastery2;
+                    }
                     break;
                 }
             case WeaponType.OneHandedAxe:
@@ -284,6 +298,15 @@ public record struct FieldUserStats : IFieldUserStats
             case WeaponType.TwoHandedMace:
             {
                 GetMastery(SkillLevels, Skill.PageWeaponMastery, ref incMastery, ref incACC);
+                
+                if (incMastery > 0 && character.TemporaryStats[TemporaryStatType.WeaponCharge] != null)
+                {
+                    var incMastery2 = 0;
+                            
+                    GetMastery(SkillLevels, Skill.PaladinAdvancedCharge, ref incMastery2, ref incNone);
+                    if (incMastery2 > 0)
+                        incMastery = incMastery2;
+                }
                 break;
             }
             case WeaponType.Spear:
@@ -419,7 +442,7 @@ public record struct FieldUserStats : IFieldUserStats
             }
         }
         
-        var masteryMultiplier = weaponType switch
+        var masteryConst = weaponType switch
         {
             WeaponType.Wand or
             WeaponType.Staff => 0.25,
@@ -429,13 +452,15 @@ public record struct FieldUserStats : IFieldUserStats
             WeaponType.Gun => 0.15,
             _ => 0.20,
         };
+        var masteryMultiplier = Mastery / 100d;
 
-        masteryMultiplier += Mastery / 100d;
-        masteryMultiplier = Math.Min(masteryMultiplier, 0.95);
+        masteryMultiplier += masteryConst;
+        masteryMultiplier = Math.Min(0.95, masteryMultiplier);
 
+        Console.WriteLine(masteryMultiplier);
         DamageMax = (int)((stat3 + stat2 + 4 * stat1) / 100d * attack * multiplier + 0.5);
-        DamageMin = (int)(DamageMax * masteryMultiplier + 0.5);
-        
+        DamageMin = (int)(masteryMultiplier * DamageMax + 0.5);
+
         DamageMin = Math.Min(DamageMin, DamageMax);
         DamageMin = Math.Min(Math.Max(DamageMin, 1), 999999);
         DamageMax = Math.Min(Math.Max(DamageMax, 1), 999999);
