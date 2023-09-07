@@ -19,7 +19,8 @@ public class SkillTemplate : ISkillTemplate
     public bool IsCombatOrders { get; }
     
     public Element Element { get; }
-
+    
+    public ICollection<int> PsdSkill { get; }
     public IDictionary<int, int> ReqSkill { get; }
     public IDictionary<int, ISkillTemplateLevel> Levels { get; }
     
@@ -48,6 +49,9 @@ public class SkillTemplate : ISkillTemplate
                 _ => Element.Physical
             };
 
+        PsdSkill = property.Resolve("psdSkill")?
+            .Select(c => Convert.ToInt32(c.Name))
+            .ToImmutableList() ?? ImmutableList<int>.Empty;
         ReqSkill = property.Resolve("req")?.Children
             .ToImmutableDictionary(
                 c => Convert.ToInt32(c.Name),

@@ -15,6 +15,7 @@ public interface ISkillTemplate : ITemplate
     
     Element Element { get; }
 
+    ICollection<int> PsdSkill { get; }
     IDictionary<int, int> ReqSkill { get; } 
     IDictionary<int, ISkillTemplateLevel> Levels { get; }
 }

@@ -181,6 +181,7 @@ public record struct FieldUserStats : IFieldUserStats
             if (levelTemplate == null) continue;
             
             if (skillTemplate is not { IsPSD: true }) continue;
+            if (skillTemplate.PsdSkill.Count > 0) continue;
             
             // TODO: more psd handling
             
