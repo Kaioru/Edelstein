@@ -12,7 +12,8 @@ namespace Edelstein.Protocol.Gameplay.Game.Objects.User;
 
 public interface IFieldUser :
     IFieldLife<IFieldUserMovePath, IFieldUserMoveAction>,
-    IFieldSplitObserver, IFieldController
+    IFieldSplitObserver, 
+    IFieldObjectController
 {
     IGameStageUser StageUser { get; }
 
@@ -27,6 +28,8 @@ public interface IFieldUser :
 
     bool IsInstantiated { get; set; }
     bool IsConversing { get; }
+    
+    ICollection<IFieldObjectOwned> Owned { get; }
 
     IPacket GetSetFieldPacket();
 

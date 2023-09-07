@@ -108,7 +108,7 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
             .Select(o => observer.Dispatch(o.GetEnterFieldPacket())));
         await UpdateControllableObjects();
     }
-
+    
     public async Task Unobserve(IFieldSplitObserver observer)
     {
         _observers.Remove(observer);
@@ -136,11 +136,11 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
     private async Task UpdateControllableObjects()
     {
         var controllers = Observers
-            .OfType<IFieldController>()
+            .OfType<IFieldObjectController>()
             .OrderBy(u => u.Controlled.Count)
             .ToImmutableList();
         var controlled = Objects
-            .OfType<IFieldControllable>()
+            .OfType<IFieldObjectControllable>()
             .ToImmutableList();
 
         await Task.WhenAll(controlled

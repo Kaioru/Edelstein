@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay.Models.Characters.Skills;
+﻿namespace Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
 public enum ElementAttribute
 {

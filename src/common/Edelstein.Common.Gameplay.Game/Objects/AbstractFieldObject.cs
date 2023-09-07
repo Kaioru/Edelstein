@@ -31,7 +31,7 @@ public abstract class AbstractFieldObject : IFieldObject
         IsHidden = hidden;
         if (!hidden) await FieldSplit.Dispatch(GetEnterFieldPacket(), this);
 
-        if (this is not IFieldController controller) return;
+        if (this is not IFieldObjectController controller) return;
 
         foreach (var controlled in controller.Controlled.ToImmutableList())
             await controlled.Control();

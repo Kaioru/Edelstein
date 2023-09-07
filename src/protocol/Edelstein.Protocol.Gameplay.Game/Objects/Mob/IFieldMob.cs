@@ -5,7 +5,7 @@ using Edelstein.Protocol.Gameplay.Game.Objects.User;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 
-public interface IFieldMob : IFieldLife<IFieldMobMovePath, IFieldMobMoveAction>, IFieldControllable
+public interface IFieldMob : IFieldLife<IFieldMobMovePath, IFieldMobMoveAction>, IFieldObjectControllable
 {
     IMobTemplate Template { get; }
     

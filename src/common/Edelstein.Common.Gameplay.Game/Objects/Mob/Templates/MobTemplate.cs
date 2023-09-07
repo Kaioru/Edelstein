@@ -1,7 +1,7 @@
 ﻿using Edelstein.Protocol.Data;
-using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
-using Edelstein.Protocol.Gameplay.Models.Characters.Skills;
+using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob.Templates;
 
@@ -11,10 +11,10 @@ public class MobTemplate : IMobTemplate
     {
         ID = id;
 
-        if (property.Resolve("fly") != null) MoveAbility = MobMoveAbilityType.Fly;
-        else if (property.Resolve("jump") != null) MoveAbility = MobMoveAbilityType.Jump;
-        else if (property.Resolve("move") != null) MoveAbility = MobMoveAbilityType.Walk;
-        else MoveAbility = MobMoveAbilityType.Stop;
+        if (property.Resolve("fly") != null) MoveAbility = MoveAbilityType.Fly;
+        else if (property.Resolve("jump") != null) MoveAbility = MoveAbilityType.Jump;
+        else if (property.Resolve("move") != null) MoveAbility = MoveAbilityType.Walk;
+        else MoveAbility = MoveAbilityType.Stop;
 
         Level = info.Resolve<short>("level") ?? 0;
 
@@ -70,7 +70,7 @@ public class MobTemplate : IMobTemplate
     
     public int ID { get; }
 
-    public MobMoveAbilityType MoveAbility { get; }
+    public MoveAbilityType MoveAbility { get; }
 
     public short Level { get; }
     

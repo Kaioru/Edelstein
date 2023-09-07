@@ -1,11 +1,11 @@
-﻿using Edelstein.Protocol.Gameplay.Models.Characters.Skills;
+﻿using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 
 public interface IMobTemplate : ITemplate
 {
-    MobMoveAbilityType MoveAbility { get; }
+    MoveAbilityType MoveAbility { get; }
 
     short Level { get; }
     

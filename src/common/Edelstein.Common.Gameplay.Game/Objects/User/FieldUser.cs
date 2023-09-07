@@ -1,7 +1,9 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Combat;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Common.Gameplay.Game.Objects.Summoned;
 using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Characters.Stats;
 using Edelstein.Common.Gameplay.Packets;
@@ -12,10 +14,12 @@ using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects;
+using Edelstein.Protocol.Gameplay.Game.Objects.Summoned;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
+using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Network;
@@ -43,11 +47,12 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         );
 
         Observing = new List<IFieldSplit>();
-        Controlled = new List<IFieldControllable>();
+        Controlled = new List<IFieldObjectControllable>();
+        Owned = new List<IFieldObjectOwned>();
         
         UpdateStats().Wait();
     }
-    
+
     public override FieldObjectType Type => FieldObjectType.User;
 
     public ISocket Socket => StageUser.Socket;
@@ -65,10 +70,11 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
     public bool IsInstantiated { get; set; }
     public bool IsConversing => Conversation != null;
-
+    
     public ICollection<IFieldSplit> Observing { get; }
-    public ICollection<IFieldControllable> Controlled { get; }
-
+    public ICollection<IFieldObjectControllable> Controlled { get; }
+    public ICollection<IFieldObjectOwned> Owned { get; }
+    
     public IPacket GetSetFieldPacket()
     {
         using var packet = new PacketWriter(PacketSendOperations.SetField);
@@ -303,7 +309,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         if (FieldSplit != null)
             await FieldSplit.Dispatch(avatarPacket.Build(), this);
     }
-
+    
     public async Task OnTick(DateTime now)
     {
         var expiredStats = Character.TemporaryStats.Records

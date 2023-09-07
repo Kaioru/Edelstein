@@ -1,11 +1,16 @@
-﻿using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
+﻿using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Game.Objects.Summoned;
+using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Common.Gameplay.Models.Characters.Stats;
 using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
+using Edelstein.Protocol.Gameplay.Game.Objects;
+using Edelstein.Protocol.Gameplay.Game.Objects.Summoned;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
+using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 
@@ -114,6 +119,47 @@ public class FieldUserModify : IFieldUserModify
             await _user.Dispatch(setLocalPacket.Build());
             if (_user.FieldSplit != null) 
                 await _user.FieldSplit.Dispatch(setRemotePacket.Build());
+        }
+
+        var summonedReset = new List<FieldSummoned>();
+        var summonedSet = new List<FieldSummoned>();
+
+        var beholder = _user.Owned
+            .OfType<FieldSummoned>()
+            .FirstOrDefault(s => s.SkillID == Skill.DarkknightBeholder);
+        
+        if (context.HistoryReset[TemporaryStatType.Beholder] != null && beholder != null)
+        {
+            summonedReset.Add(beholder);
+            beholder = null;
+        }
+
+        if (context.HistorySet[TemporaryStatType.Beholder] != null && beholder == null)
+        {
+            beholder = new FieldSummoned(
+                _user,
+                Skill.DarkknightBeholder,
+                (byte)_user.Stats.SkillLevels[Skill.DarkknightBeholder],
+                MoveAbilityType.Walk,
+                SummonedAssistType.None,
+                _user.Position,
+                _user.Foothold
+            );
+            summonedSet.Add(beholder);
+        }
+        
+        foreach (var summoned in summonedReset)
+        {
+            _user.Owned.Remove(summoned);
+            if (_user.Field != null) 
+                await _user.Field.Leave(summoned, () => summoned.GetLeaveFieldPacket(0));
+        }
+        
+        foreach (var summoned in summonedSet)
+        {
+            _user.Owned.Add(summoned);
+            if (_user.Field != null) 
+                await _user.Field.Enter(summoned, () => summoned.GetEnterFieldPacket(1));
         }
     }
 }

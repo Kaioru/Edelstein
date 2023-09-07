@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Models.Characters.Skills;
+﻿using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
 namespace Edelstein.Common.Gameplay.Constants;
 
