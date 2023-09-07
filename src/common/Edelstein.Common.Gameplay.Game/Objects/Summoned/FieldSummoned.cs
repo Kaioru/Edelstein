@@ -38,7 +38,10 @@ public class FieldSummoned : AbstractFieldLife<IFieldSummonedMovePath, IFieldSum
     public SummonedAssistType AssistType { get; }
     
     public override FieldObjectType Type => FieldObjectType.Summoned;
-
+    
+    public Task Move(IPoint2D position)
+        => Move(position, true);
+    
     public override IPacket GetEnterFieldPacket()
         => GetEnterFieldPacket(0);
     

@@ -127,7 +127,10 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
         
         if (obj is IFieldUser owner)
             foreach (var owned in owner.Owned)
+            {
+                await owned.Move(owner.Position);
                 await Enter(owned);
+            }
     }
 
     public async Task Leave(IFieldObject obj, Func<IPacket>? getLeavePacket)
@@ -135,10 +138,6 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
         var pool = GetPool(obj.Type);
 
         obj.Field = null;
-
-        if (obj is IFieldUser owner)
-            foreach (var owned in owner.Owned)
-                await Leave(owned);
 
         if (obj.FieldSplit != null)
         {
@@ -148,6 +147,10 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
             await obj.FieldSplit.Leave(obj, getLeavePacket: getLeavePacket);
         }
         if (pool != null) await pool.Leave(obj);
+        
+        if (obj is IFieldUser owner)
+            foreach (var owned in owner.Owned)
+                await Leave(owned);
     }
 
     public override IFieldObject? GetObject(int id) => Objects.FirstOrDefault(o => o.ObjectID == id);
