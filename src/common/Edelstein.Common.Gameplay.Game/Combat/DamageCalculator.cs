@@ -76,8 +76,7 @@ public class DamageCalculator : IDamageCalculator
         {
             var psdSkillID = kv.Key;
             var skillTemplate = _skills.Retrieve(psdSkillID).Result;
-            var levelTemplate = skillTemplate?[character.Skills?[psdSkillID]?.Level ?? 0];
-            // Apparently psd here doesn't take into account combat orders
+            var levelTemplate = skillTemplate?[stats.SkillLevels[psdSkillID]];
             if (skillTemplate == null || levelTemplate == null) continue;
             if (!skillTemplate.IsPSD) continue;
             if (!skillTemplate.PsdSkill.Contains(attack.SkillID)) continue;
