@@ -160,14 +160,14 @@ public record struct FieldUserStats : IFieldUserStats
 
         foreach (var kv in user.Character.Skills.Records)
         {
-            var (id, record) = kv;
-            var skillTemplate = skillTemplates.Retrieve(id).Result;
+            var skillID = kv.Key;
+            var skillTemplate = skillTemplates.Retrieve(skillID).Result;
             
             if (skillTemplate == null) continue;
             
             var level = kv.Value.Level;
             
-            if (JobConstants.GetJobLevel(id / 10000) > 0 && id != Skill.KnightCombatOrders && level > 0)
+            if (JobConstants.GetJobLevel(skillID / 10000) > 0 && skillID != Skill.KnightCombatOrders && level > 0)
             {
                 var maxLevel = skillTemplate.MaxLevel;
                 if (skillTemplate.IsCombatOrders) maxLevel += 2;
@@ -181,16 +181,11 @@ public record struct FieldUserStats : IFieldUserStats
             if (levelTemplate == null) continue;
             
             if (skillTemplate is not { IsPSD: true }) continue;
-            if (skillTemplate.PsdSkill.Count > 0) continue;
             
             // TODO: more psd handling
             
             MaxHPr += levelTemplate.MHPr;
             MaxMPr += levelTemplate.MMPr;
-
-            Cr += levelTemplate.Cr;
-            CDMin += levelTemplate.CDMin;
-            CDMax += levelTemplate.CDMax;
 
             ACCr += levelTemplate.ACCr;
             EVAr += levelTemplate.EVAr;
@@ -208,6 +203,12 @@ public record struct FieldUserStats : IFieldUserStats
 
             Jump += levelTemplate.PsdJump;
             Speed += levelTemplate.PsdSpeed;
+            
+            if (skillTemplate.PsdSkill.Count > 0) continue;
+            
+            Cr += levelTemplate.Cr;
+            CDMin += levelTemplate.CDMin;
+            CDMax += levelTemplate.CDMax;
         }
         
         var equipped = character.Inventories[ItemInventoryType.Equip];

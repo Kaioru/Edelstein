@@ -66,6 +66,29 @@ public class DamageCalculator : IDamageCalculator
         var result = new IUserAttackDamage[attackCount];
 
         _rndGenForCharacter.Next(random.Array);
+
+        var totalCr = stats.Cr;
+        var totalCDMin = stats.CDMin;
+        var totalCDMax = stats.CDMax;
+        var totalIMDr = stats.IMDr;
+        
+        foreach (var kv in character.Skills.Records)
+        {
+            var psdSkillID = kv.Key;
+            var skillTemplate = _skills.Retrieve(psdSkillID).Result;
+            var levelTemplate = skillTemplate?[character.Skills?[psdSkillID]?.Level ?? 0];
+            // Apparently psd here doesn't take into account combat orders
+            if (skillTemplate == null || levelTemplate == null) continue;
+            if (!skillTemplate.IsPSD) continue;
+            if (!skillTemplate.PsdSkill.Contains(attack.SkillID)) continue;
+            
+            totalCr += levelTemplate.Cr;
+            totalCDMin += levelTemplate.CDMin;
+            totalCDMax += levelTemplate.CDMax;
+            totalIMDr += levelTemplate.IMDr;
+        }
+        
+        totalCDMin = Math.Min(totalCDMin, totalCDMax);
         
         var sqrtACC = Math.Sqrt(stats.PACC);
         var sqrtEVA = Math.Sqrt(mobStats.EVA);
@@ -138,7 +161,7 @@ public class DamageCalculator : IDamageCalculator
                 }
             }
 
-            damage *= (100d - (mobStats.PDR * stats.IMDr / -100 + mobStats.PDR)) / 100d;
+            damage *= (100d - (mobStats.PDR * totalIMDr / -100 + mobStats.PDR)) / 100d;
 
             var skillDamageR = skillLevel?.Damage ?? 100d;
 
@@ -212,9 +235,9 @@ public class DamageCalculator : IDamageCalculator
             if (enrageStat?.Value / 100 > 0)
                 damage *= ((enrageStat?.Value ?? 100) / 100 + 100) / 100d;
 
-            if (stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= stats.Cr)
+            if (stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= totalCr)
             {
-                var criticalDamageR = (int)GetRandomInRange(random.Next(), stats.CDMin, stats.CDMax);
+                var criticalDamageR = (int)GetRandomInRange(random.Next(), totalCDMin, totalCDMax);
 
                 critical = true;
                 damage += (int)damageBefore * criticalDamageR / 100d;
