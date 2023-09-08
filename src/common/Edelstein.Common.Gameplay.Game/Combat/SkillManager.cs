@@ -145,7 +145,7 @@ public class SkillManager : ISkillManager
         if (level.MPCon > user.Character.MP) return false;
         
         var stats = new List<Tuple<TemporaryStatType, short>>();
-        var expire = DateTime.UtcNow.AddSeconds(level.Time);
+        DateTime? expire = DateTime.UtcNow.AddSeconds(level.Time);
 
         if (level.PAD > 0)
             stats.Add(Tuple.Create(TemporaryStatType.PAD, level.PAD));
@@ -194,6 +194,13 @@ public class SkillManager : ISkillManager
                 break;
             case Skill.KnightCombatOrders:
                 stats.Add(Tuple.Create(TemporaryStatType.CombatOrders, level.X));
+                break;
+            case Skill.Mage1TeleportMastery:
+            case Skill.Mage2TeleportMastery:
+            case Skill.PriestTeleportMastery:
+            case Skill.BmageTeleportMastery:
+                expire = null;
+                stats.Add(Tuple.Create(TemporaryStatType.TeleportMasteryOn, level.X));
                 break;
             case Skill.Mage1ElementalReset:
             case Skill.Mage2ElementalReset:

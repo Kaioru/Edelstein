@@ -62,6 +62,7 @@ public class AttackRequest : IAttackRequest, IPacketReadable
         switch (Type)
         {
             case AttackType.Melee:
+            case AttackType.Body:
                 _ = reader.ReadInt(); // skillLevel crc
                 _ = reader.ReadInt(); // skillLevel crc
                 break;

@@ -220,7 +220,6 @@ public class FieldMob :
             var hp = HP - times * damage;
             
             HP = Math.Max(1, hp);
-            Console.WriteLine(HP);
         }
 
         LastUpdateVenom = now;

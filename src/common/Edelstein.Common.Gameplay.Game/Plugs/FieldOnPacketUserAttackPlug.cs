@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Combat;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
@@ -24,9 +25,21 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         );
         var skillID = message.Attack.SkillID;
         var skillLevel = skillID > 0 ? message.User.Stats.SkillLevels[skillID] : 0;
+        var isPDamage = message.Attack.Type == AttackType.Magic;
         var operation = (PacketSendOperations)((int)PacketSendOperations.UserMeleeAttack + (int)message.Attack.Type);
         var packet = new PacketWriter(operation);
-
+        
+        if (message.Attack is {
+                Type: AttackType.Body, 
+                SkillID: 
+                    Skill.BmageCyclone or 
+                    Skill.Mage1TeleportMastery or 
+                    Skill.Mage2TeleportMastery or 
+                    Skill.PriestTeleportMastery or 
+                    Skill.BmageTeleportMastery
+            }
+        ) isPDamage = false;
+        
         packet.WriteInt(message.User.Character.ID);
         packet.WriteByte((byte)(
             0x1 * message.Attack.DamagePerMob |
@@ -78,9 +91,9 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             var damageSrv = await message.User.Damage.AdjustDamageDecRate(
                 attack,
                 count,
-                message.Attack.Type == AttackType.Magic 
-                    ? await message.User.Damage.CalculateMDamage(message.User.Character, message.User.Stats, mob, mob.Stats, attack)
-                    : await message.User.Damage.CalculatePDamage(message.User.Character, message.User.Stats, mob, mob.Stats, attack)
+                isPDamage
+                    ? await message.User.Damage.CalculatePDamage(message.User.Character, message.User.Stats, mob, mob.Stats, attack)
+                    : await message.User.Damage.CalculateMDamage(message.User.Character, message.User.Stats, mob, mob.Stats, attack)
             );
 
             for (var i = 0; i < message.Attack.DamagePerMob; i++)
