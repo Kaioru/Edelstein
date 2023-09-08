@@ -41,6 +41,7 @@ public class SkillManager : ISkillManager
         
         if (skill == null || level == null) return;
         if (level.Prop > 0 && random.Next(0, 100) > level.Prop) return;
+        if (level.SubProp > 0 && random.Next(0, 100) > level.SubProp) return;
         
         var mobStats = new List<Tuple<MobTemporaryStatType, short>>();
         var expire = DateTime.UtcNow.AddSeconds(level.Time);
@@ -62,8 +63,13 @@ public class SkillManager : ISkillManager
             case Skill.KnightChargeBlow:
             case Skill.HeroMonsterMagnet:
             case Skill.DarkknightMonsterMagnet:
+            case Skill.Mage1TeleportMastery:
+            case Skill.Mage2TeleportMastery:
+            case Skill.PriestTeleportMastery:
+            case Skill.BmageTeleportMastery:
                 mobStats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
                 break;
+                
         }
         
         if (mobStats.Count > 0)
