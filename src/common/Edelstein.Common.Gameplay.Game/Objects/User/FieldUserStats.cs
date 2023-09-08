@@ -269,7 +269,39 @@ public record struct FieldUserStats : IFieldUserStats
 
         var incMastery = 0;
         var incNone = 0;
+        var incMAD = 0;
         var incACC = 0;
+        
+        if (JobConstants.GetJobType(character.Job) == 2)
+        {
+            var skills = new List<int>();
+
+            switch (JobConstants.GetJobRace(character.Job))
+            {
+                case 0:
+                    skills.Add(JobConstants.GetJobBranch(character.Job) switch
+                    {
+                        1 => Skill.Wizard1SpellMastery,
+                        2 => Skill.Wizard2SpellMastery,
+                        3 => Skill.ClericSpellMastery,
+                        _ => 0
+                    });
+                    break;
+                case 1:
+                    skills.Add(Skill.FlamewizardSpellMastery);
+                    break;
+                case 2:
+                    skills.Add(Skill.EvanSpellMastery);
+                    skills.Add(Skill.EvanMagicMastery);
+                    break;
+                case 3:
+                    skills.Add(Skill.BmageSpellMastery);
+                    break;
+            }
+
+            foreach (var skill in skills.TakeWhile(_ => incMastery == 0))
+                GetMastery(SkillLevels, skill, ref incMastery, ref incMAD);
+        }
         
         switch (weaponType)
         {
@@ -328,6 +360,7 @@ public record struct FieldUserStats : IFieldUserStats
         }
 
         Mastery += incMastery;
+        MAD += incMAD;
         ACC += incACC;
 
         STR += (int)(STR * (STRr / 100d));
