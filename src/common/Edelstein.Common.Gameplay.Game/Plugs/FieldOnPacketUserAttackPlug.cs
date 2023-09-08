@@ -30,7 +30,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         packet.WriteInt(message.User.Character.ID);
         packet.WriteByte((byte)(
             0x1 * message.Attack.DamagePerMob |
-            0x10 *  message.Attack.MobCount
+            0x10 * message.Attack.MobCount
         ));
         packet.WriteByte(message.User.Character.Level);
 
@@ -59,7 +59,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         packet.WriteInt(0); // BulletCashItemID
 
         var count = 0;
-        
+
         foreach (var entry in message.Attack.Entries)
         {
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
@@ -75,9 +75,9 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                 message.Attack.IsSpiritJavelin,
                 message.Attack.IsSpark
             );
-            var damageSrv= await message.User.Damage.AdjustDamageDecRate(
-                attack, 
-                count, 
+            var damageSrv = await message.User.Damage.AdjustDamageDecRate(
+                attack,
+                count,
                 await message.User.Damage.CalculatePDamage(
                     message.User.Character,
                     message.User.Stats,
@@ -101,10 +101,10 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
 
             count++;
         }
-        
+
         if (message.User.FieldSplit != null)
             await message.User.FieldSplit.Dispatch(packet.Build(), message.User);
-        
+
         if (!await _skillManager.ProcessUserAttack(message.User, message.Attack))
             return;
 

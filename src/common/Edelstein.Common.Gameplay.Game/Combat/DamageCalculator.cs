@@ -62,10 +62,18 @@ public class DamageCalculator : IDamageCalculator
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
         var skillLevel = skill?[attack.SkillLevel];
         var attackCount = skillLevel?.AttackCount ?? 1;
-        var result = new IUserAttackDamage[attackCount];
 
         _rndGenForCharacter.Next(random.Array);
 
+        var darkForceSkill = await _skills.Retrieve(Skill.DarkknightDarkForce);
+        var darkForceLevel = darkForceSkill?[stats.SkillLevels[Skill.DarkknightDarkForce]];
+        var isDarkForce = darkForceLevel != null && character.HP >= stats.MaxHP * darkForceLevel.X / 100;
+
+        if (isDarkForce && attack.SkillID == Skill.DragonknightDragonBurster)
+            attackCount += darkForceLevel?.Y ?? 0;
+        
+        var result = new IUserAttackDamage[attackCount];
+        
         var totalCr = stats.Cr;
         var totalCDMin = stats.CDMin;
         var totalCDMax = stats.CDMax;
@@ -262,6 +270,9 @@ public class DamageCalculator : IDamageCalculator
 
             if (mob.Template.IsBoss)
                 random.Skip();
+
+            if (isDarkForce)
+                damage += damage * (darkForceLevel?.Damage ?? 0) / 100d;
 
             if (!mob.Template.IsBoss)
             {

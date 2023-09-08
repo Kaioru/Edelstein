@@ -82,7 +82,7 @@ public class SkillManager : ISkillManager
         var skill = await _skills.Retrieve(attack.SkillID);
         var level = skill?.Levels[user.Stats.SkillLevels[attack.SkillID]];
 
-        if (skill == null || level == null) return false;
+        if (skill == null || level == null) return attack.SkillID == 0;
         if (level.MPCon > user.Character.MP) return false;
         
         var random = new Random();
