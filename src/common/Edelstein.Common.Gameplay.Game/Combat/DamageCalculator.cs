@@ -280,7 +280,7 @@ public class DamageCalculator : IDamageCalculator
                     random.Skip();
             }
             
-            damage = Math.Min(Math.Max(damage, 1), 999999);
+            damage = Math.Min(damage, 999999);
             result[i] = new UserAttackDamage((int)damage, critical);
         }
         
@@ -320,7 +320,7 @@ public class DamageCalculator : IDamageCalculator
         for (var i = 0; i < damage.Length; i++)
         {
             result[i] = new UserAttackDamage(
-                Math.Max(1, (int)(damage[i].Damage * Math.Pow(rate, count))),
+                (int)(damage[i].Damage * Math.Pow(rate, count)),
                 damage[i].IsCritical
             );
         }
