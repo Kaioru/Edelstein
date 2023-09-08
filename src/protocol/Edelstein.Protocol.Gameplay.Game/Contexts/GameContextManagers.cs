@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Data;
+using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Utilities.Tickers;
@@ -11,5 +12,6 @@ public record GameContextManagers(
     
     IFieldManager Field,
     IContiMoveManager ContiMove,
-    INamedConversationManager Conversation
+    INamedConversationManager Conversation,
+    ISkillManager Skill
 );
