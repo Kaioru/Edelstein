@@ -47,6 +47,10 @@ public class SkillManager : ISkillManager
         
         switch (attack.SkillID)
         {
+            case Skill.Wizard1PoisonBreath:
+                expire = DateTime.UtcNow.AddSeconds(level.DotTime);
+                mobStats.Add(Tuple.Create(MobTemporaryStatType.Venom, level.Dot));
+                break;
             case Skill.CrusaderPanic:
             case Skill.SoulmasterPanicSword:
                 // TODO: not working?
@@ -54,14 +58,8 @@ public class SkillManager : ISkillManager
                 break;
             case Skill.CrusaderComa:
             case Skill.SoulmasterComaSword:
-                mobStats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
-                break;
             case Skill.CrusaderShout:
-                mobStats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
-                break;
             case Skill.KnightChargeBlow:
-                mobStats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
-                break;
             case Skill.HeroMonsterMagnet:
             case Skill.DarkknightMonsterMagnet:
                 mobStats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));

@@ -16,7 +16,11 @@ using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob;
 
-public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMoveAction>, IFieldMob, IPacketWritable, ITickable
+public class FieldMob : 
+    AbstractFieldControllable<IFieldMobMovePath, IFieldMobMoveAction>, 
+    IFieldMob, 
+    IPacketWritable, 
+    ITickable
 {
     private readonly SemaphoreSlim _lock;
 
@@ -28,6 +32,7 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
     ) : base(new FieldMobMoveAction(template.MoveAbility, isFacingLeft), position, foothold)
     {
         _lock = new SemaphoreSlim(1, 1);
+        LastUpdateVenom = DateTime.UtcNow;
         
         Template = template;
         TemporaryStats = new MobTemporaryStats();
@@ -45,6 +50,8 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
     public IMobTemporaryStats TemporaryStats { get; }
     public int HP { get; private set; }
     public int MP { get; private set; }
+    
+    private DateTime LastUpdateVenom { get; set; }
     
     public async Task Damage(int damage, IFieldUser? attacker = null)
     {
@@ -195,5 +202,27 @@ public class FieldMob : AbstractFieldControllable<IFieldMobMovePath, IFieldMobMo
                     s.ResetByType(kv.Key);
             });
         }
+
+        var venomStat = TemporaryStats[MobTemporaryStatType.Venom];
+        if (venomStat != null)
+        {
+            var end = (DateTime)(venomStat.DateExpire == null 
+                ? now 
+                : venomStat.DateExpire >= now 
+                    ? now 
+                    : venomStat.DateExpire);
+            var times = (end - LastUpdateVenom).Seconds;
+            var damage = venomStat.Value;
+            
+            // fixedDamage check
+            // onlyNormalAttack check
+
+            var hp = HP - times * damage;
+            
+            HP = Math.Max(1, hp);
+            Console.WriteLine(HP);
+        }
+
+        LastUpdateVenom = now;
     }
 }
