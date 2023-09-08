@@ -384,14 +384,12 @@ public class DamageCalculator : IDamageCalculator
 
             damage *= skillDamageR / 100d;
             
-            var damageBefore = damage;
-            
             if (stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= totalCr)
             {
                 var criticalDamageR = (int)GetRandomInRange(random.Next(), totalCDMin, totalCDMax);
 
                 critical = true;
-                damage += (int)damageBefore * criticalDamageR / 100d;
+                damage += damage * criticalDamageR / 100d;
             }
             
             if (mob.Template.IsBoss)
