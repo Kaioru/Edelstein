@@ -7,6 +7,8 @@ using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
+using Edelstein.Protocol.Gameplay.Models.Inventories;
+using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Combat;
@@ -61,13 +63,23 @@ public class DamageCalculator : IDamageCalculator
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
         var skillLevel = skill?[attack.SkillLevel];
+        var equipped = character.Inventories[ItemInventoryType.Equip];
+        var weapon = equipped != null
+            ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
+                ? result1.ID 
+                : 0
+            : 0;
+        var weaponType = ItemConstants.GetWeaponType(weapon);
         var attackCount = skillLevel?.AttackCount ?? 1;
 
         _rndGenForCharacter.Next(random.Array);
 
         var darkForceSkill = await _skills.Retrieve(Skill.DarkknightDarkForce);
         var darkForceLevel = darkForceSkill?[stats.SkillLevels[Skill.DarkknightDarkForce]];
-        var isDarkForce = darkForceLevel != null && character.HP >= stats.MaxHP * darkForceLevel.X / 100;
+        var isDarkForce = 
+            darkForceLevel != null && 
+            character.Job == Job.DarkKnight &&
+            character.HP >= stats.MaxHP * darkForceLevel.X / 100;
 
         if (isDarkForce && attack.SkillID == Skill.DragonknightDragonBurster)
             attackCount += darkForceLevel?.Y ?? 0;
@@ -128,6 +140,9 @@ public class DamageCalculator : IDamageCalculator
 
             var damage = GetRandomInRange(random.Next(), stats.DamageMin, stats.DamageMax);
             var critical = false;
+
+            if (weaponType is WeaponType.Wand or WeaponType.Staff)
+                damage *= 0.2;
 
             if (mobStats.Level > stats.Level)
                 damage *= (100d - (mobStats.Level - stats.Level)) / 100d;

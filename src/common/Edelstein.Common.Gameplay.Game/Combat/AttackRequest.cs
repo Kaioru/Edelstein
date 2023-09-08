@@ -29,7 +29,7 @@ public class AttackRequest : IAttackRequest, IPacketReadable
     
     public int Action { get; private set; }
     
-    public byte AttackType { get; private set; }
+    public byte AttackActionType { get; private set; }
     
     public int PartyCount { get; private set; }
     public int SpeedDegree { get; private set; }
@@ -77,7 +77,7 @@ public class AttackRequest : IAttackRequest, IPacketReadable
         Action = v15 & 0x7FFF;
         _ = reader.ReadInt(); // action crc?
 
-        AttackType = reader.ReadByte();
+        AttackActionType = reader.ReadByte();
         
         var v17 = reader.ReadByte();
         PartyCount = v17 >> 4;

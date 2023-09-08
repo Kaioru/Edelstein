@@ -78,13 +78,9 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             var damageSrv = await message.User.Damage.AdjustDamageDecRate(
                 attack,
                 count,
-                await message.User.Damage.CalculatePDamage(
-                    message.User.Character,
-                    message.User.Stats,
-                    mob,
-                    mob.Stats,
-                    attack
-                )
+                message.Attack.Type == AttackType.Magic 
+                    ? await message.User.Damage.CalculateMDamage(message.User.Character, message.User.Stats, mob, mob.Stats, attack)
+                    : await message.User.Damage.CalculatePDamage(message.User.Character, message.User.Stats, mob, mob.Stats, attack)
             );
 
             for (var i = 0; i < message.Attack.DamagePerMob; i++)

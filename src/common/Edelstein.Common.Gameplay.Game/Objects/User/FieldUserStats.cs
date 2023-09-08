@@ -373,7 +373,7 @@ public record struct FieldUserStats : IFieldUserStats
         var stat2 = 0;
         var stat3 = 0;
         var attack = PAD;
-        var multiplier = 0.0;
+        var multiplier = 1.0;
         
         if (JobConstants.GetJobLevel(character.Job) == 0)
         {

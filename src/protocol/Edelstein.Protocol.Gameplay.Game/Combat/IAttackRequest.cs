@@ -23,7 +23,7 @@ public interface IAttackRequest
     
     int Action { get; }
     
-    byte AttackType { get; }
+    byte AttackActionType { get; }
     
     int PartyCount { get; }
     int SpeedDegree { get; }
