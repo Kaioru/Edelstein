@@ -141,7 +141,7 @@ public class FieldUserModify : IFieldUserModify
                 Skill.DarkknightBeholder,
                 (byte)_user.Stats.SkillLevels[Skill.DarkknightBeholder],
                 MoveAbilityType.Walk,
-                SummonedAssistType.None,
+                SummonedAssistType.Heal,
                 _user.Position,
                 _user.Foothold
             );

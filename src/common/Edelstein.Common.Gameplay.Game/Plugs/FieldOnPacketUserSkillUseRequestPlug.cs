@@ -35,8 +35,12 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
             stats.Add(Tuple.Create(TemporaryStatType.MAD, level.MAD));
         if (level.MDD > 0)
             stats.Add(Tuple.Create(TemporaryStatType.MDD, level.MDD));
+        if (level.ACC > 0)
+            stats.Add(Tuple.Create(TemporaryStatType.ACC, level.ACC));
+        if (level.EVA > 0)
+            stats.Add(Tuple.Create(TemporaryStatType.EVA, level.EVA));
 
-        
+
         switch (skill.ID)
         {
             case Skill.FighterWeaponBooster:

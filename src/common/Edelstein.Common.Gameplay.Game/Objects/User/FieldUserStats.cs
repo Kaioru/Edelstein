@@ -243,6 +243,11 @@ public record struct FieldUserStats : IFieldUserStats
         PDD += character.TemporaryStats[TemporaryStatType.PDD]?.Value ?? 0;
         MAD += character.TemporaryStats[TemporaryStatType.MAD]?.Value ?? 0;
         MDD += character.TemporaryStats[TemporaryStatType.MDD]?.Value ?? 0;
+        
+        PAD += character.TemporaryStats[TemporaryStatType.EPAD]?.Value ?? 0;
+        PDD += character.TemporaryStats[TemporaryStatType.EPDD]?.Value ?? 0;
+        MDD += character.TemporaryStats[TemporaryStatType.EMDD]?.Value ?? 0;
+        
         ACC += character.TemporaryStats[TemporaryStatType.ACC]?.Value ?? 0;
         EVA += character.TemporaryStats[TemporaryStatType.EVA]?.Value ?? 0;
         Craft += character.TemporaryStats[TemporaryStatType.Craft]?.Value ?? 0;
