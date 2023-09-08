@@ -16,12 +16,15 @@ public class AttackRequest : IAttackRequest, IPacketReadable
     public int SkillID { get; private set; }
     public int Keydown { get; private set; }
     
+    public bool IsCombatOrders { get; private set; }
+
     public bool IsFinalAfterSlashBlast { get; private set; }
     public bool IsSoulArrow { get; private set; }
     public bool IsShadowPartner { get; private set; }
     public bool IsSerialAttack { get; private set; }
     public bool IsSpiritJavelin { get; private set; }
-    
+    public bool IsSpark { get; private set; }
+
     public bool IsLeft { get; private set; }
     
     public int Action { get; private set; }
@@ -51,7 +54,7 @@ public class AttackRequest : IAttackRequest, IPacketReadable
         _ = reader.ReadInt(); // dr3
 
         SkillID = reader.ReadInt();
-        _ = reader.ReadBool(); // unk
+        IsCombatOrders = reader.ReadBool();
 
         _ = reader.ReadInt(); // dr rand
         _ = reader.ReadInt(); // crc
@@ -62,12 +65,12 @@ public class AttackRequest : IAttackRequest, IPacketReadable
         Keydown = 0;
         
         var option = reader.ReadByte();
-        IsFinalAfterSlashBlast = (option & 0x0) > 0;
+        IsFinalAfterSlashBlast = (option & 0x1) > 0;
         IsSoulArrow = (option & 0x2) > 0;
         IsShadowPartner = (option & 0x8) > 0;
-        //
         IsSerialAttack = (option & 0x20) > 0;
         IsSpiritJavelin = (option & 0x40) > 0;
+        IsSpark = (option & 0x80) > 0;
 
         var v15 = reader.ReadShort();
         IsLeft = (v15 >> 15 & 1) > 0;

@@ -15,7 +15,7 @@ namespace Edelstein.Common.Gameplay.Game.Plugs;
 
 public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack>
 {
-    private ITemplateManager<ISkillTemplate> _skillTemplates;
+    private readonly ITemplateManager<ISkillTemplate> _skillTemplates;
     
     public FieldOnPacketUserAttackPlug(ITemplateManager<ISkillTemplate> skillTemplates) => _skillTemplates = skillTemplates;
     
@@ -50,7 +50,8 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             0x2 * Convert.ToByte(message.Attack.IsSoulArrow) |
             0x8 * Convert.ToByte(message.Attack.IsShadowPartner) |
             0x20 * Convert.ToByte(message.Attack.IsSerialAttack) |
-            0x40 * Convert.ToByte(message.Attack.IsSpiritJavelin)
+            0x40 * Convert.ToByte(message.Attack.IsSpiritJavelin) |
+            0x80 * Convert.ToByte(message.Attack.IsSpark)
         ));
         packet.WriteShort((short)(
             message.Attack.Action & 0x7FFF |
@@ -70,7 +71,17 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                 message.User.Stats,
                 mob,
                 mob.Stats,
-                new UserAttack(skillID, skillLevel, message.Attack.Keydown)
+                new UserAttack(
+                    skillID, 
+                    skillLevel, 
+                    message.Attack.Keydown,
+                    message.Attack.IsFinalAfterSlashBlast,
+                    message.Attack.IsSoulArrow,
+                    message.Attack.IsShadowPartner,
+                    message.Attack.IsSerialAttack,
+                    message.Attack.IsSpiritJavelin,
+                    message.Attack.IsSpark
+                )
             );
 
             for (var i = 0; i < message.Attack.DamagePerMob; i++)

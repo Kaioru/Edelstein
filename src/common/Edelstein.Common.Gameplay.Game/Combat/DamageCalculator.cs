@@ -164,37 +164,43 @@ public class DamageCalculator : IDamageCalculator
                 attack.SkillID != Skill.ViperDemolition)
                 damage *= (100d - (mobStats.PDR * totalIMDr / -100 + mobStats.PDR)) / 100d;
 
-            var skillDamageR = skillLevel?.Damage ?? 100d;
+            var skillDamageR = !attack.IsFinalAfterSlashBlast 
+                ? skillLevel?.Damage ?? 100d 
+                : 100d;
 
-            if (attack.SkillID is Skill.WarriorPowerStrike or Skill.WarriorSlashBlast)
+            switch (attack.SkillID)
             {
-                foreach (var skillID in new List<int>
-                         {
-                             Skill.FighterImproveBasic,
-                             Skill.PageImproveBasic,
-                             Skill.SpearmanImproveBasic
-                         })
+                case Skill.WarriorPowerStrike:
+                case Skill.WarriorSlashBlast:
                 {
-                    if ((character.Skills[skillID]?.Level ?? 0) <= 0) continue;
+                    foreach (var skillID in new List<int>
+                             {
+                                 Skill.FighterImproveBasic,
+                                 Skill.PageImproveBasic,
+                                 Skill.SpearmanImproveBasic
+                             }.Where(skillID => stats.SkillLevels[skillID] > 0))
+                    {
+                        var warriorImproveBasicSkill = await _skills.Retrieve(skillID);
+                        var warriorImproveBasicLevel = warriorImproveBasicSkill?[stats.SkillLevels[skillID]];
 
-                    var warriorImproveBasicSkill = await _skills.Retrieve(skillID);
-                    var warriorImproveBasicLevel = warriorImproveBasicSkill?[character.Skills[skillID]?.Level ?? 0];
+                        if (warriorImproveBasicLevel == null) break;
 
-                    if (warriorImproveBasicLevel == null) break;
+                        skillDamageR += attack.SkillID == Skill.WarriorPowerStrike
+                            ? warriorImproveBasicLevel.X
+                            : warriorImproveBasicLevel.Y;
+                        break;
+                    }
 
-                    skillDamageR += attack.SkillID == Skill.WarriorPowerStrike
-                        ? warriorImproveBasicLevel.X
-                        : warriorImproveBasicLevel.Y;
                     break;
                 }
-            }
+                case Skill.KnightChargeBlow:
+                {
+                    var advancedChargeSkill = await _skills.Retrieve(Skill.PaladinAdvancedCharge);
+                    var advancedChargeLevel = advancedChargeSkill?[stats.SkillLevels[Skill.PaladinAdvancedCharge]];
 
-            if (attack.SkillID == Skill.KnightChargeBlow)
-            {
-                var advancedChargeSkill = await _skills.Retrieve(Skill.PaladinAdvancedCharge);
-                var advancedChargeLevel = advancedChargeSkill?[stats.SkillLevels[Skill.PaladinAdvancedCharge]];
-
-                skillDamageR = advancedChargeLevel?.Damage ?? skillDamageR;
+                    skillDamageR = advancedChargeLevel?.Damage ?? skillDamageR;
+                    break;
+                }
             }
 
             damage *= skillDamageR / 100d;
@@ -207,13 +213,13 @@ public class DamageCalculator : IDamageCalculator
                     ? Skill.CrusaderComboAttack
                     : Skill.SoulmasterComboAttack;
                 var comboCounterSkill = await _skills.Retrieve(comboCounterSkillID);
-                var comboCounterLevel = comboCounterSkill?[character.Skills[comboCounterSkillID]?.Level ?? 0];
+                var comboCounterLevel = comboCounterSkill?[stats.SkillLevels[comboCounterSkillID]];
                 var comboCounter = comboCounterStat.Value - 1;
                 var advComboCounterSkillID = JobConstants.GetJobRace(character.Job) == 0
                     ? Skill.HeroAdvancedCombo
                     : Skill.SoulmasterAdvancedCombo;
                 var advComboCounterSkill = await _skills.Retrieve(advComboCounterSkillID);
-                var advComboCounterLevel = advComboCounterSkill?[character.Skills[advComboCounterSkillID]?.Level ?? 0];
+                var advComboCounterLevel = advComboCounterSkill?[stats.SkillLevels[advComboCounterSkillID]];
 
                 var damagePerCombo = (advComboCounterLevel?.DIPr ?? 0) + (comboCounterLevel?.DIPr ?? 0);
 
@@ -224,7 +230,7 @@ public class DamageCalculator : IDamageCalculator
                     Skill.SoulmasterComaSword)
                 {
                     var comboAttackSkill = await _skills.Retrieve(attack.SkillID);
-                    var comboAttackLevel = comboAttackSkill?[character.Skills[attack.SkillID]?.Level ?? 0];
+                    var comboAttackLevel = comboAttackSkill?[stats.SkillLevels[attack.SkillID]];
 
                     damagePerCombo += comboAttackLevel?.Y ?? 0;
                 }
@@ -248,7 +254,7 @@ public class DamageCalculator : IDamageCalculator
                 mob.TemporaryStats[MobTemporaryStatType.Blind] != null)
             {
                 var chanceAttackSkill = await _skills.Retrieve(Skill.CrusaderChanceAttack);
-                var chanceAttackLevel = chanceAttackSkill?[character.Skills[Skill.CrusaderChanceAttack]?.Level ?? 0];
+                var chanceAttackLevel = chanceAttackSkill?[stats.SkillLevels[Skill.CrusaderChanceAttack]];
 
                 if (chanceAttackLevel != null)
                     damage *= chanceAttackLevel.Damage / 100d;

@@ -10,11 +10,14 @@ public interface IAttackRequest
     int SkillID { get; }
     int Keydown { get; }
     
+    bool IsCombatOrders { get; }
+    
     bool IsFinalAfterSlashBlast { get; }
     bool IsSoulArrow { get; }
     bool IsShadowPartner { get; }
     bool IsSerialAttack { get; }
     bool IsSpiritJavelin { get; }
+    bool IsSpark { get; }
     
     bool IsLeft { get; }
     
