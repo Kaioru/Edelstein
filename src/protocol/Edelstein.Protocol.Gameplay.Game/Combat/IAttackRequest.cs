@@ -21,7 +21,7 @@ public interface IAttackRequest
     
     bool IsLeft { get; }
     
-    int Action { get; }
+    int AttackAction { get; }
     
     byte AttackActionType { get; }
     

@@ -50,7 +50,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             0x80 * Convert.ToByte(message.Attack.IsSpark)
         ));
         packet.WriteShort((short)(
-            message.Attack.Action & 0x7FFF |
+            message.Attack.AttackAction & 0x7FFF |
             Convert.ToByte(message.Attack.IsLeft) << 15
         ));
 

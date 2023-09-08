@@ -27,7 +27,7 @@ public class AttackRequest : IAttackRequest, IPacketReadable
 
     public bool IsLeft { get; private set; }
     
-    public int Action { get; private set; }
+    public int AttackAction { get; private set; }
     
     public byte AttackActionType { get; private set; }
     
@@ -59,8 +59,23 @@ public class AttackRequest : IAttackRequest, IPacketReadable
         _ = reader.ReadInt(); // dr rand
         _ = reader.ReadInt(); // crc
 
-        _ = reader.ReadInt(); // skillLevel crc
-        _ = reader.ReadInt(); // skillLevel crc
+        switch (Type)
+        {
+            case AttackType.Melee:
+                _ = reader.ReadInt(); // skillLevel crc
+                _ = reader.ReadInt(); // skillLevel crc
+                break;
+            case AttackType.Magic:
+                _ = reader.ReadInt(); // skillLevel crc
+                _ = reader.ReadInt(); // skillLevel crc
+                _ = reader.ReadInt(); // skillLevel crc
+                _ = reader.ReadInt(); // skillLevel crc
+                _ = reader.ReadInt(); // skillLevel crc
+                _ = reader.ReadInt(); // skillLevel crc
+                _ = reader.ReadInt(); // skillLevel crc
+                _ = reader.ReadInt(); // skillLevel crc
+                break;
+        }
 
         Keydown = 0;
         
@@ -74,7 +89,7 @@ public class AttackRequest : IAttackRequest, IPacketReadable
 
         var v15 = reader.ReadShort();
         IsLeft = (v15 >> 15 & 1) > 0;
-        Action = v15 & 0x7FFF;
+        AttackAction = v15 & 0x7FFF;
         _ = reader.ReadInt(); // action crc?
 
         AttackActionType = reader.ReadByte();

@@ -312,14 +312,88 @@ public class DamageCalculator : IDamageCalculator
     {
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
-        var skillLevel = skill?.Levels[attack.SkillLevel];
+        var skillLevel = skill?[attack.SkillLevel];
         var attackCount = skillLevel?.AttackCount ?? 1;
         var result = new IUserAttackDamage[attackCount];
 
         _rndGenForCharacter.Next(random.Array);
         
+        var totalCr = stats.Cr;
+        var totalCDMin = stats.CDMin;
+        var totalCDMax = stats.CDMax;
+        var totalIMDr = stats.IMDr;
+        
+        foreach (var kv in character.Skills.Records)
+        {
+            var psdSkillID = kv.Key;
+            var skillTemplate = _skills.Retrieve(psdSkillID).Result;
+            var levelTemplate = skillTemplate?[stats.SkillLevels[psdSkillID]];
+            if (skillTemplate == null || levelTemplate == null) continue;
+            if (!skillTemplate.IsPSD) continue;
+            if (!skillTemplate.PsdSkill.Contains(attack.SkillID)) continue;
+            
+            totalCr += levelTemplate.Cr;
+            totalCDMin += levelTemplate.CDMin;
+            totalCDMax += levelTemplate.CDMax;
+            totalIMDr += levelTemplate.IMDr;
+        }
+        
+        totalCDMin = Math.Min(totalCDMin, totalCDMax);
+        
+        var sqrtACC = Math.Sqrt(stats.PACC);
+        var sqrtEVA = Math.Sqrt(mobStats.EVA);
+        var hitRate = sqrtACC - sqrtEVA + 100 + stats.Ar * (sqrtACC - sqrtEVA + 100) / 100;
+
+        hitRate = Math.Min(hitRate, 100);
+
+        if (mobStats.Level > stats.Level)
+            hitRate -= 5 * (mobStats.Level - stats.Level);
+
         for (var i = 0; i < attackCount; i++)
-            result[i] = new UserAttackDamage(0);
+        {
+            random.Skip(); // CalcMImmune
+
+            if (hitRate < GetRandomInRange(random.Next(), 0, 100))
+            {
+                result[i] = new UserAttackDamage(0);
+                continue;
+            }
+            
+            var damage = GetRandomInRange(random.Next(), stats.DamageMin, stats.DamageMax);
+            var critical = false;
+
+            if (mobStats.Level > stats.Level)
+                damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
+
+            damage += damage * stats.MDamR / 100d;
+            damage *= (100d - (mobStats.PDR * totalIMDr / -100 + mobStats.PDR)) / 100d;
+            
+            var skillDamageR = skillLevel?.Damage ?? 100d;
+
+            damage *= skillDamageR / 100d;
+            
+            var damageBefore = damage;
+            
+            if (stats.Cr > 0 && GetRandomInRange(random.Next(), 0, 100) <= totalCr)
+            {
+                var criticalDamageR = (int)GetRandomInRange(random.Next(), totalCDMin, totalCDMax);
+
+                critical = true;
+                damage += (int)damageBefore * criticalDamageR / 100d;
+            }
+            
+            if (mob.Template.IsBoss)
+                random.Skip();
+
+            if (!mob.Template.IsBoss)
+            {
+                if (mob.Template.MaxHP > damage && i == 0)
+                    random.Skip();
+            }
+            
+            damage = Math.Min(damage, 999999);
+            result[i] = new UserAttackDamage((int)damage, critical);
+        }
 
         return result;
     }
