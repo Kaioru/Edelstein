@@ -61,22 +61,33 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         packet.WriteByte((byte)message.Attack.SpeedDegree);
         packet.WriteByte((byte)message.User.Stats.Mastery);
         packet.WriteInt(0); // BulletCashItemID
+
+        var count = 0;
         
         foreach (var entry in message.Attack.Entries)
         {
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;
-            var damageSrv = await message.User.Damage.CalculatePDamage(
-                message.User.Character,
-                message.User.Stats,
-                mob,
-                mob.Stats,
-                new UserAttack(
-                    !message.Attack.IsFinalAfterSlashBlast 
-                        ? skillID
-                        : 0, 
-                    skillLevel, 
-                    message.Attack.Keydown
+            var attack = new UserAttack(
+                skillID,
+                skillLevel,
+                message.Attack.Keydown,
+                message.Attack.IsFinalAfterSlashBlast,
+                message.Attack.IsSoulArrow,
+                message.Attack.IsShadowPartner,
+                message.Attack.IsSerialAttack,
+                message.Attack.IsSpiritJavelin,
+                message.Attack.IsSpark
+            );
+            var damageSrv= await message.User.Damage.AdjustDamageDecRate(
+                attack, 
+                count, 
+                await message.User.Damage.CalculatePDamage(
+                    message.User.Character,
+                    message.User.Stats,
+                    mob,
+                    mob.Stats,
+                    attack
                 )
             );
 
@@ -91,6 +102,8 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                 packet.WriteBool(damageSrv[i].IsCritical);
                 packet.WriteInt(entry.Damage[i]);
             }
+
+            count++;
         }
         
         if (message.User.FieldSplit != null)

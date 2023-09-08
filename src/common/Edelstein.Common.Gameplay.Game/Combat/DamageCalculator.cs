@@ -164,7 +164,9 @@ public class DamageCalculator : IDamageCalculator
                 attack.SkillID != Skill.ViperDemolition)
                 damage *= (100d - (mobStats.PDR * totalIMDr / -100 + mobStats.PDR)) / 100d;
 
-            var skillDamageR = skillLevel?.Damage ?? 100d;
+            var skillDamageR = !attack.IsFinalAfterSlashBlast
+                ? skillLevel?.Damage ?? 100d
+                : 100d;
 
             switch (attack.SkillID)
             {
@@ -296,6 +298,25 @@ public class DamageCalculator : IDamageCalculator
         return result;
     }
     
+    public async Task<IUserAttackDamage[]> AdjustDamageDecRate(IUserAttack attack, int count, IUserAttackDamage[] damage)
+    {
+        var rate = 1d;
+        var result = new IUserAttackDamage[damage.Length];
+
+        if (attack.IsFinalAfterSlashBlast)
+            rate = 1 / 3d;
+
+        for (var i = 0; i < damage.Length; i++)
+        {
+            result[i] = new UserAttackDamage(
+                Math.Max(1, (int)(damage[i].Damage * Math.Pow(rate, count))),
+                damage[i].IsCritical
+            );
+        }
+        
+        return result;
+    }
+
     private static double GetRandomInRange(uint rand, double f0, double f1)
     {
         if (Math.Abs(f0 - f1) < 0.0001) return f0;

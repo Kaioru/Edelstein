@@ -26,4 +26,6 @@ public interface IDamageCalculator
         IFieldMobStats mobStats, 
         IUserAttack attack
     );
+
+    Task<IUserAttackDamage[]> AdjustDamageDecRate(IUserAttack attack, int count, IUserAttackDamage[] damage);
 }
