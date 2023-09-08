@@ -164,9 +164,7 @@ public class DamageCalculator : IDamageCalculator
                 attack.SkillID != Skill.ViperDemolition)
                 damage *= (100d - (mobStats.PDR * totalIMDr / -100 + mobStats.PDR)) / 100d;
 
-            var skillDamageR = !attack.IsFinalAfterSlashBlast 
-                ? skillLevel?.Damage ?? 100d 
-                : 100d;
+            var skillDamageR = skillLevel?.Damage ?? 100d;
 
             switch (attack.SkillID)
             {

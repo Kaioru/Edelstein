@@ -6,11 +6,4 @@ public interface IUserAttack
     int SkillLevel { get; }
     
     int Keydown { get; }
-    
-    bool IsFinalAfterSlashBlast { get; }
-    bool IsSoulArrow { get; }
-    bool IsShadowPartner { get; }
-    bool IsSerialAttack { get; }
-    bool IsSpiritJavelin { get; }
-    bool IsSpark { get; }
 }

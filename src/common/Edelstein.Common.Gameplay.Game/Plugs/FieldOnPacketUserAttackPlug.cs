@@ -72,15 +72,11 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                 mob,
                 mob.Stats,
                 new UserAttack(
-                    skillID, 
+                    !message.Attack.IsFinalAfterSlashBlast 
+                        ? skillID
+                        : 0, 
                     skillLevel, 
-                    message.Attack.Keydown,
-                    message.Attack.IsFinalAfterSlashBlast,
-                    message.Attack.IsSoulArrow,
-                    message.Attack.IsShadowPartner,
-                    message.Attack.IsSerialAttack,
-                    message.Attack.IsSpiritJavelin,
-                    message.Attack.IsSpark
+                    message.Attack.Keydown
                 )
             );
 
