@@ -366,6 +366,17 @@ public class DamageCalculator : IDamageCalculator
                 damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
 
             damage += damage * stats.MDamR / 100d;
+            
+            // ElemBoost
+            // Mage1 MagicComposition
+            // Mage2 MagicComposition
+            // Ranger FireShot
+            // Sniper IceShot
+            var damageAdjustedByElemAttr = skill != null
+                ? GetDamageAdjustedByElemAttr(damage, mobStats.ElementAttributes[skill.Element], 1.0, 0.0)
+                : damage;
+
+            damage = damageAdjustedByElemAttr;
             damage *= (100d - (mobStats.PDR * totalIMDr / -100 + mobStats.PDR)) / 100d;
             
             var skillDamageR = skillLevel?.Damage ?? 100d;

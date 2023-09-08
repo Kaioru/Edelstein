@@ -36,7 +36,7 @@ public class SkillTemplate : ISkillTemplate
 
         Element = Element.Physical;
         if (elemAttr.Length > 0)
-            Element = elemAttr[0] switch
+            Element = elemAttr.ToUpper()[0] switch
             {
                 'P' => Element.Physical,
                 'I' => Element.Ice,
