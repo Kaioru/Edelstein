@@ -372,8 +372,9 @@ public class DamageCalculator : IDamageCalculator
             // Mage2 MagicComposition
             // Ranger FireShot
             // Sniper IceShot
+            var elementalResetStat = character.TemporaryStats[TemporaryStatType.ElementalReset]?.Value ?? 0;
             var damageAdjustedByElemAttr = skill != null
-                ? GetDamageAdjustedByElemAttr(damage, mobStats.ElementAttributes[skill.Element], 1.0, 0.0)
+                ? GetDamageAdjustedByElemAttr(damage, mobStats.ElementAttributes[skill.Element], 1d - elementalResetStat / 100d, 0d)
                 : damage;
 
             damage = damageAdjustedByElemAttr;

@@ -197,6 +197,12 @@ public class SkillManager : ISkillManager
             case Skill.KnightCombatOrders:
                 stats.Add(Tuple.Create(TemporaryStatType.CombatOrders, level.X));
                 break;
+            case Skill.Mage1ElementalReset:
+            case Skill.Mage2ElementalReset:
+            case Skill.FlamewizardElementalReset:
+            case Skill.EvanElementalReset:
+                stats.Add(Tuple.Create(TemporaryStatType.ElementalReset, level.X));
+                break;
             case Skill.HeroMapleHero:
             case Skill.PaladinMapleHero:
             case Skill.DarkknightMapleHero:
