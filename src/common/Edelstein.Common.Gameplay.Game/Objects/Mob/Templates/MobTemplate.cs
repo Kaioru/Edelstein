@@ -40,6 +40,7 @@ public class MobTemplate : IMobTemplate
             { Element.Ice, ElementAttribute.None },
             { Element.Fire, ElementAttribute.None },
             { Element.Light, ElementAttribute.None },
+            { Element.Poison, ElementAttribute.None },
             { Element.Holy, ElementAttribute.None },
             { Element.Dark, ElementAttribute.None },
             { Element.Undead, ElementAttribute.None }
@@ -57,9 +58,10 @@ public class MobTemplate : IMobTemplate
                 'I' => Element.Ice,
                 'F' => Element.Fire,
                 'L' => Element.Light,
+                'S' => Element.Poison,
                 'H' => Element.Holy,
                 'D' => Element.Dark,
-                'S' => Element.Undead,
+                'U' => Element.Undead,
                 _ => Element.Physical
             };
             var elemAttr = (ElementAttribute)Convert.ToInt32(groupList[1].ToString());

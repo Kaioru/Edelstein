@@ -383,6 +383,20 @@ public class DamageCalculator : IDamageCalculator
                 ? GetDamageAdjustedByElemAttr(damage, mobStats.ElementAttributes[skill.Element], 1d - elementalResetStat / 100d, 0d)
                 : damage;
 
+            switch (attack.SkillID)
+            {
+                case Skill.Mage1MagicComposition:
+                    damageAdjustedByElemAttr =
+                        GetDamageAdjustedByElemAttr(damage * 0.5, mobStats.ElementAttributes[Element.Poison], 1.0, 0d) +
+                        GetDamageAdjustedByElemAttr(damage * 0.5, mobStats.ElementAttributes[Element.Fire], 1.0, 0d);
+                    break;
+                case Skill.Mage2MagicComposition:
+                    damageAdjustedByElemAttr =
+                        GetDamageAdjustedByElemAttr(damage * 0.5, mobStats.ElementAttributes[Element.Light], 1.0, 0d) +
+                        GetDamageAdjustedByElemAttr(damage * 0.5, mobStats.ElementAttributes[Element.Ice], 1.0, 0d);
+                    break;
+            }
+
             damage = damageAdjustedByElemAttr;
             damage *= (100d - (mobStats.PDR * totalIMDr / -100 + mobStats.PDR)) / 100d;
             

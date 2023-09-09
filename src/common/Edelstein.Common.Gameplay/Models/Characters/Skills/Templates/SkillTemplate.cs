@@ -42,9 +42,10 @@ public class SkillTemplate : ISkillTemplate
                 'I' => Element.Ice,
                 'F' => Element.Fire,
                 'L' => Element.Light,
+                'S' => Element.Poison,
                 'H' => Element.Holy,
                 'D' => Element.Dark,
-                'S' => Element.Undead,
+                'U' => Element.Undead,
                 _ => Element.Physical
             };
 
