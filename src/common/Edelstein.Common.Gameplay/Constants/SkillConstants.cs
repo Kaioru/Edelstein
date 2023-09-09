@@ -61,7 +61,50 @@ public static class SkillConstants
         if (job == 100 * (job / 100)) return false;
         return JobConstants.GetJobLevel(job) == 4;
     }
+    
+    public static bool IsKeydownSkill(int skill)
+    {
+        switch (skill)
+        {
+            case Skill.Archmage1Bigbang:
+            case Skill.Archmage2Bigbang:
+            case Skill.BishopBigbang:
+            case Skill.BowmasterStormArrow:
+            case Skill.CrossbowmasterPiercing:
+            case Skill.Dual5FinalCut:
+            case Skill.Dual5MonsterBomb:
+            case Skill.InfighterScrewPunch:
+            case Skill.GunslingerThrowingBomb:
+            case Skill.CaptainRapidFire:
+            case Skill.WindbreakerStormArrow:
+            case Skill.NightwalkerPoisonBomb:
+            case Skill.StrikerScrewPunch:
+            case Skill.EvanIceBreath:
+            case Skill.EvanBreath:
+            case Skill.WildhunterSwallow:
+            case Skill.WildhunterWildShoot:
+            case Skill.MechanicFlamethrower:
+            case Skill.MechanicFlamethrowerUp:
+                return true;
+        }
+        return false;
+    }
 
+    public static int GetMaxGaugeTime(int skillID)
+    {
+        if (!IsKeydownSkill(skillID)) return 0;
+
+        switch (skillID)
+        {
+            case Skill.Archmage1Bigbang:
+            case Skill.Archmage2Bigbang:
+            case Skill.BishopBigbang:
+                return 1000;
+        }
+        
+        return 500;
+    }
+    
     public static Element GetElementByChargedSkill(int skillID) 
         => skillID switch
         {

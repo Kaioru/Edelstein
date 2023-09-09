@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Utilities.Packets;
+﻿using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Utilities.Packets;
 
@@ -78,7 +79,9 @@ public class AttackRequest : IAttackRequest, IPacketReadable
                 break;
         }
 
-        Keydown = 0;
+        Keydown = SkillConstants.IsKeydownSkill(SkillID) 
+            ? reader.ReadInt() 
+            : 0;
         
         var option = reader.ReadByte();
         IsFinalAfterSlashBlast = (option & 0x1) > 0;

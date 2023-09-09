@@ -391,6 +391,9 @@ public class DamageCalculator : IDamageCalculator
                 critical = true;
                 damage += damage * criticalDamageR / 100d;
             }
+
+            if (attack.Keydown > 0)
+                damage *= (90 * attack.Keydown / SkillConstants.GetMaxGaugeTime(attack.SkillID) + 10) / 100d;
             
             if (mob.Template.IsBoss)
                 random.Skip();
