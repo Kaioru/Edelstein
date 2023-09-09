@@ -6,6 +6,8 @@ public interface IRectangle2D : IObject2D
 {
     IPoint2D P1 { get; }
     IPoint2D P2 { get; }
+    
+    IPoint2D Center { get; }
 
     int Left { get; }
     int Right { get; }

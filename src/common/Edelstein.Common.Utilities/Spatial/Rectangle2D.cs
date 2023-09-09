@@ -12,6 +12,8 @@ public readonly record struct Rectangle2D : IRectangle2D
     public IPoint2D P1 { get; }
     public IPoint2D P2 { get; }
 
+    public IPoint2D Center => new Point2D((int)(MinX + Width / 2), (int)(MinY + Height / 2));
+
     public Rectangle2D(IPoint2D p1, IPoint2D p2)
     {
         P1 = p1;

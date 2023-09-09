@@ -44,6 +44,8 @@ public class RueGamePlugin : IGamePlugin
         commandManager.Insert(new StatCommand());
         commandManager.Insert(new TemporaryStatCommand());
         commandManager.Insert(new MobTemporaryStatCommand());
+        
+        commandManager.Insert(new DebugCommand());
 
         ctx.Pipelines.FieldOnPacketUserChat.Add(PipelinePriority.High, new FieldOnPacketUserChatCommandPlug(commandManager));
         return Task.CompletedTask;
