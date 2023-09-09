@@ -84,6 +84,9 @@ jobs:
       run: dotnet publish -c Release -r ${{ matrix.runtime }} --output artifacts-${{ matrix.runtime }} -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:SelfContained=true
     - name: Bundle migrations
       run: |
+        dotnet ef migrations script --project src/common/Edelstein.Common.Database/ --output artifacts-${{ matrix.runtime }}/migrate-01-gameplay.sql
+        dotnet ef migrations script --project src/common/Edelstein.Common.Services.Auth/ --output artifacts-${{ matrix.runtime }}/migrate-02-auth.sql
+        dotnet ef migrations script --project src/common/Edelstein.Common.Services.Server/ --output artifacts-${{ matrix.runtime }}/migrate-03-server.sql
         dotnet ef migrations bundle --project src/common/Edelstein.Common.Database/ --output artifacts-${{ matrix.runtime }}/migrate-01-gameplay --self-contained -r ${{ matrix.runtime }}
         dotnet ef migrations bundle --project src/common/Edelstein.Common.Services.Auth/ --output artifacts-${{ matrix.runtime }}/migrate-02-auth --self-contained -r ${{ matrix.runtime }}
         dotnet ef migrations bundle --project src/common/Edelstein.Common.Services.Server/ --output artifacts-${{ matrix.runtime }}/migrate-03-server --self-contained -r ${{ matrix.runtime }}
