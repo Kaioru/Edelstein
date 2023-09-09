@@ -206,7 +206,9 @@ public class ProgramHost : IHostedService
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        foreach (var bootstrap in _bootstraps)
-            await bootstrap.Stop();
+        foreach (var group in _bootstraps
+                     .GroupBy(b => b.Priority)
+                     .OrderByDescending(g => g.Key))
+            await Task.WhenAll(group.Select(b => b.Stop()));
     }
 }

@@ -32,9 +32,17 @@ public class StartServerBootstrap : IBootstrap, ITickable
 
     public async Task Stop()
     {
+        _logger.LogInformation(
+            "{ID} socket acceptor shutting down, this may take awhile..",
+            _config.ID
+        );
         TickerContext?.Cancel();
         if (TransportContext != null)
             await TransportContext.Close();
+        _logger.LogInformation(
+            "{ID} socket acceptor finished shutting down",
+            _config.ID
+        );
     }
 
     public async Task OnTick(DateTime now)
