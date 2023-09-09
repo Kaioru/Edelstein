@@ -30,7 +30,9 @@ public class FieldUserModify : IFieldUserModify
         var context = new ModifyStatContext(_user.Character);
 
         action?.Invoke(context);
-        IsRequireUpdate = true;
+        
+        if (context.Flag > 0)
+            IsRequireUpdate = true;
         
         if (!_user.IsInstantiated) return;
         
