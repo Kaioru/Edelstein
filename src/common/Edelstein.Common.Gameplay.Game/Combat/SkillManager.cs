@@ -1,4 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
@@ -42,16 +43,24 @@ public class SkillManager : ISkillManager
         if (skill == null || level == null) return;
         if (level.Prop > 0 && random.Next(0, 100) > level.Prop) return;
         if (level.SubProp > 0 && random.Next(0, 100) > level.SubProp) return;
-        
+
+        var now = DateTime.UtcNow;
         var mobStats = new List<Tuple<MobTemporaryStatType, short>>();
-        var expire = DateTime.UtcNow.AddSeconds(level.Time);
+        var mobBurnedInfo = new List<IMobBurnedInfo>();
+        var expire = now.AddSeconds(level.Time);
+        
+        if (level.Dot > 0)
+            mobBurnedInfo.Add(new MobBurnedInfo(
+                user.Character.ID,
+                attack.SkillID,
+                (int)(user.Stats.DamageMax * level.Dot / 100d),
+                TimeSpan.FromSeconds(level.DotInterval),
+                now,
+                now.AddSeconds(level.DotTime)
+            ));
         
         switch (attack.SkillID)
         {
-            case Skill.Wizard1PoisonBreath:
-                expire = DateTime.UtcNow.AddSeconds(level.DotTime);
-                mobStats.Add(Tuple.Create(MobTemporaryStatType.Venom, level.Dot));
-                break;
             case Skill.CrusaderPanic:
             case Skill.SoulmasterPanicSword:
                 // TODO: not working?
@@ -72,12 +81,21 @@ public class SkillManager : ISkillManager
                 
         }
         
-        if (mobStats.Count > 0)
+        if (mobStats.Count > 0 || mobBurnedInfo.Count > 0)
             await mob.ModifyTemporaryStats(s =>
             {
-                s.ResetByReason(attack.SkillID);
-                foreach (var tuple in mobStats)
-                    s.Set(tuple.Item1, tuple.Item2, attack.SkillID, expire);
+                if (mobStats.Count > 0)
+                {
+                    s.ResetByReason(attack.SkillID);
+                    foreach (var tuple in mobStats)
+                        s.Set(tuple.Item1, tuple.Item2, attack.SkillID, expire);
+                }
+
+                if (mobBurnedInfo.Count > 0)
+                {
+                    foreach (var burned in mobBurnedInfo)
+                        s.SetBurnedInfo(burned);
+                }
             });
     }
     
@@ -191,7 +209,8 @@ public class SkillManager : ISkillManager
                 stats.Add(Tuple.Create(TemporaryStatType.MaxHP, level.X));
                 stats.Add(Tuple.Create(TemporaryStatType.MaxMP, level.Y));
                 break;
-            case Skill.CrusaderComboAttack or Skill.SoulmasterComboAttack:
+            case Skill.CrusaderComboAttack:
+            case Skill.SoulmasterComboAttack:
                 stats.Add(Tuple.Create(TemporaryStatType.ComboCounter, (short)1));
                 break;
             case Skill.KnightFireCharge:

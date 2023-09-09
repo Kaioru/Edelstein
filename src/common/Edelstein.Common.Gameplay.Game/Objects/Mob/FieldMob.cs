@@ -32,13 +32,13 @@ public class FieldMob :
     ) : base(new FieldMobMoveAction(template.MoveAbility, isFacingLeft), position, foothold)
     {
         _lock = new SemaphoreSlim(1, 1);
-        LastUpdateVenom = DateTime.UtcNow;
+        LastUpdateBurned = DateTime.UtcNow;
         
         Template = template;
         TemporaryStats = new MobTemporaryStats();
         HP = template.MaxHP;
         MP = template.MaxMP;
-
+        
         UpdateStats().Wait();
     }
 
@@ -51,7 +51,7 @@ public class FieldMob :
     public int HP { get; private set; }
     public int MP { get; private set; }
     
-    private DateTime LastUpdateVenom { get; set; }
+    private DateTime LastUpdateBurned { get; set; }
     
     public async Task Damage(int damage, IFieldUser? attacker = null)
     {
@@ -92,12 +92,23 @@ public class FieldMob :
 
         action.Invoke(context);
 
-        if (context.HistoryReset.Records.Any())
+        if (context.HistoryReset.Records.Any() || context.HistoryReset.BurnedInfo.Any())
         {
             var resetPacket = new PacketWriter(PacketSendOperations.MobStatReset);
 
             resetPacket.WriteInt(ObjectID ?? 0);
             resetPacket.WriteMobTemporaryStatsFlag(context.HistoryReset);
+
+            if (context.HistoryReset.BurnedInfo.Count > 0)
+            {
+                resetPacket.WriteInt(context.HistoryReset.BurnedInfo.Count);
+                foreach (var burned in context.HistoryReset.BurnedInfo)
+                {
+                    resetPacket.WriteInt(burned.CharacterID);
+                    resetPacket.WriteInt(burned.SkillID);
+                }
+            }
+            
             resetPacket.WriteByte(0); // CalcDamageStatIndex
             resetPacket.WriteBool(false); // Movement stuff
 
@@ -105,7 +116,7 @@ public class FieldMob :
                 await FieldSplit.Dispatch(resetPacket.Build());
         }
 
-        if (context.HistorySet.Records.Any())
+        if (context.HistorySet.Records.Any() || context.HistorySet.BurnedInfo.Any())
         {
             var setPacket = new PacketWriter(PacketSendOperations.MobStatSet);
 
@@ -190,8 +201,28 @@ public class FieldMob :
 
     public async Task OnTick(DateTime now)
     {
+        if (TemporaryStats.BurnedInfo.Count > 0)
+        {
+            foreach (var burned in TemporaryStats.BurnedInfo)
+            {
+                var times = (int)((now - LastUpdateBurned).TotalMilliseconds / burned.Interval.TotalMilliseconds);
+                var hp = HP - times * burned.Damage;
+
+                // fixedDamage check
+                // onlyNormalAttack check
+                
+                if (times > 0)
+                    HP = Math.Max(1, hp);
+            }
+        }
+
+        LastUpdateBurned = now;
+        
         var expiredStats = TemporaryStats.Records
             .Where(kv => kv.Value.DateExpire < now)
+            .ToImmutableList();
+        var expiredBurned = TemporaryStats.BurnedInfo
+            .Where(b => b.DateExpire < now)
             .ToImmutableList();
 
         if (expiredStats.Count > 0)
@@ -203,25 +234,13 @@ public class FieldMob :
             });
         }
 
-        var venomStat = TemporaryStats[MobTemporaryStatType.Venom];
-        if (venomStat != null)
+        if (expiredBurned.Count > 0)
         {
-            var end = (DateTime)(venomStat.DateExpire == null 
-                ? now 
-                : venomStat.DateExpire >= now 
-                    ? now 
-                    : venomStat.DateExpire);
-            var times = (end - LastUpdateVenom).Seconds;
-            var damage = venomStat.Value;
-            
-            // fixedDamage check
-            // onlyNormalAttack check
-
-            var hp = HP - times * damage;
-            
-            HP = Math.Max(1, hp);
+            await ModifyTemporaryStats(s =>
+            {
+                foreach (var burned in expiredBurned)
+                    s.ResetBurnedInfo(burned);
+            });
         }
-
-        LastUpdateVenom = now;
     }
 }

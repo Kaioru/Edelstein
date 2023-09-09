@@ -33,7 +33,19 @@ public class ModifyMobTemporaryStatsContext : IModifyMobTemporaryStatContext
             Reason = reason,
             DateExpire = dateExpire
         });
-    
+
+    public void SetBurnedInfo(IMobBurnedInfo info)
+    {
+        var burned = _stats.BurnedInfo
+            .FirstOrDefault(b => b.CharacterID == info.CharacterID && b.SkillID == info.SkillID);
+
+        if (burned != null)
+            ResetBurnedInfo(burned);
+        
+        _stats.BurnedInfo.Add(info);
+        HistorySet.BurnedInfo.Add(info);
+    }
+
     public void ResetByType(MobTemporaryStatType type)
     {
         if (_stats.Records.ContainsKey(type))
@@ -54,5 +66,36 @@ public class ModifyMobTemporaryStatsContext : IModifyMobTemporaryStatContext
     {
         foreach (var type in _stats.Records.Keys)
             ResetByType(type);
+    }
+    
+    public void ResetBurnedInfo(IMobBurnedInfo info)
+    {
+        _stats.BurnedInfo.Remove(info);
+        HistoryReset.BurnedInfo.Add(info);
+    }
+
+    public void ResetBurnedInfoByCharacter(int characterID)
+    {
+        var burned = _stats.BurnedInfo.FirstOrDefault(i => i.CharacterID == characterID);
+        if (burned == null) return;
+        _stats.BurnedInfo.Remove(burned);
+        HistoryReset.BurnedInfo.Add(burned);
+    }
+
+    public void ResetBurnedInfoBySkill(int skillID) 
+    {
+        var burned = _stats.BurnedInfo.FirstOrDefault(i => i.SkillID == skillID);
+        if (burned == null) return;
+        _stats.BurnedInfo.Remove(burned);
+        HistoryReset.BurnedInfo.Add(burned);
+    }
+    
+    public void ResetBurnedInfoAll()
+    {
+        foreach (var burned in _stats.BurnedInfo.ToImmutableList())
+        {
+            _stats.BurnedInfo.Remove(burned);
+            HistoryReset.BurnedInfo.Add(burned);
+        }
     }
 }
