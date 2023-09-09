@@ -431,6 +431,36 @@ public class DamageCalculator : IDamageCalculator
         return result;
     }
     
+    public async Task<int> CalculateBurnedDamage(
+        ICharacter character, 
+        IFieldUserStats stats, 
+        IFieldMob mob, 
+        IFieldMobStats mobStats, 
+        int skillID, 
+        int skillLevel
+    )
+    {
+        var skill = skillID > 0 ? await _skills.Retrieve(skillID) : null;
+        var level = skill?[skillLevel];
+        var damage = (stats.DamageMin + stats.DamageMax) / 2d;
+        
+        if (mobStats.Level > stats.Level)
+            damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
+        
+        var damageAdjustedByElemAttr = skill != null
+            ? GetDamageAdjustedByElemAttr(damage, mobStats.ElementAttributes[skill.Element], 1.0, 0.0)
+            : damage;
+
+        damage = damageAdjustedByElemAttr;
+        damage *= (100d - (mobStats.PDR * stats.IMDr / -100 + mobStats.PDR)) / 100d;
+        
+        var skillDamageR = level?.Dot ?? 100d;
+
+        damage *= skillDamageR / 100d;
+        
+        return Math.Max(1, (int)damage);
+    }
+
     public async Task<IUserAttackDamage[]> AdjustDamageDecRate(IUserAttack attack, int count, IUserAttackDamage[] damage)
     {
         var rate = 1d;

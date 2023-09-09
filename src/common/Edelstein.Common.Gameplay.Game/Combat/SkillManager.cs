@@ -53,7 +53,14 @@ public class SkillManager : ISkillManager
             mobBurnedInfo.Add(new MobBurnedInfo(
                 user.Character.ID,
                 attack.SkillID,
-                (int)(user.Stats.DamageMax * level.Dot / 100d),
+                await user.Damage.CalculateBurnedDamage(
+                    user.Character,
+                    user.Stats,
+                    mob,
+                    mob.Stats,
+                    attack.SkillID,
+                    user.Stats.SkillLevels[attack.SkillID]
+                ),
                 TimeSpan.FromSeconds(level.DotInterval),
                 now,
                 now.AddSeconds(level.DotTime)

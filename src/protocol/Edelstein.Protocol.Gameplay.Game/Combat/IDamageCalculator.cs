@@ -27,5 +27,14 @@ public interface IDamageCalculator
         IUserAttack attack
     );
 
+    Task<int> CalculateBurnedDamage(
+        ICharacter character,
+        IFieldUserStats stats,
+        IFieldMob mob,
+        IFieldMobStats mobStats,
+        int skillID,
+        int skillLevel
+    );
+
     Task<IUserAttackDamage[]> AdjustDamageDecRate(IUserAttack attack, int count, IUserAttackDamage[] damage);
 }
