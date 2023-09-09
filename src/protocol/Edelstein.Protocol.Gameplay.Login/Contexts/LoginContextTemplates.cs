@@ -9,5 +9,6 @@ public record LoginContextTemplates(
     ITemplateManager<IItemTemplate> Item,
     ITemplateManager<IItemStringTemplate> ItemString,
     ITemplateManager<ISkillTemplate> Skill,
+    ITemplateManager<ISkillStringTemplate> SkillString,
     ITemplateManager<IWorldTemplate> World
 );

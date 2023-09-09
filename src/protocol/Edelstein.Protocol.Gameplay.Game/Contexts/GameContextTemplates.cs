@@ -12,6 +12,7 @@ public record GameContextTemplates(
     ITemplateManager<IItemTemplate> Item,
     ITemplateManager<IItemStringTemplate> ItemString,
     ITemplateManager<ISkillTemplate> Skill,
+    ITemplateManager<ISkillStringTemplate> SkillString,
     ITemplateManager<IFieldTemplate> Field,
     ITemplateManager<IFieldStringTemplate> FieldString,
     ITemplateManager<INPCTemplate> NPC,
