@@ -54,7 +54,7 @@ public class StartPluginBootstrap<TContext> : IBootstrap
         foreach (var plugin in plugins)
         {
             await plugin.OnStop();
-            _logger.LogInformation("{Context} plugin {ID} stopped", typeof(TContext).Name, plugin.ID);
+            _logger.LogDebug("{Context} plugin {ID} stopped", typeof(TContext).Name, plugin.ID);
         }
     }
 }
