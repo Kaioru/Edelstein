@@ -205,14 +205,18 @@ public class FieldMob :
         {
             foreach (var burned in TemporaryStats.BurnedInfo)
             {
+                var attacker = Field?
+                    .GetPool(FieldObjectType.User)?
+                    .Objects
+                    .OfType<IFieldUser>()
+                    .FirstOrDefault(o => o.ObjectID == burned.CharacterID);
                 var times = (int)((now - LastUpdateBurned).TotalMilliseconds / burned.Interval.TotalMilliseconds);
-                var hp = HP - times * burned.Damage;
+                var damage = times * burned.Damage;
 
                 // fixedDamage check
                 // onlyNormalAttack check
-                
-                if (times > 0)
-                    HP = Math.Max(1, hp);
+
+                _ = Damage(Math.Min(HP - 1, damage), attacker);
             }
         }
 
