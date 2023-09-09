@@ -21,6 +21,7 @@ public class UserOnDisconnectPlug : AbstractUserOnDisconnectPlug<IGameStageUser>
 
     public override async Task Handle(IPipelineContext ctx, UserOnDisconnect<IGameStageUser> message)
     {
+        _ = message.User.FieldUser?.EndConversation();
         if (message.User is { Field: { }, FieldUser: { }, Character: { } })
         {
             message.User.Character.FieldID = message.User.Field.Template.ForcedReturn ?? message.User.Field.Template.ID;
