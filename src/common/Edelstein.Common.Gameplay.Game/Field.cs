@@ -61,6 +61,21 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
         var col = (position.X - Template.Bounds.Left) / ScreenWidthOffset;
         return GetSplit(row, col);
     }
+    
+    public IFieldSplit?[] GetSplits(IRectangle2D bounds)
+    {
+        var minRow = (bounds.Top - Template.Bounds.Top) / ScreenHeightOffset;
+        var maxRow = (bounds.Bottom - Template.Bounds.Top) / ScreenHeightOffset;
+        var minCol = (bounds.Left - Template.Bounds.Left) / ScreenWidthOffset;
+        var maxCol = (bounds.Right - Template.Bounds.Left) / ScreenWidthOffset;
+        var splits = new IFieldSplit?[(maxRow - minRow + 1) * (maxCol - minCol + 1)];
+        var index = 0;
+        
+        for (var row = minRow; row <= maxRow; row++)
+        for (var col = minCol; col <= maxCol; col++)
+            splits[index++] = GetSplit(row, col);
+        return splits;
+    }
 
     public IFieldSplit?[] GetEnclosingSplits(IPoint2D position)
     {
