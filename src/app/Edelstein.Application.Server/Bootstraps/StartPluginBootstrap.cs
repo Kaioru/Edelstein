@@ -37,13 +37,13 @@ public class StartPluginBootstrap<TContext> : IBootstrap
         foreach (var host in hosted)
         {
             await host.Item1.OnInit(host.Item2, _context);
-            _logger.LogInformation("{Context} plugin {ID} initialised", typeof(TContext).Name, host.Item1.ID);
+            _logger.LogDebug("{Context} plugin {ID} initialised", typeof(TContext).Name, host.Item1.ID);
         }
         
         foreach (var host in hosted)
         {
             await host.Item1.OnStart(host.Item2, _context);
-            _logger.LogInformation("{Context} plugin {ID} started", typeof(TContext).Name, host.Item1.ID);
+            _logger.LogDebug("{Context} plugin {ID} started", typeof(TContext).Name, host.Item1.ID);
         }
     }
 
