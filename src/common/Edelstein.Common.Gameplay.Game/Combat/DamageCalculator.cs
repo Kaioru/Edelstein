@@ -144,6 +144,9 @@ public class DamageCalculator : IDamageCalculator
             if (weaponType is WeaponType.Wand or WeaponType.Staff)
                 damage *= 0.2;
 
+            if (attack.AttackAction is 41 or 57)
+                damage *= 0.1;
+
             if (mobStats.Level > stats.Level)
                 damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
 
@@ -298,7 +301,7 @@ public class DamageCalculator : IDamageCalculator
                     random.Skip();
             }
             
-            damage = Math.Min(damage, 999999);
+            damage = Math.Min(Math.Max(1, damage), 999999);
             result[i] = new UserAttackDamage((int)damage, critical);
         }
         
@@ -407,7 +410,7 @@ public class DamageCalculator : IDamageCalculator
                     random.Skip();
             }
             
-            damage = Math.Min(damage, 999999);
+            damage = Math.Min(Math.Max(1, damage), 999999);
             result[i] = new UserAttackDamage((int)damage, critical);
         }
 

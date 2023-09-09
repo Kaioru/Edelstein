@@ -7,6 +7,8 @@ public interface IUserAttack
     
     int Keydown { get; }
     
+    int AttackAction { get; }
+    
     bool IsFinalAfterSlashBlast { get; }
     bool IsSoulArrow { get; }
     bool IsShadowPartner { get; }

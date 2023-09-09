@@ -81,6 +81,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                 skillID,
                 skillLevel,
                 message.Attack.Keydown,
+                message.Attack.AttackAction,
                 message.Attack.IsFinalAfterSlashBlast,
                 message.Attack.IsSoulArrow,
                 message.Attack.IsShadowPartner,

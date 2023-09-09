@@ -6,6 +6,7 @@ public record UserAttack(
     int SkillID, 
     int SkillLevel, 
     int Keydown, 
+    int AttackAction,
     bool IsFinalAfterSlashBlast, 
     bool IsSoulArrow, 
     bool IsShadowPartner, 
