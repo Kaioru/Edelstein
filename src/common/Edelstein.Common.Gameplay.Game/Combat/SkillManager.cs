@@ -179,6 +179,8 @@ public class SkillManager : ISkillManager
             case Skill.FighterWeaponBooster:
             case Skill.PageWeaponBooster:
             case Skill.SpearmanWeaponBooster:
+            case Skill.Mage1MagicBooster:
+            case Skill.Mage2MagicBooster:
                 stats.Add(Tuple.Create(TemporaryStatType.Booster, level.X));
                 break;
             case Skill.FighterPowerGuard:
