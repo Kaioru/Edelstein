@@ -207,9 +207,8 @@ public class FieldMob :
             {
                 var attacker = Field?
                     .GetPool(FieldObjectType.User)?
-                    .Objects
-                    .OfType<IFieldUser>()
-                    .FirstOrDefault(o => o.ObjectID == burned.CharacterID);
+                    .GetObject(burned.CharacterID) 
+                    as IFieldUser;
                 var times = (int)((now - LastUpdateBurned).TotalMilliseconds / burned.Interval.TotalMilliseconds);
                 var damage = times * burned.Damage;
 
