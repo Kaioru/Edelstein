@@ -37,6 +37,10 @@ public class RueGamePlugin : IGamePlugin
             ctx.Templates.Item,
             ctx.Templates.ItemString
         ));
+        commandManager.Insert(new SkillCommand(
+            ctx.Templates.Skill,
+            ctx.Templates.SkillString
+        ));
         commandManager.Insert(new StatCommand());
         commandManager.Insert(new TemporaryStatCommand());
 
