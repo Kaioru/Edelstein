@@ -25,8 +25,10 @@ public interface IFieldUser :
 
     IPacket GetSetFieldPacket();
 
-    Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt);
-    Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt);
+    Task Message(string message);
+    
+    Task<T> Prompt<T>(Func<IConversationSpeaker, T> prompt, T def);
+    Task<T> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt, T def);
 
     Task Converse(
         IConversation conversation,

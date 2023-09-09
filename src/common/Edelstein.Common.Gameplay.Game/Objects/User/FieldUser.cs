@@ -94,6 +94,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
         return packet.Build();
     }
+    
     public override IPacket GetEnterFieldPacket()
     {
         using var packet = new PacketWriter(PacketSendOperations.UserEnterField);
@@ -166,12 +167,21 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public Task Dispatch(IPacket packet) => StageUser.Dispatch(packet);
     public Task Disconnect() => StageUser.Disconnect();
 
-    public Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt) =>
-        Prompt((s1, s2) => prompt.Invoke(s1));
-
-    public async Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt)
+    public Task Message(string message)
     {
-        var result = default(T);
+        // TODO more message types
+        var packet = new PacketWriter(PacketSendOperations.Message);
+        packet.WriteByte(0xA);
+        packet.WriteString(message);
+        return Dispatch(packet.Build());
+    }
+
+    public Task<T> Prompt<T>(Func<IConversationSpeaker, T> prompt, T def) =>
+        Prompt((s1, s2) => prompt.Invoke(s1), def);
+
+    public async Task<T> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt, T def)
+    {
+        var result = def;
         var conversation = new PromptConversation((self, target) => result = prompt.Invoke(self, target));
 
         await Converse(conversation);

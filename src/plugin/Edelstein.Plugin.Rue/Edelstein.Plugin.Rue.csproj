@@ -2,4 +2,14 @@
 
   <Import Project="..\Plugin.targets" />
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\Edelstein.Common.Utilities\Edelstein.Common.Utilities.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin.Game\Edelstein.Protocol.Plugin.Game.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNet.Glob" Version="3.1.3" />
+    <PackageReference Include="PowerArgs" Version="4.0.2" />
+  </ItemGroup>
+
 </Project>
