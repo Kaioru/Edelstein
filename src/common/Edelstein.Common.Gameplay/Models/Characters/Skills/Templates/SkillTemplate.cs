@@ -70,6 +70,7 @@ public class SkillTemplate : ISkillTemplate
                     i => i,
                     i => (ISkillTemplateLevel)new SkillTemplateLevelCommon(i, common.ResolveAll())
                 );
+            MaxLevel = (short)maxLevel;
         }
         else
         {
@@ -80,8 +81,7 @@ public class SkillTemplate : ISkillTemplate
                     c => Convert.ToInt32(c.Name),
                     c => (ISkillTemplateLevel)new SkillTemplateLevel(c.ResolveAll())
                 );
+            MaxLevel = (short)(Levels?.Count ?? 0);
         }
-
-        MaxLevel = (short)(Levels?.Count ?? 0);
     }
 }
