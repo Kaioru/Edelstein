@@ -285,6 +285,9 @@ public class DamageCalculator : IDamageCalculator
 
             if (mob.Template.IsBoss)
                 random.Skip();
+            
+            if (attack.Keydown > 0)
+                damage *= (90 * attack.Keydown / SkillConstants.GetMaxGaugeTime(attack.SkillID) + 10) / 100d;
 
             if (isDarkForce)
                 damage += damage * (darkForceLevel?.Damage ?? 0) / 100d;
@@ -392,11 +395,11 @@ public class DamageCalculator : IDamageCalculator
                 damage += damage * criticalDamageR / 100d;
             }
 
-            if (attack.Keydown > 0)
-                damage *= (90 * attack.Keydown / SkillConstants.GetMaxGaugeTime(attack.SkillID) + 10) / 100d;
-            
             if (mob.Template.IsBoss)
                 random.Skip();
+
+            if (attack.Keydown > 0)
+                damage *= (90 * attack.Keydown / SkillConstants.GetMaxGaugeTime(attack.SkillID) + 10) / 100d;
 
             if (!mob.Template.IsBoss)
             {
