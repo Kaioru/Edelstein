@@ -80,9 +80,12 @@ jobs:
           ${{ runner.os }}-nuget
     - name: Install EntityFramework Core tools
       run: dotnet tool install --global dotnet-ef
-    - name: Publish
-      run: dotnet publish -c Release -r ${{ matrix.runtime }} --output artifacts-${{ matrix.runtime }} -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:SelfContained=true
-    - name: Bundle migrations
+    - name: Publish (apps)
+      run: |
+        for project in src/app/*/ ; do
+          dotnet publish $project -c Release -r ${{ matrix.runtime }} --output artifacts-${{ matrix.runtime }} -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:SelfContained=true
+        done
+    - name: Bundle migrations (scripts)
       run: |
         dotnet ef migrations script --project src/common/Edelstein.Common.Database/ --output artifacts-${{ matrix.runtime }}/migrate-01-gameplay.sql --idempotent
         dotnet ef migrations script --project src/common/Edelstein.Common.Services.Auth/ --output artifacts-${{ matrix.runtime }}/migrate-02-auth.sql --idempotent
@@ -101,6 +104,11 @@ jobs:
         mkdir artifacts-${{ matrix.runtime }}/data
         mkdir artifacts-${{ matrix.runtime }}/scripts
         mkdir artifacts-${{ matrix.runtime }}/plugins
+    - name: Publish (plugins)
+      run: |
+        for project in src/plugin/*/ ; do
+          dotnet publish $project -c Release --output artifacts-${{ matrix.runtime }}/plugins/$project
+        done
     - name: Compress
       run: cd artifacts-${{ matrix.runtime }}; zip ../server-${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip *; cd ..
     - name: Store artifacts
