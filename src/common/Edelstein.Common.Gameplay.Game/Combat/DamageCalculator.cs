@@ -372,6 +372,16 @@ public class DamageCalculator : IDamageCalculator
                 damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
 
             damage += damage * stats.MDamR / 100d;
+
+            var elementAmpSkillID = SkillConstants.GetMagicAmplificationSkill(character.Job);
+            if (elementAmpSkillID > 0)
+            {
+                var elementAmpSkill = await _skills.Retrieve(elementAmpSkillID);
+                var elementAmpLevel = elementAmpSkill?[stats.SkillLevels[elementAmpSkillID]];
+
+                if (elementAmpLevel != null)
+                    damage *= elementAmpLevel.Y / 100d;
+            }
             
             // ElemBoost
             // Mage1 MagicComposition

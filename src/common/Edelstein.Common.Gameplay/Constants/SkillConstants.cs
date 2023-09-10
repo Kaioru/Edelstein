@@ -114,4 +114,25 @@ public static class SkillConstants
             Skill.PaladinDivineCharge => Element.Holy,
             _ => Element.Physical
         };
+
+    public static bool IsCorrectJobForSkillRoot(int jobID, int skillRoot)
+    {
+        if (skillRoot % 100 == 0)
+            return skillRoot / 100 == jobID / 100;
+        return skillRoot / 10 == jobID / 10 && jobID % 10 >= skillRoot % 10;
+    }
+    
+    public static int GetMagicAmplificationSkill(int jobID)
+    {
+        if (IsCorrectJobForSkillRoot(jobID, Job.MageFirePoison))
+            return Skill.Mage1ElementAmplification;
+        if (IsCorrectJobForSkillRoot(jobID, Job.MageThunderCold))
+            return Skill.Mage2ElementAmplification;
+        if (IsCorrectJobForSkillRoot(jobID, Job.Flamewizard3))
+            return Skill.FlamewizardElementAmplification;
+        if (IsCorrectJobForSkillRoot(jobID, Job.Evan3))
+            return Skill.EvanElementAmplification;
+        
+        return 0;
+    }
 }
