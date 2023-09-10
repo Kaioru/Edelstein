@@ -9,4 +9,6 @@ public interface IFieldSummoned :
     
     MoveAbilityType MoveAbility { get; }
     SummonedAssistType AssistType { get; }
+    
+    DateTime? DateExpire { get; }
 }

@@ -1,8 +1,12 @@
-﻿using Edelstein.Common.Gameplay.Constants;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
+using Edelstein.Common.Gameplay.Game.Objects.Summoned;
 using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
+using Edelstein.Protocol.Gameplay.Game.Objects.Summoned;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
@@ -170,11 +174,13 @@ public class SkillManager : ISkillManager
     public async Task<bool> ProcessUserSkill(IFieldUser user, int skillID)
     {
         var skill = await _skills.Retrieve(skillID);
-        var level = skill?.Levels[user.Stats.SkillLevels[skillID]];
+        var skillLevel = user.Stats.SkillLevels[skillID];
+        var level = skill?.Levels[skillLevel];
 
         if (skill == null || level == null) return false;
         if (level.MPCon > user.Character.MP) return false;
-        
+
+        var summoned = new List<FieldSummoned>();
         var stats = new List<Tuple<TemporaryStatType, short>>();
         DateTime? expire = DateTime.UtcNow.AddSeconds(level.Time);
 
@@ -269,17 +275,41 @@ public class SkillManager : ISkillManager
             case Skill.BmageStance:
                 stats.Add(Tuple.Create(TemporaryStatType.Stance, level.Prop));
                 break;
-            case Skill.DarkknightBeholder:
-                stats.Add(Tuple.Create(TemporaryStatType.Beholder, level.X));
-                break;
             case Skill.HeroEnrage:
                 stats.Add(Tuple.Create(TemporaryStatType.Enrage, (short)(
                     level.X * 100 +
                     level.MobCount
                 )));
                 break;
+            case Skill.DarkknightBeholder:
+                stats.Add(Tuple.Create(TemporaryStatType.Beholder, level.X));
+                summoned.Add(new FieldSummoned(
+                    user,
+                    skillID,
+                    (byte)skillLevel,
+                    MoveAbilityType.Walk,
+                    SummonedAssistType.Heal,
+                    user.Position,
+                    user.Foothold,
+                    expire
+                ));
+                break;
+            case Skill.Archmage1Ifrit:
+            case Skill.Archmage2Elquines:
+            case Skill.FlamewizardIfrit:
+                summoned.Add(new FieldSummoned(
+                    user,
+                    skillID,
+                    (byte)skillLevel,
+                    MoveAbilityType.Walk,
+                    SummonedAssistType.Attack,
+                    user.Position,
+                    user.Foothold,
+                    expire
+                ));
+                break;
         }
-        
+
         await user.Modify(m =>
         {
             m.Stats(s => {
@@ -306,7 +336,30 @@ public class SkillManager : ISkillManager
                         s.Set(tuple.Item1, tuple.Item2, skillID, expire);
                 });
         });
-        
+
+        if (summoned.Count > 0)
+        {
+            var existingSummons = user.Owned
+                .OfType<IFieldSummoned>()
+                .ToImmutableList();
+            foreach (var summon in summoned)
+            {
+                var existing = existingSummons
+                    .FirstOrDefault(o => o.SkillID == summon.SkillID);
+
+                if (existing != null)
+                {
+                    user.Owned.Remove(existing);
+                    if (user.Field != null)
+                        await user.Field.Leave(existing);
+                }
+
+                user.Owned.Add(summon);
+                if (user.Field != null)
+                    await user.Field.Enter(summon, () => summon.GetEnterFieldPacket(1));
+            }
+        }
+
         return true;
     }
 }

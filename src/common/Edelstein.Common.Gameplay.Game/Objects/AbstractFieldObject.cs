@@ -8,7 +8,6 @@ namespace Edelstein.Common.Gameplay.Game.Objects;
 
 public abstract class AbstractFieldObject : IFieldObject
 {
-
     protected AbstractFieldObject(IPoint2D position) => Position = position;
 
     private bool IsHidden { get; set; }

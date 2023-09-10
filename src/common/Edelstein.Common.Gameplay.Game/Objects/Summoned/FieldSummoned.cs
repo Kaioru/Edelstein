@@ -7,10 +7,14 @@ using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Spatial;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
+using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Summoned;
 
-public class FieldSummoned : AbstractFieldLife<IFieldSummonedMovePath, IFieldSummonedMoveAction>, IFieldSummoned
+public class FieldSummoned : 
+    AbstractFieldLife<IFieldSummonedMovePath, IFieldSummonedMoveAction>, 
+    IFieldSummoned,
+    ITickable
 {
     public FieldSummoned(
         IFieldUser owner, 
@@ -19,7 +23,8 @@ public class FieldSummoned : AbstractFieldLife<IFieldSummonedMovePath, IFieldSum
         MoveAbilityType moveAbility, 
         SummonedAssistType assistType, 
         IPoint2D position,
-        IFieldFoothold? foothold = null
+        IFieldFoothold? foothold = null,
+        DateTime? dateExpire = null
     ) : base(new FieldSummonedMoveAction(Convert.ToByte(owner.Action.Direction == MoveActionDirection.Left)), position, foothold)
     {
         Owner = owner;
@@ -27,6 +32,7 @@ public class FieldSummoned : AbstractFieldLife<IFieldSummonedMovePath, IFieldSum
         SkillLevel = skillLevel;
         MoveAbility = moveAbility;
         AssistType = assistType;
+        DateExpire = dateExpire;
     }
     
     public IFieldUser Owner { get; }
@@ -37,6 +43,8 @@ public class FieldSummoned : AbstractFieldLife<IFieldSummonedMovePath, IFieldSum
     public MoveAbilityType MoveAbility { get; }
     public SummonedAssistType AssistType { get; }
     
+    public DateTime? DateExpire { get; }
+
     public override FieldObjectType Type => FieldObjectType.Summoned;
     
     public Task Move(IPoint2D position)
@@ -46,14 +54,14 @@ public class FieldSummoned : AbstractFieldLife<IFieldSummonedMovePath, IFieldSum
         => GetEnterFieldPacket(0);
     
     public override IPacket GetLeaveFieldPacket()
-        => GetEnterFieldPacket(3);
+        => GetLeaveFieldPacket(3);
 
     public IPacket GetEnterFieldPacket(byte enterType)
     {
         using var packet = new PacketWriter(PacketSendOperations.SummonedEnterField);
 
         packet.WriteInt(Owner.Character.ID);
-        packet.WriteInt(ObjectID!.Value);
+        packet.WriteInt(ObjectID ?? 0);
 
         packet.WriteInt(SkillID);
         packet.WriteByte(Owner.Character.Level);
@@ -78,7 +86,7 @@ public class FieldSummoned : AbstractFieldLife<IFieldSummonedMovePath, IFieldSum
         using var packet = new PacketWriter(PacketSendOperations.SummonedLeaveField);
 
         packet.WriteInt(Owner.Character.ID);
-        packet.WriteInt(ObjectID!.Value);
+        packet.WriteInt(ObjectID ?? 0);
         packet.WriteByte(leaveType);
 
         return packet.Build();
@@ -89,9 +97,16 @@ public class FieldSummoned : AbstractFieldLife<IFieldSummonedMovePath, IFieldSum
         using var packet = new PacketWriter(PacketSendOperations.SummonedMove);
 
         packet.WriteInt(Owner.Character.ID);
-        packet.WriteInt(ObjectID!.Value);
+        packet.WriteInt(ObjectID ?? 0);
         packet.Write(ctx);
 
         return packet.Build();
+    }
+    
+    public async Task OnTick(DateTime now)
+    {
+        if (Field == null) return;
+        if (now > DateExpire) 
+            await Field.Leave(this, () => GetLeaveFieldPacket(0));
     }
 }

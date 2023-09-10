@@ -161,8 +161,9 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
                     await split.Unobserve(observer);
             await obj.FieldSplit.Leave(obj, getLeavePacket: getLeavePacket);
         }
+
         if (pool != null) await pool.Leave(obj);
-        
+
         if (obj is IFieldUser owner)
             foreach (var owned in owner.Owned)
                 await Leave(owned);
