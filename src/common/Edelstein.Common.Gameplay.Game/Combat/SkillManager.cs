@@ -247,6 +247,11 @@ public class SkillManager : ISkillManager
             case Skill.KnightCombatOrders:
                 stats.Add(Tuple.Create(TemporaryStatType.CombatOrders, level.X));
                 break;
+            case Skill.Mage1Seal:
+            case Skill.Mage2Seal:
+            case Skill.FlamewizardSeal:
+                mobStats.Add(Tuple.Create(MobTemporaryStatType.Seal, (short)1));
+                break;
             case Skill.Wizard1Slow:
             case Skill.Wizard2Slow:
             case Skill.FlamewizardSlow:
