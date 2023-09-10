@@ -1,9 +1,10 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Utilities.Packets;
-using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
+using Edelstein.Protocol.Gameplay.Game.Combat.Damage.Requests;
 using Edelstein.Protocol.Utilities.Packets;
 
-namespace Edelstein.Common.Gameplay.Game.Combat;
+namespace Edelstein.Common.Gameplay.Game.Combat.Damage.Requests;
 
 public class AttackRequest : IAttackRequest, IPacketReadable
 {

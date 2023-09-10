@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Combat;
+﻿using Edelstein.Protocol.Gameplay.Game.Combat.Damage.Requests;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 
 namespace Edelstein.Protocol.Gameplay.Game.Contracts;

@@ -1,5 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Utilities.Pipelines;
 

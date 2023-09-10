@@ -3,7 +3,7 @@ using Edelstein.Protocol.Gameplay.Game.Objects.Summoned;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 
-namespace Edelstein.Protocol.Gameplay.Game.Combat;
+namespace Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 
 public interface IDamageCalculator
 {

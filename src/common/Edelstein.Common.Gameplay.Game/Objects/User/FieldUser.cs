@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using Edelstein.Common.Gameplay.Game.Combat;
+using Edelstein.Common.Gameplay.Game.Combat.Damage;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Models.Characters;
@@ -8,7 +8,7 @@ using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game;
-using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects;

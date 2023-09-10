@@ -10,10 +10,10 @@ public class FieldOnPacketSummonedSkillPlug : IPipelinePlug<FieldOnPacketSummone
 
     public FieldOnPacketSummonedSkillPlug(ISkillManager skillManager) 
         => _skillManager = skillManager;
-    
+
     public async Task Handle(IPipelineContext ctx, FieldOnPacketSummonedSkill message)
     {
-        if (!await _skillManager.ProcessUserSkill(message.User, message.SkillID)) return;
-        // TODO
+        if (await _skillManager.Check(message.User, message.SkillID))
+            await _skillManager.HandleSkillUse(message.User, message.SkillID);
     }
 }

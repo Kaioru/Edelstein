@@ -1,6 +1,6 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Combat;
+﻿using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 
-namespace Edelstein.Common.Gameplay.Game.Combat;
+namespace Edelstein.Common.Gameplay.Game.Combat.Damage;
 
 public record UserAttack(
     int SkillID, 

@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Combat;
+﻿using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Models.Accounts;

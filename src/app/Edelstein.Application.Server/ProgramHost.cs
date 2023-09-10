@@ -155,6 +155,12 @@ public class ProgramHost : IHostedService
                         b.RegisterType<SkillManager>().As<ISkillManager>().SingleInstance();
                         
                         b
+                            .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(GameStage))!)
+                            .Where(t => t.IsClass && t.IsAssignableTo<ISkillHandler>())
+                            .As<ISkillHandler>()
+                            .SingleInstance();
+                        
+                        b
                             .RegisterInstance(options)
                             .As<IGameStageOptions>()
                             .As<ProgramConfigStageGame>()

@@ -1,6 +1,6 @@
-﻿using Edelstein.Common.Gameplay.Game.Combat;
+﻿using Edelstein.Common.Gameplay.Game.Combat.Damage.Requests;
 using Edelstein.Common.Utilities.Packets;
-using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Utilities.Packets;

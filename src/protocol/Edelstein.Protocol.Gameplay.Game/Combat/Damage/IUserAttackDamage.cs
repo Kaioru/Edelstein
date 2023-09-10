@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay.Game.Combat;
+﻿namespace Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 
 public interface IUserAttackDamage
 {

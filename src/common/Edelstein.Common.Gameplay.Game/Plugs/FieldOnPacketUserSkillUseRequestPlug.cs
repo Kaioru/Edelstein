@@ -15,7 +15,10 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
     
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserSkillUseRequest message)
     {
-        if (!await _skillManager.ProcessUserSkill(message.User, message.SkillID)) return;
+        if (!await _skillManager.Check(message.User, message.SkillID)) 
+            return;
+
+        await _skillManager.HandleSkillUse(message.User, message.SkillID);
         
         await message.User.Dispatch(new PacketWriter(PacketSendOperations.SkillUseResult)
             .WriteBool(true)

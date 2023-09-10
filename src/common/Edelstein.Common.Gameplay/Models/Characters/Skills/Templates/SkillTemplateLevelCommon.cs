@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Duey.Types;
+﻿using Duey.Types;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
@@ -9,6 +8,8 @@ namespace Edelstein.Common.Gameplay.Models.Characters.Skills.Templates;
 
 public class SkillTemplateLevelCommon : ISkillTemplateLevel
 {
+    public int Level { get; }
+    
     public short HP { get; }
     public short MP { get; }
 
@@ -128,6 +129,8 @@ public class SkillTemplateLevelCommon : ISkillTemplateLevel
 
     public SkillTemplateLevelCommon(int level, IDataProperty property)
     {
+        Level = level;
+        
         var x = new Argument("x", level);
 
         var u = new Function("u", "ceil(x)", "x");

@@ -1,9 +1,9 @@
 ﻿using Edelstein.Common.Utilities.Packets;
-using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Combat.Damage.Requests;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
 
-namespace Edelstein.Common.Gameplay.Game.Combat;
+namespace Edelstein.Common.Gameplay.Game.Combat.Damage.Requests;
 
 public class SummonedAttackRequest : ISummonedAttackRequest, IPacketReadable
 {

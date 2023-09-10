@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Constants;
-using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
+﻿using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using PowerArgs;

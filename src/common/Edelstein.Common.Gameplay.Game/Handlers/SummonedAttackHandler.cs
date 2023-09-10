@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Game.Combat;
-using Edelstein.Common.Gameplay.Game.Objects.Summoned;
+﻿using Edelstein.Common.Gameplay.Game.Combat.Damage.Requests;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;

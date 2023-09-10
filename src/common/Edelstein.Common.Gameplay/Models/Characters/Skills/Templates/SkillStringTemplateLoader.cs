@@ -1,9 +1,6 @@
-﻿using System.Collections.Immutable;
-using Edelstein.Common.Gameplay.Models.Inventories.Templates;
-using Edelstein.Common.Utilities.Templates;
+﻿using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
-using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Models.Characters.Skills.Templates;

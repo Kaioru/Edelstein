@@ -1,9 +1,10 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Constants;
-using Edelstein.Common.Gameplay.Game.Combat;
+using Edelstein.Common.Gameplay.Game.Combat.Damage;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Utilities.Pipelines;
@@ -72,7 +73,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         packet.WriteInt(0); // BulletCashItemID
 
         var count = 0;
-
+        
         foreach (var entry in message.Attack.Entries)
         {
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
@@ -116,14 +117,16 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         if (message.User.FieldSplit != null)
             await message.User.FieldSplit.Dispatch(packet.Build(), message.User);
 
-        if (!await _skillManager.ProcessUserAttack(message.User, message.Attack.SkillID, message.Attack.Entries.Count > 0))
+        if (!await _skillManager.Check(message.User, message.Attack.SkillID))
             return;
+
+        await _skillManager.HandleAttack(message.User, message.Attack.SkillID, message.Attack.Entries.Count > 0);
 
         foreach (var entry in message.Attack.Entries)
         {
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;
-            await _skillManager.ProcessUserAttackMob(message.User, mob, message.Attack.SkillID, entry.Damage.Sum());
+            await _skillManager.HandleAttackMob(message.User, mob, message.Attack.SkillID, entry.Damage.Sum());
         }
     }
 }

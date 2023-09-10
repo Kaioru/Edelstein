@@ -1,6 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Utilities;
-using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.Summoned;
@@ -12,7 +12,7 @@ using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Utilities.Templates;
 
-namespace Edelstein.Common.Gameplay.Game.Combat;
+namespace Edelstein.Common.Gameplay.Game.Combat.Damage;
 
 public class DamageCalculator : IDamageCalculator
 {
