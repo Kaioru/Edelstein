@@ -145,7 +145,7 @@ public class DamageCalculator : IDamageCalculator
                 Skill.Dual4BloodyStorm)
                 random.Skip();
 
-            var damage = GetRandomInRange(random.Next(), stats.DamageMin, stats.DamageMax);
+            var damage = (double)stats.DamageMax;
             var critical = false;
 
             if (weaponType is WeaponType.Wand or WeaponType.Staff)
@@ -153,6 +153,8 @@ public class DamageCalculator : IDamageCalculator
 
             if (attack.AttackAction is 41 or 57)
                 damage *= 0.1;
+            
+            damage = GetDamageAdjustedByRandom(damage, stats.Mastery, ItemConstants.GetMasteryConstByWeaponType(weaponType), random.Next());
 
             if (mobStats.Level > stats.Level)
                 damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
@@ -326,6 +328,13 @@ public class DamageCalculator : IDamageCalculator
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
         var skillLevel = skill?[attack.SkillLevel];
+        var equipped = character.Inventories[ItemInventoryType.Equip];
+        var weapon = equipped != null
+            ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
+                ? result1.ID 
+                : 0
+            : 0;
+        var weaponType = ItemConstants.GetWeaponType(weapon);
         var attackCount = skillLevel?.AttackCount ?? 1;
         var result = new IUserAttackDamage[attackCount];
 
@@ -374,9 +383,6 @@ public class DamageCalculator : IDamageCalculator
             
             var damage = GetRandomInRange(random.Next(), stats.DamageMin, stats.DamageMax);
             var critical = false;
-
-            if (mobStats.Level > stats.Level)
-                damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
 
             damage += damage * stats.MDamR / 100d;
 
@@ -476,6 +482,13 @@ public class DamageCalculator : IDamageCalculator
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = summoned.SkillID > 0 ? await _skills.Retrieve(summoned.SkillID) : null;
         var skillLevel = skill?[summoned.SkillLevel];
+        var equipped = character.Inventories[ItemInventoryType.Equip];
+        var weapon = equipped != null
+            ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
+                ? result1.ID 
+                : 0
+            : 0;
+        var weaponType = ItemConstants.GetWeaponType(weapon);
 
         _rndGenForCharacter.Next(random.Array);
         
@@ -491,9 +504,7 @@ public class DamageCalculator : IDamageCalculator
         if (hitRate < GetRandomInRange(random.Array[0], 0, 100))
             return 0;
         
-        var damage = 
-            GetRandomInRange(random.Array[2], stats.DamageMin, stats.DamageMax) * 
-            (skillLevel?.Damage ?? 100d) / 100d;
+        var damage = stats.DamageMax * (skillLevel?.Damage ?? 100d) / 100d;
         
         var elementAmpSkillID = SkillConstants.GetMagicAmplificationSkill(character.Job);
         if (elementAmpSkillID > 0)
@@ -504,6 +515,8 @@ public class DamageCalculator : IDamageCalculator
             if (elementAmpLevel != null)
                 damage *= elementAmpLevel.Y / 100d;
         }
+
+        damage = GetDamageAdjustedByRandom(damage, stats.Mastery, ItemConstants.GetMasteryConstByWeaponType(weaponType), random.Array[2]);
         
         var elementalResetStat = character.TemporaryStats[TemporaryStatType.ElementalReset]?.Value ?? 0;
         var damageAdjustedByElemAttr = skill != null
@@ -576,6 +589,16 @@ public class DamageCalculator : IDamageCalculator
         return f0 + rand % 10000000 * (f1 - f0) / 9999999.0;
     }
 
+    private static double GetDamageAdjustedByRandom(double damage, int mastery, double masteryConst, uint rand)
+    {
+        var masteryMultiplier = mastery / 100d;
+
+        masteryMultiplier += masteryConst;
+        masteryMultiplier = Math.Min(0.95, masteryMultiplier);
+
+        return GetRandomInRange(rand, (int)(masteryMultiplier * damage + 0.5), damage);
+    }
+    
     private static double GetDamageAdjustedByElemAttr(double damage, ElementAttribute attr, double adjust, double boost) 
         => attr switch
         {

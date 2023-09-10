@@ -485,19 +485,9 @@ public record struct FieldUserStats : IFieldUserStats
             }
         }
         
-        var masteryConst = weaponType switch
-        {
-            WeaponType.Wand or
-            WeaponType.Staff => 0.25,
-            WeaponType.Bow or
-            WeaponType.Crossbow or
-            WeaponType.ThrowingGlove or
-            WeaponType.Gun => 0.15,
-            _ => 0.20,
-        };
         var masteryMultiplier = Mastery / 100d;
 
-        masteryMultiplier += masteryConst;
+        masteryMultiplier += ItemConstants.GetMasteryConstByWeaponType(weaponType);
         masteryMultiplier = Math.Min(0.95, masteryMultiplier);
 
         DamageMax = (int)((stat3 + stat2 + 4 * stat1) / 100d * attack * multiplier + 0.5);
