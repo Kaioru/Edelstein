@@ -19,6 +19,8 @@ public interface ISkillContext
     void SetTargetField(bool active = true, int? limit = null, IRectangle2D? bounds = null);
     void SetTargetParty(bool active = true, IRectangle2D? bounds = null);
 
+    void SetMobCount(int? count = null);
+
     void AddTemporaryStat(TemporaryStatType type, int value, int? reason = null, DateTime? expire = null);
     void AddMobTemporaryStat(MobTemporaryStatType type, int value, int? reason = null, DateTime? expire = null);
     void AddMobBurned(int damage, int? skillID = null, TimeSpan? interval = null, DateTime? expire = null);

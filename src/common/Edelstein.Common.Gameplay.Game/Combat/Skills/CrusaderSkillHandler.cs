@@ -22,12 +22,13 @@ public class CrusaderSkillHandler : FighterSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.CrusaderPanic:
-                // TODO investigate not working
-                context.AddMobTemporaryStat(MobTemporaryStatType.Darkness, context.SkillLevel!.X);
+                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
+                    context.AddMobTemporaryStat(MobTemporaryStatType.ACC, -context.SkillLevel!.X);
                 break;
             case Skill.CrusaderComa:
             case Skill.CrusaderShout:
-                context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
+                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
+                    context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
                 break;
         }
         

@@ -37,6 +37,7 @@ public sealed class SkillManager :
 
     public async Task HandleAttackMob(IFieldUser user, IFieldMob mob, int skillID, int damage)
     {
+        if (damage == 0) return;
         await mob.Damage(damage, user);
         if (mob.HP <= 0) return;
         var context = await CreateContext(user, skillID, user.Stats.SkillLevels[skillID], mob: mob);

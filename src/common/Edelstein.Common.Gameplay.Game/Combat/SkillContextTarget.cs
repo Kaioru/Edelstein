@@ -2,6 +2,6 @@
 
 namespace Edelstein.Common.Gameplay.Game.Combat;
 
-public record SkillContextTargetParty(
+public record SkillContextTarget(
     IRectangle2D Bounds
 );

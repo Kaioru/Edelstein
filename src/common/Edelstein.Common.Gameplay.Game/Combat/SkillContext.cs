@@ -24,8 +24,10 @@ public class SkillContext : ISkillContext
     private readonly ICollection<SkillContextBurnedInfo> _addBurnedInfo;
     private readonly ICollection<SkillContextSummoned> _addSummoned;
     
-    private SkillContextTargetField? TargetField { get; set; }
-    private SkillContextTargetParty? TargetParty{ get; set; }
+    private SkillContextTarget? TargetField { get; set; }
+    private SkillContextTarget? TargetParty{ get; set; }
+    
+    private int? MobCount { get; set; }
     
     private bool IsResetComboCounter { get; set; }
     
@@ -62,8 +64,7 @@ public class SkillContext : ISkillContext
     
     public void SetTargetField(bool active = true, int? limit = null, IRectangle2D? bounds = null)
         => TargetField = active 
-            ? new SkillContextTargetField(
-                limit ?? 1000, 
+            ? new SkillContextTarget(
                 bounds ?? (SkillLevel == null
                     ? new Rectangle2D(_user.Position, _user.Field?.Template.Bounds ?? new Rectangle2D())
                     : new Rectangle2D(_user.Position, SkillLevel.Bounds)))
@@ -71,12 +72,14 @@ public class SkillContext : ISkillContext
     
     public void SetTargetParty(bool active = true, IRectangle2D? bounds = null)
         => TargetParty = active 
-            ? new SkillContextTargetParty(
+            ? new SkillContextTarget(
                 bounds ?? (SkillLevel == null
                     ? new Rectangle2D(_user.Position, _user.Field?.Template.Bounds ?? new Rectangle2D())
                     : new Rectangle2D(_user.Position, SkillLevel.Bounds)))
             : null;
-    
+
+    public void SetMobCount(int? count = null) => MobCount = count;
+
     public void AddTemporaryStat(TemporaryStatType type, int value, int? reason = null, DateTime? expire = null)
         => _addTemporaryStat.Add(new SkillContextTemporaryStat(
             type, 
@@ -125,8 +128,7 @@ public class SkillContext : ISkillContext
                          .Where(s => s != null)
                          .SelectMany(s => s!.Objects)
                          .Where(o => TargetField.Bounds.Intersects(o.Position))
-                         .OrderBy(u => _user.Position.Distance(u.Position))
-                         .Take(TargetField.Limit))
+                         .OrderBy(u => _user.Position.Distance(u.Position)))
                 targets.Add(target);
         
         if (TargetParty != null && _user.Field != null)
@@ -154,6 +156,7 @@ public class SkillContext : ISkillContext
         {
             await Task.WhenAll(targets
                 .OfType<IFieldMob>()
+                .Take(MobCount ?? SkillLevel?.MobCount ?? 100)
                 .Select(t => t.ModifyTemporaryStats(s =>
                 {
                     if (_addMobTemporaryStat.Count > 0)
