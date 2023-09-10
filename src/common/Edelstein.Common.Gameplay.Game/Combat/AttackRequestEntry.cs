@@ -8,10 +8,12 @@ namespace Edelstein.Common.Gameplay.Game.Combat;
 public class AttackRequestEntry : IAttackRequestEntry, IPacketReadable
 {
     private readonly int _damagePerMob;
+    private readonly bool _isSummoned;
     
-    public AttackRequestEntry(int damagePerMob)
+    public AttackRequestEntry(int damagePerMob, bool isSummoned = false)
     {
         _damagePerMob = damagePerMob;
+        _isSummoned = isSummoned;
         Damage = new int[_damagePerMob];
     }
 
@@ -37,6 +39,8 @@ public class AttackRequestEntry : IAttackRequestEntry, IPacketReadable
     public void ReadFrom(IPacketReader reader)
     {
         MobID = reader.ReadInt();
+        if (_isSummoned)
+            _ = reader.ReadInt();
         HitAction = reader.ReadByte();
 
         var v33 = reader.ReadByte();
@@ -57,6 +61,7 @@ public class AttackRequestEntry : IAttackRequestEntry, IPacketReadable
         for (var i = 0; i < _damagePerMob; i++)
             Damage[i] = reader.ReadInt();
 
-        _ = reader.ReadInt(); // mob crc
+        if (!_isSummoned)
+            _ = reader.ReadInt(); // mob crc
     }
 }

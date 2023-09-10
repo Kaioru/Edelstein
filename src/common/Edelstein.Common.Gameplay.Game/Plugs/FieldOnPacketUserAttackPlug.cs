@@ -115,14 +115,14 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         if (message.User.FieldSplit != null)
             await message.User.FieldSplit.Dispatch(packet.Build(), message.User);
 
-        if (!await _skillManager.ProcessUserAttack(message.User, message.Attack))
+        if (!await _skillManager.ProcessUserAttack(message.User, message.Attack.SkillID, message.Attack.Entries.Count > 0))
             return;
 
         foreach (var entry in message.Attack.Entries)
         {
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;
-            await _skillManager.ProcessUserAttackMob(message.User, mob, message.Attack, entry);
+            await _skillManager.ProcessUserAttackMob(message.User, mob, message.Attack.SkillID, entry.Damage.Sum());
         }
     }
 }

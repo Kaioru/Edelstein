@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Game.Objects.Summoned;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 
@@ -25,6 +26,22 @@ public interface IDamageCalculator
         IFieldMob mob, 
         IFieldMobStats mobStats, 
         IUserAttack attack
+    );
+    
+    Task<int> CalculatePDamage(
+        ICharacter character, 
+        IFieldUserStats stats, 
+        IFieldMob mob, 
+        IFieldMobStats mobStats, 
+        IFieldSummoned summoned
+    );
+    
+    Task<int> CalculateMDamage(
+        ICharacter character, 
+        IFieldUserStats stats, 
+        IFieldMob mob, 
+        IFieldMobStats mobStats, 
+        IFieldSummoned summoned
     );
 
     Task<int> CalculateBurnedDamage(

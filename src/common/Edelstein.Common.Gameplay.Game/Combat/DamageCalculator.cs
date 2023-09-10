@@ -3,6 +3,7 @@ using Edelstein.Common.Utilities;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
+using Edelstein.Protocol.Gameplay.Game.Objects.Summoned;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
@@ -19,6 +20,9 @@ public class DamageCalculator : IDamageCalculator
     
     private readonly DamageRand _rndGenForCharacter;
     private readonly DamageRand _rndForCheckDamageMiss;
+    private readonly DamageRand _rndForMortalBlow;
+    private readonly DamageRand _rndForSummoned;
+    private readonly DamageRand _rndForMob;
     private readonly DamageRand _rndGenForMob;
 
     private readonly ITemplateManager<ISkillTemplate> _skills;
@@ -40,6 +44,9 @@ public class DamageCalculator : IDamageCalculator
 
         _rndGenForCharacter = new DamageRand(s1, s2, s3);
         _rndForCheckDamageMiss = new DamageRand(s1, s2, s3);
+        _rndForMortalBlow = new DamageRand(s1, s2, s3);
+        _rndForSummoned = new DamageRand(s1, s2, s3);
+        _rndForMob = new DamageRand(s1, s2, s3);
         _rndGenForMob = new DamageRand(s1, s2, s3);
         
         _skills = skills;
@@ -346,7 +353,7 @@ public class DamageCalculator : IDamageCalculator
         
         totalCDMin = Math.Min(totalCDMin, totalCDMax);
         
-        var sqrtACC = Math.Sqrt(stats.PACC);
+        var sqrtACC = Math.Sqrt(stats.MACC);
         var sqrtEVA = Math.Sqrt(mobStats.EVA);
         var hitRate = sqrtACC - sqrtEVA + 100 + stats.Ar * (sqrtACC - sqrtEVA + 100) / 100;
 
@@ -439,6 +446,72 @@ public class DamageCalculator : IDamageCalculator
         }
 
         return result;
+    }
+
+    public async Task<int> CalculatePDamage(
+        ICharacter character,
+        IFieldUserStats stats,
+        IFieldMob mob,
+        IFieldMobStats mobStats,
+        IFieldSummoned summoned
+    )
+    {
+        var random = new Rotational<uint>(new uint[RndSize]);
+        var skill = summoned.SkillID > 0 ? await _skills.Retrieve(summoned.SkillID) : null;
+        var skillLevel = skill?[summoned.SkillLevel];
+
+        _rndGenForCharacter.Next(random.Array);
+        
+        return 0;
+    }
+
+    public async Task<int> CalculateMDamage(
+        ICharacter character,
+        IFieldUserStats stats,
+        IFieldMob mob,
+        IFieldMobStats mobStats,
+        IFieldSummoned summoned
+    )
+    {
+        var random = new Rotational<uint>(new uint[RndSize]);
+        var skill = summoned.SkillID > 0 ? await _skills.Retrieve(summoned.SkillID) : null;
+        var skillLevel = skill?[summoned.SkillLevel];
+
+        _rndGenForCharacter.Next(random.Array);
+        
+        var sqrtACC = Math.Sqrt(stats.MACC);
+        var sqrtEVA = Math.Sqrt(mobStats.EVA);
+        var hitRate = sqrtACC - sqrtEVA + 100 + stats.Ar * (sqrtACC - sqrtEVA + 100) / 100;
+
+        hitRate = Math.Min(hitRate, 100);
+
+        if (mobStats.Level > stats.Level)
+            hitRate -= 5 * (mobStats.Level - stats.Level);
+
+        if (hitRate < GetRandomInRange(random.Array[0], 0, 100))
+            return 0;
+        
+        var damage = 
+            GetRandomInRange(random.Array[2], stats.DamageMin, stats.DamageMax) * 
+            (skillLevel?.Damage ?? 100d) / 100d;
+        
+        var elementAmpSkillID = SkillConstants.GetMagicAmplificationSkill(character.Job);
+        if (elementAmpSkillID > 0)
+        {
+            var elementAmpSkill = await _skills.Retrieve(elementAmpSkillID);
+            var elementAmpLevel = elementAmpSkill?[stats.SkillLevels[elementAmpSkillID]];
+
+            if (elementAmpLevel != null)
+                damage *= elementAmpLevel.Y / 100d;
+        }
+        
+        var elementalResetStat = character.TemporaryStats[TemporaryStatType.ElementalReset]?.Value ?? 0;
+        var damageAdjustedByElemAttr = skill != null
+            ? GetDamageAdjustedByElemAttr(damage, mobStats.ElementAttributes[skill.Element], 1d - elementalResetStat / 100d, 0d)
+            : damage;
+
+        damage = damageAdjustedByElemAttr;
+        return (int)damage;
     }
     
     public async Task<int> CalculateBurnedDamage(

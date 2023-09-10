@@ -21,9 +21,9 @@ public class SkillManager : ISkillManager
     public SkillManager(ITemplateManager<ISkillTemplate> skills) 
         => _skills = skills;
 
-    public async Task ProcessUserAttackMob(IFieldUser user, IFieldMob mob, IAttackRequest attack, IAttackRequestEntry attackEntry)
+    public async Task ProcessUserAttackMob(IFieldUser user, IFieldMob mob, int skillID, int damage)
     {
-        await mob.Damage(attackEntry.Damage.Sum(), user);
+        await mob.Damage(damage, user);
 
         if (mob.HP <= 0) return;
 
@@ -41,8 +41,8 @@ public class SkillManager : ISkillManager
         }
 
         var random = new Random();
-        var skill = await _skills.Retrieve(attack.SkillID);
-        var level = skill?[user.Stats.SkillLevels[attack.SkillID]];
+        var skill = await _skills.Retrieve(skillID);
+        var level = skill?[user.Stats.SkillLevels[skillID]];
         
         if (skill == null || level == null) return;
         if (level.Prop > 0 && random.Next(0, 100) > level.Prop) return;
@@ -56,21 +56,21 @@ public class SkillManager : ISkillManager
         if (level.Dot > 0)
             mobBurnedInfo.Add(new MobBurnedInfo(
                 user.Character.ID,
-                attack.SkillID,
+                skillID,
                 await user.Damage.CalculateBurnedDamage(
                     user.Character,
                     user.Stats,
                     mob,
                     mob.Stats,
-                    attack.SkillID,
-                    user.Stats.SkillLevels[attack.SkillID]
+                    skillID,
+                    user.Stats.SkillLevels[skillID]
                 ),
                 TimeSpan.FromSeconds(level.DotInterval),
                 now,
                 now.AddSeconds(level.DotTime)
             ));
         
-        switch (attack.SkillID)
+        switch (skillID)
         {
             case Skill.CrusaderPanic:
             case Skill.SoulmasterPanicSword:
@@ -97,9 +97,9 @@ public class SkillManager : ISkillManager
             {
                 if (mobStats.Count > 0)
                 {
-                    s.ResetByReason(attack.SkillID);
+                    s.ResetByReason(skillID);
                     foreach (var tuple in mobStats)
-                        s.Set(tuple.Item1, tuple.Item2, attack.SkillID, expire);
+                        s.Set(tuple.Item1, tuple.Item2, skillID, expire);
                 }
 
                 if (mobBurnedInfo.Count > 0)
@@ -110,19 +110,19 @@ public class SkillManager : ISkillManager
             });
     }
     
-    public async Task<bool> ProcessUserAttack(IFieldUser user, IAttackRequest attack)
+    public async Task<bool> ProcessUserAttack(IFieldUser user, int skillID, bool isHitAnyMob)
     {
-        var skill = await _skills.Retrieve(attack.SkillID);
-        var level = skill?.Levels[user.Stats.SkillLevels[attack.SkillID]];
+        var skill = await _skills.Retrieve(skillID);
+        var level = skill?.Levels[user.Stats.SkillLevels[skillID]];
 
-        if (skill == null || level == null) return attack.SkillID == 0;
+        if (skill == null || level == null) return skillID == 0;
         if (level.MPCon > user.Character.MP) return false;
         
         var random = new Random();
         
         var comboCounterStat = user.Character.TemporaryStats[TemporaryStatType.ComboCounter];
 
-        if (comboCounterStat != null && attack.SkillID is
+        if (comboCounterStat != null && skillID is
             Skill.CrusaderPanic or
             Skill.CrusaderComa or
             Skill.SoulmasterPanicSword or
@@ -135,7 +135,7 @@ public class SkillManager : ISkillManager
                 comboCounterStat.DateExpire
             ));
         }
-        else if (comboCounterStat != null && attack.Entries.Count > 0)
+        else if (comboCounterStat != null && isHitAnyMob)
         {
             var comboCounterSkillID = JobConstants.GetJobRace(user.Character.Job) == 0
                 ? Skill.CrusaderComboAttack

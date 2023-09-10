@@ -5,8 +5,8 @@ namespace Edelstein.Protocol.Gameplay.Game.Combat;
 
 public interface ISkillManager
 {
-    Task ProcessUserAttackMob(IFieldUser user, IFieldMob mob, IAttackRequest attack, IAttackRequestEntry attackEntry);
+    Task ProcessUserAttackMob(IFieldUser user, IFieldMob mob, int skillID, int damage);
     
-    Task<bool> ProcessUserAttack(IFieldUser user, IAttackRequest attack);
+    Task<bool> ProcessUserAttack(IFieldUser user, int skillID, bool isHitAnyMob);
     Task<bool> ProcessUserSkill(IFieldUser user, int skillID);
 }
