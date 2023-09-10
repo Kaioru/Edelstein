@@ -40,7 +40,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                     Skill.BmageTeleportMastery
             }
         ) isPDamage = false;
-        
+
         packet.WriteInt(message.User.Character.ID);
         packet.WriteByte((byte)(
             0x1 * message.Attack.DamagePerMob |
