@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob;
@@ -34,6 +35,13 @@ public record struct FieldMobStats : IFieldMobStats
         ElementAttributes = new Dictionary<Element, ElementAttribute>();
         foreach (var kv in mob.Template.ElementAttributes)
             ElementAttributes[kv.Key] = kv.Value;
+
+        PAD += mob.TemporaryStats[MobTemporaryStatType.PAD]?.Value ?? 0;
+        PDR += mob.TemporaryStats[MobTemporaryStatType.PDR]?.Value ?? 0;
+        MAD += mob.TemporaryStats[MobTemporaryStatType.MAD]?.Value ?? 0;
+        MDR += mob.TemporaryStats[MobTemporaryStatType.MDR]?.Value ?? 0;
+        ACC += mob.TemporaryStats[MobTemporaryStatType.ACC]?.Value ?? 0;
+        EVA += mob.TemporaryStats[MobTemporaryStatType.EVA]?.Value ?? 0;
         
         PAD = Math.Min(PAD, 29999);
         PDD = Math.Min(PDD, 30000);

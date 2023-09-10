@@ -91,6 +91,7 @@ public class FieldMob :
         var context = new ModifyMobTemporaryStatsContext(TemporaryStats);
 
         action.Invoke(context);
+        await UpdateStats();
 
         if (context.HistoryReset.Records.Any() || context.HistoryReset.BurnedInfo.Any())
         {
