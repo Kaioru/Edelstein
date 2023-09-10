@@ -466,7 +466,7 @@ public class DamageCalculator : IDamageCalculator
         var skill = summoned.SkillID > 0 ? await _skills.Retrieve(summoned.SkillID) : null;
         var skillLevel = skill?[summoned.SkillLevel];
 
-        _rndGenForCharacter.Next(random.Array);
+        _rndForSummoned.Next(random.Array);
         
         return 0;
     }
@@ -490,7 +490,7 @@ public class DamageCalculator : IDamageCalculator
             : 0;
         var weaponType = ItemConstants.GetWeaponType(weapon);
 
-        _rndGenForCharacter.Next(random.Array);
+        _rndForSummoned.Next(random.Array);
         
         var sqrtACC = Math.Sqrt(stats.MACC);
         var sqrtEVA = Math.Sqrt(mobStats.EVA);
