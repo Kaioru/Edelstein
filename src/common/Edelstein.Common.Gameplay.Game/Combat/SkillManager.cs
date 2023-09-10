@@ -91,11 +91,12 @@ public class SkillManager : ISkillManager
             case Skill.KnightChargeBlow:
             case Skill.HeroMonsterMagnet:
             case Skill.DarkknightMonsterMagnet:
-            case Skill.Mage2ThunderSpear:
             case Skill.Mage1TeleportMastery:
             case Skill.Mage2TeleportMastery:
             case Skill.PriestTeleportMastery:
             case Skill.BmageTeleportMastery:
+            case Skill.Mage2ThunderSpear:
+            case Skill.PriestShiningRay:
                 mobStats.Add(Tuple.Create(MobTemporaryStatType.Stun, (short)1));
                 break;
                 
@@ -306,6 +307,8 @@ public class SkillManager : ISkillManager
             case Skill.Archmage1Ifrit:
             case Skill.Archmage2Elquines:
             case Skill.FlamewizardIfrit:
+            case Skill.PriestSummonDragon:
+            case Skill.BishopBahamut:
                 summoned.Add(new FieldSummoned(
                     user,
                     skillID,
