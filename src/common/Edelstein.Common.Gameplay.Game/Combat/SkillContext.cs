@@ -206,7 +206,7 @@ public class SkillContext : ISkillContext
                     await _user.Field.Enter(newSummon, () => newSummon.GetEnterFieldPacket(1));
             }
         }
-
+        
         await _user.Modify(m =>
         {
             m.TemporaryStats(s =>

@@ -82,7 +82,8 @@ public class FieldUserModify : IFieldUserModify
         var context = new ModifyTemporaryStatContext(_user.Character.TemporaryStats);
 
         action?.Invoke(context);
-        IsRequireUpdate = true;
+        if (!IsRequireUpdate)
+            IsRequireUpdate = context.HistoryReset.Records.Any() || context.HistorySet.Records.Any();
 
         if (context.HistoryReset.Records.Any())
         {
