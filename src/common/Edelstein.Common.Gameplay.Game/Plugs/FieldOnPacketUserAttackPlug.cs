@@ -90,6 +90,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                 message.Attack.IsSpark
             );
             var damageSrv = await message.User.Damage.AdjustDamageDecRate(
+                message.User.Stats,
                 attack,
                 count,
                 isPDamage

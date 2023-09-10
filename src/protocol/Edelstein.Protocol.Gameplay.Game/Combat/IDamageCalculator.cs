@@ -53,5 +53,5 @@ public interface IDamageCalculator
         int skillLevel
     );
 
-    Task<IUserAttackDamage[]> AdjustDamageDecRate(IUserAttack attack, int count, IUserAttackDamage[] damage);
+    Task<IUserAttackDamage[]> AdjustDamageDecRate(IFieldUserStats stats, IUserAttack attack, int count, IUserAttackDamage[] damage);
 }

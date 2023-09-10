@@ -72,6 +72,14 @@ public class SkillManager : ISkillManager
         
         switch (skillID)
         {
+            case Skill.Wizard2ColdBeam:
+            case Skill.Mage2IceStrike:
+                mobStats.Add(Tuple.Create(MobTemporaryStatType.Freeze, (short)1));
+                break;
+            case Skill.Archmage2Elquines:
+                expire = DateTime.UtcNow.AddSeconds(level.X);
+                mobStats.Add(Tuple.Create(MobTemporaryStatType.Freeze, (short)1));
+                break;
             case Skill.CrusaderPanic:
             case Skill.SoulmasterPanicSword:
                 // TODO: not working?
@@ -83,6 +91,7 @@ public class SkillManager : ISkillManager
             case Skill.KnightChargeBlow:
             case Skill.HeroMonsterMagnet:
             case Skill.DarkknightMonsterMagnet:
+            case Skill.Mage2ThunderSpear:
             case Skill.Mage1TeleportMastery:
             case Skill.Mage2TeleportMastery:
             case Skill.PriestTeleportMastery:

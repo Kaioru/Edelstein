@@ -557,18 +557,26 @@ public class DamageCalculator : IDamageCalculator
         return Math.Max(1, (int)damage);
     }
 
-    public async Task<IUserAttackDamage[]> AdjustDamageDecRate(IUserAttack attack, int count, IUserAttackDamage[] damage)
+    public async Task<IUserAttackDamage[]> AdjustDamageDecRate(IFieldUserStats stats, IUserAttack attack, int count, IUserAttackDamage[] damage)
     {
         var rate = 1d;
         var result = new IUserAttackDamage[damage.Length];
 
         if (attack.IsFinalAfterSlashBlast)
-            rate = 1 / 3d;
+            rate = Math.Pow(1 / 3d, count);
+
+        if (attack.SkillID == Skill.Archmage2ChainLightning)
+        {
+            var chainLightningSkill = await _skills.Retrieve(Skill.Archmage2ChainLightning);
+            var chainLightningLevel = chainLightningSkill?[stats.SkillLevels[Skill.Archmage2ChainLightning]];
+
+            rate = (100 - count * (chainLightningLevel?.X ?? 0)) / 100d;
+        }
 
         for (var i = 0; i < damage.Length; i++)
         {
             result[i] = new UserAttackDamage(
-                (int)(damage[i].Damage * Math.Pow(rate, count)),
+                (int)(damage[i].Damage * rate),
                 damage[i].IsCritical
             );
         }
