@@ -1,6 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Game.Combat;
-using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 
@@ -26,6 +25,10 @@ public class PaladinSkillHandler : KnightSkillHandler
     {
         switch (context.Skill?.ID)
         {
+            case Skill.PaladinMapleHero:
+                context.SetTargetParty();
+                context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
+                break;
             case Skill.PaladinStance:
                 context.AddTemporaryStat(TemporaryStatType.Stance, context.SkillLevel!.Prop);
                 break;
