@@ -26,5 +26,6 @@ public interface ISkillContext
     void AddMobBurned(int damage, int? skillID = null, TimeSpan? interval = null, DateTime? expire = null);
     void AddSummoned(MoveAbilityType moveAbilityType, SummonedAssistType summonedAssistType, int? skillID = null, int? skillLevel = null, DateTime? expire = null);
 
+    void ResetAuras();
     void ResetComboCounter();
 }

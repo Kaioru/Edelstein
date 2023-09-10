@@ -29,6 +29,7 @@ public class SkillContext : ISkillContext
     
     private int? MobCount { get; set; }
     
+    private bool IsResetAuras { get; set; }
     private bool IsResetComboCounter { get; set; }
     
     public SkillContext(
@@ -113,10 +114,39 @@ public class SkillContext : ISkillContext
                 expire ?? _now.AddSeconds(SkillLevel?.Time ?? 0)
         ));
 
+    public void ResetAuras() => IsResetAuras = true;
+
     public void ResetComboCounter() => IsResetComboCounter = true;
 
     public async Task Execute()
     {
+        
+        await _user.Modify(m =>
+        {
+            m.TemporaryStats(s =>
+            {
+                if (IsResetAuras)
+                {
+                    s.ResetByType(TemporaryStatType.DarkAura);
+                    s.ResetByType(TemporaryStatType.BlueAura);
+                    s.ResetByType(TemporaryStatType.YellowAura);
+                }
+
+                if (IsResetComboCounter)
+                {
+                    var comboCounterStat = _user.Character.TemporaryStats[TemporaryStatType.ComboCounter];
+
+                    if (comboCounterStat != null)
+                        s.Set(
+                            TemporaryStatType.ComboCounter,
+                            1, 
+                            comboCounterStat.Reason,
+                            comboCounterStat.DateExpire
+                        );
+                }
+            });
+        });
+        
         var targets = new HashSet<IFieldObject>{ _user };
 
         if (_mob != null)
@@ -206,24 +236,5 @@ public class SkillContext : ISkillContext
                     await _user.Field.Enter(newSummon, () => newSummon.GetEnterFieldPacket(1));
             }
         }
-        
-        await _user.Modify(m =>
-        {
-            m.TemporaryStats(s =>
-            {
-                if (IsResetComboCounter)
-                {
-                    var comboCounterStat = _user.Character.TemporaryStats[TemporaryStatType.ComboCounter];
-
-                    if (comboCounterStat != null)
-                        s.Set(
-                            TemporaryStatType.ComboCounter,
-                            1, 
-                            comboCounterStat.Reason,
-                            comboCounterStat.DateExpire
-                        );
-                }
-            });
-        });
     }
 }
