@@ -59,10 +59,11 @@ public class SkillContext : ISkillContext
     public ISkillTemplateLevel? SkillLevel { get; }
     
     public bool IsHitMob { get; }
+    
     public void SetTargetField(bool active = true, int? limit = null, IRectangle2D? bounds = null)
         => TargetField = active 
             ? new SkillContextTargetField(
-                limit ?? 100, 
+                limit ?? 1000, 
                 bounds ?? (SkillLevel == null
                     ? new Rectangle2D(_user.Position, _user.Field?.Template.Bounds ?? new Rectangle2D())
                     : new Rectangle2D(_user.Position, SkillLevel.Bounds)))
@@ -113,71 +114,62 @@ public class SkillContext : ISkillContext
 
     public async Task Execute()
     {
+        var targets = new HashSet<IFieldObject>{ _user };
+
+        if (_mob != null)
+            targets.Add(_mob);
+
+        if (TargetField != null && _user.Field != null)
+            foreach (var target in _user.Field
+                         .GetSplits(TargetField.Bounds)
+                         .Where(s => s != null)
+                         .SelectMany(s => s!.Objects)
+                         .Where(o => TargetField.Bounds.Intersects(o.Position))
+                         .OrderBy(u => _user.Position.Distance(u.Position))
+                         .Take(TargetField.Limit))
+                targets.Add(target);
+        
+        if (TargetParty != null && _user.Field != null)
+            foreach (var target in _user.Field
+                         .GetSplits(TargetParty.Bounds)
+                         .Where(s => s != null)
+                         .SelectMany(s => s!.Objects)
+                         .Where(o => TargetParty.Bounds.Intersects(o.Position))
+                         .OrderBy(u => _user.Position.Distance(u.Position)))
+                         //.Where(Party..))
+                targets.Add(target);
+
         if (_addTemporaryStat.Count > 0)
         {
-            var targets = new HashSet<IFieldUser>{ _user };
-
-            if (TargetField != null && _user.Field != null)
-                foreach (var target in _user.Field
-                             .GetSplits(TargetField.Bounds)
-                             .Where(s => s != null)
-                             .SelectMany(s => s!.Objects)
-                             .Where(o => TargetField.Bounds.Intersects(o.Position))
-                             .OfType<IFieldUser>()
-                             .OrderBy(u => _user.Position.Distance(u.Position))
-                             .Take(TargetField.Limit))
-                    targets.Add(target);
-            
-            // TODO: party check
-            if (TargetParty != null && _user.Field != null)
-                foreach (var target in _user.Field
-                             .GetSplits(TargetParty.Bounds)
-                             .Where(s => s != null)
-                             .SelectMany(s => s!.Objects)
-                             .OfType<IFieldUser>())
-                    targets.Add(target);
-
-            await Task.WhenAll(targets.Select(t => t.ModifyTemporaryStats(s =>
-            {
-                foreach (var ts in _addTemporaryStat)
-                    s.Set(ts.Type, ts.Value, ts.Reason, ts.Expire);
-            })));
+            await Task.WhenAll(targets
+                .OfType<IFieldUser>()
+                .Select(t => t.ModifyTemporaryStats(s =>
+                {
+                    foreach (var ts in _addTemporaryStat)
+                        s.Set(ts.Type, ts.Value, ts.Reason, ts.Expire);
+                })));
         }
 
         if (_addMobTemporaryStat.Count > 0 || _addBurnedInfo.Count > 0)
         {
-            var targets = new HashSet<IFieldMob>();
-
-            if (_mob != null)
-                targets.Add(_mob);
-
-            if (TargetField != null && _user.Field != null)
-                foreach (var target in _user.Field
-                             .GetSplits(TargetField.Bounds)
-                             .Where(s => s != null)
-                             .SelectMany(s => s!.Objects)
-                             .Where(o => TargetField.Bounds.Intersects(o.Position))
-                             .OfType<IFieldMob>()
-                             .OrderBy(m => _user.Position.Distance(m.Position))
-                             .Take(TargetField.Limit))
-                    targets.Add(target);
-            
-            await Task.WhenAll(targets.Select(t => t.ModifyTemporaryStats(s =>
-            {
-                if (_addMobTemporaryStat.Count > 0)
-                    foreach (var mts in _addMobTemporaryStat)
-                        s.Set(mts.Type, mts.Value, mts.Reason, mts.Expire);
-                if (_addBurnedInfo.Count > 0)
-                    foreach (var b in _addBurnedInfo)
-                        s.SetBurnedInfo(new MobBurnedInfo(
-                            _user.Character.ID,
-                            b.SkillID,
-                            b.Damage,
-                            b.Interval,
-                            _now,
-                            b.Expire
-                        ));
-            })));
+            await Task.WhenAll(targets
+                .OfType<IFieldMob>()
+                .Select(t => t.ModifyTemporaryStats(s =>
+                {
+                    if (_addMobTemporaryStat.Count > 0)
+                        foreach (var mts in _addMobTemporaryStat)
+                            s.Set(mts.Type, mts.Value, mts.Reason, mts.Expire);
+                    if (_addBurnedInfo.Count > 0)
+                        foreach (var b in _addBurnedInfo)
+                            s.SetBurnedInfo(new MobBurnedInfo(
+                                _user.Character.ID,
+                                b.SkillID,
+                                b.Damage,
+                                b.Interval,
+                                _now,
+                                b.Expire
+                            ));
+                })));
         }
 
         if (_addSummoned.Count > 0)

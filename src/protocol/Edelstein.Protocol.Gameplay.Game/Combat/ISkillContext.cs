@@ -25,6 +25,4 @@ public interface ISkillContext
     void AddSummoned(MoveAbilityType moveAbilityType, SummonedAssistType summonedAssistType, int? skillID = null, int? skillLevel = null, DateTime? expire = null);
 
     void ResetComboCounter();
-    
-    Task Execute();
 }

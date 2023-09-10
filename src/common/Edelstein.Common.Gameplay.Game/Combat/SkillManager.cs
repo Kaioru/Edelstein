@@ -67,7 +67,7 @@ public sealed class SkillManager :
         await context.Execute();
     }
 
-    private async Task<ISkillContext?> CreateContext(IFieldUser user, int? skillID, int? skillLevel, bool isHitMob = false, IFieldMob? mob = null)
+    private async Task<SkillContext?> CreateContext(IFieldUser user, int? skillID, int? skillLevel, bool isHitMob = false, IFieldMob? mob = null)
     {
         if (skillID == null || skillLevel == null)
             return new SkillContext(
