@@ -65,7 +65,7 @@ public class SkillTemplateLevelCommon : ISkillTemplateLevel
 
     public short Cooltime { get; }
 
-    public Rectangle2D AffectedArea { get; }
+    public Rectangle2D Bounds { get; }
 
     public short MHPr { get; }
     public short MMPr { get; }
@@ -191,8 +191,8 @@ public class SkillTemplateLevelCommon : ISkillTemplateLevel
 
         var lt = property.Resolve<Point>("lt") ?? new Point(0, 0);
         var rb = property.Resolve<Point>("rb") ?? new Point(0, 0);
-
-        AffectedArea = new Rectangle2D(new Point2D(lt.X, lt.Y), new Point2D(rb.X, rb.Y));
+        
+        Bounds = new Rectangle2D(new Point2D(lt.X, lt.Y), new Point2D(rb.X, rb.Y));
 
         MHPr = ResolveExpression(property.ResolveOrDefault<string>("mhpR"), x, u, d);
         MMPr = ResolveExpression(property.ResolveOrDefault<string>("mmpR"), x, u, d);

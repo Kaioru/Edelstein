@@ -20,6 +20,12 @@ public readonly record struct Rectangle2D : IRectangle2D
         P2 = p2;
     }
 
+    public Rectangle2D(IPoint2D center, IRectangle2D rect)
+    {
+        P1 = new Point2D((int)(center.X - rect.Width / 2), (int)(center.Y - rect.Height / 2));
+        P2 = new Point2D((int)(center.X + rect.Width / 2), (int)(center.Y + rect.Height / 2));
+    }
+
     public int Left => Math.Min(P1.X, P2.X);
     public int Right => Math.Max(P1.X, P2.X);
     public int Top => Math.Min(P1.Y, P2.Y);

@@ -2,6 +2,7 @@
 using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Common.Gameplay.Game.Objects.Summoned;
+using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
@@ -192,6 +193,7 @@ public class SkillManager : ISkillManager
 
         var summoned = new List<FieldSummoned>();
         var stats = new List<Tuple<TemporaryStatType, short>>();
+        var mobStats = new List<Tuple<MobTemporaryStatType, short>>();
         DateTime? expire = DateTime.UtcNow.AddSeconds(level.Time);
 
         if (level.PAD > 0)
@@ -244,6 +246,11 @@ public class SkillManager : ISkillManager
                 break;
             case Skill.KnightCombatOrders:
                 stats.Add(Tuple.Create(TemporaryStatType.CombatOrders, level.X));
+                break;
+            case Skill.Wizard1Slow:
+            case Skill.Wizard2Slow:
+            case Skill.FlamewizardSlow:
+                mobStats.Add(Tuple.Create(MobTemporaryStatType.Speed, level.X));
                 break;
             case Skill.Mage1TeleportMastery:
             case Skill.Mage2TeleportMastery:
@@ -370,6 +377,33 @@ public class SkillManager : ISkillManager
                 if (user.Field != null)
                     await user.Field.Enter(summon, () => summon.GetEnterFieldPacket(1));
             }
+        }
+
+        if (mobStats.Count > 0 && user.Field != null)
+        {
+            var bounds = new Rectangle2D(user.Position, new Rectangle2D(
+                new Point2D(-250, -150),
+                new Point2D(250, 150)
+            )); // TODO: fix level bounds
+            var mobs = user.Field
+                .GetSplits(bounds)
+                .Where(s => s != null)
+                .SelectMany(s => s!.Objects)
+                .OfType<IFieldMob>()
+                .Where(m => bounds.Intersects(m.Position))
+                .Take(level.MobCount)
+                .ToImmutableList();
+            
+            Console.WriteLine(bounds);
+            Console.WriteLine(user.Field.GetSplits(bounds).Length);
+            Console.WriteLine(mobs.Count);
+
+            foreach (var mob in mobs)
+                await mob.ModifyTemporaryStats(s =>
+                {
+                    foreach (var mobStat in mobStats)
+                        s.Set(mobStat.Item1, mobStat.Item2, skillID, expire);
+                });
         }
 
         return true;

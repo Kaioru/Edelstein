@@ -61,7 +61,7 @@ public interface ISkillTemplateLevel
 
     short Cooltime { get; }
 
-    Rectangle2D AffectedArea { get; }
+    Rectangle2D Bounds { get; }
 
     short MHPr { get; }
     short MMPr { get; }
