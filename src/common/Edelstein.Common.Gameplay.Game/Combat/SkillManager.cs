@@ -381,10 +381,7 @@ public class SkillManager : ISkillManager
 
         if (mobStats.Count > 0 && user.Field != null)
         {
-            var bounds = new Rectangle2D(user.Position, new Rectangle2D(
-                new Point2D(-250, -150),
-                new Point2D(250, 150)
-            )); // TODO: fix level bounds
+            var bounds = new Rectangle2D(user.Position, level.Bounds);
             var mobs = user.Field
                 .GetSplits(bounds)
                 .Where(s => s != null)
@@ -394,10 +391,6 @@ public class SkillManager : ISkillManager
                 .Take(level.MobCount)
                 .ToImmutableList();
             
-            Console.WriteLine(bounds);
-            Console.WriteLine(user.Field.GetSplits(bounds).Length);
-            Console.WriteLine(mobs.Count);
-
             foreach (var mob in mobs)
                 await mob.ModifyTemporaryStats(s =>
                 {

@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using Duey.Types;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
@@ -189,8 +190,8 @@ public class SkillTemplateLevelCommon : ISkillTemplateLevel
 
         Cooltime = ResolveExpression(property.ResolveOrDefault<string>("cooltime"), x, u, d);
 
-        var lt = property.Resolve<Point>("lt") ?? new Point(0, 0);
-        var rb = property.Resolve<Point>("rb") ?? new Point(0, 0);
+        var lt = property.ResolveOrDefault<NXVector>("lt") ?? new NXVector(0, 0);
+        var rb = property.ResolveOrDefault<NXVector>("rb") ?? new NXVector(0, 0);
         
         Bounds = new Rectangle2D(new Point2D(lt.X, lt.Y), new Point2D(rb.X, rb.Y));
 
