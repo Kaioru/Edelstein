@@ -48,6 +48,7 @@ public class PriestSkillHandler : ClericSkillHandler
                 break;
             case Skill.PriestSummonDragon:
                 context.AddSummoned(MoveAbilityType.Walk, SummonedAssistType.Attack);
+                context.ResetSummoned(Skill.BishopBahamut);
                 break;
             case Skill.PriestTeleportMastery:
                 context.AddTemporaryStat(TemporaryStatType.TeleportMasteryOn, context.SkillLevel!.X, expire: DateTime.MaxValue);

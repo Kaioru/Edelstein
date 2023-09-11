@@ -28,6 +28,7 @@ public class BishopSkillHandler : PriestSkillHandler
                 break;
             case Skill.BishopBahamut:
                 context.AddSummoned(MoveAbilityType.Walk, SummonedAssistType.Attack);
+                context.ResetSummoned(Skill.PriestSummonDragon);
                 break;
             case Skill.BishopResurrection:
                 // TODO resurrection
