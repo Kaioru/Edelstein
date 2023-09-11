@@ -60,6 +60,7 @@ public sealed class SkillManager :
 
     public async Task HandleSkillCancel(IFieldUser user, int skillID)
     {
+        await user.ModifyTemporaryStats(s => s.ResetByReason(skillID));
         var context = await CreateContext(user, skillID, user.Stats.SkillLevels[skillID]);
         if (context == null) return;
         var handler = await Retrieve(user.Character.Job);
