@@ -15,6 +15,9 @@ public class AdminSuperGMSkillHandler : AdminSkillHandler
         {
             case Skill.AdminDispel:
                 context.SetTargetField();
+                context.SetRecoverHP(99999);
+                context.SetRecoverHP(99999);
+                context.ResetTemporaryStatNegative();
                 break;
             case Skill.AdminSuperHaste:
                 context.SetTargetField();

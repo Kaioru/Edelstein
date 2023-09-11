@@ -22,6 +22,8 @@ public interface ISkillContext
     void SetTargetParty(bool active = true, IRectangle2D? bounds = null);
 
     void SetMobCount(int? count = null);
+    void SetRecoverHP(int? hp = null);
+    void SetRecoverMP(int? mp = null);
 
     void AddTemporaryStat(TemporaryStatType type, int value, int? reason = null, DateTime? expire = null);
     void AddMobTemporaryStat(MobTemporaryStatType type, int value, int? reason = null, DateTime? expire = null);

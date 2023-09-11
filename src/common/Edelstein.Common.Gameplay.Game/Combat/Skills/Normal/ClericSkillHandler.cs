@@ -11,10 +11,12 @@ public class ClericSkillHandler : MagicianSkillHandler
     
     public override Task HandleSkillUse(ISkillContext context, IFieldUser user)
     {
+        Console.WriteLine(context.Skill?.ID);
         switch (context.Skill?.ID)
         {
             case Skill.ClericHeal:
-                // TODO heal
+                context.SetTargetParty();
+                context.SetRecoverHP();
                 break;
             case Skill.ClericInvincible:
                 context.AddTemporaryStat(TemporaryStatType.Invincible, context.SkillLevel!.Level);

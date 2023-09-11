@@ -42,6 +42,8 @@ public class SkillContext : ISkillContext
     private SkillContextTarget? TargetParty{ get; set; }
     
     private int? MobCount { get; set; }
+    private int? RecoverHP { get; set; }
+    private int? RecoverMP { get; set; }
     
     public SkillContext(
         IFieldUser user,
@@ -101,6 +103,12 @@ public class SkillContext : ISkillContext
             : null;
 
     public void SetMobCount(int? count = null) => MobCount = count;
+
+    public void SetRecoverHP(int? hp = null)
+        => RecoverHP = hp ?? (SkillLevel?.HP > 0 ? (int)(_user.Stats.MaxHP * SkillLevel.HP / 100d) : null);
+    
+    public void SetRecoverMP(int? mp = null)
+        => RecoverHP = mp ?? (SkillLevel?.MP > 0 ? (int)(_user.Stats.MaxMP * SkillLevel.MP / 100d) : null);
 
     public void AddTemporaryStat(TemporaryStatType type, int value, int? reason = null, DateTime? expire = null)
         => _addTemporaryStat.Add(new SkillContextTemporaryStat(
@@ -200,15 +208,19 @@ public class SkillContext : ISkillContext
                          //.Where(Party..))
                 targets.Add(target);
 
-        if (_addTemporaryStat.Count > 0 || 
-            _resetTemporaryStatBySkill.Count > 0 || 
-            _resetTemporaryStatByType.Count > 0 ||
-            _resetTemporaryStatExisting.Count > 0
-        )
-        {
-            await Task.WhenAll(targets
-                .OfType<IFieldUser>()
-                .Select(t => t.ModifyTemporaryStats(s =>
+        await Task.WhenAll(targets
+            .OfType<IFieldUser>()
+            .Select(t => t.Modify(m =>
+            {
+                m.Stats(s =>
+                {
+                    if (RecoverHP != null)
+                        s.HP += RecoverHP.Value;
+                    if (RecoverMP != null)
+                        s.MP += RecoverMP.Value;
+                });
+                
+                m.TemporaryStats(s =>
                 {
                     foreach (var x in _resetTemporaryStatBySkill)
                         s.ResetByReason(x);
@@ -220,33 +232,31 @@ public class SkillContext : ISkillContext
                         if (existingStat != null)
                             s.Set(x.Type, x.Value, existingStat.Reason, existingStat.DateExpire);
                     }
+
                     foreach (var ts in _addTemporaryStat)
                         s.Set(ts.Type, ts.Value, ts.Reason, ts.Expire);
-                })));
-        }
+                });
+            })));
 
-        if (_addMobTemporaryStat.Count > 0 || _addBurnedInfo.Count > 0)
-        {
-            await Task.WhenAll(targets
-                .OfType<IFieldMob>()
-                .Take(MobCount ?? SkillLevel?.MobCount ?? 100)
-                .Select(t => t.ModifyTemporaryStats(s =>
-                {
-                    if (_addMobTemporaryStat.Count > 0)
-                        foreach (var mts in _addMobTemporaryStat)
-                            s.Set(mts.Type, mts.Value, mts.Reason, mts.Expire);
-                    if (_addBurnedInfo.Count > 0)
-                        foreach (var b in _addBurnedInfo)
-                            s.SetBurnedInfo(new MobBurnedInfo(
-                                _user.Character.ID,
-                                b.SkillID,
-                                b.Damage,
-                                b.Interval,
-                                _now,
-                                b.Expire
-                            ));
-                })));
-        }
+        await Task.WhenAll(targets
+            .OfType<IFieldMob>()
+            .Take(MobCount ?? SkillLevel?.MobCount ?? 100)
+            .Select(t => t.ModifyTemporaryStats(s =>
+            {
+                if (_addMobTemporaryStat.Count > 0)
+                    foreach (var mts in _addMobTemporaryStat)
+                        s.Set(mts.Type, mts.Value, mts.Reason, mts.Expire);
+                if (_addBurnedInfo.Count > 0)
+                    foreach (var b in _addBurnedInfo)
+                        s.SetBurnedInfo(new MobBurnedInfo(
+                            _user.Character.ID,
+                            b.SkillID,
+                            b.Damage,
+                            b.Interval,
+                            _now,
+                            b.Expire
+                        ));
+            })));
 
         if (_addSummoned.Count > 0)
         {
