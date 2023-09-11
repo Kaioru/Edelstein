@@ -14,6 +14,8 @@ public interface ISkillTemplate : ITemplate
     bool IsCombatOrders { get; }
     
     Element Element { get; }
+    
+    int Delay { get; }
 
     ICollection<int> PsdSkill { get; }
     IDictionary<int, int> ReqSkill { get; } 

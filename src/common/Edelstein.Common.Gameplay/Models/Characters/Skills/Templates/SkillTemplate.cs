@@ -19,6 +19,8 @@ public class SkillTemplate : ISkillTemplate
     
     public Element Element { get; }
     
+    public int Delay { get; }
+    
     public ICollection<int> PsdSkill { get; }
     public IDictionary<int, int> ReqSkill { get; }
     public IDictionary<int, ISkillTemplateLevel> Levels { get; }
@@ -48,6 +50,8 @@ public class SkillTemplate : ISkillTemplate
                 'U' => Element.Undead,
                 _ => Element.Physical
             };
+
+        Delay = property.Resolve("effect")?.Children.Sum(c => c.Resolve<int>("delay") ?? 0) ?? 0;
 
         PsdSkill = property.Resolve("psdSkill")?
             .Select(c => Convert.ToInt32(c.Name))
