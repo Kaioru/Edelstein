@@ -18,7 +18,7 @@ public class MageFirePoisonSkillHandler : WizardFirePoisonSkillHandler
         {
             case Skill.Mage1PoisonMist:
                 context.AddAffectedArea(AffectedAreaType.UserSkill);
-                context.AddAffectedAreaBurned();
+                context.AddAffectedAreaBurnedInfo();
                 break;
         }
 

@@ -25,9 +25,11 @@ public class SkillContext : ISkillContext
     private readonly ICollection<SkillContextTemporaryStat> _addTemporaryStat;
     private readonly ICollection<SkillContextMobTemporaryStat> _addMobTemporaryStat;
     private readonly ICollection<SkillContextBurnedInfo> _addBurnedInfo;
+    
     private readonly ICollection<SkillContextSummoned> _addSummoned;
+    
     private readonly ICollection<SkillContextAffectedArea> _addAffectedArea;
-    private readonly ICollection<SkillContextAffectedAreaBurned> _addAffectedAreaBurned;
+    private readonly ICollection<SkillContextAffectedAreaBurnedInfo> _addAffectedAreaBurnedInfo;
 
     private SkillContextTarget? TargetField { get; set; }
     private SkillContextTarget? TargetParty{ get; set; }
@@ -53,9 +55,11 @@ public class SkillContext : ISkillContext
         _addTemporaryStat = new List<SkillContextTemporaryStat>();
         _addMobTemporaryStat = new List<SkillContextMobTemporaryStat>();
         _addBurnedInfo = new List<SkillContextBurnedInfo>();
+        
         _addSummoned = new List<SkillContextSummoned>();
+        
         _addAffectedArea = new List<SkillContextAffectedArea>();
-        _addAffectedAreaBurned = new List<SkillContextAffectedAreaBurned>();
+        _addAffectedAreaBurnedInfo = new List<SkillContextAffectedAreaBurnedInfo>();
         
         Random = random;
         Skill = skill;
@@ -140,8 +144,8 @@ public class SkillContext : ISkillContext
             expire ?? _now.AddSeconds(SkillLevel?.Time ?? 0)
         ));
     
-    public void AddAffectedAreaBurned(int? skillID = null, int? skillLevel = null, TimeSpan? interval = null, TimeSpan? duration = null, IFieldUser? user = null)
-        => _addAffectedAreaBurned.Add(new SkillContextAffectedAreaBurned(
+    public void AddAffectedAreaBurnedInfo(int? skillID = null, int? skillLevel = null, TimeSpan? interval = null, TimeSpan? duration = null, IFieldUser? user = null)
+        => _addAffectedAreaBurnedInfo.Add(new SkillContextAffectedAreaBurnedInfo(
             skillID ?? Skill?.ID ?? 0,
             skillLevel ?? SkillLevel?.Level ?? 0,
             interval ?? TimeSpan.FromSeconds(SkillLevel?.DotInterval ?? 0),
@@ -288,8 +292,8 @@ public class SkillContext : ISkillContext
                     affectedArea.Expire
                 );
                 
-                if (_addAffectedAreaBurned.Count > 0)
-                    foreach (var burned in _addAffectedAreaBurned)
+                if (_addAffectedAreaBurnedInfo.Count > 0)
+                    foreach (var burned in _addAffectedAreaBurnedInfo)
                         obj.Actions.Add(new FieldAffectedAreaActionBurned(
                             _user,
                             burned.SkillID,

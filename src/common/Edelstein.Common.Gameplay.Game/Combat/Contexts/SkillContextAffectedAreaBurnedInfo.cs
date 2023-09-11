@@ -2,7 +2,7 @@
 
 namespace Edelstein.Common.Gameplay.Game.Combat.Contexts;
 
-public record SkillContextAffectedAreaBurned(
+public record SkillContextAffectedAreaBurnedInfo(
     int SkillID,
     int SkillLevel,
     TimeSpan Interval, 
