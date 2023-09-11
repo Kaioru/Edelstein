@@ -37,6 +37,7 @@ public class DarkKnightSkillHandler : DragonKnightSkillHandler
                 context.AddTemporaryStat(TemporaryStatType.Stance, context.SkillLevel!.Prop);
                 break;
             case Skill.DarkknightBeholder:
+                context.AddTemporaryStat(TemporaryStatType.Beholder, context.SkillLevel!.X);
                 context.AddSummoned(MoveAbilityType.Walk, SummonedAssistType.Heal);
                 break;
         }
@@ -49,7 +50,7 @@ public class DarkKnightSkillHandler : DragonKnightSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.DarkknightBeholder:
-                // TODO ResetSummonedBySkill
+                context.ResetSummoned();
                 break;
         }
 

@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Game.Combat.Contexts;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Game.Combat.Contexts;
 using Edelstein.Common.Gameplay.Game.Objects.AffectedArea;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Common.Gameplay.Game.Objects.Summoned;
@@ -31,6 +32,8 @@ public class SkillContext : ISkillContext
     private readonly ICollection<SkillContextAffectedArea> _addAffectedArea;
     private readonly ICollection<SkillContextAffectedAreaBurnedInfo> _addAffectedAreaBurnedInfo;
 
+    private readonly ICollection<int> _resetSummoned;
+
     private SkillContextTarget? TargetField { get; set; }
     private SkillContextTarget? TargetParty{ get; set; }
     
@@ -60,6 +63,8 @@ public class SkillContext : ISkillContext
         
         _addAffectedArea = new List<SkillContextAffectedArea>();
         _addAffectedAreaBurnedInfo = new List<SkillContextAffectedAreaBurnedInfo>();
+
+        _resetSummoned = new List<int>();
         
         Random = random;
         Skill = skill;
@@ -156,6 +161,8 @@ public class SkillContext : ISkillContext
     public void ResetAuras() => IsResetAuras = true;
 
     public void ResetComboCounter() => IsResetComboCounter = true;
+
+    public void ResetSummoned(int? skillID = null) => _resetSummoned.Add(skillID ?? Skill?.ID ?? 0);
 
     public async Task Execute()
     {
@@ -273,6 +280,19 @@ public class SkillContext : ISkillContext
                 _user.Owned.Add(obj);
                 if (_user.Field != null)
                     await _user.Field.Enter(obj, () => obj.GetEnterFieldPacket(1));
+            }
+        }
+
+        if (_resetSummoned.Count > 0)
+        {
+            foreach (var summoned in _user.Owned
+                         .OfType<IFieldSummoned>()
+                         .Where(s => _resetSummoned.Contains(s.SkillID))
+                         .ToImmutableList())
+            {
+                _user.Owned.Remove(summoned);
+                if (_user.Field != null)
+                    await _user.Field.Leave(summoned);
             }
         }
 

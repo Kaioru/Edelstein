@@ -34,4 +34,6 @@ public interface ISkillContext
     
     void ResetAuras();
     void ResetComboCounter();
+
+    void ResetSummoned(int? skillID = null);
 }
