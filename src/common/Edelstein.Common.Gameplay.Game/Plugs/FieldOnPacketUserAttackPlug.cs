@@ -114,6 +114,9 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             count++;
         }
 
+        if (SkillConstants.IsKeydownSkill(message.Attack.SkillID))
+            packet.WriteInt(message.Attack.Keydown);
+
         if (message.User.FieldSplit != null)
             await message.User.FieldSplit.Dispatch(packet.Build(), message.User);
 

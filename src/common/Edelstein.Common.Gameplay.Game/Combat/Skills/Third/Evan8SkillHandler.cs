@@ -1,5 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Objects.AffectedArea;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 
@@ -27,6 +28,7 @@ public class Evan8SkillHandler : Evan7SkillHandler
         {
             case Skill.EvanRecoveryAura:
                 // TODO
+                context.AddAffectedArea(AffectedAreaType.UserSkill);
                 break;
         }
         

@@ -565,12 +565,12 @@ public class DamageCalculator : IDamageCalculator
         if (attack.IsFinalAfterSlashBlast)
             rate = Math.Pow(1 / 3d, count);
 
-        if (attack.SkillID == Skill.Archmage2ChainLightning)
+        if (attack.SkillID is Skill.Archmage2ChainLightning or Skill.EvanBlaze)
         {
-            var chainLightningSkill = await _skills.Retrieve(Skill.Archmage2ChainLightning);
-            var chainLightningLevel = chainLightningSkill?[stats.SkillLevels[Skill.Archmage2ChainLightning]];
+            var damageDecSkill = await _skills.Retrieve(Skill.Archmage2ChainLightning);
+            var damageDecLevel = damageDecSkill?[stats.SkillLevels[Skill.Archmage2ChainLightning]];
 
-            rate = (100 - count * (chainLightningLevel?.X ?? 0)) / 100d;
+            rate = (100 - count * (damageDecLevel?.X ?? 0)) / 100d;
         }
 
         for (var i = 0; i < damage.Length; i++)
