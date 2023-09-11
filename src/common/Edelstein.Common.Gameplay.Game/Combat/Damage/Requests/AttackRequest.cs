@@ -51,7 +51,7 @@ public class AttackRequest : IAttackRequest, IPacketReadable
         var v6 = reader.ReadByte();
         DamagePerMob = v6 >> 0 & 0xF;
         MobCount = v6 >> 4 & 0xF;
-        
+
         _ = reader.ReadInt(); // dr2
         _ = reader.ReadInt(); // dr3
 
@@ -65,25 +65,26 @@ public class AttackRequest : IAttackRequest, IPacketReadable
         {
             case AttackType.Melee:
             case AttackType.Body:
-                _ = reader.ReadInt(); // skillLevel crc
-                _ = reader.ReadInt(); // skillLevel crc
+            case AttackType.Shoot:
+                _ = reader.ReadInt();
+                _ = reader.ReadInt();
                 break;
             case AttackType.Magic:
-                _ = reader.ReadInt(); // skillLevel crc
-                _ = reader.ReadInt(); // skillLevel crc
-                _ = reader.ReadInt(); // skillLevel crc
-                _ = reader.ReadInt(); // skillLevel crc
-                _ = reader.ReadInt(); // skillLevel crc
-                _ = reader.ReadInt(); // skillLevel crc
-                _ = reader.ReadInt(); // skillLevel crc
-                _ = reader.ReadInt(); // skillLevel crc
+                _ = reader.ReadInt();
+                _ = reader.ReadInt();
+                _ = reader.ReadInt();
+                _ = reader.ReadInt();
+                _ = reader.ReadInt();
+                _ = reader.ReadInt();
+                _ = reader.ReadInt();
+                _ = reader.ReadInt();
                 break;
         }
 
-        Keydown = SkillConstants.IsKeydownSkill(SkillID) 
-            ? reader.ReadInt() 
+        Keydown = SkillConstants.IsKeydownSkill(SkillID)
+            ? reader.ReadInt()
             : 0;
-        
+
         var option = reader.ReadByte();
         IsFinalAfterSlashBlast = (option & 0x1) > 0;
         IsSoulArrow = (option & 0x2) > 0;
@@ -92,24 +93,35 @@ public class AttackRequest : IAttackRequest, IPacketReadable
         IsSpiritJavelin = (option & 0x40) > 0;
         IsSpark = (option & 0x80) > 0;
 
+        if (Type == AttackType.Shoot)
+            _ = reader.ReadBool(); // bNextShootExJablin
+
         var v15 = reader.ReadShort();
         IsLeft = (v15 >> 15 & 1) > 0;
         AttackAction = v15 & 0x7FFF;
         _ = reader.ReadInt(); // action crc?
 
         AttackActionType = reader.ReadByte();
-        
+
         var v17 = reader.ReadByte();
         PartyCount = v17 >> 4;
         SpeedDegree = v17 & 0xF;
-        
+
         AttackTime = reader.ReadInt();
 
-        Phase = reader.ReadInt();
-        
+        if (Type == AttackType.Shoot)
+        {
+            _ = reader.ReadInt(); // dwID
+            _ = reader.ReadShort(); // ProperBulletPosition
+            _ = reader.ReadShort(); // CashItemPos
+            _ = reader.ReadByte(); // ShootRange
+            // _ = reader.ReadInt(); // SpiritJavelin ItemID
+        }
+        else Phase = reader.ReadInt();
+
         for (var i = 0; i < MobCount; i++)
             Entries.Add(reader.Read(new AttackRequestEntry(DamagePerMob)));
-
+                
         _ = reader.ReadPoint2D();
     }
 }
