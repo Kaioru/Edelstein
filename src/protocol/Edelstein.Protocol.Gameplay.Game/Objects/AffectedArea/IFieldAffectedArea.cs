@@ -17,4 +17,7 @@ public interface IFieldAffectedArea : IFieldObject
     
     DateTime? DateStart { get; }
     DateTime? DateExpire { get; }
+
+    Task Enter(IFieldObject obj);
+    Task Leave(IFieldObject obj);
 }

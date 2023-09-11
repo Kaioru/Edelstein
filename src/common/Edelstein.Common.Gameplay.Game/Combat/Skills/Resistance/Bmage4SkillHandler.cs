@@ -1,5 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Objects.AffectedArea;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
@@ -33,6 +34,7 @@ public class Bmage4SkillHandler : Bmage3SkillHandler
                 break;
             case Skill.BmageShelter:
                 // TODO
+                context.AddAffectedArea(AffectedAreaType.Smoke);
                 break;
             case Skill.BmageMapleHero:
                 context.SetTargetParty();

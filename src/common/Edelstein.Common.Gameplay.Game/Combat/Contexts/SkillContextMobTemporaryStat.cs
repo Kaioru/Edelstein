@@ -1,6 +1,6 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 
-namespace Edelstein.Common.Gameplay.Game.Combat;
+namespace Edelstein.Common.Gameplay.Game.Combat.Contexts;
 
 public record SkillContextMobTemporaryStat(
     MobTemporaryStatType Type,

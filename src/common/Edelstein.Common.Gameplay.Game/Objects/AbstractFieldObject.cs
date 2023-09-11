@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Objects;
+using Edelstein.Protocol.Gameplay.Game.Objects.AffectedArea;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
 
@@ -8,7 +9,11 @@ namespace Edelstein.Common.Gameplay.Game.Objects;
 
 public abstract class AbstractFieldObject : IFieldObject
 {
-    protected AbstractFieldObject(IPoint2D position) => Position = position;
+    protected AbstractFieldObject(IPoint2D position)
+    {
+        Position = position;
+        Affected = new List<IFieldAffectedArea>();
+    }
 
     private bool IsHidden { get; set; }
     public abstract FieldObjectType Type { get; }
@@ -18,9 +23,25 @@ public abstract class AbstractFieldObject : IFieldObject
     public IField? Field { get; set; }
     public IFieldSplit? FieldSplit { get; set; }
     public IPoint2D Position { get; protected set; }
+    
+    public ICollection<IFieldAffectedArea> Affected { get; }
 
     public bool IsVisibleTo(IFieldObject obj) => !IsHidden;
+    
 
+    private async Task UpdateFieldSplit()
+    {
+        var split = Field?.GetSplit(Position);
+
+        if (split == null)
+        {
+            if (Field != null) await Field.Enter(this);
+            return;
+        }
+
+        if (FieldSplit != split) await split.Enter(this);
+    }
+    
     public async Task Hide(bool hidden = true)
     {
         if (IsHidden == hidden) return;

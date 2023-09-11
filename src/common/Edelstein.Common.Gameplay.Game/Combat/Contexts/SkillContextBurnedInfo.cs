@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Common.Gameplay.Game.Combat;
+﻿namespace Edelstein.Common.Gameplay.Game.Combat.Contexts;
 
 public record SkillContextBurnedInfo(
     int Damage, 

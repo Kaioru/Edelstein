@@ -1,5 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Objects.AffectedArea;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
@@ -10,6 +11,19 @@ namespace Edelstein.Common.Gameplay.Game.Combat.Skills.Normal;
 public class MageFirePoisonSkillHandler : WizardFirePoisonSkillHandler
 {
     public override int ID => Job.MageFirePoison;
+
+    public override Task HandleAttack(ISkillContext context, IFieldUser user)
+    {
+        switch (context.Skill?.ID)
+        {
+            case Skill.Mage1PoisonMist:
+                // TODO DOT
+                context.AddAffectedArea(AffectedAreaType.UserSkill);
+                break;
+        }
+
+        return base.HandleAttack(context, user);
+    }
 
     public override Task HandleAttackMob(ISkillContext context, IFieldUser user, IFieldMob mob)
     {
@@ -28,9 +42,6 @@ public class MageFirePoisonSkillHandler : WizardFirePoisonSkillHandler
     {
         switch (context.Skill?.ID)
         {
-            case Skill.Mage1PoisonMist:
-                // TODO affected area
-                break;
             case Skill.Mage1Seal:
                 if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
                     context.AddMobTemporaryStat(MobTemporaryStatType.Seal, 1);

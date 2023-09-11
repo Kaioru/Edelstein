@@ -1,8 +1,11 @@
-﻿using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
+﻿using Edelstein.Common.Gameplay.Game.Combat.Contexts;
+using Edelstein.Common.Gameplay.Game.Objects.AffectedArea;
+using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Common.Gameplay.Game.Objects.Summoned;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Objects;
+using Edelstein.Protocol.Gameplay.Game.Objects.AffectedArea;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.Summoned;
@@ -23,6 +26,7 @@ public class SkillContext : ISkillContext
     private readonly ICollection<SkillContextMobTemporaryStat> _addMobTemporaryStat;
     private readonly ICollection<SkillContextBurnedInfo> _addBurnedInfo;
     private readonly ICollection<SkillContextSummoned> _addSummoned;
+    private readonly ICollection<SkillContextAffectedArea> _addAffectedArea;
     
     private SkillContextTarget? TargetField { get; set; }
     private SkillContextTarget? TargetParty{ get; set; }
@@ -49,6 +53,7 @@ public class SkillContext : ISkillContext
         _addMobTemporaryStat = new List<SkillContextMobTemporaryStat>();
         _addBurnedInfo = new List<SkillContextBurnedInfo>();
         _addSummoned = new List<SkillContextSummoned>();
+        _addAffectedArea = new List<SkillContextAffectedArea>();
         
         Random = random;
         Skill = skill;
@@ -112,6 +117,25 @@ public class SkillContext : ISkillContext
                 skillID ?? Skill?.ID ?? 0,
                 skillLevel ?? SkillLevel?.Level ?? 0,
                 expire ?? _now.AddSeconds(SkillLevel?.Time ?? 0)
+        ));
+
+    public void AddAffectedArea(AffectedAreaType type, int? skillID = null, int? skillLevel = null, int? info = null, int? phase = null, IRectangle2D? bounds = null, DateTime? expire = null)
+        => _addAffectedArea.Add(new SkillContextAffectedArea(
+            type,
+            skillID ?? Skill?.ID ?? 0,
+            skillLevel ?? SkillLevel?.Level ?? 0,
+            info ?? 0,
+            phase ?? 0,
+            bounds ?? (SkillLevel == null
+                ? new Rectangle2D()
+                : new Rectangle2D(
+                    new Point2D(
+                        _user.Position.X, 
+                        _user.Position.Y - 60
+                    ), 
+                    SkillLevel.Bounds
+            )),
+            expire ?? _now.AddSeconds(SkillLevel?.Time ?? 0)
         ));
 
     public void ResetAuras() => IsResetAuras = true;
@@ -220,7 +244,7 @@ public class SkillContext : ISkillContext
                         await _user.Field.Leave(existing);
                 }
 
-                var newSummon = new FieldSummoned(
+                var obj = new FieldSummoned(
                     _user,
                     summoned.SkillID,
                     (byte)summoned.SkillLevel,
@@ -231,9 +255,31 @@ public class SkillContext : ISkillContext
                     summoned.Expire
                 );
                 
-                _user.Owned.Add(newSummon);
+                _user.Owned.Add(obj);
                 if (_user.Field != null)
-                    await _user.Field.Enter(newSummon, () => newSummon.GetEnterFieldPacket(1));
+                    await _user.Field.Enter(obj, () => obj.GetEnterFieldPacket(1));
+            }
+        }
+
+        if (_addAffectedArea.Count > 0)
+        {
+            foreach (var affectedArea in _addAffectedArea)
+            {
+                var obj = new FieldAffectedArea(
+                    _user.Character.ID,
+                    affectedArea.Type,
+                    affectedArea.SkillID,
+                    affectedArea.SkillLevel,
+                    affectedArea.Info,
+                    affectedArea.Phase,
+                    affectedArea.Bounds,
+                    _now,
+                    affectedArea.Expire
+                );
+                Console.WriteLine(affectedArea.Bounds);
+                
+                if (_user.Field != null)
+                    await _user.Field.Enter(obj, () => obj.GetEnterFieldPacket());
             }
         }
     }

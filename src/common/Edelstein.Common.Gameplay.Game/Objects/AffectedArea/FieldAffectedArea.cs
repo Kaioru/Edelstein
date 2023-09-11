@@ -49,6 +49,18 @@ public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITicka
     
     public DateTime? DateStart { get; }
     public DateTime? DateExpire { get; }
+    
+    public Task Enter(IFieldObject obj)
+    {
+        Console.WriteLine(obj.Type + " ENTERED " + ObjectID);
+        return Task.CompletedTask;
+    }
+
+    public Task Leave(IFieldObject obj)
+    {
+        Console.WriteLine(obj.Type + " LEFT " + ObjectID);
+        return Task.CompletedTask;
+    }
 
     public override IPacket GetEnterFieldPacket()
     {

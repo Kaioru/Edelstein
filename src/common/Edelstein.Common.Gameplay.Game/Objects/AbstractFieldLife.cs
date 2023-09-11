@@ -17,6 +17,7 @@ public abstract class AbstractFieldLife<TMovePath, TMoveAction> :
         Action = action;
         Foothold = foothold;
     }
+    
     public TMoveAction Action { get; protected set; }
     public IFieldFoothold? Foothold { get; private set; }
 

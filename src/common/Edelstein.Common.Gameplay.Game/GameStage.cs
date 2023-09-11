@@ -33,7 +33,7 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
         }
 
         user.FieldUser = fieldUser;
-
+        
         await field.Enter(fieldUser);
         await base.Enter(user);
     }
