@@ -39,6 +39,7 @@ public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITicka
         Bounds = bounds;
         DateStart = dateStart;
         DateExpire = dateExpire;
+        Actions = new List<IFieldAffectedAreaAction>();
     }
 
     public override FieldObjectType Type => FieldObjectType.AffectedArea;
@@ -58,13 +59,19 @@ public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITicka
     public DateTime? DateStart { get; }
     public DateTime? DateExpire { get; }
     
+    public ICollection<IFieldAffectedAreaAction> Actions { get; }
+
     public Task Enter(IFieldObject obj)
     {
+        foreach (var action in Actions)
+            _ = action.OnEnter(obj);
         return Task.CompletedTask;
     }
 
     public Task Leave(IFieldObject obj)
     {
+        foreach (var action in Actions)
+            _ = action.OnLeave(obj);
         return Task.CompletedTask;
     }
 
@@ -132,5 +139,9 @@ public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITicka
             _affected.Add(obj);
             _ = Enter(obj);
         }
+
+        foreach (var action in Actions)
+        foreach (var obj in _affected)
+            _ = action.OnTick(obj);
     }
 }

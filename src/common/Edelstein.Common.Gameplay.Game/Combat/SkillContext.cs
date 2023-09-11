@@ -27,7 +27,8 @@ public class SkillContext : ISkillContext
     private readonly ICollection<SkillContextBurnedInfo> _addBurnedInfo;
     private readonly ICollection<SkillContextSummoned> _addSummoned;
     private readonly ICollection<SkillContextAffectedArea> _addAffectedArea;
-    
+    private readonly ICollection<SkillContextAffectedAreaBurned> _addAffectedAreaBurned;
+
     private SkillContextTarget? TargetField { get; set; }
     private SkillContextTarget? TargetParty{ get; set; }
     
@@ -54,6 +55,7 @@ public class SkillContext : ISkillContext
         _addBurnedInfo = new List<SkillContextBurnedInfo>();
         _addSummoned = new List<SkillContextSummoned>();
         _addAffectedArea = new List<SkillContextAffectedArea>();
+        _addAffectedAreaBurned = new List<SkillContextAffectedAreaBurned>();
         
         Random = random;
         Skill = skill;
@@ -136,6 +138,15 @@ public class SkillContext : ISkillContext
                     SkillLevel.Bounds
             )),
             expire ?? _now.AddSeconds(SkillLevel?.Time ?? 0)
+        ));
+    
+    public void AddAffectedAreaBurned(int? skillID = null, int? skillLevel = null, TimeSpan? interval = null, TimeSpan? duration = null, IFieldUser? user = null)
+        => _addAffectedAreaBurned.Add(new SkillContextAffectedAreaBurned(
+            skillID ?? Skill?.ID ?? 0,
+            skillLevel ?? SkillLevel?.Level ?? 0,
+            interval ?? TimeSpan.FromSeconds(SkillLevel?.DotInterval ?? 0),
+            duration ?? TimeSpan.FromSeconds(SkillLevel?.DotTime ?? 0),
+            user ?? _user
         ));
 
     public void ResetAuras() => IsResetAuras = true;
@@ -276,7 +287,16 @@ public class SkillContext : ISkillContext
                     _now,
                     affectedArea.Expire
                 );
-                Console.WriteLine(affectedArea.Bounds);
+                
+                if (_addAffectedAreaBurned.Count > 0)
+                    foreach (var burned in _addAffectedAreaBurned)
+                        obj.Actions.Add(new FieldAffectedAreaActionBurned(
+                            _user,
+                            burned.SkillID,
+                            burned.SkillLevel,
+                            burned.Interval,
+                            burned.Duration
+                        ));
                 
                 if (_user.Field != null)
                     await _user.Field.Enter(obj, () => obj.GetEnterFieldPacket());
