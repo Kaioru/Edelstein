@@ -1,7 +1,9 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Combat.Damage;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Common.Gameplay.Game.Objects.Dragon;
 using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Characters.Stats;
 using Edelstein.Common.Gameplay.Packets;
@@ -12,6 +14,7 @@ using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects;
+using Edelstein.Protocol.Gameplay.Game.Objects.Dragon;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
@@ -284,6 +287,46 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
             StageUser.Context.Templates.Skill
         );
         Console.WriteLine(Stats);
+
+        if (JobConstants.GetJobRace(Character.Job) == 2 &&
+            JobConstants.GetJobType(Character.Job) == 2 &&
+            JobConstants.GetJobLevel(Character.Job) > 0)
+        {
+            Console.WriteLine("TEST");
+            try
+            {
+                var dragon = Owned
+                    .OfType<IFieldDragon>()
+                    .FirstOrDefault();
+
+                if (dragon == null || dragon.JobCode != Character.Job)
+                {
+                    if (dragon != null)
+                    {
+                        Owned.Remove(dragon);
+                        if (IsInstantiated && Field != null)
+                            await Field.Leave(dragon);
+                    }
+
+                    dragon = new FieldDragon(
+                        this,
+                        Character.Job,
+                        new FieldDragonMoveAction(0),
+                        Position,
+                        Foothold
+                    );
+
+                    Owned.Add(dragon);
+
+                    if (IsInstantiated && Field != null)
+                        await Field.Enter(dragon);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         
         if (Character.HP > Stats.MaxHP) await ModifyStats(s => s.HP = Stats.MaxHP);
         if (Character.MP > Stats.MaxMP) await ModifyStats(s => s.MP = Stats.MaxMP);
