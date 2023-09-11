@@ -50,6 +50,9 @@ public class ArchmageThunderColdSkillHandler : MageThunderColdSkillHandler
             case Skill.Archmage2Elquines:
                 context.AddSummoned(MoveAbilityType.Walk, SummonedAssistType.Attack);
                 break;
+            case Skill.Archmage2HerosWill:
+                context.ResetTemporaryStatNegative();
+                break;
         }
 
         return base.HandleSkillUse(context, user);

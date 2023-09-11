@@ -51,6 +51,9 @@ public class ArchmageFirePoisonSkillHandler : MageFirePoisonSkillHandler
             case Skill.Archmage1Ifrit:
                 context.AddSummoned(MoveAbilityType.Walk, SummonedAssistType.Attack);
                 break;
+            case Skill.Archmage1HerosWill:
+                context.ResetTemporaryStatNegative();
+                break;
         }
 
         return base.HandleSkillUse(context, user);

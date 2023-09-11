@@ -17,6 +17,9 @@ public class Evan9SkillHandler : Evan8SkillHandler
                 context.SetTargetParty();
                 context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
                 break;
+            case Skill.EvanHerosWill:
+                context.ResetTemporaryStatNegative();
+                break;
         }
         
         return base.HandleSkillUse(context, user);

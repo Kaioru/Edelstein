@@ -40,6 +40,9 @@ public class Bmage4SkillHandler : Bmage3SkillHandler
                 context.SetTargetParty();
                 context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
                 break;
+            case Skill.BmageHerosWill:
+                context.ResetTemporaryStatNegative();
+                break;
         }
         
         return base.HandleSkillUse(context, user);

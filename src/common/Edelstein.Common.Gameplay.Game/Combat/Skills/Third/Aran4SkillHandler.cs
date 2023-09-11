@@ -23,6 +23,9 @@ public class Aran4SkillHandler : Aran3SkillHandler
             case Skill.AranComboBarrier:
                 context.AddTemporaryStat(TemporaryStatType.ComboBarrier, context.SkillLevel!.X);
                 break;
+            case Skill.AranHerosWill:
+                context.ResetTemporaryStatNegative();
+                break;
         }
 
         return base.HandleSkillUse(context, user);

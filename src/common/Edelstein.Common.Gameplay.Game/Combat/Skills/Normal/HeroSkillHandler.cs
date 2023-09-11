@@ -41,6 +41,9 @@ public class HeroSkillHandler : CrusaderSkillHandler
                     context.SkillLevel!.MobCount)
                 );
                 break;
+            case Skill.HeroHerosWill:
+                context.ResetTemporaryStatNegative();
+                break;
         }
         
         return base.HandleSkillUse(context, user);

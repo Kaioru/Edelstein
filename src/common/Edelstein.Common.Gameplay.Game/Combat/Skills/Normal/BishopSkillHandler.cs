@@ -32,6 +32,9 @@ public class BishopSkillHandler : PriestSkillHandler
             case Skill.BishopResurrection:
                 // TODO resurrection
                 break;
+            case Skill.BishopHerosWill:
+                context.ResetTemporaryStatNegative();
+                break;
         }
 
         return base.HandleSkillUse(context, user);

@@ -40,6 +40,9 @@ public class DarkKnightSkillHandler : DragonKnightSkillHandler
                 context.AddTemporaryStat(TemporaryStatType.Beholder, context.SkillLevel!.X);
                 context.AddSummoned(MoveAbilityType.Walk, SummonedAssistType.Heal);
                 break;
+            case Skill.DarkknightHerosWill:
+                context.ResetTemporaryStatNegative();
+                break;
         }
 
         return base.HandleSkillUse(context, user);

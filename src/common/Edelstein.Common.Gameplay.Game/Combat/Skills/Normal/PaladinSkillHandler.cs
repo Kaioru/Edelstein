@@ -35,6 +35,9 @@ public class PaladinSkillHandler : KnightSkillHandler
             case Skill.PaladinDivineCharge:
                 context.AddTemporaryStat(TemporaryStatType.WeaponCharge, context.SkillLevel!.X);
                 break;
+            case Skill.PaladinHerosWill:
+                context.ResetTemporaryStatNegative();
+                break;
         }
 
         return base.HandleSkillUse(context, user);
