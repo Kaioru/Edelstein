@@ -19,7 +19,7 @@ public class ArchmageFirePoisonSkillHandler : MageFirePoisonSkillHandler
             case Skill.Archmage1FireDemon:
             case Skill.Archmage1Paralyze:
             case Skill.Archmage1Meteor:
-                context.AddMobBurned(await user.Damage.CalculateBurnedDamage(
+                context.AddMobBurnedInfo(await user.Damage.CalculateBurnedDamage(
                     user.Character,
                     user.Stats,
                     mob,

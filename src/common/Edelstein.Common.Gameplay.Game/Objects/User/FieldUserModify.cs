@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
+﻿using Edelstein.Common.Gameplay.Models.Characters;
+using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Common.Gameplay.Models.Characters.Stats;
 using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify;
@@ -82,10 +83,15 @@ public class FieldUserModify : IFieldUserModify
         var context = new ModifyTemporaryStatContext(_user.Character.TemporaryStats);
 
         action?.Invoke(context);
-        if (!IsRequireUpdate)
-            IsRequireUpdate = context.HistoryReset.Records.Any() || context.HistorySet.Records.Any();
 
-        if (context.HistoryReset.Records.Any())
+        var isUpdateReset = context.HistoryReset.Records.Any() ||
+                            context.HistoryReset.HasTwoStateStats();
+        var isUpdateSet = context.HistorySet.Records.Any() ||
+                          context.HistorySet.HasTwoStateStats();
+        if (!IsRequireUpdate)
+            IsRequireUpdate = isUpdateReset || isUpdateSet;
+
+        if (isUpdateReset)
         {
             var resetLocalPacket = new PacketWriter(PacketSendOperations.TemporaryStatReset);
             var resetRemotePacket = new PacketWriter(PacketSendOperations.UserTemporaryStatReset);
@@ -101,7 +107,7 @@ public class FieldUserModify : IFieldUserModify
                 await _user.FieldSplit.Dispatch(resetRemotePacket.Build());
         }
 
-        if (context.HistorySet.Records.Any())
+        if (isUpdateSet)
         {
             var setLocalPacket = new PacketWriter(PacketSendOperations.TemporaryStatSet);
             var setRemotePacket = new PacketWriter(PacketSendOperations.UserTemporaryStatSet);

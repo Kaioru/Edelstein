@@ -19,7 +19,7 @@ public class RangerSkillHandler : HunterSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.RangerFireShot:
-                context.AddMobBurned(await user.Damage.CalculateBurnedDamage(
+                context.AddMobBurnedInfo(await user.Damage.CalculateBurnedDamage(
                     user.Character,
                     user.Stats,
                     mob,

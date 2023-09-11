@@ -15,7 +15,7 @@ public class WizardFirePoisonSkillHandler : MagicianSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.Wizard1PoisonBreath:
-                context.AddMobBurned(await user.Damage.CalculateBurnedDamage(
+                context.AddMobBurnedInfo(await user.Damage.CalculateBurnedDamage(
                     user.Character,
                     user.Stats,
                     mob,

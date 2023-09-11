@@ -22,8 +22,11 @@ public class SkillContext : ISkillContext
     private readonly IFieldUser _user;
     private readonly IFieldMob? _mob;
     private readonly DateTime _now;
+
+    private SkillContextTwoStateRideVehicle? _setTwoStateRideVehicle { get; set; }
     
     private readonly ICollection<SkillContextTemporaryStat> _addTemporaryStat;
+    
     private readonly ICollection<SkillContextMobTemporaryStat> _addMobTemporaryStat;
     private readonly ICollection<SkillContextBurnedInfo> _addBurnedInfo;
     
@@ -121,6 +124,9 @@ public class SkillContext : ISkillContext
         => RecoverMP = mp ?? (SkillLevel?.MP > 0
             ? (int)(_user.Stats.MaxMP * SkillLevel.MP / 100d)
             : 0);
+    
+    public void SetTwoStateRideVehicle(int value = 0, int? reason = null)
+        => _setTwoStateRideVehicle = new SkillContextTwoStateRideVehicle(value, reason ?? (value > 0 ? Skill?.ID ?? 0 : 0));
 
     public void AddTemporaryStat(TemporaryStatType type, int value, int? reason = null, DateTime? expire = null)
         => _addTemporaryStat.Add(new SkillContextTemporaryStat(
@@ -138,7 +144,7 @@ public class SkillContext : ISkillContext
             expire ?? _now.AddSeconds(SkillLevel?.Time ?? 0)
         ));
 
-    public void AddMobBurned(int damage, int? skillID = null, TimeSpan? interval = null, DateTime? expire = null)
+    public void AddMobBurnedInfo(int damage, int? skillID = null, TimeSpan? interval = null, DateTime? expire = null)
         => _addBurnedInfo.Add(new SkillContextBurnedInfo(
             damage,
             skillID ?? Skill?.ID ?? 0,
@@ -251,6 +257,9 @@ public class SkillContext : ISkillContext
                         if (existingStat != null)
                             s.Set(x.Type, x.Value, existingStat.Reason, existingStat.DateExpire);
                     }
+                    
+                    if (_setTwoStateRideVehicle != null)
+                        s.SetRideVehicle(_setTwoStateRideVehicle.Value, _setTwoStateRideVehicle.Reason);
 
                     foreach (var ts in _addTemporaryStat)
                         s.Set(ts.Type, ts.Value, ts.Reason, ts.Expire);

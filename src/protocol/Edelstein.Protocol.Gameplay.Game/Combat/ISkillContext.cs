@@ -25,9 +25,12 @@ public interface ISkillContext
     void SetRecoverHP(int? hp = null);
     void SetRecoverMP(int? mp = null);
 
+    void SetTwoStateRideVehicle(int value = 0, int? reason = null);
+    
     void AddTemporaryStat(TemporaryStatType type, int value, int? reason = null, DateTime? expire = null);
+    
     void AddMobTemporaryStat(MobTemporaryStatType type, int value, int? reason = null, DateTime? expire = null);
-    void AddMobBurned(int damage, int? skillID = null, TimeSpan? interval = null, DateTime? expire = null);
+    void AddMobBurnedInfo(int damage, int? skillID = null, TimeSpan? interval = null, DateTime? expire = null);
     
     void AddSummoned(MoveAbilityType moveAbilityType, SummonedAssistType summonedAssistType, int? skillID = null, int? skillLevel = null, DateTime? expire = null);
 

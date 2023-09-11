@@ -351,17 +351,28 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     
     public async Task OnTick(DateTime now)
     {
-        var expiredStats = Character.TemporaryStats.Records
-            .Where(kv => kv.Value.DateExpire < now)
-            .ToImmutableList();
-
-        if (expiredStats.Count > 0)
+        await ModifyTemporaryStats(s =>
         {
-            await ModifyTemporaryStats(s =>
-            {
-                foreach (var kv in expiredStats)
-                    s.ResetByType(kv.Key);
-            });
-        }
+            foreach (var kv in Character.TemporaryStats.Records
+                         .Where(kv => kv.Value.DateExpire < now)
+                         .ToImmutableList())
+                s.ResetByType(kv.Key);
+            
+            if ((Character.TemporaryStats.EnergyChargedRecord?.IsExpired(now) ?? false) &&
+                (Character.TemporaryStats.EnergyChargedRecord?.IsActive() ?? false))
+                s.ResetEnergyCharged();
+            if ((Character.TemporaryStats.DashSpeedRecord?.IsExpired(now) ?? false) &&
+                (Character.TemporaryStats.DashSpeedRecord?.IsActive() ?? false))
+                s.ResetDashSpeed();
+            if ((Character.TemporaryStats.DashJumpRecord?.IsExpired(now) ?? false) &&
+                (Character.TemporaryStats.DashJumpRecord?.IsActive() ?? false))
+                s.ResetDashJump();
+            if ((Character.TemporaryStats.PartyBoosterRecord?.IsExpired(now) ?? false) &&
+                (Character.TemporaryStats.PartyBoosterRecord?.IsActive() ?? false))
+                s.ResetPartyBooster();
+            if ((Character.TemporaryStats.UndeadRecord?.IsExpired(now) ?? false) &&
+                (Character.TemporaryStats.UndeadRecord?.IsActive() ?? false))
+                s.ResetUndead();
+        });
     }
 }

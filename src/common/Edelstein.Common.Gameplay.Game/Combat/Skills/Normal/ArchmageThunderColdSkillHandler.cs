@@ -18,7 +18,7 @@ public class ArchmageThunderColdSkillHandler : MageThunderColdSkillHandler
         {
             case Skill.Archmage2IceDemon:
             case Skill.Archmage2Blizzard:
-                context.AddMobBurned(await user.Damage.CalculateBurnedDamage(
+                context.AddMobBurnedInfo(await user.Damage.CalculateBurnedDamage(
                     user.Character,
                     user.Stats,
                     mob,
