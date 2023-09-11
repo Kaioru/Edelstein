@@ -31,9 +31,10 @@ public interface ISkillContext
 
     void AddAffectedArea(AffectedAreaType type, int? skillID = null, int? skillLevel = null, int? info = null, int? phase = null, IRectangle2D? bounds = null, DateTime? expire = null);
     void AddAffectedAreaBurnedInfo(int? skillID = null, int? skillLevel = null, TimeSpan? interval = null, TimeSpan? duration = null, IFieldUser? user = null);
-    
-    void ResetAuras();
-    void ResetComboCounter();
 
+    void ResetTemporaryStatBySkill(int? skillID = null);
+    void ResetTemporaryStatByType(TemporaryStatType type);
+    void ResetTemporaryStatExisting(TemporaryStatType type, int value);
+    
     void ResetSummoned(int? skillID = null);
 }

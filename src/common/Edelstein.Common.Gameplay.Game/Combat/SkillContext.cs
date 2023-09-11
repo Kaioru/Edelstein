@@ -32,15 +32,16 @@ public class SkillContext : ISkillContext
     private readonly ICollection<SkillContextAffectedArea> _addAffectedArea;
     private readonly ICollection<SkillContextAffectedAreaBurnedInfo> _addAffectedAreaBurnedInfo;
 
+    private readonly ICollection<int> _resetTemporaryStatBySkill;
+    private readonly ICollection<TemporaryStatType> _resetTemporaryStatByType;
+    private readonly ICollection<SkillContextTemporaryStatExisting> _resetTemporaryStatExisting;
+
     private readonly ICollection<int> _resetSummoned;
 
     private SkillContextTarget? TargetField { get; set; }
     private SkillContextTarget? TargetParty{ get; set; }
     
     private int? MobCount { get; set; }
-    
-    private bool IsResetAuras { get; set; }
-    private bool IsResetComboCounter { get; set; }
     
     public SkillContext(
         IFieldUser user,
@@ -64,6 +65,10 @@ public class SkillContext : ISkillContext
         _addAffectedArea = new List<SkillContextAffectedArea>();
         _addAffectedAreaBurnedInfo = new List<SkillContextAffectedAreaBurnedInfo>();
 
+        _resetTemporaryStatBySkill = new List<int>();
+        _resetTemporaryStatByType = new List<TemporaryStatType>();
+        _resetTemporaryStatExisting = new List<SkillContextTemporaryStatExisting>();
+        
         _resetSummoned = new List<int>();
         
         Random = random;
@@ -158,41 +163,19 @@ public class SkillContext : ISkillContext
             user ?? _user
         ));
 
-    public void ResetAuras() => IsResetAuras = true;
+    public void ResetTemporaryStatBySkill(int? skillID = null)
+        => _resetTemporaryStatBySkill.Add(skillID ?? Skill?.ID ?? 0);
+    
+    public void ResetTemporaryStatByType(TemporaryStatType type)
+        => _resetTemporaryStatByType.Add(type);
 
-    public void ResetComboCounter() => IsResetComboCounter = true;
+    public void ResetTemporaryStatExisting(TemporaryStatType type, int value)
+        => _resetTemporaryStatExisting.Add(new SkillContextTemporaryStatExisting(type, value));
 
     public void ResetSummoned(int? skillID = null) => _resetSummoned.Add(skillID ?? Skill?.ID ?? 0);
 
     public async Task Execute()
     {
-        
-        await _user.Modify(m =>
-        {
-            m.TemporaryStats(s =>
-            {
-                if (IsResetAuras)
-                {
-                    s.ResetByType(TemporaryStatType.DarkAura);
-                    s.ResetByType(TemporaryStatType.BlueAura);
-                    s.ResetByType(TemporaryStatType.YellowAura);
-                }
-
-                if (IsResetComboCounter)
-                {
-                    var comboCounterStat = _user.Character.TemporaryStats[TemporaryStatType.ComboCounter];
-
-                    if (comboCounterStat != null)
-                        s.Set(
-                            TemporaryStatType.ComboCounter,
-                            1, 
-                            comboCounterStat.Reason,
-                            comboCounterStat.DateExpire
-                        );
-                }
-            });
-        });
-        
         var targets = new HashSet<IFieldObject>{ _user };
 
         if (_mob != null)
@@ -217,12 +200,26 @@ public class SkillContext : ISkillContext
                          //.Where(Party..))
                 targets.Add(target);
 
-        if (_addTemporaryStat.Count > 0)
+        if (_addTemporaryStat.Count > 0 || 
+            _resetTemporaryStatBySkill.Count > 0 || 
+            _resetTemporaryStatByType.Count > 0 ||
+            _resetTemporaryStatExisting.Count > 0
+        )
         {
             await Task.WhenAll(targets
                 .OfType<IFieldUser>()
                 .Select(t => t.ModifyTemporaryStats(s =>
                 {
+                    foreach (var x in _resetTemporaryStatBySkill)
+                        s.ResetByReason(x);
+                    foreach (var x in _resetTemporaryStatByType)
+                        s.ResetByType(x);
+                    foreach (var x in _resetTemporaryStatExisting)
+                    {
+                        var existingStat = t.Character.TemporaryStats[x.Type];
+                        if (existingStat != null)
+                            s.Set(x.Type, x.Value, existingStat.Reason, existingStat.DateExpire);
+                    }
                     foreach (var ts in _addTemporaryStat)
                         s.Set(ts.Type, ts.Value, ts.Reason, ts.Expire);
                 })));

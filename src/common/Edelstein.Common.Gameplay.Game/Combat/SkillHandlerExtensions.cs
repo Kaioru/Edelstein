@@ -16,7 +16,7 @@ public static class SkillHandlerExtensions
             Skill.CrusaderComa or
             Skill.SoulmasterPanicSword or
             Skill.SoulmasterComaSword)
-            context.ResetComboCounter();
+            context.ResetTemporaryStatComboCounter();
         else if (comboCounterStat != null && context.IsHitMob)
         {
             var comboCounterSkillID = JobConstants.GetJobRace(user.Character.Job) == 0

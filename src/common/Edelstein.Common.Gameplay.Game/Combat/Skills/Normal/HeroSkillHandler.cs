@@ -35,7 +35,7 @@ public class HeroSkillHandler : CrusaderSkillHandler
                 context.AddTemporaryStat(TemporaryStatType.Stance, context.SkillLevel!.Prop);
                 break;
             case Skill.HeroEnrage:
-                context.ResetComboCounter();
+                context.ResetTemporaryStatComboCounter();
                 context.AddTemporaryStat(TemporaryStatType.Enrage, (short)(
                     context.SkillLevel!.X * 100 +
                     context.SkillLevel!.MobCount)
