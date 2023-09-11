@@ -15,8 +15,8 @@ public class Evan7SkillHandler : Evan6SkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.EvanBreath:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
                 break;
             case Skill.EvanKillingWing:
                 // TODO

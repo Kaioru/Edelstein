@@ -19,8 +19,8 @@ public class MageThunderColdSkillHandler : WizardThunderColdSkillHandler
                 context.AddMobTemporaryStat(MobTemporaryStatType.Freeze, 1);
                 break;
             case Skill.Mage2ThunderSpear:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
                 break;
         }
         
@@ -32,8 +32,8 @@ public class MageThunderColdSkillHandler : WizardThunderColdSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.Mage2Seal:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Seal, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Seal, 1);
                 break;
             case Skill.Mage2MagicBooster:
                 context.AddTemporaryStat(TemporaryStatType.Booster, context.SkillLevel!.X);

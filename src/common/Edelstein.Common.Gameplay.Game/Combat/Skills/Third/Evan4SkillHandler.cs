@@ -16,8 +16,8 @@ public class Evan4SkillHandler : Evan3SkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.EvanIceBreath:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Freeze, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Freeze, 1);
                 break;
         }
 

@@ -12,7 +12,7 @@ namespace Edelstein.Protocol.Gameplay.Game.Combat;
 public interface ISkillContext
 {
     Random Random { get; }
-
+    
     ISkillTemplate? Skill { get; }
     ISkillTemplateLevel? SkillLevel { get; }
     
@@ -21,7 +21,7 @@ public interface ISkillContext
     void SetTargetField(bool active = true, int? limit = null, IRectangle2D? bounds = null);
     void SetTargetParty(bool active = true, IRectangle2D? bounds = null);
 
-    void SetMobCount(int? count = null);
+    void SetProc(int? proc = null);
     void SetRecoverHP(int? hp = null);
     void SetRecoverMP(int? mp = null);
 

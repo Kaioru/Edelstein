@@ -24,12 +24,12 @@ public class Soulfighter3SkillHandler: Soulfighter2SkillHandler
                 context.AddTemporaryStat(TemporaryStatType.ComboCounter, 1);
                 break;
             case Skill.SoulmasterPanicSword:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.ACC, -context.SkillLevel!.X);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.ACC, -context.SkillLevel!.X);
                 break;
             case Skill.SoulmasterComaSword:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
                 break;
             case Skill.SoulmasterSoulCharge:
                 context.AddTemporaryStat(TemporaryStatType.WeaponCharge, context.SkillLevel!.X);

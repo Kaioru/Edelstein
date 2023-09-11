@@ -14,6 +14,7 @@ public class DragonKnightSkillHandler : SpearmanSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.DragonknightMagicCrash:
+                context.SetProc();
                 context.SetTargetField();
                 context.AddMobTemporaryStat(MobTemporaryStatType.MagicCrash, 1);
                 break;

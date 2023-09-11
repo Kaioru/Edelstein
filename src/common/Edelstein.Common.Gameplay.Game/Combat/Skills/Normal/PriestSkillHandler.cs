@@ -18,8 +18,8 @@ public class PriestSkillHandler : ClericSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.PriestShiningRay:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
                 break;
         }
         
@@ -31,12 +31,9 @@ public class PriestSkillHandler : ClericSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.PriestDispel:
-                // TODO rework procs
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                {
-                    context.SetTargetParty();
-                    context.ResetTemporaryStatNegative();
-                }
+                context.SetProc();
+                context.SetTargetParty();
+                context.ResetTemporaryStatNegative();
                 break;
             case Skill.PriestMysticDoor:
                 // TODO
@@ -46,8 +43,8 @@ public class PriestSkillHandler : ClericSkillHandler
                 context.AddTemporaryStat(TemporaryStatType.HolySymbol, context.SkillLevel!.X);
                 break;
             case Skill.PriestDoom:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Doom, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Doom, 1);
                 break;
             case Skill.PriestSummonDragon:
                 context.AddSummoned(MoveAbilityType.Walk, SummonedAssistType.Attack);

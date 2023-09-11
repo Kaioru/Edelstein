@@ -15,8 +15,8 @@ public class Evan10SkillHandler : Evan9SkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.EvanBlaze:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
                 break;
         }
         

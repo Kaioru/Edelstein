@@ -17,8 +17,8 @@ public class Bmage4SkillHandler : Bmage3SkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.BmageNemesis:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
                 break;
         }
         

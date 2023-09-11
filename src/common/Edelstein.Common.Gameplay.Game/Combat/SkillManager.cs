@@ -74,7 +74,6 @@ public sealed class SkillManager :
         if (skillID == null || skillLevel == null)
             return new SkillContext(
                 user,
-                new Random(),
                 null,
                 null,
                 isHitMob || mob != null,
@@ -86,7 +85,6 @@ public sealed class SkillManager :
 
         return new SkillContext(
             user,
-            new Random(),
             skill,
             level,
             isHitMob || mob != null,

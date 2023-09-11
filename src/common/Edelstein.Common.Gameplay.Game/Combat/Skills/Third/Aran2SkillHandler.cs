@@ -16,8 +16,8 @@ public class Aran2SkillHandler : Aran1SkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.AranBodyPressure:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
                 break;
         }
         

@@ -1,6 +1,7 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Objects;
+using Edelstein.Protocol.Gameplay.Game.Objects.AffectedArea;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.Summoned;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
@@ -16,14 +17,15 @@ public class Flamewizard3SkillHandler : Flamewizard2SkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.FlamewizardSeal:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Seal, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Seal, 1);
                 break;
             case Skill.FlamewizardIfrit:
                 context.AddSummoned(MoveAbilityType.Walk, SummonedAssistType.Attack);
                 break;
             case Skill.FlamewizardFlameGear:
-                // TODO affected area
+                context.AddAffectedArea(AffectedAreaType.UserSkill);
+                context.AddAffectedAreaBurnedInfo();
                 break;
         }
 

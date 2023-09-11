@@ -41,13 +41,12 @@ public class SkillContext : ISkillContext
     private SkillContextTarget? TargetField { get; set; }
     private SkillContextTarget? TargetParty{ get; set; }
     
-    private int? MobCount { get; set; }
+    private int? Proc { get; set; }
     private int? RecoverHP { get; set; }
     private int? RecoverMP { get; set; }
     
     public SkillContext(
         IFieldUser user,
-        Random random, 
         ISkillTemplate? skill, 
         ISkillTemplateLevel? skillLevel, 
         bool isHitMob = false,
@@ -73,14 +72,14 @@ public class SkillContext : ISkillContext
         
         _resetSummoned = new List<int>();
         
-        Random = random;
+        Random = new Random();
+        
         Skill = skill;
         SkillLevel = skillLevel;
         IsHitMob = isHitMob;
     }
-    
+
     public Random Random { get; }
-    
     public ISkillTemplate? Skill { get; }
     public ISkillTemplateLevel? SkillLevel { get; }
     
@@ -102,7 +101,8 @@ public class SkillContext : ISkillContext
                     : new Rectangle2D(_user.Position, SkillLevel.Bounds)))
             : null;
 
-    public void SetMobCount(int? count = null) => MobCount = count;
+    public void SetProc(int? proc = null)
+        => Proc = proc ?? SkillLevel?.Prop ?? 0;
 
     public void SetRecoverHP(int? hp = null)
         => RecoverHP = hp ?? (SkillLevel?.HP > 0 ? (int)(_user.Stats.MaxHP * SkillLevel.HP / 100d) : null);
@@ -195,6 +195,7 @@ public class SkillContext : ISkillContext
                          .Where(s => s != null)
                          .SelectMany(s => s!.Objects)
                          .Where(o => TargetField.Bounds.Intersects(o.Position))
+                         .Where(o => Proc == null || Random.Next(0, 100) <= Proc)
                          .OrderBy(u => _user.Position.Distance(u.Position)))
                 targets.Add(target);
         
@@ -204,8 +205,9 @@ public class SkillContext : ISkillContext
                          .Where(s => s != null)
                          .SelectMany(s => s!.Objects)
                          .Where(o => TargetParty.Bounds.Intersects(o.Position))
+                         .Where(o => Proc == null || Random.Next(0, 100) <= Proc)
+                         //.Where(Party..)
                          .OrderBy(u => _user.Position.Distance(u.Position)))
-                         //.Where(Party..))
                 targets.Add(target);
 
         await Task.WhenAll(targets
@@ -240,7 +242,13 @@ public class SkillContext : ISkillContext
 
         await Task.WhenAll(targets
             .OfType<IFieldMob>()
-            .Take(MobCount ?? SkillLevel?.MobCount ?? 100)
+            .Take(
+                SkillLevel == null 
+                    ? 100
+                    : SkillLevel.MobCount > 0
+                        ? SkillLevel.MobCount
+                        : 100
+            )
             .Select(t => t.ModifyTemporaryStats(s =>
             {
                 if (_addMobTemporaryStat.Count > 0)

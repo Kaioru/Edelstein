@@ -22,13 +22,13 @@ public class CrusaderSkillHandler : FighterSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.CrusaderPanic:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.ACC, -context.SkillLevel!.X);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.ACC, -context.SkillLevel!.X);
                 break;
             case Skill.CrusaderComa:
             case Skill.CrusaderShout:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
                 break;
         }
         
@@ -44,6 +44,7 @@ public class CrusaderSkillHandler : FighterSkillHandler
                 break;
             case Skill.CrusaderMagicCrash:
                 // TODO: remove existing buffs
+                context.SetProc();
                 context.SetTargetField();
                 context.AddMobTemporaryStat(MobTemporaryStatType.MagicCrash, 1);
                 break;

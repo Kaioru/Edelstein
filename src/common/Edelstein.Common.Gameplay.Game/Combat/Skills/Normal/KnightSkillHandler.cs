@@ -19,8 +19,8 @@ public class KnightSkillHandler : PageSkillHandler
                 context.AddMobTemporaryStat(MobTemporaryStatType.Freeze, 1);
                 break;
             case Skill.KnightChargeBlow:
-                if (context.Random.Next(0, 100) <= context.SkillLevel!.Prop)
-                    context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
                 break;
         }
         
@@ -39,6 +39,7 @@ public class KnightSkillHandler : PageSkillHandler
                 context.AddTemporaryStat(TemporaryStatType.CombatOrders, context.SkillLevel!.X);
                 break;
             case Skill.KnightMagicCrash:
+                context.SetProc();
                 context.SetTargetField();
                 context.AddMobTemporaryStat(MobTemporaryStatType.MagicCrash, 1);
                 break;
