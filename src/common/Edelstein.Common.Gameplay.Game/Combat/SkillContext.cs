@@ -167,7 +167,7 @@ public class SkillContext : ISkillContext
                 : new Rectangle2D(
                     new Point2D(
                         _user.Position.X, 
-                        _user.Position.Y - 60
+                        _user.Position.Y - (int)(SkillLevel.Bounds.Height / 2) + 10
                     ), 
                     SkillLevel.Bounds
             )),

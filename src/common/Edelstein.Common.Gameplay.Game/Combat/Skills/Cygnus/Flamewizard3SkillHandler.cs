@@ -11,7 +11,20 @@ namespace Edelstein.Common.Gameplay.Game.Combat.Skills.Cygnus;
 public class Flamewizard3SkillHandler : Flamewizard2SkillHandler
 {
     public override int ID => Job.Flamewizard3;
-    
+
+    public override Task HandleAttack(ISkillContext context, IFieldUser user)
+    {
+        switch (context.Skill?.ID)
+        {
+            case Skill.FlamewizardFlameGear:
+                context.AddAffectedArea(AffectedAreaType.UserSkill);
+                context.AddAffectedAreaBurnedInfo();
+                break;
+        }
+        
+        return base.HandleAttack(context, user);
+    }
+
     public override Task HandleSkillUse(ISkillContext context, IFieldUser user)
     {
         switch (context.Skill?.ID)
@@ -22,10 +35,6 @@ public class Flamewizard3SkillHandler : Flamewizard2SkillHandler
                 break;
             case Skill.FlamewizardIfrit:
                 context.AddSummoned(MoveAbilityType.Walk, SummonedAssistType.Attack);
-                break;
-            case Skill.FlamewizardFlameGear:
-                context.AddAffectedArea(AffectedAreaType.UserSkill);
-                context.AddAffectedAreaBurnedInfo();
                 break;
         }
 
