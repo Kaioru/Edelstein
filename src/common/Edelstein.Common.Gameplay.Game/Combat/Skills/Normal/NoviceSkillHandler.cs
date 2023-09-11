@@ -1,6 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
 
-namespace Edelstein.Common.Gameplay.Game.Combat.Skills.Resistance;
+namespace Edelstein.Common.Gameplay.Game.Combat.Skills.Normal;
 
 public class NoviceSkillHandler : AbstractSkillHandler
 {
