@@ -1,7 +1,11 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
+using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.AffectedArea;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
 using Edelstein.Protocol.Utilities.Tickers;
@@ -10,6 +14,8 @@ namespace Edelstein.Common.Gameplay.Game.Objects.AffectedArea;
 
 public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITickable
 {
+    private readonly ICollection<IFieldObject> _affected;
+    
     public FieldAffectedArea(
         int ownerID, 
         AffectedAreaType areaType, 
@@ -22,6 +28,8 @@ public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITicka
         DateTime? dateExpire = null
     ) : base(bounds.Center)
     {
+        _affected = new HashSet<IFieldObject>();
+        
         OwnerID = ownerID;
         AreaType = areaType;
         SkillID = skillID;
@@ -52,13 +60,11 @@ public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITicka
     
     public Task Enter(IFieldObject obj)
     {
-        Console.WriteLine(obj.Type + " ENTERED " + ObjectID);
         return Task.CompletedTask;
     }
 
     public Task Leave(IFieldObject obj)
     {
-        Console.WriteLine(obj.Type + " LEFT " + ObjectID);
         return Task.CompletedTask;
     }
 
@@ -99,7 +105,32 @@ public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITicka
     public async Task OnTick(DateTime now)
     {
         if (Field == null) return;
-        if (now > DateExpire) 
+        if (now > DateExpire)
             await Field.Leave(this);
+
+        foreach (var obj in _affected
+                     .Where(o => o is not IFieldAffectedArea)
+                     .Where(o => _affected.Contains(o))
+                     .Where(o => !Bounds.Intersects(o.Position) || o.Field != Field)
+                     .ToImmutableList())
+        {
+            _affected.Remove(obj);
+            _ = Leave(obj);
+        }
+
+        if (Field == null) return;
+
+        foreach (var obj in Field
+                     .GetSplits(Bounds)
+                     .Where(s => s != null)
+                     .SelectMany(s => s!.Objects)
+                     .Where(o => o is not IFieldAffectedArea)
+                     .Where(o => !_affected.Contains(o))
+                     .Where(o => Bounds.Intersects(o.Position))
+                     .ToImmutableList())
+        {
+            _affected.Add(obj);
+            _ = Enter(obj);
+        }
     }
 }
