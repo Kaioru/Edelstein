@@ -567,8 +567,8 @@ public class DamageCalculator : IDamageCalculator
 
         if (attack.SkillID is Skill.Archmage2ChainLightning or Skill.EvanBlaze)
         {
-            var damageDecSkill = await _skills.Retrieve(Skill.Archmage2ChainLightning);
-            var damageDecLevel = damageDecSkill?[stats.SkillLevels[Skill.Archmage2ChainLightning]];
+            var damageDecSkill = await _skills.Retrieve(attack.SkillID);
+            var damageDecLevel = damageDecSkill?[stats.SkillLevels[attack.SkillID]];
 
             rate = (100 - count * (damageDecLevel?.X ?? 0)) / 100d;
         }
