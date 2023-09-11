@@ -14,28 +14,28 @@ public class AdminSuperGMSkillHandler : AdminSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.AdminDispel:
-                context.SetTargetField();
+                context.TargetField();
                 context.SetRecoverHP(99999);
                 context.SetRecoverHP(99999);
                 context.ResetTemporaryStatNegative();
                 break;
             case Skill.AdminSuperHaste:
-                context.SetTargetField();
+                context.TargetField();
                 break;
             case Skill.AdminHolySymbol:
-                context.SetTargetField();
+                context.TargetField();
                 context.AddTemporaryStat(TemporaryStatType.ExpBuffRate, context.SkillLevel!.X);
                 break;
             case Skill.AdminBless:
-                context.SetTargetField();
+                context.TargetField();
                 break;
             case Skill.AdminHide:
                 break;
             case Skill.AdminResurrection:
-                context.SetTargetField();
+                context.TargetField();
                 break;
             case Skill.AdminHyperBody:
-                context.SetTargetField();
+                context.TargetField();
                 context.AddTemporaryStat(TemporaryStatType.MaxHP, context.SkillLevel!.X);
                 context.AddTemporaryStat(TemporaryStatType.MaxMP, context.SkillLevel!.Y);
                 break;

@@ -31,15 +31,15 @@ public class PriestSkillHandler : ClericSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.PriestDispel:
+                context.TargetParty();
                 context.SetProc();
-                context.SetTargetParty();
                 context.ResetTemporaryStatNegative();
                 break;
             case Skill.PriestMysticDoor:
                 // TODO
                 break;
             case Skill.PriestHolySymbol:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.AddTemporaryStat(TemporaryStatType.HolySymbol, context.SkillLevel!.X);
                 break;
             case Skill.PriestDoom:

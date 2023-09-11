@@ -34,10 +34,10 @@ public class WizardFirePoisonSkillHandler : MagicianSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.Wizard1Meditation:
-                context.SetTargetParty();
+                context.TargetParty();
                 break;
             case Skill.Wizard1Slow:
-                context.SetTargetField();
+                context.TargetField();
                 context.AddMobTemporaryStat(MobTemporaryStatType.Speed, context.SkillLevel!.X);
                 break;
         }

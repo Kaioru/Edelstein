@@ -18,8 +18,8 @@ public interface ISkillContext
     
     bool IsHitMob { get; }
 
-    void SetTargetField(bool active = true, int? limit = null, IRectangle2D? bounds = null);
-    void SetTargetParty(bool active = true, IRectangle2D? bounds = null);
+    void TargetField(bool active = true, int? limit = null, IRectangle2D? bounds = null);
+    void TargetParty(bool active = true, IRectangle2D? bounds = null);
 
     void SetProc(int? proc = null);
     void SetRecoverHP(int? hp = null);
@@ -37,6 +37,9 @@ public interface ISkillContext
     void ResetTemporaryStatBySkill(int? skillID = null);
     void ResetTemporaryStatByType(TemporaryStatType type);
     void ResetTemporaryStatExisting(TemporaryStatType type, int value);
+
+    void ResetMobTemporaryStatBySkill(int? skillID = null);
+    void ResetMobTemporaryStatByType(MobTemporaryStatType type);
     
     void ResetSummoned(int? skillID = null);
 }

@@ -37,7 +37,7 @@ public class Bmage4SkillHandler : Bmage3SkillHandler
                 context.AddAffectedArea(AffectedAreaType.Smoke);
                 break;
             case Skill.BmageMapleHero:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
                 break;
             case Skill.BmageHerosWill:

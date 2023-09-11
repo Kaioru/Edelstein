@@ -15,10 +15,10 @@ public class Flamewizard2SkillHandler : Flamewizard1SkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.FlamewizardMeditation:
-                context.SetTargetParty();
+                context.TargetParty();
                 break;
             case Skill.FlamewizardSlow:
-                context.SetTargetField();
+                context.TargetField();
                 context.AddMobTemporaryStat(MobTemporaryStatType.Speed, context.SkillLevel!.X);
                 break;
             case Skill.FlamewizardMagicBooster:

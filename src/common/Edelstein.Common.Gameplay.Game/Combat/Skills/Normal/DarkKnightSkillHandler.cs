@@ -30,7 +30,7 @@ public class DarkKnightSkillHandler : DragonKnightSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.DarkknightMapleHero:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
                 break;
             case Skill.DarkknightStance:

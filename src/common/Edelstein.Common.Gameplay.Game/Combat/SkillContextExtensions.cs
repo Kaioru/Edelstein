@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 
 namespace Edelstein.Common.Gameplay.Game.Combat;
@@ -26,5 +27,17 @@ public static class SkillContextExtensions
         context.ResetTemporaryStatByType(TemporaryStatType.Curse);
         context.ResetTemporaryStatByType(TemporaryStatType.Slow);
         context.ResetTemporaryStatByType(TemporaryStatType.Blind);
+    }
+    
+    public static void ResetMobTemporaryStatPositive(this ISkillContext context)
+    {
+        context.ResetMobTemporaryStatByType(MobTemporaryStatType.PowerUp);
+        context.ResetMobTemporaryStatByType(MobTemporaryStatType.MagicUp);
+        context.ResetMobTemporaryStatByType(MobTemporaryStatType.PGuardUp);
+        context.ResetMobTemporaryStatByType(MobTemporaryStatType.MGuardUp);
+        context.ResetMobTemporaryStatByType(MobTemporaryStatType.PImmune);
+        context.ResetMobTemporaryStatByType(MobTemporaryStatType.MImmune);
+        context.ResetMobTemporaryStatByType(MobTemporaryStatType.PCounter);
+        context.ResetMobTemporaryStatByType(MobTemporaryStatType.MCounter);
     }
 }

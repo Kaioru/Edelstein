@@ -17,7 +17,7 @@ public class FighterSkillHandler : SwordmanSkillHandler
                 context.AddTemporaryStat(TemporaryStatType.Booster, context.SkillLevel!.X);
                 break;
             case Skill.FighterFury:
-                context.SetTargetParty();
+                context.TargetParty();
                 break;
             case Skill.FighterPowerGuard:
                 context.AddTemporaryStat(TemporaryStatType.PowerGuard, context.SkillLevel!.X);

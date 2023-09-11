@@ -35,11 +35,14 @@ public class SkillContext : ISkillContext
     private readonly ICollection<int> _resetTemporaryStatBySkill;
     private readonly ICollection<TemporaryStatType> _resetTemporaryStatByType;
     private readonly ICollection<SkillContextTemporaryStatExisting> _resetTemporaryStatExisting;
+    
+    private readonly ICollection<int> _resetMobTemporaryStatBySkill;
+    private readonly ICollection<MobTemporaryStatType> _resetMobTemporaryStatByType;
 
     private readonly ICollection<int> _resetSummoned;
 
-    private SkillContextTarget? TargetField { get; set; }
-    private SkillContextTarget? TargetParty{ get; set; }
+    private SkillContextTarget? TargetFieldInfo { get; set; }
+    private SkillContextTarget? TargetPartyInfo { get; set; }
     
     private int? Proc { get; set; }
     private int? RecoverHP { get; set; }
@@ -69,6 +72,9 @@ public class SkillContext : ISkillContext
         _resetTemporaryStatBySkill = new List<int>();
         _resetTemporaryStatByType = new List<TemporaryStatType>();
         _resetTemporaryStatExisting = new List<SkillContextTemporaryStatExisting>();
+
+        _resetMobTemporaryStatBySkill = new List<int>();
+        _resetMobTemporaryStatByType = new List<MobTemporaryStatType>();
         
         _resetSummoned = new List<int>();
         
@@ -85,16 +91,16 @@ public class SkillContext : ISkillContext
     
     public bool IsHitMob { get; }
     
-    public void SetTargetField(bool active = true, int? limit = null, IRectangle2D? bounds = null)
-        => TargetField = active 
+    public void TargetField(bool active = true, int? limit = null, IRectangle2D? bounds = null)
+        => TargetFieldInfo = active 
             ? new SkillContextTarget(
                 bounds ?? (SkillLevel == null
                     ? new Rectangle2D(_user.Position, _user.Field?.Template.Bounds ?? new Rectangle2D())
                     : new Rectangle2D(_user.Position, SkillLevel.Bounds)))
             : null;
     
-    public void SetTargetParty(bool active = true, IRectangle2D? bounds = null)
-        => TargetParty = active 
+    public void TargetParty(bool active = true, IRectangle2D? bounds = null)
+        => TargetPartyInfo = active 
             ? new SkillContextTarget(
                 bounds ?? (SkillLevel == null
                     ? new Rectangle2D(_user.Position, _user.Field?.Template.Bounds ?? new Rectangle2D())
@@ -102,13 +108,19 @@ public class SkillContext : ISkillContext
             : null;
 
     public void SetProc(int? proc = null)
-        => Proc = proc ?? SkillLevel?.Prop ?? 0;
+        => Proc = proc ?? (SkillLevel?.Prop > 0
+            ? SkillLevel.Prop
+            : 0);
 
     public void SetRecoverHP(int? hp = null)
-        => RecoverHP = hp ?? (SkillLevel?.HP > 0 ? (int)(_user.Stats.MaxHP * SkillLevel.HP / 100d) : null);
+        => RecoverHP = hp ?? (SkillLevel?.HP > 0
+            ? (int)(_user.Stats.MaxHP * SkillLevel.HP / 100d)
+            : 0);
     
     public void SetRecoverMP(int? mp = null)
-        => RecoverHP = mp ?? (SkillLevel?.MP > 0 ? (int)(_user.Stats.MaxMP * SkillLevel.MP / 100d) : null);
+        => RecoverMP = mp ?? (SkillLevel?.MP > 0
+            ? (int)(_user.Stats.MaxMP * SkillLevel.MP / 100d)
+            : 0);
 
     public void AddTemporaryStat(TemporaryStatType type, int value, int? reason = null, DateTime? expire = null)
         => _addTemporaryStat.Add(new SkillContextTemporaryStat(
@@ -179,6 +191,12 @@ public class SkillContext : ISkillContext
 
     public void ResetTemporaryStatExisting(TemporaryStatType type, int value)
         => _resetTemporaryStatExisting.Add(new SkillContextTemporaryStatExisting(type, value));
+    
+    public void ResetMobTemporaryStatBySkill(int? skillID = null)
+        => _resetMobTemporaryStatBySkill.Add(skillID ?? Skill?.ID ?? 0);
+    
+    public void ResetMobTemporaryStatByType(MobTemporaryStatType type)
+        => _resetMobTemporaryStatByType.Add(type);
 
     public void ResetSummoned(int? skillID = null) => _resetSummoned.Add(skillID ?? Skill?.ID ?? 0);
 
@@ -189,22 +207,22 @@ public class SkillContext : ISkillContext
         if (_mob != null)
             targets.Add(_mob);
 
-        if (TargetField != null && _user.Field != null)
+        if (TargetFieldInfo != null && _user.Field != null)
             foreach (var target in _user.Field
-                         .GetSplits(TargetField.Bounds)
+                         .GetSplits(TargetFieldInfo.Bounds)
                          .Where(s => s != null)
                          .SelectMany(s => s!.Objects)
-                         .Where(o => TargetField.Bounds.Intersects(o.Position))
+                         .Where(o => TargetFieldInfo.Bounds.Intersects(o.Position))
                          .Where(o => Proc == null || Random.Next(0, 100) <= Proc)
                          .OrderBy(u => _user.Position.Distance(u.Position)))
                 targets.Add(target);
         
-        if (TargetParty != null && _user.Field != null)
+        if (TargetPartyInfo != null && _user.Field != null)
             foreach (var target in _user.Field
-                         .GetSplits(TargetParty.Bounds)
+                         .GetSplits(TargetPartyInfo.Bounds)
                          .Where(s => s != null)
                          .SelectMany(s => s!.Objects)
-                         .Where(o => TargetParty.Bounds.Intersects(o.Position))
+                         .Where(o => TargetPartyInfo.Bounds.Intersects(o.Position))
                          .Where(o => Proc == null || Random.Next(0, 100) <= Proc)
                          //.Where(Party..)
                          .OrderBy(u => _user.Position.Distance(u.Position)))
@@ -251,6 +269,10 @@ public class SkillContext : ISkillContext
             )
             .Select(t => t.ModifyTemporaryStats(s =>
             {
+                foreach (var x in _resetMobTemporaryStatBySkill)
+                    s.ResetByReason(x);
+                foreach (var x in _resetMobTemporaryStatByType)
+                    s.ResetByType(x);
                 if (_addMobTemporaryStat.Count > 0)
                     foreach (var mts in _addMobTemporaryStat)
                         s.Set(mts.Type, mts.Value, mts.Reason, mts.Expire);

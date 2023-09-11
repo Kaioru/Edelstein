@@ -27,10 +27,10 @@ public class WizardThunderColdSkillHandler : MagicianSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.Wizard2Meditation:
-                context.SetTargetParty();
+                context.TargetParty();
                 break;
             case Skill.Wizard2Slow:
-                context.SetTargetField();
+                context.TargetField();
                 context.AddMobTemporaryStat(MobTemporaryStatType.Speed, context.SkillLevel!.X);
                 break;
         }

@@ -38,7 +38,7 @@ public class ArchmageFirePoisonSkillHandler : MageFirePoisonSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.Archmage1MapleHero:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
                 break;
             case Skill.Archmage1ManaReflection:

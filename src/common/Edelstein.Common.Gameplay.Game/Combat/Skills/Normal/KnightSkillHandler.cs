@@ -39,9 +39,10 @@ public class KnightSkillHandler : PageSkillHandler
                 context.AddTemporaryStat(TemporaryStatType.CombatOrders, context.SkillLevel!.X);
                 break;
             case Skill.KnightMagicCrash:
+                context.TargetField();
                 context.SetProc();
-                context.SetTargetField();
                 context.AddMobTemporaryStat(MobTemporaryStatType.MagicCrash, 1);
+                context.ResetMobTemporaryStatPositive();
                 break;
             case Skill.KnightRestoration:
                 // TODO

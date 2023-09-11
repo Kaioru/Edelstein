@@ -28,7 +28,7 @@ public class HeroSkillHandler : CrusaderSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.HeroMapleHero:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
                 break;
             case Skill.HeroStance:

@@ -16,7 +16,7 @@ public class BishopSkillHandler : PriestSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.BishopMapleHero:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
                 break;
             case Skill.BishopManaReflection:

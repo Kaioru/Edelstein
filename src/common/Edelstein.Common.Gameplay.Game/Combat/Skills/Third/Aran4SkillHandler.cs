@@ -14,7 +14,7 @@ public class Aran4SkillHandler : Aran3SkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.AranMapleHero:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
                 break;
             case Skill.AranFreezeStanding:

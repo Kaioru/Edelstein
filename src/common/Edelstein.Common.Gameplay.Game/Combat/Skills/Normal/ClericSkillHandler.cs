@@ -14,14 +14,14 @@ public class ClericSkillHandler : MagicianSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.ClericHeal:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.SetRecoverHP();
                 break;
             case Skill.ClericInvincible:
                 context.AddTemporaryStat(TemporaryStatType.Invincible, context.SkillLevel!.Level);
                 break;
             case Skill.ClericBless:
-                context.SetTargetParty();
+                context.TargetParty();
                 break;
         }
 

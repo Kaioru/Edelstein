@@ -18,7 +18,7 @@ public class PageSkillHandler : SwordmanSkillHandler
                 context.AddTemporaryStat(TemporaryStatType.Booster, context.SkillLevel!.X);
                 break;
             case Skill.PageThreaten:
-                context.SetTargetField();
+                context.TargetField();
                 context.AddMobTemporaryStat(MobTemporaryStatType.PAD, context.SkillLevel!.X);
                 context.AddMobTemporaryStat(MobTemporaryStatType.PDR, context.SkillLevel!.Y);
                 context.AddMobTemporaryStat(MobTemporaryStatType.ACC, -context.SkillLevel!.Z);

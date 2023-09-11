@@ -26,7 +26,7 @@ public class PaladinSkillHandler : KnightSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.PaladinMapleHero:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
                 break;
             case Skill.PaladinStance:

@@ -44,9 +44,10 @@ public class CrusaderSkillHandler : FighterSkillHandler
                 break;
             case Skill.CrusaderMagicCrash:
                 // TODO: remove existing buffs
+                context.TargetField();
                 context.SetProc();
-                context.SetTargetField();
                 context.AddMobTemporaryStat(MobTemporaryStatType.MagicCrash, 1);
+                context.ResetMobTemporaryStatPositive();
                 break;
         }
         

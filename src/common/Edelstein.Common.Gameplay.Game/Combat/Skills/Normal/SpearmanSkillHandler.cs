@@ -17,10 +17,10 @@ public class SpearmanSkillHandler : SwordmanSkillHandler
                 context.AddTemporaryStat(TemporaryStatType.Booster, context.SkillLevel!.X);
                 break;
             case Skill.SpearmanIronWall:
-                context.SetTargetParty();
+                context.TargetParty();
                 break;
             case Skill.SpearmanHyperBody:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.AddTemporaryStat(TemporaryStatType.MaxHP, context.SkillLevel!.X);
                 context.AddTemporaryStat(TemporaryStatType.MaxMP, context.SkillLevel!.Y);
                 break;

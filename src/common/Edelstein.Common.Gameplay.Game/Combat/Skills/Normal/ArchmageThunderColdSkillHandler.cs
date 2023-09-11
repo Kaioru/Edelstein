@@ -37,7 +37,7 @@ public class ArchmageThunderColdSkillHandler : MageThunderColdSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.Archmage2MapleHero:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
                 break;
             case Skill.Archmage2ManaReflection:

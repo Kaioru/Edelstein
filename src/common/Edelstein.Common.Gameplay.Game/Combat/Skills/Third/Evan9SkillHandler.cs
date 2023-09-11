@@ -14,7 +14,7 @@ public class Evan9SkillHandler : Evan8SkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.EvanMapleHero:
-                context.SetTargetParty();
+                context.TargetParty();
                 context.AddTemporaryStat(TemporaryStatType.BasicStatUp, context.SkillLevel!.X);
                 break;
             case Skill.EvanHerosWill:
