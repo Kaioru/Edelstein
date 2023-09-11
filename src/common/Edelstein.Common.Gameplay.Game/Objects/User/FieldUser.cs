@@ -358,20 +358,20 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
                          .ToImmutableList())
                 s.ResetByType(kv.Key);
             
-            if ((Character.TemporaryStats.EnergyChargedRecord?.IsExpired(now) ?? false) &&
-                (Character.TemporaryStats.EnergyChargedRecord?.IsActive() ?? false))
+            if ((Character.TemporaryStats.EnergyChargedRecord?.IsActive() ?? false) &&
+                (Character.TemporaryStats.EnergyChargedRecord?.IsExpired(now) ?? false))
                 s.ResetEnergyCharged();
-            if ((Character.TemporaryStats.DashSpeedRecord?.IsExpired(now) ?? false) &&
-                (Character.TemporaryStats.DashSpeedRecord?.IsActive() ?? false))
+            if ((Character.TemporaryStats.DashSpeedRecord?.IsActive() ?? false) &&
+                (Character.TemporaryStats.DashSpeedRecord?.IsExpired(now) ?? false))
                 s.ResetDashSpeed();
-            if ((Character.TemporaryStats.DashJumpRecord?.IsExpired(now) ?? false) &&
-                (Character.TemporaryStats.DashJumpRecord?.IsActive() ?? false))
+            if ((Character.TemporaryStats.DashJumpRecord?.IsActive() ?? false) &&
+                (Character.TemporaryStats.DashJumpRecord?.IsExpired(now) ?? false))
                 s.ResetDashJump();
-            if ((Character.TemporaryStats.PartyBoosterRecord?.IsExpired(now) ?? false) &&
-                (Character.TemporaryStats.PartyBoosterRecord?.IsActive() ?? false))
+            if ((Character.TemporaryStats.PartyBoosterRecord?.IsActive() ?? false) &&
+                (Character.TemporaryStats.PartyBoosterRecord?.IsExpired(now) ?? false))
                 s.ResetPartyBooster();
-            if ((Character.TemporaryStats.UndeadRecord?.IsExpired(now) ?? false) &&
-                (Character.TemporaryStats.UndeadRecord?.IsActive() ?? false))
+            if ((Character.TemporaryStats.UndeadRecord?.IsActive() ?? false) &&
+                (Character.TemporaryStats.UndeadRecord?.IsExpired(now) ?? false))
                 s.ResetUndead();
         });
     }
