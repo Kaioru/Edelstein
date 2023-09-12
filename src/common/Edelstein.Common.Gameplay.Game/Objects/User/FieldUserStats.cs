@@ -257,6 +257,19 @@ public record struct FieldUserStats : IFieldUserStats
         MaxHPr += character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
         MaxMPr += character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
 
+        if (JobConstants.GetJobRace(character.Job) == 3 &&
+            JobConstants.GetJobType(character.Job) == 3 &&
+            character.TemporaryStats.RideVehicleRecord?.Reason == Skill.WildhunterJaguarRiding)
+        {
+            var jaguarRidingSkill = skillTemplates.Retrieve(Skill.WildhunterJaguarRiding).Result;
+            var jaguarRidingLevel = jaguarRidingSkill?[SkillLevels[Skill.WildhunterJaguarRiding]];
+
+            MaxHPr += jaguarRidingLevel?.W ?? 0;
+            Speed += jaguarRidingLevel?.X ?? 0;
+            EVA += jaguarRidingLevel?.Y ?? 0;
+            Cr += jaguarRidingLevel?.Z ?? 0;
+        }
+
         void GetMastery(IFieldUserStatsSkillLevels skillLevels, int skillID, ref int mastery, ref int stat)
         {
             var skillTemplate = skillTemplates.Retrieve(skillID).Result;

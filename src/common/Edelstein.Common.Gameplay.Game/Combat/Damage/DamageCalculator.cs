@@ -82,6 +82,8 @@ public class DamageCalculator : IDamageCalculator
             ? skillLevel?.BulletCount ?? 1
             : skillLevel?.AttackCount ?? 1;
 
+        attackCount = Math.Max((short)1, attackCount);
+
         _rndGenForCharacter.Next(random.Array);
 
         var darkForceSkill = await _skills.Retrieve(Skill.DarkknightDarkForce);
