@@ -1,5 +1,4 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Objects.User;
-using Edelstein.Protocol.Gameplay.Models.Accounts;
 using PowerArgs;
 
 namespace Edelstein.Plugin.Rue.Commands;

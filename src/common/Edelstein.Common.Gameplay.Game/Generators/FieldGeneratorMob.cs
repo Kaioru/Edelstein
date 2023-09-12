@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Game;
+﻿using Edelstein.Common.Gameplay.Game.Objects.Mob;
+using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Generators;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 
@@ -6,7 +7,6 @@ namespace Edelstein.Common.Gameplay.Game.Generators;
 
 public class FieldGeneratorMob : IFieldGenerator
 {
-
     private readonly IField _field;
     private readonly ICollection<IFieldGeneratorUnit> _units;
 
@@ -18,7 +18,7 @@ public class FieldGeneratorMob : IFieldGenerator
     }
     public string ID { get; }
 
-    public IEnumerable<IFieldObject> Generate()
+    public async Task Generate()
     {
         var random = new Random();
         var userCount = _field.GetPool(FieldObjectType.User)?.Objects.Count ?? 0;
@@ -34,7 +34,7 @@ public class FieldGeneratorMob : IFieldGenerator
 
         var mobGenCount = mobCapacity - mobCount;
 
-        if (mobGenCount == 0) yield break;
+        if (mobGenCount == 0) return;
 
         foreach (var unit in _units
                      .OrderByDescending(u => random.Next())
@@ -42,7 +42,7 @@ public class FieldGeneratorMob : IFieldGenerator
         {
             var obj = unit.Generate();
             if (obj == null) continue;
-            yield return obj;
+            await _field.Enter(obj, obj is FieldMob mob ? () => mob.GetEnterFieldPacket(FieldMobAppearType.Regen) : null);
         }
     }
 }

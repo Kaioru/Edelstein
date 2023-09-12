@@ -5,20 +5,17 @@ namespace Edelstein.Common.Utilities.Templates;
 public class TemplateProviderLazy<TTemplate> : ITemplateProvider<TTemplate> where TTemplate : ITemplate
 {
     private readonly Func<TTemplate> _func;
-    private readonly WeakReference _reference;
+    private TTemplate? _template;
 
     public TemplateProviderLazy(int id, Func<TTemplate> func)
     {
         ID = id;
         _func = func;
-        _reference = new WeakReference(null);
+        _template = default;
     }
 
     public int ID { get; }
 
-    public Task<TTemplate> Provide()
-        => Task.FromResult(
-            ((TemplateProviderLazyHolder<TTemplate>)(_reference.Target ??=
-                new TemplateProviderLazyHolder<TTemplate>(_func.Invoke())))
-            .Template);
+    public Task<TTemplate> Provide() 
+        => Task.FromResult(_template ??= _func.Invoke());
 }

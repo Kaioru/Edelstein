@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Drop;

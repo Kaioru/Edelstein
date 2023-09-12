@@ -24,7 +24,6 @@ public abstract class AbstractMovePath<TMoveAction> : IMovePath<TMoveAction> whe
     {
         _position = reader.ReadPoint2D();
         _vPosition = reader.ReadPoint2D();
-
         var size = reader.ReadByte();
 
         for (var i = 0; i < size; i++)
@@ -81,6 +80,9 @@ public abstract class AbstractMovePath<TMoveAction> : IMovePath<TMoveAction> whe
                     break;
                 case MovePathFragmentType.StatChange:
                     _fragments.Add(reader.Read(new StatChangePathFragment<TMoveAction>(attribute)));
+                    break;
+                default:
+                    _fragments.Add(reader.Read(new ActionPathFragment<TMoveAction>(attribute)));
                     break;
             }
         }

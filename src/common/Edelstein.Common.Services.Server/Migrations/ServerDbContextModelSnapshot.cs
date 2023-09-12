@@ -30,20 +30,20 @@ namespace Edelstein.Common.Services.Server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CharacterID"));
 
-                    b.Property<byte[]>("Account")
+                    b.Property<string>("Account")
                         .IsRequired()
-                        .HasColumnType("bytea");
+                        .HasColumnType("text");
 
                     b.Property<int>("AccountID")
                         .HasColumnType("integer");
 
-                    b.Property<byte[]>("AccountWorld")
+                    b.Property<string>("AccountWorld")
                         .IsRequired()
-                        .HasColumnType("bytea");
+                        .HasColumnType("text");
 
-                    b.Property<byte[]>("Character")
+                    b.Property<string>("Character")
                         .IsRequired()
-                        .HasColumnType("bytea");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("DateExpire")
                         .HasColumnType("timestamp with time zone");

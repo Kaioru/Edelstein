@@ -7,7 +7,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Duey" Version="1.0.3"/>
+    <PackageReference Include="Duey" Version="1.0.4"/>
   </ItemGroup>
 
 </Project>
