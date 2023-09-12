@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay;
+﻿using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
+using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
@@ -40,7 +41,7 @@ public abstract class AbstractUserOnDisconnectPlug<TStageUser> : IPipelinePlug<U
         if (message.User.Character != null)
         {
             if (!message.User.IsMigrating)
-                message.User.Character.TemporaryStats.Records.Clear();
+                new ModifyTemporaryStatContext(message.User.Character.TemporaryStats).ResetAll();
             await _characterRepository.Update(message.User.Character);
         }
 

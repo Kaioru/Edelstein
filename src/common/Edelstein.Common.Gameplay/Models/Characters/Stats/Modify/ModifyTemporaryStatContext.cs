@@ -236,5 +236,12 @@ public class ModifyTemporaryStatContext : IModifyTemporaryStatContext
     {
         foreach (var type in _stats.Records.Keys)
             ResetByType(type);
+        ResetEnergyCharged();
+        ResetDashSpeed();
+        ResetDashJump();
+        ResetRideVehicle();
+        ResetPartyBooster();
+        ResetGuidedBullet();
+        ResetUndead();
     }
 }
