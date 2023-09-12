@@ -1,10 +1,10 @@
-﻿using Edelstein.Protocol.Gameplay.Models.Characters;
+﻿using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 
-namespace Edelstein.Common.Gameplay.Models.Characters;
+namespace Edelstein.Common.Gameplay.Models.Characters.Stats;
 
-public static class CharacterTemporaryStatsExtensions
+public static class TemporaryStatsExtensions
 {
-    public static bool HasTwoStateStats(this ICharacterTemporaryStats stats)
+    public static bool HasTwoStateStats(this ITemporaryStats stats)
         => stats.EnergyChargedRecord != null ||
            stats.DashSpeedRecord != null ||
            stats.DashJumpRecord != null ||

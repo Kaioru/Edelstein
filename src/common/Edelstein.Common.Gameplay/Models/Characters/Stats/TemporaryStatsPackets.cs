@@ -7,11 +7,11 @@ using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Common.Gameplay.Models.Characters.Stats;
 
-public static class CharacterTemporaryStatsPackets
+public static class TemporaryStatsPackets
 {
     private const int TemporaryStatsFlagSize = 128;
 
-    public static void WriteTemporaryStatsFlag(this IPacketWriter writer, ICharacterTemporaryStats stats)
+    public static void WriteTemporaryStatsFlag(this IPacketWriter writer, ITemporaryStats stats)
     {
         var flag = new Flags(TemporaryStatsFlagSize);
 
@@ -36,13 +36,13 @@ public static class CharacterTemporaryStatsPackets
         writer.Write(flag);
     }
 
-    public static void WriteTemporaryStatsToLocal(this IPacketWriter writer, ICharacterTemporaryStats stats)
+    public static void WriteTemporaryStatsToLocal(this IPacketWriter writer, ITemporaryStats stats)
     {
         var now = DateTime.UtcNow;
 
         writer.WriteTemporaryStatsFlag(stats);
 
-        foreach (var type in CharacterTemporaryStatsOrder.WriteOrderLocal)
+        foreach (var type in TemporaryStatsOrder.WriteOrderLocal)
         {
             var stat = stats[type];
             if (stat == null) continue;
@@ -75,11 +75,11 @@ public static class CharacterTemporaryStatsPackets
         writer.WriteTwoStateTemporaryStats(stats, now);
     }
 
-    public static void WriteTemporaryStatsToRemote(this IPacketWriter writer, ICharacterTemporaryStats stats)
+    public static void WriteTemporaryStatsToRemote(this IPacketWriter writer, ITemporaryStats stats)
     {
         writer.WriteTemporaryStatsFlag(stats);
 
-        foreach (var kv in CharacterTemporaryStatsOrder.WriteOrderRemote)
+        foreach (var kv in TemporaryStatsOrder.WriteOrderRemote)
         {
             var stat = stats[kv.Key];
             if (stat == null) continue;
@@ -92,7 +92,7 @@ public static class CharacterTemporaryStatsPackets
         writer.WriteTwoStateTemporaryStats(stats, DateTime.UtcNow);
     }
 
-    private static void WriteTwoStateTemporaryStats(this IPacketWriter writer, ICharacterTemporaryStats stats, DateTime now)
+    private static void WriteTwoStateTemporaryStats(this IPacketWriter writer, ITemporaryStats stats, DateTime now)
     {
         if (stats.EnergyChargedRecord != null) writer.WriteTwoStateRecordDynamicTerm(stats.EnergyChargedRecord, now);
         if (stats.DashSpeedRecord != null) writer.WriteTwoStateRecordDynamicTerm(stats.DashSpeedRecord, now);

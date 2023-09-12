@@ -3,7 +3,7 @@ using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Common.Gameplay.Models.Characters.Stats;
 
-internal static class CharacterTemporaryStatsOrder
+internal static class TemporaryStatsOrder
 {
     internal static readonly TemporaryStatType[] WriteOrderLocal =
         {
