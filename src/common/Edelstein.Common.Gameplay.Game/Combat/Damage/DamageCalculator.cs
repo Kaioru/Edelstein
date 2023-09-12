@@ -152,6 +152,19 @@ public class DamageCalculator : IDamageCalculator
 
             var damage = (double)stats.DamageMax;
             var critical = false;
+            var isLuckySevenOrTripleThrow = false;
+
+            switch (attack.SkillID)
+            {
+                case Skill.RogueLuckySeven or Skill.NightwalkerLuckySeven:
+                    isLuckySevenOrTripleThrow = true;
+                    damage = GetRandomInRange(random.Next(), stats.LUK, stats.LUK * 1.4) * 5.5 * stats.PAD / 100d;
+                    break;
+                case Skill.NightlordTripleThrow or Skill.NightwalkerTripleThrow:
+                    isLuckySevenOrTripleThrow = true;
+                    damage = GetRandomInRange(random.Next(), stats.LUK, stats.LUK * 1.4) * 6.0 * stats.PAD / 100d;
+                    break;
+            }
 
             if (weaponType is WeaponType.Wand or WeaponType.Staff)
                 damage *= 0.2;
@@ -159,7 +172,8 @@ public class DamageCalculator : IDamageCalculator
             if (attack.AttackAction is 41 or 57)
                 damage *= 0.1;
             
-            damage = GetDamageAdjustedByRandom(damage, stats.Mastery, ItemConstants.GetMasteryConstByWeaponType(weaponType), random.Next());
+            if (!isLuckySevenOrTripleThrow)
+                damage = GetDamageAdjustedByRandom(damage, stats.Mastery, ItemConstants.GetMasteryConstByWeaponType(weaponType), random.Next());
 
             if (mobStats.Level > stats.Level)
                 damage *= (100d - (mobStats.Level - stats.Level)) / 100d;
