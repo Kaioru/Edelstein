@@ -13,11 +13,11 @@ public readonly struct Flags : IPacketWritable
     public Flags(BitArray bits)
         => _bits = bits;
 
-    public bool SetFlag(int index, bool value = true)
-        => _bits[index] = value;
+    public void SetFlag(int index, bool value = true)
+        => _bits.Set(index, value);
 
     public bool HasFlag(int index)
-        => _bits[index];
+        => _bits.Get(index);
 
     public int[] ToArray()
     {

@@ -30,8 +30,8 @@ public static class TemporaryStatsPackets
             flag.SetFlag((int)TemporaryStatType.PartyBooster);
         if (stats.GuidedBulletRecord != null)
             flag.SetFlag((int)TemporaryStatType.GuidedBullet);
-        if (stats.UndeadRecord != null)
-            flag.SetFlag((int)TemporaryStatType.Undead);
+        //if (stats.UndeadRecord != null)
+        //    flag.SetFlag((int)TemporaryStatType.Undead);
         
         writer.Write(flag);
     }
@@ -112,7 +112,7 @@ public static class TemporaryStatsPackets
             writer.WriteInt(stats.GuidedBulletRecord.MobID);
         }
         
-        if (stats.UndeadRecord != null) writer.WriteTwoStateRecordDynamicTerm(stats.UndeadRecord, now);
+        //if (stats.UndeadRecord != null) writer.WriteTwoStateRecordDynamicTerm(stats.UndeadRecord, now);
     }
 
     private static void WriteTwoStateTime(this IPacketWriter writer, DateTime time, DateTime now)
