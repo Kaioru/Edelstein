@@ -1,9 +1,11 @@
-﻿using Edelstein.Common.Gameplay.Constants;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
+using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 using Edelstein.Protocol.Utilities.Templates;
@@ -158,6 +160,40 @@ public record struct FieldUserStats : IFieldUserStats
 
         // TODO: item sets
 
+        var equipped = character.Inventories[ItemInventoryType.Equip];
+        var weapon = equipped != null
+            ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
+                ? result1.ID 
+                : 0
+            : 0;
+        var subWeapon = equipped != null
+            ? equipped.Items.TryGetValue(-(short)BodyPart.Shield, out var result2) 
+                ? result2.ID 
+                : 0
+            : 0;
+        var weaponType = ItemConstants.GetWeaponType(weapon);
+        var subWeaponType = ItemConstants.GetWeaponType(subWeapon);
+        var conItems = character.Inventories[ItemInventoryType.Consume]?.Items ?? new Dictionary<short, IItemSlot>();
+
+        foreach (var kv in conItems
+                     .OrderBy(i => i.Key)
+                     .ToImmutableDictionary())
+        {
+            var (slot, item) = kv;
+
+            if ((weaponType == WeaponType.ThrowingGlove && item.ID / 10000 == 207 || 
+                 weaponType == WeaponType.Gun && item.ID / 10000 == 233) &&
+                item is IItemSlotBundle { Number: > 0 })
+            {
+                var itemTemplate = itemTemplates.Retrieve(item.ID).Result;
+                if (itemTemplate is not IItemBundleTemplate bundleTemplate) continue;
+                if (character.Level < bundleTemplate.ReqLevel) continue;
+
+                PAD += bundleTemplate.IncPAD;
+                break;
+            }
+        }
+
         foreach (var kv in user.Character.Skills.Records)
         {
             var skillID = kv.Key;
@@ -210,20 +246,6 @@ public record struct FieldUserStats : IFieldUserStats
             CDMin += levelTemplate.CDMin;
             CDMax += levelTemplate.CDMax;
         }
-        
-        var equipped = character.Inventories[ItemInventoryType.Equip];
-        var weapon = equipped != null
-            ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
-                ? result1.ID 
-                : 0
-            : 0;
-        var subWeapon = equipped != null
-            ? equipped.Items.TryGetValue(-(short)BodyPart.Shield, out var result2) 
-                ? result2.ID 
-                : 0
-            : 0;
-        var weaponType = ItemConstants.GetWeaponType(weapon);
-        var subWeaponType = ItemConstants.GetWeaponType(subWeapon);
 
         if (subWeapon > 0 && SkillLevels[Skill.KnightShieldMastery] > 0)
         {
