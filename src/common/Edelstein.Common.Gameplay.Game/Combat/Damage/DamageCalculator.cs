@@ -201,7 +201,7 @@ public class DamageCalculator : IDamageCalculator
                 damage *= (100d - (mobStats.PDR * totalIMDr / -100 + mobStats.PDR)) / 100d;
 
             var skillDamageR = !attack.IsFinalAfterSlashBlast
-                ? skillLevel?.Damage ?? 100d
+                ? skillLevel?.Damage != 0 ? skillLevel?.Damage ?? 100d : 100d
                 : 100d;
 
             switch (attack.SkillID)

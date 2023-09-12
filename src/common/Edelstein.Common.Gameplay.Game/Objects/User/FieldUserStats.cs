@@ -256,6 +256,35 @@ public record struct FieldUserStats : IFieldUserStats
 
         MaxHPr += character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
         MaxMPr += character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
+        
+        if (JobConstants.GetJobRace(character.Job) == 0 &&
+            JobConstants.GetJobType(character.Job) == 3)
+        {
+            var criticalShotSkill = skillTemplates.Retrieve(Skill.ArcherCriticalShot).Result;
+            var criticalShotLevel = criticalShotSkill?[SkillLevels[Skill.ArcherCriticalShot]];
+
+            Cr += criticalShotLevel?.Prop ?? 0;
+        }
+        
+        if (JobConstants.GetJobRace(character.Job) == 0 &&
+            JobConstants.GetJobType(character.Job) == 4)
+        {
+            var nimbleBodySkill = skillTemplates.Retrieve(Skill.RogueNimbleBody).Result;
+            var nimbleBodyLevel = nimbleBodySkill?[SkillLevels[Skill.RogueNimbleBody]];
+
+            ACC += nimbleBodyLevel?.X ?? 0;
+            EVA += nimbleBodyLevel?.Y ?? 0;
+        }
+        
+        if (JobConstants.GetJobRace(character.Job) == 0 &&
+            JobConstants.GetJobType(character.Job) == 4)
+        {
+            var quickMotionSkill = skillTemplates.Retrieve(Skill.PirateQuickmotion).Result;
+            var quickMotionLevel = quickMotionSkill?[SkillLevels[Skill.PirateQuickmotion]];
+
+            ACC += quickMotionLevel?.X ?? 0;
+            EVA += quickMotionLevel?.Y ?? 0;
+        }
 
         if (JobConstants.GetJobRace(character.Job) == 3 &&
             JobConstants.GetJobType(character.Job) == 3 &&
