@@ -35,6 +35,11 @@ public class CharacterConfiguration : IEntityTypeConfiguration<CharacterEntity>
             .HasColumnType("json")
             .HasConversion<JsonConverter<ICharacterSkills>>()
             .HasDefaultValue(new CharacterSkills());
+        builder
+            .Property(e => e.WildHunterInfo)
+            .HasColumnType("json")
+            .HasConversion<JsonConverter<ICharacterWildHunterInfo>>()
+            .HasDefaultValue(new CharacterWildHunterInfo());
 
         builder
             .Property(e => e.TemporaryStats)

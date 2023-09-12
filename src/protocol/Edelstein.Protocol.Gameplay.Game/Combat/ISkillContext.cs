@@ -41,6 +41,8 @@ public interface ISkillContext
     void ResetTemporaryStatByType(TemporaryStatType type);
     void ResetTemporaryStatExisting(TemporaryStatType type, int value);
 
+    void ResetTwoStateRideVehicle();
+
     void ResetMobTemporaryStatBySkill(int? skillID = null);
     void ResetMobTemporaryStatByType(MobTemporaryStatType type);
     

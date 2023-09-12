@@ -134,8 +134,9 @@ public static class CharacterPackets
         if (flags.HasFlag(DbFlags.WildHunterInfo))
             if (character.Job / 100 == 33)
             {
-                writer.WriteByte(0);
-                for (var i = 0; i < 5; i++) writer.WriteInt(0);
+                writer.WriteByte(character.WildHunterInfo.RidingType);
+                for (var i = 0; i < 5; i++) 
+                    writer.WriteInt(character.WildHunterInfo.CaptureMob[i]);
             }
 
         if (flags.HasFlag(DbFlags.QuestCompleteOld)) writer.WriteShort(0);

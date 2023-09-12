@@ -44,6 +44,7 @@ public interface ICharacter : IIdentifiable<int>
 
     ICharacterInventories Inventories { get; set; }
     ICharacterSkills Skills { get; set; }
+    ICharacterWildHunterInfo WildHunterInfo { get; set; }
 
-    ICharacterTemporaryStats TemporaryStats { get; }
+    ICharacterTemporaryStats TemporaryStats { get; set; }
 }

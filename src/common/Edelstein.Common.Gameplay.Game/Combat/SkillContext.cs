@@ -39,6 +39,8 @@ public class SkillContext : ISkillContext
     private readonly ICollection<TemporaryStatType> _resetTemporaryStatByType;
     private readonly ICollection<SkillContextTemporaryStatExisting> _resetTemporaryStatExisting;
     
+    private bool IsResetTwoStateRideVehicle { get; set; }
+    
     private readonly ICollection<int> _resetMobTemporaryStatBySkill;
     private readonly ICollection<MobTemporaryStatType> _resetMobTemporaryStatByType;
 
@@ -197,7 +199,10 @@ public class SkillContext : ISkillContext
 
     public void ResetTemporaryStatExisting(TemporaryStatType type, int value)
         => _resetTemporaryStatExisting.Add(new SkillContextTemporaryStatExisting(type, value));
-    
+
+    public void ResetTwoStateRideVehicle()
+        => IsResetTwoStateRideVehicle = true;
+
     public void ResetMobTemporaryStatBySkill(int? skillID = null)
         => _resetMobTemporaryStatBySkill.Add(skillID ?? Skill?.ID ?? 0);
     
@@ -258,6 +263,9 @@ public class SkillContext : ISkillContext
                             s.Set(x.Type, x.Value, existingStat.Reason, existingStat.DateExpire);
                     }
                     
+                    if (IsResetTwoStateRideVehicle)
+                        s.ResetRideVehicle();
+                        
                     if (_setTwoStateRideVehicle != null)
                         s.SetRideVehicle(_setTwoStateRideVehicle.Value, _setTwoStateRideVehicle.Reason);
 
