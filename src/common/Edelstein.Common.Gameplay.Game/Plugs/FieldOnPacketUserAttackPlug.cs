@@ -3,6 +3,7 @@ using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Combat.Damage;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
+using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
@@ -55,7 +56,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
 
         if (message.Attack.SkillID > 0)
         {
-            packet.WriteByte((byte)(message.User.Character.Skills[message.Attack.SkillID]?.Level ?? 1));
+            packet.WriteByte((byte)message.User.Stats.SkillLevels[message.Attack.SkillID]);
             packet.WriteInt(message.Attack.SkillID);
         }
         else packet.WriteByte(0);
@@ -94,9 +95,6 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
 
             for (var i = 0; i < message.Attack.DamagePerMob; i++)
             {
-                packet.WriteBool(false);
-                packet.WriteInt(entry.Damage[i]);
-
                 if (entry.Damage[i] != adjustedDamage[i])
                     _logger.LogInformation(
                         "{Character} triggered a {Type} attack damage calculation mismatch with skill id: {Skill} (Client: {Damage}, Server: {DamageServer}, Critical: {IsCritical})",
@@ -114,12 +112,15 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             count++;
         }
 
+        if (message.Attack.Type == AttackType.Shoot)
+            packet.WritePoint2D(new Point2D());
+
         if (SkillConstants.IsKeydownSkill(message.Attack.SkillID))
             packet.WriteInt(message.Attack.Keydown);
-
+        
         if (message.User.FieldSplit != null)
             await message.User.FieldSplit.Dispatch(packet.Build(), message.User);
-
+        
         if (!await _skillManager.Check(message.User, message.Attack.SkillID))
             return;
 
