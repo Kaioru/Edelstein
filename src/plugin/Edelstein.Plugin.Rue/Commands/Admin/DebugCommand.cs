@@ -12,19 +12,6 @@ public class DebugCommand : AbstractCommand
     
     public override async Task Execute(IFieldUser user, string[] args)
     {
-        var bounds = new Rectangle2D(
-            new Point2D(user.Position.X - 200, user.Position.Y - 150),
-            new Point2D(user.Position.X + 200, user.Position.Y + 150)
-        );
-        if (user.Field != null)
-            await user.Field.Enter(new FieldAffectedArea(
-                user.Character.ID,
-                AffectedAreaType.UserSkill,
-                2111003, 
-                20, 
-                0,
-                0, 
-                bounds
-            ));
+        await user.Prompt(s => s.Say(user.Stats.ToString()!), default);
     }
 }

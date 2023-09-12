@@ -286,8 +286,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
             StageUser.Context.Templates.Item,
             StageUser.Context.Templates.Skill
         );
-        Console.WriteLine(Stats);
-
+        
         if (JobConstants.GetJobRace(Character.Job) == 2 &&
             JobConstants.GetJobType(Character.Job) == 2 &&
             JobConstants.GetJobLevel(Character.Job) > 0)
