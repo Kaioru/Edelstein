@@ -74,7 +74,13 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         foreach (var entry in message.Attack.MobEntries)
         {
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
-            if (mob == null) continue;
+            
+            if (mob == null)
+            {
+                message.User.Damage.Skip();
+                continue;
+            }
+            
             var damage = await (isPDamage
                 ? message.User.Damage.CalculatePDamage(message.User.Character, message.User.Stats, mob, mob.Stats, message.Attack, entry)
                 : message.User.Damage.CalculateMDamage(message.User.Character, message.User.Stats, mob, mob.Stats, message.Attack, entry));
