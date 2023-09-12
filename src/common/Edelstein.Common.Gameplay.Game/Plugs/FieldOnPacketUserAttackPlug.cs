@@ -82,6 +82,16 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             packet.WriteInt(entry.MobID);
             packet.WriteByte(entry.ActionHit);
 
+            if (entry.Damage.Length != adjustedDamage.Length)
+                _logger.LogInformation(
+                    "{Character} triggered a {Type} attack count mismatch with skill id: {Skill} (Client: {Count}, Server: {CountServer})",
+                    message.User.Character.Name,
+                    message.Attack.Type,
+                    message.Attack.SkillID,
+                    entry.Damage.Length,
+                    adjustedDamage.Length
+                );
+
             for (var i = 0; i < message.Attack.DamagePerMob; i++)
             {
                 packet.WriteBool(false);
