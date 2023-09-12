@@ -23,7 +23,9 @@ public class SkillContext : ISkillContext
     private readonly IFieldMob? _mob;
     private readonly DateTime _now;
 
-    private SkillContextTwoStateRideVehicle? _setTwoStateRideVehicle { get; set; }
+    private SkillContextTwoStateDynamicTerm? SetTwoStateDashSpeedInfo { get; set; }
+    private SkillContextTwoStateDynamicTerm? SetTwoStateDashJumpInfo { get; set; }
+    private SkillContextTwoStateRideVehicle? SetTwoStateRideVehicleInfo { get; set; }
     
     private readonly ICollection<SkillContextTemporaryStat> _addTemporaryStat;
     
@@ -39,6 +41,8 @@ public class SkillContext : ISkillContext
     private readonly ICollection<TemporaryStatType> _resetTemporaryStatByType;
     private readonly ICollection<SkillContextTemporaryStatExisting> _resetTemporaryStatExisting;
     
+    private bool IsResetTwoStateDashSpeed { get; set; }
+    private bool IsResetTwoStateDashJump { get; set; }
     private bool IsResetTwoStateRideVehicle { get; set; }
     
     private readonly ICollection<int> _resetMobTemporaryStatBySkill;
@@ -127,8 +131,22 @@ public class SkillContext : ISkillContext
             ? (int)(_user.Stats.MaxMP * SkillLevel.MP / 100d)
             : 0);
     
-    public void SetTwoStateRideVehicle(int value = 0, int? reason = null)
-        => _setTwoStateRideVehicle = new SkillContextTwoStateRideVehicle(value, reason ?? (value > 0 ? Skill?.ID ?? 0 : 0));
+    public void SetTwoStateDashSpeed(int value, int? reason = null, TimeSpan? term = null)
+        => SetTwoStateDashSpeedInfo = new SkillContextTwoStateDynamicTerm(
+            value, 
+            reason ?? (value > 0 ? Skill?.ID ?? 0 : 0),
+            TimeSpan.FromSeconds(SkillLevel?.Time ?? 0)
+        );
+    
+    public void SetTwoStateDashJump(int value, int? reason = null, TimeSpan? term = null)
+        => SetTwoStateDashJumpInfo = new SkillContextTwoStateDynamicTerm(
+            value, 
+            reason ?? (value > 0 ? Skill?.ID ?? 0 : 0),
+            TimeSpan.FromSeconds(SkillLevel?.Time ?? 0)
+        );
+
+    public void SetTwoStateRideVehicle(int value, int? reason = null)
+        => SetTwoStateRideVehicleInfo = new SkillContextTwoStateRideVehicle(value, reason ?? (value > 0 ? Skill?.ID ?? 0 : 0));
 
     public void AddTemporaryStat(TemporaryStatType type, int value, int? reason = null, DateTime? expire = null)
         => _addTemporaryStat.Add(new SkillContextTemporaryStat(
@@ -199,6 +217,11 @@ public class SkillContext : ISkillContext
 
     public void ResetTemporaryStatExisting(TemporaryStatType type, int value)
         => _resetTemporaryStatExisting.Add(new SkillContextTemporaryStatExisting(type, value));
+    public void ResetTwoStateDashSpeed()
+        => IsResetTwoStateDashSpeed = true;
+    
+    public void ResetTwoStateDashJump()
+        => IsResetTwoStateDashJump = true;
 
     public void ResetTwoStateRideVehicle()
         => IsResetTwoStateRideVehicle = true;
@@ -263,11 +286,19 @@ public class SkillContext : ISkillContext
                             s.Set(x.Type, x.Value, existingStat.Reason, existingStat.DateExpire);
                     }
                     
+                    if (IsResetTwoStateDashSpeed)
+                        s.ResetDashSpeed();
+                    if (IsResetTwoStateDashJump)
+                        s.ResetDashJump();
                     if (IsResetTwoStateRideVehicle)
                         s.ResetRideVehicle();
                         
-                    if (_setTwoStateRideVehicle != null)
-                        s.SetRideVehicle(_setTwoStateRideVehicle.Value, _setTwoStateRideVehicle.Reason);
+                    if (SetTwoStateDashSpeedInfo != null)
+                        s.SetDashSpeed(SetTwoStateDashSpeedInfo.Value, SetTwoStateDashSpeedInfo.Reason, SetTwoStateDashSpeedInfo.Term);
+                    if (SetTwoStateDashJumpInfo != null)
+                        s.SetDashJump(SetTwoStateDashJumpInfo.Value, SetTwoStateDashJumpInfo.Reason, SetTwoStateDashJumpInfo.Term);
+                    if (SetTwoStateRideVehicleInfo != null)
+                        s.SetRideVehicle(SetTwoStateRideVehicleInfo.Value, SetTwoStateRideVehicleInfo.Reason);
 
                     foreach (var ts in _addTemporaryStat)
                         s.Set(ts.Type, ts.Value, ts.Reason, ts.Expire);

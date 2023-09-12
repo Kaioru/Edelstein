@@ -25,7 +25,9 @@ public interface ISkillContext
     void SetRecoverHP(int? hp = null);
     void SetRecoverMP(int? mp = null);
 
-    void SetTwoStateRideVehicle(int value = 0, int? reason = null);
+    void SetTwoStateDashSpeed(int value, int? reason = null, TimeSpan? term = null);
+    void SetTwoStateDashJump(int value, int? reason = null, TimeSpan? term = null);
+    void SetTwoStateRideVehicle(int value, int? reason = null);
     
     void AddTemporaryStat(TemporaryStatType type, int value, int? reason = null, DateTime? expire = null);
     
@@ -41,6 +43,8 @@ public interface ISkillContext
     void ResetTemporaryStatByType(TemporaryStatType type);
     void ResetTemporaryStatExisting(TemporaryStatType type, int value);
 
+    void ResetTwoStateDashSpeed();
+    void ResetTwoStateDashJump();
     void ResetTwoStateRideVehicle();
 
     void ResetMobTemporaryStatBySkill(int? skillID = null);
