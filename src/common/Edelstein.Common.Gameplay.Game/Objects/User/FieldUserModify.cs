@@ -57,7 +57,7 @@ public class FieldUserModify : IFieldUserModify
             IsRequireUpdate = true;
 
         if (context.IsUpdatedAvatar)
-            IsRequireUpdate = true;
+            IsRequireUpdateAvatar = true;
         
         await _user.Dispatch(packet.Build());
     }
