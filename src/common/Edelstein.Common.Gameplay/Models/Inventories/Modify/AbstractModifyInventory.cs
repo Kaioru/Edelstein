@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Models.Inventories.Modify.Operations;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
@@ -13,7 +14,9 @@ public abstract class AbstractModifyInventory : IModifyInventory
     public abstract IEnumerable<AbstractModifyInventoryOperation> Operations { get; }
 
     public bool IsUpdated => Operations.Any();
-    public bool IsUpdatedAvatar => Operations.Any(o => o.Inventory == ItemInventoryType.Equip && o.Slot < 0);
+    public bool IsUpdatedAvatar => Operations.Any(o => o is 
+        { Inventory: ItemInventoryType.Equip, Slot: < 0 } or 
+        MoveModifyInventoryOperation { ToSlot: < 0 });
 
     public abstract bool HasItem(int templateID);
     public abstract bool HasItem(int templateID, short count);
