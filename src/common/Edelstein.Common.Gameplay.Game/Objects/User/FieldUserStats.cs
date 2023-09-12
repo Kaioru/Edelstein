@@ -277,7 +277,7 @@ public record struct FieldUserStats : IFieldUserStats
         }
         
         if (JobConstants.GetJobRace(character.Job) == 0 &&
-            JobConstants.GetJobType(character.Job) == 4)
+            JobConstants.GetJobType(character.Job) == 5)
         {
             var quickMotionSkill = skillTemplates.Retrieve(Skill.PirateQuickmotion).Result;
             var quickMotionLevel = quickMotionSkill?[SkillLevels[Skill.PirateQuickmotion]];
