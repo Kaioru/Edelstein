@@ -5,19 +5,24 @@ using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Utilities.Pipelines;
+using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Game.Plugs;
 
 public class FieldOnPacketSummonedAttackPlug : IPipelinePlug<FieldOnPacketSummonedAttack>
 {
+    private readonly ILogger _logger;
     private readonly ISkillManager _skillManager;
     
-    public FieldOnPacketSummonedAttackPlug(ISkillManager skillManager) 
-        => _skillManager = skillManager;
+    public FieldOnPacketSummonedAttackPlug(ILogger<FieldOnPacketSummonedAttackPlug> logger, ISkillManager skillManager)
+    {
+        _logger = logger;
+        _skillManager = skillManager;
+    }
 
     public async Task Handle(IPipelineContext ctx, FieldOnPacketSummonedAttack message)
     {
-        var mobs = message.Attack.Entries.ToImmutableDictionary(
+        var mobs = message.Attack.MobEntries.ToImmutableDictionary(
             kv => kv.MobID,
             kv => message.User.Field?.GetObject<IFieldMob>(kv.MobID)
         );
@@ -27,18 +32,15 @@ public class FieldOnPacketSummonedAttackPlug : IPipelinePlug<FieldOnPacketSummon
         packet.WriteInt(message.Summoned.ObjectID ?? 0);
         packet.WriteByte(message.User.Character.Level);
         
-        packet.WriteByte((byte)(
-            message.Attack.AttackAction & 0x7F |
-            Convert.ToByte(message.Attack.IsLeft) << 7
-        ));
+        packet.WriteByte(message.Attack.AttackActionAndDir);
         
-        packet.WriteByte((byte)message.Attack.MobCount);
+        packet.WriteByte(message.Attack.MobCount);
         
-        foreach (var entry in message.Attack.Entries)
+        foreach (var entry in message.Attack.MobEntries)
         {
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;
-            var damageSrv = await message.User.Damage.CalculateMDamage(
+            var damage = await message.User.Damage.CalculateMDamage(
                 message.User.Character,
                 message.User.Stats,
                 mob,
@@ -46,7 +48,14 @@ public class FieldOnPacketSummonedAttackPlug : IPipelinePlug<FieldOnPacketSummon
                 message.Summoned
             );
 
-            Console.WriteLine($"Client: {entry.Damage[0]}, Server: {damageSrv}");
+            if (entry.Damage[0] != damage)
+                _logger.LogInformation(
+                    "{Character} triggered a summoned attack damage calculation mismatch with summoned skill id: {Skill} (Client: {Damage}, Server: {DamageServer})",
+                    message.User.Character.Name,
+                    message.Summoned.SkillID,
+                    entry.Damage[0],
+                    damage
+                );
             
             packet.WriteInt(entry.MobID);
             packet.WriteBool(false);
@@ -61,9 +70,9 @@ public class FieldOnPacketSummonedAttackPlug : IPipelinePlug<FieldOnPacketSummon
         if (!await _skillManager.Check(message.User, message.Summoned.SkillID))
             return;
 
-        await _skillManager.HandleAttack(message.User, message.Summoned.SkillID, message.Attack.Entries.Count > 0);
+        await _skillManager.HandleAttack(message.User, message.Summoned.SkillID, message.Attack.MobEntries.Length > 0);
 
-        foreach (var entry in message.Attack.Entries)
+        foreach (var entry in message.Attack.MobEntries)
         {
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;

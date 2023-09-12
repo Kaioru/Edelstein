@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Game.Combat.Damage.Requests;
+﻿using Edelstein.Common.Gameplay.Game.Combat.Damage;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
@@ -18,5 +18,5 @@ public class SummonedAttackHandler : AbstractPipedFieldSummonedHandler<FieldOnPa
     public override short Operation => (short)PacketRecvOperations.SummonedAttack;
 
     protected override FieldOnPacketSummonedAttack? Serialize(IFieldUser user, IFieldSummoned summoned, IPacketReader reader)
-        => new(user, summoned, reader.Read(new SummonedAttackRequest()));
+        => new(user, summoned, reader.Read(new SummonedAttack()));
 }

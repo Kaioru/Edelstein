@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Game.Combat.Damage.Requests;
+﻿using Edelstein.Common.Gameplay.Game.Combat.Damage;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
@@ -19,6 +19,6 @@ public abstract class AbstractUserAttackHandler : AbstractPipedFieldHandler<Fiel
     protected override FieldOnPacketUserAttack? Serialize(IFieldUser user, IPacketReader reader)
         => new(
             user,
-            reader.Read(new AttackRequest(Type))
+            reader.Read(new Attack(Type))
         );
 }

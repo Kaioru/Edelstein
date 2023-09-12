@@ -59,17 +59,18 @@ public class DamageCalculator : IDamageCalculator
     public void Skip()
         => _rndGenForCharacter.Next(new uint[RndSize]);
     
-    public async Task<IUserAttackDamage[]> CalculatePDamage(
+    public async Task<IDamage[]> CalculatePDamage(
         ICharacter character, 
         IFieldUserStats stats, 
         IFieldMob mob,
         IFieldMobStats mobStats,
-        IUserAttack attack
+        IAttack attack,
+        IAttackMobEntry attackMob
     )
     {
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
-        var skillLevel = skill?[attack.SkillLevel];
+        var skillLevel = skill?[stats.SkillLevels[attack.SkillID]];
         var equipped = character.Inventories[ItemInventoryType.Equip];
         var weapon = equipped != null
             ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
@@ -91,7 +92,7 @@ public class DamageCalculator : IDamageCalculator
         if (isDarkForce && attack.SkillID == Skill.DragonknightDragonBurster)
             attackCount += darkForceLevel?.Y ?? 0;
         
-        var result = new IUserAttackDamage[attackCount];
+        var result = new IDamage[attackCount];
         
         var totalCr = stats.Cr;
         var totalCDMin = stats.CDMin;
@@ -130,7 +131,7 @@ public class DamageCalculator : IDamageCalculator
 
             if (hitRate < GetRandomInRange(random.Next(), 0, 100))
             {
-                result[i] = new UserAttackDamage(0);
+                result[i] = new Damage(0);
                 continue;
             }
 
@@ -162,10 +163,6 @@ public class DamageCalculator : IDamageCalculator
             damage += damage * stats.PDamR / 100d;
 
             // ElemBoost
-            // Mage1 MagicComposition
-            // Mage2 MagicComposition
-            // Ranger FireShot
-            // Sniper IceShot
             var damageAdjustedByElemAttr = skill != null
                 ? GetDamageAdjustedByElemAttr(damage, mobStats.ElementAttributes[skill.Element], 1.0, 0.0)
                 : damage;
@@ -311,32 +308,26 @@ public class DamageCalculator : IDamageCalculator
             }
             
             damage = Math.Min(Math.Max(1, damage), 999999);
-            result[i] = new UserAttackDamage((int)damage, critical);
+            result[i] = new Damage((int)damage, critical);
         }
         
         return result;
     }
     
-    public async Task<IUserAttackDamage[]> CalculateMDamage(
+    public async Task<IDamage[]> CalculateMDamage(
         ICharacter character, 
         IFieldUserStats stats,
         IFieldMob mob,
         IFieldMobStats mobStats, 
-        IUserAttack attack
+        IAttack attack,
+        IAttackMobEntry attackMob
     )    
     {
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
-        var skillLevel = skill?[attack.SkillLevel];
-        var equipped = character.Inventories[ItemInventoryType.Equip];
-        var weapon = equipped != null
-            ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
-                ? result1.ID 
-                : 0
-            : 0;
-        var weaponType = ItemConstants.GetWeaponType(weapon);
+        var skillLevel = skill?[stats.SkillLevels[attack.SkillID]];
         var attackCount = skillLevel?.AttackCount ?? 1;
-        var result = new IUserAttackDamage[attackCount];
+        var result = new IDamage[attackCount];
 
         _rndGenForCharacter.Next(random.Array);
         
@@ -377,7 +368,7 @@ public class DamageCalculator : IDamageCalculator
 
             if (hitRate < GetRandomInRange(random.Next(), 0, 100))
             {
-                result[i] = new UserAttackDamage(0);
+                result[i] = new Damage(0);
                 continue;
             }
             
@@ -397,10 +388,6 @@ public class DamageCalculator : IDamageCalculator
             }
             
             // ElemBoost
-            // Mage1 MagicComposition
-            // Mage2 MagicComposition
-            // Ranger FireShot
-            // Sniper IceShot
             var elementalResetStat = character.TemporaryStats[TemporaryStatType.ElementalReset]?.Value ?? 0;
             var damageAdjustedByElemAttr = skill != null
                 ? GetDamageAdjustedByElemAttr(damage, mobStats.ElementAttributes[skill.Element], 1d - elementalResetStat / 100d, 0d)
@@ -448,7 +435,7 @@ public class DamageCalculator : IDamageCalculator
             }
             
             damage = Math.Min(Math.Max(1, damage), 999999);
-            result[i] = new UserAttackDamage((int)damage, critical);
+            result[i] = new Damage((int)damage, critical);
         }
 
         return result;
@@ -556,11 +543,11 @@ public class DamageCalculator : IDamageCalculator
         
         return Math.Max(1, (int)damage);
     }
-
-    public async Task<IUserAttackDamage[]> AdjustDamageDecRate(IFieldUserStats stats, IUserAttack attack, int count, IUserAttackDamage[] damage)
+    
+    public async Task<int[]> CalculateAdjustedDamage(ICharacter character, IFieldUserStats stats, IAttack attack, IDamage[] damage, int count)
     {
         var rate = 1d;
-        var result = new IUserAttackDamage[damage.Length];
+        var result = new int[damage.Length];
 
         if (attack.IsFinalAfterSlashBlast)
             rate = Math.Pow(1 / 3d, count);
@@ -574,12 +561,7 @@ public class DamageCalculator : IDamageCalculator
         }
 
         for (var i = 0; i < damage.Length; i++)
-        {
-            result[i] = new UserAttackDamage(
-                (int)(damage[i].Damage * rate),
-                damage[i].IsCritical
-            );
-        }
+            result[i] = (int)(damage[i].Value * rate);
         
         return result;
     }

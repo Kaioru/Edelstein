@@ -13,19 +13,21 @@ public interface IDamageCalculator
 
     void Skip();
     
-    Task<IUserAttackDamage[]> CalculatePDamage(
+    Task<IDamage[]> CalculatePDamage(
         ICharacter character, 
         IFieldUserStats stats, 
         IFieldMob mob, 
         IFieldMobStats mobStats, 
-        IUserAttack attack
+        IAttack attack,
+        IAttackMobEntry attackMob
     );
-    Task<IUserAttackDamage[]> CalculateMDamage(
+    Task<IDamage[]> CalculateMDamage(
         ICharacter character, 
         IFieldUserStats stats, 
         IFieldMob mob, 
         IFieldMobStats mobStats, 
-        IUserAttack attack
+        IAttack attack,
+        IAttackMobEntry attackMob
     );
     
     Task<int> CalculatePDamage(
@@ -53,5 +55,5 @@ public interface IDamageCalculator
         int skillLevel
     );
 
-    Task<IUserAttackDamage[]> AdjustDamageDecRate(IFieldUserStats stats, IUserAttack attack, int count, IUserAttackDamage[] damage);
+    Task<int[]> CalculateAdjustedDamage(ICharacter character, IFieldUserStats stats, IAttack attack, IDamage[] damage, int count);
 }

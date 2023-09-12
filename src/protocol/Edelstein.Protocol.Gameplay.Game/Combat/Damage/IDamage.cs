@@ -1,7 +1,7 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 
-public interface IUserAttackDamage
+public interface IDamage
 {
-    int Damage { get; }
+    int Value { get; }
     bool IsCritical { get; }
 }
