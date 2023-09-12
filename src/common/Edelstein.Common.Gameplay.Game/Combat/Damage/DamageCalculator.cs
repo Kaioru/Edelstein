@@ -78,7 +78,9 @@ public class DamageCalculator : IDamageCalculator
                 : 0
             : 0;
         var weaponType = ItemConstants.GetWeaponType(weapon);
-        var attackCount = skillLevel?.AttackCount ?? 1;
+        var attackCount = attack.Type == AttackType.Shoot 
+            ? skillLevel?.BulletCount ?? 1
+            : skillLevel?.AttackCount ?? 1;
 
         _rndGenForCharacter.Next(random.Array);
 
