@@ -83,6 +83,22 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             
             for (var i = 0; i < message.Attack.DamagePerMob; i++)
             {
+                if (i > adjustedDamage.Length)
+                {
+                    _logger.LogInformation(
+                        "{Character} triggered a {Type} attack count mismatch with skill id: {Skill} (Client: {Count}, Server: {CountServer})",
+                        message.User.Character.Name,
+                        message.Attack.Type,
+                        message.Attack.SkillID,
+                        entry.Damage.Length,
+                        adjustedDamage.Length
+                    );
+                    
+                    packet.WriteBool(false);
+                    packet.WriteInt(entry.Damage[i]);
+                    continue;
+                }
+                
                 if (entry.Damage[i] != adjustedDamage[i])
                     _logger.LogInformation(
                         "{Character} triggered a {Type} attack damage calculation mismatch with skill id: {Skill} (Client: {Damage}, Server: {DamageServer}, Critical: {IsCritical})",
