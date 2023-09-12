@@ -107,10 +107,10 @@ jobs:
     - name: Publish (plugins)
       run: |
         for project in src/plugin/*/ ; do
-          dotnet publish $project -c Release --output artifacts-${{ matrix.runtime }}/plugins/$project
+          dotnet publish $project -c Release --output artifacts-${{ matrix.runtime }}/plugins/$(basename $project)
         done
     - name: Compress
-      run: cd artifacts-${{ matrix.runtime }}; zip ../server-${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip *; cd ..
+      run: cd artifacts-${{ matrix.runtime }}; zip -r ../server-${{ matrix.runtime }}-nightly.${{ needs.setup.outputs.date }}.zip . ; cd ..
     - name: Store artifacts
       uses: actions/upload-artifact@v3
       with:

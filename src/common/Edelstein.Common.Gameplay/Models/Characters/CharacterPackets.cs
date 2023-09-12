@@ -1,4 +1,6 @@
-﻿using Edelstein.Common.Gameplay.Models.Inventories.Items;
+﻿using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Models.Inventories.Items;
+using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
@@ -89,7 +91,20 @@ public static class CharacterPackets
             writer.WriteByte(0);
         }
 
-        if (flags.HasFlag(DbFlags.SkillRecord)) writer.WriteShort(0);
+        if (flags.HasFlag(DbFlags.SkillRecord))
+        {
+            writer.WriteShort((short)character.Skills.Records.Count);
+            
+            foreach (var record in character.Skills.Records)
+            {
+                writer.WriteInt(record.Key);
+                writer.WriteInt(record.Value.Level);
+                writer.WriteDateTime(record.Value.DateExpire ?? DateTime.FromFileTimeUtc(150842304000000000));
+
+                if (SkillConstants.IsSkillNeedMasterLevel(record.Key))
+                    writer.WriteInt(record.Value.MasterLevel ?? 0);
+            }
+        }
 
         if (flags.HasFlag(DbFlags.SkillCooltime)) writer.WriteShort(0);
 
@@ -119,8 +134,9 @@ public static class CharacterPackets
         if (flags.HasFlag(DbFlags.WildHunterInfo))
             if (character.Job / 100 == 33)
             {
-                writer.WriteByte(0);
-                for (var i = 0; i < 5; i++) writer.WriteInt(0);
+                writer.WriteByte(character.WildHunterInfo.RidingType);
+                for (var i = 0; i < 5; i++) 
+                    writer.WriteInt(character.WildHunterInfo.CaptureMob[i]);
             }
 
         if (flags.HasFlag(DbFlags.QuestCompleteOld)) writer.WriteShort(0);
@@ -157,7 +173,10 @@ public static class CharacterPackets
         writer.WriteInt(character.MaxMP);
 
         writer.WriteShort(character.AP);
-        writer.WriteShort(character.SP); // TODO: extendSP
+        if (JobConstants.IsExtendSPJob(character.Job))
+            writer.WriteCharacterExtendSP(character.ExtendSP);
+        else 
+            writer.WriteShort(character.SP);
 
         writer.WriteInt(character.EXP);
         writer.WriteShort(character.POP);
@@ -228,5 +247,16 @@ public static class CharacterPackets
 
         for (var i = 0; i < 3; i++)
             writer.WriteInt(0);
+    }
+    
+    
+    public static void WriteCharacterExtendSP(this IPacketWriter p, ICharacterExtendSP extendSP)
+    {
+        p.WriteByte((byte)extendSP.Records.Count);
+        foreach (var kv in extendSP.Records)
+        {
+            p.WriteByte(kv.Key);
+            p.WriteByte(kv.Value);
+        }
     }
 }

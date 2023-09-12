@@ -8,10 +8,11 @@ using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
+using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Common.Gameplay.Game;
 
-public class Field : AbstractFieldObjectPool, IField
+public class Field : AbstractFieldObjectPool, IField, ITickable
 {
     private const int ScreenWidth = 1024;
     private const int ScreenHeight = 768;
@@ -48,6 +49,8 @@ public class Field : AbstractFieldObjectPool, IField
     public IFieldTemplate Template { get; }
 
     public IFieldGeneratorRegistry Generators { get; }
+    
+    private DateTime NextGeneratorTick { get; set; }
 
     public override IReadOnlyCollection<IFieldObject> Objects =>
         _pools.Values.SelectMany(p => p.Objects).ToImmutableList();
@@ -57,6 +60,21 @@ public class Field : AbstractFieldObjectPool, IField
         var row = (position.Y - Template.Bounds.Top) / ScreenHeightOffset;
         var col = (position.X - Template.Bounds.Left) / ScreenWidthOffset;
         return GetSplit(row, col);
+    }
+    
+    public IFieldSplit?[] GetSplits(IRectangle2D bounds)
+    {
+        var minRow = (bounds.Top - Template.Bounds.Top) / ScreenHeightOffset;
+        var maxRow = (bounds.Bottom - Template.Bounds.Top) / ScreenHeightOffset;
+        var minCol = (bounds.Left - Template.Bounds.Left) / ScreenWidthOffset;
+        var maxCol = (bounds.Right - Template.Bounds.Left) / ScreenWidthOffset;
+        var splits = new IFieldSplit?[(maxRow - minRow + 1) * (maxCol - minCol + 1)];
+        var index = 0;
+        
+        for (var row = minRow; row <= maxRow; row++)
+        for (var col = minCol; col <= maxCol; col++)
+            splits[index++] = GetSplit(row, col);
+        return splits;
     }
 
     public IFieldSplit?[] GetEnclosingSplits(IPoint2D position)
@@ -121,6 +139,13 @@ public class Field : AbstractFieldObjectPool, IField
 
         if (pool != null) await pool.Enter(obj);
         if (split != null) await split.Enter(obj, getEnterPacket);
+        
+        if (obj is IFieldUser owner)
+            foreach (var owned in owner.Owned)
+            {
+                await owned.Move(owner.Position);
+                await Enter(owned);
+            }
     }
 
     public async Task Leave(IFieldObject obj, Func<IPacket>? getLeavePacket)
@@ -136,7 +161,12 @@ public class Field : AbstractFieldObjectPool, IField
                     await split.Unobserve(observer);
             await obj.FieldSplit.Leave(obj, getLeavePacket: getLeavePacket);
         }
+
         if (pool != null) await pool.Leave(obj);
+
+        if (obj is IFieldUser owner)
+            foreach (var owned in owner.Owned)
+                await Leave(owned);
     }
 
     public override IFieldObject? GetObject(int id) => Objects.FirstOrDefault(o => o.ObjectID == id);
@@ -169,5 +199,23 @@ public class Field : AbstractFieldObjectPool, IField
             col < 0 || col >= _splits.GetLength(1)
         ) return null;
         return _splits[row, col];
+    }
+    
+    public async Task OnTick(DateTime now)
+    {
+        if (GetPool(FieldObjectType.User)?.Objects.Count == 0) return;
+
+        await Task.WhenAll(
+            Objects
+                .OfType<ITickable>()
+                .Select(o => o.OnTick(now))
+        );
+
+        if (now > NextGeneratorTick)
+        {
+            NextGeneratorTick = now.AddSeconds(7);
+            await Task.WhenAll((await Generators.RetrieveAll())
+                .Select(g => g.Generate()));
+        }
     }
 }

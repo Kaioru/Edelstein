@@ -1,5 +1,6 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Movements;
 using Edelstein.Protocol.Gameplay.Game.Objects;
+using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Spatial;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
@@ -17,6 +18,7 @@ public abstract class AbstractFieldLife<TMovePath, TMoveAction> :
         Action = action;
         Foothold = foothold;
     }
+    
     public TMoveAction Action { get; protected set; }
     public IFieldFoothold? Foothold { get; private set; }
 
@@ -30,7 +32,7 @@ public abstract class AbstractFieldLife<TMovePath, TMoveAction> :
             await UpdateFieldSplit();
     }
 
-    public async Task Move(TMovePath ctx)
+    public async Task Move(TMovePath ctx, IFieldObject? controller = null)
     {
         if (Field == null) return;
 
@@ -44,7 +46,7 @@ public abstract class AbstractFieldLife<TMovePath, TMoveAction> :
         await UpdateFieldSplit();
 
         if (FieldSplit != null)
-            await FieldSplit.Dispatch(GetMovePacket(ctx), this);
+            await FieldSplit.Dispatch(GetMovePacket(ctx), controller ?? this);
     }
 
     private async Task UpdateFieldSplit()

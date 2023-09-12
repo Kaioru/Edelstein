@@ -76,7 +76,7 @@ public class FieldNPC : AbstractFieldControllable<IFieldNPCMovePath, IFieldNPCMo
         return packet.Build();
     }
 
-    protected override IPacket GetControlPacket(IFieldController? controller = null)
+    protected override IPacket GetControlPacket(IFieldObjectController? controller = null)
     {
         using var packet = new PacketWriter(PacketSendOperations.NpcChangeController);
 

@@ -35,7 +35,7 @@ public class NXDataNode : IDataNode
             return null;
         }
     }
-
+    
     public T? Resolve<T>(string? path = null) where T : struct =>
         _node.Resolve<T>(path);
 

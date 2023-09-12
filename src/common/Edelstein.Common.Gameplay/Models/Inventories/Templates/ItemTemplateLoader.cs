@@ -10,8 +10,7 @@ public class ItemTemplateLoader : ITemplateLoader
 {
     private readonly IDataManager _data;
     private readonly ITemplateManager<IItemTemplate> _manager;
-
-
+    
     public ItemTemplateLoader(IDataManager data, ITemplateManager<IItemTemplate> manager)
     {
         _data = data;

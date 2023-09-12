@@ -12,8 +12,12 @@ public class GameStageUser : AbstractStageUser<IGameStageUser>, IGameStageUser
     public GameStageUser(
         ISocket socket,
         GameContext context
-    ) : base(socket) =>
+    ) : base(socket)
+    {
         Context = context;
+        _ = Context.Templates.Mob.Retrieve(9400504).Result;
+    }
+    
     public GameContext Context { get; }
 
     public IField? Field => FieldUser?.Field;

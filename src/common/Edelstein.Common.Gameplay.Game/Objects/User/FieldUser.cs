@@ -1,29 +1,34 @@
-﻿using Edelstein.Common.Gameplay.Game.Conversations;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Game.Combat.Damage;
+using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Common.Gameplay.Game.Objects.Dragon;
 using Edelstein.Common.Gameplay.Models.Characters;
-using Edelstein.Common.Gameplay.Models.Characters.Modify;
-using Edelstein.Common.Gameplay.Models.Inventories.Modify;
+using Edelstein.Common.Gameplay.Models.Characters.Stats;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects;
+using Edelstein.Protocol.Gameplay.Game.Objects.Dragon;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
-using Edelstein.Protocol.Gameplay.Models.Characters.Modify;
+using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
+using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Utilities.Packets;
-using Microsoft.Extensions.Logging;
+using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.User;
 
-public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAction>, IFieldUser
+public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAction>, IFieldUser, ITickable
 {
-
     public FieldUser(
         IGameStageUser user,
         IAccount account,
@@ -36,9 +41,17 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         AccountWorld = accountWorld;
         Character = character;
 
+        Damage = new DamageCalculator(
+            user.Context.Templates.Skill    
+        );
+
         Observing = new List<IFieldSplit>();
-        Controlled = new List<IFieldControllable>();
+        Controlled = new List<IFieldObjectControllable>();
+        Owned = new List<IFieldObjectOwned>();
+        
+        UpdateStats().Wait();
     }
+
     public override FieldObjectType Type => FieldObjectType.User;
 
     public ISocket Socket => StageUser.Socket;
@@ -48,15 +61,19 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public IAccount Account { get; }
     public IAccountWorld AccountWorld { get; }
     public ICharacter Character { get; }
+    
+    public IFieldUserStats Stats { get; private set; }
+    public IDamageCalculator Damage { get; }
 
     public IConversationContext? Conversation { get; private set; }
 
     public bool IsInstantiated { get; set; }
     public bool IsConversing => Conversation != null;
-
+    
     public ICollection<IFieldSplit> Observing { get; }
-    public ICollection<IFieldControllable> Controlled { get; }
-
+    public ICollection<IFieldObjectControllable> Controlled { get; }
+    public ICollection<IFieldObjectOwned> Owned { get; }
+    
     public IPacket GetSetFieldPacket()
     {
         using var packet = new PacketWriter(PacketSendOperations.SetField);
@@ -72,9 +89,9 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
         if (!IsInstantiated)
         {
-            packet.WriteUInt(0);
-            packet.WriteUInt(0);
-            packet.WriteUInt(0);
+            packet.WriteUInt(Damage.InitSeed1);
+            packet.WriteUInt(Damage.InitSeed2);
+            packet.WriteUInt(Damage.InitSeed3);
 
             packet.WriteCharacterData(Character);
 
@@ -110,10 +127,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         packet.WriteShort(0);
         packet.WriteByte(0);
 
-        packet.WriteLong(0); // secondary stats
-        packet.WriteLong(0);
-        packet.WriteByte(0);
-        packet.WriteByte(0);
+        packet.WriteTemporaryStatsToRemote(Character.TemporaryStats);
 
         packet.WriteShort(Character.Job);
         packet.WriteCharacterLooks(Character);
@@ -231,41 +245,29 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         return Task.CompletedTask;
     }
     
-    public async Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false)
+    public async Task Modify(Action<IFieldUserModify> action)
     {
-        var context = new ModifyStatContext(Character);
+        var modify = new FieldUserModify(this);
+        
+        action.Invoke(modify);
 
-        action?.Invoke(context);
-        
-        // TODO update stats
-        
-        if (!IsInstantiated) return;
-        
-        var packet = new PacketWriter(PacketSendOperations.StatChanged);
-
-        packet.WriteBool(exclRequest);
-        packet.Write(context);
-        packet.WriteBool(false);
-        packet.WriteBool(false);
-        
-        await Dispatch(packet.Build());
+        if (modify.IsRequireUpdate)
+            await UpdateStats();
+        if (modify.IsRequireUpdateAvatar) 
+            await UpdateAvatar();
     }
 
-    public async Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
-    {
-        var context = new ModifyInventoryGroupContext(Character.Inventories, StageUser.Context.Templates.Item);
-        using var packet = new PacketWriter(PacketSendOperations.InventoryOperation);
+    public Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false)
+        => Modify(m => m.Stats(action, exclRequest));
 
-        action?.Invoke(context);
-
-        packet.WriteBool(exclRequest);
-        packet.Write(context);
-        packet.WriteBool(false);
-
-        await Dispatch(packet.Build());
-
-        // TODO update stats
-    }
+    public Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
+        => Modify(m => m.Inventory(action, exclRequest));
+    
+    public Task ModifySkills(Action<IModifySkillContext>? action = null, bool exclRequest = false)
+        => Modify(m => m.Skills(action, exclRequest));
+    
+    public Task ModifyTemporaryStats(Action<IModifyTemporaryStatContext>? action = null, bool exclRequest = false)
+        => Modify(m => m.TemporaryStats(action, exclRequest));
 
     protected override IPacket GetMovePacket(IFieldUserMovePath ctx)
     {
@@ -275,5 +277,101 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         packet.Write(ctx);
 
         return packet.Build();
+    }
+
+    private async Task UpdateStats()
+    {
+        Stats = new FieldUserStats(
+            this, 
+            StageUser.Context.Templates.Item,
+            StageUser.Context.Templates.Skill
+        );
+        
+        if (JobConstants.GetJobRace(Character.Job) == 2 &&
+            JobConstants.GetJobType(Character.Job) == 2 &&
+            JobConstants.GetJobLevel(Character.Job) > 0)
+        {
+            Console.WriteLine("TEST");
+            try
+            {
+                var dragon = Owned
+                    .OfType<IFieldDragon>()
+                    .FirstOrDefault();
+
+                if (dragon == null || dragon.JobCode != Character.Job)
+                {
+                    if (dragon != null)
+                    {
+                        Owned.Remove(dragon);
+                        if (IsInstantiated && Field != null)
+                            await Field.Leave(dragon);
+                    }
+
+                    dragon = new FieldDragon(
+                        this,
+                        Character.Job,
+                        new FieldDragonMoveAction(0),
+                        Position,
+                        Foothold
+                    );
+
+                    Owned.Add(dragon);
+
+                    if (IsInstantiated && Field != null)
+                        await Field.Enter(dragon);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+        
+        if (Character.HP > Stats.MaxHP) await ModifyStats(s => s.HP = Stats.MaxHP);
+        if (Character.MP > Stats.MaxMP) await ModifyStats(s => s.MP = Stats.MaxMP);
+    }
+    
+    private async Task UpdateAvatar()
+    {
+        var avatarPacket = new PacketWriter(PacketSendOperations.UserAvatarModified);
+
+        avatarPacket.WriteInt(Character.ID);
+        avatarPacket.WriteByte(0x1); // Flag
+        avatarPacket.WriteCharacterLooks(Character);
+
+        avatarPacket.WriteBool(false);
+        avatarPacket.WriteBool(false);
+        avatarPacket.WriteBool(false);
+        avatarPacket.WriteInt(0);
+
+        if (FieldSplit != null)
+            await FieldSplit.Dispatch(avatarPacket.Build(), this);
+    }
+    
+    public async Task OnTick(DateTime now)
+    {
+        await ModifyTemporaryStats(s =>
+        {
+            foreach (var kv in Character.TemporaryStats.Records
+                         .Where(kv => kv.Value.DateExpire < now)
+                         .ToImmutableList())
+                s.ResetByType(kv.Key);
+            
+            if ((Character.TemporaryStats.EnergyChargedRecord?.IsActive() ?? false) &&
+                (Character.TemporaryStats.EnergyChargedRecord?.IsExpired(now) ?? false))
+                s.ResetEnergyCharged();
+            if ((Character.TemporaryStats.DashSpeedRecord?.IsActive() ?? false) &&
+                (Character.TemporaryStats.DashSpeedRecord?.IsExpired(now) ?? false))
+                s.ResetDashSpeed();
+            if ((Character.TemporaryStats.DashJumpRecord?.IsActive() ?? false) &&
+                (Character.TemporaryStats.DashJumpRecord?.IsExpired(now) ?? false))
+                s.ResetDashJump();
+            if ((Character.TemporaryStats.PartyBoosterRecord?.IsActive() ?? false) &&
+                (Character.TemporaryStats.PartyBoosterRecord?.IsExpired(now) ?? false))
+                s.ResetPartyBooster();
+            if ((Character.TemporaryStats.UndeadRecord?.IsActive() ?? false) &&
+                (Character.TemporaryStats.UndeadRecord?.IsExpired(now) ?? false))
+                s.ResetUndead();
+        });
     }
 }

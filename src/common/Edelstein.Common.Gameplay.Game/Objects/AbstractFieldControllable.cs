@@ -7,7 +7,7 @@ using Edelstein.Protocol.Utilities.Spatial;
 namespace Edelstein.Common.Gameplay.Game.Objects;
 
 public abstract class AbstractFieldControllable<TMovePath, TMoveAction> :
-    AbstractFieldLife<TMovePath, TMoveAction>, IFieldControllable
+    AbstractFieldLife<TMovePath, TMoveAction>, IFieldObjectControllable
     where TMovePath : IMovePath<TMoveAction>
     where TMoveAction : IMoveAction
 {
@@ -17,9 +17,9 @@ public abstract class AbstractFieldControllable<TMovePath, TMoveAction> :
     ) : base(action, position, foothold)
     {
     }
-    public IFieldController? Controller { get; private set; }
+    public IFieldObjectController? Controller { get; private set; }
 
-    public async Task Control(IFieldController? controller = null)
+    public async Task Control(IFieldObjectController? controller = null)
     {
         if (Controller == controller) return;
 
@@ -36,5 +36,5 @@ public abstract class AbstractFieldControllable<TMovePath, TMoveAction> :
         await controller.Dispatch(GetControlPacket(controller));
     }
 
-    protected abstract IPacket GetControlPacket(IFieldController? controller = null);
+    protected abstract IPacket GetControlPacket(IFieldObjectController? controller = null);
 }

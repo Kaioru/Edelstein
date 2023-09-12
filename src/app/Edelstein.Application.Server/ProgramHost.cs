@@ -5,6 +5,7 @@ using Edelstein.Application.Server.Configs;
 using Edelstein.Common.Database;
 using Edelstein.Common.Gameplay;
 using Edelstein.Common.Gameplay.Game;
+using Edelstein.Common.Gameplay.Game.Combat;
 using Edelstein.Common.Gameplay.Game.Continents;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Login;
@@ -17,6 +18,7 @@ using Edelstein.Common.Utilities.Pipelines;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
@@ -150,7 +152,14 @@ public class ProgramHost : IHostedService
                         b.RegisterType<FieldManager>().As<IFieldManager>().SingleInstance();
                         b.RegisterType<ContiMoveManager>().As<IContiMoveManager>().SingleInstance();
                         b.RegisterType<ScriptedConversationManager>().As<INamedConversationManager>().SingleInstance();
-
+                        b.RegisterType<SkillManager>().As<ISkillManager>().SingleInstance();
+                        
+                        b
+                            .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(GameStage))!)
+                            .Where(t => t.IsClass && t.IsAssignableTo<ISkillHandler>())
+                            .As<ISkillHandler>()
+                            .SingleInstance();
+                        
                         b
                             .RegisterInstance(options)
                             .As<IGameStageOptions>()

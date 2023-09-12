@@ -1,5 +1,4 @@
-﻿using Ceras;
-using Edelstein.Common.Services.Server.Converters;
+﻿using Edelstein.Common.Services.Server.Converters;
 using Edelstein.Common.Services.Server.Entities;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
@@ -27,16 +26,14 @@ public class MigrationConfiguration : IEntityTypeConfiguration<MigrationEntity>
             .HasForeignKey(m => m.ToServerID)
             .OnDelete(DeleteBehavior.Cascade);
 
-        var serializer = new CerasSerializer();
-
         builder
             .Property(e => e.Account)
-            .HasConversion(new BinaryConverter<IAccount>(serializer));
+            .HasConversion(new JsonConverter<IAccount>());
         builder
             .Property(e => e.AccountWorld)
-            .HasConversion(new BinaryConverter<IAccountWorld>(serializer));
+            .HasConversion(new JsonConverter<IAccountWorld>());
         builder
             .Property(e => e.Character)
-            .HasConversion(new BinaryConverter<ICharacter>(serializer));
+            .HasConversion(new JsonConverter<ICharacter>());
     }
 }

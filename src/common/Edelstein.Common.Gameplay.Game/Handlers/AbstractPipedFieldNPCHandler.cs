@@ -1,5 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Game;
-using Edelstein.Protocol.Gameplay.Game.Objects;
+﻿using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Utilities.Packets;

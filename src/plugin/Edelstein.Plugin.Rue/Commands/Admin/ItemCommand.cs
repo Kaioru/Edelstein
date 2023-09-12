@@ -32,8 +32,6 @@ public class ItemCommand : AbstractTemplateCommand<IItemTemplate>
         return result;
     }
 
-    protected override async Task Execute(IFieldUser user, IItemTemplate template, TemplateCommandArgs args)
-    {
-        await user.ModifyInventory(i => i.Add(template.ID));
-    }
+    protected override async Task Execute(IFieldUser user, IItemTemplate template, TemplateCommandArgs args) 
+        => await user.ModifyInventory(i => i.Add(template.ID));
 }

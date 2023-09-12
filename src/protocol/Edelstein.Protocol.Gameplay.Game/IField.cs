@@ -16,6 +16,7 @@ public interface IField : IIdentifiable<int>, IFieldObjectPool
     IFieldGeneratorRegistry Generators { get; }
 
     IFieldSplit? GetSplit(IPoint2D position);
+    IFieldSplit?[] GetSplits(IRectangle2D bounds);
     IFieldSplit?[] GetEnclosingSplits(IPoint2D position);
     IFieldSplit?[] GetEnclosingSplits(IFieldSplit split);
 
