@@ -9,6 +9,7 @@ public interface ISkillTemplate : ITemplate
     short MaxLevel { get; }
 
     bool IsPSD { get; }
+    bool IsPrepared { get; }
     bool IsSummon { get; }
     bool IsInvisible { get; }
     bool IsCombatOrders { get; }

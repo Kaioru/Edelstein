@@ -13,6 +13,7 @@ public class SkillTemplate : ISkillTemplate
     public short MaxLevel { get; }
     
     public bool IsPSD { get; }
+    public bool IsPrepared { get; }
     public bool IsSummon { get; }
     public bool IsInvisible { get; }
     public bool IsCombatOrders { get; }
@@ -30,6 +31,7 @@ public class SkillTemplate : ISkillTemplate
         ID = id;
 
         IsPSD = (property.Resolve<int>("psd") ?? 0) > 0;
+        IsPrepared = property.Resolve("prepare") != null;
         IsSummon = property.Resolve("summon") != null;
         IsInvisible = (property.Resolve<int>("invisible") ?? 0) > 0;
         IsCombatOrders = (property.Resolve<int>("combatOrders") ?? 0) > 0;
