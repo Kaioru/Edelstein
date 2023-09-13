@@ -30,6 +30,11 @@ public class CharacterConfiguration : IEntityTypeConfiguration<CharacterEntity>
             .HasColumnType("json")
             .HasConversion<JsonConverter<ICharacterFuncKeys>>()
             .HasDefaultValue(new CharacterFuncKeys());
+        builder
+            .Property(e => e.QuickslotKeys)
+            .HasColumnType("json")
+            .HasConversion<JsonConverter<ICharacterQuickslotKeys>>()
+            .HasDefaultValue(new CharacterQuickslotKeys());
         
         builder
             .Property(e => e.Inventories)

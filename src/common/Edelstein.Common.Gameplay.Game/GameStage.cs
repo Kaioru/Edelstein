@@ -41,7 +41,7 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
         await base.Enter(user);
 
         var funcKeyMappedInitPacket = new PacketWriter(PacketSendOperations.FuncKeyMappedInit);
-
+        
         funcKeyMappedInitPacket.WriteBool(user.Character.FuncKeys.Records.Count == 0);
         if (user.Character.FuncKeys.Records.Count > 0)
         {
@@ -60,6 +60,17 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
             }
         }
         await fieldUser.Dispatch(funcKeyMappedInitPacket.Build());
+        
+        var quickslotMappedInitPacket = new PacketWriter(PacketSendOperations.QuickslotMappedInit);
+        
+        quickslotMappedInitPacket.WriteBool(user.Character.QuickslotKeys.Records.Count > 0);
+        if (user.Character.QuickslotKeys.Records.Count > 0)
+            for (byte i = 0; i < 8; i++)
+                quickslotMappedInitPacket.WriteInt(user.Character.QuickslotKeys.Records.TryGetValue(i, out var value) 
+                    ? value 
+                    : 0
+                );
+        await fieldUser.Dispatch(quickslotMappedInitPacket.Build());
     }
 
     public new async Task Leave(IGameStageUser user)

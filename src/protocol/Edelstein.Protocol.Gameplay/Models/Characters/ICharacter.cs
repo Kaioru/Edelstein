@@ -43,6 +43,7 @@ public interface ICharacter : IIdentifiable<int>
     short SubJob { get; set; }
 
     ICharacterFuncKeys FuncKeys { get; }
+    ICharacterQuickslotKeys QuickslotKeys { get; }
 
     ICharacterInventories Inventories { get;  }
     ICharacterSkills Skills { get; }

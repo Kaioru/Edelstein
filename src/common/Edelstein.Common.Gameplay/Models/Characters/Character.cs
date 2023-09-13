@@ -44,6 +44,7 @@ public record Character : ICharacter
     public short SubJob { get; set; }
 
     public ICharacterFuncKeys FuncKeys { get; private set; } = new CharacterFuncKeys();
+    public ICharacterQuickslotKeys QuickslotKeys { get; private set; } = new CharacterQuickslotKeys();
 
     public ICharacterInventories Inventories { get; private set; } = new CharacterInventories();
     public ICharacterSkills Skills { get; private set; } = new CharacterSkills();
