@@ -37,10 +37,7 @@ public interface IItemOptionTemplateLevel
     short IncPDDr { get; }
     short IncMDDr { get; }
     short IncCr { get; }
-    short IncCDr { get;  }
-    short IncMAMr { get;  }
     
-    short IncSkill { get;  }
     short IncAllSkill { get; }
     
     short RecoveryHP { get; }

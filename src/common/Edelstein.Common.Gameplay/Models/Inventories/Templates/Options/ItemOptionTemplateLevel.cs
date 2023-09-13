@@ -43,11 +43,7 @@ public record ItemOptionTemplateLevel : IItemOptionTemplateLevel
         IncMDDr = property.Resolve<short>("incMDDr") ?? 0;
 
         IncCr = property.Resolve<short>("incCr") ?? 0;
-        IncCDr = property.Resolve<short>("incCDr") ?? 0;
-
-        IncMAMr = property.Resolve<short>("incMAMr") ?? 0;
         
-        IncSkill = property.Resolve<short>("incSkill") ?? 0;
         IncAllSkill = property.Resolve<short>("incAllskill") ?? 0;
         
         RecoveryHP = property.Resolve<short>("RecoveryHP") ?? 0;
@@ -103,11 +99,7 @@ public record ItemOptionTemplateLevel : IItemOptionTemplateLevel
     public short IncPDDr { get; }
     public short IncMDDr { get; }
     public short IncCr { get; }
-    public short IncCDr { get; }
     
-    public short IncMAMr { get; }
-    
-    public short IncSkill { get; }
     public short IncAllSkill { get; }
     
     public short RecoveryHP { get; }
