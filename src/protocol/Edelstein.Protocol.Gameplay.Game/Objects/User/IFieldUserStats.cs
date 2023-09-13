@@ -54,11 +54,14 @@ public interface IFieldUserStats
     int PDamR { get; }
     int MDamR { get; }
     int BossDamR { get; }
-    
+
     int Mastery { get; }
 
     int DamageMin { get; }
     int DamageMax { get; }
     
     IFieldUserStatsSkillLevels SkillLevels { get; }
+
+    Task Apply(IFieldUser user);
+    void Reset();
 }

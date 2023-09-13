@@ -4,23 +4,30 @@ using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob;
 
-public record struct FieldMobStats : IFieldMobStats
+public record FieldMobStats : IFieldMobStats
 {
-    public int Level { get; }
+    public int Level { get; private set; }
     
-    public int PAD { get; }
-    public int PDD { get; }
-    public int PDR { get; }
-    public int MAD { get; }
-    public int MDD { get; }
-    public int MDR { get; }
-    public int ACC { get; }
-    public int EVA { get; }
+    public int PAD { get; private set; }
+    public int PDD { get; private set; }
+    public int PDR { get; private set; }
+    public int MAD { get; private set; }
+    public int MDD { get; private set; }
+    public int MDR { get; private set; }
+    public int ACC { get; private set; }
+    public int EVA { get; private set; }
     
     public IDictionary<Element, ElementAttribute> ElementAttributes { get; }
 
-    public FieldMobStats(IFieldMob mob)
+    public FieldMobStats()
     {
+        ElementAttributes = new Dictionary<Element, ElementAttribute>();
+        Reset();
+    }
+
+    public Task Apply(IFieldMob mob)
+    {
+        Reset();
         Level = mob.Template.Level;
         
         PAD = mob.Template.PAD;
@@ -32,7 +39,7 @@ public record struct FieldMobStats : IFieldMobStats
         ACC = mob.Template.ACC;
         EVA = mob.Template.EVA;
 
-        ElementAttributes = new Dictionary<Element, ElementAttribute>();
+        ElementAttributes.Clear();
         foreach (var kv in mob.Template.ElementAttributes)
             ElementAttributes[kv.Key] = kv.Value;
 
@@ -49,5 +56,22 @@ public record struct FieldMobStats : IFieldMobStats
         MDD = Math.Min(MDD, 30000);
         ACC = Math.Min(ACC, 9999);
         EVA = Math.Min(EVA, 9999);
+        return Task.CompletedTask;
+    }
+    
+    public void Reset()
+    {
+        Level = 0;
+        
+        PAD = 0;
+        PDD = 0;
+        PDR = 0;
+        MAD = 0;
+        MDD = 0;
+        MDR = 0;
+        ACC = 0;
+        EVA = 0;
+        
+        ElementAttributes.Clear();
     }
 }

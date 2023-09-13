@@ -17,4 +17,7 @@ public interface IFieldMobStats
     int EVA { get; }
     
     IDictionary<Element, ElementAttribute> ElementAttributes { get; }
+    
+    Task Apply(IFieldMob mob);
+    void Reset();
 }

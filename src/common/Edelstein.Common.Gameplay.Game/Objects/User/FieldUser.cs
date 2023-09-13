@@ -41,6 +41,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         AccountWorld = accountWorld;
         Character = character;
 
+        Stats = new FieldUserStats();
         Damage = new DamageCalculator(
             user.Context.Templates.Skill    
         );
@@ -62,7 +63,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public IAccountWorld AccountWorld { get; }
     public ICharacter Character { get; }
     
-    public IFieldUserStats Stats { get; private set; }
+    public IFieldUserStats Stats { get; }
     public IDamageCalculator Damage { get; }
 
     public IConversationContext? Conversation { get; private set; }
@@ -281,49 +282,37 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
     private async Task UpdateStats()
     {
-        Stats = new FieldUserStats(
-            this, 
-            StageUser.Context.Templates.Item,
-            StageUser.Context.Templates.Skill
-        );
+        await Stats.Apply(this);
         
         if (JobConstants.GetJobRace(Character.Job) == 2 &&
             JobConstants.GetJobType(Character.Job) == 2 &&
             JobConstants.GetJobLevel(Character.Job) > 0)
         {
-            Console.WriteLine("TEST");
-            try
-            {
-                var dragon = Owned
-                    .OfType<IFieldDragon>()
-                    .FirstOrDefault();
+            var dragon = Owned
+                .OfType<IFieldDragon>()
+                .FirstOrDefault();
 
-                if (dragon == null || dragon.JobCode != Character.Job)
+            if (dragon == null || dragon.JobCode != Character.Job)
+            {
+                if (dragon != null)
                 {
-                    if (dragon != null)
-                    {
-                        Owned.Remove(dragon);
-                        if (IsInstantiated && Field != null)
-                            await Field.Leave(dragon);
-                    }
-
-                    dragon = new FieldDragon(
-                        this,
-                        Character.Job,
-                        new FieldDragonMoveAction(0),
-                        Position,
-                        Foothold
-                    );
-
-                    Owned.Add(dragon);
-
+                    Owned.Remove(dragon);
                     if (IsInstantiated && Field != null)
-                        await Field.Enter(dragon);
+                        await Field.Leave(dragon);
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+
+                dragon = new FieldDragon(
+                    this,
+                    Character.Job,
+                    new FieldDragonMoveAction(0),
+                    Position,
+                    Foothold
+                );
+
+                Owned.Add(dragon);
+
+                if (IsInstantiated && Field != null)
+                    await Field.Enter(dragon);
             }
         }
         

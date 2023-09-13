@@ -35,6 +35,8 @@ public class FieldMob :
         LastUpdateBurned = DateTime.UtcNow;
         
         Template = template;
+
+        Stats = new FieldMobStats();
         TemporaryStats = new MobTemporaryStats();
         HP = template.MaxHP;
         MP = template.MaxMP;
@@ -46,7 +48,7 @@ public class FieldMob :
 
     public IMobTemplate Template { get; }
     
-    public IFieldMobStats Stats { get; private set; }
+    public IFieldMobStats Stats { get; }
     public IMobTemporaryStats TemporaryStats { get; }
     public int HP { get; private set; }
     public int MP { get; private set; }
@@ -198,7 +200,7 @@ public class FieldMob :
     }
     
     private Task UpdateStats() 
-        => Task.FromResult(Stats = new FieldMobStats(this));
+        => Stats.Apply(this);
 
     public async Task OnTick(DateTime now)
     {
