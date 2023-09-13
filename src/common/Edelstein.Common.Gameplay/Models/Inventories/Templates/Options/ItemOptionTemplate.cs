@@ -18,14 +18,11 @@ public record ItemOptionTemplate : IItemOptionTemplate
         
         ReqLevel = info?.Resolve<short>("reqLevel") ?? 0;
 
-        if (level != null)
-            Levels = level.Children
-                .ToImmutableDictionary(
-                    l => Convert.ToInt32(l.Name),
-                    l => (IItemOptionTemplateLevel)new ItemOptionTemplateLevel(Convert.ToInt32(l.Name), l.ResolveAll())
-                );
-        else 
-            Levels = new Dictionary<int, IItemOptionTemplateLevel>();
+        Levels = level?.Children
+            .ToImmutableDictionary(
+                l => Convert.ToInt32(l.Name),
+                l => (IItemOptionTemplateLevel)new ItemOptionTemplateLevel(Convert.ToInt32(l.Name), l.ResolveAll())
+            ) ?? ImmutableDictionary<int, IItemOptionTemplateLevel>.Empty;
     }
     
     public int ID { get; }
