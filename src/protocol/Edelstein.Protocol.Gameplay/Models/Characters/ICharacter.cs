@@ -27,7 +27,7 @@ public interface ICharacter : IIdentifiable<int>
     short AP { get; set; }
     short SP { get; set; }
 
-    ICharacterExtendSP ExtendSP { get; set; }
+    ICharacterExtendSP ExtendSP { get; }
 
     int EXP { get; set; }
     short POP { get; set; }
@@ -42,9 +42,11 @@ public interface ICharacter : IIdentifiable<int>
 
     short SubJob { get; set; }
 
-    ICharacterInventories Inventories { get; set; }
-    ICharacterSkills Skills { get; set; }
-    ICharacterWildHunterInfo WildHunterInfo { get; set; }
+    ICharacterFuncKeys FuncKeys { get; }
 
-    ICharacterTemporaryStats TemporaryStats { get; set; }
+    ICharacterInventories Inventories { get;  }
+    ICharacterSkills Skills { get; }
+    ICharacterWildHunterInfo WildHunterInfo { get; }
+
+    ICharacterTemporaryStats TemporaryStats { get; }
 }

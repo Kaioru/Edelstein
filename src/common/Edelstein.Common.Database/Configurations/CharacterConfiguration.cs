@@ -26,6 +26,12 @@ public class CharacterConfiguration : IEntityTypeConfiguration<CharacterEntity>
             .HasDefaultValue(new CharacterExtendSP());
         
         builder
+            .Property(e => e.FuncKeys)
+            .HasColumnType("json")
+            .HasConversion<JsonConverter<ICharacterFuncKeys>>()
+            .HasDefaultValue(new CharacterFuncKeys());
+        
+        builder
             .Property(e => e.Inventories)
             .HasColumnType("json")
             .HasConversion<JsonConverter<ICharacterInventories>>()

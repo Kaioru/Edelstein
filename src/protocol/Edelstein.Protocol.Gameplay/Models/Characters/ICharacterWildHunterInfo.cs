@@ -3,5 +3,5 @@
 public interface ICharacterWildHunterInfo
 {
     byte RidingType { get; set; }
-    int[] CaptureMob { get; set; }
+    int[] CaptureMob { get; }
 }

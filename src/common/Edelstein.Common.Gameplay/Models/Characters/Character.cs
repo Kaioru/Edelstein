@@ -28,7 +28,7 @@ public record Character : ICharacter
     public short AP { get; set; }
     public short SP { get; set; }
 
-    public ICharacterExtendSP ExtendSP { get; set; } = new CharacterExtendSP();
+    public ICharacterExtendSP ExtendSP { get; private set; } = new CharacterExtendSP();
 
     public int EXP { get; set; }
     public short POP { get; set; }
@@ -43,9 +43,11 @@ public record Character : ICharacter
 
     public short SubJob { get; set; }
 
-    public ICharacterInventories Inventories { get; set; } = new CharacterInventories();
-    public ICharacterSkills Skills { get; set; } = new CharacterSkills();
-    public ICharacterWildHunterInfo WildHunterInfo { get; set; } = new CharacterWildHunterInfo();
+    public ICharacterFuncKeys FuncKeys { get; private set; } = new CharacterFuncKeys();
 
-    public ICharacterTemporaryStats TemporaryStats { get; set; } = new CharacterTemporaryStats();
+    public ICharacterInventories Inventories { get; private set; } = new CharacterInventories();
+    public ICharacterSkills Skills { get; private set; } = new CharacterSkills();
+    public ICharacterWildHunterInfo WildHunterInfo { get; private set; } = new CharacterWildHunterInfo();
+
+    public ICharacterTemporaryStats TemporaryStats { get; private set; } = new CharacterTemporaryStats();
 }
