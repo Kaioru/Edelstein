@@ -81,12 +81,14 @@ public class SkillTemplate : ISkillTemplate
         else
         {
             var level = property.Resolve("level");
-            
+
             if (level != null)
                 Levels = level.Children.ToImmutableDictionary(
                     c => Convert.ToInt32(c.Name),
                     c => (ISkillTemplateLevel)new SkillTemplateLevel(Convert.ToInt32(c.Name), c.ResolveAll())
                 );
+            else
+                Levels = new Dictionary<int, ISkillTemplateLevel>();
             MaxLevel = (short)(Levels?.Count ?? 0);
         }
     }

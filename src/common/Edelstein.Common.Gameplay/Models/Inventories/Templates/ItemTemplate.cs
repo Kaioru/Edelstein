@@ -5,7 +5,6 @@ namespace Edelstein.Common.Gameplay.Models.Inventories.Templates;
 
 public record ItemTemplate : IItemTemplate
 {
-
     public ItemTemplate(int id, IDataProperty info)
     {
         ID = id;
@@ -26,6 +25,7 @@ public record ItemTemplate : IItemTemplate
 
         Cash = info.Resolve<bool>("cash") ?? false;
     }
+    
     public int ID { get; }
 
     public int SellPrice { get; }
