@@ -41,6 +41,7 @@ public class RueGamePlugin : IGamePlugin
             ctx.Templates.Skill,
             ctx.Templates.SkillString
         ));
+        commandManager.Insert(new EquipCommand());
         commandManager.Insert(new StatCommand());
         commandManager.Insert(new TemporaryStatCommand());
         commandManager.Insert(new MobTemporaryStatCommand());

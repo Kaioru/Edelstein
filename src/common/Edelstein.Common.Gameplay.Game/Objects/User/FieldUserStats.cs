@@ -259,10 +259,25 @@ public record FieldUserStats : IFieldUserStats
                 Craft += item.Craft;
                 Speed += item.Speed;
                 Jump += item.Jump;
-            }
 
-            MaxHPr += equip.IncMaxHPr;
-            MaxMPr += equip.IncMaxMPr;
+                MaxHPr += equip.IncMaxHPr;
+                MaxMPr += equip.IncMaxMPr;
+
+                if (item.Grade is
+                    ItemGrade.Rare or
+                    ItemGrade.Epic or
+                    ItemGrade.Unique)
+                {
+                    var level = (equip.ReqLevel - 1) / 10;
+
+                    level = Math.Max(1, level);
+                    level = Math.Min(20, level);
+                
+                    await ApplyItemOption(user, item.Option1, level);
+                    await ApplyItemOption(user, item.Option2, level);
+                    await ApplyItemOption(user, item.Option3, level);
+                }
+            }
         }
 
         var weaponType = ItemConstants.GetWeaponType(
@@ -282,6 +297,54 @@ public record FieldUserStats : IFieldUserStats
             var template = await user.StageUser.Context.Templates.Item.Retrieve(rechargeable.ID);
             if (template is IItemBundleTemplate bundle && user.Character.Level > bundle.ReqLevel)
                 PAD += bundle.IncPAD;
+        }
+    }
+
+    private async Task ApplyItemOption(IFieldUser user, int option, int level)
+    {
+        try
+        {
+            var template = await user.StageUser.Context.Templates.ItemOption.Retrieve(option);
+            if (template == null) return;
+            if (!template.Levels.ContainsKey(level)) return;
+            var levelTemplate = template.Levels[level];
+            
+            STR += levelTemplate.IncSTR;
+            DEX += levelTemplate.IncDEX;
+            LUK += levelTemplate.IncLUK;
+            INT += levelTemplate.IncINT;
+
+            MaxHP += levelTemplate.IncMaxHP;
+            MaxMP += levelTemplate.IncMaxMP;
+
+            PAD += levelTemplate.IncPAD;
+            PDD += levelTemplate.IncPDD;
+            MAD += levelTemplate.IncMAD;
+            MDD += levelTemplate.IncMDD;
+            ACC += levelTemplate.IncACC;
+            EVA += levelTemplate.IncEVA;
+
+            Speed += levelTemplate.IncSpeed;
+            Jump += levelTemplate.IncJump;
+        
+            STRr += levelTemplate.IncSTRr;
+            DEXr += levelTemplate.IncDEXr;
+            LUKr += levelTemplate.IncLUKr;
+            INTr += levelTemplate.IncINTr;
+        
+            MaxHPr += levelTemplate.IncMaxHPr;
+            MaxMPr += levelTemplate.IncMaxMPr;
+        
+            PADr += levelTemplate.IncPADr;
+            PDDr += levelTemplate.IncPDDr;
+            MADr += levelTemplate.IncMADr;
+            MDDr += levelTemplate.IncMDDr;
+            ACCr += levelTemplate.IncACCr;
+            EVAr += levelTemplate.IncEVAr;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
         }
     }
     
@@ -527,6 +590,7 @@ public record FieldUserStats : IFieldUserStats
         MAD += incMAD;
         ACC += incACC;
     }
+    
     private Task ApplyDamage(IFieldUser user)
     {
         var weaponType = ItemConstants.GetWeaponType(

@@ -4,6 +4,7 @@ using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
+using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Options;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Protocol.Gameplay.Game.Contexts;
@@ -11,6 +12,7 @@ namespace Edelstein.Protocol.Gameplay.Game.Contexts;
 public record GameContextTemplates(
     ITemplateManager<IItemTemplate> Item,
     ITemplateManager<IItemStringTemplate> ItemString,
+    ITemplateManager<IItemOptionTemplate> ItemOption,
     ITemplateManager<ISkillTemplate> Skill,
     ITemplateManager<ISkillStringTemplate> SkillString,
     ITemplateManager<IFieldTemplate> Field,
