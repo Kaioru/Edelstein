@@ -61,6 +61,8 @@ public class ProgramHost : IHostedService
                 assemblies.Add(Assembly.GetAssembly(typeof(LoginStage))!);
             if (_config.GameStages.Count > 0)
                 assemblies.Add(Assembly.GetAssembly(typeof(GameStage))!);
+            if (_config.ShopStages.Count > 0)
+                assemblies.Add(Assembly.GetAssembly(typeof(ShopStage))!);
 
             b
                 .RegisterAssemblyTypes(assemblies.ToArray())
