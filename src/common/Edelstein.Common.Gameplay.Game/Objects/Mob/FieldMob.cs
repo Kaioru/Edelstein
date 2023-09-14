@@ -81,7 +81,7 @@ public class FieldMob :
             }
 
             if (HP <= 0)
-                await Field.Leave(this);
+                await Field.Leave(this, () => GetLeaveFieldPacket(1));
         }
         finally
         {
@@ -136,15 +136,8 @@ public class FieldMob :
 
     public override IPacket GetEnterFieldPacket() => GetEnterFieldPacket(FieldMobAppearType.Normal);
 
-    public override IPacket GetLeaveFieldPacket()
-    {
-        using var packet = new PacketWriter(PacketSendOperations.MobLeaveField);
-
-        packet.WriteInt(ObjectID ?? 0);
-        packet.WriteInt(1); // m_tLastUpdateAmbush?
-        return packet.Build();
-    }
-
+    public override IPacket GetLeaveFieldPacket() => GetLeaveFieldPacket(2);
+    
     public void WriteTo(IPacketWriter writer) => WriteTo(writer, FieldMobAppearType.Normal);
 
     public IPacket GetEnterFieldPacket(FieldMobAppearType appear, int? appearOption = null)
@@ -155,7 +148,16 @@ public class FieldMob :
         WriteTo(packet, appear, appearOption);
         return packet.Build();
     }
+    
+    public IPacket GetLeaveFieldPacket(byte leaveType)
+    {
+        using var packet = new PacketWriter(PacketSendOperations.MobLeaveField);
 
+        packet.WriteInt(ObjectID ?? 0);
+        packet.WriteByte(leaveType);
+        return packet.Build();
+    }
+    
     private void WriteTo(IPacketWriter writer, FieldMobAppearType appear, int? appearOption = null)
     {
         writer.WriteByte(1); // CalcDamageStatIndex
