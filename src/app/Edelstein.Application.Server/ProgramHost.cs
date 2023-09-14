@@ -209,8 +209,10 @@ public class ProgramHost : IHostedService
             programScope.Resolve<IEnumerable<ITemplateLoader>>())
         );
 
-        foreach (var bootstrap in _bootstraps.OrderBy(b => b.Priority))
-            await bootstrap.Start();
+        foreach (var group in _bootstraps
+                     .GroupBy(b => b.Priority)
+                     .OrderBy(g => g.Key))
+            await Task.WhenAll(group.AsParallel().Select(b => b.Start()));
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
@@ -218,6 +220,6 @@ public class ProgramHost : IHostedService
         foreach (var group in _bootstraps
                      .GroupBy(b => b.Priority)
                      .OrderByDescending(g => g.Key))
-            await Task.WhenAll(group.Select(b => b.Stop()));
+            await Task.WhenAll(group.AsParallel().Select(b => b.Stop()));
     }
 }
