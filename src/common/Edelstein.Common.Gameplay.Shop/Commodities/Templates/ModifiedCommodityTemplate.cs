@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Data;
+﻿using System.Collections.Immutable;
+using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Shop.Commodities;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -32,6 +33,8 @@ public record ModifiedCommodityTemplate : IModifiedCommodity, ITemplate
         PbCash = property.Resolve<short>("PbCash");
         PbPoint = property.Resolve<short>("PbPoint");
         PbGift = property.Resolve<short>("PbGift");
+        
+        PackageSN = ImmutableList<int>.Empty;
     }
     
     public int ID { get; }

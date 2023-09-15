@@ -11,6 +11,7 @@ using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Shop;
+using Edelstein.Common.Gameplay.Shop.Commodities;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Plugin;
 using Edelstein.Common.Services.Auth;
@@ -26,6 +27,7 @@ using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Gameplay.Shop;
+using Edelstein.Protocol.Gameplay.Shop.Commodities;
 using Edelstein.Protocol.Gameplay.Shop.Contexts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
@@ -206,7 +208,10 @@ public class ProgramHost : IHostedService
                             .Where(t => t.IsClass)
                             .AsClosedTypesOf(typeof(IPipelinePlug<>))
                             .SingleInstance();
-
+                        
+                        b.RegisterType<CommodityManager>().As<ICommodityManager>().SingleInstance();
+                        b.RegisterType<ModifiedCommodityManager>().As<IModifiedCommodityManager>().SingleInstance();
+                        
                         b
                             .RegisterInstance(options)
                             .As<IShopStageOptions>()
