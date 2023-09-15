@@ -26,6 +26,6 @@ public class CashShopCashItemRequestHandler : IPacketHandler<IShopStageUser>
                 break;
         }
 
-        return Task.CompletedTask;
+        return user.DispatchUpdateCash();
     }
 }
