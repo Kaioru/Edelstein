@@ -38,7 +38,7 @@ public class CommodityManager : ICommodityManager
             ReqLevel = modified?.ReqLevel ?? template?.ReqLevel ?? 0,
             MaplePoint = modified?.MaplePoint ?? template?.MaplePoint ?? 0,
             Meso = modified?.Meso ?? template?.Meso ?? 0,
-            ForPremiumUser = modified?.ForPremiumUser ?? template?.ForPremiumUser ?? false,
+            ForPremiumUser = modified?.ForPremiumUser ?? template?.ForPremiumUser ?? true,
             Gender = modified?.Gender ?? template?.Gender ?? 0,
             OnSale = modified?.OnSale ?? template?.OnSale ?? false,
             Class = modified?.Class ?? template?.Class ?? 0,

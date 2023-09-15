@@ -18,11 +18,13 @@ public record ModifiedCommodityTemplate : IModifiedCommodity, ITemplate
         Bonus = property.Resolve<int>("Bonus") > 0;
         
         Period = property.Resolve<short>("Period");
-        // ReqPOP
-        // ReqLVL
-        // MaplePoint
-        // Meso
-        // ForPremiumUser
+        ReqPOP = property.Resolve<short>("ReqPOP");
+        ReqLevel = property.Resolve<short>("ReqLVL");
+        
+        MaplePoint = property.Resolve<int>("MaplePoint");
+        Meso = property.Resolve<int>("Meso");
+        
+        ForPremiumUser = property.Resolve<int>("Premium") > 0;
         
         Gender = property.Resolve<byte>("Gender");
             
@@ -33,11 +35,38 @@ public record ModifiedCommodityTemplate : IModifiedCommodity, ITemplate
         PbCash = property.Resolve<short>("PbCash");
         PbPoint = property.Resolve<short>("PbPoint");
         PbGift = property.Resolve<short>("PbGift");
+
+        if (ItemID != null) Flags |= CommodityFlags.ItemID;
+        if (Count != null) Flags |= CommodityFlags.Count;
+        if (Priority != null) Flags |= CommodityFlags.Priority;
         
-        PackageSN = ImmutableList<int>.Empty;
+        if (Price != null) Flags |= CommodityFlags.Price;
+        if (Bonus != null) Flags |= CommodityFlags.Bonus;
+        
+        if (Period != null) Flags |= CommodityFlags.Period;
+        if (ReqPOP != null) Flags |= CommodityFlags.ReqPOP;
+        if (ReqLevel != null) Flags |= CommodityFlags.ReqLVL;
+        
+        if (MaplePoint != null) Flags |= CommodityFlags.MaplePoint;
+        if (Meso != null) Flags |= CommodityFlags.Meso;
+        
+        if (ForPremiumUser != null) Flags |= CommodityFlags.ForPremiumUser;
+        
+        if (Gender != null) Flags |= CommodityFlags.CommodityGender;
+        
+        if (OnSale != null) Flags |= CommodityFlags.OnSale;
+        if (Class != null) Flags |= CommodityFlags.Class;
+        if (Limit != null) Flags |= CommodityFlags.Limit;
+        
+        if (PbCash != null) Flags |= CommodityFlags.PbCash;
+        if (PbPoint != null) Flags |= CommodityFlags.PbPoint;
+        if (PbGift != null) Flags |= CommodityFlags.PbGift;
     }
     
     public int ID { get; }
+    
+    public CommodityFlags Flags { get; }
+    
     public int? ItemID { get; }
     public short? Count { get; }
     

@@ -4,6 +4,8 @@ namespace Edelstein.Protocol.Gameplay.Shop.Commodities;
 
 public interface IModifiedCommodity : IIdentifiable<int>
 {
+    CommodityFlags Flags { get; }
+    
     int? ItemID { get; }
     short? Count { get; }
     byte? Priority { get; }

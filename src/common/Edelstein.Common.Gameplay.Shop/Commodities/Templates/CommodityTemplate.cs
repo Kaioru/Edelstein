@@ -17,12 +17,14 @@ public record CommodityTemplate : ICommodityTemplate
         Bonus = (property.Resolve<int>("Bonus") ?? 0) > 0;
         
         Period = property.Resolve<short>("Period") ?? 0;
-        // ReqPOP
-        // ReqLVL
-        // MaplePoint
-        // Meso
-        // ForPremiumUser
-
+        ReqPOP = property.Resolve<short>("ReqPOP") ?? 0;
+        ReqLevel = property.Resolve<short>("ReqLVL") ?? 0;
+        
+        MaplePoint = property.Resolve<int>("MaplePoint") ?? 0;
+        Meso = property.Resolve<int>("Meso") ?? 0;
+        
+        ForPremiumUser = (property.Resolve<int>("Premium") ?? 0) > 0;
+        
         var gender = property.Resolve<int>("Gender") ?? 0;
         if (gender == -1) gender = 2;
         Gender = (byte)gender;
