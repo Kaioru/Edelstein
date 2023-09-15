@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Common.Gameplay.Shop;
+﻿namespace Edelstein.Common.Gameplay.Shop.Types;
 
 public enum ShopRequestOperations
 {

@@ -1,4 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Shop.Types;
 using Edelstein.Protocol.Gameplay.Shop;
 using Edelstein.Protocol.Utilities.Packets;
 using Microsoft.Extensions.Logging;
