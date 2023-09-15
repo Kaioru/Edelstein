@@ -2,6 +2,7 @@
 using Edelstein.Common.Gameplay.Shop.Types;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Shop;
+using Edelstein.Protocol.Gameplay.Shop.Types;
 
 namespace Edelstein.Common.Gameplay.Shop;
 

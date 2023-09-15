@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Common.Gameplay.Shop.Types;
+﻿namespace Edelstein.Protocol.Gameplay.Shop.Types;
 
 public enum ShopCashType
 {

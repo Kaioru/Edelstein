@@ -1,6 +1,8 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Shop.Types;
 using Edelstein.Protocol.Gameplay.Shop;
+using Edelstein.Protocol.Gameplay.Shop.Contracts;
+using Edelstein.Protocol.Gameplay.Shop.Types;
 using Edelstein.Protocol.Utilities.Packets;
 using Microsoft.Extensions.Logging;
 
@@ -16,17 +18,24 @@ public class CashShopCashItemRequestHandler : IPacketHandler<IShopStageUser>
 
     public bool Check(IShopStageUser user) => true;
     
-    public Task Handle(IShopStageUser user, IPacketReader reader)
+    public async Task Handle(IShopStageUser user, IPacketReader reader)
     {
         var type = (ShopRequestOperations)reader.ReadByte();
 
         switch (type)
         {
+            case ShopRequestOperations.Buy:
+                await user.Context.Pipelines.ShopOnPacketCashItemBuyRequest.Process(new ShopOnPacketCashItemBuyRequest(
+                    user,
+                    (ShopCashType)reader.Skip(1).ReadByte(),
+                    reader.ReadInt()
+                ));
+                break;
             default:
                 _logger.LogWarning("Unhandled cash shop cash item request type {Type}", type);
                 break;
         }
 
-        return user.DispatchUpdateCash();
+        await user.DispatchUpdateCash();
     }
 }
