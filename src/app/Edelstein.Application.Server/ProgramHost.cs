@@ -209,6 +209,7 @@ public class ProgramHost : IHostedService
                             .AsClosedTypesOf(typeof(IPipelinePlug<>))
                             .SingleInstance();
                         
+                        b.RegisterType<NotSaleManager>().As<INotSaleManager>().SingleInstance();
                         b.RegisterType<CommodityManager>().As<ICommodityManager>().SingleInstance();
                         b.RegisterType<ModifiedCommodityManager>().As<IModifiedCommodityManager>().SingleInstance();
                         

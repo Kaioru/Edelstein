@@ -8,6 +8,7 @@ public record ShopContextManagers(
     IDataManager Data,
     ITickerManager Ticker,
     
+    INotSaleManager NotSale,
     ICommodityManager Commodity,
     IModifiedCommodityManager ModifiedCommodity
 );

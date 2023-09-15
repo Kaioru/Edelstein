@@ -7,14 +7,17 @@ namespace Edelstein.Common.Gameplay.Shop.Commodities;
 public class CommodityManager : ICommodityManager
 {
     private readonly ITemplateManager<ICommodityTemplate> _templates;
+    private readonly INotSaleManager _notSaleManager;
     private readonly IModifiedCommodityManager _modifiedManager;
     
     public CommodityManager(
         ITemplateManager<ICommodityTemplate> templates, 
+        INotSaleManager notSaleManager, 
         IModifiedCommodityManager modifiedManager
     )
     {
         _templates = templates;
+        _notSaleManager = notSaleManager;
         _modifiedManager = modifiedManager;
     }
     
@@ -24,6 +27,7 @@ public class CommodityManager : ICommodityManager
         var modified = await _modifiedManager.Retrieve(key);
         
         if (template == null && modified == null) return null;
+        var notSale = await _notSaleManager.Retrieve(key);
         
         return new Commodity
         {
@@ -40,7 +44,7 @@ public class CommodityManager : ICommodityManager
             Meso = modified?.Meso ?? template?.Meso ?? 0,
             ForPremiumUser = modified?.ForPremiumUser ?? template?.ForPremiumUser ?? true,
             Gender = modified?.Gender ?? template?.Gender ?? 0,
-            OnSale = modified?.OnSale ?? template?.OnSale ?? false,
+            OnSale = notSale == null && (modified?.OnSale ?? template?.OnSale ?? false),
             Class = modified?.Class ?? template?.Class ?? 0,
             Limit = modified?.Limit ?? template?.Limit ?? 0,
             PbCash = modified?.PbCash ?? template?.PbCash ?? 0,

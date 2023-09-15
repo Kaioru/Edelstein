@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Models.Characters;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Shop;
@@ -27,8 +28,10 @@ public class ShopStage : AbstractStage<IShopStageUser>, IShopStage
         packet.WriteBool(true); // CashShopAuthorized
         packet.WriteString(user.Account.Username);
         
-        // SetSaleInfo
-        packet.WriteInt(0); // NotSaleInfo
+        var notSale = await user.Context.Managers.NotSale.RetrieveAll();
+        packet.WriteInt(notSale.Count); // NotSaleInfo
+        foreach (var commodity in notSale)
+            packet.WriteInt(commodity.ID);
 
         var modifiedCommodities = await user.Context.Managers.ModifiedCommodity.RetrieveAll();
         packet.WriteShort((short)modifiedCommodities.Count);
