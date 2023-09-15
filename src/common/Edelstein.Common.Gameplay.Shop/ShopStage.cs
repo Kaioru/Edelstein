@@ -23,13 +23,23 @@ public class ShopStage : AbstractStage<IShopStageUser>, IShopStage
         
         var packet = new PacketWriter(PacketSendOperations.SetCashShop);
         
-        packet.WriteCharacterData(user.Character);
+        packet.WriteCharacterData(
+            user.Character, 
+            DbFlags.Character | 
+            DbFlags.Money | 
+            DbFlags.ItemSlotEquip | 
+            DbFlags.ItemSlotConsume | 
+            DbFlags.ItemSlotInstall |
+            DbFlags.ItemSlotEtc | 
+            DbFlags.ItemSlotCash | 
+            DbFlags.InventorySize
+        );
 
         packet.WriteBool(true); // CashShopAuthorized
         packet.WriteString(user.Account.Username);
         
         var notSale = await user.Context.Managers.NotSale.RetrieveAll();
-        packet.WriteInt(notSale.Count); // NotSaleInfo
+        packet.WriteInt(notSale.Count);
         foreach (var commodity in notSale)
             packet.WriteInt(commodity.ID);
 
