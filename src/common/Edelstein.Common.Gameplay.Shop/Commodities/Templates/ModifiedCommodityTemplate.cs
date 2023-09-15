@@ -19,7 +19,7 @@ public record ModifiedCommodityTemplate : IModifiedCommodity, ITemplate
         
         Period = property.Resolve<short>("Period");
         ReqPOP = property.Resolve<short>("ReqPOP");
-        ReqLevel = property.Resolve<short>("ReqLVL");
+        ReqLevel = property.Resolve<short>("ReqLEV");
         
         MaplePoint = property.Resolve<int>("MaplePoint");
         Meso = property.Resolve<int>("Meso");

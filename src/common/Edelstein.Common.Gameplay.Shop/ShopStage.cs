@@ -105,6 +105,7 @@ public class ShopStage : AbstractStage<IShopStageUser>, IShopStage
         packet.WriteInt(200); // HighestCharacterLevelInThisAccount
 
         await user.Dispatch(packet.Build());
+        await user.DispatchUpdateCash();
         await base.Enter(user);
     }
 }

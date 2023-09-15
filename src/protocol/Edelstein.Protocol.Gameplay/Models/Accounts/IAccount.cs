@@ -13,4 +13,8 @@ public interface IAccount : IIdentifiable<int>
     AccountSubGradeCode SubGradeCode { get; set; }
 
     byte? Gender { get; set; }
+    
+    int NexonCash { get; set; }
+    int MaplePoint { get; set; }
+    int PrepaidNXCash { get; set; }
 }

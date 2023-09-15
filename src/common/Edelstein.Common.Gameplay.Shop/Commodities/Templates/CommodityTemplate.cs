@@ -18,7 +18,7 @@ public record CommodityTemplate : ICommodityTemplate
         
         Period = property.Resolve<short>("Period") ?? 0;
         ReqPOP = property.Resolve<short>("ReqPOP") ?? 0;
-        ReqLevel = property.Resolve<short>("ReqLVL") ?? 0;
+        ReqLevel = property.Resolve<short>("ReqLEV") ?? 0;
         
         MaplePoint = property.Resolve<int>("MaplePoint") ?? 0;
         Meso = property.Resolve<int>("Meso") ?? 0;
