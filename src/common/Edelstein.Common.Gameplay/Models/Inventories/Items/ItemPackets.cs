@@ -1,4 +1,5 @@
 ﻿using Edelstein.Common.Utilities.Packets;
+using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Utilities.Packets;
 
@@ -122,5 +123,23 @@ public static class ItemPackets
         writer.WriteShort(pet.PetSkill);
         writer.WriteInt(pet.RemainLife);
         writer.WriteShort(pet.Attribute);
+    }
+
+    public static void WriteItemLockerData(this IPacketWriter writer, IItemLockerSlot item)
+    {
+        writer.WriteLong(0);
+        writer.WriteInt(item.AccountID);
+        writer.WriteInt(item.CharacterID);
+        writer.WriteInt(item.Item.ID);
+        writer.WriteInt(item.CommodityID);
+        writer.WriteShort((short)(item.Item is IItemSlotBundle bundle ? bundle.Number : 1));
+        writer.WriteString(item.BuyCharacterName ?? string.Empty, 13);
+
+        var itemBase = item.Item as IItemSlotBase;
+        if (itemBase?.DateExpire != null) writer.WriteDateTime(itemBase.DateExpire.Value);
+        else writer.WriteLong(0);
+        
+        writer.WriteInt(item.PaybackRate);
+        writer.WriteInt(item.DiscountRate);
     }
 }

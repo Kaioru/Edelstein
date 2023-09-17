@@ -1,6 +1,9 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Models.Inventories.Items;
+using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Shop.Types;
 using Edelstein.Common.Utilities.Packets;
+using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Shop;
 using Edelstein.Protocol.Gameplay.Shop.Types;
 
@@ -49,6 +52,21 @@ public static class ShopStageUserExtensions
         p.WriteInt(user.Account?.NexonCash ?? -1);
         p.WriteInt(user.Account?.MaplePoint ?? -1);
         p.WriteInt(user.Account?.PrepaidNXCash ?? -1);
+        return user.Dispatch(p.Build());
+    }
+
+    public static Task DispatchUpdateLocker(this IShopStageUser user)
+    {
+        var p = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
+
+        p.WriteByte((byte)ShopResultOperations.LoadLocker_Done);
+        p.WriteShort((short)(user.AccountWorld?.Locker.Items.Count ?? 0));
+        foreach (var slot in user.AccountWorld?.Locker.Items ?? ImmutableDictionary<short, IItemLockerSlot>.Empty)
+            p.WriteItemLockerData(slot.Value);
+        p.WriteShort(user.AccountWorld?.Locker.SlotMax ?? 0);
+        p.WriteShort((short)(user.AccountWorld?.CharacterSlotMax ?? 3));
+        p.WriteShort((short)((user.AccountWorld?.CharacterSlotMax ?? 0) - 3));
+        p.WriteShort(1);
         return user.Dispatch(p.Build());
     }
 }

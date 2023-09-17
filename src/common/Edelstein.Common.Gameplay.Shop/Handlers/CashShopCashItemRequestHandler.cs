@@ -27,7 +27,7 @@ public class CashShopCashItemRequestHandler : IPacketHandler<IShopStageUser>
             case ShopRequestOperations.Buy:
                 await user.Context.Pipelines.ShopOnPacketCashItemBuyRequest.Process(new ShopOnPacketCashItemBuyRequest(
                     user,
-                    (ShopCashType)reader.Skip(1).ReadByte(),
+                    (ShopCashType)reader.Skip(1).ReadInt(),
                     reader.ReadInt()
                 ));
                 break;
