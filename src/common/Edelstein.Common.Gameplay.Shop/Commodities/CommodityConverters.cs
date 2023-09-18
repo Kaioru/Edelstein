@@ -14,11 +14,15 @@ public static class CommodityConverters
         var item = template.ToItemSlot();
         var slot = new ItemLockerSlot { Item = item };
 
-        if (commodity.Period > 0 && item is IItemSlotBase itemBase)
-            itemBase.DateExpire = DateTime.UtcNow.AddDays(commodity.Period);
+        if (item is IItemSlotBase itemBase)
+        {
+            if (commodity.Period > 0)
+                itemBase.DateExpire = DateTime.UtcNow.AddDays(commodity.Period);
+            itemBase.CashItemSN = new Random().NextInt64();
+        }
 
         slot.CommodityID = commodity.ID;
-        
+
         return slot;
     }
 }

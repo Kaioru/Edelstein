@@ -149,7 +149,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         return _inventory.Items.Count + totalSlots <= _inventory.SlotMax;
     }
 
-    public override void Add(IItemSlot? item)
+    public override short Add(IItemSlot? item)
     {
         switch (item)
         {
@@ -176,12 +176,12 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
                         mergeable.Item2.Number = maxNumber;
                         UpdateQuantitySlot(mergeable.Item1, mergeable.Item2.Number);
                         Add(bundle);
-                        return;
+                        return mergeable.Item1;
                     }
 
                     mergeable.Item2.Number += bundle.Number;
                     UpdateQuantitySlot(mergeable.Item1, mergeable.Item2.Number);
-                    return;
+                    return mergeable.Item1;
                 }
 
                 goto default;
@@ -192,7 +192,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
                     .FirstOrDefault(i => i > 0);
 
                 if (slot > 0 && item != null) SetSlot(slot, item);
-                break;
+                return slot;
         }
     }
 
@@ -280,22 +280,24 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
             .ToList()
             .ForEach(kv => RemoveSlot(kv.Key));
 
-    public override void Add(int templateID) =>
+    public override short Add(int templateID) =>
         Add(templateID, 1);
 
-    public override void Add(int templateID, short count) =>
+    public override short Add(int templateID, short count) =>
         Add(_manager.Retrieve(templateID).Result, count);
 
-    public override void Add(IItemTemplate? template) =>
+    public override short Add(IItemTemplate? template) =>
         Add(template, 1);
 
-    public override void Add(IItemTemplate? template, short count)
+    public override short Add(IItemTemplate? template, short count)
     {
         var item = template?.ToItemSlot();
 
         if (item is IItemSlotBundle bundle)
             bundle.Number = count;
-        if (item != null) Add(item);
+        if (item != null) 
+            return Add(item);
+        return -1;
     }
 
     public void SetSlot(short slot, IItemSlot item)

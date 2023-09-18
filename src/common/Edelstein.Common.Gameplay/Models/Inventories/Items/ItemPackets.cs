@@ -28,18 +28,13 @@ public static class ItemPackets
 
     private static void WriteItemBase(this IPacketWriter writer, IItemSlot item)
     {
+        var itemBase = item as IItemSlotBase;
+        
         writer.WriteInt(item.ID);
-
-        if (item is IItemSlotBase slot)
-        {
-            writer.WriteBool(false);
-            writer.WriteDateTime(slot.DateExpire ?? DateTime.FromFileTimeUtc(150842304000000000));
-        }
-        else
-        {
-            writer.WriteBool(false);
-            writer.WriteDateTime(DateTime.FromFileTimeUtc(150842304000000000));
-        }
+        writer.WriteBool(itemBase?.CashItemSN != null);
+        if (itemBase?.CashItemSN != null)
+            writer.WriteLong(itemBase.CashItemSN.Value);
+        writer.WriteDateTime(itemBase?.DateExpire ?? DateTime.FromFileTimeUtc(150842304000000000));
     }
 
     public static void WriteItemEquipData(this IPacketWriter writer, IItemSlotEquip equip)
@@ -86,7 +81,9 @@ public static class ItemPackets
         writer.WriteShort(equip.Socket1);
         writer.WriteShort(equip.Socket2);
 
-        writer.WriteLong(0); // TODO: cash sn
+        if (!equip.CashItemSN.HasValue)
+            writer.WriteLong(0);
+        
         writer.WriteLong(0);
         writer.WriteInt(0);
     }
@@ -127,7 +124,9 @@ public static class ItemPackets
 
     public static void WriteItemLockerData(this IPacketWriter writer, IItemLockerSlot item)
     {
-        writer.WriteLong(0);
+        var itemBase = item.Item as IItemSlotBase;
+        
+        writer.WriteLong(itemBase?.CashItemSN ?? 0);
         writer.WriteInt(item.AccountID);
         writer.WriteInt(item.CharacterID);
         writer.WriteInt(item.Item.ID);
@@ -135,7 +134,6 @@ public static class ItemPackets
         writer.WriteShort((short)(item.Item is IItemSlotBundle bundle ? bundle.Number : 1));
         writer.WriteString(item.BuyCharacterName ?? string.Empty, 13);
 
-        var itemBase = item.Item as IItemSlotBase;
         if (itemBase?.DateExpire != null) writer.WriteDateTime(itemBase.DateExpire.Value);
         else writer.WriteLong(0);
         

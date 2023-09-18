@@ -4,7 +4,7 @@ using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 
-public interface IModifyInventory<TSlot> : IPacketWritable where TSlot : IItemSlot
+public interface IModifyInventory<in TSlot> : IPacketWritable where TSlot : IItemSlot
 {
     bool IsUpdated { get; }
     bool IsUpdatedAvatar { get; }
@@ -26,7 +26,7 @@ public interface IModifyInventory<TSlot> : IPacketWritable where TSlot : IItemSl
     bool HasSlotFor(IItemSlot item);
     bool HasSlotFor(ICollection<IItemSlot> items);
 
-    void Add(TSlot item);
+    short Add(TSlot item);
 
     void Remove(int templateID);
     void Remove(int templateID, short count);
@@ -43,8 +43,8 @@ public interface IModifyInventory<TSlot> : IPacketWritable where TSlot : IItemSl
 
 public interface IModifyInventory : IModifyInventory<IItemSlot>
 {
-    void Add(int templateID);
-    void Add(int templateID, short count);
-    void Add(IItemTemplate template);
-    void Add(IItemTemplate template, short count);
+    short Add(int templateID);
+    short Add(int templateID, short count);
+    short Add(IItemTemplate template);
+    short Add(IItemTemplate template, short count);
 }

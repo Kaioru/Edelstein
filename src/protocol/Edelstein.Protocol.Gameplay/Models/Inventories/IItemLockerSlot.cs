@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Models.Inventories;
 
-public interface IItemLockerSlot : IItemSlot
+public interface IItemLockerSlot
 {
     int AccountID { get; set; }
     int CharacterID { get; set; }
