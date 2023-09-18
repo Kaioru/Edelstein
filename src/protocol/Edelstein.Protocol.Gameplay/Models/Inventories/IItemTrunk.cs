@@ -1,6 +1,10 @@
-﻿namespace Edelstein.Protocol.Gameplay.Models.Inventories;
+﻿using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 
-public interface IItemTrunk : IItemInventory
+namespace Edelstein.Protocol.Gameplay.Models.Inventories;
+
+public interface IItemTrunk
 {
     int Money { get; set; }
+    short SlotMax { get; set; }
+    ICollection<IItemSlot> Items { get; }
 }

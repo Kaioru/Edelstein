@@ -8,7 +8,7 @@ public interface IItemLockerSlot : IItemSlot
     int CharacterID { get; set; }
     int CommodityID { get; set; }
 
-    string BuyCharacterName { get; set; }
+    string? BuyCharacterName { get; set; }
 
     int PaybackRate { get; set; }
     int DiscountRate { get; set; }

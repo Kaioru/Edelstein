@@ -34,13 +34,15 @@ public class ShopOnPacketCashItemBuyRequestPlug : IPipelinePlug<ShopOnPacketCash
         if (commodity.OnSale == false) return;
         if (message.User.AccountWorld?.Locker == null) return;
         if (message.User.AccountWorld.Locker.Items.Count >= message.User.AccountWorld.Locker.SlotMax) return;
+        if (!message.User.CheckCash(message.Cash, commodity.Price)) return;
 
         var item = commodity.ToItemLockerSlot(template);
 
         item.AccountID = message.User.Account?.ID ?? 0;
         item.CharacterID = message.User.Character?.ID ?? 0;
 
-        message.User.AccountWorld.Locker.Items.Add((short)message.User.AccountWorld.Locker.Items.Count, item);
+        message.User.AccountWorld.Locker.Items.Add(item);
+        message.User.IncCash(message.Cash, -commodity.Price);
 
         var p = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
     
