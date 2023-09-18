@@ -12,6 +12,7 @@ using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Shop;
 using Edelstein.Common.Gameplay.Shop.Commodities;
+using Edelstein.Common.Gameplay.Trade;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Plugin;
 using Edelstein.Common.Services.Auth;
@@ -29,6 +30,8 @@ using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Gameplay.Shop;
 using Edelstein.Protocol.Gameplay.Shop.Commodities;
 using Edelstein.Protocol.Gameplay.Shop.Contexts;
+using Edelstein.Protocol.Gameplay.Trade;
+using Edelstein.Protocol.Gameplay.Trade.Contexts;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
@@ -65,6 +68,8 @@ public class ProgramHost : IHostedService
                 assemblies.Add(Assembly.GetAssembly(typeof(GameStage))!);
             if (_config.ShopStages.Count > 0)
                 assemblies.Add(Assembly.GetAssembly(typeof(ShopStage))!);
+            if (_config.TradeStages.Count > 0)
+                assemblies.Add(Assembly.GetAssembly(typeof(TradeStage))!);
 
             b
                 .RegisterAssemblyTypes(assemblies.ToArray())
@@ -77,6 +82,7 @@ public class ProgramHost : IHostedService
         stages.AddRange(_config.LoginStages);
         stages.AddRange(_config.GameStages);
         stages.AddRange(_config.ShopStages);
+        stages.AddRange(_config.TradeStages);
 
         foreach (var stage in stages)
         {
@@ -239,6 +245,47 @@ public class ProgramHost : IHostedService
                             .SingleInstance();
 
                         b.RegisterType<StartServerUpdateBootstrap<ProgramConfigStageShop>>()
+                            .As<IBootstrap>()
+                            .SingleInstance();
+                        break;
+                    case ITradeStageOptions options:
+                        b
+                            .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(TradeStage))!)
+                            .Where(t => t.IsClass)
+                            .AsClosedTypesOf(typeof(IPacketHandler<>))
+                            .SingleInstance();
+                        b
+                            .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(TradeStage))!)
+                            .Where(t => t.IsClass)
+                            .AsClosedTypesOf(typeof(IPipelinePlug<>))
+                            .SingleInstance();
+                        
+                        b
+                            .RegisterInstance(options)
+                            .As<ITradeStageOptions>()
+                            .As<ProgramConfigStageTrade>()
+                            .SingleInstance();
+                        b.RegisterType<TradeContext>().SingleInstance();
+                        b.RegisterType<TradeContextManagers>().SingleInstance();
+                        b.RegisterType<TradeContextServices>().SingleInstance();
+                        b.RegisterType<TradeContextRepositories>().SingleInstance();
+                        b.RegisterType<TradeContextTemplates>().SingleInstance();
+                        b.RegisterType<TradeContextPipelines>().SingleInstance();
+
+                        b.RegisterType<TradeStageUserInitializer>().As<IAdapterInitializer>().SingleInstance();
+                        b.Register(c => new TradeStage(stage.ID))
+                            .As<IStage<ITradeStageUser>>()
+                            .As<ITradeStage>()
+                            .SingleInstance();
+                        
+                        b.RegisterType<InitPluginBootstrap<TradeContext>>()
+                            .As<IBootstrap>()
+                            .SingleInstance();
+                        b.RegisterType<StartPluginBootstrap<TradeContext>>()
+                            .As<IBootstrap>()
+                            .SingleInstance();
+
+                        b.RegisterType<StartServerUpdateBootstrap<ProgramConfigStageTrade>>()
                             .As<IBootstrap>()
                             .SingleInstance();
                         break;

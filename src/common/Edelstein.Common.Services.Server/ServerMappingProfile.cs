@@ -16,5 +16,6 @@ public class ServerMappingProfile : Profile
         CreateMap<ServerLogin, ServerLoginEntity>().ReverseMap();
         CreateMap<ServerGame, ServerGameEntity>().ReverseMap();
         CreateMap<ServerShop, ServerShopEntity>().ReverseMap();
+        CreateMap<ServerTrade, ServerTradeEntity>().ReverseMap();
     }
 }

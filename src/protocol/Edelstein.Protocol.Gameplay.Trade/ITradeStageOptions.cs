@@ -4,6 +4,8 @@ namespace Edelstein.Protocol.Gameplay.Trade;
 
 public interface ITradeStageOptions : IIdentifiable<string>
 {
+    int WorldID { get; }
+    
     int RegisterFeeMeso { get; }
     int CommissionRate { get; }
     int CommissionBase { get; }

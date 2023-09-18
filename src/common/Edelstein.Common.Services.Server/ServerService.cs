@@ -27,6 +27,9 @@ public class ServerService : IServerService
     
     public Task<ServerResponse> RegisterShop(ServerRegisterRequest<IServerShop> request) =>
         Register(_mapper.Map<ServerShopEntity>(request.Server));
+    
+    public Task<ServerResponse> RegisterTrade(ServerRegisterRequest<IServerTrade> request) =>
+        Register(_mapper.Map<ServerTradeEntity>(request.Server));
 
     public async Task<ServerResponse> Ping(ServerPingRequest request)
     {
@@ -151,6 +154,26 @@ public class ServerService : IServerService
         catch (Exception)
         {
             return new ServerGetOneResponse<IServerShop>(ServerResult.FailedUnknown);
+        }
+    }
+    
+    public async Task<ServerGetOneResponse<IServerTrade>> GetTradeByWorld(ServerGetTradeByWorldRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            var now = DateTime.UtcNow;
+            var existing = await db.TradeServers
+                .FirstOrDefaultAsync(s => s.WorldID == request.WorldID);
+
+            if (existing == null || existing.DateExpire < now)
+                return new ServerGetOneResponse<IServerTrade>(ServerResult.FailedNotFound);
+
+            return new ServerGetOneResponse<IServerTrade>(ServerResult.Success, _mapper.Map<ServerTrade>(existing));
+        }
+        catch (Exception)
+        {
+            return new ServerGetOneResponse<IServerTrade>(ServerResult.FailedUnknown);
         }
     }
 
