@@ -28,12 +28,15 @@ public class MigrationConfiguration : IEntityTypeConfiguration<MigrationEntity>
 
         builder
             .Property(e => e.Account)
+            .HasColumnType("json")
             .HasConversion(new JsonConverter<IAccount>());
         builder
             .Property(e => e.AccountWorld)
+            .HasColumnType("json")
             .HasConversion(new JsonConverter<IAccountWorld>());
         builder
             .Property(e => e.Character)
+            .HasColumnType("json")
             .HasConversion(new JsonConverter<ICharacter>());
     }
 }

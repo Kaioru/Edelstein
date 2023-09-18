@@ -69,4 +69,14 @@ public static class ShopStageUserExtensions
         p.WriteShort(1);
         return user.Dispatch(p.Build());
     }
+    
+    public static Task DispatchUpdateWish(this IShopStageUser user)
+    {
+        var p = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
+
+        p.WriteByte((byte)ShopResultOperations.LoadWish_Done);
+        for (var i = 0; i < 10; i++)
+            p.WriteInt(user.Character?.Wishlist.Records.ElementAtOrDefault(i) ?? 0);
+        return user.Dispatch(p.Build());
+    }
 }

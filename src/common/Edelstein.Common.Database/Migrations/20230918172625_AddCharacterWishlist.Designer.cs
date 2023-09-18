@@ -5,6 +5,7 @@ using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Inventories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -13,9 +14,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Edelstein.Common.Database.Migrations
 {
     [DbContext(typeof(GameplayDbContext))]
-    partial class GameplayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230918172625_AddCharacterWishlist")]
+    partial class AddCharacterWishlist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,13 +234,13 @@ namespace Edelstein.Common.Database.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("json")
-                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Characters.CharacterWildHunterInfo, Edelstein.Common.Gameplay\",\"RidingType\":0,\"CaptureMob\":{\"$type\":\"System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]], System.Private.CoreLib\",\"$values\":[]}}");
+                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Characters.CharacterWildHunterInfo, Edelstein.Common.Gameplay\",\"RidingType\":0,\"CaptureMob\":{\"$type\":\"System.Int32[], System.Private.CoreLib\",\"$values\":[0,0,0,0,0]}}");
 
                     b.Property<string>("Wishlist")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("json")
-                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Characters.CharacterWishlist, Edelstein.Common.Gameplay\",\"Records\":{\"$type\":\"System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]], System.Private.CoreLib\",\"$values\":[]}}");
+                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Characters.CharacterWishlist, Edelstein.Common.Gameplay\",\"Records\":{\"$type\":\"System.Int32[], System.Private.CoreLib\",\"$values\":[0,0,0,0,0,0,0,0,0,0]}}");
 
                     b.HasKey("ID");
 

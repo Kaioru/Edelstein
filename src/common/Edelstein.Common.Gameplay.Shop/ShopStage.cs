@@ -106,6 +106,7 @@ public class ShopStage : AbstractStage<IShopStageUser>, IShopStage
 
         await user.Dispatch(packet.Build());
         await user.DispatchUpdateLocker();
+        await user.DispatchUpdateWish();
         await user.DispatchUpdateCash();
         await base.Enter(user);
     }

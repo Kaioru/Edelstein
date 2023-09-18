@@ -37,6 +37,12 @@ public class CharacterConfiguration : IEntityTypeConfiguration<CharacterEntity>
             .HasDefaultValue(new CharacterQuickslotKeys());
         
         builder
+            .Property(e => e.Wishlist)
+            .HasColumnType("json")
+            .HasConversion<JsonConverter<ICharacterWishlist>>()
+            .HasDefaultValue(new CharacterWishlist());
+        
+        builder
             .Property(e => e.Inventories)
             .HasColumnType("json")
             .HasConversion<JsonConverter<ICharacterInventories>>()

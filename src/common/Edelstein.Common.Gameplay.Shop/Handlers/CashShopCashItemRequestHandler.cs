@@ -32,6 +32,15 @@ public class CashShopCashItemRequestHandler : IPacketHandler<IShopStageUser>
                     reader.ReadInt()
                 ));
                 break;
+            case ShopRequestOperations.SetWish:
+                var wishlist = new int[10];
+                for (var i = 0; i < 10; i++)
+                    wishlist[i] = reader.ReadInt();
+                await user.Context.Pipelines.ShopOnPacketCashItemSetWishRequest.Process(new ShopOnPacketCashItemSetWishRequest(
+                    user,
+                    wishlist
+                ));
+                break;
             case ShopRequestOperations.MoveLtoS:
                 await user.Context.Pipelines.ShopOnPacketCashItemMoveLToSRequest.Process(new ShopOnPacketCashItemMoveLToSRequest(
                     user,
