@@ -35,6 +35,11 @@ public record ModifiedCommodityTemplate : IModifiedCommodity, ITemplate
         PbCash = property.Resolve<short>("PbCash");
         PbPoint = property.Resolve<short>("PbPoint");
         PbGift = property.Resolve<short>("PbGift");
+        
+        PackageSN = property
+            .Resolve("SN")?
+            .Select(c => c.Resolve<int>() ?? 0)
+            .ToImmutableList() ?? null;
 
         if (ItemID != null) Flags |= CommodityFlags.ItemID;
         if (Count != null) Flags |= CommodityFlags.Count;
@@ -61,6 +66,8 @@ public record ModifiedCommodityTemplate : IModifiedCommodity, ITemplate
         if (PbCash != null) Flags |= CommodityFlags.PbCash;
         if (PbPoint != null) Flags |= CommodityFlags.PbPoint;
         if (PbGift != null) Flags |= CommodityFlags.PbGift;
+        
+        if (PackageSN != null) Flags |= CommodityFlags.PackageSN;
     }
     
     public int ID { get; }
