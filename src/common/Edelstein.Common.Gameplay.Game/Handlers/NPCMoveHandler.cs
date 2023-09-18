@@ -11,7 +11,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class NPCMoveHandler : AbstractPipedFieldNPCHandler<FieldOnPacketNPCMove>
 {
-    public NPCMoveHandler(IPipeline<FieldOnPacketNPCMove?> pipeline) : base(pipeline)
+    public NPCMoveHandler(IPipeline<FieldOnPacketNPCMove> pipeline) : base(pipeline)
     {
     }
     

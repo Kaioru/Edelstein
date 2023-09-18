@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 
 public class SelectWorldHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketSelectWorld>
 {
-    public SelectWorldHandler(IPipeline<UserOnPacketSelectWorld?> pipeline) : base(pipeline)
+    public SelectWorldHandler(IPipeline<UserOnPacketSelectWorld> pipeline) : base(pipeline)
     {
     }
     

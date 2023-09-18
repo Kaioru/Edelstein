@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 
 public class CheckUserLimitHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketCheckUserLimit>
 {
-    public CheckUserLimitHandler(IPipeline<UserOnPacketCheckUserLimit?> pipeline) : base(pipeline)
+    public CheckUserLimitHandler(IPipeline<UserOnPacketCheckUserLimit> pipeline) : base(pipeline)
     {
     }
     

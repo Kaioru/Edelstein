@@ -10,7 +10,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class UserMoveHandler : AbstractPipedFieldHandler<FieldOnPacketUserMove>
 {
-    public UserMoveHandler(IPipeline<FieldOnPacketUserMove?> pipeline) : base(pipeline)
+    public UserMoveHandler(IPipeline<FieldOnPacketUserMove> pipeline) : base(pipeline)
     {
     }
     

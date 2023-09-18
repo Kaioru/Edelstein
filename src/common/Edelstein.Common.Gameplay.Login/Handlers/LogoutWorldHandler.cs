@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 
 public class LogoutWorldHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketLogoutWorld>
 {
-    public LogoutWorldHandler(IPipeline<UserOnPacketLogoutWorld?> pipeline) : base(pipeline)
+    public LogoutWorldHandler(IPipeline<UserOnPacketLogoutWorld> pipeline) : base(pipeline)
     {
     }
     

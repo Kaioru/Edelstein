@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Shop.Handlers;
 
 public class UserTransferFieldRequestHandler : AbstractPipedPacketHandler<IShopStageUser, ShopOnPacketUserTransferFieldRequest>
 {    
-    public UserTransferFieldRequestHandler(IPipeline<ShopOnPacketUserTransferFieldRequest?> pipeline) : base(pipeline)
+    public UserTransferFieldRequestHandler(IPipeline<ShopOnPacketUserTransferFieldRequest> pipeline) : base(pipeline)
     {
     }
     

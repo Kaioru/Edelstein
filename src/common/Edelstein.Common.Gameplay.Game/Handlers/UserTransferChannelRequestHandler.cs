@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class UserTransferChannelRequestHandler : AbstractPipedFieldHandler<FieldOnPacketUserTransferChannelRequest>
 {
-    public UserTransferChannelRequestHandler(IPipeline<FieldOnPacketUserTransferChannelRequest?> pipeline) : base(pipeline)
+    public UserTransferChannelRequestHandler(IPipeline<FieldOnPacketUserTransferChannelRequest> pipeline) : base(pipeline)
     {
     }
 

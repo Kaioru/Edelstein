@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class UserMigrateToCashShopRequestHandler : AbstractPipedFieldHandler<FieldOnPacketUserMigrateToCashShopRequest>
 {
-    public UserMigrateToCashShopRequestHandler(IPipeline<FieldOnPacketUserMigrateToCashShopRequest?> pipeline) : base(pipeline)
+    public UserMigrateToCashShopRequestHandler(IPipeline<FieldOnPacketUserMigrateToCashShopRequest> pipeline) : base(pipeline)
     {
     }
 

@@ -10,7 +10,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class QuickslotKeyMappedModifiedHandler : AbstractPipedFieldHandler<FieldOnPacketUserQuickslotKeyMappedModified>
 {
-    public QuickslotKeyMappedModifiedHandler(IPipeline<FieldOnPacketUserQuickslotKeyMappedModified?> pipeline) : base(pipeline)
+    public QuickslotKeyMappedModifiedHandler(IPipeline<FieldOnPacketUserQuickslotKeyMappedModified> pipeline) : base(pipeline)
     {
     }
 

@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 
 public class CheckDuplicatedIDHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketCheckDuplicatedID>
 {
-    public CheckDuplicatedIDHandler(IPipeline<UserOnPacketCheckDuplicatedID?> pipeline) : base(pipeline)
+    public CheckDuplicatedIDHandler(IPipeline<UserOnPacketCheckDuplicatedID> pipeline) : base(pipeline)
     {
     }
     

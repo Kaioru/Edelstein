@@ -10,7 +10,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class SummonedSkillHandler : AbstractPipedFieldSummonedHandler<FieldOnPacketSummonedSkill>
 {
-    public SummonedSkillHandler(IPipeline<FieldOnPacketSummonedSkill?> pipeline) : base(pipeline)
+    public SummonedSkillHandler(IPipeline<FieldOnPacketSummonedSkill> pipeline) : base(pipeline)
     {
     }
 

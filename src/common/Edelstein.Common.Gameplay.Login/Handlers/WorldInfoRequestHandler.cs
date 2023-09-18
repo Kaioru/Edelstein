@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 
 public class WorldInfoRequestHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketWorldRequest>
 {
-    public WorldInfoRequestHandler(IPipeline<UserOnPacketWorldRequest?> pipeline) : base(pipeline)
+    public WorldInfoRequestHandler(IPipeline<UserOnPacketWorldRequest> pipeline) : base(pipeline)
     {
     }
     

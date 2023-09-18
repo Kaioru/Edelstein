@@ -10,7 +10,7 @@ public class UserDropMoneyRequestHandler : AbstractPipedFieldHandler<FieldOnPack
 {
     public override short Operation => (short)PacketRecvOperations.UserDropMoneyRequest;
     
-    public UserDropMoneyRequestHandler(IPipeline<FieldOnPacketUserDropMoneyRequest?> pipeline) : base(pipeline)
+    public UserDropMoneyRequestHandler(IPipeline<FieldOnPacketUserDropMoneyRequest> pipeline) : base(pipeline)
     {
     }
     

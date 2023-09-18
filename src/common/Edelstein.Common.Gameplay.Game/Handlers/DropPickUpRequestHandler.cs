@@ -11,7 +11,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class DropPickUpRequestHandler : AbstractPipedFieldHandler<FieldOnPacketDropPickupRequest>
 {
-    public DropPickUpRequestHandler(IPipeline<FieldOnPacketDropPickupRequest?> pipeline) : base(pipeline)
+    public DropPickUpRequestHandler(IPipeline<FieldOnPacketDropPickupRequest> pipeline) : base(pipeline)
     {
     }
     public override short Operation => (short)PacketRecvOperations.DropPickUpRequest;

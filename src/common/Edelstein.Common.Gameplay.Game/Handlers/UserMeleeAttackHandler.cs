@@ -10,7 +10,7 @@ public class UserMeleeAttackHandler : AbstractUserAttackHandler
     public override short Operation => (short)PacketRecvOperations.UserMeleeAttack;
     protected override AttackType Type => AttackType.Melee;
     
-    public UserMeleeAttackHandler(IPipeline<FieldOnPacketUserAttack?> pipeline) : base(pipeline)
+    public UserMeleeAttackHandler(IPipeline<FieldOnPacketUserAttack> pipeline) : base(pipeline)
     {
     }
 }

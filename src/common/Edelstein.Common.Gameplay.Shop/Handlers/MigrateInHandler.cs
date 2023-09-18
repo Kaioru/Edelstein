@@ -7,7 +7,7 @@ namespace Edelstein.Common.Gameplay.Shop.Handlers;
 
 public class MigrateInHandler : AbstractMigrateInHandler<IShopStageUser>
 {
-    public MigrateInHandler(IPipeline<UserOnPacketMigrateIn<IShopStageUser>?> pipeline) : base(pipeline)
+    public MigrateInHandler(IPipeline<UserOnPacketMigrateIn<IShopStageUser>> pipeline) : base(pipeline)
     {
     }
 }

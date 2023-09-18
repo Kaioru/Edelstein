@@ -11,7 +11,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 public class UserSelectNPCHandler : AbstractPipedFieldHandler<FieldOnPacketUserSelectNPC>
 {
 
-    public UserSelectNPCHandler(IPipeline<FieldOnPacketUserSelectNPC?> pipeline) : base(pipeline)
+    public UserSelectNPCHandler(IPipeline<FieldOnPacketUserSelectNPC> pipeline) : base(pipeline)
     {
     }
 

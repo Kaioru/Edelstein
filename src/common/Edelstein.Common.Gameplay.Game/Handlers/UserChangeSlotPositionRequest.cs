@@ -10,7 +10,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 public class UserChangeSlotPositionRequest : AbstractPipedFieldHandler<FieldOnPacketUserChangeSlotPositionRequest>
 {
 
-    public UserChangeSlotPositionRequest(IPipeline<FieldOnPacketUserChangeSlotPositionRequest?> pipeline) : base(pipeline)
+    public UserChangeSlotPositionRequest(IPipeline<FieldOnPacketUserChangeSlotPositionRequest> pipeline) : base(pipeline)
     {
     }
     

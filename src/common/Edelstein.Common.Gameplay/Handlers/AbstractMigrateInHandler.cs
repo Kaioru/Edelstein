@@ -11,7 +11,7 @@ public abstract class AbstractMigrateInHandler<TStageUser> :
     IPacketHandler<TStageUser>
     where TStageUser : IStageUser<TStageUser>
 {
-    protected AbstractMigrateInHandler(IPipeline<UserOnPacketMigrateIn<TStageUser>?> pipeline) : base(pipeline)
+    protected AbstractMigrateInHandler(IPipeline<UserOnPacketMigrateIn<TStageUser>> pipeline) : base(pipeline)
     {
     }
     

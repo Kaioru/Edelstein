@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class UserSkillCancelRequestHandler : AbstractPipedFieldHandler<FieldOnPacketUserSkillCancelRequest>
 {
-    public UserSkillCancelRequestHandler(IPipeline<FieldOnPacketUserSkillCancelRequest?> pipeline) : base(pipeline)
+    public UserSkillCancelRequestHandler(IPipeline<FieldOnPacketUserSkillCancelRequest> pipeline) : base(pipeline)
     {
     }
 

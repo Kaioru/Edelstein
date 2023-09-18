@@ -11,7 +11,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class SummonedAttackHandler : AbstractPipedFieldSummonedHandler<FieldOnPacketSummonedAttack>
 {
-    public SummonedAttackHandler(IPipeline<FieldOnPacketSummonedAttack?> pipeline) : base(pipeline)
+    public SummonedAttackHandler(IPipeline<FieldOnPacketSummonedAttack> pipeline) : base(pipeline)
     {
     }
 

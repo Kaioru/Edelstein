@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 
 public class CreateNewCharacterHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketCreateNewCharacter>
 {
-    public CreateNewCharacterHandler(IPipeline<UserOnPacketCreateNewCharacter?> pipeline) : base(pipeline)
+    public CreateNewCharacterHandler(IPipeline<UserOnPacketCreateNewCharacter> pipeline) : base(pipeline)
     {
     }
     
