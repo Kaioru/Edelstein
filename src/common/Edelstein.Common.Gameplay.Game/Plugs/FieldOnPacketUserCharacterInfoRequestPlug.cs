@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
@@ -27,7 +28,14 @@ public class FieldOnPacketUserCharacterInfoRequestPlug : IPipelinePlug<FieldOnPa
         packet.WriteBool(false); // Pets
 
         packet.WriteByte(0); // TamingMobInfo
-        packet.WriteByte(0); // Wishlist
+
+        var wishlist = message.Target.Character.Wishlist.Records
+            .Where(c => c > 0)
+            .ToImmutableList();
+        
+        packet.WriteByte((byte)wishlist.Count);
+        foreach (var commodity in wishlist)
+            packet.WriteInt(commodity);
 
         packet.WriteInt(0); // MedalAchievementInfo
         packet.WriteShort(0);
