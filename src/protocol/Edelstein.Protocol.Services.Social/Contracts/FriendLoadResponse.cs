@@ -2,5 +2,5 @@
 
 public record FriendLoadResponse(
     FriendResult Result,
-    ICollection<IFriend> Friends
+    IFriendList Friends
 );
