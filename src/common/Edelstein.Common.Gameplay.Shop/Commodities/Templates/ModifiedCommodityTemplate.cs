@@ -37,7 +37,7 @@ public record ModifiedCommodityTemplate : IModifiedCommodity, ITemplate
         PbGift = property.Resolve<short>("PbGift");
         
         PackageSN = property
-            .Resolve("SN")?
+            .Resolve("PackageSN")?
             .Select(c => c.Resolve<int>() ?? 0)
             .ToImmutableList() ?? null;
 

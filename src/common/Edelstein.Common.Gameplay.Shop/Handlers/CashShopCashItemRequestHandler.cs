@@ -54,6 +54,13 @@ public class CashShopCashItemRequestHandler : IPacketHandler<IShopStageUser>
                     (ItemInventoryType)reader.ReadByte()
                 ));
                 break;
+            case ShopRequestOperations.BuyPackage:
+                await user.Context.Pipelines.ShopOnPacketCashItemBuyPackageRequest.Process(new ShopOnPacketCashItemBuyPackageRequest(
+                    user,
+                    (ShopCashType)reader.Skip(1).ReadInt(),
+                    reader.ReadInt()
+                ));
+                break;
             default:
                 _logger.LogWarning("Unhandled cash shop cash item request type {Type}", type);
                 break;

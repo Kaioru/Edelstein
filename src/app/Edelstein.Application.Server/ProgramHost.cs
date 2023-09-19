@@ -218,6 +218,7 @@ public class ProgramHost : IHostedService
                         b.RegisterType<NotSaleManager>().As<INotSaleManager>().SingleInstance();
                         b.RegisterType<CommodityManager>().As<ICommodityManager>().SingleInstance();
                         b.RegisterType<ModifiedCommodityManager>().As<IModifiedCommodityManager>().SingleInstance();
+                        b.RegisterType<CashPackageManager>().As<ICashPackageManager>().SingleInstance();
                         
                         b
                             .RegisterInstance(options)

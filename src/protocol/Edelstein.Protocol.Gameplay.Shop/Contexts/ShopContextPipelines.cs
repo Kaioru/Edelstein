@@ -16,5 +16,6 @@ public record ShopContextPipelines(
     IPipeline<ShopOnPacketCashItemBuyRequest> ShopOnPacketCashItemBuyRequest,
     IPipeline<ShopOnPacketCashItemSetWishRequest> ShopOnPacketCashItemSetWishRequest,
     IPipeline<ShopOnPacketCashItemMoveLToSRequest> ShopOnPacketCashItemMoveLToSRequest,
-    IPipeline<ShopOnPacketCashItemMoveSToLRequest> ShopOnPacketCashItemMoveSToLRequest
+    IPipeline<ShopOnPacketCashItemMoveSToLRequest> ShopOnPacketCashItemMoveSToLRequest,
+    IPipeline<ShopOnPacketCashItemBuyPackageRequest> ShopOnPacketCashItemBuyPackageRequest
 );

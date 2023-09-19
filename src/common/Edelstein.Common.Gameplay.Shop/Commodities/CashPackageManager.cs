@@ -19,9 +19,10 @@ public class CashPackageManager : ICashPackageManager
     public async Task<ICashPackage?> Retrieve(int key)
     {
         var template = await _templates.Retrieve(key);
-        var modified = await _modifiedManager.Retrieve(key);
+        var modified = (await _modifiedManager.RetrieveAll())
+            .FirstOrDefault(m => m.ItemID == key);
         
-        if (template == null && modified == null) return null;
+        if (template == null && modified?.PackageSN == null) return null;
         
         return new CashPackage
         {
