@@ -41,6 +41,18 @@ public class CashShopCashItemRequestHandler : IPacketHandler<IShopStageUser>
                     wishlist
                 ));
                 break;
+            case ShopRequestOperations.IncSlotCount:
+                reader.Skip(1);
+                var cashType = (ShopCashType)reader.ReadInt();
+                var incType = reader.ReadByte();
+
+                if (incType == 0)
+                    await user.Context.Pipelines.ShopOnPacketCashItemIncSlotCountRequest.Process(new ShopOnPacketCashItemIncSlotCountRequest(
+                        user,
+                        cashType,
+                        (ItemInventoryType)reader.ReadByte()
+                    ));
+                break;
             case ShopRequestOperations.MoveLtoS:
                 await user.Context.Pipelines.ShopOnPacketCashItemMoveLToSRequest.Process(new ShopOnPacketCashItemMoveLToSRequest(
                     user,
