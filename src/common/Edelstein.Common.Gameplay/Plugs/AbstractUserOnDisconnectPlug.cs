@@ -55,7 +55,7 @@ public abstract class AbstractUserOnDisconnectPlug<TStageUser> : IPipelinePlug<U
                     _ = _partyService.UpdateChannelOrField(new PartyUpdateChannelOrFieldRequest(
                         message.User.Party.ID,
                         message.User.Character.ID,
-                        -1,
+                        -2,
                         999999999
                     ));
             }

@@ -24,6 +24,7 @@ public class PartyService : IPartyService
             await using var db = await _dbFactory.CreateDbContextAsync();
             var partyMember = db.PartyMembers
                 .Include(p => p.Party)
+                .ThenInclude(p => p.Members)
                 .FirstOrDefault(p => p.CharacterID == request.CharacterID);
             return new PartyLoadResponse(PartyResult.Success, partyMember != null
                 ? new PartyMembership(partyMember)
