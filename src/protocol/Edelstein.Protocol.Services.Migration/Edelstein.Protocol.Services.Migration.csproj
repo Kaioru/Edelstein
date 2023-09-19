@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <Import Project="..\Protocol.targets"/>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj"/>
-  </ItemGroup>
-
-</Project>

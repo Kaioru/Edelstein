@@ -7,8 +7,8 @@ using Edelstein.Protocol.Gameplay.Login.Contracts;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Auth.Contracts;
-using Edelstein.Protocol.Services.Session;
-using Edelstein.Protocol.Services.Session.Contracts;
+using Edelstein.Protocol.Services.Server;
+using Edelstein.Protocol.Services.Server.Contracts;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Microsoft.Extensions.Logging;
 

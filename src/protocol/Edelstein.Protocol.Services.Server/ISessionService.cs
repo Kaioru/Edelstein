@@ -1,6 +1,6 @@
-﻿using Edelstein.Protocol.Services.Session.Contracts;
+﻿using Edelstein.Protocol.Services.Server.Contracts;
 
-namespace Edelstein.Protocol.Services.Session;
+namespace Edelstein.Protocol.Services.Server;
 
 public interface ISessionService
 {

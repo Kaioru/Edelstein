@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using Edelstein.Common.Gameplay.Models.Characters;
+﻿using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Shop;

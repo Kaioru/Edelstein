@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Models.Characters;
-using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
+﻿using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Common.Gameplay.Models.Characters.Stats;
 using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify;

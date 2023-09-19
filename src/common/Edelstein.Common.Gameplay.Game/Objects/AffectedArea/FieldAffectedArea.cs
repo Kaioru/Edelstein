@@ -1,11 +1,8 @@
 ﻿using System.Collections.Immutable;
-using Edelstein.Common.Gameplay.Constants;
-using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.AffectedArea;
-using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
 using Edelstein.Protocol.Utilities.Tickers;

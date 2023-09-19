@@ -1,6 +1,6 @@
-﻿using Edelstein.Protocol.Services.Migration.Contracts;
+﻿using Edelstein.Protocol.Services.Server.Contracts;
 
-namespace Edelstein.Protocol.Services.Migration;
+namespace Edelstein.Protocol.Services.Server;
 
 public interface IMigrationService
 {

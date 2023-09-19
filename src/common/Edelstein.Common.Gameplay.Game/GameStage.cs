@@ -2,7 +2,6 @@
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game;
-using Edelstein.Protocol.Gameplay.Models.Characters;
 
 namespace Edelstein.Common.Gameplay.Game;
 

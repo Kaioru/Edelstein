@@ -3,7 +3,7 @@ using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
-using Edelstein.Protocol.Services.Session;
+using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Plugs;

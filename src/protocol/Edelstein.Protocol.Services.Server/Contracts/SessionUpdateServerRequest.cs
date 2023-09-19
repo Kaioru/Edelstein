@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Services.Session.Contracts;
+﻿namespace Edelstein.Protocol.Services.Server.Contracts;
 
 public record SessionUpdateServerRequest(
     int ID,

@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Services.Migration.Contracts;
+﻿namespace Edelstein.Protocol.Services.Server.Contracts;
 
 public enum MigrationResult
 {

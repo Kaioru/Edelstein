@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Services.Session;
+﻿namespace Edelstein.Protocol.Services.Server;
 
 public interface ISession
 {

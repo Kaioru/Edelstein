@@ -1,7 +1,7 @@
 ﻿using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 
-namespace Edelstein.Protocol.Services.Migration;
+namespace Edelstein.Protocol.Services.Server;
 
 public interface IMigration
 {

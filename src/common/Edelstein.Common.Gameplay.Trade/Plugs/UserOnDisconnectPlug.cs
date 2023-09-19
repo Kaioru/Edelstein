@@ -2,7 +2,7 @@
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Trade;
-using Edelstein.Protocol.Services.Session;
+using Edelstein.Protocol.Services.Server;
 
 namespace Edelstein.Common.Gameplay.Trade.Plugs;
 

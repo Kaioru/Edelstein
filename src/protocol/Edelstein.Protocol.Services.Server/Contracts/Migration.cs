@@ -1,7 +1,7 @@
 ﻿using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 
-namespace Edelstein.Protocol.Services.Migration.Contracts;
+namespace Edelstein.Protocol.Services.Server.Contracts;
 
 public record Migration(
     int AccountID,
