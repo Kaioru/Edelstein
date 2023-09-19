@@ -7,18 +7,18 @@ public class PartyMembership : IPartyMembership
 {
     public int ID { get; }
     
-    public int BossCharacterID { get; }
+    public int BossCharacterID { get; set; }
 
     public int PartyID => ID;
     
     public int CharacterID { get; }
     public string CharacterName { get; }
     
-    public int Job { get; }
-    public int Level { get; }
+    public int Job { get; set; }
+    public int Level { get; set; }
     
-    public int ChannelID { get; }
-    public int FieldID { get; }
+    public int ChannelID { get; set; }
+    public int FieldID { get; set; }
 
     public IDictionary<int, IPartyMember> Members { get; }
 

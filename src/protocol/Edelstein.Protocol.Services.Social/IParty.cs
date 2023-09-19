@@ -4,5 +4,5 @@ namespace Edelstein.Protocol.Services.Social;
 
 public interface IParty : IIdentifiable<int>
 {
-    int BossCharacterID { get; }
+    int BossCharacterID { get; set; }
 }

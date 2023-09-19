@@ -7,9 +7,9 @@ public interface IPartyMember
     int CharacterID { get; }
     string CharacterName { get; }
     
-    int Job { get; }
-    int Level { get; }
+    int Job { get; set; }
+    int Level { get; set; }
     
-    int ChannelID { get; }
-    int FieldID { get; }
+    int ChannelID { get; set; }
+    int FieldID { get; set; }
 }

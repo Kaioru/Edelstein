@@ -15,6 +15,9 @@ public record GameContextPipelines(
     IPipeline<UserOnPacketAliveAck<IGameStageUser>> UserOnPacketAliveAck,
     IPipeline<UserOnPacketMigrateIn<IGameStageUser>> UserOnPacketMigrateIn,
     
+    IPipeline<NotifyPartyMemberUpdateChannelOrField> NotifyPartyMemberUpdateChannelOrField,
+    IPipeline<NotifyPartyMemberUpdateLevelOrJob> NotifyPartyMemberUpdateLevelOrJob,
+
     IPipeline<FieldOnPacketUserMove> FieldOnPacketUserMove,
     IPipeline<FieldOnPacketUserChat> FieldOnPacketUserChat,
     IPipeline<FieldOnPacketUserEmotion> FieldOnPacketUserEmotion,

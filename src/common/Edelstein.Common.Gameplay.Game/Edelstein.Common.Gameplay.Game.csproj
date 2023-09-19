@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Foundatio" Version="10.6.1" />
     <PackageReference Include="Stateless" Version="5.13.0" />
   </ItemGroup>
 

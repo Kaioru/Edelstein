@@ -19,6 +19,7 @@ using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Utilities.Templates;
 using Edelstein.Protocol.Utilities.Tickers;
+using Foundatio.Messaging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,6 +50,8 @@ await Host.CreateDefaultBuilder(args)
             o.UseNpgsql(ctx.Configuration.GetConnectionString(GameplayDbContext.ConnectionStringKey)));
         services.AddDbContextFactory<SocialDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(SocialDbContext.ConnectionStringKey)));
+
+        services.AddSingleton<IMessageBus, InMemoryMessageBus>();
 
         services.AddSingleton<IAccountRepository, AccountRepository>();
         services.AddSingleton<IAccountWorldRepository, AccountWorldRepository>();
