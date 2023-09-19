@@ -11,7 +11,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class MobMoveHandler : AbstractPipedFieldMobHandler<FieldOnPacketMobMove>
 {
-    public MobMoveHandler(IPipeline<FieldOnPacketMobMove?> pipeline) : base(pipeline)
+    public MobMoveHandler(IPipeline<FieldOnPacketMobMove> pipeline) : base(pipeline)
     {
     }
 

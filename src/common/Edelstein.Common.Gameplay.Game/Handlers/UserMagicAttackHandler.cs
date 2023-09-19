@@ -10,7 +10,7 @@ public class UserMagicAttackHandler : AbstractUserAttackHandler
     public override short Operation => (short)PacketRecvOperations.UserMagicAttack;
     protected override AttackType Type => AttackType.Magic;
     
-    public UserMagicAttackHandler(IPipeline<FieldOnPacketUserAttack?> pipeline) : base(pipeline)
+    public UserMagicAttackHandler(IPipeline<FieldOnPacketUserAttack> pipeline) : base(pipeline)
     {
     }
 }

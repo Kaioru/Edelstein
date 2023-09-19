@@ -11,7 +11,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class SummonedMoveHandler : AbstractPipedFieldSummonedHandler<FieldOnPacketSummonedMove>
 {
-    public SummonedMoveHandler(IPipeline<FieldOnPacketSummonedMove?> pipeline) : base(pipeline)
+    public SummonedMoveHandler(IPipeline<FieldOnPacketSummonedMove> pipeline) : base(pipeline)
     {
     }
 

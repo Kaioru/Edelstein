@@ -38,8 +38,17 @@ namespace Edelstein.Common.Database.Migrations
                     b.Property<byte>("GradeCode")
                         .HasColumnType("smallint");
 
+                    b.Property<int>("MaplePoint")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("NexonCash")
+                        .HasColumnType("integer");
+
                     b.Property<string>("PIN")
                         .HasColumnType("text");
+
+                    b.Property<int>("PrepaidNXCash")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SPW")
                         .HasColumnType("text");
@@ -77,13 +86,13 @@ namespace Edelstein.Common.Database.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("json")
-                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Inventories.ItemLocker, Edelstein.Common.Gameplay\",\"SlotMax\":999,\"Items\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.Int16, System.Private.CoreLib],[Edelstein.Protocol.Gameplay.Models.Inventories.IItemLockerSlot, Edelstein.Protocol.Gameplay]], System.Private.CoreLib\"}}");
+                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Inventories.ItemLocker, Edelstein.Common.Gameplay\",\"SlotMax\":999,\"Items\":{\"$type\":\"System.Collections.Generic.List`1[[Edelstein.Protocol.Gameplay.Models.Inventories.IItemLockerSlot, Edelstein.Protocol.Gameplay]], System.Private.CoreLib\",\"$values\":[]}}");
 
                     b.Property<string>("Trunk")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("json")
-                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Inventories.ItemTrunk, Edelstein.Common.Gameplay\",\"SlotMax\":4,\"Money\":0,\"Items\":{\"$type\":\"System.Collections.Generic.Dictionary`2[[System.Int16, System.Private.CoreLib],[Edelstein.Protocol.Gameplay.Models.Inventories.Items.IItemSlot, Edelstein.Protocol.Gameplay]], System.Private.CoreLib\"}}");
+                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Inventories.ItemTrunk, Edelstein.Common.Gameplay\",\"Money\":0,\"SlotMax\":4,\"Items\":{\"$type\":\"System.Collections.Generic.List`1[[Edelstein.Protocol.Gameplay.Models.Inventories.Items.IItemSlot, Edelstein.Protocol.Gameplay]], System.Private.CoreLib\",\"$values\":[]}}");
 
                     b.Property<int>("WorldID")
                         .HasColumnType("integer");
@@ -222,7 +231,13 @@ namespace Edelstein.Common.Database.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("json")
-                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Characters.CharacterWildHunterInfo, Edelstein.Common.Gameplay\",\"RidingType\":0,\"CaptureMob\":{\"$type\":\"System.Int32[], System.Private.CoreLib\",\"$values\":[0,0,0,0,0]}}");
+                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Characters.CharacterWildHunterInfo, Edelstein.Common.Gameplay\",\"RidingType\":0,\"CaptureMob\":{\"$type\":\"System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]], System.Private.CoreLib\",\"$values\":[]}}");
+
+                    b.Property<string>("Wishlist")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("json")
+                        .HasDefaultValue("{\"$type\":\"Edelstein.Common.Gameplay.Models.Characters.CharacterWishlist, Edelstein.Common.Gameplay\",\"Records\":{\"$type\":\"System.Collections.Generic.List`1[[System.Int32, System.Private.CoreLib]], System.Private.CoreLib\",\"$values\":[]}}");
 
                     b.HasKey("ID");
 

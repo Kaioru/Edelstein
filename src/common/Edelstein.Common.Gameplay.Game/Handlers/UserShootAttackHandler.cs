@@ -10,7 +10,7 @@ public class UserShootAttackHandler : AbstractUserAttackHandler
     public override short Operation => (short)PacketRecvOperations.UserShootAttack;
     protected override AttackType Type => AttackType.Shoot;
     
-    public UserShootAttackHandler(IPipeline<FieldOnPacketUserAttack?> pipeline) : base(pipeline)
+    public UserShootAttackHandler(IPipeline<FieldOnPacketUserAttack> pipeline) : base(pipeline)
     {
     }
 }

@@ -11,7 +11,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class DragonMoveHandler : AbstractPipedFieldDragonHandler<FieldOnPacketDragonMove>
 {
-    public DragonMoveHandler(IPipeline<FieldOnPacketDragonMove?> pipeline) : base(pipeline)
+    public DragonMoveHandler(IPipeline<FieldOnPacketDragonMove> pipeline) : base(pipeline)
     {
     }
 

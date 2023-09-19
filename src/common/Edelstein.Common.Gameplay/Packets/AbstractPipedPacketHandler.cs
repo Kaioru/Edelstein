@@ -9,9 +9,9 @@ public abstract class AbstractPipedPacketHandler<TStageUser, TMessage> :
     IPacketHandler<TStageUser>
     where TStageUser : IStageUser<TStageUser>
 {
-    private readonly IPipeline<TMessage?> _pipeline;
+    private readonly IPipeline<TMessage> _pipeline;
 
-    protected AbstractPipedPacketHandler(IPipeline<TMessage?> pipeline) => _pipeline = pipeline;
+    protected AbstractPipedPacketHandler(IPipeline<TMessage> pipeline) => _pipeline = pipeline;
     
     public abstract short Operation { get; }
 

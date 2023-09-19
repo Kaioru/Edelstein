@@ -12,7 +12,7 @@ public abstract class AbstractUserAttackHandler : AbstractPipedFieldHandler<Fiel
 {
     protected abstract AttackType Type { get; }
     
-    protected AbstractUserAttackHandler(IPipeline<FieldOnPacketUserAttack?> pipeline) : base(pipeline)
+    protected AbstractUserAttackHandler(IPipeline<FieldOnPacketUserAttack> pipeline) : base(pipeline)
     {
     }
 

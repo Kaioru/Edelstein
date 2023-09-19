@@ -136,7 +136,7 @@ public static class CharacterPackets
             {
                 writer.WriteByte(character.WildHunterInfo.RidingType);
                 for (var i = 0; i < 5; i++) 
-                    writer.WriteInt(character.WildHunterInfo.CaptureMob[i]);
+                    writer.WriteInt(character.WildHunterInfo.CaptureMob.ElementAtOrDefault(i));
             }
 
         if (flags.HasFlag(DbFlags.QuestCompleteOld)) writer.WriteShort(0);

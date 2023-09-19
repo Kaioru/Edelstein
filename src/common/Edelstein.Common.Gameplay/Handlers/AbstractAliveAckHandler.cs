@@ -11,7 +11,7 @@ public abstract class AbstractAliveAckHandler<TStageUser> :
     IPacketHandler<TStageUser>
     where TStageUser : IStageUser<TStageUser>
 {
-    protected AbstractAliveAckHandler(IPipeline<UserOnPacketAliveAck<TStageUser>?> pipeline) : base(pipeline)
+    protected AbstractAliveAckHandler(IPipeline<UserOnPacketAliveAck<TStageUser>> pipeline) : base(pipeline)
     {
     }
     

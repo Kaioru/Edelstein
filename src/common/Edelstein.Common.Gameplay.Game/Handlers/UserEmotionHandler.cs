@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class UserEmotionHandler : AbstractPipedFieldHandler<FieldOnPacketUserEmotion>
 {
-    public UserEmotionHandler(IPipeline<FieldOnPacketUserEmotion?> pipeline) : base(pipeline)
+    public UserEmotionHandler(IPipeline<FieldOnPacketUserEmotion> pipeline) : base(pipeline)
     {
     }
 

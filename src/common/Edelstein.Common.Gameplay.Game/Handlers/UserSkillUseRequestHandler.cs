@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class UserSkillUseRequestHandler : AbstractPipedFieldHandler<FieldOnPacketUserSkillUseRequest>
 {
-    public UserSkillUseRequestHandler(IPipeline<FieldOnPacketUserSkillUseRequest?> pipeline) : base(pipeline)
+    public UserSkillUseRequestHandler(IPipeline<FieldOnPacketUserSkillUseRequest> pipeline) : base(pipeline)
     {
     }
 

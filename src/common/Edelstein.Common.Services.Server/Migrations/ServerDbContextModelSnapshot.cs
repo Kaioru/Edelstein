@@ -32,18 +32,18 @@ namespace Edelstein.Common.Services.Server.Migrations
 
                     b.Property<string>("Account")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("json");
 
                     b.Property<int>("AccountID")
                         .HasColumnType("integer");
 
                     b.Property<string>("AccountWorld")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("json");
 
                     b.Property<string>("Character")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("json");
 
                     b.Property<DateTime>("DateExpire")
                         .HasColumnType("timestamp with time zone");
@@ -149,6 +149,38 @@ namespace Edelstein.Common.Services.Server.Migrations
                     b.ToTable("servers", (string)null);
 
                     b.HasDiscriminator().HasValue("Login");
+                });
+
+            modelBuilder.Entity("Edelstein.Common.Services.Server.Entities.ServerShopEntity", b =>
+                {
+                    b.HasBaseType("Edelstein.Common.Services.Server.Entities.ServerEntity");
+
+                    b.Property<int>("WorldID")
+                        .HasColumnType("integer");
+
+                    b.ToTable("servers", null, t =>
+                        {
+                            t.Property("WorldID")
+                                .HasColumnName("ServerShopEntity_WorldID");
+                        });
+
+                    b.HasDiscriminator().HasValue("Shop");
+                });
+
+            modelBuilder.Entity("Edelstein.Common.Services.Server.Entities.ServerTradeEntity", b =>
+                {
+                    b.HasBaseType("Edelstein.Common.Services.Server.Entities.ServerEntity");
+
+                    b.Property<int>("WorldID")
+                        .HasColumnType("integer");
+
+                    b.ToTable("servers", null, t =>
+                        {
+                            t.Property("WorldID")
+                                .HasColumnName("ServerTradeEntity_WorldID");
+                        });
+
+                    b.HasDiscriminator().HasValue("Trade");
                 });
 
             modelBuilder.Entity("Edelstein.Common.Services.Server.Entities.MigrationEntity", b =>

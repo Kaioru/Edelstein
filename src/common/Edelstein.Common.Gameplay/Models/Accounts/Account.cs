@@ -15,4 +15,8 @@ public record Account : IAccount
     public AccountSubGradeCode SubGradeCode { get; set; }
 
     public byte? Gender { get; set; }
+    
+    public int NexonCash { get; set; }
+    public int MaplePoint { get; set; }
+    public int PrepaidNXCash { get; set; }
 }

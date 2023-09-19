@@ -10,7 +10,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 public class UserSortItemRequestHandler : AbstractPipedFieldHandler<FieldOnPacketUserSortItemRequest>
 {
 
-    public UserSortItemRequestHandler(IPipeline<FieldOnPacketUserSortItemRequest?> pipeline) : base(pipeline)
+    public UserSortItemRequestHandler(IPipeline<FieldOnPacketUserSortItemRequest> pipeline) : base(pipeline)
     {
     }
 

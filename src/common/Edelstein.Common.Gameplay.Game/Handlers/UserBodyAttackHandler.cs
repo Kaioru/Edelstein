@@ -10,7 +10,7 @@ public class UserBodyAttackHandler : AbstractUserAttackHandler
     public override short Operation => (short)PacketRecvOperations.UserBodyAttack;
     protected override AttackType Type => AttackType.Body;
     
-    public UserBodyAttackHandler(IPipeline<FieldOnPacketUserAttack?> pipeline) : base(pipeline)
+    public UserBodyAttackHandler(IPipeline<FieldOnPacketUserAttack> pipeline) : base(pipeline)
     {
     }
 }

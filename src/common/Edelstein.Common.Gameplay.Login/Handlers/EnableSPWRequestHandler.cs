@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 
 public class EnableSPWRequestHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketEnableSPWRequest>
 {
-    public EnableSPWRequestHandler(IPipeline<UserOnPacketEnableSPWRequest?> pipeline) : base(pipeline)
+    public EnableSPWRequestHandler(IPipeline<UserOnPacketEnableSPWRequest> pipeline) : base(pipeline)
     {
     }
     

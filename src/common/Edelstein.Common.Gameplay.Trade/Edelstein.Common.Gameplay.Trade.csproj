@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Common.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Trade\Edelstein.Protocol.Gameplay.Trade.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
+  </ItemGroup>
+
+</Project>

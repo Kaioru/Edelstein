@@ -9,7 +9,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class UserCharacterInfoRequest : AbstractPipedFieldHandler<FieldOnPacketUserCharacterInfoRequest>
 {
-    public UserCharacterInfoRequest(IPipeline<FieldOnPacketUserCharacterInfoRequest?> pipeline) : base(pipeline)
+    public UserCharacterInfoRequest(IPipeline<FieldOnPacketUserCharacterInfoRequest> pipeline) : base(pipeline)
     {
     }
 

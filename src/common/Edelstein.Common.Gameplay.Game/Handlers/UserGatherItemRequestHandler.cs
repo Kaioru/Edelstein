@@ -10,7 +10,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 public class UserGatherItemRequestHandler : AbstractPipedFieldHandler<FieldOnPacketUserGatherItemRequest>
 {
 
-    public UserGatherItemRequestHandler(IPipeline<FieldOnPacketUserGatherItemRequest?> pipeline) : base(pipeline)
+    public UserGatherItemRequestHandler(IPipeline<FieldOnPacketUserGatherItemRequest> pipeline) : base(pipeline)
     {
     }
 

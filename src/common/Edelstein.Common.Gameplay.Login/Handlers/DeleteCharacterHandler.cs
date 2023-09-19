@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 
 public class DeleteCharacterHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketDeleteCharacter>
 {
-    public DeleteCharacterHandler(IPipeline<UserOnPacketDeleteCharacter?> pipeline) : base(pipeline)
+    public DeleteCharacterHandler(IPipeline<UserOnPacketDeleteCharacter> pipeline) : base(pipeline)
     {
     }
     

@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public abstract class AbstractPipedFieldHandler<TMessage> : AbstractPipedPacketHandler<IGameStageUser, TMessage>
 {
-    protected AbstractPipedFieldHandler(IPipeline<TMessage?> pipeline) : base(pipeline)
+    protected AbstractPipedFieldHandler(IPipeline<TMessage> pipeline) : base(pipeline)
     {
     }
     

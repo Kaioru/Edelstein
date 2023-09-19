@@ -44,8 +44,10 @@ public interface ICharacter : IIdentifiable<int>
 
     ICharacterFuncKeys FuncKeys { get; }
     ICharacterQuickslotKeys QuickslotKeys { get; }
+    
+    ICharacterWishlist Wishlist { get; }
 
-    ICharacterInventories Inventories { get;  }
+    ICharacterInventories Inventories { get; }
     ICharacterSkills Skills { get; }
     ICharacterWildHunterInfo WildHunterInfo { get; }
 

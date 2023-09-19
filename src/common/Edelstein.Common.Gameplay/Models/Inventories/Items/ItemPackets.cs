@@ -1,4 +1,5 @@
 ﻿using Edelstein.Common.Utilities.Packets;
+using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Utilities.Packets;
 
@@ -27,18 +28,13 @@ public static class ItemPackets
 
     private static void WriteItemBase(this IPacketWriter writer, IItemSlot item)
     {
+        var itemBase = item as IItemSlotBase;
+        
         writer.WriteInt(item.ID);
-
-        if (item is IItemSlotBase slot)
-        {
-            writer.WriteBool(false);
-            writer.WriteDateTime(slot.DateExpire ?? DateTime.FromFileTimeUtc(150842304000000000));
-        }
-        else
-        {
-            writer.WriteBool(false);
-            writer.WriteDateTime(DateTime.FromFileTimeUtc(150842304000000000));
-        }
+        writer.WriteBool(itemBase?.CashItemSN != null);
+        if (itemBase?.CashItemSN != null)
+            writer.WriteLong(itemBase.CashItemSN.Value);
+        writer.WriteDateTime(itemBase?.DateExpire ?? DateTime.FromFileTimeUtc(150842304000000000));
     }
 
     public static void WriteItemEquipData(this IPacketWriter writer, IItemSlotEquip equip)
@@ -72,7 +68,7 @@ public static class ItemPackets
         writer.WriteByte(equip.LevelUpType);
         writer.WriteByte(equip.Level);
         writer.WriteInt(equip.EXP);
-        writer.WriteInt(equip.Durability ?? 100);
+        writer.WriteInt(equip.Durability ?? -1);
 
         writer.WriteInt(equip.IUC);
 
@@ -85,7 +81,9 @@ public static class ItemPackets
         writer.WriteShort(equip.Socket1);
         writer.WriteShort(equip.Socket2);
 
-        writer.WriteLong(0); // TODO: cash sn
+        if (!equip.CashItemSN.HasValue)
+            writer.WriteLong(0);
+        
         writer.WriteLong(0);
         writer.WriteInt(0);
     }
@@ -122,5 +120,24 @@ public static class ItemPackets
         writer.WriteShort(pet.PetSkill);
         writer.WriteInt(pet.RemainLife);
         writer.WriteShort(pet.Attribute);
+    }
+
+    public static void WriteItemLockerData(this IPacketWriter writer, IItemLockerSlot item)
+    {
+        var itemBase = item.Item as IItemSlotBase;
+        
+        writer.WriteLong(itemBase?.CashItemSN ?? 0);
+        writer.WriteInt(item.AccountID);
+        writer.WriteInt(item.CharacterID);
+        writer.WriteInt(item.Item.ID);
+        writer.WriteInt(item.CommodityID);
+        writer.WriteShort((short)(item.Item is IItemSlotBundle bundle ? bundle.Number : 1));
+        writer.WriteString(item.BuyCharacterName ?? string.Empty, 13);
+
+        if (itemBase?.DateExpire != null) writer.WriteDateTime(itemBase.DateExpire.Value);
+        else writer.WriteLong(0);
+        
+        writer.WriteInt(item.PaybackRate);
+        writer.WriteInt(item.DiscountRate);
     }
 }

@@ -2,13 +2,9 @@
 
 namespace Edelstein.Protocol.Gameplay.Models.Inventories;
 
-public interface IItemInventory : IItemInventory<IItemSlot>
-{
-}
-
-public interface IItemInventory<TSlot> where TSlot : IItemSlot
+public interface IItemInventory
 {
     short SlotMax { get; set; }
 
-    IDictionary<short, TSlot> Items { get; }
+    IDictionary<short, IItemSlot> Items { get; }
 }

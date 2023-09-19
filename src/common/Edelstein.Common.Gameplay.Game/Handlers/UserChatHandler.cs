@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class UserChatHandler : AbstractPipedFieldHandler<FieldOnPacketUserChat>
 {
-    public UserChatHandler(IPipeline<FieldOnPacketUserChat?> pipeline) : base(pipeline)
+    public UserChatHandler(IPipeline<FieldOnPacketUserChat> pipeline) : base(pipeline)
     {
     }
     

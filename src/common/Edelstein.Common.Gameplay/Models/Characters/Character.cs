@@ -45,6 +45,8 @@ public record Character : ICharacter
 
     public ICharacterFuncKeys FuncKeys { get; private set; } = new CharacterFuncKeys();
     public ICharacterQuickslotKeys QuickslotKeys { get; private set; } = new CharacterQuickslotKeys();
+    
+    public ICharacterWishlist Wishlist { get; private set; } = new CharacterWishlist();
 
     public ICharacterInventories Inventories { get; private set; } = new CharacterInventories();
     public ICharacterSkills Skills { get; private set; } = new CharacterSkills();

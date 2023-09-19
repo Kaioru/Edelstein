@@ -34,7 +34,7 @@ public abstract class AbstractModifyInventory : IModifyInventory
     public abstract bool HasSlotFor(IItemSlot item);
     public abstract bool HasSlotFor(ICollection<IItemSlot> items);
 
-    public abstract void Add(IItemSlot item);
+    public abstract short Add(IItemSlot item);
 
     public abstract void Remove(int templateID);
     public abstract void Remove(int templateID, short count);
@@ -48,10 +48,10 @@ public abstract class AbstractModifyInventory : IModifyInventory
     public abstract void Sort();
     public abstract void Clear();
 
-    public abstract void Add(int templateID);
-    public abstract void Add(int templateID, short count);
-    public abstract void Add(IItemTemplate template);
-    public abstract void Add(IItemTemplate template, short count);
+    public abstract short Add(int templateID);
+    public abstract short Add(int templateID, short count);
+    public abstract short Add(IItemTemplate template);
+    public abstract short Add(IItemTemplate template, short count);
 
     public void WriteTo(IPacketWriter writer)
     {

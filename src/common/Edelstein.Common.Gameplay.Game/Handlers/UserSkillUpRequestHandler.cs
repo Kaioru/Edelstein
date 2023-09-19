@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class UserSkillUpRequestHandler : AbstractPipedFieldHandler<FieldOnPacketUserSkillUpRequest>
 {
-    public UserSkillUpRequestHandler(IPipeline<FieldOnPacketUserSkillUpRequest?> pipeline) : base(pipeline)
+    public UserSkillUpRequestHandler(IPipeline<FieldOnPacketUserSkillUpRequest> pipeline) : base(pipeline)
     {
     }
 

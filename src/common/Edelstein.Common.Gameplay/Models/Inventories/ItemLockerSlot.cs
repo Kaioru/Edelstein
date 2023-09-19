@@ -10,7 +10,7 @@ public record ItemLockerSlot : IItemLockerSlot
     public int AccountID { get; set; }
     public int CharacterID { get; set; }
     public int CommodityID { get; set; }
-    public string BuyCharacterName { get; set; }
+    public string? BuyCharacterName { get; set; }
     public int PaybackRate { get; set; }
     public int DiscountRate { get; set; }
 

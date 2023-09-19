@@ -10,7 +10,7 @@ public class UserTransferFieldRequestHandler : AbstractPipedFieldHandler<FieldOn
 {
     public override short Operation => (short)PacketRecvOperations.UserTransferFieldRequest;
 
-    public UserTransferFieldRequestHandler(IPipeline<FieldOnPacketUserTransferFieldRequest?> pipeline) : base(pipeline)
+    public UserTransferFieldRequestHandler(IPipeline<FieldOnPacketUserTransferFieldRequest> pipeline) : base(pipeline)
     {
     }
     protected override FieldOnPacketUserTransferFieldRequest? Serialize(IFieldUser user, IPacketReader reader)

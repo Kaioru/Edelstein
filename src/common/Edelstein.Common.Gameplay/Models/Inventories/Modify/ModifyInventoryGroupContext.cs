@@ -82,8 +82,8 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
             .All(g => this[g.Key]?.HasSlotFor(g.ToImmutableList()) ?? false);
 
 
-    public override void Add(IItemSlot item) =>
-        this[GetTypeByID(item.ID)]?.Add(item);
+    public override short Add(IItemSlot item) =>
+        this[GetTypeByID(item.ID)]?.Add(item) ?? -1;
 
     public override void Remove(int templateID) =>
         this[GetTypeByID(templateID)]?.Remove(templateID);
@@ -121,17 +121,17 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
             context.Clear();
     }
 
-    public override void Add(int templateID) =>
-        this[GetTypeByID(templateID)]?.Add(templateID);
+    public override short Add(int templateID) =>
+        this[GetTypeByID(templateID)]?.Add(templateID) ?? -1;
 
-    public override void Add(int templateID, short count) =>
-        this[GetTypeByID(templateID)]?.Add(templateID, count);
+    public override short Add(int templateID, short count) =>
+        this[GetTypeByID(templateID)]?.Add(templateID, count) ?? -1;
 
-    public override void Add(IItemTemplate template) =>
-        this[GetTypeByID(template.ID)]?.Add(template);
+    public override short Add(IItemTemplate template) =>
+        this[GetTypeByID(template.ID)]?.Add(template) ?? -1;
 
-    public override void Add(IItemTemplate template, short count) =>
-        this[GetTypeByID(template.ID)]?.Add(template, count);
+    public override short Add(IItemTemplate template, short count) =>
+        this[GetTypeByID(template.ID)]?.Add(template, count) ?? -1;
 
     public bool HasEquipped(BodyPart part) =>
         this[ItemInventoryType.Equip]?[(short)-(short)part] != null;

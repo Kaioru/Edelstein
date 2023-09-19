@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 
 public class CheckPasswordHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketCheckPassword>
 {    
-    public CheckPasswordHandler(IPipeline<UserOnPacketCheckPassword?> pipeline) : base(pipeline)
+    public CheckPasswordHandler(IPipeline<UserOnPacketCheckPassword> pipeline) : base(pipeline)
     {
     }
     

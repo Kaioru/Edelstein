@@ -11,7 +11,7 @@ namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class FuncKeyMappedModifiedHandler : AbstractPipedFieldHandler<FieldOnPacketUserFuncKeyMappedModified>
 {
-    public FuncKeyMappedModifiedHandler(IPipeline<FieldOnPacketUserFuncKeyMappedModified?> pipeline) : base(pipeline)
+    public FuncKeyMappedModifiedHandler(IPipeline<FieldOnPacketUserFuncKeyMappedModified> pipeline) : base(pipeline)
     {
     }
 

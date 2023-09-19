@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Login.Handlers;
 
 public class CheckSPWRequestHandler : AbstractPipedPacketHandler<ILoginStageUser, UserOnPacketCheckSPWRequest>
 {
-    public CheckSPWRequestHandler(IPipeline<UserOnPacketCheckSPWRequest?> pipeline) : base(pipeline)
+    public CheckSPWRequestHandler(IPipeline<UserOnPacketCheckSPWRequest> pipeline) : base(pipeline)
     {
     }
     
