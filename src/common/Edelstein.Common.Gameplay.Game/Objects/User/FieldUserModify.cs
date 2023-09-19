@@ -8,6 +8,7 @@ using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
+using Edelstein.Protocol.Services.Social.Contracts;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.User;
 
@@ -39,6 +40,13 @@ public class FieldUserModify : IFieldUserModify
         packet.WriteBool(false);
         
         await _user.Dispatch(packet.Build());
+
+        if (_user.StageUser.Party != null && (context.Flag.HasFlag(ModifyStatType.Level) || context.Flag.HasFlag(ModifyStatType.Job)))
+            _ = _user.StageUser.Context.Services.Party.UpdateLevelOrJob(new PartyUpdateLevelOrJobRequest(
+                _user.StageUser.Party.ID,
+                _user.Character.ID,
+                _user.Character.Level,
+                _user.Character.Job));
     }
 
     public async Task Inventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)

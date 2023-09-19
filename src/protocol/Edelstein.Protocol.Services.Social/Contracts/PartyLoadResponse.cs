@@ -2,5 +2,5 @@
 
 public record PartyLoadResponse(
     PartyResult Result,
-    IPartyMembership? PartyMembership
+    IPartyMembership? PartyMembership = null
 );

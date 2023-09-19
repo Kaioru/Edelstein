@@ -11,10 +11,11 @@ public record PartyMemberEntity : IPartyMember, IIdentifiable<int>
     public PartyEntity Party { get; set; }
     
     public int CharacterID { get; set; }
-    public int CharacterName { get; set; }
+    public string CharacterName { get; set; }
     
     public int Job { get; set; }
     public int Level { get; set; }
     
     public int ChannelID { get; set; }
+    public int FieldID { get; set; }
 }

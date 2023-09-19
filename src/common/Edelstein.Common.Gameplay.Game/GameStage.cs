@@ -1,7 +1,9 @@
 ﻿using Edelstein.Common.Gameplay.Game.Objects.User;
 using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Social;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Services.Social.Contracts;
 
 namespace Edelstein.Common.Gameplay.Game;
 
@@ -34,8 +36,11 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
             return;
         }
 
-        user.FieldUser = fieldUser;
+        user.Friends = (await user.Context.Services.Friend.Load(new FriendLoadRequest(user.Character.ID))).Friends;
+        user.Party = (await user.Context.Services.Party.Load(new PartyLoadRequest(user.Character.ID))).PartyMembership;
 
+        user.FieldUser = fieldUser;
+        
         await field.Enter(fieldUser);
         await base.Enter(user);
 
@@ -70,6 +75,43 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
                     : 0
                 );
         await fieldUser.Dispatch(quickslotMappedInitPacket.Build());
+
+        if (user.Friends != null)
+        {
+            var friendPacket = new PacketWriter(PacketSendOperations.FriendResult);
+
+            friendPacket.WriteByte(0x7);
+            friendPacket.WriteByte((byte)user.Friends.Records.Count);
+            
+            foreach (var record in user.Friends.Records.Values)
+            {
+                friendPacket.WriteInt(record.FriendID);
+                friendPacket.WriteString(record.FriendName, 13);
+                friendPacket.WriteByte((byte)record.Flag);
+                friendPacket.WriteInt(record.ChannelID);
+                friendPacket.WriteString(record.FriendGroup, 17);
+            }
+            
+            foreach (var _ in user.Friends.Records.Values)
+                friendPacket.WriteInt(0);
+            
+            await fieldUser.Dispatch(friendPacket.Build());
+        }
+        
+        if (user.Party != null)
+        {
+            var partyPacket = new PacketWriter(PacketSendOperations.PartyResult);
+            partyPacket.WriteByte((byte)PartyResultOperations.LoadPartyDone);
+            partyPacket.WriteInt(user.Party.ID);
+            partyPacket.WritePartyInfo(user.Party);
+            await fieldUser.Dispatch(partyPacket.Build());
+            await user.Context.Services.Party.UpdateChannelOrField(new PartyUpdateChannelOrFieldRequest(
+                user.Party.ID,
+                user.Character.ID,
+                user.Context.Options.ChannelID,
+                field.ID
+            ));
+        }
     }
 
     public new async Task Leave(IGameStageUser user)

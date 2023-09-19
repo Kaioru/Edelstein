@@ -2,6 +2,7 @@
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Common.Gameplay;
@@ -21,6 +22,9 @@ public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser>
     public IAccount? Account { get; set; }
     public IAccountWorld? AccountWorld { get; set; }
     public ICharacter? Character { get; set; }
+    
+    public IFriendList? Friends { get; set; }
+    public IPartyMembership? Party { get; set; }
 
     public long Key { get; set; }
 

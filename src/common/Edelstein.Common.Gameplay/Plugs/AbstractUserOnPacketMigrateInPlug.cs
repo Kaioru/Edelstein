@@ -2,6 +2,8 @@
 using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
+using Edelstein.Protocol.Services.Social;
+using Edelstein.Protocol.Services.Social.Contracts;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Microsoft.Extensions.Logging;
 
@@ -12,21 +14,27 @@ public abstract class AbstractUserOnPacketMigrateInPlug<TStage, TStageUser> : IP
     where TStageUser : class, IStageUser<TStageUser>
 {
     private readonly ILogger _logger;
+    private readonly TStage _stage;
     private readonly IMigrationService _migrationService;
     private readonly ISessionService _sessionService;
-    private readonly TStage _stage;
+    private readonly IFriendService _friendService;
+    private readonly IPartyService _partyService;
 
     public AbstractUserOnPacketMigrateInPlug(
         ILogger<AbstractUserOnPacketMigrateInPlug<TStage, TStageUser>> logger,
         TStage stage,
         IMigrationService migrationService,
-        ISessionService sessionService
+        ISessionService sessionService, 
+        IFriendService friendService, 
+        IPartyService partyService
     )
     {
         _logger = logger;
         _stage = stage;
         _migrationService = migrationService;
         _sessionService = sessionService;
+        _friendService = friendService;
+        _partyService = partyService;
     }
 
     public async Task Handle(IPipelineContext ctx, UserOnPacketMigrateIn<TStageUser> message)
@@ -80,6 +88,9 @@ public abstract class AbstractUserOnPacketMigrateInPlug<TStage, TStageUser> : IP
         message.User.AccountWorld = migrationResponse.Migration.AccountWorld;
         message.User.Character = migrationResponse.Migration.Character;
         SetValues(message.User, migrationResponse.Migration);
+
+        message.User.Friends = (await _friendService.Load(new FriendLoadRequest(message.User.Character.ID))).Friends;
+        message.User.Party = (await _partyService.Load(new PartyLoadRequest(message.User.Character.ID))).PartyMembership;
 
         _logger.LogDebug(
             "Migrated in character {Name} from service {From} to service {To} ",

@@ -22,6 +22,7 @@ using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Tickers;
 
@@ -62,7 +63,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public IAccount Account { get; }
     public IAccountWorld AccountWorld { get; }
     public ICharacter Character { get; }
-    
+
     public IFieldUserStats Stats { get; }
     public IDamageCalculator Damage { get; }
 

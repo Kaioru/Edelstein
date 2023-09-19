@@ -4,6 +4,7 @@ using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Services.Server;
+using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Plugs;
@@ -11,14 +12,16 @@ namespace Edelstein.Common.Gameplay.Game.Plugs;
 public class UserOnDisconnectPlug : AbstractUserOnDisconnectPlug<IGameStageUser>
 {
     public UserOnDisconnectPlug(
-        ISessionService session,
-        IAccountRepository accountRepository,
+        ISessionService session, 
+        IAccountRepository accountRepository, 
         IAccountWorldRepository accountWorldRepository,
-        ICharacterRepository characterRepository
-    ) : base(session, accountRepository, accountWorldRepository, characterRepository)
+        ICharacterRepository characterRepository, 
+        IFriendService friendService, 
+        IPartyService partyService
+    ) : base(session, accountRepository, accountWorldRepository, characterRepository, friendService, partyService)
     {
     }
-
+    
     public override async Task Handle(IPipelineContext ctx, UserOnDisconnect<IGameStageUser> message)
     {
         _ = message.User.FieldUser?.EndConversation();

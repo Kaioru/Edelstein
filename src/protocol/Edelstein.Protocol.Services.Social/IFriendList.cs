@@ -2,5 +2,5 @@
 
 public interface IFriendList
 {
-    IDictionary<int, IFriend> Friends { get; }
+    IDictionary<int, IFriend> Records { get; }
 }
