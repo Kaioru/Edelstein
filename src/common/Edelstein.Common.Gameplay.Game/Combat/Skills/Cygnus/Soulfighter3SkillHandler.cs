@@ -1,5 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Game.Combat;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
@@ -14,6 +15,23 @@ public class Soulfighter3SkillHandler: Soulfighter2SkillHandler
     {
         await this.HandleAttackComboCounter(context, user);
         await base.HandleAttack(context, user);
+    }
+    
+    public override Task HandleAttackMob(ISkillContext context, IFieldUser user, IFieldMob mob)
+    {
+        switch (context.Skill?.ID)
+        {
+            case Skill.SoulmasterPanicSword:
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.ACC, -context.SkillLevel!.X);
+                break;
+            case Skill.SoulmasterComaSword:
+                context.SetProc();
+                context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
+                break;
+        }
+        
+        return base.HandleAttackMob(context, user, mob);
     }
 
     public override Task HandleSkillUse(ISkillContext context, IFieldUser user)
