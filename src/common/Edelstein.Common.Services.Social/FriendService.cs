@@ -38,6 +38,37 @@ public class FriendService : IFriendService
         }
     }
     
+    public async Task<FriendResponse> UpdateProfile(FriendProfileRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            var profile = db.FriendProfiles.Any(f => f.CharacterID == request.CharacterID);
+
+            if (profile)
+                await db.FriendProfiles
+                    .Where(f => f.CharacterID == request.CharacterID)
+                    .ExecuteUpdateAsync(p => p
+                        .SetProperty(e => e.FriendMax, e => request.FriendMax)
+                        .SetProperty(e => e.IsMaster, e => request.IsMaster));
+            else
+            {
+                await db.FriendProfiles.AddAsync(new FriendProfileEntity
+                {
+                    CharacterID = request.CharacterID,
+                    FriendMax = request.FriendMax,
+                    IsMaster = request.IsMaster
+                });
+                await db.SaveChangesAsync();
+            }
+            return new FriendResponse(FriendResult.Success);
+        }
+        catch (Exception)
+        {
+            return new FriendResponse(FriendResult.FailedUnknown);
+        }
+    }
+
     public async Task<FriendResponse> UpdateChannel(FriendUpdateChannelRequest request)
     {
         try

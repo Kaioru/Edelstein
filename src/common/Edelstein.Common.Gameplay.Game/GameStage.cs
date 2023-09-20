@@ -36,6 +36,12 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
             return;
         }
 
+        await user.Context.Services.Friend.UpdateProfile(new FriendProfileRequest(
+            user.Character.ID,
+            user.Character.FriendMax,
+            user.Account.GradeCode > 0 || user.Account.SubGradeCode > 0
+        ));
+
         user.Friends = (await user.Context.Services.Friend.Load(new FriendLoadRequest(user.Character.ID))).Friends;
         user.Party = (await user.Context.Services.Party.Load(new PartyLoadRequest(user.Character.ID))).PartyMembership;
 

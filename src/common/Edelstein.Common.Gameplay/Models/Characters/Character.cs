@@ -43,6 +43,8 @@ public record Character : ICharacter
 
     public short SubJob { get; set; }
 
+    public byte FriendMax { get; set; } = 20;
+
     public ICharacterFuncKeys FuncKeys { get; private set; } = new CharacterFuncKeys();
     public ICharacterQuickslotKeys QuickslotKeys { get; private set; } = new CharacterQuickslotKeys();
     

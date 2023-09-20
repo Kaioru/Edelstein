@@ -24,7 +24,7 @@ public static class CharacterPackets
         {
             writer.WriteCharacterStats(character);
 
-            writer.WriteByte(250); // nFriendMax
+            writer.WriteByte(character.FriendMax);
             writer.WriteBool(false);
         }
 

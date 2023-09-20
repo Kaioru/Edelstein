@@ -16,5 +16,10 @@ public class FriendConfiguration : IEntityTypeConfiguration<FriendEntity>
             m.CharacterID,
             m.FriendID
         }).IsUnique();
+        builder
+            .HasOne(m => m.Profile)
+            .WithMany(p => p.Friends)
+            .HasForeignKey(m => m.CharacterID)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -15,4 +15,6 @@ public class FriendEntity : IFriend
     public short Flag { get; set; }
     
     public int ChannelID { get; set; }
+    
+    public FriendProfileEntity Profile { get; set; }
 }

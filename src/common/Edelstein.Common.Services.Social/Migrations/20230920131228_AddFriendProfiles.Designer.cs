@@ -2,6 +2,7 @@
 using Edelstein.Common.Services.Social;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Edelstein.Common.Services.Social.Migrations
 {
     [DbContext(typeof(SocialDbContext))]
-    partial class SocialDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230920131228_AddFriendProfiles")]
+    partial class AddFriendProfiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,17 +135,6 @@ namespace Edelstein.Common.Services.Social.Migrations
                     b.ToTable("party_members", (string)null);
                 });
 
-            modelBuilder.Entity("Edelstein.Common.Services.Social.Entities.FriendEntity", b =>
-                {
-                    b.HasOne("Edelstein.Common.Services.Social.Entities.FriendProfileEntity", "Profile")
-                        .WithMany("Friends")
-                        .HasForeignKey("CharacterID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Profile");
-                });
-
             modelBuilder.Entity("Edelstein.Common.Services.Social.Entities.PartyMemberEntity", b =>
                 {
                     b.HasOne("Edelstein.Common.Services.Social.Entities.PartyEntity", "Party")
@@ -152,11 +144,6 @@ namespace Edelstein.Common.Services.Social.Migrations
                         .IsRequired();
 
                     b.Navigation("Party");
-                });
-
-            modelBuilder.Entity("Edelstein.Common.Services.Social.Entities.FriendProfileEntity", b =>
-                {
-                    b.Navigation("Friends");
                 });
 
             modelBuilder.Entity("Edelstein.Common.Services.Social.Entities.PartyEntity", b =>
