@@ -51,6 +51,10 @@ public abstract class AbstractUserOnDisconnectPlug<TStageUser> : IPipelinePlug<U
             if (!message.User.IsMigrating)
             {
                 new ModifyTemporaryStatContext(message.User.Character.TemporaryStats).ResetAll();
+                _ = _friendService.UpdateChannel(new FriendUpdateChannelRequest(
+                    message.User.Character.ID,
+                    -1
+                ));
                 if (message.User.Party != null)
                     _ = _partyService.UpdateChannelOrField(new PartyUpdateChannelOrFieldRequest(
                         message.User.Party.ID,

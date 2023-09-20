@@ -80,22 +80,17 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
         {
             var friendPacket = new PacketWriter(PacketSendOperations.FriendResult);
 
-            friendPacket.WriteByte(0x7);
+            friendPacket.WriteByte((byte)FriendResultOperations.LoadFriend_Done);
             friendPacket.WriteByte((byte)user.Friends.Records.Count);
-            
             foreach (var record in user.Friends.Records.Values)
-            {
-                friendPacket.WriteInt(record.FriendID);
-                friendPacket.WriteString(record.FriendName, 13);
-                friendPacket.WriteByte((byte)record.Flag);
-                friendPacket.WriteInt(record.ChannelID);
-                friendPacket.WriteString(record.FriendGroup, 17);
-            }
-            
+                friendPacket.WriteFriendInfo(record);
             foreach (var _ in user.Friends.Records.Values)
                 friendPacket.WriteInt(0);
-            
             await fieldUser.Dispatch(friendPacket.Build());
+            await user.Context.Services.Friend.UpdateChannel(new FriendUpdateChannelRequest(
+                user.Character.ID,
+                user.Context.Options.ChannelID
+            ));
         }
         
         if (user.Party != null)

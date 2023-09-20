@@ -5,4 +5,6 @@ namespace Edelstein.Protocol.Services.Social;
 public interface IFriendService
 {
     Task<FriendLoadResponse> Load(FriendLoadRequest request);
+
+    Task<FriendResponse> UpdateChannel(FriendUpdateChannelRequest request);
 }
