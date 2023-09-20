@@ -20,7 +20,7 @@ public class Soulfighter3SkillHandler: Soulfighter2SkillHandler
     {
         switch (context.Skill?.ID)
         {
-            case Skill.SoulmasterAdvancedCombo:
+            case Skill.SoulmasterComboAttack:
                 context.AddTemporaryStat(TemporaryStatType.ComboCounter, 1);
                 break;
             case Skill.SoulmasterPanicSword:
