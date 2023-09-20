@@ -6,5 +6,5 @@ public class FriendList : IFriendList
 {
     public FriendList(IDictionary<int, IFriend> friends) => Records = friends;
     
-    public IDictionary<int, IFriend> Records { get; }
+    public IDictionary<int, IFriend> Records { get; set; }
 }

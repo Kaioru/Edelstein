@@ -20,11 +20,13 @@ using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Utilities.Templates;
 using Edelstein.Protocol.Utilities.Tickers;
 using Foundatio.Messaging;
+using Foundatio.Serializer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Serilog;
 
 await Host.CreateDefaultBuilder(args)
@@ -51,7 +53,11 @@ await Host.CreateDefaultBuilder(args)
         services.AddDbContextFactory<SocialDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(SocialDbContext.ConnectionStringKey)));
 
-        services.AddSingleton<IMessageBus, InMemoryMessageBus>();
+        services.AddSingleton<IMessageBus>(new InMemoryMessageBus(
+            new InMemoryMessageBusOptions
+            {
+                Serializer = new JsonNetSerializer(new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.All})
+            }));
 
         services.AddSingleton<IAccountRepository, AccountRepository>();
         services.AddSingleton<IAccountWorldRepository, AccountWorldRepository>();

@@ -21,6 +21,7 @@ public class NotifyFriendUpdateChannelPlug : IPipelinePlug<NotifyFriendUpdateCha
         {
             if (!(user.Friends?.Records.TryGetValue(message.CharacterID, out var friend) ?? false)) continue;
             friend.ChannelID = message.ChannelID;
+            if (friend.Flag > 0) return;
 
             var p = new PacketWriter(PacketSendOperations.FriendResult);
             p.WriteByte((byte)FriendResultOperations.Notify);
