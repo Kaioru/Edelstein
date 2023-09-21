@@ -158,7 +158,7 @@ public class SkillContext : ISkillContext
             type, 
             value, 
             reason ?? Skill?.ID ?? 0, 
-            expire ?? _now.AddSeconds(SkillLevel?.Time ?? 0)
+            expire ?? (SkillLevel?.Time == 0 ? DateTime.MaxValue : _now.AddSeconds(SkillLevel?.Time ?? 0))
         ));
 
     public void AddMobTemporaryStat(MobTemporaryStatType type, int value, int? reason = null, DateTime? expire = null)
@@ -166,7 +166,7 @@ public class SkillContext : ISkillContext
             type, 
             value, 
             reason ?? Skill?.ID ?? 0, 
-            expire ?? _now.AddSeconds(SkillLevel?.Time ?? 0)
+            expire ?? (SkillLevel?.Time == 0 ? DateTime.MaxValue : _now.AddSeconds(SkillLevel?.Time ?? 0))
         ));
 
     public void AddMobBurnedInfo(int damage, int? skillID = null, TimeSpan? interval = null, DateTime? expire = null)
