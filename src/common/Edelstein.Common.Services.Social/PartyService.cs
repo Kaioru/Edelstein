@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Contracts;
+﻿using Edelstein.Common.Services.Social.Entities;
+using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Services.Social.Contracts;
 using Foundatio.Messaging;
@@ -36,6 +37,45 @@ public class PartyService : IPartyService
         }
     }
     
+    public async Task<PartyResponse> Create(PartyCreateRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            
+            if (await db.PartyMembers.AnyAsync(m => m.CharacterID == request.CharacterID))
+                return new PartyResponse(PartyResult.FailedAlreadyInParty);
+
+            var party = new PartyEntity
+            {
+                BossCharacterID = request.CharacterID
+            };
+            var partyMember = new PartyMemberEntity
+            {
+                Party = party,
+                CharacterID = request.CharacterID,
+                CharacterName = request.CharacterName,
+                Job = request.Job,
+                Level = request.Level,
+                ChannelID = request.ChannelID,
+                FieldID = request.FieldID
+            };
+            
+            party.Members.Add(partyMember);
+            await db.Parties.AddAsync(party);
+            await db.SaveChangesAsync();
+            await _messaging.PublishAsync(new NotifyPartyCreated(
+                request.CharacterID,
+                new PartyMembership(partyMember)
+            ));
+            return new PartyResponse(PartyResult.Success);
+        }
+        catch (Exception)
+        {
+            return new PartyResponse(PartyResult.FailedUnknown);
+        }
+    }
+
     public async Task<PartyResponse> UpdateChannelOrField(PartyUpdateChannelOrFieldRequest request)
     {
         try

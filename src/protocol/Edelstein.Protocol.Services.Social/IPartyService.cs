@@ -6,6 +6,8 @@ public interface IPartyService
 {
     Task<PartyLoadResponse> Load(PartyLoadRequest request);
 
+    Task<PartyResponse> Create(PartyCreateRequest request);
+
     Task<PartyResponse> UpdateChannelOrField(PartyUpdateChannelOrFieldRequest request);
     Task<PartyResponse> UpdateLevelOrJob(PartyUpdateLevelOrJobRequest request);
 }
