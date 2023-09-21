@@ -1,9 +1,11 @@
-﻿using Edelstein.Common.Gameplay.Constants;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
+using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Common.Gameplay.Models.Characters;
@@ -200,56 +202,53 @@ public static class CharacterPackets
         writer.WriteBool(false);
         writer.WriteInt(character.Hair);
 
-        var inventory = character.Inventories[ItemInventoryType.Equip];
-        var equipped = inventory?.Items
-            .Where(kv => kv.Key < 0)
-            .Select(kv => Tuple.Create(Math.Abs(kv.Key), kv.Value))
-            .ToList() ?? new List<Tuple<short, IItemSlot>>();
-        var stickers = equipped
-            .Where(t => t.Item1 > 100)
-            .Select(t => Tuple.Create(t.Item1 - 100, t.Item2))
-            .ToDictionary(
-                kv => kv.Item1,
-                kv => kv.Item2
-            );
-        var hidden = new Dictionary<short, IItemSlot>();
-
-        foreach (var tuple in equipped.Where(t => t.Item1 < 100))
-            if (!stickers.ContainsKey(tuple.Item1))
-                stickers[tuple.Item1] = tuple.Item2;
-            else
-                hidden[tuple.Item1] = tuple.Item2;
-
-        foreach (var kv in stickers)
+        var inventory = character.Inventories[ItemInventoryType.Equip]?.Items ?? ImmutableDictionary<short, IItemSlot>.Empty;
+        var unseen = new int[60];
+        var equip = new int[60];
+        
+        foreach (var kv in inventory.Where(kv => kv.Key < -100))
         {
-            writer.WriteByte((byte)kv.Key);
-            writer.WriteInt(kv.Value.ID);
+            var id = Math.Abs(kv.Key) - 100;
+            if (id == (int)BodyPart.Weapon) continue;
+            equip[id] = kv.Value.ID;
+        }
+        
+        foreach (var kv in inventory.Where(kv => kv.Key is < 0 and > -100))
+        {
+            var id = Math.Abs(kv.Key);
+            if (equip[id] == 0) equip[id] = kv.Value.ID;
+            else unseen[id] = kv.Value.ID;
         }
 
-        writer.WriteByte(0xFF);
-
-        foreach (var kv in hidden)
+        for (byte i = 0; i < equip.Length; i++)
         {
-            writer.WriteByte((byte)kv.Key);
-            writer.WriteInt(kv.Value.ID);
+            var value = equip[i];
+            if (value == 0) continue;
+
+            writer.WriteByte(i);
+            writer.WriteInt(value);
         }
-
         writer.WriteByte(0xFF);
+        
+        for (byte i = 0; i < unseen.Length; i++)
+        {
+            var value = unseen[i];
+            if (value == 0) continue;
 
-        var item = character.Inventories[ItemInventoryType.Equip]?.Items ?? new Dictionary<short, IItemSlot>();
-
-        writer.WriteInt(item.TryGetValue(-111, out var v1) 
-            ? v1.ID
-            : item.TryGetValue(-11, out var v2) 
-                ? v2.ID
-                : 0
+            writer.WriteByte(i);
+            writer.WriteInt(value);
+        }
+        writer.WriteByte(0xFF);
+        
+        writer.WriteInt(inventory.TryGetValue(-((int)BodyPart.Weapon + 100), out var weaponSticker) 
+            ? weaponSticker.ID
+            : 0
         );
 
         for (var i = 0; i < 3; i++)
             writer.WriteInt(0);
     }
-    
-    
+
     public static void WriteCharacterExtendSP(this IPacketWriter p, ICharacterExtendSP extendSP)
     {
         p.WriteByte((byte)extendSP.Records.Count);
