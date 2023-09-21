@@ -23,10 +23,10 @@ public class FieldOnPacketUserChatPlug : IPipelinePlug<FieldOnPacketUserChat>
 
         var chatPacket2 = new PacketWriter(PacketSendOperations.UserChatNLCPQ);
 
-        chatPacket1.WriteInt(message.User.Character.ID);
-        chatPacket1.WriteBool(message.User.Account.GradeCode > 0 || message.User.Account.SubGradeCode > 0);
-        chatPacket1.WriteString(message.Message);
-        chatPacket1.WriteBool(message.IsOnlyBalloon);
+        chatPacket2.WriteInt(message.User.Character.ID);
+        chatPacket2.WriteBool(message.User.Account.GradeCode > 0 || message.User.Account.SubGradeCode > 0);
+        chatPacket2.WriteString(message.Message);
+        chatPacket2.WriteBool(message.IsOnlyBalloon);
         chatPacket2.WriteString(message.User.Character.Name);
 
         await Task.WhenAll(message.User.Field!.Objects
