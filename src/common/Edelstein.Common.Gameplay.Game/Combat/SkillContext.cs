@@ -258,13 +258,14 @@ public class SkillContext : ISkillContext
                          .OrderBy(u => _user.Position.Distance(u.Position)))
                 targets.Add(target);
         
-        if (TargetPartyInfo != null && _user.Field != null)
+        if (TargetPartyInfo != null && _user is { Field: { }, StageUser.Party: { } })
             foreach (var target in _user.Field
                          .GetSplits(TargetPartyInfo.Bounds)
                          .Where(s => s != null)
                          .SelectMany(s => s!.Objects)
+                         .OfType<IFieldUser>()
                          .Where(o => TargetPartyInfo.Bounds.Intersects(o.Position))
-                         //.Where(Party..)
+                         .Where(o => o.StageUser.Party?.ID == _user.StageUser.Party.ID)
                          .OrderBy(u => _user.Position.Distance(u.Position)))
                 targets.Add(target);
 
