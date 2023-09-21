@@ -16,15 +16,23 @@ public class FriendOnPacketFriendSetRequestPlug : IPipelinePlug<FriendOnPacketFr
     
     public async Task Handle(IPipelineContext ctx, FriendOnPacketFriendSetRequest message)
     {
-        var response = await _service.Invite(new FriendInviteRequest(
-            message.User.Character.ID,
-            message.User.Character.Name,
-            message.User.Character.Level,
-            message.User.Character.Job,
-            message.User.StageUser.Context.Options.ChannelID,
-            message.FriendName,
-            message.FriendGroup
-        ));
+        var existing = message.User.StageUser.Friends?.Records.Values
+            .FirstOrDefault(f => f.FriendName == message.FriendName);
+        var response = existing == null
+            ? await _service.Invite(new FriendInviteRequest(
+                message.User.Character.ID,
+                message.User.Character.Name,
+                message.User.Character.Level,
+                message.User.Character.Job,
+                message.User.StageUser.Context.Options.ChannelID,
+                message.FriendName,
+                message.FriendGroup
+            ))
+            : await _service.UpdateGroup(new FriendUpdateGroupRequest(
+                message.User.Character.ID,
+                existing.FriendID,
+                message.FriendGroup
+            ));
 
         if (response.Result == FriendResult.Success) return;
         

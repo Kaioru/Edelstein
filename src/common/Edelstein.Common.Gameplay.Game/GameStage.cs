@@ -36,7 +36,7 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
             return;
         }
 
-        await user.Context.Services.Friend.UpdateProfile(new FriendProfileRequest(
+        await user.Context.Services.Friend.UpdateProfile(new FriendUpdateProfileRequest(
             user.Character.ID,
             user.Character.FriendMax,
             user.Account.GradeCode > 0 || user.Account.SubGradeCode > 0

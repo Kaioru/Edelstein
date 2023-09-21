@@ -215,8 +215,8 @@ public class FriendService : IFriendService
             return new FriendResponse(FriendResult.FailedUnknown);
         }
     }
-
-    public async Task<FriendResponse> UpdateProfile(FriendProfileRequest request)
+    
+    public async Task<FriendResponse> UpdateProfile(FriendUpdateProfileRequest request)
     {
         try
         {
@@ -239,6 +239,33 @@ public class FriendService : IFriendService
                 });
                 await db.SaveChangesAsync();
             }
+            return new FriendResponse(FriendResult.Success);
+        }
+        catch (Exception)
+        {
+            return new FriendResponse(FriendResult.FailedUnknown);
+        }
+    }
+    
+    public async Task<FriendResponse> UpdateGroup(FriendUpdateGroupRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            await db.Friends
+                .Where(f => f.CharacterID == request.CharacterID && f.FriendID == request.FriendID)
+                .ExecuteUpdateAsync(p => p
+                    .SetProperty(e => e.FriendGroup, e => request.FriendGroup));
+            var friends = db.Friends
+                .Where(f => f.CharacterID == request.CharacterID)
+                .ToDictionary(
+                    f => f.FriendID,
+                    f => (IFriend)f
+                ) as IDictionary<int, IFriend>;
+            await _messaging.PublishAsync(new NotifyFriendUpdateList(
+                request.CharacterID,
+                new FriendList(friends)
+            ));
             return new FriendResponse(FriendResult.Success);
         }
         catch (Exception)

@@ -1,7 +1,7 @@
 ﻿namespace Edelstein.Protocol.Services.Social.Contracts;
 
-public record FriendProfileRequest(
+public record FriendUpdateGroupRequest(
     int CharacterID,
-    byte FriendMax,
-    bool IsMaster
+    int FriendID,
+    string FriendGroup
 );
