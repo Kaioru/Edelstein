@@ -13,10 +13,21 @@ public class NotifyPartyInit : IPipelinePlug<StageStart>
     private readonly IPipeline<NotifyPartyMemberInvited> _notifyPartyMemberInvited;
     private readonly IPipeline<NotifyPartyMemberJoined> _notifyPartyMemberJoined;
     private readonly IPipeline<NotifyPartyMemberWithdrawn> _notifyPartyMemberWithdrawn;
+    private readonly IPipeline<NotifyPartyChangedBoss> _notifyPartyChangedBoss;
     private readonly IPipeline<NotifyPartyMemberUpdateChannelOrField> _notifyPartyMemberUpdateChannelOrField;
     private readonly IPipeline<NotifyPartyMemberUpdateLevelOrJob> _notifyPartyMemberUpdateLevelOrJob;
-
-    public NotifyPartyInit(IMessageBus messaging, IPipeline<NotifyPartyCreated> notifyPartyCreated, IPipeline<NotifyPartyDisbanded> notifyPartyDisbanded, IPipeline<NotifyPartyMemberInvited> notifyPartyMemberInvited, IPipeline<NotifyPartyMemberJoined> notifyPartyMemberJoined, IPipeline<NotifyPartyMemberWithdrawn> notifyPartyMemberWithdrawn, IPipeline<NotifyPartyMemberUpdateChannelOrField> notifyPartyMemberUpdateChannelOrField, IPipeline<NotifyPartyMemberUpdateLevelOrJob> notifyPartyMemberUpdateLevelOrJob)
+    
+    public NotifyPartyInit(
+        IMessageBus messaging, 
+        IPipeline<NotifyPartyCreated> notifyPartyCreated, 
+        IPipeline<NotifyPartyDisbanded> notifyPartyDisbanded, 
+        IPipeline<NotifyPartyMemberInvited> notifyPartyMemberInvited, 
+        IPipeline<NotifyPartyMemberJoined> notifyPartyMemberJoined, 
+        IPipeline<NotifyPartyMemberWithdrawn> notifyPartyMemberWithdrawn, 
+        IPipeline<NotifyPartyChangedBoss> notifyPartyChangedBoss, 
+        IPipeline<NotifyPartyMemberUpdateChannelOrField> notifyPartyMemberUpdateChannelOrField, 
+        IPipeline<NotifyPartyMemberUpdateLevelOrJob> notifyPartyMemberUpdateLevelOrJob
+    )
     {
         _messaging = messaging;
         _notifyPartyCreated = notifyPartyCreated;
@@ -24,10 +35,10 @@ public class NotifyPartyInit : IPipelinePlug<StageStart>
         _notifyPartyMemberInvited = notifyPartyMemberInvited;
         _notifyPartyMemberJoined = notifyPartyMemberJoined;
         _notifyPartyMemberWithdrawn = notifyPartyMemberWithdrawn;
+        _notifyPartyChangedBoss = notifyPartyChangedBoss;
         _notifyPartyMemberUpdateChannelOrField = notifyPartyMemberUpdateChannelOrField;
         _notifyPartyMemberUpdateLevelOrJob = notifyPartyMemberUpdateLevelOrJob;
     }
-    
     public async Task Handle(IPipelineContext ctx, StageStart message)
     {
         await _messaging.SubscribeAsync<NotifyPartyCreated>(
@@ -44,6 +55,9 @@ public class NotifyPartyInit : IPipelinePlug<StageStart>
         );
         await _messaging.SubscribeAsync<NotifyPartyMemberWithdrawn>(
             e => _notifyPartyMemberWithdrawn.Process(e)
+        );
+        await _messaging.SubscribeAsync<NotifyPartyChangedBoss>(
+            e => _notifyPartyChangedBoss.Process(e)
         );
         await _messaging.SubscribeAsync<NotifyPartyMemberUpdateChannelOrField>(
             e => _notifyPartyMemberUpdateChannelOrField.Process(e)

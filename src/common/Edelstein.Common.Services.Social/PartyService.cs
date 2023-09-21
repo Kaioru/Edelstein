@@ -279,6 +279,42 @@ public class PartyService : IPartyService
             return new PartyResponse(PartyResult.FailedUnknown);
         }
     }
+    
+    public async Task<PartyResponse> ChangeBoss(PartyChangeBossRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            
+            if (request.BossID == request.CharacterID)
+                return new PartyResponse(PartyResult.FailedSelf);
+            if (!await db.Parties.AnyAsync(p => p.ID == request.PartyID && p.BossCharacterID == request.BossID))
+                return new PartyResponse(PartyResult.FailedNotBoss);
+            
+            var partyMember = db.PartyMembers
+                .FirstOrDefault(p => p.PartyID == request.PartyID && p.CharacterID == request.CharacterID);
+            
+            if (partyMember == null)
+                return new PartyResponse(PartyResult.FailedNotInParty);
+            if (partyMember.ChannelID < 0)
+                return new PartyResponse(PartyResult.FailedOffline);
+            
+            await db.Parties
+                .Where(p => p.ID == request.PartyID)
+                .ExecuteUpdateAsync(p => p
+                    .SetProperty(e => e.BossCharacterID, e => request.CharacterID));
+            await _messaging.PublishAsync(new NotifyPartyChangedBoss(
+                request.PartyID,
+                request.CharacterID,
+                request.IsDisconnected
+            ));
+            return new PartyResponse(PartyResult.Success);
+        }
+        catch (Exception)
+        {
+            return new PartyResponse(PartyResult.FailedUnknown);
+        }
+    }
 
     public async Task<PartyResponse> UpdateChannelOrField(PartyUpdateChannelOrFieldRequest request)
     {

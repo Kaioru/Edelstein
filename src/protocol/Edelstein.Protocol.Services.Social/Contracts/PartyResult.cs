@@ -13,5 +13,6 @@ public enum PartyResult
     FailedNotInvited = 0x8,
     FailedFull = 0x9,
     FailedIsBoss = 0x10,
-    FailedNotInParty = 0x11
+    FailedNotInParty = 0x11,
+    FailedOffline = 0x12
 }

@@ -16,6 +16,8 @@ public interface IPartyService
 
     Task<PartyResponse> Kick(PartyKickRequest request);
 
+    Task<PartyResponse> ChangeBoss(PartyChangeBossRequest request);
+
     Task<PartyResponse> UpdateChannelOrField(PartyUpdateChannelOrFieldRequest request);
     Task<PartyResponse> UpdateLevelOrJob(PartyUpdateLevelOrJobRequest request);
 }
