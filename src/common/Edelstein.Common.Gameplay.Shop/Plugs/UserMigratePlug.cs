@@ -1,6 +1,6 @@
 ﻿using Edelstein.Common.Gameplay.Plugs;
 using Edelstein.Protocol.Gameplay.Shop;
-using Edelstein.Protocol.Services.Migration;
+using Edelstein.Protocol.Services.Server;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Shop.Plugs;

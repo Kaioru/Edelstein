@@ -6,6 +6,7 @@ using Edelstein.Protocol.Gameplay.Game.Generators;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Templates;
+using Edelstein.Protocol.Services.Social.Contracts;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
 using Edelstein.Protocol.Utilities.Tickers;
@@ -131,6 +132,17 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
                 await user.Move(portal.Position, true);
 
             await user.Dispatch(user.GetSetFieldPacket());
+
+            if (user.IsInstantiated)
+            {
+                if (user.StageUser.Party != null)
+                    _ = user.StageUser.Context.Services.Party.UpdateChannelOrField(new PartyUpdateChannelOrFieldRequest(
+                        user.StageUser.Party.ID,
+                        user.Character.ID,
+                        user.StageUser.Context.Options.ChannelID,
+                        ID
+                    ));
+            }
 
             if (!user.IsInstantiated) user.IsInstantiated = true;
         }

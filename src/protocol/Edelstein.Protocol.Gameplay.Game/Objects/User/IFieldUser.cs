@@ -6,6 +6,7 @@ using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
+using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.User;

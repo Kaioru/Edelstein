@@ -1,6 +1,5 @@
 ﻿using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Data;
-using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Options;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Sets;
 using Edelstein.Protocol.Utilities.Templates;
 

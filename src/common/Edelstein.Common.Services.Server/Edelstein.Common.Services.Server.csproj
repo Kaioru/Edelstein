@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Migration\Edelstein.Protocol.Services.Migration.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Server\Edelstein.Protocol.Services.Server.csproj" />
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
   </ItemGroup>

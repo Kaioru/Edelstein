@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using Edelstein.Protocol.Data;
+﻿using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Shop.Commodities.Templates;
 
 namespace Edelstein.Common.Gameplay.Shop.Commodities.Templates;

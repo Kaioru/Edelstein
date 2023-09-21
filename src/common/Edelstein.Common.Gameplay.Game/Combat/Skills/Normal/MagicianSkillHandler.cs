@@ -1,5 +1,4 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
-using Edelstein.Common.Gameplay.Game.Combat.Skills.Resistance;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;

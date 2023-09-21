@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Services.Session;
+﻿using Edelstein.Protocol.Services.Server;
 
 namespace Edelstein.Common.Services.Server.Entities;
 

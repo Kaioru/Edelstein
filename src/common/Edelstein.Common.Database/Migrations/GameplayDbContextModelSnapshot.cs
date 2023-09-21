@@ -139,6 +139,9 @@ namespace Edelstein.Common.Database.Migrations
                     b.Property<byte>("FieldPortal")
                         .HasColumnType("smallint");
 
+                    b.Property<byte>("FriendMax")
+                        .HasColumnType("smallint");
+
                     b.Property<string>("FuncKeys")
                         .IsRequired()
                         .ValueGeneratedOnAdd()

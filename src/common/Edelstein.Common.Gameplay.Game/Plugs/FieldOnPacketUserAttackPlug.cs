@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Constants;
-using Edelstein.Common.Gameplay.Game.Combat.Damage;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Common.Utilities.Spatial;

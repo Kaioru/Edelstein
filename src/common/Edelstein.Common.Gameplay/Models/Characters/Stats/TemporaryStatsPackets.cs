@@ -1,6 +1,5 @@
 ﻿using Edelstein.Common.Utilities;
 using Edelstein.Common.Utilities.Packets;
-using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats.TwoState;
 using Edelstein.Protocol.Utilities.Packets;

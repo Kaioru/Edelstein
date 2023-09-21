@@ -3,6 +3,7 @@
   <Import Project="..\Protocol.targets" />
 
   <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj" />
   </ItemGroup>
 

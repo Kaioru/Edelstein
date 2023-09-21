@@ -15,6 +15,9 @@ public record GameContextPipelines(
     IPipeline<UserOnPacketAliveAck<IGameStageUser>> UserOnPacketAliveAck,
     IPipeline<UserOnPacketMigrateIn<IGameStageUser>> UserOnPacketMigrateIn,
     
+    IPipeline<NotifyPartyMemberUpdateChannelOrField> NotifyPartyMemberUpdateChannelOrField,
+    IPipeline<NotifyPartyMemberUpdateLevelOrJob> NotifyPartyMemberUpdateLevelOrJob,
+
     IPipeline<FieldOnPacketUserMove> FieldOnPacketUserMove,
     IPipeline<FieldOnPacketUserChat> FieldOnPacketUserChat,
     IPipeline<FieldOnPacketUserEmotion> FieldOnPacketUserEmotion,
@@ -24,6 +27,19 @@ public record GameContextPipelines(
     IPipeline<FieldOnPacketUserChangeSlotPositionRequest> FieldOnPacketUserChangeSlotPositionRequest,
     IPipeline<FieldOnPacketUserSkillUpRequest> FieldOnPacketUserSkillUpRequest,
     
+    IPipeline<FieldOnPacketPartyCreateRequest> FieldOnPacketPartyCreateRequest,
+    IPipeline<FieldOnPacketPartyLeaveRequest> FieldOnPacketPartyLeaveRequest,
+    IPipeline<FieldOnPacketPartyInviteRequest> FieldOnPacketPartyInviteRequest,
+    IPipeline<FieldOnPacketPartyKickRequest> FieldOnPacketPartyKickRequest,
+    IPipeline<FieldOnPacketPartyChangeLeaderRequest> FieldOnPacketPartyChangeLeaderRequest,
+    
+    IPipeline<FieldOnPacketPartyInviteAcceptResult> FieldOnPacketPartyInviteAcceptResult,
+    IPipeline<FieldOnPacketPartyInviteRejectResult> FieldOnPacketPartyInviteRejectResult,
+    
+    IPipeline<FieldOnPacketFriendSetRequest> FieldOnPacketFriendSetRequest,
+    IPipeline<FieldOnPacketFriendAcceptRequest> FieldOnPacketFriendAcceptRequest,
+    IPipeline<FieldOnPacketFriendDeleteRequest> FieldOnPacketFriendDeleteRequest,
+
     IPipeline<FieldOnPacketNPCMove> FieldOnPacketNPCMove,
     
     IPipeline<FieldOnPacketDropPickupRequest> FieldOnPacketDropPickupRequest

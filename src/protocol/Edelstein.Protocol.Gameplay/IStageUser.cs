@@ -1,6 +1,7 @@
 ﻿using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Repositories;
 
@@ -14,6 +15,9 @@ public interface IStageUser<TStageUser> : IIdentifiable<int>, IAdapter
     IAccount? Account { get; set; }
     IAccountWorld? AccountWorld { get; set; }
     ICharacter? Character { get; set; }
+    
+    IFriendList? Friends { get; set; }
+    IPartyMembership? Party { get; set; }
 
     long Key { get; set; }
 

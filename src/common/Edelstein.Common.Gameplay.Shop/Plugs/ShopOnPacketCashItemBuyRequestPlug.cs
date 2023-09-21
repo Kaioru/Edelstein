@@ -1,10 +1,8 @@
 ﻿using Edelstein.Common.Gameplay.Models.Inventories.Items;
-using Edelstein.Common.Gameplay.Models.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Shop.Commodities;
 using Edelstein.Common.Gameplay.Shop.Types;
 using Edelstein.Common.Utilities.Packets;
-using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Shop.Commodities;
 using Edelstein.Protocol.Gameplay.Shop.Contracts;

@@ -1,6 +1,5 @@
 ﻿using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Data;
-using Edelstein.Protocol.Gameplay.Shop.Commodities.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Shop.Commodities.Templates;

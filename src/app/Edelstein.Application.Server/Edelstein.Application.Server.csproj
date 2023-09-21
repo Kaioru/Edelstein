@@ -10,6 +10,7 @@
     <PackageReference Include="Autofac" Version="7.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Foundatio.JsonNet" Version="10.6.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
@@ -33,6 +34,7 @@
     <ProjectReference Include="..\..\common\Edelstein.Common.Scripting.Lua\Edelstein.Common.Scripting.Lua.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Social\Edelstein.Common.Services.Social.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Game\Edelstein.Protocol.Gameplay.Game.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Login\Edelstein.Protocol.Gameplay.Login.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Shop\Edelstein.Protocol.Gameplay.Shop.csproj" />

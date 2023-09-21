@@ -62,7 +62,7 @@ public class CharacterRepository : ICharacterRepository
         await using var db = await _dbFactory.CreateDbContextAsync();
         return await db.Characters.AnyAsync(c => c.Name.ToLower() == name.ToLower());
     }
-
+    
     public async Task<ICharacter?> RetrieveByName(string name)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();

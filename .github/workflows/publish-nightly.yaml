@@ -90,9 +90,7 @@ jobs:
         dotnet ef migrations script --project src/common/Edelstein.Common.Database/ --output artifacts-${{ matrix.runtime }}/migrate-01-gameplay.sql --idempotent
         dotnet ef migrations script --project src/common/Edelstein.Common.Services.Auth/ --output artifacts-${{ matrix.runtime }}/migrate-02-auth.sql --idempotent
         dotnet ef migrations script --project src/common/Edelstein.Common.Services.Server/ --output artifacts-${{ matrix.runtime }}/migrate-03-server.sql --idempotent
-        dotnet ef migrations bundle --project src/common/Edelstein.Common.Database/ --output artifacts-${{ matrix.runtime }}/migrate-01-gameplay --self-contained -r ${{ matrix.runtime }}
-        dotnet ef migrations bundle --project src/common/Edelstein.Common.Services.Auth/ --output artifacts-${{ matrix.runtime }}/migrate-02-auth --self-contained -r ${{ matrix.runtime }}
-        dotnet ef migrations bundle --project src/common/Edelstein.Common.Services.Server/ --output artifacts-${{ matrix.runtime }}/migrate-03-server --self-contained -r ${{ matrix.runtime }}
+        dotnet ef migrations script --project src/common/Edelstein.Common.Services.Social/ --output artifacts-${{ matrix.runtime }}/migrate-04-social.sql --idempotent
     - name: Add VERSION, COMMIT, LICENSE, and README files
       run: |
         echo "nightly.${{ needs.setup.outputs.date }}" > artifacts-${{ matrix.runtime }}/VERSION

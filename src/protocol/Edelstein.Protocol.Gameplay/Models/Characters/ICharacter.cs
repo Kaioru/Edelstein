@@ -41,6 +41,8 @@ public interface ICharacter : IIdentifiable<int>
     int PlayTime { get; set; }
 
     short SubJob { get; set; }
+    
+    byte FriendMax { get; set; }
 
     ICharacterFuncKeys FuncKeys { get; }
     ICharacterQuickslotKeys QuickslotKeys { get; }

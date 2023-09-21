@@ -1,5 +1,4 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Shop;
 using Edelstein.Protocol.Utilities.Packets;
 

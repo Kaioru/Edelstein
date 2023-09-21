@@ -7,6 +7,7 @@ using Edelstein.Common.Database.Repositories;
 using Edelstein.Common.Scripting.Lua;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Server;
+using Edelstein.Common.Services.Social;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Common.Utilities.Tickers;
 using Edelstein.Protocol.Data;
@@ -14,16 +15,18 @@ using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Scripting;
 using Edelstein.Protocol.Services.Auth;
-using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
-using Edelstein.Protocol.Services.Session;
+using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Utilities.Templates;
 using Edelstein.Protocol.Utilities.Tickers;
+using Foundatio.Messaging;
+using Foundatio.Serializer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Serilog;
 
 await Host.CreateDefaultBuilder(args)
@@ -47,6 +50,14 @@ await Host.CreateDefaultBuilder(args)
             o.UseNpgsql(ctx.Configuration.GetConnectionString(ServerDbContext.ConnectionStringKey)));
         services.AddDbContextFactory<GameplayDbContext>(o =>
             o.UseNpgsql(ctx.Configuration.GetConnectionString(GameplayDbContext.ConnectionStringKey)));
+        services.AddDbContextFactory<SocialDbContext>(o =>
+            o.UseNpgsql(ctx.Configuration.GetConnectionString(SocialDbContext.ConnectionStringKey)));
+
+        services.AddSingleton<IMessageBus>(new InMemoryMessageBus(
+            new InMemoryMessageBusOptions
+            {
+                Serializer = new JsonNetSerializer(new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.All})
+            }));
 
         services.AddSingleton<IAccountRepository, AccountRepository>();
         services.AddSingleton<IAccountWorldRepository, AccountWorldRepository>();
@@ -56,6 +67,9 @@ await Host.CreateDefaultBuilder(args)
         services.AddSingleton<IServerService, ServerService>();
         services.AddSingleton<ISessionService, SessionService>();
         services.AddSingleton<IMigrationService, MigrationService>();
+        
+        services.AddSingleton<IFriendService, FriendService>();
+        services.AddSingleton<IPartyService, PartyService>();
     })
     .ConfigureServices((ctx, services) =>
     {
