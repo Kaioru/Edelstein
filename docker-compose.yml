@@ -32,7 +32,10 @@ services:
     environment:
       - HOST__LOGINSTAGES__0__HOST=${HOST:-127.0.0.1}
       - HOST__GAMESTAGES__0__HOST=${HOST:-127.0.0.1}
+      - HOST__SHOPSTAGES__0__HOST=${HOST:-127.0.0.1}
+      - HOST__TRADESTAGES__0__HOST=${HOST:-127.0.0.1}
       - HOST__MIGRATEDATABASEONINIT=true
       - CONNECTIONSTRINGS__AUTH=host=db;username=postgres;password=password;database=edelstein
       - CONNECTIONSTRINGS__SERVER=host=db;username=postgres;password=password;database=edelstein
       - CONNECTIONSTRINGS__GAMEPLAY=host=db;username=postgres;password=password;database=edelstein
+      - CONNECTIONSTRINGS__SOCIAL=host=db;username=postgres;password=password;database=edelstein
