@@ -75,6 +75,29 @@ public class PartyService : IPartyService
             return new PartyResponse(PartyResult.FailedUnknown);
         }
     }
+    
+    public async Task<PartyResponse> Disband(PartyDisbandRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            
+            if (!await db.Parties.AnyAsync(p => p.ID == request.PartyID && p.BossCharacterID == request.CharacterID))
+                return new PartyResponse(PartyResult.FailedNotBoss);
+            await db.Parties
+                .Where(p => p.ID == request.PartyID)
+                .ExecuteDeleteAsync();
+            await _messaging.PublishAsync(new NotifyPartyDisbanded(
+                request.CharacterID,
+                request.PartyID
+            ));
+            return new PartyResponse(PartyResult.Success);
+        }
+        catch (Exception)
+        {
+            return new PartyResponse(PartyResult.FailedUnknown);
+        }
+    }
 
     public async Task<PartyResponse> UpdateChannelOrField(PartyUpdateChannelOrFieldRequest request)
     {

@@ -7,6 +7,7 @@ public interface IPartyService
     Task<PartyLoadResponse> Load(PartyLoadRequest request);
 
     Task<PartyResponse> Create(PartyCreateRequest request);
+    Task<PartyResponse> Disband(PartyDisbandRequest request);
 
     Task<PartyResponse> UpdateChannelOrField(PartyUpdateChannelOrFieldRequest request);
     Task<PartyResponse> UpdateLevelOrJob(PartyUpdateLevelOrJobRequest request);

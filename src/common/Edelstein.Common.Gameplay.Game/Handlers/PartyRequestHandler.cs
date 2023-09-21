@@ -26,6 +26,10 @@ public class PartyRequestHandler : AbstractFieldHandler
                 return user.StageUser.Context.Pipelines.FieldOnPacketPartyCreateRequest.Process(new FieldOnPacketPartyCreateRequest(
                     user
                 ));
+            case PartyRequestOperations.LeaveParty:
+                return user.StageUser.Context.Pipelines.FieldOnPacketPartyLeaveRequest.Process(new FieldOnPacketPartyLeaveRequest(
+                    user
+                ));
             default:
                 _logger.LogWarning("Unhandled party request type {Type}", type);
                 break;

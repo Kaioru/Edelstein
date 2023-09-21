@@ -28,6 +28,7 @@ public record GameContextPipelines(
     IPipeline<FieldOnPacketUserSkillUpRequest> FieldOnPacketUserSkillUpRequest,
     
     IPipeline<FieldOnPacketPartyCreateRequest> FieldOnPacketPartyCreateRequest,
+    IPipeline<FieldOnPacketPartyLeaveRequest> FieldOnPacketPartyLeaveRequest,
     
     IPipeline<FriendOnPacketFriendSetRequest> FriendOnPacketFriendSetRequest,
     IPipeline<FriendOnPacketFriendAcceptRequest> FriendOnPacketFriendAcceptRequest,
