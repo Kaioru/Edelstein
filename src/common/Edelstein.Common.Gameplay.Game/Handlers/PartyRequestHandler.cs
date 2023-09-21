@@ -35,6 +35,16 @@ public class PartyRequestHandler : AbstractFieldHandler
                     user,
                     reader.ReadString()
                 ));
+            case PartyRequestOperations.KickParty:
+                return user.StageUser.Context.Pipelines.FieldOnPacketPartyKickRequest.Process(new FieldOnPacketPartyKickRequest(
+                    user,
+                    reader.ReadInt()
+                ));
+            case PartyRequestOperations.ChangePartyLeader:
+                return user.StageUser.Context.Pipelines.FieldOnPacketPartyChangeLeaderRequest.Process(new FieldOnPacketPartyChangeLeaderRequest(
+                    user,
+                    reader.ReadInt()
+                ));
             default:
                 _logger.LogWarning("Unhandled party request type {Type}", type);
                 break;

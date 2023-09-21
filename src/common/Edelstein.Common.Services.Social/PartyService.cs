@@ -102,6 +102,31 @@ public class PartyService : IPartyService
         }
     }
     
+    public async Task<PartyResponse> Leave(PartyLeaveRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            
+            if (await db.Parties.AnyAsync(p => p.ID == request.PartyID && p.BossCharacterID == request.CharacterID))
+                return new PartyResponse(PartyResult.FailedIsBoss);
+            await db.PartyMembers
+                .Where(p => p.PartyID == request.PartyID && p.CharacterID == request.CharacterID)
+                .ExecuteDeleteAsync();
+            await _messaging.PublishAsync(new NotifyPartyMemberWithdrawn(
+                request.PartyID,
+                request.CharacterID,
+                request.CharacterName,
+                false
+            ));
+            return new PartyResponse(PartyResult.Success);
+        }
+        catch (Exception)
+        {
+            return new PartyResponse(PartyResult.FailedUnknown);
+        }
+    }
+
     public async Task<PartyResponse> Invite(PartyInviteRequest request)
     {
         try
@@ -216,6 +241,37 @@ public class PartyService : IPartyService
                 return new PartyResponse(PartyResult.FailedNotInvited);
             db.PartyInvitations.Remove(invitation);
             await db.SaveChangesAsync();
+            return new PartyResponse(PartyResult.Success);
+        }
+        catch (Exception)
+        {
+            return new PartyResponse(PartyResult.FailedUnknown);
+        }
+    }
+    public async Task<PartyResponse> Kick(PartyKickRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            
+            if (request.BossID == request.CharacterID)
+                return new PartyResponse(PartyResult.FailedSelf);
+            if (!await db.Parties.AnyAsync(p => p.ID == request.PartyID && p.BossCharacterID == request.BossID))
+                return new PartyResponse(PartyResult.FailedNotBoss);
+            var partyMember = db.PartyMembers
+                .FirstOrDefault(p => p.PartyID == request.PartyID && p.CharacterID == request.CharacterID);
+            
+            if (partyMember == null)
+                return new PartyResponse(PartyResult.FailedNotInParty);
+
+            db.Remove(partyMember);
+            await db.SaveChangesAsync();
+            await _messaging.PublishAsync(new NotifyPartyMemberWithdrawn(
+                request.PartyID,
+                request.CharacterID,
+                partyMember.CharacterName,
+                true
+            ));
             return new PartyResponse(PartyResult.Success);
         }
         catch (Exception)

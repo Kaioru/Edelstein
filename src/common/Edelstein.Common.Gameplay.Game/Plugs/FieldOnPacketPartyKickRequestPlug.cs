@@ -7,22 +7,17 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Plugs;
 
-public class FieldOnPacketPartyLeaveRequestPlug : IPipelinePlug<FieldOnPacketPartyLeaveRequest>
+public class FieldOnPacketPartyKickRequestPlug : IPipelinePlug<FieldOnPacketPartyKickRequest>
 {
-    public async Task Handle(IPipelineContext ctx, FieldOnPacketPartyLeaveRequest message)
+    public async Task Handle(IPipelineContext ctx, FieldOnPacketPartyKickRequest message)
     {
         if (message.User.StageUser.Party == null) return;
         
-        var response = message.User.Character.ID == message.User.StageUser.Party.BossCharacterID
-            ? await message.User.StageUser.Context.Services.Party.Disband(new PartyDisbandRequest(
-                message.User.Character.ID,
-                message.User.StageUser.Party.ID
-            ))
-            : await message.User.StageUser.Context.Services.Party.Leave(new PartyLeaveRequest(
-                message.User.Character.ID,
-                message.User.Character.Name,
-                message.User.StageUser.Party.ID
-            ));
+        var response = await message.User.StageUser.Context.Services.Party.Kick(new PartyKickRequest(
+            message.User.Character.ID,
+            message.User.StageUser.Party.ID,
+            message.CharacterID
+        ));
         
         if (response.Result == PartyResult.Success) return;
         
