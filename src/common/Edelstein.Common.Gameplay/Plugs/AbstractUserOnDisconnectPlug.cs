@@ -56,12 +56,30 @@ public abstract class AbstractUserOnDisconnectPlug<TStageUser> : IPipelinePlug<U
                     -1
                 ));
                 if (message.User.Party != null)
+                {
+                    if (message.User.Character.ID == message.User.Party.BossCharacterID)
+                    {
+                        var nextPartyBoss = message.User.Party.Members.Values
+                            .Where(m => m.CharacterID != message.User.Character.ID)
+                            .Where(m => m.ChannelID >= 0)
+                            .MaxBy(m => m.Level);
+
+                        if (nextPartyBoss != null)
+                            _ = _partyService.ChangeBoss(new PartyChangeBossRequest(
+                                message.User.Character.ID,
+                                message.User.Party.ID,
+                                nextPartyBoss.CharacterID,
+                                true
+                            ));
+                    }
+                    
                     _ = _partyService.UpdateChannelOrField(new PartyUpdateChannelOrFieldRequest(
                         message.User.Party.ID,
                         message.User.Character.ID,
                         -2,
                         999999999
                     ));
+                }
             }
 
             await _characterRepository.Update(message.User.Character);
