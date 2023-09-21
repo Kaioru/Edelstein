@@ -8,5 +8,6 @@ public class PartyEntity : IParty
     
     public int BossCharacterID { get; set; }
 
+    public ICollection<PartyInvitationEntity> Invitations { get; set; } = new List<PartyInvitationEntity>();
     public ICollection<PartyMemberEntity> Members { get; set; } = new List<PartyMemberEntity>();
 }

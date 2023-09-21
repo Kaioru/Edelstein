@@ -15,6 +15,7 @@ public class SocialDbContext : DbContext
     public DbSet<FriendEntity> Friends { get; set; }
     public DbSet<FriendProfileEntity> FriendProfiles { get; set; }
     public DbSet<PartyEntity> Parties { get; set; }
+    public DbSet<PartyInvitationEntity> PartyInvitations { get; set; }
     public DbSet<PartyMemberEntity> PartyMembers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
