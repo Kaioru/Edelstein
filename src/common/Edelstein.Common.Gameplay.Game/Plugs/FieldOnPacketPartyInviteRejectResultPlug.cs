@@ -7,17 +7,13 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Plugs;
 
-public class FieldOnPacketPartyInviteAcceptResultPlug : IPipelinePlug<FieldOnPacketPartyInviteAcceptResult>
+public class FieldOnPacketPartyInviteRejectResultPlug : IPipelinePlug<FieldOnPacketPartyInviteRejectResult>
 {
-    public async Task Handle(IPipelineContext ctx, FieldOnPacketPartyInviteAcceptResult message)
+    public async Task Handle(IPipelineContext ctx, FieldOnPacketPartyInviteRejectResult message)
     {
-        var response = await message.User.StageUser.Context.Services.Party.InviteAccept(new PartyInviteAcceptRequest(
+        var response = await message.User.StageUser.Context.Services.Party.InviteReject(new PartyInviteRejectRequest(
             message.User.Character.ID,
             message.User.Character.Name,
-            message.User.Character.Job,
-            message.User.Character.Level,
-            message.User.StageUser.Context.Options.ChannelID,
-            message.User.Field?.ID ?? 999999999,
             message.PartyID
         ));
         
@@ -25,8 +21,6 @@ public class FieldOnPacketPartyInviteAcceptResultPlug : IPipelinePlug<FieldOnPac
         
         var result = response.Result switch
         {
-            PartyResult.FailedFull => PartyResultOperations.JoinPartyAlreadyFull,
-            PartyResult.FailedAlreadyInParty => PartyResultOperations.JoinPartyAlreadyJoined,
             _ => PartyResultOperations.JoinPartyUnknown
         };
         var p = new PacketWriter(PacketSendOperations.PartyResult);

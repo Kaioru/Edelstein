@@ -2,5 +2,6 @@
 
 public record PartyInviteRejectRequest(
     int CharacterID,
+    string CharacterName,
     int PartyID
 );

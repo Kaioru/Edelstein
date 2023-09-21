@@ -198,9 +198,8 @@ public class PartyService : IPartyService
             ));
             return new PartyResponse(PartyResult.Success);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine(e);
             return new PartyResponse(PartyResult.FailedUnknown);
         }
     }
@@ -210,6 +209,13 @@ public class PartyService : IPartyService
         try
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
+            var now = DateTime.UtcNow;
+            var invitation = await db.PartyInvitations
+                .FirstOrDefaultAsync(i => i.PartyID == request.PartyID && i.CharacterID == request.CharacterID);
+            if (invitation == null || invitation.DateExpire < now)
+                return new PartyResponse(PartyResult.FailedNotInvited);
+            db.PartyInvitations.Remove(invitation);
+            await db.SaveChangesAsync();
             return new PartyResponse(PartyResult.Success);
         }
         catch (Exception)
