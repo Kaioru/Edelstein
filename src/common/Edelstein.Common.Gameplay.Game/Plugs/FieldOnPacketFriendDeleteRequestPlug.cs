@@ -8,13 +8,13 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Plugs;
 
-public class FriendOnPacketFriendDeleteRequestPlug : IPipelinePlug<FriendOnPacketFriendDeleteRequest>
+public class FieldOnPacketFriendDeleteRequestPlug : IPipelinePlug<FieldOnPacketFriendDeleteRequest>
 {
     private readonly IFriendService _service;
     
-    public FriendOnPacketFriendDeleteRequestPlug(IFriendService service) => _service = service;
+    public FieldOnPacketFriendDeleteRequestPlug(IFriendService service) => _service = service;
     
-    public async Task Handle(IPipelineContext ctx, FriendOnPacketFriendDeleteRequest message)
+    public async Task Handle(IPipelineContext ctx, FieldOnPacketFriendDeleteRequest message)
     {
         var response = await _service.Delete(new FriendDeleteRequest(
             message.User.Character.ID,

@@ -8,13 +8,13 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Plugs;
 
-public class FriendOnPacketFriendAcceptRequestPlug : IPipelinePlug<FriendOnPacketFriendAcceptRequest>
+public class FieldOnPacketFriendAcceptRequestPlug : IPipelinePlug<FieldOnPacketFriendAcceptRequest>
 {
     private readonly IFriendService _service;
     
-    public FriendOnPacketFriendAcceptRequestPlug(IFriendService service) => _service = service;
+    public FieldOnPacketFriendAcceptRequestPlug(IFriendService service) => _service = service;
     
-    public async Task Handle(IPipelineContext ctx, FriendOnPacketFriendAcceptRequest message)
+    public async Task Handle(IPipelineContext ctx, FieldOnPacketFriendAcceptRequest message)
     {
         var response = await _service.InviteAccept(new FriendInviteAcceptRequest(
             message.FriendID,

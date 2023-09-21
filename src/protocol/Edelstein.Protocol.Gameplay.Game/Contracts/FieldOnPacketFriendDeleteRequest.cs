@@ -2,8 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Game.Contracts;
 
-public record FriendOnPacketFriendSetRequest(
+public record FieldOnPacketFriendDeleteRequest(
     IFieldUser User,
-    string FriendName,
-    string FriendGroup
+    int FriendID
 );

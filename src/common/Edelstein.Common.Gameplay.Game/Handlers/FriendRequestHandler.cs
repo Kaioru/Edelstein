@@ -22,18 +22,18 @@ public class FriendRequestHandler : AbstractFieldHandler
         switch (type)
         {
             case FriendRequestOperations.SetFriend:
-                return user.StageUser.Context.Pipelines.FriendOnPacketFriendSetRequest.Process(new FriendOnPacketFriendSetRequest(
+                return user.StageUser.Context.Pipelines.FriendOnPacketFriendSetRequest.Process(new FieldOnPacketFriendSetRequest(
                     user,
                     reader.ReadString(),
                     reader.ReadString()
                 ));
             case FriendRequestOperations.AcceptFriend:
-                return user.StageUser.Context.Pipelines.FriendOnPacketFriendAcceptRequest.Process(new FriendOnPacketFriendAcceptRequest(
+                return user.StageUser.Context.Pipelines.FriendOnPacketFriendAcceptRequest.Process(new FieldOnPacketFriendAcceptRequest(
                     user,
                     reader.ReadInt()
                 ));
             case FriendRequestOperations.DeleteFriend:
-                return user.StageUser.Context.Pipelines.FriendOnPacketFriendDeleteRequest.Process(new FriendOnPacketFriendDeleteRequest(
+                return user.StageUser.Context.Pipelines.FriendOnPacketFriendDeleteRequest.Process(new FieldOnPacketFriendDeleteRequest(
                     user,
                     reader.ReadInt()
                 ));
