@@ -8,7 +8,7 @@ public interface IFriendService
 
     Task<FriendResponse> Invite(FriendInviteRequest request);
     Task<FriendResponse> InviteAccept(FriendInviteAcceptRequest request);
-    Task<FriendResponse> InviteReject(FriendInviteRejectRequest request);
+    Task<FriendResponse> Delete(FriendDeleteRequest request);
 
     Task<FriendResponse> UpdateProfile(FriendProfileRequest request);
     Task<FriendResponse> UpdateChannel(FriendUpdateChannelRequest request);

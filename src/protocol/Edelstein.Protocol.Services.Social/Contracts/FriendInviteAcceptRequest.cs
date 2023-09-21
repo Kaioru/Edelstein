@@ -2,6 +2,6 @@
 
 public record FriendInviteAcceptRequest(
     int InviterID,
-    int CharacterID,
+    int FriendID,
     int ChannelID
 );

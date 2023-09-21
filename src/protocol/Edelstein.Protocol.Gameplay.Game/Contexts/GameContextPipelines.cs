@@ -27,6 +27,10 @@ public record GameContextPipelines(
     IPipeline<FieldOnPacketUserChangeSlotPositionRequest> FieldOnPacketUserChangeSlotPositionRequest,
     IPipeline<FieldOnPacketUserSkillUpRequest> FieldOnPacketUserSkillUpRequest,
     
+    IPipeline<FriendOnPacketFriendSetRequest> FriendOnPacketFriendSetRequest,
+    IPipeline<FriendOnPacketFriendAcceptRequest> FriendOnPacketFriendAcceptRequest,
+    IPipeline<FriendOnPacketFriendDeleteRequest> FriendOnPacketFriendDeleteRequest,
+
     IPipeline<FieldOnPacketNPCMove> FieldOnPacketNPCMove,
     
     IPipeline<FieldOnPacketDropPickupRequest> FieldOnPacketDropPickupRequest

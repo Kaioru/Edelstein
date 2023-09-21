@@ -7,7 +7,9 @@ public enum FriendResult
     FailedUnknown = 0x2,
     FailedCharacterNotFound = 0x3,
     FailedAlreadyAdded = 0x4,
-    FailedMaxSlot = 0x5,
-    FailedNotInvited = 0x6,
-    FailedMaster = 0x7
+    FailedMaxSlotMe = 0x5,
+    FailedMaxSlotOther = 0x6,
+    FailedNotInvited = 0x7,
+    FailedMaster = 0x8,
+    FailedSelf = 0x9
 }

@@ -6,6 +6,6 @@ public record FriendInviteRequest(
     int InviterLevel,
     int InviterJob,
     int InviterChannelID,
-    string FriendGroup,
-    string FriendName
+    string FriendName,
+    string FriendGroup
 );
