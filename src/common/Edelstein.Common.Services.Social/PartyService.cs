@@ -154,6 +154,69 @@ public class PartyService : IPartyService
             return new PartyResponse(PartyResult.FailedUnknown);
         }
     }
+    
+    public async Task<PartyResponse> InviteAccept(PartyInviteAcceptRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            var now = DateTime.UtcNow;
+            var invitation = await db.PartyInvitations
+                .FirstOrDefaultAsync(i => i.PartyID == request.PartyID && i.CharacterID == request.CharacterID);
+            
+            if (invitation == null || invitation.DateExpire < now)
+                return new PartyResponse(PartyResult.FailedNotInvited);
+            if (await db.PartyMembers.AnyAsync(m => m.PartyID == request.PartyID && m.CharacterID == request.CharacterID))
+                return new PartyResponse(PartyResult.FailedAlreadyInParty);
+            if (await db.PartyMembers.Where(m => m.PartyID == request.PartyID).CountAsync() >= 6)
+                return new PartyResponse(PartyResult.FailedFull);
+            
+            var partyMember = new PartyMemberEntity
+            {
+                PartyID = request.PartyID,
+                CharacterID = request.CharacterID,
+                CharacterName = request.CharacterName,
+                Job = request.Job,
+                Level = request.Level,
+                ChannelID = request.ChannelID,
+                FieldID = request.FieldID
+            };
+
+            db.PartyInvitations.Remove(invitation);
+            await db.PartyMembers.AddAsync(partyMember);
+            await db.SaveChangesAsync();
+
+            partyMember = await db.PartyMembers
+                .Include(m => m.Party)
+                .ThenInclude(p => p.Members)
+                .FirstAsync(m => m.PartyID == request.PartyID && m.CharacterID == request.CharacterID);
+            
+            await _messaging.PublishAsync(new NotifyPartyMemberJoined(
+                request.PartyID,
+                new PartyMembership(partyMember),
+                new PartyMembershipMember(partyMember)
+            ));
+            return new PartyResponse(PartyResult.Success);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return new PartyResponse(PartyResult.FailedUnknown);
+        }
+    }
+
+    public async Task<PartyResponse> InviteReject(PartyInviteRejectRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            return new PartyResponse(PartyResult.Success);
+        }
+        catch (Exception)
+        {
+            return new PartyResponse(PartyResult.FailedUnknown);
+        }
+    }
 
     public async Task<PartyResponse> UpdateChannelOrField(PartyUpdateChannelOrFieldRequest request)
     {

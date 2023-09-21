@@ -9,5 +9,7 @@ public enum PartyResult
     FailedNotBoss = 0x4,
     FailedCharacterNotFound = 0x5,
     FailedSelf = 0x6,
-    FailedAlreadyInvited = 0x7
+    FailedAlreadyInvited = 0x7,
+    FailedNotInvited = 0x8,
+    FailedFull = 0x9
 }

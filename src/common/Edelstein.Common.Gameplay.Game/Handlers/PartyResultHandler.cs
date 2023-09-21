@@ -21,6 +21,16 @@ public class PartyResultHandler : AbstractFieldHandler
 
         switch (type)
         {
+            case PartyResultOperations.InvitePartyAccepted:
+                return user.StageUser.Context.Pipelines.FieldOnPacketPartyInviteAcceptResult.Process(new FieldOnPacketPartyInviteAcceptResult(
+                    user,
+                    reader.ReadInt()
+                ));
+            case PartyResultOperations.InvitePartyRejected:
+                return user.StageUser.Context.Pipelines.FieldOnPacketPartyInviteRejectResult.Process(new FieldOnPacketPartyInviteRejectResult(
+                    user,
+                    reader.ReadInt()
+                ));
             default:
                 _logger.LogWarning("Unhandled party result type {Type}", type);
                 break;
