@@ -110,9 +110,25 @@ public static class CharacterPackets
 
         if (flags.HasFlag(DbFlags.SkillCooltime)) writer.WriteShort(0);
 
-        if (flags.HasFlag(DbFlags.QuestRecord)) writer.WriteShort(0);
+        if (flags.HasFlag(DbFlags.QuestRecord))
+        {
+            writer.WriteShort((short)character.QuestRecords.Records.Count);
+            foreach (var kv in character.QuestRecords.Records)
+            {
+                writer.WriteShort((short)kv.Key);
+                writer.WriteString(kv.Value.Value);
+            }
+        }
 
-        if (flags.HasFlag(DbFlags.QuestComplete)) writer.WriteShort(0);
+        if (flags.HasFlag(DbFlags.QuestComplete))
+        {
+            writer.WriteShort((short)character.QuestCompletes.Records.Count);
+            foreach (var kv in character.QuestCompletes.Records)
+            {
+                writer.WriteShort((short)kv.Key);
+                writer.WriteDateTime(kv.Value.DateFinish);
+            }
+        }
 
         if (flags.HasFlag(DbFlags.MinigameRecord)) writer.WriteShort(0);
 
@@ -131,10 +147,18 @@ public static class CharacterPackets
 
         if (flags.HasFlag(DbFlags.NewYearCard)) writer.WriteShort(0);
 
-        if (flags.HasFlag(DbFlags.QuestRecordEx)) writer.WriteShort(0);
+        if (flags.HasFlag(DbFlags.QuestRecordEx))
+        {
+            writer.WriteShort((short)character.QuestRecordsEx.Records.Count);
+            foreach (var kv in character.QuestRecordsEx.Records)
+            {
+                writer.WriteShort((short)kv.Key);
+                writer.WriteString(kv.Value.Value);
+            }
+        }
 
         if (flags.HasFlag(DbFlags.WildHunterInfo))
-            if (character.Job / 100 == 33)
+            if (JobConstants.GetJobRace(character.Job) == 3 && JobConstants.GetJobType(character.Job) == 3)
             {
                 writer.WriteByte(character.WildHunterInfo.RidingType);
                 for (var i = 0; i < 5; i++) 

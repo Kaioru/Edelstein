@@ -53,6 +53,22 @@ public class CharacterConfiguration : IEntityTypeConfiguration<CharacterEntity>
             .HasConversion<JsonConverter<ICharacterSkills>>()
             .HasDefaultValue(new CharacterSkills());
         builder
+            .Property(e => e.QuestCompletes)
+            .HasColumnType("json")
+            .HasConversion<JsonConverter<ICharacterQuestCompletes>>()
+            .HasDefaultValue(new CharacterQuestCompletes());
+        builder
+            .Property(e => e.QuestRecords)
+            .HasColumnType("json")
+            .HasConversion<JsonConverter<ICharacterQuestRecords>>()
+            .HasDefaultValue(new CharacterQuestRecords());
+        builder
+            .Property(e => e.QuestRecordsEx)
+            .HasColumnType("json")
+            .HasConversion<JsonConverter<ICharacterQuestRecordsEx>>()
+            .HasDefaultValue(new CharacterQuestRecordsEx());
+        
+        builder
             .Property(e => e.WildHunterInfo)
             .HasColumnType("json")
             .HasConversion<JsonConverter<ICharacterWildHunterInfo>>()

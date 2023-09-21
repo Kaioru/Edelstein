@@ -52,6 +52,10 @@ public record Character : ICharacter
 
     public ICharacterInventories Inventories { get; private set; } = new CharacterInventories();
     public ICharacterSkills Skills { get; private set; } = new CharacterSkills();
+    public ICharacterQuestCompletes QuestCompletes { get; private set; } = new CharacterQuestCompletes();
+    public ICharacterQuestRecords QuestRecords { get; private set; } = new CharacterQuestRecords();
+    public ICharacterQuestRecordsEx QuestRecordsEx { get; private set; } = new CharacterQuestRecordsEx();
+    
     public ICharacterWildHunterInfo WildHunterInfo { get; private set; } = new CharacterWildHunterInfo();
 
     public ICharacterTemporaryStats TemporaryStats { get; private set; } = new CharacterTemporaryStats();

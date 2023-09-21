@@ -51,6 +51,10 @@ public interface ICharacter : IIdentifiable<int>
 
     ICharacterInventories Inventories { get; }
     ICharacterSkills Skills { get; }
+    ICharacterQuestCompletes QuestCompletes { get; }
+    ICharacterQuestRecords QuestRecords { get; }
+    ICharacterQuestRecordsEx QuestRecordsEx { get; }
+    
     ICharacterWildHunterInfo WildHunterInfo { get; }
 
     ICharacterTemporaryStats TemporaryStats { get; }
