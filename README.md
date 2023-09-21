@@ -19,7 +19,7 @@ A v.95.1 Mushroom game server emulator written in C#.
 
 #### Update configuration and migrations
 5. Edit the `appsettings.json` file to the appropriate settings
-6. Run the scripts in with the `migrate` prefix in sequence (Use either the bundled binary files or SQL scripts)
+6. Run the scripts in with the `migrate` prefix in sequence
 
 #### Running the server
 7. Run the `Edelstein.Daemon.Server` executable
