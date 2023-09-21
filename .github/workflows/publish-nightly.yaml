@@ -63,7 +63,7 @@ jobs:
     if: ${{ needs.setup.outputs.should_run != 'false' }}
     strategy:
       matrix:
-        runtime: [win-x64, osx-x64, linux-x64]
+        runtime: [win-x64, win-arm64, osx-x64, osx-arm64, linux-x64, linux-arm64]
     runs-on: ubuntu-latest
     name: Publish artifacts (${{ matrix.runtime }})
     steps:
