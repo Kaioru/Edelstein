@@ -29,6 +29,7 @@ public record GameContextPipelines(
     
     IPipeline<FieldOnPacketPartyCreateRequest> FieldOnPacketPartyCreateRequest,
     IPipeline<FieldOnPacketPartyLeaveRequest> FieldOnPacketPartyLeaveRequest,
+    IPipeline<FieldOnPacketPartyInviteRequest> FieldOnPacketPartyInviteRequest,
     
     IPipeline<FriendOnPacketFriendSetRequest> FriendOnPacketFriendSetRequest,
     IPipeline<FriendOnPacketFriendAcceptRequest> FriendOnPacketFriendAcceptRequest,

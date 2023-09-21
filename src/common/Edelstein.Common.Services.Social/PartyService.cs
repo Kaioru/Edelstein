@@ -1,5 +1,6 @@
 ﻿using Edelstein.Common.Services.Social.Entities;
 using Edelstein.Protocol.Gameplay.Contracts;
+using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Services.Social.Contracts;
 using Foundatio.Messaging;
@@ -11,11 +12,13 @@ public class PartyService : IPartyService
 {
     private readonly IDbContextFactory<SocialDbContext> _dbFactory;
     private readonly IMessageBus _messaging;
+    private readonly ICharacterRepository _characterRepository;
 
-    public PartyService(IDbContextFactory<SocialDbContext> dbFactory, IMessageBus messaging)
+    public PartyService(IDbContextFactory<SocialDbContext> dbFactory, IMessageBus messaging, ICharacterRepository characterRepository)
     {
         _dbFactory = dbFactory;
         _messaging = messaging;
+        _characterRepository = characterRepository;
     }
 
     public async Task<PartyLoadResponse> Load(PartyLoadRequest request)
@@ -75,7 +78,7 @@ public class PartyService : IPartyService
             return new PartyResponse(PartyResult.FailedUnknown);
         }
     }
-    
+
     public async Task<PartyResponse> Disband(PartyDisbandRequest request)
     {
         try
@@ -90,6 +93,59 @@ public class PartyService : IPartyService
             await _messaging.PublishAsync(new NotifyPartyDisbanded(
                 request.CharacterID,
                 request.PartyID
+            ));
+            return new PartyResponse(PartyResult.Success);
+        }
+        catch (Exception)
+        {
+            return new PartyResponse(PartyResult.FailedUnknown);
+        }
+    }
+    
+    public async Task<PartyResponse> Invite(PartyInviteRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            
+            if (!await db.Parties.AnyAsync(p => p.ID == request.PartyID && p.BossCharacterID == request.InviterID))
+                return new PartyResponse(PartyResult.FailedNotBoss);
+            
+            var target = await _characterRepository.RetrieveByName(request.CharacterName);
+            var now = DateTime.UtcNow;
+            
+            if (target == null)
+                return new PartyResponse(PartyResult.FailedCharacterNotFound);
+            
+            if (request.InviterID == target.ID)
+                return new PartyResponse(PartyResult.FailedSelf);
+            
+            if (await db.PartyMembers.AnyAsync(m => m.CharacterID == target.ID))
+                return new PartyResponse(PartyResult.FailedAlreadyInParty);
+
+            if (await db.PartyInvitations.AnyAsync(i =>
+                    i.PartyID == request.PartyID &&
+                    i.CharacterID == target.ID &&
+                    i.DateExpire > now))
+                return new PartyResponse(PartyResult.FailedAlreadyInvited);
+            
+            await db.PartyInvitations
+                .Where(i => i.PartyID == request.PartyID && i.CharacterID == target.ID)
+                .ExecuteDeleteAsync();
+            await db.PartyInvitations.AddAsync(new PartyInvitationEntity
+            {
+                PartyID = request.PartyID,
+                CharacterID = target.ID,
+                DateExpire = now.AddMinutes(3)
+            });
+            await db.SaveChangesAsync();
+            await _messaging.PublishAsync(new NotifyPartyMemberInvited(
+                request.InviterID,
+                request.InviterName,
+                request.InviterLevel,
+                request.InviterJob,
+                request.PartyID,
+                target.ID
             ));
             return new PartyResponse(PartyResult.Success);
         }
