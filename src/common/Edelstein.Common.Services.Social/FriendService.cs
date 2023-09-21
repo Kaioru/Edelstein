@@ -55,14 +55,17 @@ public class FriendService : IFriendService
                     f.CharacterID == request.InviterID && f.FriendID == target.ID || 
                     f.CharacterID == target.ID && f.FriendID == request.InviterID))
                 return new FriendResponse(FriendResult.FailedAlreadyAdded);
-
+            
+            if (await db.FriendProfiles.AnyAsync(p => p.CharacterID == request.InviterID && p.IsMaster ) ||
+                await db.FriendProfiles.AnyAsync(p => p.CharacterID == target.ID && p.IsMaster))
+                return new FriendResponse(FriendResult.FailedMaster);
+            
             var inviterFriendCount = await db.Friends.CountAsync(f => f.CharacterID == request.InviterID);
             var targetFriendCount = await db.Friends.CountAsync(f => f.CharacterID == target.ID);
             
-            /*
-            if (await db.FriendProfiles.AnyAsync(p => p.CharacterID == request.InviterID && p.FriendMax >= inviterFriendCount) ||
-                await db.FriendProfiles.AnyAsync(p => p.CharacterID == target.ID && p.FriendMax >= targetFriendCount))
-                return new FriendResponse(FriendResult.FailedMaxSlot);*/
+            if (await db.FriendProfiles.AnyAsync(p => p.CharacterID == request.InviterID && inviterFriendCount >= p.FriendMax ) ||
+                await db.FriendProfiles.AnyAsync(p => p.CharacterID == target.ID && targetFriendCount >= p.FriendMax))
+                return new FriendResponse(FriendResult.FailedMaxSlot);
             
             var record1 = new FriendEntity
             {
@@ -106,6 +109,100 @@ public class FriendService : IFriendService
                 request.InviterJob,
                 target.ID,
                 record2
+            ));
+            return new FriendResponse(FriendResult.Success);
+        }
+        catch (Exception)
+        {
+            return new FriendResponse(FriendResult.FailedUnknown);
+        }
+    }
+    public async Task<FriendResponse> InviteAccept(FriendInviteAcceptRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            var record1 = await db.Friends
+                .FirstOrDefaultAsync(f => f.CharacterID == request.CharacterID && f.FriendID == request.InviterID);
+            var record2 = await db.Friends
+                .FirstOrDefaultAsync(f => f.CharacterID == request.InviterID && f.FriendID == request.CharacterID);
+            
+            if (record1 == null || record2 == null)
+                return new FriendResponse(FriendResult.FailedNotInvited);
+
+            record1.Flag = 0;
+            record2.Flag = 0;
+            record2.ChannelID = request.ChannelID;
+            db.Update(record1);
+            db.Update(record2);
+            await db.SaveChangesAsync();
+
+            var friends1 = db.Friends
+                .Where(f => f.CharacterID == request.CharacterID)
+                .ToDictionary(
+                    f => f.FriendID,
+                    f => (IFriend)f
+                );
+            var friends2 = db.Friends
+                .Where(f => f.CharacterID == request.InviterID)
+                .ToDictionary(
+                    f => f.FriendID,
+                    f => (IFriend)f
+                );
+            
+            await _messaging.PublishAsync(new NotifyFriendUpdateList(
+                request.CharacterID,
+                new FriendList(friends1)
+            ));
+            await _messaging.PublishAsync(new NotifyFriendUpdateList(
+                request.InviterID,
+                new FriendList(friends2)
+            ));
+            return new FriendResponse(FriendResult.Success);
+        }
+        catch (Exception)
+        {
+            return new FriendResponse(FriendResult.FailedUnknown);
+        }
+    }
+
+    public async Task<FriendResponse> InviteReject(FriendInviteRejectRequest request)
+    {
+        try
+        {
+            await using var db = await _dbFactory.CreateDbContextAsync();
+            var record1 = await db.Friends
+                .FirstOrDefaultAsync(f => f.CharacterID == request.CharacterID && f.FriendID == request.InviterID);
+            var record2 = await db.Friends
+                .FirstOrDefaultAsync(f => f.CharacterID == request.InviterID && f.FriendID == request.CharacterID);
+            
+            if (record1 == null || record2 == null)
+                return new FriendResponse(FriendResult.FailedNotInvited);
+
+            db.Remove(record1);
+            db.Remove(record2);
+            await db.SaveChangesAsync();
+
+            var friends1 = db.Friends
+                .Where(f => f.CharacterID == request.CharacterID)
+                .ToDictionary(
+                    f => f.FriendID,
+                    f => (IFriend)f
+                );
+            var friends2 = db.Friends
+                .Where(f => f.CharacterID == request.InviterID)
+                .ToDictionary(
+                    f => f.FriendID,
+                    f => (IFriend)f
+                );
+            
+            await _messaging.PublishAsync(new NotifyFriendUpdateList(
+                request.CharacterID,
+                new FriendList(friends1)
+            ));
+            await _messaging.PublishAsync(new NotifyFriendUpdateList(
+                request.InviterID,
+                new FriendList(friends2)
             ));
             return new FriendResponse(FriendResult.Success);
         }
