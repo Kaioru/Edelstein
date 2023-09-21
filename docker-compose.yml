@@ -29,6 +29,8 @@ services:
     ports:
       - 8484:8484
       - "7575-7577:7575-7577"
+      - 9000:9000
+      - 9100:9100
     environment:
       - HOST__LOGINSTAGES__0__HOST=${HOST:-127.0.0.1}
       - HOST__GAMESTAGES__0__HOST=${HOST:-127.0.0.1}
