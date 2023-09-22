@@ -18,9 +18,9 @@ public class InitPluginBootstrap<TContext> : IBootstrap
 
     public Task Start() 
         => Task.WhenAll(_config.Plugins.Select(p => 
-            File.GetAttributes(p).HasFlag(FileAttributes.Directory) 
-                ? _manager.LoadFromDirectory(p) 
-                : _manager.LoadFromFile(p)));
+            File.GetAttributes(Path.GetFullPath(p)).HasFlag(FileAttributes.Directory) 
+                ? _manager.LoadFromDirectory(Path.GetFullPath(p)) 
+                : _manager.LoadFromFile(Path.GetFullPath(p))));
     
     public Task Stop() => Task.CompletedTask;
 }
