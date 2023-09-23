@@ -26,10 +26,14 @@ public record QuestTemplate : IQuestTemplate
         IsAutoComplete = (property.Resolve<int>("autoComplete") ?? 0) > 0;
         IsAutoPreComplete = (property.Resolve<int>("autoPreComplete") ?? 0) > 0;
 
-        ActStart = new QuestTemplateAct(property.Resolve("Act/0"));
-        ActEnd = new QuestTemplateAct(property.Resolve("Act/1"));
+        var act = property.Resolve("Act")?.ResolveAll();
         
-        CheckStart = new QuestTemplateCheck(property.Resolve("Check/0"));
-        CheckEnd = new QuestTemplateCheck(property.Resolve("Check/1"));
+        ActStart = new QuestTemplateAct(act?.Resolve("0"));
+        ActEnd = new QuestTemplateAct(act?.Resolve("1"));
+
+        var check = property.Resolve("Check")?.ResolveAll();
+        
+        CheckStart = new QuestTemplateCheck(check?.Resolve("Check/0"));
+        CheckEnd = new QuestTemplateCheck(check?.Resolve("Check/1"));
     }
 }
