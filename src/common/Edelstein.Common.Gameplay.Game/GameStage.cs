@@ -50,10 +50,11 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
         await field.Enter(fieldUser);
         await base.Enter(user);
 
-        await user.DispatchFuncKeys();
-        await user.DispatchQuickSlotKeys();
+        await user.DispatchInitFuncKeys();
+        await user.DispatchInitQuickSlotKeys();
         await user.DispatchInitFriends();
         await user.DispatchInitParty();
+        await user.DispatchInitQuestTime();
         
         _ = user.Context.Services.Friend.UpdateChannel(new FriendUpdateChannelRequest(
             user.Character.ID,

@@ -2,6 +2,7 @@
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Quests;
 using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Protocol.Gameplay.Game.Contexts;
@@ -13,5 +14,6 @@ public record GameContextManagers(
     IFieldManager Field,
     IContiMoveManager ContiMove,
     INamedConversationManager Conversation,
-    ISkillManager Skill
+    ISkillManager Skill,
+    IModifiedQuestTimeManager QuestTime
 );

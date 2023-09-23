@@ -8,7 +8,7 @@ namespace Edelstein.Common.Gameplay.Game;
 
 public static class GameStageUserExtensions
 {
-    public static Task DispatchFuncKeys(this IGameStageUser user)
+    public static Task DispatchInitFuncKeys(this IGameStageUser user)
     {
         var p = new PacketWriter(PacketSendOperations.FuncKeyMappedInit);
         
@@ -33,7 +33,7 @@ public static class GameStageUserExtensions
         return user.Dispatch(p.Build());
     }
     
-    public static Task DispatchQuickSlotKeys(this IGameStageUser user)
+    public static Task DispatchInitQuickSlotKeys(this IGameStageUser user)
     {
         var p = new PacketWriter(PacketSendOperations.QuickslotMappedInit);
         
@@ -73,5 +73,20 @@ public static class GameStageUserExtensions
             p.WritePartyInfo(user.Party);
             await user.Dispatch(p.Build());
         }
+    }
+
+    public async static Task DispatchInitQuestTime(this IGameStageUser user)
+    {
+        var records = await user.Context.Managers.QuestTime.RetrieveAll();
+        var p = new PacketWriter(PacketSendOperations.SetQuestTime);
+
+        p.WriteByte((byte)records.Count);
+        foreach (var record in records)
+        {
+            p.WriteInt(record.ID);
+            p.WriteDateTime(record.DateStart);
+            p.WriteDateTime(record.DateEnd);
+        }
+        await user.Dispatch(p.Build());
     }
 }
