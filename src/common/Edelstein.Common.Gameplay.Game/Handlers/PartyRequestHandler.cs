@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace Edelstein.Common.Gameplay.Game.Handlers;
 
 public class PartyRequestHandler : AbstractFieldHandler
-    {
+{
     private readonly ILogger _logger;
     
     public PartyRequestHandler(ILogger<PartyRequestHandler> logger) => _logger = logger;
