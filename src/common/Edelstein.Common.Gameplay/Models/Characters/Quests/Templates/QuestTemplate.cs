@@ -28,12 +28,12 @@ public record QuestTemplate : IQuestTemplate
 
         var act = property.Resolve("Act")?.ResolveAll();
         
-        ActStart = new QuestTemplateAct(act?.Resolve("0"));
-        ActEnd = new QuestTemplateAct(act?.Resolve("1"));
+        ActStart = new QuestTemplateAct(act?.Resolve("0")?.ResolveAll());
+        ActEnd = new QuestTemplateAct(act?.Resolve("1")?.ResolveAll());
 
         var check = property.Resolve("Check")?.ResolveAll();
         
-        CheckStart = new QuestTemplateCheck(check?.Resolve("Check/0"));
-        CheckEnd = new QuestTemplateCheck(check?.Resolve("Check/1"));
+        CheckStart = new QuestTemplateCheck(check?.Resolve("0")?.ResolveAll());
+        CheckEnd = new QuestTemplateCheck(check?.Resolve("1")?.ResolveAll());
     }
 }
