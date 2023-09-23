@@ -50,69 +50,22 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
         await field.Enter(fieldUser);
         await base.Enter(user);
 
-        var funcKeyMappedInitPacket = new PacketWriter(PacketSendOperations.FuncKeyMappedInit);
+        await user.DispatchFuncKeys();
+        await user.DispatchQuickSlotKeys();
+        await user.DispatchInitFriends();
+        await user.DispatchInitParty();
         
-        funcKeyMappedInitPacket.WriteBool(user.Character.FuncKeys.Records.Count == 0);
-        if (user.Character.FuncKeys.Records.Count > 0)
-        {
-            for (byte i = 0; i < 90; i++)
-            {
-                if (user.Character.FuncKeys.Records.TryGetValue(i, out var value))
-                {
-                    funcKeyMappedInitPacket.WriteByte(value.Type);
-                    funcKeyMappedInitPacket.WriteInt(value.Action);
-                }
-                else
-                {
-                    funcKeyMappedInitPacket.WriteByte(0);
-                    funcKeyMappedInitPacket.WriteInt(0);
-                }
-            }
-        }
-        await fieldUser.Dispatch(funcKeyMappedInitPacket.Build());
-        
-        var quickslotMappedInitPacket = new PacketWriter(PacketSendOperations.QuickslotMappedInit);
-        
-        quickslotMappedInitPacket.WriteBool(user.Character.QuickslotKeys.Records.Count > 0);
-        if (user.Character.QuickslotKeys.Records.Count > 0)
-            for (byte i = 0; i < 8; i++)
-                quickslotMappedInitPacket.WriteInt(user.Character.QuickslotKeys.Records.TryGetValue(i, out var value) 
-                    ? value 
-                    : 0
-                );
-        await fieldUser.Dispatch(quickslotMappedInitPacket.Build());
-
-        if (user.Friends != null)
-        {
-            var friendPacket = new PacketWriter(PacketSendOperations.FriendResult);
-
-            friendPacket.WriteByte((byte)FriendResultOperations.LoadFriend_Done);
-            friendPacket.WriteByte((byte)user.Friends.Records.Count);
-            foreach (var record in user.Friends.Records.Values)
-                friendPacket.WriteFriendInfo(record);
-            foreach (var _ in user.Friends.Records.Values)
-                friendPacket.WriteInt(0);
-            await fieldUser.Dispatch(friendPacket.Build());
-            await user.Context.Services.Friend.UpdateChannel(new FriendUpdateChannelRequest(
-                user.Character.ID,
-                user.Context.Options.ChannelID
-            ));
-        }
-        
+        _ = user.Context.Services.Friend.UpdateChannel(new FriendUpdateChannelRequest(
+            user.Character.ID,
+            user.Context.Options.ChannelID
+        ));
         if (user.Party != null)
-        {
-            var partyPacket = new PacketWriter(PacketSendOperations.PartyResult);
-            partyPacket.WriteByte((byte)PartyResultOperations.LoadPartyDone);
-            partyPacket.WriteInt(user.Party.ID);
-            partyPacket.WritePartyInfo(user.Party);
-            await fieldUser.Dispatch(partyPacket.Build());
-            await user.Context.Services.Party.UpdateChannelOrField(new PartyUpdateChannelOrFieldRequest(
+            _ = user.Context.Services.Party.UpdateChannelOrField(new PartyUpdateChannelOrFieldRequest(
                 user.Party.ID,
                 user.Character.ID,
                 user.Context.Options.ChannelID,
                 field.ID
             ));
-        }
     }
 
     public new async Task Leave(IGameStageUser user)
