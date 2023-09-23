@@ -4,6 +4,8 @@ namespace Edelstein.Protocol.Gameplay.Models.Characters.Quests.Templates;
 
 public interface IQuestTemplate : ITemplate
 {
+    string Name { get; }
+    
     bool IsAutoAccept { get; }
     bool IsAutoStart { get; }
     bool IsAutoComplete { get; }

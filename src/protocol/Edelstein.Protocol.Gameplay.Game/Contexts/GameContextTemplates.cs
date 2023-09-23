@@ -2,6 +2,7 @@
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Game.Templates;
+using Edelstein.Protocol.Gameplay.Models.Characters.Quests.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Options;
@@ -15,6 +16,7 @@ public record GameContextTemplates(
     ITemplateManager<IItemOptionTemplate> ItemOption,
     ITemplateManager<ISkillTemplate> Skill,
     ITemplateManager<ISkillStringTemplate> SkillString,
+    ITemplateManager<IQuestTemplate> Quest,
     ITemplateManager<IFieldTemplate> Field,
     ITemplateManager<IFieldStringTemplate> FieldString,
     ITemplateManager<INPCTemplate> NPC,

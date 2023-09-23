@@ -6,6 +6,8 @@ namespace Edelstein.Common.Gameplay.Models.Characters.Quests.Templates;
 public record QuestTemplate : IQuestTemplate
 {
     public int ID { get; }
+
+    public string Name { get; }
     
     public bool IsAutoAccept { get; }
     public bool IsAutoStart { get; }
@@ -21,10 +23,14 @@ public record QuestTemplate : IQuestTemplate
     {
         ID = id;
 
-        IsAutoAccept = (property.Resolve<int>("autoAccept") ?? 0) > 0;
-        IsAutoStart = (property.Resolve<int>("autoStart") ?? 0) > 0;
-        IsAutoComplete = (property.Resolve<int>("autoComplete") ?? 0) > 0;
-        IsAutoPreComplete = (property.Resolve<int>("autoPreComplete") ?? 0) > 0;
+        var info = property.Resolve("QuestInfo")?.ResolveAll();
+
+        Name = info?.ResolveOrDefault<string>("name") ?? "NO-NAME";
+            
+        IsAutoAccept = (info?.Resolve<int>("autoAccept") ?? 0) > 0;
+        IsAutoStart = (info?.Resolve<int>("autoStart") ?? 0) > 0;
+        IsAutoComplete = (info?.Resolve<int>("autoComplete") ?? 0) > 0;
+        IsAutoPreComplete = (info?.Resolve<int>("autoPreComplete") ?? 0) > 0;
 
         var act = property.Resolve("Act")?.ResolveAll();
         
