@@ -175,6 +175,7 @@ public class ProgramHost : IHostedService
                         b.RegisterType<ScriptedConversationManager>().As<INamedConversationManager>().SingleInstance();
                         b.RegisterType<SkillManager>().As<ISkillManager>().SingleInstance();
                         b.RegisterType<ModifiedQuestTimeManager>().As<IModifiedQuestTimeManager>().SingleInstance();
+                        b.RegisterType<QuestManager>().As<IQuestManager>().SingleInstance();
                         
                         b
                             .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(GameStage))!)
