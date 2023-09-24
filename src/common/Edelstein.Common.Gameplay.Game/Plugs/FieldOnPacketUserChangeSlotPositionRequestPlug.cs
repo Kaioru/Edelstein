@@ -30,8 +30,7 @@ public class FieldOnPacketUserChangeSlotPositionRequestPlug : IPipelinePlug<Fiel
 
             var drop = new FieldDropItem(position, item)
             {
-                OwnType = DropOwnType.NoOwn,
-                SourceID = message.User.ObjectID ?? 0
+                OwnType = DropOwnType.NoOwn
             };
             
             await message.User.Field!.Enter(

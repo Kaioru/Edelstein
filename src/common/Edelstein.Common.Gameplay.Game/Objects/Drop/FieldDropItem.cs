@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
+﻿using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Utilities.Spatial;
@@ -28,6 +29,9 @@ public class FieldDropItem : AbstractFieldDrop
         return check;
     }
     
-    protected override Task Update(IFieldUser user) 
-        => user.ModifyInventory(i => i.Add(_item));
+    protected override async Task Update(IFieldUser user)
+    {
+        await user.ModifyInventory(i => i.Add(_item));
+        await user.Message(new DropPickUpItemMessage(_item.ID, _item is IItemSlotBundle bundle ? bundle.Number : 1, false));
+    }
 }
