@@ -1,7 +1,7 @@
 ﻿using Edelstein.Protocol.Data;
-using Edelstein.Protocol.Gameplay.Models.Characters.Quests.Templates;
+using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
-namespace Edelstein.Common.Gameplay.Models.Characters.Quests.Templates;
+namespace Edelstein.Common.Gameplay.Game.Quests.Templates;
 
 public record QuestTemplate : IQuestTemplate
 {

@@ -1,6 +1,6 @@
 ﻿using Edelstein.Protocol.Utilities.Templates;
 
-namespace Edelstein.Protocol.Gameplay.Models.Characters.Quests.Templates;
+namespace Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
 public interface IQuestTemplate : ITemplate
 {
