@@ -17,5 +17,6 @@ public record GameContextManagers(
     IContiMoveManager ContiMove,
     INamedConversationManager Conversation,
     ISkillManager Skill,
+    IQuestManager Quest,
     IModifiedQuestTimeManager QuestTime
 );

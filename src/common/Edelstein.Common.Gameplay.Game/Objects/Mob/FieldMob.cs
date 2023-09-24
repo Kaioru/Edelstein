@@ -81,7 +81,12 @@ public class FieldMob :
             }
 
             if (HP <= 0)
+            {
                 await Field.Leave(this, () => GetLeaveFieldPacket(1));
+
+                if (attacker != null) 
+                    _ = attacker.StageUser.Context.Managers.Quest.UpdateMobKill(attacker, Template.ID);
+            }
         }
         finally
         {
