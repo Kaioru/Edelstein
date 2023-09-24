@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Immutable;
+using System.Globalization;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
@@ -8,6 +9,9 @@ public record QuestTemplateCheck : IQuestTemplateCheck
 {
     public QuestTemplateCheck(IDataProperty? property)
     {
+        ScriptStart = property?.ResolveOrDefault<string>("startscript");
+        ScriptEnd = property?.ResolveOrDefault<string>("endscript");
+        
         WorldMin = property?.Resolve<int>("worldmin");
         WorldMax = property?.Resolve<int>("worldmax");
 
@@ -27,9 +31,14 @@ public record QuestTemplateCheck : IQuestTemplateCheck
         if (start != null) DateStart = DateTime.ParseExact(start[..10], "yyyyMMddHH", CultureInfo.InvariantCulture);
         if (end != null) DateEnd = DateTime.ParseExact(end[..10], "yyyyMMddHH", CultureInfo.InvariantCulture);
 
-        Job = property?.Resolve<int>("job");
+        Jobs = property?.Resolve("job")?.Children
+            .Select(c => c.Resolve<int>() ?? -1)
+            .ToImmutableList();
         SubJobFlags = property?.Resolve<int>("subJobFlags");
     }
+
+    public string? ScriptStart { get; }
+    public string? ScriptEnd { get; }
     
     public int? WorldMin { get; }
     public int? WorldMax { get; }
@@ -47,6 +56,6 @@ public record QuestTemplateCheck : IQuestTemplateCheck
     public DateTime? DateStart { get; }
     public DateTime? DateEnd { get; }
     
-    public int? Job { get; }
+    public ICollection<int>? Jobs { get; }
     public int? SubJobFlags { get; }
 }

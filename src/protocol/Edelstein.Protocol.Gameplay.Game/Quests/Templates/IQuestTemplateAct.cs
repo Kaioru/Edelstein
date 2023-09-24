@@ -2,5 +2,8 @@
 
 public interface IQuestTemplateAct
 {
+    int? IncEXP { get; }
+    int? IncMoney { get; }
     
+    int? NextQuest { get; }
 }

@@ -2,6 +2,9 @@
 
 public interface IQuestTemplateCheck
 {
+    string? ScriptStart { get; }
+    string? ScriptEnd { get; }
+    
     int? WorldMin { get; }
     int? WorldMax { get; }
     
@@ -18,6 +21,6 @@ public interface IQuestTemplateCheck
     DateTime? DateStart { get; }
     DateTime? DateEnd { get; }
     
-    int? Job { get; }
+    ICollection<int>? Jobs { get; }
     int? SubJobFlags { get; }
 }

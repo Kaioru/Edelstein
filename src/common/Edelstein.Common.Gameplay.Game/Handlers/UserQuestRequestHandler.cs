@@ -90,7 +90,7 @@ public class UserQuestRequestHandler : AbstractFieldHandler
                 ));
                 break;
             case QuestRequestType.CompleteScript:
-                await user.StageUser.Context.Pipelines.FieldOnPacketUserQuestCompleteRequest.Process(new FieldOnPacketUserQuestCompleteRequest(
+                await user.StageUser.Context.Pipelines.FieldOnPacketUserQuestScriptEndRequest.Process(new FieldOnPacketUserQuestScriptEndRequest(
                     user,
                     quest,
                     npcID,

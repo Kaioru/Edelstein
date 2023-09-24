@@ -19,15 +19,15 @@ public class FieldOnPacketUserQuestAcceptRequestPlug : IPipelinePlug<FieldOnPack
         var result = await _manager.Check(
             QuestAction.Start, 
             message.Template, 
-            message.NPCTemplateID ?? 0, 
             message.User
         );
+
+        if (message.Template.CheckStart.ScriptStart != null) return;
 
         if (result == QuestResultType.Success)
             result = await _manager.Act(
                 QuestAction.Start,
                 message.Template,
-                message.NPCTemplateID ?? 0,
                 message.User
             );
 
@@ -55,7 +55,7 @@ public class FieldOnPacketUserQuestAcceptRequestPlug : IPipelinePlug<FieldOnPack
             case QuestResultType.Success:
                 p.WriteShort((short)message.Template.ID);
                 p.WriteInt(message.NPCTemplateID ?? 0);
-                p.WriteShort(0);
+                p.WriteShort((short)(message.Template.ActStart.NextQuest ?? 0));
                 break;
         }
         
