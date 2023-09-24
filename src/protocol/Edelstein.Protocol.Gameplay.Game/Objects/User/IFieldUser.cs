@@ -35,6 +35,7 @@ public interface IFieldUser :
     IPacket GetSetFieldPacket();
 
     Task Message(string message);
+    Task Message(IPacketWritable writable);
     
     Task<T> Prompt<T>(Func<IConversationSpeaker, T> prompt, T def);
     Task<T> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt, T def);

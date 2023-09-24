@@ -4,6 +4,7 @@ using Edelstein.Common.Gameplay.Game.Combat.Damage;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Game.Objects.Dragon;
+using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
 using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Characters.Stats;
 using Edelstein.Common.Gameplay.Packets;
@@ -184,11 +185,12 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public Task Disconnect() => StageUser.Disconnect();
 
     public Task Message(string message)
+        => Message(new SystemMessage(message));
+    
+    public Task Message(IPacketWritable writable)
     {
-        // TODO more message types
         var packet = new PacketWriter(PacketSendOperations.Message);
-        packet.WriteByte(0xA);
-        packet.WriteString(message);
+        packet.Write(writable);
         return Dispatch(packet.Build());
     }
 
