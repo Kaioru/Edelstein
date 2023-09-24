@@ -19,11 +19,9 @@ public record QuestTemplate : IQuestTemplate
     public IQuestTemplateCheck CheckStart { get; }
     public IQuestTemplateCheck CheckEnd { get; }
 
-    public QuestTemplate(int id, IDataProperty property)
+    public QuestTemplate(int id, IDataProperty? info, IDataProperty? act, IDataProperty? check)
     {
         ID = id;
-
-        var info = property.Resolve("QuestInfo")?.ResolveAll();
 
         Name = info?.ResolveOrDefault<string>("name") ?? "NO-NAME";
             
@@ -32,13 +30,9 @@ public record QuestTemplate : IQuestTemplate
         IsAutoComplete = (info?.Resolve<int>("autoComplete") ?? 0) > 0;
         IsAutoPreComplete = (info?.Resolve<int>("autoPreComplete") ?? 0) > 0;
 
-        var act = property.Resolve("Act")?.ResolveAll();
-        
         ActStart = new QuestTemplateAct(act?.Resolve("0")?.ResolveAll());
         ActEnd = new QuestTemplateAct(act?.Resolve("1")?.ResolveAll());
 
-        var check = property.Resolve("Check")?.ResolveAll();
-        
         CheckStart = new QuestTemplateCheck(check?.Resolve("0")?.ResolveAll());
         CheckEnd = new QuestTemplateCheck(check?.Resolve("1")?.ResolveAll());
     }
