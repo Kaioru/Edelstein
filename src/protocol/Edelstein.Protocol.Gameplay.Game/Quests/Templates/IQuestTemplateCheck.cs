@@ -23,4 +23,6 @@ public interface IQuestTemplateCheck
     
     ICollection<int>? Jobs { get; }
     int? SubJobFlags { get; }
+    
+    ICollection<IQuestTemplateCheckMob>? CheckMob { get; }
 }

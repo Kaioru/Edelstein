@@ -176,6 +176,7 @@ public class ProgramHost : IHostedService
                         b.RegisterType<SkillManager>().As<ISkillManager>().SingleInstance();
                         b.RegisterType<ModifiedQuestTimeManager>().As<IModifiedQuestTimeManager>().SingleInstance();
                         b.RegisterType<QuestManager>().As<IQuestManager>().SingleInstance();
+                        b.RegisterType<MobQuestCacheManager>().As<IMobQuestCacheManager>().SingleInstance();
                         
                         b
                             .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(GameStage))!)
