@@ -3,6 +3,7 @@ using Edelstein.Common.Gameplay.Models.Characters.Quests;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
+using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Quests;
 using Edelstein.Protocol.Utilities.Pipelines;
 
@@ -13,7 +14,7 @@ public class FieldOnPacketUserQuestCompleteRequestPlug : IPipelinePlug<FieldOnPa
     private readonly IQuestManager _manager;
     
     public FieldOnPacketUserQuestCompleteRequestPlug(IQuestManager manager) => _manager = manager;
-    
+
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserQuestCompleteRequest message)
     {
         var result = await _manager.Check(
