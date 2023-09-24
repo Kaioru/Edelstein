@@ -25,6 +25,9 @@ public record QuestTemplateAct : IQuestTemplateAct
         Skills = property?.Resolve("skill")?.Children
             .Select(p => (IQuestTemplateActSkill)new QuestTemplateActSkill(p.ResolveAll()))
             .ToImmutableList();
+        SP = property?.Resolve("sp")?.Children
+            .Select(p => (IQuestTemplateActSP)new QuestTemplateActSP(p.ResolveAll()))
+            .ToImmutableList();
     }
     
     public int? IncEXP { get; }
@@ -40,4 +43,5 @@ public record QuestTemplateAct : IQuestTemplateAct
     
     public ICollection<IQuestTemplateActItem>? Items { get; }
     public ICollection<IQuestTemplateActSkill>? Skills { get; }
+    public ICollection<IQuestTemplateActSP>? SP { get; }
 }

@@ -12,7 +12,7 @@ public record QuestTemplateActSkill : IQuestTemplateActSkill
         SkillLevel = property.Resolve<int>("skillLevel") ?? 0;
         MasterLevel = property.Resolve<int>("masterLevel") ?? 0;
         IsOnlyMasterLevel = property.Resolve<int>("onlyMasterLevel") > 0;
-        Jobs = property?.Resolve("job")?.Children
+        Jobs = property.Resolve("job")?.Children
             .Select(p => p.Resolve<int>())
             .Where(i => i.HasValue)
             .Select(i => i.Value)

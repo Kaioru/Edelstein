@@ -17,4 +17,5 @@ public interface IQuestTemplateAct
     
     ICollection<IQuestTemplateActItem>? Items { get; }
     ICollection<IQuestTemplateActSkill>? Skills { get; }
+    ICollection<IQuestTemplateActSP>? SP { get; }
 }
