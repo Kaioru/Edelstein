@@ -1,12 +1,10 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
 namespace Edelstein.Protocol.Gameplay.Game.Quests;
 
 public interface IQuestManager
 {
-    Task ActStart(IFieldUser user);
-    Task ActEnd(IFieldUser user);
-    
-    Task<bool> CheckStart(IFieldUser user);
-    Task<bool> CheckEnd(IFieldUser user);
+    Task<QuestResultType> Act(QuestAction action, IQuestTemplate template, IFieldUser user);
+    Task<QuestResultType> Check(QuestAction action, IQuestTemplate template, IFieldUser user);
 }

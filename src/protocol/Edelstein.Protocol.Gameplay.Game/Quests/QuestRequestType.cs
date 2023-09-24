@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Common.Gameplay.Game.Quests;
+﻿namespace Edelstein.Protocol.Gameplay.Game.Quests;
 
 public enum QuestRequestType
 {
