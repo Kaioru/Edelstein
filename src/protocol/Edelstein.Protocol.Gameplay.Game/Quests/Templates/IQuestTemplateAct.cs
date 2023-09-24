@@ -16,4 +16,5 @@ public interface IQuestTemplateAct
     int? NextQuest { get; }
     
     ICollection<IQuestTemplateActItem>? Items { get; }
+    ICollection<IQuestTemplateActSkill>? Skills { get; }
 }
