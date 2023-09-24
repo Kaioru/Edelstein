@@ -42,13 +42,17 @@ public class QuestManager : IQuestManager
             var checkMob = quest.CheckEnd.CheckMob.FirstOrDefault(m => m.MobID == mobID);
             if (checkMob == null) continue;
             
-            var count = Convert.ToInt32(builder.ToString(3 * checkMob.Order, 3)) + inc;
+            var count = Convert.ToInt32(builder.ToString(3 * checkMob.Order, 3));
 
+            if (count >= checkMob.Count) continue;
+
+            count += inc;
             count = Math.Min(count, checkMob.Count);
             count = Math.Max(count, 0);
 
             builder.Remove(3 * checkMob.Order, 3);
             builder.Insert(3 * checkMob.Order, count.ToString("000"));
+            
             record.Value = builder.ToString();
             _ = user.Message(new QuestRecordAcceptMessage(questID, record.Value));
         }
