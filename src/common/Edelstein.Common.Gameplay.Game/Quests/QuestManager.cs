@@ -31,7 +31,7 @@ public class QuestManager : IQuestManager
             var quest = await _questTemplates.Retrieve(questID);
             if (quest?.CheckEnd.CheckMob == null) continue;
             
-            if (record.Value.Length != quest.CheckEnd.CheckMob.Count * 3)
+            if (record.Value.Length != quest.CheckEnd.CheckMob.Count * 3 || !record.Value.All(char.IsDigit))
             {
                 record.Value = string.Empty;
                 for (var i = 0; i < quest.CheckEnd.CheckMob.Count; i++)
