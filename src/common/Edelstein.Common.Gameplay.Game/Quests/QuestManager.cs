@@ -41,7 +41,7 @@ public class QuestManager : IQuestManager
             var builder = new StringBuilder(record.Value, quest.CheckEnd.CheckMob.Count * 3);
             var checkMob = quest.CheckEnd.CheckMob.FirstOrDefault(m => m.MobID == mobID);
             if (checkMob == null) continue;
-            Console.WriteLine("E ");
+            
             var count = Convert.ToInt32(builder.ToString(3 * checkMob.Order, 3)) + inc;
 
             count = Math.Min(count, checkMob.Count);
