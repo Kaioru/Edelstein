@@ -3,6 +3,7 @@ using Edelstein.Common.Gameplay.Models.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Shop.Types;
 using Edelstein.Common.Utilities.Packets;
+using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Shop.Contracts;
 using Edelstein.Protocol.Utilities.Pipelines;
@@ -11,6 +12,10 @@ namespace Edelstein.Common.Gameplay.Shop.Plugs;
 
 public class ShopOnPacketCashItemMoveLToSRequestPlug : IPipelinePlug<ShopOnPacketCashItemMoveLToSRequest>
 {
+    private readonly IInventoryManager _inventoryManager;
+    
+    public ShopOnPacketCashItemMoveLToSRequestPlug(IInventoryManager inventoryManager) => _inventoryManager = inventoryManager;
+    
     public async Task Handle(IPipelineContext ctx, ShopOnPacketCashItemMoveLToSRequest message)
     {
         if (message.User.Character == null) return;
@@ -21,7 +26,7 @@ public class ShopOnPacketCashItemMoveLToSRequestPlug : IPipelinePlug<ShopOnPacke
         var context = new ModifyInventoryGroupContext(message.User.Character.Inventories, message.User.Context.Templates.Item);
 
         if (slot == null) return;
-        if (!context.HasSlotFor(slot.Item)) return;
+        if (!_inventoryManager.HasSlotFor(message.User.Character.Inventories, slot.Item)) return;
 
         message.User.AccountWorld.Locker.Items.Remove(slot);
         var target = context.Add(slot.Item);

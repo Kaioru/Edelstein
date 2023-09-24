@@ -9,23 +9,6 @@ public interface IModifyInventory<in TSlot> : IPacketWritable where TSlot : IIte
     bool IsUpdated { get; }
     bool IsUpdatedAvatar { get; }
 
-    bool HasItem(int templateID);
-    bool HasItem(int templateID, short count);
-    bool HasItem(IItemTemplate template);
-    bool HasItem(IItemTemplate template, short count);
-
-    bool HasSlotFor(int templateID);
-    bool HasSlotFor(int templateID, short count);
-    
-    bool HasSlotFor(ICollection<Tuple<int, short>> templates);
-    
-    bool HasSlotFor(IItemTemplate template);
-    bool HasSlotFor(IItemTemplate template, short count);
-    bool HasSlotFor(ICollection<Tuple<IItemTemplate, short>> templates);
-
-    bool HasSlotFor(IItemSlot item);
-    bool HasSlotFor(ICollection<IItemSlot> items);
-
     short Add(TSlot item);
 
     void Remove(int templateID);

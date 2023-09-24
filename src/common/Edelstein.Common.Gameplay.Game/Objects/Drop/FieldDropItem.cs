@@ -22,13 +22,9 @@ public class FieldDropItem : AbstractFieldDrop
     public override bool IsMoney => false;
     public override int Info => _item.ID;
 
-    protected override async Task<bool> Check(IFieldUser user)
-    {
-        var check = false;
-        await user.ModifyInventory(i => check = i.HasSlotFor(_item));
-        return check;
-    }
-    
+    protected override Task<bool> Check(IFieldUser user) 
+        => Task.FromResult(user.StageUser.Context.Managers.Inventory.HasSlotFor(user.Character.Inventories, _item));
+
     protected override async Task Update(IFieldUser user)
     {
         await user.ModifyInventory(i => i.Add(_item));

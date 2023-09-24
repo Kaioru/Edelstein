@@ -10,6 +10,7 @@ using Edelstein.Common.Gameplay.Game.Continents;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Quests;
 using Edelstein.Common.Gameplay.Login;
+using Edelstein.Common.Gameplay.Models.Inventories;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Shop;
 using Edelstein.Common.Gameplay.Shop.Commodities;
@@ -29,6 +30,7 @@ using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Quests;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
+using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Shop;
 using Edelstein.Protocol.Gameplay.Shop.Commodities;
 using Edelstein.Protocol.Gameplay.Shop.Contexts;
@@ -109,6 +111,9 @@ public class ProgramHost : IHostedService
                     c.Resolve<ITransportAcceptor>(),
                     stage
                 )).As<IBootstrap>().SingleInstance();
+                
+                
+                b.RegisterType<InventoryManager>().As<IInventoryManager>().SingleInstance();
 
                 switch (stage)
                 {
