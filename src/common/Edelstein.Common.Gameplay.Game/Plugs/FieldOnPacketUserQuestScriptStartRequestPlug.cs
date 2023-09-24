@@ -28,6 +28,7 @@ public class FieldOnPacketUserQuestScriptStartRequestPlug : IPipelinePlug<FieldO
         );
 
         if (message.Template.CheckStart.ScriptStart == null) return;
+        if (result != QuestResultType.Success) return;
         
         var conversation = await _scriptManager.Retrieve(message.Template.CheckStart.ScriptStart) as IConversation ?? new FallbackConversation(message.Template.CheckStart.ScriptStart);
 

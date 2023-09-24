@@ -28,6 +28,7 @@ public class FieldOnPacketUserQuestScriptEndRequestPlug : IPipelinePlug<FieldOnP
         );
 
         if (message.Template.CheckEnd.ScriptEnd == null) return;
+        if (result != QuestResultType.Success) return;
         
         var conversation = await _scriptManager.Retrieve(message.Template.CheckEnd.ScriptEnd) as IConversation ?? new FallbackConversation(message.Template.CheckEnd.ScriptEnd);
 
