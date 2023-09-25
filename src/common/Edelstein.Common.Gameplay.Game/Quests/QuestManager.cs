@@ -150,9 +150,14 @@ public class QuestManager : IQuestManager
 
         if (!user.StageUser.Context.Managers.Inventory.HasSlotFor(user.Character.Inventories, rewardsCheck))
             return QuestResultType.FailedInventory;
-
-        var stats = new ModifyStatContext(user.Character);
         
+        var stats = new ModifyStatContext(user.Character);
+
+        if (actTemplate.IncMoney > 0 && stats.Money > int.MaxValue - (actTemplate.IncMoney ?? 0))
+            return QuestResultType.FailedMeso;
+        if (actTemplate.IncPOP > 0 && stats.POP > short.MaxValue - (actTemplate.IncPOP ?? 0))
+            return QuestResultType.FailedUnknown;
+
         if (actTemplate.IncEXP > 0)
         {
             stats.EXP += actTemplate.IncEXP.Value;
