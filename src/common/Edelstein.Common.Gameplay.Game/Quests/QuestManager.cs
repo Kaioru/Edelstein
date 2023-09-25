@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Text;
 using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
 using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
@@ -216,6 +217,10 @@ public class QuestManager : IQuestManager
                 } else
                     await user.ModifyInventory(i => i.Remove(reward.ItemID, Math.Abs((short)reward.Count)));
             }
+
+            await user.Effect(new QuestEffect(rewards
+                .Select(r => Tuple.Create(r.ItemID, r.Count))
+                .ToImmutableList()));
         }
         
         return QuestResultType.Success;
