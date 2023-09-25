@@ -35,6 +35,8 @@ public interface IFieldUser :
     IPacket GetSetFieldPacket();
 
     Task Message(string message);
+    Task Message(IPacketWritable writable);
+    Task Effect(IPacketWritable writable, bool isLocal = true, bool isRemote = true);
     
     Task<T> Prompt<T>(Func<IConversationSpeaker, T> prompt, T def);
     Task<T> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt, T def);
@@ -49,7 +51,14 @@ public interface IFieldUser :
 
     Task Modify(Action<IFieldUserModify> action);
     Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false);
+    Task ModifyStats(IModifyStatContext context, bool exclRequest = false);
+    
     Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false);
+    Task ModifyInventory(IModifyInventoryGroupContext context, bool exclRequest = false);
+    
     Task ModifySkills(Action<IModifySkillContext>? action = null, bool exclRequest = false);
+    Task ModifySkills(IModifySkillContext context, bool exclRequest = false);
+    
     Task ModifyTemporaryStats(Action<IModifyTemporaryStatContext>? action = null, bool exclRequest = false);
+    Task ModifyTemporaryStats(IModifyTemporaryStatContext context, bool exclRequest = false);
 }

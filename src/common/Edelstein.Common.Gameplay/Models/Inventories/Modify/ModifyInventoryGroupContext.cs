@@ -43,45 +43,6 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
     public IModifyInventoryContext? this[ItemInventoryType type] =>
         _contexts.GetValueOrDefault(type);
 
-    public override bool HasItem(int templateID) =>
-        this[GetTypeByID(templateID)]?.HasItem(templateID) ?? false;
-    public override bool HasItem(int templateID, short count) =>
-        this[GetTypeByID(templateID)]?.HasItem(templateID, count) ?? false;
-
-    public override bool HasItem(IItemTemplate template) =>
-        this[GetTypeByID(template.ID)]?.HasItem(template) ?? false;
-    public override bool HasItem(IItemTemplate template, short count) =>
-        this[GetTypeByID(template.ID)]?.HasItem(template, count) ?? false;
-    
-    public override bool HasSlotFor(int templateID) => 
-        this[GetTypeByID(templateID)]?.HasSlotFor(templateID) ?? false;
-    public override bool HasSlotFor(int templateID, short count) =>
-        this[GetTypeByID(templateID)]?.HasSlotFor(templateID, count) ?? false;
-    public override bool HasSlotFor(ICollection<Tuple<int, short>> templates) =>
-        templates
-            .GroupBy(t => GetTypeByID(t.Item1))
-            .All(g => this[g.Key]?.HasSlotFor(g.ToImmutableList()) ?? false);
-    
-    public override bool HasSlotFor(IItemTemplate template) =>
-        this[GetTypeByID(template.ID)]?.HasSlotFor(template) ?? false;
-    
-    public override bool HasSlotFor(IItemTemplate template, short count) =>
-        this[GetTypeByID(template.ID)]?.HasSlotFor(template, count) ?? false;
-    
-    public override bool HasSlotFor(ICollection<Tuple<IItemTemplate, short>> templates) =>
-        templates
-            .GroupBy(t => GetTypeByID(t.Item1.ID))
-            .All(g => this[g.Key]?.HasSlotFor(g.ToImmutableList()) ?? false);
-    
-    public override bool HasSlotFor(IItemSlot item) =>
-        this[GetTypeByID(item.ID)]?.HasSlotFor(item) ?? false;
-    
-    public override bool HasSlotFor(ICollection<IItemSlot> items) => 
-        items
-            .GroupBy(t => GetTypeByID(t.ID))
-            .All(g => this[g.Key]?.HasSlotFor(g.ToImmutableList()) ?? false);
-
-
     public override short Add(IItemSlot item) =>
         this[GetTypeByID(item.ID)]?.Add(item) ?? -1;
 

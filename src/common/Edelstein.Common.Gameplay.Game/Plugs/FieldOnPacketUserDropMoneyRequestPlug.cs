@@ -21,8 +21,7 @@ public class FieldOnPacketUserDropMoneyRequestPlug : IPipelinePlug<FieldOnPacket
 
         var drop = new FieldDropMoney(position, message.Money)
         {
-            OwnType = DropOwnType.NoOwn,
-            SourceID = message.User.ObjectID ?? 0
+            OwnType = DropOwnType.NoOwn
         };
 
         await message.User.ModifyStats(s => s.Money -= message.Money, true);

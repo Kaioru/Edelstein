@@ -4,6 +4,7 @@ using Edelstein.Common.Gameplay.Game.Combat.Damage;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Game.Objects.Dragon;
+using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
 using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Characters.Stats;
 using Edelstein.Common.Gameplay.Packets;
@@ -184,12 +185,29 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public Task Disconnect() => StageUser.Disconnect();
 
     public Task Message(string message)
+        => Message(new SystemMessage(message));
+    
+    public Task Message(IPacketWritable writable)
     {
-        // TODO more message types
         var packet = new PacketWriter(PacketSendOperations.Message);
-        packet.WriteByte(0xA);
-        packet.WriteString(message);
+        packet.Write(writable);
         return Dispatch(packet.Build());
+    }
+    
+    public async Task Effect(IPacketWritable writable, bool isLocal = true, bool isRemote = true)
+    {
+        var localPacket = new PacketWriter(PacketSendOperations.UserEffectLocal)
+            .Write(writable)
+            .Build();
+        var remotePacket = new PacketWriter(PacketSendOperations.UserEffectRemote)
+            .WriteInt(Character.ID)
+            .Write(writable)
+            .Build();
+
+        if (isLocal)
+            await Dispatch(localPacket);
+        if (isRemote && FieldSplit != null) 
+            await FieldSplit.Dispatch(remotePacket, this);
     }
 
     public Task<T> Prompt<T>(Func<IConversationSpeaker, T> prompt, T def) =>
@@ -261,15 +279,23 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
     public Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false)
         => Modify(m => m.Stats(action, exclRequest));
+    public Task ModifyStats(IModifyStatContext context, bool exclRequest = false)
+        => Modify(m => m.Stats(context, exclRequest));
 
     public Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
         => Modify(m => m.Inventory(action, exclRequest));
-    
+    public Task ModifyInventory(IModifyInventoryGroupContext context, bool exclRequest = false)
+        => Modify(m => m.Inventory(context, exclRequest));
+
     public Task ModifySkills(Action<IModifySkillContext>? action = null, bool exclRequest = false)
         => Modify(m => m.Skills(action, exclRequest));
-    
+    public Task ModifySkills(IModifySkillContext context, bool exclRequest = false)
+        => Modify(m => m.Skills(context, exclRequest));
+
     public Task ModifyTemporaryStats(Action<IModifyTemporaryStatContext>? action = null, bool exclRequest = false)
         => Modify(m => m.TemporaryStats(action, exclRequest));
+    public Task ModifyTemporaryStats(IModifyTemporaryStatContext context, bool exclRequest = false)
+        => Modify(m => m.TemporaryStats(context, exclRequest));
 
     protected override IPacket GetMovePacket(IFieldUserMovePath ctx)
     {

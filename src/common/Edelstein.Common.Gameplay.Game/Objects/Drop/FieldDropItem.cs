@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
+﻿using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Utilities.Spatial;
@@ -21,13 +22,12 @@ public class FieldDropItem : AbstractFieldDrop
     public override bool IsMoney => false;
     public override int Info => _item.ID;
 
-    protected override async Task<bool> Check(IFieldUser user)
+    protected override Task<bool> Check(IFieldUser user) 
+        => Task.FromResult(user.StageUser.Context.Managers.Inventory.HasSlotFor(user.Character.Inventories, _item));
+
+    protected override async Task Update(IFieldUser user)
     {
-        var check = false;
-        await user.ModifyInventory(i => check = i.HasSlotFor(_item));
-        return check;
+        await user.ModifyInventory(i => i.Add(_item));
+        await user.Message(new DropPickUpItemMessage(_item.ID, _item is IItemSlotBundle bundle ? bundle.Number : 1));
     }
-    
-    protected override Task Update(IFieldUser user) 
-        => user.ModifyInventory(i => i.Add(_item));
 }

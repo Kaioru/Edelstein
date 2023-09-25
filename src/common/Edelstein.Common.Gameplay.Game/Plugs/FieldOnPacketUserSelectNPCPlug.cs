@@ -17,7 +17,8 @@ public class FieldOnPacketUserSelectNPCPlug : IPipelinePlug<FieldOnPacketUserSel
     {
         var script = message.NPC.Template.Scripts.FirstOrDefault()?.Script;
         if (script == null) return;
-        var conversation = await _manager.Retrieve(script) as IConversation ?? new FallbackConversation(script);
+        var conversation = await _manager.Retrieve(script) as IConversation ?? 
+                           new FallbackConversation(script, message.User);
 
         _ = message.User.Converse(
             conversation,

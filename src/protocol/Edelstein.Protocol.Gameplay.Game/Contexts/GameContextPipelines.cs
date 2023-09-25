@@ -26,7 +26,13 @@ public record GameContextPipelines(
     IPipeline<FieldOnPacketUserSortItemRequest> FieldOnPacketUserSortItemRequest,
     IPipeline<FieldOnPacketUserChangeSlotPositionRequest> FieldOnPacketUserChangeSlotPositionRequest,
     IPipeline<FieldOnPacketUserSkillUpRequest> FieldOnPacketUserSkillUpRequest,
-    
+    IPipeline<FieldOnPacketUserQuestLostItemRequest> FieldOnPacketUserQuestLostItemRequest,
+    IPipeline<FieldOnPacketUserQuestAcceptRequest> FieldOnPacketUserQuestAcceptRequest,
+    IPipeline<FieldOnPacketUserQuestCompleteRequest> FieldOnPacketUserQuestCompleteRequest,
+    IPipeline<FieldOnPacketUserQuestResignRequest> FieldOnPacketUserQuestResignRequest,
+    IPipeline<FieldOnPacketUserQuestScriptStartRequest> FieldOnPacketUserQuestScriptStartRequest,
+    IPipeline<FieldOnPacketUserQuestScriptEndRequest> FieldOnPacketUserQuestScriptEndRequest,
+
     IPipeline<FieldOnPacketPartyCreateRequest> FieldOnPacketPartyCreateRequest,
     IPipeline<FieldOnPacketPartyLeaveRequest> FieldOnPacketPartyLeaveRequest,
     IPipeline<FieldOnPacketPartyInviteRequest> FieldOnPacketPartyInviteRequest,

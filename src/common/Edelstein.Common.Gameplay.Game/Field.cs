@@ -170,7 +170,7 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
         {
             if (obj is IFieldSplitObserver observer)
                 foreach (var split in observer.Observing.ToImmutableList())
-                    await split.Unobserve(observer);
+                    await split.Unobserve(observer, true);
             await obj.FieldSplit.Leave(obj, getLeavePacket: getLeavePacket);
         }
 

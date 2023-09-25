@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
+﻿using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Utilities.Spatial;
 
@@ -21,6 +22,9 @@ public class FieldDropMoney : AbstractFieldDrop
     protected override Task<bool> Check(IFieldUser user)
         => Task.FromResult(user.Character.Money + Info > 0);
 
-    protected override Task Update(IFieldUser user)
-        => user.ModifyStats(s => s.Money += Info);
+    protected override async Task Update(IFieldUser user)
+    {
+        await user.ModifyStats(s => s.Money += Info);
+        await user.Message(new DropPickUpMoneyMessage(Info));
+    }
 }

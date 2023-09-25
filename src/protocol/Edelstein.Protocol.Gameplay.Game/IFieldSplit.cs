@@ -17,5 +17,5 @@ public interface IFieldSplit : IFieldObjectPool
     Task MigrateOut(IFieldObject obj);
 
     Task Observe(IFieldSplitObserver observer);
-    Task Unobserve(IFieldSplitObserver observer);
+    Task Unobserve(IFieldSplitObserver observer, bool quiet = false);
 }

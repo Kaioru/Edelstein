@@ -18,22 +18,6 @@ public abstract class AbstractModifyInventory : IModifyInventory
         { Inventory: ItemInventoryType.Equip, Slot: < 0 } or 
         MoveModifyInventoryOperation { ToSlot: < 0 });
 
-    public abstract bool HasItem(int templateID);
-    public abstract bool HasItem(int templateID, short count);
-    public abstract bool HasItem(IItemTemplate template);
-    public abstract bool HasItem(IItemTemplate template, short count);
-    
-    public abstract bool HasSlotFor(int templateID);
-    public abstract bool HasSlotFor(int templateID, short count);
-    public abstract bool HasSlotFor(ICollection<Tuple<int, short>> templates);
-    
-    public abstract bool HasSlotFor(IItemTemplate template);
-    public abstract bool HasSlotFor(IItemTemplate template, short count);
-    public abstract bool HasSlotFor(ICollection<Tuple<IItemTemplate, short>> templates);
-        
-    public abstract bool HasSlotFor(IItemSlot item);
-    public abstract bool HasSlotFor(ICollection<IItemSlot> items);
-
     public abstract short Add(IItemSlot item);
 
     public abstract void Remove(int templateID);
