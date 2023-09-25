@@ -72,7 +72,8 @@ public class UserQuestRequestHandler : AbstractFieldHandler
                     user,
                     quest,
                     npcID,
-                    userPosition
+                    userPosition,
+                    !quest.IsAutoComplete ? reader.ReadInt() : null
                 ));
                 break;
             case QuestRequestType.ResignQuest:

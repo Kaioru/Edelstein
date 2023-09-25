@@ -9,5 +9,6 @@ public record FieldOnPacketUserQuestCompleteRequest(
     IFieldUser User,
     IQuestTemplate Template,
     int? NPCTemplateID,
-    IPoint2D? Position
+    IPoint2D? Position,
+    int? Select
 );
