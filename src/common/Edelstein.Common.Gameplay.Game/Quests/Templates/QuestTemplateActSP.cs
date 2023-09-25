@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
-using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Quests.Templates;
 

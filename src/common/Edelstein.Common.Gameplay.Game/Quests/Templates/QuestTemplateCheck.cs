@@ -36,6 +36,9 @@ public record QuestTemplateCheck : IQuestTemplateCheck
             .ToImmutableList();
         SubJobFlags = property?.Resolve<int>("subJobFlags");
 
+        CheckItem = property?.Resolve("item")?.Children
+            .Select(p => (IQuestTemplateCheckItem)new QuestTemplateCheckItem(p.ResolveAll()))
+            .ToImmutableList();
         CheckMob = property?.Resolve("mob")?.Children
             .Select(p => (IQuestTemplateCheckMob)new QuestTemplateCheckMob(Convert.ToInt32(p.Name), p.ResolveAll()))
             .ToImmutableSortedSet(new QuestTemplateCheckMobComparer());
@@ -63,5 +66,6 @@ public record QuestTemplateCheck : IQuestTemplateCheck
     public ICollection<int>? Jobs { get; }
     public int? SubJobFlags { get; }
     
+    public ICollection<IQuestTemplateCheckItem>? CheckItem { get; }
     public ICollection<IQuestTemplateCheckMob>? CheckMob { get; }
 }
