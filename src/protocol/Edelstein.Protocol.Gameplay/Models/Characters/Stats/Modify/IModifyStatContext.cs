@@ -37,4 +37,7 @@ public interface IModifyStatContext : IPacketWritable
     int TempEXP { get; set; }
 
     void SetExtendSP(byte jobLevel, byte amount);
+    void IncExtendSP(byte jobLevel, byte amount);
+
+    void LevelUp();
 }

@@ -169,8 +169,24 @@ public class ModifyStatContext : IModifyStatContext
         get => _character.EXP;
         set
         {
+            if (Level >= 200 || JobConstants.GetJobRace(Job) == 1 && Level >= 120)
+            {
+                if (_character.EXP > 0) 
+                    value = 0;
+                else return;
+            }
+
             Flag |= ModifyStatType.EXP;
             _character.EXP = value;
+
+            if (EXP < EXPTable.CharacterEXP[_character.Level]) return;
+
+            _character.EXP = Math.Max(0, Math.Min(
+                EXPTable.CharacterEXP[_character.Level] - 1,
+                _character.EXP - EXPTable.CharacterEXP[_character.Level - 1]
+            ));
+
+            LevelUp();
         }
     }
 
@@ -206,11 +222,63 @@ public class ModifyStatContext : IModifyStatContext
 
     public void IncExtendSP(byte jobLevel, byte amount)
         => SetExtendSP(jobLevel, (byte)((_character.ExtendSP[jobLevel] ?? 0) + amount));
-
+    
     public void SetExtendSP(byte jobLevel, byte amount)
     {
         Flag |= ModifyStatType.SP;
         _character.ExtendSP.Records[jobLevel] = amount;
+    }
+    
+    public void LevelUp()
+    {
+        if (Level >= 200 || JobConstants.GetJobRace(Job) == 1 && Level >= 120) return;
+
+        Level++;
+
+        var random = new Random();
+        var hpBonus = random.Next(10, 16);
+        var mpBonus = random.Next(10, 12);
+        // TODO proper values
+
+        MaxHP = Math.Min(999999, MaxHP + hpBonus);
+        MaxMP = Math.Min(999999, MaxMP + mpBonus);
+
+        if (HP < MaxHP) HP = MaxHP;
+        if (MP < MaxMP) MP = MaxMP;
+
+        if (Level <= 10) return;
+        if (JobConstants.IsExtendSPJob(Job))
+        {
+            byte jobLevel = 0;
+
+            if (JobConstants.GetJobRace(Job) == 2 && JobConstants.GetJobType(Job) == 2)
+            {
+                if (Level <= 200) jobLevel = 10;
+                if (Level <= 160) jobLevel = 9;
+                if (Level <= 120) jobLevel = 8;
+                if (Level <= 100) jobLevel = 7;
+                if (Level <= 80) jobLevel = 6;
+                if (Level <= 60) jobLevel = 5;
+                if (Level <= 50) jobLevel = 4;
+                if (Level <= 40) jobLevel = 3;
+                if (Level <= 30) jobLevel = 2;
+                if (Level <= 20) jobLevel = 1;
+            }
+            else
+            {
+                if (Level <= 200) jobLevel = 4;
+                if (Level <= 120) jobLevel = 3;
+                if (Level <= 70) jobLevel = 2;
+                if (Level <= 30) jobLevel = 1;
+            }
+
+            if (jobLevel > 0) IncExtendSP(jobLevel, 3);
+        }
+        else SP += 3;
+        AP += 5;
+
+        if (Level >= 200 || JobConstants.GetJobRace(Job) == 1 && Level >= 120)
+            EXP = 0;
     }
 
     public void WriteTo(IPacketWriter writer)
