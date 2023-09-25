@@ -109,15 +109,16 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
         await UpdateControllableObjects();
     }
     
-    public async Task Unobserve(IFieldSplitObserver observer)
+    public async Task Unobserve(IFieldSplitObserver observer, bool quiet = false)
     {
         _observers.Remove(observer);
         observer.Observing.Remove(this);
 
-        await Task.WhenAll(Objects
-            .Where(o => o != observer)
-            .Where(o => o.IsVisibleTo(observer))
-            .Select(o => observer.Dispatch(o.GetLeaveFieldPacket())));
+        if (!quiet)
+            await Task.WhenAll(Objects
+                .Where(o => o != observer)
+                .Where(o => o.IsVisibleTo(observer))
+                .Select(o => observer.Dispatch(o.GetLeaveFieldPacket())));
         await UpdateControllableObjects();
     }
 
