@@ -102,9 +102,10 @@ public class QuestManager : IQuestManager
                         Tuple.Create(QuestJobFlags.Evan, Job.Evan)
                     };
 
-                    if (checks.Any(c => i.JobFlags.Value.HasFlag(c.Item1) &&
-                                   JobConstants.GetJobRace(c.Item2) == JobConstants.GetJobRace(user.Character.Job) &&
-                                   JobConstants.GetJobType(c.Item2) == JobConstants.GetJobType(user.Character.Job)))
+                    if (checks.Any(c => 
+                            i.JobFlags.Value.HasFlag(c.Item1) &&
+                            JobConstants.GetJobRace(c.Item2) == JobConstants.GetJobRace(user.Character.Job) &&
+                            JobConstants.GetJobType(c.Item2) == JobConstants.GetJobType(user.Character.Job)))
                         check = true;
                 }
 
@@ -141,7 +142,7 @@ public class QuestManager : IQuestManager
             rewardsCheck.AddRange(rewardsBase
                 .Where(r => r.Count > 0)
                 .Select(r => Tuple.Create(r.ItemID, (short)r.Count)));
-        if (rewardsRandom != null) // TODO: job check
+        if (rewardsRandom != null)
             rewardsCheck.AddRange(rewardsRandom
                 .GroupBy(r => r.ItemID / 1000000)
                 .Select(g => Tuple.Create(g.First().ItemID, (short)g.First().Count)));
