@@ -245,6 +245,49 @@ public class QuestManager : IQuestManager
         var checkTemplate = action == QuestAction.Start
             ? template.CheckStart
             : template.CheckEnd;
+        var now = DateTime.UtcNow;
+        var record = user.Character.QuestRecords[template.ID]?.Value ?? string.Empty;
+
+        if (checkTemplate.WorldMin != null && user.StageUser.Context.Options.WorldID < checkTemplate.WorldMin)
+            return QuestResultType.FailedUnknown;
+        if (checkTemplate.WorldMax != null && user.StageUser.Context.Options.WorldID > checkTemplate.WorldMax)
+            return QuestResultType.FailedUnknown;
+        
+        if (checkTemplate.LevelMin != null && user.Character.Level < checkTemplate.LevelMin)
+            return QuestResultType.FailedUnknown;
+        
+        if (checkTemplate.POP != null && user.Character.POP < checkTemplate.POP)
+            return QuestResultType.FailedUnknown;
+        
+        if (checkTemplate.DateStart != null && now < checkTemplate.DateStart)
+            return QuestResultType.FailedUnknown;
+        if (checkTemplate.DateEnd != null && now > checkTemplate.DateEnd)
+            return QuestResultType.FailedUnknown;
+        
+        if (checkTemplate.Jobs != null && checkTemplate.Jobs.All(j => j != user.Character.Job))
+            return QuestResultType.FailedUnknown;
+        // TODO: subjob
+
+        if (checkTemplate.CheckItem != null)
+        {
+            foreach (var item in checkTemplate.CheckItem)
+                if (!user.StageUser.Context.Managers.Inventory.HasItem(user.Character.Inventories, item.ItemID, (short)item.Count))
+                    return QuestResultType.FailedInventory;
+        }
+        
+        if (action == QuestAction.End && checkTemplate.CheckMob != null)
+        {
+            if (record.Length != checkTemplate.CheckMob.Count * 3 || !record.All(char.IsDigit))
+                return QuestResultType.FailedUnknown;
+
+            foreach (var mob in checkTemplate.CheckMob)
+            {
+                var count = Convert.ToInt32(record.Substring(3 * mob.Order, 3));
+                if (count < mob.Count)
+                    return QuestResultType.FailedUnknown;
+            }
+        }
+        
         return QuestResultType.Success;
     }
 }
