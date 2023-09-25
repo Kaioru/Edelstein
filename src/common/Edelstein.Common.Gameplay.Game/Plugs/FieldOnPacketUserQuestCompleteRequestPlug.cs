@@ -29,7 +29,8 @@ public class FieldOnPacketUserQuestCompleteRequestPlug : IPipelinePlug<FieldOnPa
             result = await _manager.Act(
                 QuestAction.End,
                 message.Template,
-                message.User
+                message.User,
+                message.Select
             );
 
         if (result == QuestResultType.Success)

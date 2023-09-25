@@ -28,7 +28,8 @@ public class FieldOnPacketUserQuestAcceptRequestPlug : IPipelinePlug<FieldOnPack
             result = await _manager.Act(
                 QuestAction.Start,
                 message.Template,
-                message.User
+                message.User,
+                null
             );
 
         if (result == QuestResultType.Success)

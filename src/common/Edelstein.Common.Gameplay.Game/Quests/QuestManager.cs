@@ -1,8 +1,12 @@
-﻿using System.Text;
+﻿using System.Collections.Immutable;
+using System.Text;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Quests;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
+using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Quests;
@@ -11,11 +15,13 @@ public class QuestManager : IQuestManager
 {
     private readonly ITemplateManager<IQuestTemplate> _questTemplates;
     private readonly IMobQuestCacheManager _mobQuestCacheManager;
+    private readonly ITemplateManager<IItemTemplate> _itemTemplates;
     
-    public QuestManager(ITemplateManager<IQuestTemplate> questTemplates, IMobQuestCacheManager mobQuestCacheManager)
+    public QuestManager(ITemplateManager<IQuestTemplate> questTemplates, IMobQuestCacheManager mobQuestCacheManager, ITemplateManager<IItemTemplate> itemTemplates)
     {
         _questTemplates = questTemplates;
         _mobQuestCacheManager = mobQuestCacheManager;
+        _itemTemplates = itemTemplates;
     }
     
     public async Task UpdateMobKill(IFieldUser user, int mobID, int inc)
@@ -58,12 +64,91 @@ public class QuestManager : IQuestManager
         }
     }
     
-    public async Task<QuestResultType> Act(QuestAction action, IQuestTemplate template, IFieldUser user)
+    public async Task<QuestResultType> Act(QuestAction action, IQuestTemplate template, IFieldUser user, int? select)
     {
         var actTemplate = action == QuestAction.Start
             ? template.ActStart
             : template.ActEnd;
+        var rewardsBase = actTemplate.Items?.Where(i => i.Prob == null).ToImmutableList();
+        var rewardsRandom = actTemplate.Items?
+            .Where(i => i.Gender is null or 2 || i.Gender == user.Character.Gender)
+            .Where(i =>
+            {
+                var check = false;
+                
+                if (i.JobFlags > 0)
+                {
+                    var checks = new List<Tuple<QuestJobFlags, int>>
+                    {
+                        Tuple.Create(QuestJobFlags.Novice, Job.Novice),
+                        Tuple.Create(QuestJobFlags.Swordman, Job.Swordman),
+                        Tuple.Create(QuestJobFlags.Magician, Job.Magician),
+                        Tuple.Create(QuestJobFlags.Archer, Job.Archer),
+                        Tuple.Create(QuestJobFlags.Rogue, Job.Rogue),
+                        Tuple.Create(QuestJobFlags.Pirate, Job.Pirate),
+                        
+                        Tuple.Create(QuestJobFlags.Noblesse, Job.Noblesse),
+                        Tuple.Create(QuestJobFlags.Soulfighter, Job.Soulfighter),
+                        Tuple.Create(QuestJobFlags.Flamewizard, Job.Flamewizard),
+                        Tuple.Create(QuestJobFlags.Windbreaker, Job.Windbreaker),
+                        Tuple.Create(QuestJobFlags.Nightwalker, Job.Nightwalker),
+                        Tuple.Create(QuestJobFlags.Striker, Job.Striker),
+                        
+                        Tuple.Create(QuestJobFlags.Legend, Job.Legend),
+                        Tuple.Create(QuestJobFlags.Aran, Job.Aran),
+                        Tuple.Create(QuestJobFlags.Evan, Job.Evan)
+                    };
 
+                    if (checks.Any(c =>
+                            i.JobFlags.Value.HasFlag(c.Item1) &&
+                            JobConstants.GetJobRace(c.Item2) == JobConstants.GetJobRace(user.Character.Job) &&
+                            JobConstants.GetJobType(c.Item2) == JobConstants.GetJobType(user.Character.Job)))
+                        check = true;
+                }
+
+                if (check) return check;
+                
+                if (i.JobExFlags > 0)
+                {
+                    var checks = new List<Tuple<QuestJobExFlags, int>>
+                    {
+                        Tuple.Create(QuestJobExFlags.Bmage, Job.Bmage),
+                        Tuple.Create(QuestJobExFlags.Wildhunter, Job.Wildhunter),
+                        Tuple.Create(QuestJobExFlags.Mechanic, Job.Mechanic),
+                    };
+
+                    if (checks.Any(c =>
+                            i.JobExFlags.Value.HasFlag(c.Item1) &&
+                            JobConstants.GetJobRace(c.Item2) == JobConstants.GetJobRace(user.Character.Job) &&
+                            JobConstants.GetJobType(c.Item2) == JobConstants.GetJobType(user.Character.Job)))
+                        check = true;
+                }
+
+                return check;
+            })
+            .Where(i => i.Prob > 0)
+            .ToImmutableList();
+        var rewardsSelect = actTemplate.Items?.Where(i => i.Prob == -1).ToDictionary(
+            i => i.Order,
+            i => i
+        );
+        var rewardSelect = select != null ? rewardsSelect?.GetValueOrDefault(select.Value) : null;
+        var rewardsCheck = new List<Tuple<int, short>>();
+
+        if (rewardsBase != null)
+            rewardsCheck.AddRange(rewardsBase
+                .Where(r => r.Count > 0)
+                .Select(r => Tuple.Create(r.ItemID, (short)r.Count)));
+        if (rewardsRandom != null) // TODO: job check
+            rewardsCheck.AddRange(rewardsRandom
+                .GroupBy(r => r.ItemID / 1000000)
+                .Select(g => Tuple.Create(g.First().ItemID, (short)g.First().Count)));
+        if (rewardSelect != null)
+            rewardsCheck.Add(Tuple.Create(rewardSelect.ItemID, (short)rewardSelect.Count));
+
+        if (!user.StageUser.Context.Managers.Inventory.HasSlotFor(user.Character.Inventories, rewardsCheck))
+            return QuestResultType.FailedInventory;
+        
         if (actTemplate.IncEXP > 0)
         {
             await user.ModifyStats(s => s.EXP += actTemplate.IncEXP.Value);
@@ -74,6 +159,65 @@ public class QuestManager : IQuestManager
         {
             await user.ModifyStats(s => s.Money += actTemplate.IncMoney.Value);
             await user.Message(new IncMoneyMessage(actTemplate.IncMoney.Value));
+        }
+
+        if (actTemplate.IncPOP > 0)
+        {
+            await user.ModifyStats(s => s.POP += (short)actTemplate.IncPOP.Value);
+            await user.Message(new IncPOPMessage(actTemplate.IncPOP.Value));
+        }
+
+        var rewards = new List<IQuestTemplateActItem>();
+        
+        if (rewardsBase != null)
+            rewards.AddRange(rewardsBase);
+
+        if (rewardsRandom != null)
+        {
+            var random = new Random();
+            var value = random.Next() * (rewardsRandom.Sum(r => r.Prob) ?? 0);
+            
+            foreach (var reward in rewardsRandom ?? ImmutableList<IQuestTemplateActItem>.Empty)
+            {
+                value -= reward.Prob ?? 0;
+
+                if (!(value <= 0))
+                    continue;
+
+                rewards.Add(reward);
+                break;
+            }
+        }
+        
+        if (rewardSelect != null)
+            rewards.Add(rewardSelect);
+
+        if (rewards.Count > 0)
+        {
+            var now = DateTime.UtcNow;
+            
+            foreach (var reward in rewards)
+            {
+                if (reward.Count > 0)
+                {
+                    var item = await _itemTemplates.Retrieve(reward.ItemID);
+                    var slot = item?.ToItemSlot(reward.Variation ?? ItemVariationOption.None);
+
+                    if (slot is ItemSlotBase slotBase)
+                    {
+                        if (reward.Period > 0)
+                            slotBase.DateExpire = now.AddDays(reward.Period.Value);
+                    }
+                    
+                    if (slot is ItemSlotBundle bundle)
+                        bundle.Number = (short)reward.Count;
+
+                    if (slot != null)
+                        await user.ModifyInventory(i => i.Add(slot));
+                } else
+                    await user.ModifyInventory(i => i.Remove(reward.ItemID, (short)reward.Count));
+                await user.Message(new DropPickUpItemMessage(reward.ItemID, reward.Count, true));
+            }
         }
         
         return QuestResultType.Success;
