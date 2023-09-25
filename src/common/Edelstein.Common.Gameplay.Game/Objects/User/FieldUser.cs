@@ -279,15 +279,23 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
     public Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false)
         => Modify(m => m.Stats(action, exclRequest));
+    public Task ModifyStats(IModifyStatContext context, bool exclRequest = false)
+        => Modify(m => m.Stats(context, exclRequest));
 
     public Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
         => Modify(m => m.Inventory(action, exclRequest));
-    
+    public Task ModifyInventory(IModifyInventoryGroupContext context, bool exclRequest = false)
+        => Modify(m => m.Inventory(context, exclRequest));
+
     public Task ModifySkills(Action<IModifySkillContext>? action = null, bool exclRequest = false)
         => Modify(m => m.Skills(action, exclRequest));
-    
+    public Task ModifySkills(IModifySkillContext context, bool exclRequest = false)
+        => Modify(m => m.Skills(context, exclRequest));
+
     public Task ModifyTemporaryStats(Action<IModifyTemporaryStatContext>? action = null, bool exclRequest = false)
         => Modify(m => m.TemporaryStats(action, exclRequest));
+    public Task ModifyTemporaryStats(IModifyTemporaryStatContext context, bool exclRequest = false)
+        => Modify(m => m.TemporaryStats(context, exclRequest));
 
     protected override IPacket GetMovePacket(IFieldUserMovePath ctx)
     {

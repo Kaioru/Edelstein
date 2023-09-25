@@ -22,12 +22,15 @@ public class FieldUserModify : IFieldUserModify
     public bool IsRequireUpdate { get; private set; } = false;
     public bool IsRequireUpdateAvatar { get; private set; } = false;
     
-    public async Task Stats(Action<IModifyStatContext>? action = null, bool exclRequest = false)
+    public Task Stats(Action<IModifyStatContext>? action = null, bool exclRequest = false)
     {
         var context = new ModifyStatContext(_user.Character);
-
         action?.Invoke(context);
-        
+        return Stats(context, exclRequest);
+    }
+    
+    public async Task Stats(IModifyStatContext context, bool exclRequest = false)
+    {
         if (context.Flag > 0)
             IsRequireUpdate = true;
         
@@ -55,13 +58,17 @@ public class FieldUserModify : IFieldUserModify
                 _user.Character.Job));
     }
 
-    public async Task Inventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
+    public Task Inventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
     {
         var context = new ModifyInventoryGroupContext(_user.Character.Inventories, _user.StageUser.Context.Templates.Item);
-        using var packet = new PacketWriter(PacketSendOperations.InventoryOperation);
-
         action?.Invoke(context);
-
+        return Inventory(context, exclRequest);
+    }
+    
+    public async Task Inventory(IModifyInventoryGroupContext context, bool exclRequest = false)
+    {
+        using var packet = new PacketWriter(PacketSendOperations.InventoryOperation);
+        
         packet.WriteBool(exclRequest);
         packet.Write(context);
         packet.WriteBool(false);
@@ -74,12 +81,16 @@ public class FieldUserModify : IFieldUserModify
         
         await _user.Dispatch(packet.Build());
     }
-    
-    public async Task Skills(Action<IModifySkillContext>? action = null, bool exclRequest = false)
+
+    public Task Skills(Action<IModifySkillContext>? action = null, bool exclRequest = false)
     {
         var context = new ModifySkillContext(_user.Character);
-
         action?.Invoke(context);
+        return Skills(context, exclRequest);
+    }
+    
+    public async Task Skills(IModifySkillContext context, bool exclRequest = false)
+    {
         IsRequireUpdate = true;
         
         var packet = new PacketWriter(PacketSendOperations.ChangeSkillRecordResult);
@@ -90,13 +101,16 @@ public class FieldUserModify : IFieldUserModify
 
         await _user.Dispatch(packet.Build());
     }
-    
-    public async Task TemporaryStats(Action<IModifyTemporaryStatContext>? action = null, bool exclRequest = false)
+
+    public Task TemporaryStats(Action<IModifyTemporaryStatContext>? action = null, bool exclRequest = false)
     {
         var context = new ModifyTemporaryStatContext(_user.Character.TemporaryStats);
-
         action?.Invoke(context);
-
+        return TemporaryStats(context, exclRequest);
+    }
+    
+    public async Task TemporaryStats(IModifyTemporaryStatContext context, bool exclRequest = false)
+    {
         var isUpdateReset = context.HistoryReset.Records.Any() ||
                             context.HistoryReset.HasTwoStateStats();
         var isUpdateSet = context.HistorySet.Records.Any() ||

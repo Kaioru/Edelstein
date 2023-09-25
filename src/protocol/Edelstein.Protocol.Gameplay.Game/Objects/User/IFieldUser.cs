@@ -51,7 +51,14 @@ public interface IFieldUser :
 
     Task Modify(Action<IFieldUserModify> action);
     Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false);
+    Task ModifyStats(IModifyStatContext context, bool exclRequest = false);
+    
     Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false);
+    Task ModifyInventory(IModifyInventoryGroupContext context, bool exclRequest = false);
+    
     Task ModifySkills(Action<IModifySkillContext>? action = null, bool exclRequest = false);
+    Task ModifySkills(IModifySkillContext context, bool exclRequest = false);
+    
     Task ModifyTemporaryStats(Action<IModifyTemporaryStatContext>? action = null, bool exclRequest = false);
+    Task ModifyTemporaryStats(IModifyTemporaryStatContext context, bool exclRequest = false);
 }

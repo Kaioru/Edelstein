@@ -3,7 +3,9 @@ using System.Text;
 using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
 using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
+using Edelstein.Common.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Quests;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
@@ -148,24 +150,28 @@ public class QuestManager : IQuestManager
 
         if (!user.StageUser.Context.Managers.Inventory.HasSlotFor(user.Character.Inventories, rewardsCheck))
             return QuestResultType.FailedInventory;
+
+        var stats = new ModifyStatContext(user.Character);
         
         if (actTemplate.IncEXP > 0)
         {
-            await user.ModifyStats(s => s.EXP += actTemplate.IncEXP.Value);
+            stats.EXP += actTemplate.IncEXP.Value;
             await user.Message(new IncEXPMessage(actTemplate.IncEXP.Value, true));
         }
         
         if (actTemplate.IncMoney > 0)
         {
-            await user.ModifyStats(s => s.Money += actTemplate.IncMoney.Value);
+            stats.Money += actTemplate.IncMoney.Value;
             await user.Message(new IncMoneyMessage(actTemplate.IncMoney.Value));
         }
 
         if (actTemplate.IncPOP > 0)
         {
-            await user.ModifyStats(s => s.POP += (short)actTemplate.IncPOP.Value);
+            stats.POP += (short)actTemplate.IncPOP.Value;
             await user.Message(new IncPOPMessage(actTemplate.IncPOP.Value));
         }
+
+        await user.ModifyStats(stats);
 
         var rewards = new List<IQuestTemplateActItem>();
         
@@ -192,6 +198,8 @@ public class QuestManager : IQuestManager
         if (rewardSelect != null)
             rewards.Add(rewardSelect);
 
+        var inventory = new ModifyInventoryGroupContext(user.Character.Inventories, _itemTemplates);
+        
         if (rewards.Count > 0)
         {
             var now = DateTime.UtcNow;
@@ -213,11 +221,12 @@ public class QuestManager : IQuestManager
                         bundle.Number = (short)reward.Count;
 
                     if (slot != null)
-                        await user.ModifyInventory(i => i.Add(slot));
+                        inventory.Add(slot);
                 } else
-                    await user.ModifyInventory(i => i.Remove(reward.ItemID, Math.Abs((short)reward.Count)));
+                    inventory.Remove(reward.ItemID, Math.Abs((short)reward.Count));
             }
 
+            await user.ModifyInventory(inventory);
             await user.Effect(new QuestEffect(rewards
                 .Select(r => Tuple.Create(r.ItemID, r.Count))
                 .ToImmutableList()));
