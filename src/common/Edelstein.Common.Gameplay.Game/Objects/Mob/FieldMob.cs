@@ -82,7 +82,7 @@ public class FieldMob :
 
             if (HP <= 0)
             {
-                await Field.Leave(this, () => GetLeaveFieldPacket(1));
+                await Field.Leave(this, () => GetLeaveFieldPacket(FieldMobLeaveType.Etc));
 
                 if (attacker != null) 
                     _ = attacker.StageUser.Context.Managers.Quest.UpdateMobKill(attacker, Template.ID);
@@ -141,7 +141,7 @@ public class FieldMob :
 
     public override IPacket GetEnterFieldPacket() => GetEnterFieldPacket(FieldMobAppearType.Normal);
 
-    public override IPacket GetLeaveFieldPacket() => GetLeaveFieldPacket(2);
+    public override IPacket GetLeaveFieldPacket() => GetLeaveFieldPacket(FieldMobLeaveType.None);
     
     public void WriteTo(IPacketWriter writer) => WriteTo(writer, FieldMobAppearType.Normal);
 
@@ -154,12 +154,12 @@ public class FieldMob :
         return packet.Build();
     }
     
-    public IPacket GetLeaveFieldPacket(byte leaveType)
+    public IPacket GetLeaveFieldPacket(FieldMobLeaveType leaveType)
     {
         using var packet = new PacketWriter(PacketSendOperations.MobLeaveField);
 
         packet.WriteInt(ObjectID ?? 0);
-        packet.WriteByte(leaveType);
+        packet.WriteByte((byte)leaveType);
         return packet.Build();
     }
     
