@@ -31,7 +31,7 @@ public class FieldGeneratorNPCUnit : IFieldGeneratorUnit
 
         NPC = new FieldNPC(
             _template,
-            _life.Position,
+            _field.Template.Footholds.FindBelow(_life.Position).FirstOrDefault()?.Line.AtX(_life.Position.X) ?? _life.Position,
             _field.Template.Footholds.FindByID(_life.FootholdID),
             _life.Bounds,
             _life.IsFacingLeft
