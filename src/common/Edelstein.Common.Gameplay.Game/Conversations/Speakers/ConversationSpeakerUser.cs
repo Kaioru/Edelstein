@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+﻿using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
@@ -46,7 +47,12 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
         get => _user.Character.Job;
         set => _user.ModifyStats(s => s.Job = value).Wait();
     }
-    
+
+    public int JobRace => JobConstants.GetJobRace(_user.Character.Job);
+    public int JobType => JobConstants.GetJobType(_user.Character.Job);
+    public int JobLevel => JobConstants.GetJobLevel(_user.Character.Job);
+    public int JobBranch => JobConstants.GetJobBranch(_user.Character.Job);
+
     public short STR
     {
         get => _user.Character.STR;
@@ -123,6 +129,12 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
     {
         get => _user.Character.Money;
         set => _user.ModifyStats(s => s.Money = value).Wait();
+    }
+
+    public int Field
+    {
+        get => _user.Field?.Template.ID ?? 999999999;
+        set => TransferField(value);
     }
 
     public IConversationSpeakerUserInventory Inventory => new ConversationSpeakerUserInventory(_user);

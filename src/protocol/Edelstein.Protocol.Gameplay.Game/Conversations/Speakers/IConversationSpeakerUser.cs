@@ -8,6 +8,10 @@ public interface IConversationSpeakerUser : IConversationSpeaker
 
     byte Level { get; set; }
     short Job { get; set; }
+    int JobRace { get; }
+    int JobType { get; }
+    int JobLevel { get; }
+    int JobBranch { get; }
 
     short STR { get; set; }
     short DEX { get; set; }
@@ -26,6 +30,8 @@ public interface IConversationSpeakerUser : IConversationSpeaker
     short POP { get; set; }
 
     int Money { get; set; }
+    
+    int Field { get; set; }
 
     IConversationSpeakerUserInventory Inventory { get; }
         
