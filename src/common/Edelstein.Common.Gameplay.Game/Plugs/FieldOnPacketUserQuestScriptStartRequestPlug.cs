@@ -36,7 +36,7 @@ public class FieldOnPacketUserQuestScriptStartRequestPlug : IPipelinePlug<FieldO
         _ = message.User.Converse(
             conversation,
             c => new ConversationSpeaker(c, message.NPCTemplateID ?? 9010000),
-            c => new ConversationSpeaker(c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
+            c => new ConversationSpeakerUser(message.User, c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
         );
     }
 }

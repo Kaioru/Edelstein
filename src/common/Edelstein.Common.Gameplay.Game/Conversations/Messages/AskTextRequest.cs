@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Conversations.Messages;
+﻿using Edelstein.Protocol.Gameplay.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Conversations.Messages;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Utilities.Packets;
 

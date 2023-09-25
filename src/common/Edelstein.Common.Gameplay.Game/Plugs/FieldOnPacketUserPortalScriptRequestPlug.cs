@@ -24,7 +24,7 @@ public class FieldOnPacketUserPortalScriptRequestPlug : IPipelinePlug<FieldOnPac
         _ = message.User.Converse(
             conversation,
             c => new ConversationSpeaker(c),
-            c => new ConversationSpeaker(c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
+            c => new ConversationSpeakerUser(message.User, c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
         );
     }
 }

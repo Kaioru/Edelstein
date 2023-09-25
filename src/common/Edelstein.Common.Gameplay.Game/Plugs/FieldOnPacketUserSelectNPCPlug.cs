@@ -22,8 +22,8 @@ public class FieldOnPacketUserSelectNPCPlug : IPipelinePlug<FieldOnPacketUserSel
 
         _ = message.User.Converse(
             conversation,
-            c => new ConversationSpeaker(c, message.NPC.Template.ID),
-            c => new ConversationSpeaker(c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
+            c => new ConversationSpeakerNPC(message.NPC, c, message.NPC.Template.ID),
+            c => new ConversationSpeakerUser(message.User, c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
         );
     }
 }
