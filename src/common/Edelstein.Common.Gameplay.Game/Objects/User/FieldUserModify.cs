@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
+﻿using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
+using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Common.Gameplay.Models.Characters.Stats;
 using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify;
@@ -40,6 +41,11 @@ public class FieldUserModify : IFieldUserModify
         packet.WriteBool(false);
         
         await _user.Dispatch(packet.Build());
+
+        if (context.Flag.HasFlag(ModifyStatType.Level))
+            _ = _user.Effect(new LevelUpEffect(), false);
+        if (context.Flag.HasFlag(ModifyStatType.Job))
+            _ = _user.Effect(new JobChangedEffect(), false);
 
         if (_user.StageUser.Party != null && (context.Flag.HasFlag(ModifyStatType.Level) || context.Flag.HasFlag(ModifyStatType.Job)))
             _ = _user.StageUser.Context.Services.Party.UpdateLevelOrJob(new PartyUpdateLevelOrJobRequest(

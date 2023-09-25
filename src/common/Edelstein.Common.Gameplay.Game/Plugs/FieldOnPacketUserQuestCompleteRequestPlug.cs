@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+﻿using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
+using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
 using Edelstein.Common.Gameplay.Models.Characters.Quests;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
@@ -43,6 +44,7 @@ public class FieldOnPacketUserQuestCompleteRequestPlug : IPipelinePlug<FieldOnPa
                 message.Template.ID,
                 now
             ));
+            await message.User.Effect(new QuestCompleteEffect());
         }
 
         var p = new PacketWriter(PacketSendOperations.UserQuestResult);

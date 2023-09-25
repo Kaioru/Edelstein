@@ -193,6 +193,22 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         packet.Write(writable);
         return Dispatch(packet.Build());
     }
+    
+    public async Task Effect(IPacketWritable writable, bool isLocal = true, bool isRemote = true)
+    {
+        var localPacket = new PacketWriter(PacketSendOperations.UserEffectLocal)
+            .Write(writable)
+            .Build();
+        var remotePacket = new PacketWriter(PacketSendOperations.UserEffectRemote)
+            .WriteInt(Character.ID)
+            .Write(writable)
+            .Build();
+
+        if (isLocal)
+            await Dispatch(localPacket);
+        if (isRemote && FieldSplit != null) 
+            await FieldSplit.Dispatch(remotePacket, this);
+    }
 
     public Task<T> Prompt<T>(Func<IConversationSpeaker, T> prompt, T def) =>
         Prompt((s1, s2) => prompt.Invoke(s1), def);
