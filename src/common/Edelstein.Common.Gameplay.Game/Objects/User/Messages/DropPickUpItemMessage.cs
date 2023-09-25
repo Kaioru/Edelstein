@@ -4,15 +4,15 @@ namespace Edelstein.Common.Gameplay.Game.Objects.User.Messages;
 
 public record DropPickUpItemMessage(
     int ItemID,
-    int Quantity,
-    bool IsInChat
+    int Quantity
 ) : IPacketWritable
 {
     public void WriteTo(IPacketWriter writer)
     {
         writer.WriteByte((byte)MessageType.DropPickUpMessage);
-        writer.WriteByte((byte)(IsInChat ? 2 : 0));
+        writer.WriteByte((byte)(Quantity == 1 ? 2 : 0));
         writer.WriteInt(ItemID);
-        writer.WriteInt(Quantity);
+        if (Quantity != 1)
+            writer.WriteInt(Quantity);
     }
 }

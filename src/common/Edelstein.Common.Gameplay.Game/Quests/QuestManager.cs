@@ -215,7 +215,6 @@ public class QuestManager : IQuestManager
                         await user.ModifyInventory(i => i.Add(slot));
                 } else
                     await user.ModifyInventory(i => i.Remove(reward.ItemID, Math.Abs((short)reward.Count)));
-                await user.Message(new DropPickUpItemMessage(reward.ItemID, reward.Count, true));
             }
         }
         

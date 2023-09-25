@@ -28,6 +28,6 @@ public class FieldDropItem : AbstractFieldDrop
     protected override async Task Update(IFieldUser user)
     {
         await user.ModifyInventory(i => i.Add(_item));
-        await user.Message(new DropPickUpItemMessage(_item.ID, _item is IItemSlotBundle bundle ? bundle.Number : 1, false));
+        await user.Message(new DropPickUpItemMessage(_item.ID, _item is IItemSlotBundle bundle ? bundle.Number : 1));
     }
 }
