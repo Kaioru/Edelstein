@@ -99,10 +99,9 @@ public class QuestManager : IQuestManager
                         Tuple.Create(QuestJobFlags.Evan, Job.Evan)
                     };
 
-                    if (checks.Any(c =>
-                            i.JobFlags.Value.HasFlag(c.Item1) &&
-                            JobConstants.GetJobRace(c.Item2) == JobConstants.GetJobRace(user.Character.Job) &&
-                            JobConstants.GetJobType(c.Item2) == JobConstants.GetJobType(user.Character.Job)))
+                    if (checks.Any(c => i.JobFlags.Value.HasFlag(c.Item1) &&
+                                   JobConstants.GetJobRace(c.Item2) == JobConstants.GetJobRace(user.Character.Job) &&
+                                   JobConstants.GetJobType(c.Item2) == JobConstants.GetJobType(user.Character.Job)))
                         check = true;
                 }
 
@@ -175,9 +174,9 @@ public class QuestManager : IQuestManager
         if (rewardsRandom != null)
         {
             var random = new Random();
-            var value = random.Next() * (rewardsRandom.Sum(r => r.Prob) ?? 0);
+            var value = random.Next(0, rewardsRandom.Sum(r => r.Prob) ?? 0);
             
-            foreach (var reward in rewardsRandom ?? ImmutableList<IQuestTemplateActItem>.Empty)
+            foreach (var reward in rewardsRandom)
             {
                 value -= reward.Prob ?? 0;
 
@@ -215,7 +214,7 @@ public class QuestManager : IQuestManager
                     if (slot != null)
                         await user.ModifyInventory(i => i.Add(slot));
                 } else
-                    await user.ModifyInventory(i => i.Remove(reward.ItemID, (short)reward.Count));
+                    await user.ModifyInventory(i => i.Remove(reward.ItemID, Math.Abs((short)reward.Count)));
                 await user.Message(new DropPickUpItemMessage(reward.ItemID, reward.Count, true));
             }
         }

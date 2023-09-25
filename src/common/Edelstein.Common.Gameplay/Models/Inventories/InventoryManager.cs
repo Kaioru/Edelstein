@@ -152,7 +152,7 @@ public class InventoryManager : IInventoryManager
         var totalSlots = items
             .Except(bundles)
             .Count();
-
+        
         foreach (var bundle in bundlesMerged)
         {
             var count = (int)bundle.Number;
@@ -170,6 +170,6 @@ public class InventoryManager : IInventoryManager
             totalSlots += (int)Math.Ceiling(count / (double)template.MaxPerSlot);
         }
         
-        return inventory.Items.Count + totalSlots <= inventory.SlotMax;
+        return inventory.Items.Count(kv => kv.Key > 0) + totalSlots <= inventory.SlotMax;
     }
 }
