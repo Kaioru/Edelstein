@@ -137,20 +137,7 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
                 await user.Move(portal.Position, true);
 
             await user.Dispatch(user.GetSetFieldPacket());
-
-            if (user.IsInstantiated)
-            {
-                if (user.StageUser.Party != null)
-                    _ = user.StageUser.Context.Services.Party.UpdateChannelOrField(new PartyUpdateChannelOrFieldRequest(
-                        user.StageUser.Party.ID,
-                        user.Character.ID,
-                        user.StageUser.Context.Options.ChannelID,
-                        ID
-                    ));
-            }
-
-            if (!user.IsInstantiated) user.IsInstantiated = true;
-
+            
             if (Template.ScriptFirstUserEnter != null || Template.ScriptUserEnter != null)
             {
                 var script = isFirstUser ? Template.ScriptFirstUserEnter ?? Template.ScriptUserEnter : Template.ScriptUserEnter;
@@ -167,6 +154,19 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
                     );
                 }
             }
+
+            if (user.IsInstantiated)
+            {
+                if (user.StageUser.Party != null)
+                    _ = user.StageUser.Context.Services.Party.UpdateChannelOrField(new PartyUpdateChannelOrFieldRequest(
+                        user.StageUser.Party.ID,
+                        user.Character.ID,
+                        user.StageUser.Context.Options.ChannelID,
+                        ID
+                    ));
+            }
+
+            if (!user.IsInstantiated) user.IsInstantiated = true;
         }
 
         var split = GetSplit(obj.Position);
