@@ -30,6 +30,9 @@ public interface IFieldUser :
     bool IsInstantiated { get; set; }
     bool IsConversing { get; }
     
+    bool IsDirectionMode { get; }
+    bool IsStandAloneMode { get; }
+    
     ICollection<IFieldObjectOwned> Owned { get; }
 
     IPacket GetSetFieldPacket();
@@ -47,6 +50,9 @@ public interface IFieldUser :
         Func<IConversationContext, IConversationSpeaker>? getSpeaker1 = null,
         Func<IConversationContext, IConversationSpeaker>? getSpeaker2 = null
     );
+
+    Task SetDirectionMode(bool enable, int delay = 0);
+    Task SetStandAloneMode(bool enable);
 
     Task EndConversation();
 

@@ -16,8 +16,15 @@ public class FieldOnPacketUserTransferFieldRequestPlug : IPipelinePlug<FieldOnPa
         if (message.FieldID != -1/* && message.User.Account.GradeCode.HasFlag(AccountGradeCode.AdminLevel1)*/)
         {
             var target = await _fieldManager.Retrieve(message.FieldID);
+            
             if (target == null) return;
+            
             await target.Enter(message.User);
+
+            if (message.User.IsDirectionMode)
+                _ = message.User.SetDirectionMode(false);
+            if (message.User.IsStandAloneMode)
+                _ = message.User.SetStandAloneMode(false);
             return;
         }
 

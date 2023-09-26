@@ -23,7 +23,6 @@ using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Network;
-using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Tickers;
 
@@ -73,6 +72,9 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public bool IsInstantiated { get; set; }
     public bool IsConversing => Conversation != null;
     
+    public bool IsDirectionMode { get; private set; }
+    public bool IsStandAloneMode { get; private set; }
+
     public ICollection<IFieldSplit> Observing { get; }
     public ICollection<IFieldObjectControllable> Controlled { get; }
     public ICollection<IFieldObjectOwned> Owned { get; }
@@ -262,6 +264,24 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
             await EndConversation();
             await ModifyStats(exclRequest: true);
         }
+    }
+    
+    public Task SetDirectionMode(bool enable, int delay = 0)
+    {
+        IsDirectionMode = enable;
+        
+        var p = new PacketWriter(PacketSendOperations.SetDirectionMode);
+        p.WriteBool(enable);
+        p.WriteInt(delay);
+        return Dispatch(p.Build());
+    }
+    public Task SetStandAloneMode(bool enable)
+    {
+        IsStandAloneMode = enable;
+        
+        var p = new PacketWriter(PacketSendOperations.SetStandAloneMode);
+        p.WriteBool(enable);
+        return Dispatch(p.Build());
     }
 
     public Task EndConversation()

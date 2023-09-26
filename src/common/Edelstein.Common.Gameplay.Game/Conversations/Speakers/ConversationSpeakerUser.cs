@@ -164,10 +164,10 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
         => _user.StageUser.Context.Managers.Field.Retrieve(fieldID).Result?.Enter(_user, portal);
 
     public void SetDirectionMode(bool enable, int delay = 0)
-        => _user.DispatchSetDirectionMode(enable, delay).Wait();
+        => _user.SetDirectionMode(enable, delay).Wait();
     
     public void SetStandAloneMode(bool enable)
-        => _user.DispatchSetStandAloneMode(enable).Wait();
+        => _user.SetStandAloneMode(enable).Wait();
 
     public void EffectReserved(string path)
         => _user.Effect(new ReservedEffect(path), isRemote: false);
