@@ -15,5 +15,5 @@ public class FieldOnPacketUserQuestScriptEndRequestPlug : IPipelinePlug<FieldOnP
     public FieldOnPacketUserQuestScriptEndRequestPlug(IQuestManager manager) => _manager = manager;
 
     public Task Handle(IPipelineContext ctx, FieldOnPacketUserQuestScriptEndRequest message)
-        => _manager.Script(QuestAction.End, message.User, message.Template.ID);
+        => _manager.Script(QuestAction.End, message.User, message.Template.ID, message.NPCTemplateID);
 }

@@ -15,5 +15,5 @@ public class FieldOnPacketUserQuestScriptStartRequestPlug : IPipelinePlug<FieldO
     public FieldOnPacketUserQuestScriptStartRequestPlug(IQuestManager manager) => _manager = manager;
 
     public Task Handle(IPipelineContext ctx, FieldOnPacketUserQuestScriptStartRequest message) 
-        => _manager.Script(QuestAction.Start, message.User, message.Template.ID);
+        => _manager.Script(QuestAction.Start, message.User, message.Template.ID, message.NPCTemplateID);
 }

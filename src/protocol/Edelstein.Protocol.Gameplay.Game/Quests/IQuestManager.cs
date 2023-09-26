@@ -10,5 +10,5 @@ public interface IQuestManager
     Task<QuestResultType> Complete(IFieldUser user, int questID, int? select = null);
     Task<QuestResultType> Resign(IFieldUser user, int questID);
     
-    Task<QuestResultType> Script(QuestAction action, IFieldUser user, int questID);
+    Task<QuestResultType> Script(QuestAction action, IFieldUser user, int questID, int? npcID = null);
 }

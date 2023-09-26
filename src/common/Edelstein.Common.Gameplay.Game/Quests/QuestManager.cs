@@ -154,7 +154,7 @@ public class QuestManager : IQuestManager
     
     public Task<QuestResultType> Resign(IFieldUser user, int questID) => throw new NotImplementedException();
     
-    public async Task<QuestResultType> Script(QuestAction action, IFieldUser user, int questID)
+    public async Task<QuestResultType> Script(QuestAction action, IFieldUser user, int questID, int? npcID = null)
     {
         var template = await _questTemplates.Retrieve(questID);
         if (template == null) return QuestResultType.FailedUnknown;
@@ -167,7 +167,7 @@ public class QuestManager : IQuestManager
 
         await user.Converse(
             conversation,
-            c => new ConversationSpeaker(c),
+            c => new ConversationSpeaker(c, npcID ?? 9010000),
             c => new ConversationSpeakerUser(user, c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
         );
         return QuestResultType.Success;
