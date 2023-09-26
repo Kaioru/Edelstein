@@ -1,12 +1,16 @@
 ﻿using System.Collections.Immutable;
 using System.Text;
 using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Game.Conversations;
+using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
 using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
 using Edelstein.Common.Gameplay.Models.Characters.Quests;
 using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify;
+using Edelstein.Protocol.Gameplay.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Quests;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
@@ -20,12 +24,14 @@ public class QuestManager : IQuestManager
     private readonly ITemplateManager<IQuestTemplate> _questTemplates;
     private readonly IMobQuestCacheManager _mobQuestCacheManager;
     private readonly ITemplateManager<IItemTemplate> _itemTemplates;
+    private readonly INamedConversationManager _scriptManager;
     
-    public QuestManager(ITemplateManager<IQuestTemplate> questTemplates, IMobQuestCacheManager mobQuestCacheManager, ITemplateManager<IItemTemplate> itemTemplates)
+    public QuestManager(ITemplateManager<IQuestTemplate> questTemplates, IMobQuestCacheManager mobQuestCacheManager, ITemplateManager<IItemTemplate> itemTemplates, INamedConversationManager scriptManager)
     {
         _questTemplates = questTemplates;
         _mobQuestCacheManager = mobQuestCacheManager;
         _itemTemplates = itemTemplates;
+        _scriptManager = scriptManager;
     }
     
     public async Task UpdateMobKill(IFieldUser user, int mobID, int inc)
@@ -80,8 +86,6 @@ public class QuestManager : IQuestManager
                 template,
                 user
             );
-
-            if (template.CheckStart.ScriptStart != null) return QuestResultType.Success;
             
             if (result == QuestResultType.Success)
                 result = await Act(
@@ -120,8 +124,6 @@ public class QuestManager : IQuestManager
                 user
             );
             
-            if (template.CheckEnd.ScriptEnd != null) return QuestResultType.Success;
-            
             if (result == QuestResultType.Success)
                 result = await Act(
                     QuestAction.End,
@@ -151,6 +153,25 @@ public class QuestManager : IQuestManager
     }
     
     public Task<QuestResultType> Resign(IFieldUser user, int questID) => throw new NotImplementedException();
+    
+    public async Task<QuestResultType> Script(QuestAction action, IFieldUser user, int questID)
+    {
+        var template = await _questTemplates.Retrieve(questID);
+        if (template == null) return QuestResultType.FailedUnknown;
+        var script = action == QuestAction.Start
+            ? template.CheckStart.ScriptStart
+            : template.CheckEnd.ScriptEnd;
+        if (script == null) return QuestResultType.FailedUnknown;
+        var conversation = await _scriptManager.Retrieve(script) as IConversation ?? 
+                           new FallbackConversation(script, user);
+
+        await user.Converse(
+            conversation,
+            c => new ConversationSpeaker(c),
+            c => new ConversationSpeakerUser(user, c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
+        );
+        return QuestResultType.Success;
+    }
 
     private async Task<QuestResultType> Act(QuestAction action, IQuestTemplate template, IFieldUser user, int? select = null)
     {
