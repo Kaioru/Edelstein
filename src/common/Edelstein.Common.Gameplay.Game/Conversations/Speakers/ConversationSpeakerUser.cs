@@ -1,5 +1,9 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
+using Edelstein.Common.Gameplay.Game.Objects.User.Effects.Field;
 using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
@@ -131,6 +135,8 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
         set => _user.ModifyStats(s => s.Money = value).Wait();
     }
 
+    public int Gender => _user.Character.Gender;
+
     public int Field
     {
         get => _user.Field?.Template.ID ?? 999999999;
@@ -159,4 +165,25 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
     
     public void TransferField(int fieldID, string portal = "")
         => _user.StageUser.Context.Managers.Field.Retrieve(fieldID).Result?.Enter(_user, portal);
+    
+    public void SetDirectionMode(bool enable, int delay = 0)
+    {
+        var p = new PacketWriter(PacketSendOperations.SetDirectionMode);
+        p.WriteBool(enable);
+        p.WriteInt(delay);
+        _user.Dispatch(p.Build()).Wait();
+    }
+    
+    public void SetStandAloneMode(bool enable)
+    {
+        var p = new PacketWriter(PacketSendOperations.SetStandAloneMode);
+        p.WriteBool(enable);
+        _user.Dispatch(p.Build()).Wait();
+    }
+
+    public void EffectReserved(string path)
+        => _user.Effect(new ReservedEffect(path), isRemote: false);
+    
+    public void EffectFieldScreen(string path)
+        => _user.EffectField(new ScreenFieldEffect(path));
 }

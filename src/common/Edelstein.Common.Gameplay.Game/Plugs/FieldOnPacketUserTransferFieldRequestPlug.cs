@@ -13,7 +13,7 @@ public class FieldOnPacketUserTransferFieldRequestPlug : IPipelinePlug<FieldOnPa
     
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserTransferFieldRequest message)
     {
-        if (message.FieldID != -1 && message.User.Account.GradeCode.HasFlag(AccountGradeCode.AdminLevel1))
+        if (message.FieldID != -1/* && message.User.Account.GradeCode.HasFlag(AccountGradeCode.AdminLevel1)*/)
         {
             var target = await _fieldManager.Retrieve(message.FieldID);
             if (target == null) return;

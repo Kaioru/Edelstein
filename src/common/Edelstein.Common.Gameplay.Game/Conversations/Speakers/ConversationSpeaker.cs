@@ -24,6 +24,24 @@ public class ConversationSpeaker : IConversationSpeaker
     public byte Say(string text, bool prev = false, bool next = true) => 
         _context.Request(new SayRequest(this, text, prev, next)).Result;
 
+    public byte Say(string[] text, int current = 0)
+    {
+        byte result = 0;
+
+        while (current >= 0 && current < text.Length)
+        {
+            result = Say(text[current], current > 0);
+
+            if (result == 0) current = Math.Max(0, --current);
+            if (result != 1) continue;
+            if (current == text.Length)
+                break;
+            current = Math.Min(text.Length, ++current);
+        }
+
+        return result;
+    }
+
     public bool AskYesNo(string text) =>
         _context.Request(new AskYesNoRequest(this, text)).Result;
 

@@ -37,6 +37,7 @@ public interface IFieldUser :
     Task Message(string message);
     Task Message(IPacketWritable writable);
     Task Effect(IPacketWritable writable, bool isLocal = true, bool isRemote = true);
+    Task EffectField(IPacketWritable writable);
     
     Task<T> Prompt<T>(Func<IConversationSpeaker, T> prompt, T def);
     Task<T> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt, T def);

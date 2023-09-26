@@ -31,6 +31,8 @@ public interface IConversationSpeakerUser : IConversationSpeaker
 
     int Money { get; set; }
     
+    int Gender { get; }
+    
     int Field { get; set; }
 
     IConversationSpeakerUserInventory Inventory { get; }
@@ -40,4 +42,10 @@ public interface IConversationSpeakerUser : IConversationSpeaker
     void IncMoney(int amount);
 
     void TransferField(int fieldID, string portal = "");
+
+    void SetDirectionMode(bool enable, int delay = 0);
+    void SetStandAloneMode(bool enable);
+    
+    void EffectReserved(string path);
+    void EffectFieldScreen(string path);
 }

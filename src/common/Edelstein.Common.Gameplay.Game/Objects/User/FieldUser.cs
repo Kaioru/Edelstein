@@ -209,6 +209,13 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         if (isRemote && FieldSplit != null) 
             await FieldSplit.Dispatch(remotePacket, this);
     }
+    
+    public Task EffectField(IPacketWritable writable)
+    {
+        var packet = new PacketWriter(PacketSendOperations.FieldEffect);
+        packet.Write(writable);
+        return Dispatch(packet.Build());
+    }
 
     public Task<T> Prompt<T>(Func<IConversationSpeaker, T> prompt, T def) =>
         Prompt((s1, s2) => prompt.Invoke(s1), def);
