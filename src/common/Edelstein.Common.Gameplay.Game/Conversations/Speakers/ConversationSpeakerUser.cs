@@ -4,8 +4,6 @@ using Edelstein.Common.Gameplay.Game.Objects.User;
 using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
 using Edelstein.Common.Gameplay.Game.Objects.User.Effects.Field;
 using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
-using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers.Facades;
@@ -141,6 +139,7 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
     public int Gender => _user.Character.Gender;
 
     public ISpeakerUserInventory Inventory => new SpeakerUserInventory(_user);
+    public ISpeakerUserQuests Quests => new SpeakerUserQuests(_user);
     public ISpeakerField? Field => _user.Field == null ? null : new SpeakerField(_user.Field);
 
     public void IncEXP(int amount)

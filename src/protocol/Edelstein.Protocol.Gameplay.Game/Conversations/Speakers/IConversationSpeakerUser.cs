@@ -36,6 +36,7 @@ public interface IConversationSpeakerUser : IConversationSpeaker
     int Gender { get; }
     
     ISpeakerUserInventory Inventory { get; }
+    ISpeakerUserQuests Quests { get; }
     ISpeakerField? Field { get; }
         
     void IncEXP(int amount);
