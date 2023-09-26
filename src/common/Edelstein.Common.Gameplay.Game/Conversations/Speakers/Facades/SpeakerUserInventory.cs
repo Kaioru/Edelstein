@@ -1,15 +1,14 @@
-﻿using System.Collections.Immutable;
-using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
-using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+﻿using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
+using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers.Facades;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 
-namespace Edelstein.Common.Gameplay.Game.Conversations.Speakers;
+namespace Edelstein.Common.Gameplay.Game.Conversations.Speakers.Facades;
 
-public class ConversationSpeakerUserInventory : IConversationSpeakerUserInventory
+public class SpeakerUserInventory : ISpeakerUserInventory
 {
     private readonly IFieldUser _user;
     
-    public ConversationSpeakerUserInventory(IFieldUser user) => _user = user;
+    public SpeakerUserInventory(IFieldUser user) => _user = user;
 
     public void Add(int templateID, short count = 1)
     {

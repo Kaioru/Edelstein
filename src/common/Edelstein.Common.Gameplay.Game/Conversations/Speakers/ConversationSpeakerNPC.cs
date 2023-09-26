@@ -1,5 +1,7 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Conversations;
+﻿using Edelstein.Common.Gameplay.Game.Conversations.Speakers.Facades;
+using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers.Facades;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 
 namespace Edelstein.Common.Gameplay.Game.Conversations.Speakers;
@@ -15,4 +17,6 @@ public class ConversationSpeakerNPC : ConversationSpeaker, IConversationSpeakerN
         ConversationSpeakerFlags flags = 0
     ) : base(context, id, flags)
         => _npc = npc;
+    
+    public ISpeakerField? Field => _npc.Field == null ? null : new SpeakerField(_npc.Field);
 }

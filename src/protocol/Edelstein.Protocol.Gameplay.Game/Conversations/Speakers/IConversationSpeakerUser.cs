@@ -1,4 +1,6 @@
-﻿namespace Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+﻿using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers.Facades;
+
+namespace Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 
 public interface IConversationSpeakerUser : IConversationSpeaker
 {
@@ -33,9 +35,8 @@ public interface IConversationSpeakerUser : IConversationSpeaker
     
     int Gender { get; }
     
-    int Field { get; set; }
-
-    IConversationSpeakerUserInventory Inventory { get; }
+    ISpeakerUserInventory Inventory { get; }
+    ISpeakerField? Field { get; }
         
     void IncEXP(int amount);
     void IncPOP(short amount);
