@@ -17,7 +17,7 @@ public class SelectWorldHandler : AbstractPipedPacketHandler<ILoginStageUser, Us
     public override bool Check(ILoginStageUser user) => user.State == LoginState.SelectWorld;
 
     public override UserOnPacketSelectWorld Serialize(ILoginStageUser user, IPacketReader reader)
-        => new UserOnPacketSelectWorld(
+        => new(
             user,
             reader.Skip(1).ReadByte(),
             reader.ReadByte()

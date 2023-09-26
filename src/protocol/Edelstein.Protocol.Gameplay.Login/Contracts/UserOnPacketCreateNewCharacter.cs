@@ -1,9 +1,11 @@
-﻿namespace Edelstein.Protocol.Gameplay.Login.Contracts;
+﻿using Edelstein.Protocol.Gameplay.Login.Types;
+
+namespace Edelstein.Protocol.Gameplay.Login.Contracts;
 
 public record UserOnPacketCreateNewCharacter(
     ILoginStageUser User,
     string Name,
-    int Race,
+    RaceSelectType Race,
     short SubJob,
     int Face,
     int Hair,

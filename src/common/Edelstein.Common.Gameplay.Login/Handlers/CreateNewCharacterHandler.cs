@@ -1,6 +1,7 @@
 ﻿using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contracts;
+using Edelstein.Protocol.Gameplay.Login.Types;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Pipelines;
 
@@ -17,10 +18,10 @@ public class CreateNewCharacterHandler : AbstractPipedPacketHandler<ILoginStageU
     public override bool Check(ILoginStageUser user) => user.State == LoginState.SelectCharacter;
 
     public override UserOnPacketCreateNewCharacter Serialize(ILoginStageUser user, IPacketReader reader)
-        => new UserOnPacketCreateNewCharacter(
+        => new(
             user,
             reader.ReadString(),
-            reader.ReadInt(),
+            (RaceSelectType)reader.ReadInt(),
             reader.ReadShort(),
             reader.ReadInt(),
             reader.ReadInt(),

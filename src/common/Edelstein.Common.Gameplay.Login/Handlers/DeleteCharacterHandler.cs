@@ -19,7 +19,7 @@ public class DeleteCharacterHandler : AbstractPipedPacketHandler<ILoginStageUser
         user.Account?.SPW != null;
 
     public override UserOnPacketDeleteCharacter Serialize(ILoginStageUser user, IPacketReader reader)
-        => new UserOnPacketDeleteCharacter(
+        => new(
             user,
             reader.ReadString(),
             reader.ReadInt()

@@ -4,6 +4,7 @@ using Edelstein.Common.Gameplay.Models.Inventories.Modify;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Login.Contracts;
+using Edelstein.Protocol.Gameplay.Login.Types;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
@@ -48,14 +49,30 @@ public class UserOnPacketCreateNewCharacterPlug : IPipelinePlug<UserOnPacketCrea
                 {
                     AccountWorldID = message.User.AccountWorld!.ID,
                     Name = message.Name,
-                    Job = 0, // TODO: race -> job
+                    Job = message.Race switch
+                    {
+                        RaceSelectType.Resistance => 3000,
+                        RaceSelectType.Normal => 0,
+                        RaceSelectType.Cygnus => 1000,
+                        RaceSelectType.Aran => 2000,
+                        RaceSelectType.Evan => 2001,
+                        _ => 0
+                    },
                     Face = message.Face,
                     Hair = message.Hair + message.HairColor,
                     Skin = (byte)message.Skin,
                     Gender = message.Gender,
-                    FieldID = 310000000, // TODO: start maps
+                    FieldID = message.Race switch
+                    {
+                        RaceSelectType.Resistance => 931000000,
+                        RaceSelectType.Normal => 0,
+                        RaceSelectType.Cygnus => 130030000,
+                        RaceSelectType.Aran => 914000000,
+                        RaceSelectType.Evan => 900010000,
+                        _ => 0
+                    },
                     FieldPortal = 0,
-                    SubJob = 0 // TODO: race -> subjob
+                    SubJob = (short)(message.Race == RaceSelectType.Normal ? message.SubJob > 0 ? 1 : 0 : 0)
                 };
                 var context = new ModifyInventoryGroupContext(character.Inventories, _templateManager);
 
