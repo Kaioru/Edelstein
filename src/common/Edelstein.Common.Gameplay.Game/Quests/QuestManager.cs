@@ -161,7 +161,11 @@ public class QuestManager : IQuestManager
         var script = action == QuestAction.Start
             ? template.CheckStart.ScriptStart
             : template.CheckEnd.ScriptEnd;
-        if (script == null) return QuestResultType.FailedUnknown;
+        if (script == null) 
+            return QuestResultType.FailedUnknown;
+        if (await Check(action, template, user) != QuestResultType.Success) 
+            return QuestResultType.FailedUnknown;
+        
         var conversation = await _scriptManager.Retrieve(script) as IConversation ?? 
                            new FallbackConversation(script, user);
 
