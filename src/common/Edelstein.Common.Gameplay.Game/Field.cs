@@ -1,7 +1,11 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Game.Conversations;
+using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Game.Generators;
 using Edelstein.Common.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Gameplay.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Generators;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
@@ -123,6 +127,7 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
 
         if (obj is IFieldUser user)
         {
+            var isFirstUser = !Objects.OfType<IFieldUser>().Any();
             var portal =
                 Template.Portals.FindByID(user.Character.FieldPortal) ??
                 Template.Portals.FindClosest(obj.Position).FirstOrDefault();
@@ -145,6 +150,23 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
             }
 
             if (!user.IsInstantiated) user.IsInstantiated = true;
+
+            if (Template.ScriptFirstUserEnter != null || Template.ScriptUserEnter != null)
+            {
+                var script = isFirstUser ? Template.ScriptFirstUserEnter ?? Template.ScriptUserEnter : Template.ScriptUserEnter;
+                
+                if (script != null)
+                {
+                    var conversation = await user.StageUser.Context.Managers.Conversation.Retrieve(script) as IConversation ??
+                                       new FallbackConversation(script, user);
+
+                    _ = user.Converse(
+                        conversation,
+                        c => new ConversationSpeaker(c),
+                        c => new ConversationSpeakerUser(user, c, flags: ConversationSpeakerFlags.NPCReplacedByUser)
+                    );
+                }
+            }
         }
 
         var split = GetSplit(obj.Position);
