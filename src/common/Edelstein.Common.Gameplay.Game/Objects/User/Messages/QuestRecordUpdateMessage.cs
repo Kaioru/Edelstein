@@ -2,7 +2,7 @@
 
 namespace Edelstein.Common.Gameplay.Game.Objects.User.Messages;
 
-public record QuestRecordAcceptMessage(
+public record QuestRecordUpdateMessage(
     int QuestID,
     string Record
 ) : IPacketWritable

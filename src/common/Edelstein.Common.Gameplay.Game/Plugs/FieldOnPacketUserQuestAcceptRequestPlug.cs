@@ -37,7 +37,7 @@ public class FieldOnPacketUserQuestAcceptRequestPlug : IPipelinePlug<FieldOnPack
             var record = string.Empty;
             
             message.User.Character.QuestRecords.Records[message.Template.ID] = new QuestRecord {Value = record};
-            await message.User.Message(new QuestRecordAcceptMessage(
+            await message.User.Message(new QuestRecordUpdateMessage(
                 message.Template.ID,
                 record
             ));

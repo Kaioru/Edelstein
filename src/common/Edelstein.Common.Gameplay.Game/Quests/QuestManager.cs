@@ -63,7 +63,7 @@ public class QuestManager : IQuestManager
             builder.Insert(3 * checkMob.Order, count.ToString("000"));
             
             record.Value = builder.ToString();
-            _ = user.Message(new QuestRecordAcceptMessage(questID, record.Value));
+            _ = user.Message(new QuestRecordUpdateMessage(questID, record.Value));
         }
     }
     
