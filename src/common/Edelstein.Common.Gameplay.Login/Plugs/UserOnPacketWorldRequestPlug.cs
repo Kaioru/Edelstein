@@ -35,21 +35,15 @@ public class UserOnPacketWorldRequestPlug : IPipelinePlug<UserOnPacketWorldReque
         {
             var template = await _templates.Retrieve(worldID);
 
-            if (template == null)
-            {
-                _logger.LogWarning("Unable to retrieve data for world {World}", worldID);
-                continue;
-            }
-
             using var packet = new PacketWriter(PacketSendOperations.WorldInformation);
 
             packet.WriteByte(worldID);
-            packet.WriteString(template.Name);
-            packet.WriteByte(template.State);
+            packet.WriteString(template?.Name ?? "NO-NAME");
+            packet.WriteByte(template?.State ?? 0);
             packet.WriteString(""); // WorldEventDesc
             packet.WriteShort(0); // WorldEventEXP_WSE, WorldSpecificEvent
             packet.WriteShort(0); // WorldEventDrop_WSE, WorldSpecificEvent
-            packet.WriteBool(template.BlockCharCreation);
+            packet.WriteBool(template?.BlockCharCreation ?? false);
 
             var gameStages =
                 (await _serverService.GetGameByWorld(new ServerGetGameByWorldRequest(worldID))).Servers
