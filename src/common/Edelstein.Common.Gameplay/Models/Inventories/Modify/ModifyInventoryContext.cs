@@ -91,6 +91,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
     {
         var removed = 0;
         var match = _inventory.Items
+            .Where(kv => kv.Key > 0)
             .Where(kv => kv.Value.ID == templateID)
             .ToImmutableList();
 
