@@ -63,7 +63,9 @@ public class InventoryManager : IInventoryManager
         => HasItem(inventory, templateID, 1);
     
     public bool HasItem(IItemInventory? inventory, int templateID, short count) 
-        => inventory?.Items.Count(i => i.Value.ID == templateID) >= count;
+        => inventory?.Items
+            .Where(kv => kv.Key > 0)
+            .Count(i => i.Value.ID == templateID) >= count;
 
     public bool HasItem(IItemInventory? inventory, IItemTemplate template)
         => HasItem(inventory, template.ID);
