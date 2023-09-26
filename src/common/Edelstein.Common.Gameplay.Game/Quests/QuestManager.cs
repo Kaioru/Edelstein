@@ -3,6 +3,7 @@ using System.Text;
 using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
 using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Common.Gameplay.Models.Characters.Quests;
 using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify;
@@ -67,6 +68,31 @@ public class QuestManager : IQuestManager
         }
     }
     
+    public Task Accept(IFieldUser user, int questID)
+    {
+        var record = string.Empty;
+        user.Character.QuestRecords.Records[questID] = new QuestRecord {Value = record};
+        return user.Message(new QuestRecordUpdateMessage(
+            questID,
+            record
+        ));
+    }
+    
+    public async Task Complete(IFieldUser user, int questID)
+    {
+        var now = DateTime.UtcNow;
+
+        user.Character.QuestRecords.Records.Remove(questID);
+        user.Character.QuestCompletes.Records[questID] = new QuestCompleteRecord {DateFinish = now};
+        await user.Message(new QuestRecordCompleteMessage(
+            questID,
+            now
+        ));
+        await user.Effect(new QuestCompleteEffect());
+    }
+    
+    public Task Resign(IFieldUser user, int questID) => throw new NotImplementedException();
+
     public async Task<QuestResultType> Act(QuestAction action, IQuestTemplate template, IFieldUser user, int? select)
     {
         var actTemplate = action == QuestAction.Start

@@ -35,17 +35,7 @@ public class FieldOnPacketUserQuestCompleteRequestPlug : IPipelinePlug<FieldOnPa
             );
 
         if (result == QuestResultType.Success)
-        {
-            var now = DateTime.UtcNow;
-
-            message.User.Character.QuestRecords.Records.Remove(message.Template.ID);
-            message.User.Character.QuestCompletes.Records[message.Template.ID] = new QuestCompleteRecord {DateFinish = now};
-            await message.User.Message(new QuestRecordCompleteMessage(
-                message.Template.ID,
-                now
-            ));
-            await message.User.Effect(new QuestCompleteEffect());
-        }
+            await _manager.Complete(message.User, message.Template.ID);
 
         var p = new PacketWriter(PacketSendOperations.UserQuestResult);
         

@@ -84,7 +84,12 @@ public class SpeakerUserQuests : ISpeakerUserQuests
                 ? 1
                 : 0;
 
-    public void Accept(short questID) => throw new NotImplementedException();
-    public void Complete(short questID) => throw new NotImplementedException();
-    public void Resign(short questID) => throw new NotImplementedException();
+    public void Accept(short questID)
+        => _user.StageUser.Context.Managers.Quest.Accept(_user, questID);
+    
+    public void Complete(short questID)
+        => _user.StageUser.Context.Managers.Quest.Complete(_user, questID);
+    
+    public void Resign(short questID)
+        => _user.StageUser.Context.Managers.Quest.Resign(_user, questID);
 }

@@ -33,15 +33,7 @@ public class FieldOnPacketUserQuestAcceptRequestPlug : IPipelinePlug<FieldOnPack
             );
 
         if (result == QuestResultType.Success)
-        {
-            var record = string.Empty;
-            
-            message.User.Character.QuestRecords.Records[message.Template.ID] = new QuestRecord {Value = record};
-            await message.User.Message(new QuestRecordUpdateMessage(
-                message.Template.ID,
-                record
-            ));
-        }
+            await _manager.Accept(message.User, message.Template.ID);
 
         var p = new PacketWriter(PacketSendOperations.UserQuestResult);
         
