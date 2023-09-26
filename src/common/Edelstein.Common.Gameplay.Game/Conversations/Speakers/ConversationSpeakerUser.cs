@@ -173,6 +173,9 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
     public void EffectReserved(string path)
         => _user.Effect(new ReservedEffect(path), isRemote: false);
     
+    public void EffectAvatarOriented(string path)
+        => _user.Effect(new AvatarOrientedEffect(path), isRemote: false);
+
     public void EffectFieldScreen(string path)
         => _user.EffectField(new ScreenFieldEffect(path));
 }

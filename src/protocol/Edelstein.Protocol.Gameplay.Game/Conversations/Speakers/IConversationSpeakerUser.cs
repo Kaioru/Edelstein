@@ -48,5 +48,6 @@ public interface IConversationSpeakerUser : IConversationSpeaker
     void SetStandAloneMode(bool enable);
     
     void EffectReserved(string path);
+    void EffectAvatarOriented(string path);
     void EffectFieldScreen(string path);
 }
