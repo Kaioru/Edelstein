@@ -17,6 +17,12 @@ public class InventoryManager : IInventoryManager
     private ItemInventoryType GetTypeByID(int id)
         => (ItemInventoryType)(id / 1_000_000);
 
+    public int CountItem(ICharacterInventories inventory, int templateID)
+        => CountItem(inventory[GetTypeByID(templateID)], templateID);
+    
+    public int CountItem(ICharacterInventories inventory, IItemTemplate template)
+        => CountItem(inventory[GetTypeByID(template.ID)], template.ID);
+    
     public bool HasItem(ICharacterInventories inventory, int templateID)
         => HasItem(inventory[GetTypeByID(templateID)], templateID);
     
@@ -28,6 +34,12 @@ public class InventoryManager : IInventoryManager
     
     public bool HasItem(ICharacterInventories inventory, IItemTemplate template, short count)
         => HasItem(inventory[GetTypeByID(template.ID)], template.ID, count);
+    
+    public bool HasEquipped(ICharacterInventories inventory, int templateID)
+        => HasEquipped(inventory[GetTypeByID(templateID)], templateID);
+    
+    public bool HasEquipped(ICharacterInventories inventory, IItemTemplate template)
+        => HasEquipped(inventory[GetTypeByID(template.ID)], template.ID);
 
     public bool HasSlotFor(ICharacterInventories inventory, int templateID)
         => HasSlotFor(inventory[GetTypeByID(templateID)], templateID);
@@ -58,21 +70,35 @@ public class InventoryManager : IInventoryManager
         => items
             .GroupBy(t => GetTypeByID(t.ID))
             .All(g => HasSlotFor(inventory[g.Key], g.ToImmutableList()));
+    
+    public int CountItem(IItemInventory? inventory, int templateID)
+        => inventory?.Items
+            .Where(kv => kv.Key > 0)
+            .Count(i => i.Value.ID == templateID) ?? 0;
+
+    public int CountItem(IItemInventory? inventory, IItemTemplate template)
+        => CountItem(inventory, template.ID);
 
     public bool HasItem(IItemInventory? inventory, int templateID)
         => HasItem(inventory, templateID, 1);
     
     public bool HasItem(IItemInventory? inventory, int templateID, short count) 
-        => inventory?.Items
-            .Where(kv => kv.Key > 0)
-            .Count(i => i.Value.ID == templateID) >= count;
+        => inventory != null && CountItem(inventory, templateID) >= count;
 
     public bool HasItem(IItemInventory? inventory, IItemTemplate template)
         => HasItem(inventory, template.ID);
     
     public bool HasItem(IItemInventory? inventory, IItemTemplate template, short count)
         => HasItem(inventory, template.ID, count);
-    
+
+    public bool HasEquipped(IItemInventory? inventory, int templateID)
+        => inventory?.Items
+            .Where(kv => kv.Key < 0)
+            .Count(i => i.Value.ID == templateID) > 0;
+
+    public bool HasEquipped(IItemInventory? inventory, IItemTemplate template)
+        => HasEquipped(inventory, template.ID);
+
     public bool HasSlotFor(IItemInventory? inventory, int templateID) 
         => HasItem(inventory, templateID);
     
