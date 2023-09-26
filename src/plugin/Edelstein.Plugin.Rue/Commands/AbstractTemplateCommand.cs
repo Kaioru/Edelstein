@@ -59,6 +59,15 @@ public abstract class AbstractTemplateCommand<TTemplate, TArgs> : AbstractComman
             .ToList();
         var elapsed = stopwatch.Elapsed;
 
+        if (args.Search.All(char.IsDigit) && !results.Any())
+        {
+            var searchID = Convert.ToInt32(args.Search);
+            var search = await _templates.Retrieve(searchID);
+            
+            if (search != null)
+                results.Add(new TemplateCommandIndex(searchID, searchID.ToString(), "NO-NAME"));
+        }
+
         if (results.Any())
         {
             var templateID = await user.Prompt(target =>
