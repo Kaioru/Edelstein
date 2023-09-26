@@ -68,32 +68,91 @@ public class QuestManager : IQuestManager
         }
     }
     
-    public Task Accept(IFieldUser user, int questID)
+    public async Task<QuestResultType> Accept(IFieldUser user, int questID)
     {
-        var record = string.Empty;
-        user.Character.QuestRecords.Records[questID] = new QuestRecord {Value = record};
-        return user.Message(new QuestRecordUpdateMessage(
-            questID,
-            record
-        ));
+        var result = QuestResultType.Success;
+        var template = await _questTemplates.Retrieve(questID);
+        
+        if (template != null)
+        {
+            result = await Check(
+                QuestAction.Start, 
+                template,
+                user
+            );
+
+            if (template.CheckStart.ScriptStart != null) return QuestResultType.Success;
+            
+            if (result == QuestResultType.Success)
+                result = await Act(
+                    QuestAction.Start,
+                    template,
+                    user
+                );
+        }
+
+        if (result == QuestResultType.Success)
+        {
+            var record = string.Empty;
+            user.Character.QuestRecords.Records[questID] = new QuestRecord {Value = record};
+            await user.Message(new QuestRecordUpdateMessage(
+                questID,
+                record
+            ));
+        }
+
+        if (template?.IsAutoComplete ?? false)
+            result = await Complete(user, questID);
+        
+        return result;
     }
     
-    public async Task Complete(IFieldUser user, int questID)
+    public async Task<QuestResultType> Complete(IFieldUser user, int questID, int? select = null)
     {
-        var now = DateTime.UtcNow;
+        var result = QuestResultType.Success;
+        var template = await _questTemplates.Retrieve(questID);
 
-        user.Character.QuestRecords.Records.Remove(questID);
-        user.Character.QuestCompletes.Records[questID] = new QuestCompleteRecord {DateFinish = now};
-        await user.Message(new QuestRecordCompleteMessage(
-            questID,
-            now
-        ));
-        await user.Effect(new QuestCompleteEffect());
+        if (template != null)
+        {
+            result = await Check(
+                QuestAction.End, 
+                template,
+                user
+            );
+            
+            if (template.CheckEnd.ScriptEnd != null) return QuestResultType.Success;
+            
+            if (result == QuestResultType.Success)
+                result = await Act(
+                    QuestAction.End,
+                    template,
+                    user,
+                    select
+                );
+        }
+        
+        if (result == QuestResultType.Success)
+        {
+            var now = DateTime.UtcNow;
+
+            user.Character.QuestRecords.Records.Remove(questID);
+            user.Character.QuestCompletes.Records[questID] = new QuestCompleteRecord
+            {
+                DateFinish = now
+            };
+            await user.Message(new QuestRecordCompleteMessage(
+                questID,
+                now
+            ));
+            await user.Effect(new QuestCompleteEffect());
+        }
+
+        return result;
     }
     
-    public Task Resign(IFieldUser user, int questID) => throw new NotImplementedException();
+    public Task<QuestResultType> Resign(IFieldUser user, int questID) => throw new NotImplementedException();
 
-    public async Task<QuestResultType> Act(QuestAction action, IQuestTemplate template, IFieldUser user, int? select)
+    private async Task<QuestResultType> Act(QuestAction action, IQuestTemplate template, IFieldUser user, int? select = null)
     {
         var actTemplate = action == QuestAction.Start
             ? template.ActStart
@@ -267,7 +326,7 @@ public class QuestManager : IQuestManager
         return QuestResultType.Success;
     }
 
-    public async Task<QuestResultType> Check(QuestAction action, IQuestTemplate template, IFieldUser user)
+    private async Task<QuestResultType> Check(QuestAction action, IQuestTemplate template, IFieldUser user)
     {
         var checkTemplate = action == QuestAction.Start
             ? template.CheckStart

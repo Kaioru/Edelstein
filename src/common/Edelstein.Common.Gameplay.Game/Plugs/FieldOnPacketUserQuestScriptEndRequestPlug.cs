@@ -21,13 +21,10 @@ public class FieldOnPacketUserQuestScriptEndRequestPlug : IPipelinePlug<FieldOnP
 
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserQuestScriptEndRequest message)
     {
-        var result = await _manager.Check(
-            QuestAction.End, 
-            message.Template, 
-            message.User
-        );
-
         if (message.Template.CheckEnd.ScriptEnd == null) return;
+        
+        var result = await _manager.Accept(message.User, message.Template.ID);
+
         if (result != QuestResultType.Success) return;
         
         var conversation = await _scriptManager.Retrieve(message.Template.CheckEnd.ScriptEnd) as IConversation ?? 

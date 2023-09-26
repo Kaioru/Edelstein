@@ -18,25 +18,9 @@ public class FieldOnPacketUserQuestCompleteRequestPlug : IPipelinePlug<FieldOnPa
 
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserQuestCompleteRequest message)
     {
-        var result = await _manager.Check(
-            QuestAction.End, 
-            message.Template, 
-            message.User
-        );
-
         if (message.Template.CheckEnd.ScriptEnd != null) return;
-        
-        if (result == QuestResultType.Success)
-            result = await _manager.Act(
-                QuestAction.End,
-                message.Template,
-                message.User,
-                message.Select
-            );
-
-        if (result == QuestResultType.Success)
-            await _manager.Complete(message.User, message.Template.ID);
-
+       
+        var result = await _manager.Complete(message.User, message.Template.ID);
         var p = new PacketWriter(PacketSendOperations.UserQuestResult);
         
         p.WriteByte((byte)result);

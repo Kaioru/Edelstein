@@ -16,25 +16,9 @@ public class FieldOnPacketUserQuestAcceptRequestPlug : IPipelinePlug<FieldOnPack
     
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserQuestAcceptRequest message)
     {
-        var result = await _manager.Check(
-            QuestAction.Start, 
-            message.Template, 
-            message.User
-        );
-
         if (message.Template.CheckStart.ScriptStart != null) return;
 
-        if (result == QuestResultType.Success)
-            result = await _manager.Act(
-                QuestAction.Start,
-                message.Template,
-                message.User,
-                null
-            );
-
-        if (result == QuestResultType.Success)
-            await _manager.Accept(message.User, message.Template.ID);
-
+        var result = await _manager.Accept(message.User, message.Template.ID);
         var p = new PacketWriter(PacketSendOperations.UserQuestResult);
         
         p.WriteByte((byte)result);

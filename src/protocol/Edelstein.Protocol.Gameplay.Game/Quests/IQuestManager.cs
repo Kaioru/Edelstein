@@ -7,10 +7,7 @@ public interface IQuestManager
 {
     Task UpdateMobKill(IFieldUser user, int mobID, int inc = 1);
 
-    Task Accept(IFieldUser user, int questID);
-    Task Complete(IFieldUser user, int questID);
-    Task Resign(IFieldUser user, int questID);
-    
-    Task<QuestResultType> Act(QuestAction action, IQuestTemplate template, IFieldUser user, int? select);
-    Task<QuestResultType> Check(QuestAction action, IQuestTemplate template, IFieldUser user);
+    Task<QuestResultType> Accept(IFieldUser user, int questID);
+    Task<QuestResultType> Complete(IFieldUser user, int questID, int? select = null);
+    Task<QuestResultType> Resign(IFieldUser user, int questID);
 }
