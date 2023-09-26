@@ -47,7 +47,10 @@ public interface IConversationSpeakerUser : IConversationSpeaker
 
     void SetDirectionMode(bool enable, int delay = 0);
     void SetStandAloneMode(bool enable);
+
+    void Message(string message);
     
+    void EffectPlayPortalSE();
     void EffectReserved(string path);
     void EffectAvatarOriented(string path);
     void EffectFieldScreen(string path);

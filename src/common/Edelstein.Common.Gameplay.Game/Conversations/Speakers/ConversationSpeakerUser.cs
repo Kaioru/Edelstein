@@ -169,6 +169,12 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
     public void SetStandAloneMode(bool enable)
         => _user.SetStandAloneMode(enable).Wait();
 
+    public void Message(string message)
+        => _user.Message(message);
+
+    public void EffectPlayPortalSE()
+        => _user.Effect(new PlayPortalSEEffect(), isRemote: false);
+
     public void EffectReserved(string path)
         => _user.Effect(new ReservedEffect(path), isRemote: false);
     
