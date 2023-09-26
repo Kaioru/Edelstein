@@ -258,7 +258,7 @@ public class QuestManager : IQuestManager
                 .Select(g => Tuple.Create(g.First().ItemID, (short)g.First().Count)));
         if (rewardSelect != null)
             rewardsCheck.Add(Tuple.Create(rewardSelect.ItemID, (short)rewardSelect.Count));
-
+        
         if (!user.StageUser.Context.Managers.Inventory.HasSlotFor(user.Character.Inventories, rewardsCheck))
             return QuestResultType.FailedInventory;
         

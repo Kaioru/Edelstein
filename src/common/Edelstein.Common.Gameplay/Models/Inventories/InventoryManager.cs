@@ -71,10 +71,11 @@ public class InventoryManager : IInventoryManager
             .GroupBy(t => GetTypeByID(t.ID))
             .All(g => HasSlotFor(inventory[g.Key], g.ToImmutableList()));
     
-    public int CountItem(IItemInventory? inventory, int templateID)
+    public int CountItem(IItemInventory? inventory, int templateID) 
         => inventory?.Items
             .Where(kv => kv.Key > 0)
-            .Count(i => i.Value.ID == templateID) ?? 0;
+            .Where(i => i.Value.ID == templateID)
+            .Sum(i => i.Value is IItemSlotBundle bundle ? bundle.Number : 1) ?? 0;
 
     public int CountItem(IItemInventory? inventory, IItemTemplate template)
         => CountItem(inventory, template.ID);
