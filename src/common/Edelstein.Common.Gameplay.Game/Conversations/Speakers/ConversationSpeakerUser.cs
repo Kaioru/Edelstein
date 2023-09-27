@@ -8,6 +8,7 @@ using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers.Facades;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 
@@ -161,7 +162,7 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
     }
     
     public void TransferField(int fieldID, string portal = "")
-        => _user.StageUser.Context.Managers.Field.Retrieve(fieldID).Result?.Enter(_user, portal);
+        => _user.StageUser.Context.Managers.Field.Retrieve(fieldID).Result?.Enter(_user, portal).Wait();
 
     public void SetDirectionMode(bool enable, int delay = 0)
         => _user.SetDirectionMode(enable, delay).Wait();
@@ -170,17 +171,20 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
         => _user.SetStandAloneMode(enable).Wait();
 
     public void Message(string message)
-        => _user.Message(message);
+        => _user.Message(message).Wait();
+
+    public void MessageBalloon(string message, short? width = null, short? duration = null, IPoint2D? position = null)
+        => _user.MessageBalloon(message, width, duration, position).Wait();
 
     public void EffectPlayPortalSE()
-        => _user.Effect(new PlayPortalSEEffect(), isRemote: false);
+        => _user.Effect(new PlayPortalSEEffect(), isRemote: false).Wait();
 
     public void EffectReserved(string path)
-        => _user.Effect(new ReservedEffect(path), isRemote: false);
+        => _user.Effect(new ReservedEffect(path), isRemote: false).Wait();
     
     public void EffectAvatarOriented(string path)
-        => _user.Effect(new AvatarOrientedEffect(path), isRemote: false);
+        => _user.Effect(new AvatarOrientedEffect(path), isRemote: false).Wait();
 
     public void EffectFieldScreen(string path)
-        => _user.EffectField(new ScreenFieldEffect(path));
+        => _user.EffectField(new ScreenFieldEffect(path)).Wait();
 }

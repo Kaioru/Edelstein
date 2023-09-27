@@ -24,6 +24,7 @@ using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Utilities.Packets;
+using Edelstein.Protocol.Utilities.Spatial;
 using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.User;
@@ -196,6 +197,21 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         return Dispatch(packet.Build());
     }
     
+    public Task MessageBalloon(string message, short? width = null, short? duration = null, IPoint2D? position = null)
+    {
+        var packet = new PacketWriter(PacketSendOperations.UserBalloonMsg);
+        packet.WriteString(message);
+        packet.WriteShort((short)(width ?? message.Length * 5));
+        packet.WriteShort(duration ?? 5);
+        packet.WriteBool(position == null);
+        if (position != null)
+        {
+            packet.WriteInt(position.X);
+            packet.WriteInt(position.Y);
+        }
+        return Dispatch(packet.Build());
+    }
+
     public async Task Effect(IPacketWritable writable, bool isLocal = true, bool isRemote = true)
     {
         var localPacket = new PacketWriter(PacketSendOperations.UserEffectLocal)

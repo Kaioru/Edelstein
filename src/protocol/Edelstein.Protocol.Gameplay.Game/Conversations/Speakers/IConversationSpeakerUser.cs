@@ -1,4 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers.Facades;
+using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 
@@ -49,6 +50,7 @@ public interface IConversationSpeakerUser : IConversationSpeaker
     void SetStandAloneMode(bool enable);
 
     void Message(string message);
+    void MessageBalloon(string message, short? width = null, short? duration = null, IPoint2D? position = null);
     
     void EffectPlayPortalSE();
     void EffectReserved(string path);

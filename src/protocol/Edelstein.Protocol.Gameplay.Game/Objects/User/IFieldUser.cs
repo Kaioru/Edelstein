@@ -8,6 +8,7 @@ using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Utilities.Packets;
+using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.User;
 
@@ -39,6 +40,8 @@ public interface IFieldUser :
 
     Task Message(string message);
     Task Message(IPacketWritable writable);
+    Task MessageBalloon(string message, short? width = null, short? duration = null, IPoint2D? position = null);
+    
     Task Effect(IPacketWritable writable, bool isLocal = true, bool isRemote = true);
     Task EffectField(IPacketWritable writable);
     
