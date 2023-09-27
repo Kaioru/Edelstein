@@ -55,5 +55,7 @@ public interface IConversationSpeakerUser : IConversationSpeaker
     void EffectPlayPortalSE();
     void EffectReserved(string path);
     void EffectAvatarOriented(string path);
+    
     void EffectFieldScreen(string path);
+    void EffectFieldTremble(bool isHeavyAndShort, int delay);
 }

@@ -10,7 +10,8 @@ public class ConversationSpeaker : IConversationSpeaker
 
     public ConversationSpeaker(
         IConversationContext context,
-        int id = 9010000, ConversationSpeakerFlags flags = 0
+        int id = 9010000, 
+        ConversationSpeakerFlags flags = 0
     )
     {
         ID = id;
@@ -21,22 +22,33 @@ public class ConversationSpeaker : IConversationSpeaker
     public int ID { get; }
     public ConversationSpeakerFlags Flags { get; }
 
+    public IConversationSpeaker Speaker(int id = 9010000, ConversationSpeakerFlags flags = 0)
+        => new ConversationSpeaker(_context, id, flags);
+
+    public IConversationSpeech Speech(string message)
+        => new ConversationSpeech(this, message);
+
     public byte Say(string text, bool prev = false, bool next = true) => 
         _context.Request(new SayRequest(this, text, prev, next)).Result;
 
     public byte Say(string[] text, int current = 0)
+        => SaySpeech(text
+            .Select(Speech)
+            .ToArray(), current);
+    
+    public byte SaySpeech(IConversationSpeech[] speech, int current = 0)
     {
         byte result = 0;
 
-        while (current >= 0 && current < text.Length)
+        while (current >= 0 && current < speech.Length)
         {
-            result = Say(text[current], current > 0);
+            result = speech[current].Speaker.Say(speech[current].Message, current > 0);
 
             if (result == 0) current = Math.Max(0, --current);
             if (result != 1) continue;
-            if (current == text.Length)
+            if (current == speech.Length)
                 break;
-            current = Math.Min(text.Length, ++current);
+            current = Math.Min(speech.Length, ++current);
         }
 
         return result;

@@ -6,8 +6,13 @@ public interface IConversationSpeaker : IIdentifiable<int>
 {
     ConversationSpeakerFlags Flags { get; }
 
+    IConversationSpeaker Speaker(int id = 9010000, ConversationSpeakerFlags flags = 0);
+    IConversationSpeech Speech(string message);
+    
     byte Say(string text, bool prev = false, bool next = true);
     byte Say(string[] text, int current = 0);
+    byte SaySpeech(IConversationSpeech[] speech, int current = 0);
+    
     bool AskYesNo(string text);
     bool AskAccept(string text);
     string AskText(string text, string def = "", short lenMin = 0, short lenMax = short.MaxValue);

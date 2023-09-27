@@ -146,23 +146,23 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
     public void IncEXP(int amount)
     {
         EXP += amount;
-        _user.Message(new IncEXPMessage(amount, true)).Wait();
+        _user.Message(new IncEXPMessage(amount, true));
     }
     
     public void IncPOP(short amount)
     {
         POP += amount;
-        _user.Message(new IncPOPMessage(amount)).Wait();
+        _user.Message(new IncPOPMessage(amount));
     }
     
     public void IncMoney(int amount)
     {
         Money += amount;
-        _user.Message(new IncMoneyMessage(amount)).Wait();
+        _user.Message(new IncMoneyMessage(amount));
     }
     
     public void TransferField(int fieldID, string portal = "")
-        => _user.StageUser.Context.Managers.Field.Retrieve(fieldID).Result?.Enter(_user, portal).Wait();
+        => _user.StageUser.Context.Managers.Field.Retrieve(fieldID).Result?.Enter(_user, portal);
 
     public void SetDirectionMode(bool enable, int delay = 0)
         => _user.SetDirectionMode(enable, delay).Wait();
@@ -171,20 +171,23 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
         => _user.SetStandAloneMode(enable).Wait();
 
     public void Message(string message)
-        => _user.Message(message).Wait();
+        => _user.Message(message);
 
     public void MessageBalloon(string message, short? width = null, short? duration = null, IPoint2D? position = null)
-        => _user.MessageBalloon(message, width, duration, position).Wait();
+        => _user.MessageBalloon(message, width, duration, position);
 
     public void EffectPlayPortalSE()
-        => _user.Effect(new PlayPortalSEEffect(), isRemote: false).Wait();
+        => _user.Effect(new PlayPortalSEEffect(), isRemote: false);
 
     public void EffectReserved(string path)
-        => _user.Effect(new ReservedEffect(path), isRemote: false).Wait();
+        => _user.Effect(new ReservedEffect(path), isRemote: false);
     
     public void EffectAvatarOriented(string path)
-        => _user.Effect(new AvatarOrientedEffect(path), isRemote: false).Wait();
+        => _user.Effect(new AvatarOrientedEffect(path), isRemote: false);
 
     public void EffectFieldScreen(string path)
-        => _user.EffectField(new ScreenFieldEffect(path)).Wait();
+        => _user.EffectField(new ScreenFieldEffect(path));
+    
+    public void EffectFieldTremble(bool isHeavyAndShort, int delay)
+        => _user.EffectField(new TrembleFieldEffect(isHeavyAndShort, delay));
 }
