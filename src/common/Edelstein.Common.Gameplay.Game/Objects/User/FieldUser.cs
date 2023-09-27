@@ -197,6 +197,13 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         return Dispatch(packet.Build());
     }
     
+    public Task MessageScriptProgress(string message)
+    {
+        var packet = new PacketWriter(PacketSendOperations.ScriptProgressMessage);
+        packet.WriteString(message);
+        return Dispatch(packet.Build());
+    }
+
     public Task MessageBalloon(string message, short? width = null, short? duration = null, IPoint2D? position = null)
     {
         var packet = new PacketWriter(PacketSendOperations.UserBalloonMsg);

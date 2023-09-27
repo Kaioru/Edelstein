@@ -172,6 +172,9 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
 
     public void Message(string message)
         => _user.Message(message);
+    
+    public void MessageScriptProgress(string message)
+        => _user.MessageScriptProgress(message);
 
     public void MessageBalloon(string message, short? width = null, short? duration = null, IPoint2D? position = null)
         => _user.MessageBalloon(message, width, duration, position);

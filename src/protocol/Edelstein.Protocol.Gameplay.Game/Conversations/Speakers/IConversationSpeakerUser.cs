@@ -50,6 +50,7 @@ public interface IConversationSpeakerUser : IConversationSpeaker
     void SetStandAloneMode(bool enable);
 
     void Message(string message);
+    void MessageScriptProgress(string message);
     void MessageBalloon(string message, short? width = null, short? duration = null, IPoint2D? position = null);
     
     void EffectPlayPortalSE();

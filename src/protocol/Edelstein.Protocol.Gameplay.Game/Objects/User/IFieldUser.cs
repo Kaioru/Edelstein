@@ -40,6 +40,7 @@ public interface IFieldUser :
 
     Task Message(string message);
     Task Message(IPacketWritable writable);
+    Task MessageScriptProgress(string message);
     Task MessageBalloon(string message, short? width = null, short? duration = null, IPoint2D? position = null);
     
     Task Effect(IPacketWritable writable, bool isLocal = true, bool isRemote = true);
