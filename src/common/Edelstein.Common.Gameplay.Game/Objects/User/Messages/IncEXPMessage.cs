@@ -1,5 +1,4 @@
 ﻿using Edelstein.Protocol.Utilities.Packets;
-using Foundatio.Messaging;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.User.Messages;
 

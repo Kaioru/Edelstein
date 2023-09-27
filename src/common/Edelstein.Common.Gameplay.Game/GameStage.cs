@@ -1,7 +1,4 @@
 ﻿using Edelstein.Common.Gameplay.Game.Objects.User;
-using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Common.Gameplay.Social;
-using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Services.Social.Contracts;
 

@@ -1,6 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers.Facades;
-using Edelstein.Common.Gameplay.Game.Objects.User;
 using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
 using Edelstein.Common.Gameplay.Game.Objects.User.Effects.Field;
 using Edelstein.Common.Gameplay.Game.Objects.User.Messages;

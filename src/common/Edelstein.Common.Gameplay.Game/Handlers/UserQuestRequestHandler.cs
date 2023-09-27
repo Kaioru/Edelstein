@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Game.Quests;
-using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;

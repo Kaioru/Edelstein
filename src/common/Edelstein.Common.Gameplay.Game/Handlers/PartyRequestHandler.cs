@@ -2,7 +2,6 @@
 using Edelstein.Common.Gameplay.Social;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
-using Edelstein.Protocol.Services.Social.Contracts;
 using Edelstein.Protocol.Utilities.Packets;
 using Microsoft.Extensions.Logging;
 

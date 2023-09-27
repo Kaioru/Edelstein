@@ -1,6 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
-using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Plugs;

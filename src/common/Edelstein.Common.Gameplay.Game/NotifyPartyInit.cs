@@ -1,5 +1,4 @@
 ﻿using Edelstein.Protocol.Gameplay.Contracts;
-using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Foundatio.Messaging;
 

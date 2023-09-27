@@ -2,7 +2,6 @@
 using Edelstein.Common.Gameplay.Social;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game;
-using Edelstein.Protocol.Services.Social.Contracts;
 
 namespace Edelstein.Common.Gameplay.Game;
 

@@ -1,8 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Game.Conversations;
-using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
-using Edelstein.Protocol.Gameplay.Game.Contracts;
-using Edelstein.Protocol.Gameplay.Game.Conversations;
-using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+﻿using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Quests;
 using Edelstein.Protocol.Utilities.Pipelines;
 

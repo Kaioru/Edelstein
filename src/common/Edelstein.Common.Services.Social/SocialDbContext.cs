@@ -1,5 +1,4 @@
 ﻿using Edelstein.Common.Services.Social.Entities;
-using Edelstein.Protocol.Services.Social.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Services.Social;
