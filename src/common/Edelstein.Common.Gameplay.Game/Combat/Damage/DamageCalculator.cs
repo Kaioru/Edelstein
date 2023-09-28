@@ -30,9 +30,9 @@ public class DamageCalculator : IDamageCalculator
     public DamageCalculator(ITemplateManager<ISkillTemplate> skills)
     {
         var random = new Random();
-        var s1 = (uint)0;
-        var s2 = (uint)0;
-        var s3 = (uint)0;
+        var s1 = (uint)random.Next(int.MinValue, int.MaxValue);
+        var s2 = (uint)random.Next(int.MinValue, int.MaxValue);
+        var s3 = (uint)random.Next(int.MinValue, int.MaxValue);
         
         InitSeed1 = s1;
         InitSeed2 = s2;
