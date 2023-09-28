@@ -229,6 +229,10 @@ public static class CharacterPackets
         var inventory = character.Inventories[ItemInventoryType.Equip]?.Items ?? ImmutableDictionary<short, IItemSlot>.Empty;
         var unseen = new int[60];
         var equip = new int[60];
+
+        if ((character.Job == Job.EvanJr || JobConstants.GetJobRace(character.Job) == 2 && JobConstants.GetJobType(character.Job) == 2) &&
+            character.QuestCompletes[QuestRecords.EvanGlove] != null)
+            equip[(int)BodyPart.Gloves] = 1082262;
         
         foreach (var kv in inventory.Where(kv => kv.Key < -100))
         {
