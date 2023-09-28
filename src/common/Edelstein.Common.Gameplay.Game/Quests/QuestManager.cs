@@ -146,7 +146,9 @@ public class QuestManager : IQuestManager
                 questID,
                 now
             ));
-            await user.Effect(new QuestCompleteEffect());
+            
+            if (template != null)
+                await user.Effect(new QuestCompleteEffect());
         }
 
         return result;
