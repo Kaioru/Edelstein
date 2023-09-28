@@ -19,6 +19,7 @@ using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Common.Plugin;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Server;
+using Edelstein.Common.Services.Social;
 using Edelstein.Common.Utilities.Pipelines;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay;
@@ -309,9 +310,10 @@ public class ProgramHost : IHostedService
 
         _bootstraps.Add(new InitDatabaseBootstrap(
             programScope.Resolve<ILogger<InitDatabaseBootstrap>>(),
-            programScope.Resolve<IDbContextFactory<GameplayDbContext>>(),
             programScope.Resolve<IDbContextFactory<AuthDbContext>>(),
             programScope.Resolve<IDbContextFactory<ServerDbContext>>(),
+            programScope.Resolve<IDbContextFactory<GameplayDbContext>>(),
+            programScope.Resolve<IDbContextFactory<SocialDbContext>>(),
             _config
         ));
         _bootstraps.Add(new InitTickerBootstrap(programScope.Resolve<ITickerManager>()));
