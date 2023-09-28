@@ -62,7 +62,7 @@ public class SpeakerUserQuests : ISpeakerUserQuests
         var dictionary = GetDictionaryFromRecord(record);
 
         dictionary[key] = value;
-        SetRecord(questID, GetRecordFromDictionary(dictionary));
+        SetRecordEx(questID, GetRecordFromDictionary(dictionary));
     }
 
     public string GetRecord(short questID) 
