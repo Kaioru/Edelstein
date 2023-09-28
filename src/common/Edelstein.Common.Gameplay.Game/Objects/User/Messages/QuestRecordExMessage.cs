@@ -10,7 +10,7 @@ public record QuestRecordExMessage(
     public void WriteTo(IPacketWriter writer)
     {
         writer.WriteByte((byte)MessageType.QuestRecordExMessage);
-        writer.WriteShort((short)QuestID);
+        writer.WriteUShort((ushort)QuestID);
         writer.WriteString(Value);
     }
 }

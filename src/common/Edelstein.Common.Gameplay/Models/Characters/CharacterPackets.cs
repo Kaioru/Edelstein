@@ -115,7 +115,7 @@ public static class CharacterPackets
             writer.WriteShort((short)character.QuestRecords.Records.Count);
             foreach (var kv in character.QuestRecords.Records)
             {
-                writer.WriteShort((short)kv.Key);
+                writer.WriteUShort((ushort)kv.Key);
                 writer.WriteString(kv.Value.Value);
             }
         }
@@ -125,7 +125,7 @@ public static class CharacterPackets
             writer.WriteShort((short)character.QuestCompletes.Records.Count);
             foreach (var kv in character.QuestCompletes.Records)
             {
-                writer.WriteShort((short)kv.Key);
+                writer.WriteUShort((ushort)kv.Key);
                 writer.WriteDateTime(kv.Value.DateFinish);
             }
         }
@@ -152,7 +152,7 @@ public static class CharacterPackets
             writer.WriteShort((short)character.QuestRecordsEx.Records.Count);
             foreach (var kv in character.QuestRecordsEx.Records)
             {
-                writer.WriteShort((short)kv.Key);
+                writer.WriteUShort((ushort)kv.Key);
                 writer.WriteString(kv.Value.Value);
             }
         }

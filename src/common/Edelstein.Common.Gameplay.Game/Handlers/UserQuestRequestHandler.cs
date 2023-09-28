@@ -27,7 +27,7 @@ public class UserQuestRequestHandler : AbstractFieldHandler
     protected override async Task Handle(IFieldUser user, IPacketReader reader)
     {
         var type = (QuestRequestType)reader.ReadByte();
-        var questID = reader.ReadShort();
+        var questID = reader.ReadUShort();
         var quest = await _templates.Retrieve(questID);
 
         if (quest == null) return;

@@ -11,7 +11,7 @@ public record QuestRecordCompleteMessage(
     public void WriteTo(IPacketWriter writer)
     {
         writer.WriteByte((byte)MessageType.QuestRecordMessage);
-        writer.WriteShort((short)QuestID);
+        writer.WriteUShort((ushort)QuestID);
         writer.WriteByte(2);
         writer.WriteDateTime(DateFinish);
     }
