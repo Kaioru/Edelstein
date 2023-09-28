@@ -12,6 +12,9 @@ public interface IConversationSpeaker : IIdentifiable<int>
     byte Say(string text, bool prev = false, bool next = true);
     byte Say(string[] text, int current = 0);
     byte SaySpeech(IConversationSpeech[] speech, int current = 0);
+
+    byte SayImage(string image);
+    byte SayImage(string[] images);
     
     bool AskYesNo(string text);
     bool AskAccept(string text);

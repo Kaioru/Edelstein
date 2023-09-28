@@ -53,6 +53,12 @@ public class ConversationSpeaker : IConversationSpeaker
 
         return result;
     }
+    
+    public byte SayImage(string image) 
+        => SayImage(new []{image});
+    
+    public byte SayImage(string[] images) =>
+        _context.Request(new SayImageRequest(this, images)).Result;
 
     public bool AskYesNo(string text) =>
         _context.Request(new AskYesNoRequest(this, text)).Result;
