@@ -101,10 +101,10 @@ public class InventoryManager : IInventoryManager
         => HasEquipped(inventory, template.ID);
 
     public bool HasSlotFor(IItemInventory? inventory, int templateID) 
-        => HasItem(inventory, templateID);
+        => HasSlotFor(inventory, templateID, 1);
     
     public bool HasSlotFor(IItemInventory? inventory, int templateID, short count)
-        => HasItem(inventory, templateID, count);
+        => HasSlotFor(inventory, ImmutableList.Create(Tuple.Create(templateID, count)));
     
     public bool HasSlotFor(IItemInventory? inventory, ICollection<Tuple<int, short>> templates) 
         => HasSlotFor(inventory, templates
