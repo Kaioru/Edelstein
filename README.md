@@ -65,7 +65,7 @@ Check the [here](https://docs.github.com/en/packages/working-with-a-github-packa
 
 ## 📦 Extra Stuff
 * [Server.NX](https://github.com/kaioru/server.nx) - the source for the Server.nx file.
-* [Server.Scripts](https://github.com/kaioru/server.scripts) - various scripts for use with Edelstein.
+* [Edelstein.lua](https://github.com/Kaioru/Edelstein.lua) - various scripts for use with Edelstein.
 
 ## ⭐️ Acknowledgements
 * [Rebirth](https://github.com/RajanGrewal/Rebirth) - lot's of referencing from here.
