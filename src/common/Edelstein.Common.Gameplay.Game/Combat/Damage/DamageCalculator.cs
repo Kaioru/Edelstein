@@ -85,11 +85,14 @@ public class DamageCalculator : IDamageCalculator
                 : 0
             : 0;
         var weaponType = ItemConstants.GetWeaponType(weapon);
-        var attackCount = attack.Type == AttackType.Shoot 
+        var damagePerMob = attack.Type == AttackType.Shoot 
             ? skillLevel?.BulletCount ?? 1
             : skillLevel?.AttackCount ?? 1;
 
-        attackCount = Math.Max((short)1, attackCount);
+        damagePerMob = Math.Max((short)1, damagePerMob);
+
+        if (attack is { SkillID: 0, AttackActionType: 10 })
+            damagePerMob = 2;
 
         _rndGenForCharacter.Next(random.Array);
 
@@ -101,9 +104,9 @@ public class DamageCalculator : IDamageCalculator
             character.HP >= stats.MaxHP * darkForceLevel.X / 100;
 
         if (isDarkForce && attack.SkillID == Skill.DragonknightDragonBurster)
-            attackCount += darkForceLevel?.Y ?? 0;
+            damagePerMob += darkForceLevel?.Y ?? 0;
         
-        var result = new IDamage[attackCount];
+        var result = new IDamage[damagePerMob];
         
         var totalCr = stats.Cr;
         var totalCDMin = stats.CDMin;
@@ -136,7 +139,7 @@ public class DamageCalculator : IDamageCalculator
         if (mobStats.Level > stats.Level)
             hitRate -= 5 * (mobStats.Level - stats.Level);
 
-        for (var i = 0; i < attackCount; i++)
+        for (var i = 0; i < damagePerMob; i++)
         {
             random.Skip(); // CalcPImmune
 
@@ -351,8 +354,8 @@ public class DamageCalculator : IDamageCalculator
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
         var skillLevel = skill?[stats.SkillLevels[attack.SkillID]];
-        var attackCount = skillLevel?.AttackCount ?? 1;
-        var result = new IDamage[attackCount];
+        var damagePerMob = skillLevel?.AttackCount ?? 1;
+        var result = new IDamage[damagePerMob];
 
         _rndGenForCharacter.Next(random.Array);
         
@@ -387,7 +390,7 @@ public class DamageCalculator : IDamageCalculator
         if (mobStats.Level > stats.Level)
             hitRate -= 5 * (mobStats.Level - stats.Level);
 
-        for (var i = 0; i < attackCount; i++)
+        for (var i = 0; i < damagePerMob; i++)
         {
             random.Skip(); // CalcMImmune
 

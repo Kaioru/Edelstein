@@ -97,7 +97,11 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             packet.WriteInt(entry.MobID);
             packet.WriteByte(entry.ActionHit);
 
+            var isMismatch = false;
+
             if (entry.Damage.Length != adjustedDamage.Length)
+            {
+                isMismatch = true;
                 _logger.LogInformation(
                     "{Character} triggered a {Type} attack count mismatch with skill id: {Skill} (Client: {Count}, Server: {CountServer})",
                     message.User.Character.Name,
@@ -106,10 +110,11 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                     entry.Damage.Length,
                     adjustedDamage.Length
                 );
+            }
 
             for (var i = 0; i < message.Attack.DamagePerMob; i++)
             {
-                if (entry.Damage[i] != adjustedDamage[i])
+                if (!isMismatch && entry.Damage[i] != adjustedDamage[i])
                     _logger.LogInformation(
                         "{Character} triggered a {Type} attack damage calculation mismatch with skill id: {Skill} (Client: {Damage}, Server: {DamageServer}, Critical: {IsCritical})",
                         message.User.Character.Name,
@@ -119,7 +124,8 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                         adjustedDamage[i],
                         damage[i].IsCritical
                     );
-                packet.WriteBool(damage[i].IsCritical);
+                
+                packet.WriteBool(!isMismatch && damage[i].IsCritical);
                 packet.WriteInt(entry.Damage[i]);
             }
 
