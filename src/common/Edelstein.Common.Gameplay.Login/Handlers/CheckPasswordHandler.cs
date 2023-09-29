@@ -17,9 +17,17 @@ public class CheckPasswordHandler : AbstractPipedPacketHandler<ILoginStageUser, 
     public override bool Check(ILoginStageUser user) => user.State == LoginState.CheckPassword;
 
     public override UserOnPacketCheckPassword Serialize(ILoginStageUser user, IPacketReader reader)
-        => new(
+    {
+        var username = reader.ReadString();
+        var password = reader.ReadString();
+
+        if (user.Context.Options.IsFlippedUsername)
+            (username, password) = (password, username);
+            
+        return new(
             user,
-            reader.ReadString(),
-            reader.ReadString()
+            username,
+            password
         );
+    }
 }

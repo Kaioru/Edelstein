@@ -50,7 +50,7 @@ public class UserOnPacketCheckPasswordPlug : IPipelinePlug<UserOnPacketCheckPass
                 _ => LoginResult.Unknown
             };
 
-            if (result == LoginResult.NotRegistered)
+            if (message.User.Context.Options.IsAutoRegister && result == LoginResult.NotRegistered)
             {
                 // TODO: Move autoregister this to plugin
                 result = LoginResult.Success;
