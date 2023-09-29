@@ -14,7 +14,7 @@ A v.95.1 Mushroom game server emulator written in C#.
 
 #### Download required assets 
 2. Download the data from [Server.NX](https://github.com/Kaioru/Server.NX/releases)
-3. Download the scripts from [Server.Scripts](https://github.com/Kaioru/Server.Scripts/releases)
+3. Download the scripts from [Edelstein.lua](https://github.com/Kaioru/Edelstein.lua/releases) or [Server.Scripts](https://github.com/Kaioru/Server.Scripts/releases) (for older builds)
 4. Unzip both into the `data` and `scripts` folder respectively
 
 #### Update configuration and migrations
@@ -28,7 +28,7 @@ A v.95.1 Mushroom game server emulator written in C#.
 
 #### Download required assets 
 1. Download the data from [Server.NX](https://github.com/Kaioru/Server.NX/releases)
-2. Download the scripts from [Server.Scripts](https://github.com/Kaioru/Server.Scripts/releases)
+2. Download the scripts from [Edelstein.lua](https://github.com/Kaioru/Edelstein.lua/releases) or [Server.Scripts](https://github.com/Kaioru/Server.Scripts/releases) (for older builds)
 3. Unzip both into the `data` and `scripts` folder respectively
 
 #### Running `docker compose up`
