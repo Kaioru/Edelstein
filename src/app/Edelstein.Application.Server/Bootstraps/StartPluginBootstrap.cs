@@ -24,7 +24,7 @@ public class StartPluginBootstrap<TContext> : IBootstrap
         _context = context;
         _manager = manager;
     }
-    public int Priority => BootstrapPriority.Init;
+    public int Priority => BootstrapPriority.Start;
 
     public async Task Start()
     {
