@@ -8,7 +8,7 @@ public class EquipCommand : AbstractCommand
 {
     public override string Name => "Equip";
     public override string Description => "Modifies equipment stats";
-    
+
     public override async Task Execute(IFieldUser user, string[] args)
     {
         var equipped = user.Character.Inventories[ItemInventoryType.Equip]?.Items.ToList() ?? new List<KeyValuePair<short, IItemSlot>>();
@@ -21,9 +21,10 @@ public class EquipCommand : AbstractCommand
             )), -1);
 
         if (slot == -1) return;
+
         var item = user.Character.Inventories[ItemInventoryType.Equip]?.Items[(short)slot];
         if (item is not IItemSlotEquip equip) return;
-        
+
         var sel = await user.Prompt(target => target.AskMenu("Which equipment stat?", new Dictionary<int, string>
         {
             [0] = "Grade",
@@ -41,7 +42,7 @@ public class EquipCommand : AbstractCommand
                 equip.Grade = (byte)await user.Prompt(target => target.AskNumber("What value?"), 0);
                 break;
             case 4:
-                equip.Grade = (byte)-await user.Prompt(target => target.AskNumber("What value?"), 0);
+                equip.Grade = (byte)await user.Prompt(target => target.AskNumber("What value?"), 0);
                 break;
             case 1:
                 equip.Option1 = (short)await user.Prompt(target => target.AskNumber("What value?"), 0);
