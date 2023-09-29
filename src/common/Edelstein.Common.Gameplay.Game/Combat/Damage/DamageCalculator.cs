@@ -604,6 +604,7 @@ public class DamageCalculator : IDamageCalculator
                 Skill.AranOverSwingDs or
                 Skill.AranOverSwingTs or
                 Skill.AranRollingSpin or
+                Skill.AranFullSwingDs or
                 Skill.AranFullSwingTs &&
             mobCount > 1 &&
             (
