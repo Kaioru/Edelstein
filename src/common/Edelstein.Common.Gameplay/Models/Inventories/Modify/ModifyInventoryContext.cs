@@ -183,7 +183,20 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         var item = template?.ToItemSlot();
 
         if (item is IItemSlotBundle bundle)
+        {
             bundle.Number = count;
+
+            if (template is IItemBundleTemplate bundleTemplate)
+            {
+                while (bundle.Number > bundleTemplate.MaxPerSlot)
+                {
+                    var reduce = (short)Math.Min(bundleTemplate.MaxPerSlot, bundle.Number - bundleTemplate.MaxPerSlot);
+
+                    bundle.Number -= reduce;
+                    Add(template, reduce);
+                }
+            }
+        }
         if (item != null) 
             return Add(item);
         return -1;
