@@ -55,5 +55,14 @@ public interface IDamageCalculator
         int skillLevel
     );
 
-    Task<int[]> CalculateAdjustedDamage(ICharacter character, IFieldUserStats stats, IAttack attack, IDamage[] damage, int count);
+    Task<int[]> CalculateAdjustedDamage(
+        ICharacter character, 
+        IFieldUserStats stats,
+        IFieldMob mob,
+        IFieldMobStats mobStats, 
+        IAttack attack,
+        IDamage[] damage, 
+        int mobCount,
+        int mobOrder
+    );
 }

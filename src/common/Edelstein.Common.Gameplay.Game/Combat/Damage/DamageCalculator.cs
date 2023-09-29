@@ -562,24 +562,52 @@ public class DamageCalculator : IDamageCalculator
         return Math.Max(1, (int)damage);
     }
     
-    public async Task<int[]> CalculateAdjustedDamage(ICharacter character, IFieldUserStats stats, IAttack attack, IDamage[] damage, int count)
+    public async Task<int[]> CalculateAdjustedDamage(ICharacter character, 
+        IFieldUserStats stats,
+        IFieldMob mob,
+        IFieldMobStats mobStats, 
+        IAttack attack,
+        IDamage[] damage, 
+        int mobCount,
+        int mobOrder
+    )
     {
-        var rate = 1d;
         var result = new int[damage.Length];
+        var rate = 1d;
 
         if (attack.IsFinalAfterSlashBlast)
-            rate = Math.Pow(1 / 3d, count);
+            rate = Math.Pow(1 / 3d, mobOrder);
 
         if (attack.SkillID is Skill.Archmage2ChainLightning or Skill.EvanBlaze)
         {
             var damageDecSkill = await _skills.Retrieve(attack.SkillID);
             var damageDecLevel = damageDecSkill?[stats.SkillLevels[attack.SkillID]];
 
-            rate = (100 - count * (damageDecLevel?.X ?? 0)) / 100d;
+            rate = (100 - mobOrder * (damageDecLevel?.X ?? 0)) / 100d;
         }
 
         for (var i = 0; i < damage.Length; i++)
             result[i] = (int)(damage[i].Value * rate);
+        
+        if (attack.SkillID is 0 or
+                Skill.LegendFinalBlow or
+                Skill.AranDoubleSwing or
+                Skill.AranFinalToss or
+                Skill.AranFinalBlow or
+                Skill.AranOverSwingDs or
+                Skill.AranOverSwingTs or
+                Skill.AranRollingSpin or
+                Skill.AranFullSwingTs &&
+            mobCount > 1 &&
+            (
+                mob.TemporaryStats[MobTemporaryStatType.Freeze] == null || 
+                mob.TemporaryStats[MobTemporaryStatType.Freeze]?.Reason != Skill.AranComboTempest
+            )
+        )
+        {
+            for (var i = 0; i < damage.Length; i++)
+                result[i] = (int)(((stats.Level / 10.0 + 20.0) * (mobCount - 1) / 100.0 + 1.0) / mobCount * result[i]);
+        }
         
         return result;
     }

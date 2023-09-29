@@ -68,7 +68,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         packet.WriteByte((byte)message.User.Stats.Mastery);
         packet.WriteInt(0); // BulletCashItemID
 
-        var count = 0;
+        var mobOrder = 0;
 
         foreach (var entry in message.Attack.MobEntries)
         {
@@ -83,7 +83,16 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             var damage = await (isPDamage
                 ? message.User.Damage.CalculatePDamage(message.User.Character, message.User.Stats, mob, mob.Stats, message.Attack, entry)
                 : message.User.Damage.CalculateMDamage(message.User.Character, message.User.Stats, mob, mob.Stats, message.Attack, entry));
-            var adjustedDamage = await message.User.Damage.CalculateAdjustedDamage(message.User.Character, message.User.Stats, message.Attack, damage, count);
+            var adjustedDamage = await message.User.Damage.CalculateAdjustedDamage(
+                message.User.Character, 
+                message.User.Stats, 
+                mob, 
+                mob.Stats, 
+                message.Attack, 
+                damage, 
+                message.Attack.MobCount,
+                mobOrder
+            );
 
             packet.WriteInt(entry.MobID);
             packet.WriteByte(entry.ActionHit);
@@ -114,7 +123,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                 packet.WriteInt(entry.Damage[i]);
             }
 
-            count++;
+            mobOrder++;
         }
 
         if (message.Attack.Type == AttackType.Shoot)
