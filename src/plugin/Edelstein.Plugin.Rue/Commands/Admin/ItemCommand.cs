@@ -32,6 +32,15 @@ public class ItemCommand : AbstractTemplateCommand<IItemTemplate>
         return result;
     }
 
-    protected override async Task Execute(IFieldUser user, IItemTemplate template, TemplateCommandArgs args) 
-        => await user.ModifyInventory(i => i.Add(template.ID));
+    protected override async Task Execute(IFieldUser user, IItemTemplate template, TemplateCommandArgs args)
+    {
+        var quantity = 1;
+        
+        if (template is IItemBundleTemplate)
+            quantity = await user.Prompt(s => s.AskNumber($"How many would you like?", 1), -1);
+        if (quantity == -1) 
+            return;
+        
+        await user.ModifyInventory(i => i.Add(template.ID, (short)quantity));
+    }
 }
