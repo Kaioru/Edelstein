@@ -70,7 +70,11 @@ public class DamageCalculator : IDamageCalculator
     {
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
-        var skillLevel = skill?[stats.SkillLevels[attack.SkillID]];
+        var skillLevel = skill?[stats.SkillLevels[
+            attack.SkillID is Skill.AranOverSwingTs or Skill.AranOverSwingDs 
+                ? Skill.AranOverSwing 
+                : attack.SkillID
+        ]];
         var equipped = character.Inventories[ItemInventoryType.Equip];
         var weapon = equipped != null
             ? equipped.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) 
