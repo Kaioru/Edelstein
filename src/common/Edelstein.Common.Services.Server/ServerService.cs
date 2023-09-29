@@ -206,7 +206,11 @@ public class ServerService : IServerService
 
             if (existing != null)
             {
-                if (existing.DateExpire < now) db.Servers.Remove(existing);
+                if (existing.DateExpire < now)
+                {
+                    db.Servers.Remove(existing);
+                    await db.SaveChangesAsync();
+                }
                 else return new ServerResponse(ServerResult.FailedAlreadyRegistered);
             }
 
@@ -227,6 +231,11 @@ public class ServerService : IServerService
                     if (db.ShopServers.Any(s => s.WorldID == shop.WorldID))
                         return new ServerResponse(ServerResult.FailedAlreadyRegistered);
                     await db.ShopServers.AddAsync(shop);
+                    break;
+                case ServerTradeEntity trade:
+                    if (db.TradeServers.Any(s => s.WorldID == trade.WorldID))
+                        return new ServerResponse(ServerResult.FailedAlreadyRegistered);
+                    await db.TradeServers.AddAsync(trade);
                     break;
                 default:
                     await db.Servers.AddAsync(entity);

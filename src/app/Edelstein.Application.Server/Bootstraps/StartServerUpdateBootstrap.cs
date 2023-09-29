@@ -42,11 +42,15 @@ public class StartServerUpdateBootstrap<TConfig> : IBootstrap, ITickable
     public async Task Stop()
     {
         Context?.Cancel();
-        await _service.Deregister(new ServerDeregisterRequest(_config.ID));
-        _logger.LogInformation(
-            "Deregistered stage {ID} from server registry",
-            _config.ID
-        );
+
+        if (IsRegistered)
+        {
+            await _service.Deregister(new ServerDeregisterRequest(_config.ID));
+            _logger.LogInformation(
+                "Deregistered stage {ID} from server registry",
+                _config.ID
+            );
+        }
     }
 
     public Task OnTick(DateTime now)
