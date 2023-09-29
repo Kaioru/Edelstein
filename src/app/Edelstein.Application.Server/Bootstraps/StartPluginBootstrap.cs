@@ -13,9 +13,9 @@ public class StartPluginBootstrap<TContext> : IBootstrap
     private readonly IPluginManager<TContext> _manager;
 
     public StartPluginBootstrap(
-        ILogger<StartPluginBootstrap<TContext>> logger, 
-        ILoggerFactory loggerFactory, 
-        TContext context, 
+        ILogger<StartPluginBootstrap<TContext>> logger,
+        ILoggerFactory loggerFactory,
+        TContext context,
         IPluginManager<TContext> manager
     )
     {
@@ -24,26 +24,27 @@ public class StartPluginBootstrap<TContext> : IBootstrap
         _context = context;
         _manager = manager;
     }
+
     public int Priority => BootstrapPriority.Start;
 
     public async Task Start()
     {
         var plugins = await _manager.RetrieveAll();
         var hosted = plugins
-            .Select(p => 
+            .Select(p =>
                 Tuple.Create(p, new PluginHost(_loggerFactory.CreateLogger(p.GetType()))))
             .ToImmutableList();
 
         foreach (var host in hosted)
         {
             await host.Item1.OnInit(host.Item2, _context);
-            _logger.LogDebug("{Context} plugin {ID} initialised", typeof(TContext).Name, host.Item1.ID);
+            _logger.LogInformation("{Context} plugin {ID} initialised", typeof(TContext).Name, host.Item1.ID);
         }
-        
+
         foreach (var host in hosted)
         {
             await host.Item1.OnStart(host.Item2, _context);
-            _logger.LogDebug("{Context} plugin {ID} started", typeof(TContext).Name, host.Item1.ID);
+            _logger.LogInformation("{Context} plugin {ID} started", typeof(TContext).Name, host.Item1.ID);
         }
     }
 
@@ -54,7 +55,7 @@ public class StartPluginBootstrap<TContext> : IBootstrap
         foreach (var plugin in plugins)
         {
             await plugin.OnStop();
-            _logger.LogDebug("{Context} plugin {ID} stopped", typeof(TContext).Name, plugin.ID);
+            _logger.LogInformation("{Context} plugin {ID} stopped", typeof(TContext).Name, plugin.ID);
         }
     }
 }
