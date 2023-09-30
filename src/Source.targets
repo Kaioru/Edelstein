@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <RepositoryUrl>https://github.com/Kaioru/Edelstein</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
