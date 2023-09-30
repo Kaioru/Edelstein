@@ -12,9 +12,9 @@ namespace Edelstein.Plugin.Rue;
 
 public class RueGamePlugin : IGamePlugin
 {
-    public string ID => "Rue";
+    public string ID => "RueGame";
     private ILogger? Logger { get; set; }
-    
+
     public Task OnInit(IPluginHost host, GameContext ctx)
     {
         Logger = host.Logger;
@@ -48,15 +48,12 @@ public class RueGamePlugin : IGamePlugin
         commandManager.Insert(new StatCommand());
         commandManager.Insert(new TemporaryStatCommand());
         commandManager.Insert(new MobTemporaryStatCommand());
-        
         commandManager.Insert(new DebugCommand());
 
         ctx.Pipelines.FieldOnPacketUserChat.Add(PipelinePriority.High, new FieldOnPacketUserChatCommandPlug(commandManager));
         return Task.CompletedTask;
     }
-    
+
     public Task OnStop()
-    {
-        return Task.CompletedTask;
-    }
+        => Task.CompletedTask;
 }

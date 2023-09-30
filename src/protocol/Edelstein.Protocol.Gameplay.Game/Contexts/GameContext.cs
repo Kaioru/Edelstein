@@ -1,6 +1,7 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Game.Contexts;
 
 public record GameContext(
+    IGameStage Stage,
     IGameStageOptions Options,
     GameContextManagers Managers,
     GameContextServices Services,
