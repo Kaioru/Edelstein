@@ -2,7 +2,7 @@
 
 public static class BootstrapPriority
 {
-    public static int Load = 0x10;
-    public static int Init = 0x20;
-    public static int Start = 0x30;
+    public const int Load = 0x10;
+    public const int Init = 0x20;
+    public const int Start = 0x30;
 }
