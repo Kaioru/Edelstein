@@ -91,7 +91,7 @@ public class DamageCalculator : IDamageCalculator
 
         damagePerMob = Math.Max((short)1, damagePerMob);
 
-        if (attack is { SkillID: 0, AttackActionType: 10 })
+        if (attack is { SkillID: 0, AttackActionType: AttackActionType.DualDagger })
             damagePerMob = 2;
 
         _rndGenForCharacter.Next(random.Array);
