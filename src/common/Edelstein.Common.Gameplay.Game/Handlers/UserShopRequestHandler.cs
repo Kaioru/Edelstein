@@ -1,6 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Game.Dialogues;
 using Edelstein.Common.Gameplay.Packets;
-using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Dialogues;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Utilities.Packets;

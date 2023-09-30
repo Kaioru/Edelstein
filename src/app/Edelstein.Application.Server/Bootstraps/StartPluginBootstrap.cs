@@ -1,6 +1,4 @@
-﻿using System.Collections.Immutable;
-using Edelstein.Common.Plugin;
-using Edelstein.Protocol.Plugin;
+﻿using Edelstein.Protocol.Plugin;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Application.Server.Bootstraps;
@@ -8,19 +6,16 @@ namespace Edelstein.Application.Server.Bootstraps;
 public class StartPluginBootstrap<TContext> : IBootstrap
 {
     private readonly ILogger _logger;
-    private readonly ILoggerFactory _loggerFactory;
     private readonly TContext _context;
     private readonly IPluginManager<TContext> _manager;
 
     public StartPluginBootstrap(
         ILogger<StartPluginBootstrap<TContext>> logger,
-        ILoggerFactory loggerFactory,
         TContext context,
         IPluginManager<TContext> manager
     )
     {
         _logger = logger;
-        _loggerFactory = loggerFactory;
         _context = context;
         _manager = manager;
     }
@@ -29,33 +24,29 @@ public class StartPluginBootstrap<TContext> : IBootstrap
 
     public async Task Start()
     {
-        var plugins = await _manager.RetrieveAll();
-        var hosted = plugins
-            .Select(p =>
-                Tuple.Create(p, new PluginHost(_loggerFactory.CreateLogger(p.GetType()))))
-            .ToImmutableList();
-
-        foreach (var host in hosted)
+        var hosts = await _manager.RetrieveAll();
+        
+        foreach (var host in hosts)
         {
-            await host.Item1.OnInit(host.Item2, _context);
-            _logger.LogInformation("{Context} plugin {ID} initialised", typeof(TContext).Name, host.Item1.ID);
+            await host.Plugin.OnInit(host, _context);
+            _logger.LogInformation("{Context} plugin {ID} initialised", typeof(TContext).Name, host.ID);
         }
 
-        foreach (var host in hosted)
+        foreach (var host in hosts)
         {
-            await host.Item1.OnStart(host.Item2, _context);
-            _logger.LogInformation("{Context} plugin {ID} started", typeof(TContext).Name, host.Item1.ID);
+            await host.Plugin.OnStart(host, _context);
+            _logger.LogInformation("{Context} plugin {ID} started", typeof(TContext).Name, host.ID);
         }
     }
 
     public async Task Stop()
     {
-        var plugins = await _manager.RetrieveAll();
+        var hosts = await _manager.RetrieveAll();
 
-        foreach (var plugin in plugins)
+        foreach (var host in hosts)
         {
-            await plugin.OnStop();
-            _logger.LogInformation("{Context} plugin {ID} stopped", typeof(TContext).Name, plugin.ID);
+            await host.Plugin.OnStop();
+            _logger.LogInformation("{Context} plugin {ID} stopped", typeof(TContext).Name, host.ID);
         }
     }
 }
