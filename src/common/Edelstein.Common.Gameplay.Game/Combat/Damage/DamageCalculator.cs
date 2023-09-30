@@ -77,6 +77,8 @@ public class DamageCalculator : IDamageCalculator
             skillActingID = Skill.AranFullSwing;
         if (skillActingID is Skill.AranOverSwingTs or Skill.AranOverSwingDs)
             skillActingID = Skill.AranOverSwing;
+        if (skillActingID is Skill.Dual3HustleRush)
+            skillActingID = Skill.Dual3HustleDash;
         
         var skillLevel = skill?[stats.SkillLevels[skillActingID]];
         var equipped = character.Inventories[ItemInventoryType.Equip];

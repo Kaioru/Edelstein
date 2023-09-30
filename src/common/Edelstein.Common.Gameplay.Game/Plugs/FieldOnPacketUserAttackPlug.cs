@@ -116,7 +116,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
             {
                 if (!isMismatch && entry.Damage[i] != adjustedDamage[i])
                     _logger.LogInformation(
-                        "{Character} triggered a {Type} attack damage calculation mismatch with skill id: {Skill} (Index: {Index} Client: {Damage}, Server: {DamageServer}, Critical: {IsCritical})",
+                        "{Character} triggered a {Type} attack damage calculation mismatch with skill id: {Skill} (Index: {Index}, Client: {Damage}, Server: {DamageServer}, Critical: {IsCritical})",
                         message.User.Character.Name,
                         message.Attack.Type,
                         message.Attack.SkillID,
