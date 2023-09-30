@@ -6,5 +6,5 @@ public record RueConfigLogin
     public bool IsAutoLogin { get; set; }
     public bool IsFlippedUsername { get; set; }
     
-    public RueConfigLoginCredentials LoginCredentials { get; set; }
+    public RueConfigLoginCredentials? LoginCredentials { get; set; }
 }
