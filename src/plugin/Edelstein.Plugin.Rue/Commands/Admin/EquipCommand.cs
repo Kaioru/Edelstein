@@ -42,7 +42,7 @@ public class EquipCommand : AbstractCommand
                 equip.Grade = (byte)await user.Prompt(target => target.AskNumber("What value?"), 0);
                 break;
             case 4:
-                equip.Grade = (byte)await user.Prompt(target => target.AskNumber("What value?"), 0);
+                equip.Grade = (byte) -await user.Prompt(target => target.AskNumber("What value?"), 0);
                 break;
             case 1:
                 equip.Option1 = (short)await user.Prompt(target => target.AskNumber("What value?"), 0);
