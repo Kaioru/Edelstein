@@ -114,12 +114,14 @@ public class DebugCommand : AbstractCommand<DebugCommandArgs>
         Func<KeyValuePair<T, T>, string> formatting,
         bool outputToChat = false)
     {
-        var recordText = $"{header} records for player #e#b#h #:\\n";
+        var characterName = outputToChat ? user.Character.Name : "#e#b#h #";
+        var newline = outputToChat ? string.Empty : "\\n";
+        var recordText = $"{header} records for player {characterName}: {newline}";
 
         for (var i = 0; i < record.Count; i++)
         {
             KeyValuePair<T, T> kvp = record.ElementAt(i);
-            recordText += $"[{i}] {formatting(kvp)}\\n";
+            recordText += $"[{i}] {formatting(kvp)} {newline}";
         }
 
         if (outputToChat)
