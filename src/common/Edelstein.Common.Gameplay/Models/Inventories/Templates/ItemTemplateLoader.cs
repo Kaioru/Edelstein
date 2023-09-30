@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
@@ -62,7 +63,7 @@ public class ItemTemplateLoader : ITemplateLoader
                     () => new ItemEquipTemplate(id, node)
                 ));
             })
-            .ToImmutableList();
+            .ToFrozenSet();
         var loadBundle = nodesBundle
             .Where(n => n != null)
             .SelectMany(n => n!.Children)
@@ -77,7 +78,7 @@ public class ItemTemplateLoader : ITemplateLoader
                     () => new ItemBundleTemplate(id, node)
                 ));
             })
-            .ToImmutableList();
+            .ToFrozenSet();
         var loadPet = nodesPet?
             .Select(async n =>
             {
@@ -89,7 +90,7 @@ public class ItemTemplateLoader : ITemplateLoader
                     () => new ItemPetTemplate(id, node)
                 ));
             })
-            .ToImmutableList();
+            .ToFrozenSet();
 
         await Task.WhenAll(loadEquip);
         await Task.WhenAll(loadBundle);

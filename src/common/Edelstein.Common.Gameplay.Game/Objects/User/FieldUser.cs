@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Combat.Damage;
 using Edelstein.Common.Gameplay.Game.Conversations;
@@ -439,7 +440,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         {
             foreach (var kv in Character.TemporaryStats.Records
                          .Where(kv => kv.Value.DateExpire < now)
-                         .ToImmutableList())
+                         .ToFrozenSet())
                 s.ResetByType(kv.Key);
             
             if ((Character.TemporaryStats.EnergyChargedRecord?.IsActive() ?? false) &&

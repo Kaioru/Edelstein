@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Generators;
 using Edelstein.Protocol.Gameplay.Game;
@@ -73,5 +74,5 @@ public class FieldManager : IFieldManager
     }
 
     public Task<ICollection<IField>> RetrieveAll() =>
-        Task.FromResult<ICollection<IField>>(_fields.Values.ToImmutableList());
+        Task.FromResult<ICollection<IField>>(_fields.Values.ToFrozenSet());
 }

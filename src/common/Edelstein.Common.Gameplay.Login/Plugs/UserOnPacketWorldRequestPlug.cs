@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Login.Contracts;
@@ -48,7 +49,7 @@ public class UserOnPacketWorldRequestPlug : IPipelinePlug<UserOnPacketWorldReque
             var gameStages =
                 (await _serverService.GetGameByWorld(new ServerGetGameByWorldRequest(worldID))).Servers
                 .OrderBy(s => s.ChannelID)
-                .ToImmutableList();
+                .ToFrozenSet();
 
             packet.WriteByte((byte)gameStages.Count);
 

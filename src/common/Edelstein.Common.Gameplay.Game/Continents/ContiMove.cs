@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Objects;
 using Edelstein.Common.Gameplay.Packets;
@@ -173,7 +174,7 @@ public class ContiMove : AbstractFieldObjectPool, IContiMove, ITickable
         }
         .Where(f => f != null)
         .SelectMany(f => f!.Objects)
-        .ToImmutableList();
+        .ToFrozenSet();
 
     public override Task Enter(IFieldObject obj) => (State switch
     {

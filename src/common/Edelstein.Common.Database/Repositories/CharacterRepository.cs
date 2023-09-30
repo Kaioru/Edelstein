@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using AutoMapper;
 using Edelstein.Common.Database.Entities;
 using Edelstein.Common.Gameplay.Models.Characters;
@@ -83,6 +84,6 @@ public class CharacterRepository : ICharacterRepository
         var results = await db.Characters.Where(c => c.AccountWorldID == accountWorld).ToListAsync();
         return results
             .Select(m => _mapper.Map<Character>(m))
-            .ToImmutableList();
+            .ToFrozenSet();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using AutoMapper;
 using Edelstein.Common.Services.Server.Entities;
 using Edelstein.Protocol.Services.Server;
@@ -129,7 +130,7 @@ public class ServerService : IServerService
             return new ServerGetAllResponse<IServerGame>(ServerResult.Success, existing
                 .Where(s => s.DateExpire > now)
                 .Select(s => _mapper.Map<ServerGame>(s))
-                .ToImmutableList());
+                .ToFrozenSet());
         }
         catch (Exception)
         {
@@ -188,7 +189,7 @@ public class ServerService : IServerService
             return new ServerGetAllResponse<IServer>(ServerResult.Success, existing
                 .Where(s => s.DateExpire > now)
                 .Select(s => _mapper.Map<Protocol.Services.Server.Contracts.Server>(s))
-                .ToImmutableList());
+                .ToFrozenSet());
         }
         catch (Exception)
         {

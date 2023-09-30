@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
@@ -16,7 +17,7 @@ public class FieldObjectPool : AbstractFieldObjectPool, IFieldObjectPool
         _runningObjectID = new Queue<int>(Enumerable.Range(1, 30_000));
     }
 
-    public override IReadOnlyCollection<IFieldObject> Objects => _objects.Values.ToImmutableList();
+    public override IReadOnlyCollection<IFieldObject> Objects => _objects.Values.ToFrozenSet();
 
     public override Task Enter(IFieldObject obj)
     {

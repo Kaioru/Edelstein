@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Continents;
@@ -34,7 +35,7 @@ public class ContiMoveManager : IContiMoveManager, ITickable
         ));
 
     public Task<ICollection<IContiMove>> RetrieveAll() =>
-        Task.FromResult<ICollection<IContiMove>>(_conti.Values.ToImmutableList());
+        Task.FromResult<ICollection<IContiMove>>(_conti.Values.ToFrozenSet());
 
     public Task<IContiMove> Insert(IContiMove entry)
     {

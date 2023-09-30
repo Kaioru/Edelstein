@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats.Modify;
 
@@ -58,7 +59,7 @@ public class ModifyMobTemporaryStatsContext : IModifyMobTemporaryStatContext
         foreach (var type in _stats.Records
                      .Where(kv => kv.Value.Reason == reason)
                      .Select(kv => kv.Key)
-                     .ToImmutableList())
+                     .ToFrozenSet())
             ResetByType(type);
     }
 
@@ -92,7 +93,7 @@ public class ModifyMobTemporaryStatsContext : IModifyMobTemporaryStatContext
     
     public void ResetBurnedInfoAll()
     {
-        foreach (var burned in _stats.BurnedInfo.ToImmutableList())
+        foreach (var burned in _stats.BurnedInfo.ToFrozenSet())
         {
             _stats.BurnedInfo.Remove(burned);
             HistoryReset.BurnedInfo.Add(burned);

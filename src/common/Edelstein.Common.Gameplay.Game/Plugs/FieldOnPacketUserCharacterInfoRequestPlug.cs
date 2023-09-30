@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
@@ -31,7 +32,7 @@ public class FieldOnPacketUserCharacterInfoRequestPlug : IPipelinePlug<FieldOnPa
 
         var wishlist = message.Target.Character.Wishlist.Records
             .Where(c => c > 0)
-            .ToImmutableList();
+            .ToFrozenSet();
         
         packet.WriteByte((byte)wishlist.Count);
         foreach (var commodity in wishlist)

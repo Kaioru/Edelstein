@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Login.Types;
 using Edelstein.Common.Gameplay.Models.Accounts;
 using Edelstein.Common.Gameplay.Models.Characters;
@@ -55,7 +56,7 @@ public class UserOnPacketSelectWorldPlug : IPipelinePlug<UserOnPacketSelectWorld
 
             var characters = (await _characterRepository
                     .RetrieveAllByAccountWorld(accountWorld.ID))
-                .ToImmutableList();
+                .ToFrozenSet();
             using var packet = new PacketWriter(PacketSendOperations.SelectWorldResult);
 
             packet.WriteByte((byte)result);

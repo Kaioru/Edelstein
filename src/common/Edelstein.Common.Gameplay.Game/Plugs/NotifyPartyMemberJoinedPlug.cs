@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Social;
 using Edelstein.Common.Utilities.Packets;
@@ -22,7 +23,7 @@ public class NotifyPartyMemberJoinedPlug : IPipelinePlug<NotifyPartyMemberJoined
             .Where(u => 
                 u.Party?.PartyID == message.PartyID || 
                 u.Character?.ID == message.PartyMember.CharacterID)
-            .ToImmutableList();
+            .ToFrozenSet();
         
         foreach (var user in partied)
         {

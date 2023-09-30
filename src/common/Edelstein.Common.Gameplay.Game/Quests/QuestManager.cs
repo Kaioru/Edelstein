@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Text;
 using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Game.Conversations;
@@ -184,7 +185,7 @@ public class QuestManager : IQuestManager
         var actTemplate = action == QuestAction.Start
             ? template.ActStart
             : template.ActEnd;
-        var rewardsBase = actTemplate.Items?.Where(i => i.Prob == null).ToImmutableList();
+        var rewardsBase = actTemplate.Items?.Where(i => i.Prob == null).ToFrozenSet();
         var rewardsRandom = actTemplate.Items?
             .Where(i => i.Gender is null or 2 || i.Gender == user.Character.Gender)
             .Where(i =>
@@ -242,7 +243,7 @@ public class QuestManager : IQuestManager
                 return check;
             })
             .Where(i => i.Prob > 0)
-            .ToImmutableList();
+            .ToFrozenSet();
         var rewardsSelect = actTemplate.Items?.Where(i => i.Prob == -1).ToDictionary(
             i => i.Order,
             i => i
@@ -347,7 +348,7 @@ public class QuestManager : IQuestManager
             await user.ModifyInventory(inventory);
             await user.Effect(new QuestEffect(rewards
                 .Select(r => Tuple.Create(r.ItemID, r.Count))
-                .ToImmutableList()));
+                .ToFrozenSet()));
         }
         
         return QuestResultType.Success;

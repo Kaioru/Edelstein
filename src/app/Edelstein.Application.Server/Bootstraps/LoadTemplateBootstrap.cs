@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using Edelstein.Common.Utilities.Templates;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,7 @@ public class LoadTemplateBootstrap : IBootstrap
     )
     {
         _logger = logger;
-        _loaders = loaders.ToImmutableList();
+        _loaders = loaders.ToFrozenSet();
     }
 
     public int Priority => BootstrapPriority.Load;

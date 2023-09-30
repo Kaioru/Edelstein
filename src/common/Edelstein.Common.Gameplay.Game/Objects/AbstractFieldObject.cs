@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.AffectedArea;
@@ -53,7 +54,7 @@ public abstract class AbstractFieldObject : IFieldObject
 
         if (this is not IFieldObjectController controller) return;
 
-        foreach (var controlled in controller.Controlled.ToImmutableList())
+        foreach (var controlled in controller.Controlled.ToFrozenSet())
             await controlled.Control();
     }
 

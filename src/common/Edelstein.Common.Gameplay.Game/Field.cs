@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Game.Generators;
@@ -58,7 +59,7 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
     private DateTime NextGeneratorTick { get; set; }
 
     public override IReadOnlyCollection<IFieldObject> Objects =>
-        _pools.Values.SelectMany(p => p.Objects).ToImmutableList();
+        _pools.Values.SelectMany(p => p.Objects).ToFrozenSet();
 
     public IFieldSplit? GetSplit(IPoint2D position)
     {
@@ -191,7 +192,7 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
         if (obj.FieldSplit != null)
         {
             if (obj is IFieldSplitObserver observer)
-                foreach (var split in observer.Observing.ToImmutableList())
+                foreach (var split in observer.Observing.ToFrozenSet())
                     await split.Unobserve(observer, true);
             await obj.FieldSplit.Leave(obj, getLeavePacket: getLeavePacket);
         }

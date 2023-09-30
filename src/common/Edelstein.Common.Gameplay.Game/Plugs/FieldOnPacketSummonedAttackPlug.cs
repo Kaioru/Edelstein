@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Combat;
@@ -22,7 +23,7 @@ public class FieldOnPacketSummonedAttackPlug : IPipelinePlug<FieldOnPacketSummon
 
     public async Task Handle(IPipelineContext ctx, FieldOnPacketSummonedAttack message)
     {
-        var mobs = message.Attack.MobEntries.ToImmutableDictionary(
+        var mobs = message.Attack.MobEntries.ToFrozenDictionary(
             kv => kv.MobID,
             kv => message.User.Field?.GetObject<IFieldMob>(kv.MobID)
         );

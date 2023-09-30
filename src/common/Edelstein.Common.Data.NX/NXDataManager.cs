@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Duey;
 using Edelstein.Protocol.Data;
 
@@ -11,7 +12,7 @@ public class NXDataManager : IDataManager
     public NXDataManager(string path) =>
         _nodes = Directory
             .GetFiles(path, "*.nx")
-            .ToImmutableDictionary(
+            .ToFrozenDictionary(
                 k => Path.GetFileNameWithoutExtension(k)!,
                 d => (INXNode)new NXFile(d).Root
             );

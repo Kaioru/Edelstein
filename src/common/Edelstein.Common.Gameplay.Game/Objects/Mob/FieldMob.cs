@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats.Modify;
 using Edelstein.Common.Gameplay.Packets;
@@ -233,10 +234,10 @@ public class FieldMob :
         
         var expiredStats = TemporaryStats.Records
             .Where(kv => kv.Value.DateExpire < now)
-            .ToImmutableList();
+            .ToFrozenSet();
         var expiredBurned = TemporaryStats.BurnedInfo
             .Where(b => b.DateExpire < now)
-            .ToImmutableList();
+            .ToFrozenSet();
 
         if (expiredStats.Count > 0)
         {

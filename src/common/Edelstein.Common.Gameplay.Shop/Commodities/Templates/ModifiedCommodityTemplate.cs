@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Shop.Commodities;
 using Edelstein.Protocol.Utilities.Templates;
@@ -39,7 +40,7 @@ public record ModifiedCommodityTemplate : IModifiedCommodity, ITemplate
         PackageSN = property
             .Resolve("PackageSN")?
             .Select(c => c.Resolve<int>() ?? 0)
-            .ToImmutableList() ?? null;
+            .ToFrozenSet() ?? null;
 
         if (ItemID != null) Flags |= CommodityFlags.ItemID;
         if (Count != null) Flags |= CommodityFlags.Count;

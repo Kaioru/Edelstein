@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify.Operations;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
@@ -39,7 +40,7 @@ public abstract class AbstractModifyInventory : IModifyInventory
 
     public void WriteTo(IPacketWriter writer)
     {
-        var operations = Operations.ToImmutableList();
+        var operations = Operations.ToFrozenSet();
 
         writer.WriteByte((byte)operations.Count);
         foreach (var operation in operations)

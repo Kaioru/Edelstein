@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Combat.Contexts;
 using Edelstein.Common.Gameplay.Game.Objects.AffectedArea;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
@@ -386,7 +387,7 @@ public class SkillContext : ISkillContext
             foreach (var summoned in _user.Owned
                          .OfType<IFieldSummoned>()
                          .Where(s => _resetSummoned.Contains(s.SkillID))
-                         .ToImmutableList())
+                         .ToFrozenSet())
             {
                 _user.Owned.Remove(summoned);
                 if (_user.Field != null)

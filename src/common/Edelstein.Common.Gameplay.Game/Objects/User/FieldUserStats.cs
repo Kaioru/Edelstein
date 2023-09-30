@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
@@ -222,7 +223,7 @@ public record FieldUserStats : IFieldUserStats
             .Where(kv => kv.Key < 0)
             .Where(kv => kv.Value is ItemSlotEquip)
             .Select(kv => (kv.Key, (ItemSlotEquip)kv.Value))
-            .ToImmutableList() ?? ImmutableList<(short Key, ItemSlotEquip)>.Empty;
+            .ToFrozenSet() ?? FrozenSet<(short Key, ItemSlotEquip)>.Empty;
 
         foreach (var (slot, item) in equipped)
         {

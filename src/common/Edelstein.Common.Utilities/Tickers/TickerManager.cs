@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Protocol.Utilities.Tickers;
 using Microsoft.Extensions.Logging;
 
@@ -18,7 +19,7 @@ public class TickerManager : ITickerManager, ITickable
 
     public async Task OnTick(DateTime now)
     {
-        var tickables = _tickables.ToImmutableList();
+        var tickables = _tickables.ToFrozenSet();
 
         await Task.WhenAll(tickables.Select(b =>
             Task.Run(async () =>

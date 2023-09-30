@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Gameplay.Social;
 using Edelstein.Common.Utilities.Packets;
@@ -17,7 +18,7 @@ public class NotifyPartyChangedBossPlug : IPipelinePlug<NotifyPartyChangedBoss>
     public async Task Handle(IPipelineContext ctx, NotifyPartyChangedBoss message)
     {
         var users = await _stage.Users.RetrieveAll();
-        var partied = users.Where(u => u.Party?.PartyID == message.PartyID).ToImmutableList();
+        var partied = users.Where(u => u.Party?.PartyID == message.PartyID).ToFrozenSet();
         
         foreach (var user in partied)
         {

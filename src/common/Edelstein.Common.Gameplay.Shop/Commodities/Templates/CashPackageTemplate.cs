@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Shop.Commodities.Templates;
 
@@ -15,6 +16,6 @@ public class CashPackageTemplate : ICashPackageTemplate
         SN = property
             .Resolve("SN")?
             .Select(c => c.Resolve<int>() ?? 0)
-            .ToImmutableList() ?? ImmutableList<int>.Empty;
+            .ToFrozenSet() ?? FrozenSet<int>.Empty;
     }
 }

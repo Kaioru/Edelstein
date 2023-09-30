@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects;
@@ -116,7 +117,7 @@ public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITicka
                      .Where(o => o is not IFieldAffectedArea)
                      .Where(o => _affected.Contains(o))
                      .Where(o => !Bounds.Intersects(o.Position) || o.Field != Field)
-                     .ToImmutableList())
+                     .ToFrozenSet())
         {
             _affected.Remove(obj);
             _ = Leave(obj);
@@ -131,7 +132,7 @@ public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITicka
                      .Where(o => o is not IFieldAffectedArea)
                      .Where(o => !_affected.Contains(o))
                      .Where(o => Bounds.Intersects(o.Position))
-                     .ToImmutableList())
+                     .ToFrozenSet())
         {
             _affected.Add(obj);
             _ = Enter(obj);

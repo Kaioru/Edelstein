@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify.Operations;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
@@ -35,7 +36,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         ? item
         : null;
 
-    public IReadOnlyDictionary<short, IItemSlot> Items => _inventory.Items.ToImmutableDictionary();
+    public IReadOnlyDictionary<short, IItemSlot> Items => _inventory.Items.ToFrozenDictionary();
 
     public override short Add(IItemSlot? item)
     {
@@ -93,7 +94,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         var match = _inventory.Items
             .Where(kv => kv.Key > 0)
             .Where(kv => kv.Value.ID == templateID)
-            .ToImmutableList();
+            .ToFrozenSet();
 
         foreach (var kv in match)
         {
@@ -132,7 +133,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
     {
         var match = _inventory.Items
             .Where(kv => kv.Value.ID == templateID)
-            .ToImmutableList();
+            .ToFrozenSet();
 
         foreach (var kv in match)
             RemoveSlot(kv.Key);
