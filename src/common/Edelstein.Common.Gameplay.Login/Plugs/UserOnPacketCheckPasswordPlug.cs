@@ -50,17 +50,6 @@ public class UserOnPacketCheckPasswordPlug : IPipelinePlug<UserOnPacketCheckPass
                 _ => LoginResult.Unknown
             };
 
-            if (message.User.Context.Options.IsAutoRegister && result == LoginResult.NotRegistered)
-            {
-                // TODO: Move autoregister this to plugin
-                result = LoginResult.Success;
-                await _auth.Register(new AuthRequest(message.Username, message.Password));
-                _logger.LogInformation(
-                    "Created new user {Username} with password {Password}",
-                    message.Username, message.Password
-                );
-            }
-
             var account = await _repository.RetrieveByUsername(message.Username) ??
                           await _repository.Insert(new Account { Username = message.Username });
 

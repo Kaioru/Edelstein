@@ -4,13 +4,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Game\Edelstein.Common.Gameplay.Game.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Login\Edelstein.Common.Gameplay.Login.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Utilities\Edelstein.Common.Utilities.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin.Game\Edelstein.Protocol.Plugin.Game.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin.Login\Edelstein.Protocol.Plugin.Login.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DotNet.Glob" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
     <PackageReference Include="PowerArgs" Version="4.0.2" />
   </ItemGroup>
 
