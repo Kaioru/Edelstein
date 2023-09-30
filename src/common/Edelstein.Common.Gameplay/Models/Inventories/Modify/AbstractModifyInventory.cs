@@ -1,5 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify.Operations;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Models.Inventories;

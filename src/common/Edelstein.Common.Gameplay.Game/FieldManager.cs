@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Generators;
 using Edelstein.Protocol.Gameplay.Game;

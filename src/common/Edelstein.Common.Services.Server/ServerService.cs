@@ -1,5 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using AutoMapper;
 using Edelstein.Common.Services.Server.Entities;
 using Edelstein.Protocol.Services.Server;

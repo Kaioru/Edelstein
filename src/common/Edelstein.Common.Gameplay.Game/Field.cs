@@ -1,5 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Game.Generators;

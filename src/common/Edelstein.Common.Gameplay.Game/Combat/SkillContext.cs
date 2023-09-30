@@ -1,5 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Combat.Contexts;
 using Edelstein.Common.Gameplay.Game.Objects.AffectedArea;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;

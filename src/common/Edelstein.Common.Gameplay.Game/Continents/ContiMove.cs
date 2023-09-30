@@ -1,4 +1,3 @@
-using System.Collections.Frozen;
 using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Objects;
 using Edelstein.Common.Gameplay.Packets;

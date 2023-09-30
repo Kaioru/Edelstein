@@ -1,5 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Common.Utilities.Spatial.Collections;
 using Edelstein.Protocol.Gameplay.Game.Spatial;

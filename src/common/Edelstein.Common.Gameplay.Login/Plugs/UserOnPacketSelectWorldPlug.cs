@@ -1,5 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Login.Types;
 using Edelstein.Common.Gameplay.Models.Accounts;
 using Edelstein.Common.Gameplay.Models.Characters;

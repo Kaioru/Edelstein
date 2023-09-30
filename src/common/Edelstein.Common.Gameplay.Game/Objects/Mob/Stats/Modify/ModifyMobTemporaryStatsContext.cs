@@ -1,5 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats.Modify;
 
