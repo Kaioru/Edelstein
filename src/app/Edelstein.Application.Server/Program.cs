@@ -78,8 +78,8 @@ await Host.CreateDefaultBuilder(args)
             p.GetRequiredService<ProgramConfig>().TicksPerSecond
         ));
 
-        services.AddSingleton<IDataManager>(new NXDataManager(ctx.Configuration.GetSection("Data")["Directory"]));
-        services.AddSingleton<IScriptEngine>(new LuaScriptEngine(ctx.Configuration.GetSection("Scripts")["Directory"]));
+        services.AddSingleton<IDataManager>(new NXDataManager(ctx.Configuration.GetSection("Data")["Directory"] ?? throw new InvalidOperationException()));
+        services.AddSingleton<IScriptEngine>(new LuaScriptEngine(ctx.Configuration.GetSection("Scripts")["Directory"] ?? throw new InvalidOperationException()));
         services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));
     })
     .ConfigureServices((ctx, services) => { services.AddHostedService<ProgramHost>(); })

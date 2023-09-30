@@ -90,7 +90,7 @@ public class ProgramHost : IHostedService
         stages.AddRange(_config.GameStages);
         stages.AddRange(_config.ShopStages);
         stages.AddRange(_config.TradeStages);
-
+        
         foreach (var stage in stages)
         {
             await using var stageScope = programScope.BeginLifetimeScope(b =>
