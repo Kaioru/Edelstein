@@ -18,7 +18,9 @@ public class NotifyPartyMemberUpdateLevelOrJobPlug : IPipelinePlug<NotifyPartyMe
     public async Task Handle(IPipelineContext ctx, NotifyPartyMemberUpdateLevelOrJob message)
     {
         var users = await _stage.Users.RetrieveAll();
-        var partied = users.Where(u => u.Party?.PartyID == message.PartyID).ToFrozenSet();
+        var partied = users
+            .Where(u => u.Party?.PartyID == message.PartyID)
+            .ToImmutableHashSet();
 
         foreach (var user in partied)
         {

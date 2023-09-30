@@ -84,6 +84,6 @@ public class CharacterRepository : ICharacterRepository
         var results = await db.Characters.Where(c => c.AccountWorldID == accountWorld).ToListAsync();
         return results
             .Select(m => _mapper.Map<Character>(m))
-            .ToFrozenSet();
+            .ToImmutableHashSet();
     }
 }

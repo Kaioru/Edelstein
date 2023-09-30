@@ -174,7 +174,7 @@ public class ContiMove : AbstractFieldObjectPool, IContiMove, ITickable
         }
         .Where(f => f != null)
         .SelectMany(f => f!.Objects)
-        .ToFrozenSet();
+        .ToImmutableHashSet();
 
     public override Task Enter(IFieldObject obj) => (State switch
     {

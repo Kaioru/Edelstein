@@ -234,10 +234,10 @@ public class FieldMob :
         
         var expiredStats = TemporaryStats.Records
             .Where(kv => kv.Value.DateExpire < now)
-            .ToFrozenSet();
+            .ToImmutableHashSet();
         var expiredBurned = TemporaryStats.BurnedInfo
             .Where(b => b.DateExpire < now)
-            .ToFrozenSet();
+            .ToImmutableHashSet();
 
         if (expiredStats.Count > 0)
         {

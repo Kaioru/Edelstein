@@ -23,8 +23,8 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
     public int Row { get; }
     public int Col { get; }
 
-    public override IReadOnlyCollection<IFieldObject> Objects => _objects.ToFrozenSet();
-    public IReadOnlyCollection<IFieldSplitObserver> Observers => _observers.ToFrozenSet();
+    public override IReadOnlyCollection<IFieldObject> Objects => _objects.ToImmutableHashSet();
+    public IReadOnlyCollection<IFieldSplitObserver> Observers => _observers.ToImmutableHashSet();
 
     public override Task Enter(IFieldObject obj) => Enter(obj, null);
     public override Task Leave(IFieldObject obj) => Leave(obj, null);
@@ -45,12 +45,12 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
             .Where(w => w != obj)
             .Where(obj.IsVisibleTo)
             .Except(fromObservers)
-            .ToFrozenSet();
+            .ToImmutableHashSet();
         var oldWatchers = fromObservers
             .Where(w => w != obj)
             .Where(obj.IsVisibleTo)
             .Except(toObservers)
-            .ToFrozenSet();
+            .ToImmutableHashSet();
 
         var enterPacket = getEnterPacket?.Invoke() ?? obj.GetEnterFieldPacket();
         var leavePacket = getLeavePacket?.Invoke() ?? obj.GetLeaveFieldPacket();
@@ -64,11 +64,11 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
             var oldSplits = observer.Observing
                 .Except(enclosingSplits)
                 .Where(s => s != null)
-                .ToFrozenSet();
+                .ToImmutableHashSet();
             var newSplits = enclosingSplits
                 .Except(observer.Observing)
                 .Where(s => s != null)
-                .ToFrozenSet();
+                .ToImmutableHashSet();
 
             await Task.WhenAll(oldSplits.Select(s => s!.Unobserve(observer)));
             await Task.WhenAll(newSplits.Select(s => s!.Observe(observer)));
@@ -140,10 +140,10 @@ public class FieldSplit : AbstractFieldObjectPool, IFieldSplit
         var controllers = Observers
             .OfType<IFieldObjectController>()
             .OrderBy(u => u.Controlled.Count)
-            .ToFrozenSet();
+            .ToImmutableHashSet();
         var controlled = Objects
             .OfType<IFieldObjectControllable>()
-            .ToFrozenSet();
+            .ToImmutableHashSet();
 
         await Task.WhenAll(controlled
             .Where(c => c.Controller == null || !controllers.Contains(c.Controller))

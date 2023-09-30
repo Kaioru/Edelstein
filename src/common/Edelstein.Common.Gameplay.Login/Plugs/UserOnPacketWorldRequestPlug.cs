@@ -49,7 +49,7 @@ public class UserOnPacketWorldRequestPlug : IPipelinePlug<UserOnPacketWorldReque
             var gameStages =
                 (await _serverService.GetGameByWorld(new ServerGetGameByWorldRequest(worldID))).Servers
                 .OrderBy(s => s.ChannelID)
-                .ToFrozenSet();
+                .ToImmutableHashSet();
 
             packet.WriteByte((byte)gameStages.Count);
 

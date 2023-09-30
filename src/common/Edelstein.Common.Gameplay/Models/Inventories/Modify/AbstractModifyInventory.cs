@@ -40,7 +40,7 @@ public abstract class AbstractModifyInventory : IModifyInventory
 
     public void WriteTo(IPacketWriter writer)
     {
-        var operations = Operations.ToFrozenSet();
+        var operations = Operations.ToImmutableHashSet();
 
         writer.WriteByte((byte)operations.Count);
         foreach (var operation in operations)

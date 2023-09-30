@@ -35,7 +35,7 @@ public class ContiMoveManager : IContiMoveManager, ITickable
         ));
 
     public Task<ICollection<IContiMove>> RetrieveAll() =>
-        Task.FromResult<ICollection<IContiMove>>(_conti.Values.ToFrozenSet());
+        Task.FromResult<ICollection<IContiMove>>(_conti.Values.ToImmutableHashSet());
 
     public Task<IContiMove> Insert(IContiMove entry)
     {

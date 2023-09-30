@@ -19,7 +19,7 @@ public class TickerManager : ITickerManager, ITickable
 
     public async Task OnTick(DateTime now)
     {
-        var tickables = _tickables.ToFrozenSet();
+        var tickables = _tickables.ToImmutableHashSet();
 
         await Task.WhenAll(tickables.Select(b =>
             Task.Run(async () =>

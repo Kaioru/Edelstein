@@ -117,7 +117,7 @@ public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITicka
                      .Where(o => o is not IFieldAffectedArea)
                      .Where(o => _affected.Contains(o))
                      .Where(o => !Bounds.Intersects(o.Position) || o.Field != Field)
-                     .ToFrozenSet())
+                     .ToImmutableHashSet())
         {
             _affected.Remove(obj);
             _ = Leave(obj);
@@ -132,7 +132,7 @@ public class FieldAffectedArea : AbstractFieldObject, IFieldAffectedArea, ITicka
                      .Where(o => o is not IFieldAffectedArea)
                      .Where(o => !_affected.Contains(o))
                      .Where(o => Bounds.Intersects(o.Position))
-                     .ToFrozenSet())
+                     .ToImmutableHashSet())
         {
             _affected.Add(obj);
             _ = Enter(obj);

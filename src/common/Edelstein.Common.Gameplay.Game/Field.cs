@@ -59,7 +59,7 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
     private DateTime NextGeneratorTick { get; set; }
 
     public override IReadOnlyCollection<IFieldObject> Objects =>
-        _pools.Values.SelectMany(p => p.Objects).ToFrozenSet();
+        _pools.Values.SelectMany(p => p.Objects).ToImmutableHashSet();
 
     public IFieldSplit? GetSplit(IPoint2D position)
     {
@@ -192,7 +192,7 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
         if (obj.FieldSplit != null)
         {
             if (obj is IFieldSplitObserver observer)
-                foreach (var split in observer.Observing.ToFrozenSet())
+                foreach (var split in observer.Observing.ToImmutableHashSet())
                     await split.Unobserve(observer, true);
             await obj.FieldSplit.Leave(obj, getLeavePacket: getLeavePacket);
         }

@@ -23,7 +23,7 @@ public class FieldOnPacketSummonedAttackPlug : IPipelinePlug<FieldOnPacketSummon
 
     public async Task Handle(IPipelineContext ctx, FieldOnPacketSummonedAttack message)
     {
-        var mobs = message.Attack.MobEntries.ToFrozenDictionary(
+        var mobs = message.Attack.MobEntries.ToImmutableDictionary(
             kv => kv.MobID,
             kv => message.User.Field?.GetObject<IFieldMob>(kv.MobID)
         );

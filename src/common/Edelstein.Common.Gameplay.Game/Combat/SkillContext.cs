@@ -387,7 +387,7 @@ public class SkillContext : ISkillContext
             foreach (var summoned in _user.Owned
                          .OfType<IFieldSummoned>()
                          .Where(s => _resetSummoned.Contains(s.SkillID))
-                         .ToFrozenSet())
+                         .ToImmutableHashSet())
             {
                 _user.Owned.Remove(summoned);
                 if (_user.Field != null)

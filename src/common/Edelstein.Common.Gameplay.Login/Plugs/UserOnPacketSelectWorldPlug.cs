@@ -56,7 +56,7 @@ public class UserOnPacketSelectWorldPlug : IPipelinePlug<UserOnPacketSelectWorld
 
             var characters = (await _characterRepository
                     .RetrieveAllByAccountWorld(accountWorld.ID))
-                .ToFrozenSet();
+                .ToImmutableHashSet();
             using var packet = new PacketWriter(PacketSendOperations.SelectWorldResult);
 
             packet.WriteByte((byte)result);

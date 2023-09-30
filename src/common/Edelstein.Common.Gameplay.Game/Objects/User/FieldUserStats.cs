@@ -223,7 +223,7 @@ public record FieldUserStats : IFieldUserStats
             .Where(kv => kv.Key < 0)
             .Where(kv => kv.Value is ItemSlotEquip)
             .Select(kv => (kv.Key, (ItemSlotEquip)kv.Value))
-            .ToFrozenSet() ?? FrozenSet<(short Key, ItemSlotEquip)>.Empty;
+            .ToImmutableHashSet() ?? ImmutableHashSet<(short Key, ItemSlotEquip)>.Empty;
 
         foreach (var (slot, item) in equipped)
         {

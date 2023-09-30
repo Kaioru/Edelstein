@@ -130,7 +130,7 @@ public class ServerService : IServerService
             return new ServerGetAllResponse<IServerGame>(ServerResult.Success, existing
                 .Where(s => s.DateExpire > now)
                 .Select(s => _mapper.Map<ServerGame>(s))
-                .ToFrozenSet());
+                .ToImmutableHashSet());
         }
         catch (Exception)
         {
@@ -189,7 +189,7 @@ public class ServerService : IServerService
             return new ServerGetAllResponse<IServer>(ServerResult.Success, existing
                 .Where(s => s.DateExpire > now)
                 .Select(s => _mapper.Map<Protocol.Services.Server.Contracts.Server>(s))
-                .ToFrozenSet());
+                .ToImmutableHashSet());
         }
         catch (Exception)
         {

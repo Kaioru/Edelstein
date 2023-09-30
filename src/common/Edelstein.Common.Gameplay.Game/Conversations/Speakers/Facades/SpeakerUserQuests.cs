@@ -26,9 +26,7 @@ public class SpeakerUserQuests : ISpeakerUserQuests
             );
 
     private string GetRecordFromDictionary(IDictionary<string, string> dictionary)
-        => string.Join(';', dictionary
-            .Select(kv => kv.Key + "=" + kv.Value)
-            .ToFrozenSet());
+        => string.Join(';', dictionary.Select(kv => kv.Key + "=" + kv.Value));
 
     public void SetRecord(short questID, string value)
     {

@@ -17,7 +17,7 @@ public class FieldObjectPool : AbstractFieldObjectPool, IFieldObjectPool
         _runningObjectID = new Queue<int>(Enumerable.Range(1, 30_000));
     }
 
-    public override IReadOnlyCollection<IFieldObject> Objects => _objects.Values.ToFrozenSet();
+    public override IReadOnlyCollection<IFieldObject> Objects => _objects.Values.ToImmutableHashSet();
 
     public override Task Enter(IFieldObject obj)
     {

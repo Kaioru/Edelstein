@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Models.Characters;
+﻿using System.Collections.Immutable;
+using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
@@ -9,7 +10,7 @@ namespace Edelstein.Common.Gameplay.Models.Inventories.Modify;
 
 public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInventoryGroupContext
 {
-    private readonly Dictionary<ItemInventoryType, ModifyInventoryContext> _contexts;
+    private readonly IDictionary<ItemInventoryType, ModifyInventoryContext> _contexts;
 
     public ModifyInventoryGroupContext(
         ICharacterInventories inventories,
@@ -31,7 +32,7 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
         IDictionary<ItemInventoryType, IItemInventory> inventories,
         ITemplateManager<IItemTemplate> manager
     ) =>
-        _contexts = inventories.ToDictionary(
+        _contexts = inventories.ToImmutableDictionary(
             kv => kv.Key,
             kv => new ModifyInventoryContext(kv.Key, kv.Value, manager)
         );
@@ -40,7 +41,9 @@ public class ModifyInventoryGroupContext : AbstractModifyInventory, IModifyInven
         _contexts.Values.SelectMany(c => c.Operations);
 
     public IModifyInventoryContext? this[ItemInventoryType type] =>
-        _contexts.GetValueOrDefault(type);
+        _contexts.TryGetValue(type, out var context)
+            ? context 
+            : null;
 
     public override short Add(IItemSlot item) =>
         this[GetTypeByID(item.ID)]?.Add(item) ?? -1;

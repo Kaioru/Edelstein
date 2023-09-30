@@ -23,7 +23,7 @@ public class NotifyPartyMemberJoinedPlug : IPipelinePlug<NotifyPartyMemberJoined
             .Where(u => 
                 u.Party?.PartyID == message.PartyID || 
                 u.Character?.ID == message.PartyMember.CharacterID)
-            .ToFrozenSet();
+            .ToImmutableHashSet();
         
         foreach (var user in partied)
         {

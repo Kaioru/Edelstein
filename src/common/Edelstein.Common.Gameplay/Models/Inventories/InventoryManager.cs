@@ -51,7 +51,7 @@ public class InventoryManager : IInventoryManager
     public bool HasSlotFor(ICharacterInventories inventory, ICollection<Tuple<int, short>> templates) 
         => templates
             .GroupBy(t => GetTypeByID(t.Item1))
-            .All(g => HasSlotFor(inventory[g.Key], g.ToFrozenSet()));
+            .All(g => HasSlotFor(inventory[g.Key], g.ToImmutableHashSet()));
     
     public bool HasSlotFor(ICharacterInventories inventory, IItemTemplate template) 
         => HasSlotFor(inventory[GetTypeByID(template.ID)], template.ID);
@@ -62,7 +62,7 @@ public class InventoryManager : IInventoryManager
     public bool HasSlotFor(ICharacterInventories inventory, ICollection<Tuple<IItemTemplate, short>> templates)
         => templates
             .GroupBy(t => GetTypeByID(t.Item1.ID))
-            .All(g => HasSlotFor(inventory[g.Key], g.ToFrozenSet()));
+            .All(g => HasSlotFor(inventory[g.Key], g.ToImmutableHashSet()));
     
     public bool HasSlotFor(ICharacterInventories inventory, IItemSlot item)
         => HasSlotFor(inventory[GetTypeByID(item.ID)], item);
@@ -70,7 +70,7 @@ public class InventoryManager : IInventoryManager
     public bool HasSlotFor(ICharacterInventories inventory, ICollection<IItemSlot> items)
         => items
             .GroupBy(t => GetTypeByID(t.ID))
-            .All(g => HasSlotFor(inventory[g.Key], g.ToFrozenSet()));
+            .All(g => HasSlotFor(inventory[g.Key], g.ToImmutableHashSet()));
     
     public int CountItem(IItemInventory? inventory, int templateID) 
         => inventory?.Items
@@ -110,7 +110,7 @@ public class InventoryManager : IInventoryManager
     public bool HasSlotFor(IItemInventory? inventory, ICollection<Tuple<int, short>> templates) 
         => HasSlotFor(inventory, templates
                 .Select(t => Tuple.Create(_templates.Retrieve(t.Item1).Result!, t.Item2))
-                .ToFrozenSet());
+                .ToImmutableHashSet());
     
     public bool HasSlotFor(IItemInventory? inventory, IItemTemplate template)
         => HasSlotFor(inventory, template, 1);
@@ -143,7 +143,7 @@ public class InventoryManager : IInventoryManager
                     return items;
                 })
                 .SelectMany(i => i)
-                .ToFrozenSet());
+                .ToImmutableHashSet());
     
     public bool HasSlotFor(IItemInventory? inventory, IItemSlot item) 
         => HasSlotFor(inventory, ImmutableList.Create(item));
@@ -154,7 +154,7 @@ public class InventoryManager : IInventoryManager
         
         var bundles = items
             .OfType<IItemSlotBundle>()
-            .ToFrozenSet();
+            .ToImmutableHashSet();
         var bundlesMerged = new List<IItemSlotBundle>();
         
         foreach (var bundle in bundles)

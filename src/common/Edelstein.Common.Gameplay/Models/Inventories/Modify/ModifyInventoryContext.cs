@@ -36,7 +36,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         ? item
         : null;
 
-    public IReadOnlyDictionary<short, IItemSlot> Items => _inventory.Items.ToFrozenDictionary();
+    public IReadOnlyDictionary<short, IItemSlot> Items => _inventory.Items.ToImmutableDictionary();
 
     public override short Add(IItemSlot? item)
     {
@@ -94,7 +94,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         var match = _inventory.Items
             .Where(kv => kv.Key > 0)
             .Where(kv => kv.Value.ID == templateID)
-            .ToFrozenSet();
+            .ToImmutableHashSet();
 
         foreach (var kv in match)
         {
@@ -133,7 +133,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
     {
         var match = _inventory.Items
             .Where(kv => kv.Value.ID == templateID)
-            .ToFrozenSet();
+            .ToImmutableHashSet();
 
         foreach (var kv in match)
             RemoveSlot(kv.Key);

@@ -25,7 +25,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
     }
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserAttack message)
     {
-        var mobs = message.Attack.MobEntries.ToFrozenDictionary(
+        var mobs = message.Attack.MobEntries.ToImmutableDictionary(
             kv => kv.MobID,
             kv => message.User.Field?.GetObject<IFieldMob>(kv.MobID)
         );
