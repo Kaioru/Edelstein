@@ -258,7 +258,7 @@ public class SkillContext : ISkillContext
                          .OrderBy(u => _user.Position.Distance(u.Position)))
                 targets.Add(target);
         
-        if (TargetPartyInfo != null && _user is { Field: { }, StageUser.Party: { } })
+        if (TargetPartyInfo != null && _user is { Field: not null, StageUser.Party: not null })
             foreach (var target in _user.Field
                          .GetSplits(TargetPartyInfo.Bounds)
                          .Where(s => s != null)

@@ -2,9 +2,9 @@
 
 namespace Edelstein.Protocol.Plugin;
 
-public interface IPlugin<in TContext> : IIdentifiable<string>
+public interface IPlugin<TContext> : IIdentifiable<string>
 {
-    Task OnInit(IPluginHost host, TContext ctx);
-    Task OnStart(IPluginHost host, TContext ctx);
+    Task OnInit(IPluginHost<TContext> host, TContext ctx);
+    Task OnStart(IPluginHost<TContext> host, TContext ctx);
     Task OnStop();
 }

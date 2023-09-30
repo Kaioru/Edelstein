@@ -1,18 +1,25 @@
 ﻿using Edelstein.Common.Utilities.Repositories;
 using Edelstein.Protocol.Plugin;
 using McMaster.NETCore.Plugins;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Plugin;
 
-public class PluginManager<TContext> : Repository<string, IPlugin<TContext>>, IPluginManager<TContext>
+public class PluginManager<TContext> : Repository<string, IPluginHost<TContext>>, IPluginManager<TContext>
 {
+    private readonly IHostEnvironment _environment;
+    private readonly ILoggerFactory _loggerFactory;
     private readonly ILogger _logger;
-    
-    public PluginManager(
-        ILogger<PluginManager<TContext>> logger
-    ) => _logger = logger;
 
+    public PluginManager(IHostEnvironment environment, ILoggerFactory loggerFactory, ILogger<PluginManager<TContext>> logger)
+    {
+        _environment = environment;
+        _loggerFactory = loggerFactory;
+        _logger = logger;
+    }
+    
     public async Task LoadFromFile(string path)
     {
         if (!File.Exists(path))
@@ -36,8 +43,18 @@ public class PluginManager<TContext> : Repository<string, IPlugin<TContext>>, IP
                     _logger.LogWarning("Failed to start plugin of type {Type}", type);
                     continue;
                 }
-
-                await Insert(plugin);
+                
+                var configuration = new ConfigurationBuilder()
+                    .SetBasePath(Path.GetDirectoryName(path) ?? AppDomain.CurrentDomain.BaseDirectory)
+                    .AddJsonFile("appsettings.json", true)
+                    .AddJsonFile($"appsettings.{_environment.EnvironmentName}.json", true)
+                    .Build();
+                
+                await Insert(new PluginHost<TContext>(
+                    _loggerFactory.CreateLogger(type),
+                    configuration,
+                    plugin
+                ));
             }
             catch (Exception e)
             {

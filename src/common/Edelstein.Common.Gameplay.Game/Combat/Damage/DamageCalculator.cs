@@ -9,6 +9,7 @@ using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
+using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -76,6 +77,8 @@ public class DamageCalculator : IDamageCalculator
             skillActingID = Skill.AranFullSwing;
         if (skillActingID is Skill.AranOverSwingTs or Skill.AranOverSwingDs)
             skillActingID = Skill.AranOverSwing;
+        if (skillActingID is Skill.Dual3HustleRush)
+            skillActingID = Skill.Dual3HustleDash;
         
         var skillLevel = skill?[stats.SkillLevels[skillActingID]];
         var equipped = character.Inventories[ItemInventoryType.Equip];
@@ -91,7 +94,7 @@ public class DamageCalculator : IDamageCalculator
 
         damagePerMob = Math.Max((short)1, damagePerMob);
 
-        if (attack is { SkillID: 0, AttackActionType: 10 })
+        if (attack is { SkillID: 0, AttackActionType: AttackActionType.DualDagger })
             damagePerMob = 2;
 
         _rndGenForCharacter.Next(random.Array);
@@ -105,8 +108,16 @@ public class DamageCalculator : IDamageCalculator
 
         if (isDarkForce && attack.SkillID == Skill.DragonknightDragonBurster)
             damagePerMob += darkForceLevel?.Y ?? 0;
+
+        var damageCalcShadowPartner = new int[damagePerMob];
+        var damagePerMobShadowPartner = damagePerMob;
+
+        if (attack.IsShadowPartner &&
+            attack.SkillID != Skill.Dual3FlashBang &&
+            attack.SkillID != Skill.Dual4OwlDeath)
+            damagePerMobShadowPartner = (short)Math.Min(15, damagePerMobShadowPartner * 2);
         
-        var result = new IDamage[damagePerMob];
+        var result = new IDamage[damagePerMobShadowPartner];
         
         var totalCr = stats.Cr;
         var totalCDMin = stats.CDMin;
@@ -139,7 +150,7 @@ public class DamageCalculator : IDamageCalculator
         if (mobStats.Level > stats.Level)
             hitRate -= 5 * (mobStats.Level - stats.Level);
 
-        for (var i = 0; i < damagePerMob; i++)
+        for (var i = 0; i < result.Length; i++)
         {
             random.Skip(); // CalcPImmune
 
@@ -159,7 +170,17 @@ public class DamageCalculator : IDamageCalculator
                 Skill.Dual2SlashStorm or
                 Skill.Dual4BloodyStorm)
                 random.Skip();
-
+            
+            if (i >= damagePerMob)
+            {
+                var shadowPartnerSkillID = character.TemporaryStats[TemporaryStatType.ShadowPartner]?.Reason;
+                var shadowPartnerSkill = await _skills.Retrieve(shadowPartnerSkillID ?? 0);
+                var shadowPartnerLevel = shadowPartnerSkill?[stats.SkillLevels[shadowPartnerSkillID ?? 0]];
+                
+                result[i] = new Damage(damageCalcShadowPartner[i - damagePerMob] * (shadowPartnerLevel?.X ?? 0) / 100);
+                continue;
+            }
+            
             var damage = (double)stats.DamageMax;
             var critical = false;
             var isLuckySevenOrTripleThrow = false;
@@ -297,6 +318,9 @@ public class DamageCalculator : IDamageCalculator
 
                 damage += damage * (comboCounter * damagePerCombo) / 100d;
             }
+
+            if (attack.IsShadowPartner)
+                damageCalcShadowPartner[i] = (int)damage;
 
             var enrageStat = character.TemporaryStats[TemporaryStatType.Enrage];
             if (enrageStat?.Value / 100 > 0)
@@ -572,7 +596,8 @@ public class DamageCalculator : IDamageCalculator
         return Math.Max(1, (int)damage);
     }
     
-    public async Task<int[]> CalculateAdjustedDamage(ICharacter character, 
+    public async Task<int[]> CalculateAdjustedDamage(
+        ICharacter character, 
         IFieldUserStats stats,
         IFieldMob mob,
         IFieldMobStats mobStats, 
@@ -618,6 +643,33 @@ public class DamageCalculator : IDamageCalculator
         {
             for (var i = 0; i < damage.Length; i++)
                 result[i] = (int)(((stats.Level / 10.0 + 20.0) * (mobCount - 1) / 100.0 + 1.0) / mobCount * result[i]);
+        }
+        
+        if (attack.AttackActionType == AttackActionType.DualDagger && 
+            (attack.IsShadowPartner 
+                ? damage.Length / 2 
+                : damage.Length
+            ) > 1 &&
+            damage[0].Value != mob.Template.MaxHP && 
+            damage[0].Value != 999999 &&
+            (attack.SkillID == 0 || 
+             attack.SkillID / 100000 == 43 || 
+             attack.SkillID / 10000 == 900
+            ) && 
+            (character.Inventories[ItemInventoryType.Equip]?.Items.TryGetValue(-(short)BodyPart.Weapon, out var itemDagger) ?? false) && 
+            (character.Inventories[ItemInventoryType.Equip]?.Items.TryGetValue(-(short)BodyPart.Shield, out var itemDual) ?? false) &&
+            itemDagger is IItemSlotEquip equipDagger &&
+            itemDual is IItemSlotEquip equipDual &&
+            equipDagger.PAD + equipDual.PAD > 0
+        )
+        {
+            var rateDagger = (double)equipDagger.PAD / (equipDagger.PAD + equipDual.PAD);
+            var rateDual = 1.0 - rateDagger;
+            
+            for (var i = 0; i < damage.Length; i++)
+                result[i] = i % 2 == 0
+                    ? (int)(result[i] * rateDagger)
+                    : (int)(result[i] * rateDual);
         }
         
         return result;

@@ -8,6 +8,7 @@ using Edelstein.Common.Gameplay.Game;
 using Edelstein.Common.Gameplay.Game.Combat;
 using Edelstein.Common.Gameplay.Game.Continents;
 using Edelstein.Common.Gameplay.Game.Conversations;
+using Edelstein.Common.Gameplay.Game.Objects.NPC;
 using Edelstein.Common.Gameplay.Game.Quests;
 using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Gameplay.Models.Inventories;
@@ -28,6 +29,7 @@ using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Game.Quests;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
@@ -88,7 +90,7 @@ public class ProgramHost : IHostedService
         stages.AddRange(_config.GameStages);
         stages.AddRange(_config.ShopStages);
         stages.AddRange(_config.TradeStages);
-
+        
         foreach (var stage in stages)
         {
             await using var stageScope = programScope.BeginLifetimeScope(b =>
@@ -174,6 +176,7 @@ public class ProgramHost : IHostedService
                         b.RegisterType<FieldManager>().As<IFieldManager>().SingleInstance();
                         b.RegisterType<ContiMoveManager>().As<IContiMoveManager>().SingleInstance();
                         b.RegisterType<ScriptedConversationManager>().As<INamedConversationManager>().SingleInstance();
+                        b.RegisterType<NPCShopManager>().As<INPCShopManager>().SingleInstance();
                         b.RegisterType<SkillManager>().As<ISkillManager>().SingleInstance();
                         b.RegisterType<ModifiedQuestTimeManager>().As<IModifiedQuestTimeManager>().SingleInstance();
                         b.RegisterType<QuestManager>().As<IQuestManager>().SingleInstance();

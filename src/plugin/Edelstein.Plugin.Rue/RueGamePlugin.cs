@@ -14,14 +14,14 @@ public class RueGamePlugin : IGamePlugin
 {
     public string ID => "RueGame";
     private ILogger? Logger { get; set; }
-
-    public Task OnInit(IPluginHost host, GameContext ctx)
+    
+    public Task OnInit(IPluginHost<GameContext> host, GameContext ctx)
     {
         Logger = host.Logger;
         return Task.CompletedTask;
     }
 
-    public Task OnStart(IPluginHost host, GameContext ctx)
+    public Task OnStart(IPluginHost<GameContext> host, GameContext ctx)
     {
         var commandManager = new CommandManager();
 

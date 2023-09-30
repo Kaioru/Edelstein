@@ -25,7 +25,7 @@ public class Attack : IAttack, IPacketReadable
     public bool IsNextShootJablin { get; private set; }
     
     public short AttackActionAndDir { get; private set; }
-    public byte AttackActionType { get; private set; }
+    public AttackActionType AttackActionType { get; private set; }
     public byte AttackSpeed { get; private set; }
     public int AttackTime { get; private set; }
     
@@ -91,7 +91,7 @@ public class Attack : IAttack, IPacketReadable
         
         AttackActionAndDir = reader.ReadShort();
         _ = reader.ReadInt(); 
-        AttackActionType = reader.ReadByte();
+        AttackActionType = (AttackActionType)reader.ReadByte();
         AttackSpeed = reader.ReadByte();
         AttackTime = reader.ReadInt();
         

@@ -26,7 +26,7 @@ public interface IAttack
     short AttackActionAndDir { get; }
     short AttackAction => (short)(AttackActionAndDir & 0x7FFF);
     bool AttackIsLeft =>  (AttackActionAndDir >> 15 & 1) > 0;
-    byte AttackActionType { get; }
+    AttackActionType AttackActionType { get; }
     byte AttackSpeed { get; }
     int AttackTime { get; }
     

@@ -1,6 +1,7 @@
 ﻿using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Protocol.Gameplay.Game.Dialogues;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
@@ -25,10 +26,12 @@ public interface IFieldUser :
     IFieldUserStats Stats { get; }
     IDamageCalculator Damage { get; }
     
-    IConversationContext? Conversation { get; }
+    IConversationContext? ActiveConversation { get; }
+    IDialogue? ActiveDialogue { get; }
 
     bool IsInstantiated { get; set; }
     bool IsConversing { get; }
+    bool IsDialoguing { get; }
     
     bool IsDirectionMode { get; }
     bool IsStandAloneMode { get; }
@@ -53,11 +56,13 @@ public interface IFieldUser :
         Func<IConversationContext, IConversationSpeaker>? getSpeaker1 = null,
         Func<IConversationContext, IConversationSpeaker>? getSpeaker2 = null
     );
+    Task EndConversation();
+
+    Task Dialogue(IDialogue dialogue, Func<IDialogue, Task<bool>>? handleEnter = null);
+    Task EndDialogue(Func<IDialogue, Task<bool>>? handleLeave = null);
 
     Task SetDirectionMode(bool enable, int delay = 0);
     Task SetStandAloneMode(bool enable);
-
-    Task EndConversation();
 
     Task Modify(Action<IFieldUserModify> action);
     Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false);
