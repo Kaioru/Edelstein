@@ -15,7 +15,7 @@ public class CheckSPWRequestHandler : AbstractPipedPacketHandler<ILoginStageUser
     public override short Operation => (short)PacketRecvOperations.CheckSPWRequest;
 
     public override bool Check(ILoginStageUser user) =>
-        user is { State: LoginState.SelectCharacter, Account.SPW: { } };
+        user is { State: LoginState.SelectCharacter, Account.SPW: not null };
 
     public override UserOnPacketCheckSPWRequest Serialize(ILoginStageUser user, IPacketReader reader)
         => new(

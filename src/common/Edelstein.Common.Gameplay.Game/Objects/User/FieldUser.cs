@@ -14,6 +14,7 @@ using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Protocol.Gameplay.Game.Dialogues;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Dragon;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
@@ -68,11 +69,13 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public IFieldUserStats Stats { get; }
     public IDamageCalculator Damage { get; }
 
-    public IConversationContext? Conversation { get; private set; }
+    public IConversationContext? ActiveConversation { get; private set; }
+    public IDialogue? ActiveDialogue { get; private set; }
 
     public bool IsInstantiated { get; set; }
-    public bool IsConversing => Conversation != null;
-    
+    public bool IsConversing => ActiveConversation != null;
+    public bool IsDialoguing => ActiveDialogue != null;
+
     public bool IsDirectionMode { get; private set; }
     public bool IsStandAloneMode { get; private set; }
 
@@ -269,7 +272,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         var speaker2 = getSpeaker2?.Invoke(ctx) ??
                        new ConversationSpeaker(ctx, flags: ConversationSpeakerFlags.NPCReplacedByUser);
 
-        Conversation = ctx;
+        ActiveConversation = ctx;
 
         try
         {
@@ -289,6 +292,29 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         }
     }
     
+    public Task EndConversation()
+    {
+        if (!IsConversing) return Task.CompletedTask;
+        ActiveConversation?.Dispose();
+        ActiveConversation = null;
+        return Task.CompletedTask;
+    }
+    
+    public async Task Dialogue(IDialogue dialogue, Func<IDialogue, Task<bool>>? handleEnter = null)
+    {
+        if (IsDialoguing) return;
+        if (await (handleEnter?.Invoke(dialogue) ?? dialogue.HandleEnter(this)))
+            ActiveDialogue = dialogue;
+    }
+    
+    public async Task EndDialogue(Func<IDialogue, Task<bool>>? handleLeave = null)
+    {
+        if (!IsDialoguing) return;
+        if (ActiveDialogue == null) return;
+        await (handleLeave?.Invoke(ActiveDialogue) ?? ActiveDialogue.HandleLeave(this));
+        ActiveDialogue = null;
+    }
+
     public Task SetDirectionMode(bool enable, int delay = 0)
     {
         IsDirectionMode = enable;
@@ -298,6 +324,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         p.WriteInt(delay);
         return Dispatch(p.Build());
     }
+    
     public Task SetStandAloneMode(bool enable)
     {
         IsStandAloneMode = enable;
@@ -305,14 +332,6 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         var p = new PacketWriter(PacketSendOperations.SetStandAloneMode);
         p.WriteBool(enable);
         return Dispatch(p.Build());
-    }
-
-    public Task EndConversation()
-    {
-        if (!IsConversing) return Task.CompletedTask;
-        Conversation?.Dispose();
-        Conversation = null;
-        return Task.CompletedTask;
     }
     
     public async Task Modify(Action<IFieldUserModify> action)

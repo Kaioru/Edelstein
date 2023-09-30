@@ -13,7 +13,7 @@ public abstract class AbstractPipedFieldHandler<TMessage> : AbstractPipedPacketH
     }
     
     public override bool Check(IGameStageUser user) 
-        => user is { Field: { }, FieldUser: { } };
+        => user is { Field: not null, FieldUser: not null };
     
     public override TMessage? Serialize(IGameStageUser user, IPacketReader reader) 
         => Serialize(user.FieldUser!, reader);
