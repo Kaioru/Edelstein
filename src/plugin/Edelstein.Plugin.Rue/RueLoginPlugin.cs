@@ -22,8 +22,9 @@ public class RueLoginPlugin : ILoginPlugin
     public Task OnStart(IPluginHost host, LoginContext ctx)
     {
         ILoginManagerOptions options = new LoginManagerOptions(
-            skipAuthorization: true,
-            autoLogin: true,
+            skipAuthorization: false,
+            isAutoRegister: true,
+            autoLogin: false,
             ("user123", "pass123"));
 
         var loginManager = new LoginManager(
@@ -35,10 +36,11 @@ public class RueLoginPlugin : ILoginPlugin
             ctx.Stage,
             ctx.Pipelines);
 
-        if (loginManager.Options.AutoLogin)
+        if (loginManager.Options is not { AutoLogin: true, IsAutoRegister: true })
             ctx.Pipelines.UserOnPacketCreateSecurityHandle.Add(PipelinePriority.High, new UserOnPacketCreateSecurityHandleCustomPlug(loginManager));
 
-        ctx.Pipelines.UserOnPacketCheckPassword.Add(PipelinePriority.High, new UserOnPacketCheckPasswordCustomPlug(loginManager));
+        if (loginManager.Options is not { SkipAuthorization: true, IsAutoRegister: true })
+            ctx.Pipelines.UserOnPacketCheckPassword.Add(PipelinePriority.High, new UserOnPacketCheckPasswordCustomPlug(loginManager));
 
         return Task.CompletedTask;
     }
