@@ -500,6 +500,10 @@ public record FieldUserStats : IFieldUserStats
             user.Character.Inventories[ItemInventoryType.Equip]?.Items.TryGetValue(-(short)BodyPart.Weapon, out var result1) ?? false
                 ? result1.ID 
                 : 0);
+        var subWeaponType = ItemConstants.GetWeaponType(
+            user.Character.Inventories[ItemInventoryType.Equip]?.Items.TryGetValue(-(short)BodyPart.Shield, out var result2) ?? false
+                ? result2.ID 
+                : 0);
         var incMastery = 0;
         var incMAD = 0;
         var incACC = 0;

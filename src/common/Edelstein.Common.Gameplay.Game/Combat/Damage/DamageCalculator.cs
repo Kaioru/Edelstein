@@ -626,7 +626,7 @@ public class DamageCalculator : IDamageCalculator
             (attack.IsShadowPartner 
                 ? damage.Length / 2 
                 : damage.Length
-            ) > 0 &&
+            ) > 1 &&
             damage[0].Value != mob.Template.MaxHP && 
             damage[0].Value != 999999 &&
             (attack.SkillID == 0 || 
