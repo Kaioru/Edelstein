@@ -9,6 +9,7 @@ using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
+using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -572,7 +573,8 @@ public class DamageCalculator : IDamageCalculator
         return Math.Max(1, (int)damage);
     }
     
-    public async Task<int[]> CalculateAdjustedDamage(ICharacter character, 
+    public async Task<int[]> CalculateAdjustedDamage(
+        ICharacter character, 
         IFieldUserStats stats,
         IFieldMob mob,
         IFieldMobStats mobStats, 
@@ -618,6 +620,33 @@ public class DamageCalculator : IDamageCalculator
         {
             for (var i = 0; i < damage.Length; i++)
                 result[i] = (int)(((stats.Level / 10.0 + 20.0) * (mobCount - 1) / 100.0 + 1.0) / mobCount * result[i]);
+        }
+        
+        if (attack.AttackActionType == AttackActionType.DualDagger && 
+            (attack.IsShadowPartner 
+                ? damage.Length / 2 
+                : damage.Length
+            ) > 0 &&
+            damage[0].Value != mob.Template.MaxHP && 
+            damage[0].Value != 999999 &&
+            (attack.SkillID == 0 || 
+             attack.SkillID / 100000 == 43 || 
+             attack.SkillID / 10000 == 900
+            ) && 
+            (character.Inventories[ItemInventoryType.Equip]?.Items.TryGetValue(-(short)BodyPart.Weapon, out var itemDagger) ?? false) && 
+            (character.Inventories[ItemInventoryType.Equip]?.Items.TryGetValue(-(short)BodyPart.Shield, out var itemDual) ?? false) &&
+            itemDagger is IItemSlotEquip equipDagger &&
+            itemDual is IItemSlotEquip equipDual &&
+            equipDagger.PAD + equipDual.PAD > 0
+        )
+        {
+            var rateDagger = (double)equipDagger.PAD / (equipDagger.PAD + equipDual.PAD);
+            var rateDual = 1.0 - rateDagger;
+            
+            for (var i = 0; i < damage.Length; i++)
+                result[i] = i % 2 == 0
+                    ? (int)(result[i] * rateDagger)
+                    : (int)(result[i] * rateDual);
         }
         
         return result;
