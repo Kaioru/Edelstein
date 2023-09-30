@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Common.Utilities.Repositories;
@@ -7,7 +8,7 @@ public class Repository<TKey, TEntry> : IRepository<TKey, TEntry>
     where TKey : notnull
     where TEntry : IIdentifiable<TKey>
 {
-    private readonly IDictionary<TKey, TEntry> _dictionary;
+    private IDictionary<TKey, TEntry> _dictionary;
 
     public Repository() => _dictionary = new ConcurrentDictionary<TKey, TEntry>();
 

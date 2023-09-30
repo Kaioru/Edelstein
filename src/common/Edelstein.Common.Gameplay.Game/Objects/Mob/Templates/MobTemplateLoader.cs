@@ -37,6 +37,7 @@ public class MobTemplateLoader : ITemplateLoader
                 ));
             }));
 
+        _manager.Freeze();
         return _manager.Count;
     }
 }

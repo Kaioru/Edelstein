@@ -95,6 +95,7 @@ public class ItemTemplateLoader : ITemplateLoader
         await Task.WhenAll(loadBundle);
         if (loadPet != null) await Task.WhenAll(loadPet);
 
+        _manager.Freeze();
         return _manager.Count;
     }
 }

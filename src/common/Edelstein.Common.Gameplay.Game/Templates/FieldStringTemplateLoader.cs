@@ -36,6 +36,7 @@ public class FieldStringTemplateLoader : ITemplateLoader
                 ));
             }));
 
+        _manager.Freeze();
         return _manager.Count;
     }
 }

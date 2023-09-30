@@ -41,6 +41,7 @@ public class FieldTemplateLoader : ITemplateLoader
                 ));
             }));
 
+        _manager.Freeze();
         return _manager.Count;
     }
 }

@@ -31,6 +31,7 @@ public class WorldTemplateLoader : ITemplateLoader
             ));
         }
 
+        _manager.Freeze();
         return _manager.Count;
     }
 }
