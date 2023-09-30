@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <Folder Include="Movements" />
-    <Folder Include="Objects\NPC\Templates" />
   </ItemGroup>
 
   <ItemGroup>
