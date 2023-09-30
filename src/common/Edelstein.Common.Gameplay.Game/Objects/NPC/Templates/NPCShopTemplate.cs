@@ -11,10 +11,10 @@ public record NPCShopTemplate : INPCShop, ITemplate
     
     public ICollection<INPCShopItem> Items { get; }
 
-    public NPCShopTemplate(int id, IDataProperty property)
+    public NPCShopTemplate(int id, IDataNode property)
     {
         ID = id;
-        Items = property.Resolve()?.Children
+        Items = property.Children
             .Select(p => (INPCShopItem)new NPCShopTemplateItem(Convert.ToInt32(p.Name), p.ResolveAll()))
             .ToImmutableSortedSet(new NPCShopTemplateItemComparer()) ?? ImmutableSortedSet<INPCShopItem>.Empty;
     }

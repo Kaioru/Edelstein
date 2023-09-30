@@ -6,16 +6,16 @@ public interface INPCShopItem
     
     int TemplateID { get; }
 
-    int? Price { get; }
-    byte? DiscountRate { get; }
+    int Price { get; }
+    byte DiscountRate { get; }
 
-    int? TokenTemplateID { get; }
-    int? TokenPrice { get; }
+    int TokenTemplateID { get; }
+    int TokenPrice { get; }
 
-    int? ItemPeriod { get; }
-    int? LevelLimited { get; }
-    double? UnitPrice { get; }
+    int ItemPeriod { get; }
+    int LevelLimited { get; }
+    double UnitPrice { get; }
     
-    short? MaxPerSlot { get; }
-    int? Quantity { get; }
+    short MaxPerSlot { get; }
+    int Quantity { get; }
 }

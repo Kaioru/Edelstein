@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Game.Dialogues;
 
-public interface IDialogueShop
+public interface IDialogueNPCShop : IDialogue
 {
-    INPCShop InpcShop { get; }
+    INPCShop Shop { get; }
 }
