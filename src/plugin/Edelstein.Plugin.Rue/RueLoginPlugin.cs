@@ -13,13 +13,13 @@ public class RueLoginPlugin : ILoginPlugin
     public string ID => "RueLogin";
     private ILogger? Logger { get; set; }
 
-    public Task OnInit(IPluginHost host, LoginContext ctx)
+    public Task OnInit(IPluginHost<LoginContext> host, LoginContext ctx)
     {
         Logger = host.Logger;
         return Task.CompletedTask;
     }
 
-    public Task OnStart(IPluginHost host, LoginContext ctx)
+    public Task OnStart(IPluginHost<LoginContext> host, LoginContext ctx)
     {
         ILoginManagerOptions options = new LoginManagerOptions(
             skipAuthorization: false,
