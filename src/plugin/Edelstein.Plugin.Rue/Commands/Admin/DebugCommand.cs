@@ -1,14 +1,22 @@
 ﻿using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using PowerArgs;
 
 namespace Edelstein.Plugin.Rue.Commands.Admin;
 
-public class DebugCommand : AbstractCommand
+public class DebugCommandArgs : CommandArgs
+{
+    [ArgPosition(0)]
+    [ArgDescription("Output to chat window?")]
+    public bool ToChat { get; set; } = false;
+}
+
+public class DebugCommand : AbstractCommand<DebugCommandArgs>
 {
     public override string Name => "Debug";
     public override string Description => "Testing command for debugging purposes";
 
-    public override async Task Execute(IFieldUser user, string[] args)
+    protected override async Task Execute(IFieldUser user, DebugCommandArgs args)
     {
         await user.Message(new IncEXPMessage(1000, true));
         await user.Message(new IncMoneyMessage(1000));
@@ -22,7 +30,7 @@ public class DebugCommand : AbstractCommand
                 [3] = "ExtendedSP Records",
                 [4] = "Quest Records",
                 [5] = "QuestEx Records",
-                [6] = "QuestCompletes Records",
+                [6] = "QuestCompleted Records",
             }), -1);
 
         if (answer == -1) return;
@@ -30,7 +38,15 @@ public class DebugCommand : AbstractCommand
         switch (answer)
         {
             case 0:
-                await user.Prompt(s => s.Say(user.Stats.ToString() ?? string.Empty), default);
+                var userStats = user.Stats.ToString() ?? string.Empty;
+
+                if (args.ToChat)
+                {
+                    await user.Message(userStats);
+                    break;
+                }
+
+                await user.Prompt(s => s.Say(userStats), default);
                 break;
             case 1:
                 await DisplayRecordsToUser(
@@ -39,21 +55,24 @@ public class DebugCommand : AbstractCommand
                     user.Character.TemporaryStats.Records.ToDictionary(
                         kvp => kvp.Key.ToString(),
                         kvp => kvp.Value.ToString() ?? string.Empty),
-                    kvp => $"Type: {kvp.Key} Record: {kvp.Value}");
+                    kvp => $"Type: {kvp.Key} Record: {kvp.Value}",
+                    args.ToChat);
                 break;
             case 2:
                 await DisplayRecordsToUser(
                     user,
                     "Skill",
                     user.Stats.SkillLevels.Records,
-                    kvp => $"Id: {kvp.Key} Level: {kvp.Value}");
+                    kvp => $"Id: {kvp.Key} Level: {kvp.Value}",
+                    args.ToChat);
                 break;
             case 3:
                 await DisplayRecordsToUser(
                     user,
                     "ExtendSP",
                     user.Character.ExtendSP.Records,
-                    kvp => $"Id: {kvp.Key} Level: {kvp.Value}");
+                    kvp => $"Id: {kvp.Key} Level: {kvp.Value}",
+                    args.ToChat);
                 break;
             case 4:
                 await DisplayRecordsToUser(
@@ -62,7 +81,8 @@ public class DebugCommand : AbstractCommand
                     user.Character.QuestRecords.Records.ToDictionary(
                         kvp => kvp.Key.ToString(),
                         kvp => kvp.Value.ToString() ?? string.Empty),
-                    kvp => $"Id: {kvp.Key} Value: {kvp.Value}");
+                    kvp => $"Id: {kvp.Key} Value: {kvp.Value}",
+                    args.ToChat);
                 break;
             case 5:
                 await DisplayRecordsToUser(
@@ -71,16 +91,18 @@ public class DebugCommand : AbstractCommand
                     user.Character.QuestRecordsEx.Records.ToDictionary(
                         kvp => kvp.Key.ToString(),
                         kvp => kvp.Value.ToString() ?? string.Empty),
-                    kvp => $"Id: {kvp.Key} Value: {kvp.Value}");
+                    kvp => $"Id: {kvp.Key} Value: {kvp.Value}",
+                    args.ToChat);
                 break;
             case 6:
                 await DisplayRecordsToUser(
                     user,
-                    "QuestCompletes",
+                    "QuestCompleted",
                     user.Character.QuestCompletes.Records.ToDictionary(
                         kvp => kvp.Key.ToString(),
                         kvp => kvp.Value.ToString() ?? string.Empty),
-                    kvp => $"Id: {kvp.Key} Value: {kvp.Value}");
+                    kvp => $"Id: {kvp.Key} Value: {kvp.Value}",
+                    args.ToChat);
                 break;
         }
     }
@@ -89,7 +111,8 @@ public class DebugCommand : AbstractCommand
         IFieldUser user,
         string header,
         IDictionary<T, T> record,
-        Func<KeyValuePair<T, T>, string> formatting)
+        Func<KeyValuePair<T, T>, string> formatting,
+        bool outputToChat = false)
     {
         var recordText = $"{header} records for player #e#b#h #:\\n";
 
@@ -99,6 +122,9 @@ public class DebugCommand : AbstractCommand
             recordText += $"[{i}] {formatting(kvp)}\\n";
         }
 
-        await user.Prompt(s => s.Say(recordText), default);
+        if (outputToChat)
+            await user.Message(recordText);
+        else if (!outputToChat)
+            await user.Prompt(s => s.Say(recordText), default);
     }
 }
