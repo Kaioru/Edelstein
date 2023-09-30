@@ -53,7 +53,7 @@ public abstract class AbstractFieldObject : IFieldObject
 
         if (this is not IFieldObjectController controller) return;
 
-        foreach (var controlled in controller.Controlled.ToImmutableHashSet())
+        foreach (var controlled in controller.Controlled.ToImmutableArray())
             await controlled.Control();
     }
 

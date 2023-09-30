@@ -19,7 +19,7 @@ public class NotifyPartyDisbandedPlug : IPipelinePlug<NotifyPartyDisbanded>
         var users = await _stage.Users.RetrieveAll();
         var partied = users
             .Where(u => u.Party?.PartyID == message.PartyID)
-            .ToImmutableHashSet();
+            .ToImmutableArray();
 
         foreach (var user in partied)
         {

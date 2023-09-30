@@ -48,9 +48,9 @@ public class UserOnPacketWorldRequestPlug : IPipelinePlug<UserOnPacketWorldReque
             var gameStages =
                 (await _serverService.GetGameByWorld(new ServerGetGameByWorldRequest(worldID))).Servers
                 .OrderBy(s => s.ChannelID)
-                .ToImmutableHashSet();
+                .ToImmutableArray();
 
-            packet.WriteByte((byte)gameStages.Count);
+            packet.WriteByte((byte)gameStages.Length);
 
             foreach (var stage in gameStages)
             {

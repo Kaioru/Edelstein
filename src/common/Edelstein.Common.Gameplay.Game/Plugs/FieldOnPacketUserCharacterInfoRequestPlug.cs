@@ -31,9 +31,9 @@ public class FieldOnPacketUserCharacterInfoRequestPlug : IPipelinePlug<FieldOnPa
 
         var wishlist = message.Target.Character.Wishlist.Records
             .Where(c => c > 0)
-            .ToImmutableHashSet();
+            .ToImmutableArray();
         
-        packet.WriteByte((byte)wishlist.Count);
+        packet.WriteByte((byte)wishlist.Length);
         foreach (var commodity in wishlist)
             packet.WriteInt(commodity);
 

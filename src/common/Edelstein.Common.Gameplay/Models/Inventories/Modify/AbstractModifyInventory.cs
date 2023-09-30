@@ -39,9 +39,9 @@ public abstract class AbstractModifyInventory : IModifyInventory
 
     public void WriteTo(IPacketWriter writer)
     {
-        var operations = Operations.ToImmutableHashSet();
+        var operations = Operations.ToImmutableArray();
 
-        writer.WriteByte((byte)operations.Count);
+        writer.WriteByte((byte)operations.Length);
         foreach (var operation in operations)
             writer.Write(operation);
     }

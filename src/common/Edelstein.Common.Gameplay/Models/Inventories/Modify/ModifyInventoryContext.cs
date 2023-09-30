@@ -93,7 +93,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         var match = _inventory.Items
             .Where(kv => kv.Key > 0)
             .Where(kv => kv.Value.ID == templateID)
-            .ToImmutableHashSet();
+            .ToImmutableArray();
 
         foreach (var kv in match)
         {
@@ -132,7 +132,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
     {
         var match = _inventory.Items
             .Where(kv => kv.Value.ID == templateID)
-            .ToImmutableHashSet();
+            .ToImmutableArray();
 
         foreach (var kv in match)
             RemoveSlot(kv.Key);

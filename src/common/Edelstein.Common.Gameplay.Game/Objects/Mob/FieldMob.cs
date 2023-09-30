@@ -233,12 +233,12 @@ public class FieldMob :
         
         var expiredStats = TemporaryStats.Records
             .Where(kv => kv.Value.DateExpire < now)
-            .ToImmutableHashSet();
+            .ToImmutableArray();
         var expiredBurned = TemporaryStats.BurnedInfo
             .Where(b => b.DateExpire < now)
-            .ToImmutableHashSet();
+            .ToImmutableArray();
 
-        if (expiredStats.Count > 0)
+        if (expiredStats.Length > 0)
         {
             await ModifyTemporaryStats(s =>
             {
@@ -247,7 +247,7 @@ public class FieldMob :
             });
         }
 
-        if (expiredBurned.Count > 0)
+        if (expiredBurned.Length > 0)
         {
             await ModifyTemporaryStats(s =>
             {

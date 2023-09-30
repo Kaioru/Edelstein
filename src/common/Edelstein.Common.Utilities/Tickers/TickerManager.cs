@@ -18,9 +18,7 @@ public class TickerManager : ITickerManager, ITickable
 
     public async Task OnTick(DateTime now)
     {
-        var tickables = _tickables.ToImmutableHashSet();
-
-        await Task.WhenAll(tickables.Select(b =>
+        await Task.WhenAll(_tickables.Select(b =>
             Task.Run(async () =>
             {
                 if (!b.IsRequestedCancellation && now >= b.TickNext)
@@ -28,7 +26,7 @@ public class TickerManager : ITickerManager, ITickable
             })
         ));
 
-        foreach (var b in tickables.Where(b => b.IsRequestedCancellation))
+        foreach (var b in _tickables.Where(b => b.IsRequestedCancellation))
             _tickables.Remove(b);
     }
 

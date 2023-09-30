@@ -186,7 +186,7 @@ public class QuestManager : IQuestManager
             : template.ActEnd;
         var rewardsBase = actTemplate.Items?
             .Where(i => i.Prob == null)
-            .ToImmutableHashSet();
+            .ToImmutableArray() ?? ImmutableArray<IQuestTemplateActItem>.Empty;
         var rewardsRandom = actTemplate.Items?
             .Where(i => i.Gender is null or 2 || i.Gender == user.Character.Gender)
             .Where(i =>
@@ -244,7 +244,7 @@ public class QuestManager : IQuestManager
                 return check;
             })
             .Where(i => i.Prob > 0)
-            .ToImmutableHashSet();
+            .ToImmutableArray() ?? ImmutableArray<IQuestTemplateActItem>.Empty;
         var rewardsSelect = actTemplate.Items?
             .Where(i => i.Prob == -1)
             .ToImmutableDictionary(
@@ -351,7 +351,7 @@ public class QuestManager : IQuestManager
             await user.ModifyInventory(inventory);
             await user.Effect(new QuestEffect(rewards
                 .Select(r => Tuple.Create(r.ItemID, r.Count))
-                .ToImmutableHashSet()));
+                .ToImmutableArray()));
         }
         
         return QuestResultType.Success;

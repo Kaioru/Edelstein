@@ -73,5 +73,5 @@ public class FieldManager : IFieldManager
     }
 
     public Task<ICollection<IField>> RetrieveAll() =>
-        Task.FromResult<ICollection<IField>>(_fields.Values.ToImmutableHashSet());
+        Task.FromResult<ICollection<IField>>(_fields.Values.ToImmutableArray());
 }

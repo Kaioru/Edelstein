@@ -55,7 +55,7 @@ public class UserOnPacketSelectWorldPlug : IPipelinePlug<UserOnPacketSelectWorld
 
             var characters = (await _characterRepository
                     .RetrieveAllByAccountWorld(accountWorld.ID))
-                .ToImmutableHashSet();
+                .ToImmutableArray();
             using var packet = new PacketWriter(PacketSendOperations.SelectWorldResult);
 
             packet.WriteByte((byte)result);
@@ -67,7 +67,7 @@ public class UserOnPacketSelectWorldPlug : IPipelinePlug<UserOnPacketSelectWorld
                 message.User.SelectedWorldID = (byte)gameStage.Server!.WorldID;
                 message.User.SelectedChannelID = (byte)gameStage.Server!.ChannelID;
 
-                packet.WriteByte((byte)characters.Count);
+                packet.WriteByte((byte)characters.Length);
 
                 foreach (var character in characters)
                 {
