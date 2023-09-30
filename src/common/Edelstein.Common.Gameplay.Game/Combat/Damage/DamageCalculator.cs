@@ -106,8 +106,16 @@ public class DamageCalculator : IDamageCalculator
 
         if (isDarkForce && attack.SkillID == Skill.DragonknightDragonBurster)
             damagePerMob += darkForceLevel?.Y ?? 0;
+
+        var damageCalcShadowPartner = new int[damagePerMob];
+        var damagePerMobShadowPartner = damagePerMob;
+
+        if (attack.IsShadowPartner &&
+            attack.SkillID != Skill.Dual3FlashBang &&
+            attack.SkillID != Skill.Dual4OwlDeath)
+            damagePerMobShadowPartner = (short)Math.Min(15, damagePerMobShadowPartner * 2);
         
-        var result = new IDamage[damagePerMob];
+        var result = new IDamage[damagePerMobShadowPartner];
         
         var totalCr = stats.Cr;
         var totalCDMin = stats.CDMin;
@@ -140,7 +148,7 @@ public class DamageCalculator : IDamageCalculator
         if (mobStats.Level > stats.Level)
             hitRate -= 5 * (mobStats.Level - stats.Level);
 
-        for (var i = 0; i < damagePerMob; i++)
+        for (var i = 0; i < result.Length; i++)
         {
             random.Skip(); // CalcPImmune
 
@@ -160,7 +168,17 @@ public class DamageCalculator : IDamageCalculator
                 Skill.Dual2SlashStorm or
                 Skill.Dual4BloodyStorm)
                 random.Skip();
-
+            
+            if (i >= damagePerMob)
+            {
+                var shadowPartnerSkillID = character.TemporaryStats[TemporaryStatType.ShadowPartner]?.Reason;
+                var shadowPartnerSkill = await _skills.Retrieve(shadowPartnerSkillID ?? 0);
+                var shadowPartnerLevel = shadowPartnerSkill?[stats.SkillLevels[shadowPartnerSkillID ?? 0]];
+                
+                result[i] = new Damage(damageCalcShadowPartner[i - damagePerMob] * (shadowPartnerLevel?.X ?? 0) / 100);
+                continue;
+            }
+            
             var damage = (double)stats.DamageMax;
             var critical = false;
             var isLuckySevenOrTripleThrow = false;
@@ -298,6 +316,9 @@ public class DamageCalculator : IDamageCalculator
 
                 damage += damage * (comboCounter * damagePerCombo) / 100d;
             }
+
+            if (attack.IsShadowPartner)
+                damageCalcShadowPartner[i] = (int)damage;
 
             var enrageStat = character.TemporaryStats[TemporaryStatType.Enrage];
             if (enrageStat?.Value / 100 > 0)
