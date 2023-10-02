@@ -32,8 +32,8 @@ public class LoadTemplateBootstrap : IBootstrap
             var count = await loader.Load();
 
             _logger.LogInformation(
-                "{Loader} loaded {Count} templates in {Elapsed}",
-                loader.GetType().Name, count, stopwatch.Elapsed
+                "{Loader} loaded {Count} templates in {Elapsed:F3}ms",
+                loader.GetType().Name, count, stopwatch.Elapsed.TotalMilliseconds
             );
         }
     }
