@@ -12,15 +12,16 @@ public record LoginContextPipelines(
     IPipeline<UserOnException<ILoginStageUser>> UserOnException,
     IPipeline<UserOnDisconnect<ILoginStageUser>> UserOnDisconnect,
     IPipeline<UserOnPacketAliveAck<ILoginStageUser>> UserOnPacketAliveAck,
-    IPipeline<UserOnPacketCreateSecurityHandle> UserOnPacketCreateSecurityHandle,
+    
     IPipeline<UserOnPacketCheckPassword> UserOnPacketCheckPassword,
+    IPipeline<UserOnPacketWorldRequest> UserOnPacketWorldRequest,
     IPipeline<UserOnPacketSelectWorld> UserOnPacketSelectWorld,
     IPipeline<UserOnPacketCheckUserLimit> UserOnPacketCheckUserLimit,
-    IPipeline<UserOnPacketWorldRequest> UserOnPacketWorldRequest,
     IPipeline<UserOnPacketLogoutWorld> UserOnPacketLogoutWorld,
     IPipeline<UserOnPacketCheckDuplicatedID> UserOnPacketCheckDuplicatedID,
     IPipeline<UserOnPacketCreateNewCharacter> UserOnPacketCreateNewCharacter,
     IPipeline<UserOnPacketDeleteCharacter> UserOnPacketDeleteCharacter,
     IPipeline<UserOnPacketEnableSPWRequest> UserOnPacketEnableSPWRequest,
-    IPipeline<UserOnPacketCheckSPWRequest> UserOnPacketCheckSPWRequest
+    IPipeline<UserOnPacketCheckSPWRequest> UserOnPacketCheckSPWRequest,
+    IPipeline<UserOnPacketCreateSecurityHandle> UserOnPacketCreateSecurityHandle
 );
