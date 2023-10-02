@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
@@ -505,6 +506,7 @@ public record FieldUserStats : IFieldUserStats
                 ? result2.ID 
                 : 0);
         var incMastery = 0;
+        var incPAD = 0;
         var incMAD = 0;
         var incACC = 0;
         
@@ -582,15 +584,78 @@ public record FieldUserStats : IFieldUserStats
             case WeaponType.Spear:
             case WeaponType.Polearm:
             {
+                if (weaponType == WeaponType.Polearm && 
+                    JobConstants.GetJobRace(user.Character.Job) == 2 && 
+                    JobConstants.GetJobType(user.Character.Job) == 1)
+                {
+                    (incMastery, incACC) = await GetMastery(user, Skill.AranPolearmMastery);
+                    if (user.Stats.SkillLevels[Skill.AranHighMastery] > 0)
+                        (incMastery, incPAD) = await GetMastery(user, Skill.AranHighMastery);
+                    break;
+                }
+                
                 (incMastery, incACC) = await GetMastery(user, Skill.SpearmanWeaponMastery);
                 
                 if (user.Character.TemporaryStats[TemporaryStatType.Beholder] != null)
                     (incMastery, _) = await GetMastery(user, Skill.DarkknightBeholder);
                 break;
             }
+            case WeaponType.Bow:
+                if (JobConstants.GetJobRace(user.Character.Job) == 1)
+                {
+                    (incMastery, incACC) = await GetMastery(user, Skill.WindbreakerBowMastery);
+                    if (user.Stats.SkillLevels[Skill.WindbreakerBowExpert] > 0)
+                        (incMastery, incPAD) = await GetMastery(user, Skill.WindbreakerBowExpert);
+                    break;
+                }
+                
+                (incMastery, incACC) = await GetMastery(user, Skill.HunterBowMastery);
+                if (user.Stats.SkillLevels[Skill.BowmasterBowExpert] > 0)
+                    (incMastery, incPAD) = await GetMastery(user, Skill.BowmasterBowExpert);
+                break;
+            case WeaponType.Crossbow:
+                if (JobConstants.GetJobRace(user.Character.Job) == 3)
+                {
+                    (incMastery, incACC) = await GetMastery(user, Skill.WildhunterCrossbowMastery);
+                    if (user.Stats.SkillLevels[Skill.WildhunterCrossbowExpert] > 0)
+                        (incMastery, incPAD) = await GetMastery(user, Skill.WildhunterCrossbowExpert);
+                    break;
+                }
+                
+                (incMastery, incACC) = await GetMastery(user, Skill.CrossbowmanCrossbowMastery);
+                if (user.Stats.SkillLevels[Skill.CrossbowmasterCrossbowExpert] > 0)
+                    (incMastery, incPAD) = await GetMastery(user, Skill.CrossbowmasterCrossbowExpert);
+                break;
+            case WeaponType.ThrowingGlove:
+                (incMastery, incACC) = JobConstants.GetJobRace(user.Character.Job) == 1
+                    ? await GetMastery(user, Skill.NightwalkerJavelinMastery)
+                    : await GetMastery(user, Skill.AssassinJavelinMastery);
+                break;
+            case WeaponType.Dagger:
+                (incMastery, incACC) = subWeaponType == WeaponType.SubDagger
+                    ? await GetMastery(user, Skill.Dual1DualMastery)
+                    : await GetMastery(user, Skill.ThiefDaggerMastery);
+                break;
+            case WeaponType.Knuckle:
+                (incMastery, incACC) = JobConstants.GetJobRace(user.Character.Job) == 1
+                    ? await GetMastery(user, Skill.StrikerKnuckleMastery)
+                    : await GetMastery(user, Skill.InfighterKnuckleMastery);
+                break;
+            case WeaponType.Gun:
+                if (JobConstants.GetJobRace(user.Character.Job) == 3)
+                {
+                    (incMastery, incACC) = await GetMastery(user, Skill.MechanicGunMastery);
+                    if (user.Stats.SkillLevels[Skill.MechanicHn07Upgrade] > 0)
+                        (incMastery, _) = await GetMastery(user, Skill.MechanicHn07Upgrade);
+                    break;
+                }
+                
+                (incMastery, incACC) = await GetMastery(user, Skill.GunslingerGunMastery);
+                break;
         }
         
         Mastery += incMastery;
+        PAD += incPAD;
         MAD += incMAD;
         ACC += incACC;
     }
