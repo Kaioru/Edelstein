@@ -55,15 +55,19 @@ public class RueGamePlugin : IGamePlugin
 
         _ = Task.Run(async () =>
         {
-            await Task.WhenAll((await commandManager.RetrieveAll())
-                .OfType<IIndexedCommand>()
-                .Select(async c =>
-                {
-                    var stopwatch = new Stopwatch();
-                    stopwatch.Start();
-                    await c.Index();
-                    host.Logger.LogDebug("Finished indexing for command {Command} in {Elapsed:F2}ms", c.Name, stopwatch.Elapsed.TotalMilliseconds);
-                }));
+            foreach (var command in (await commandManager.RetrieveAll()).OfType<IIndexedCommand>())
+            {
+                var stopwatch = new Stopwatch();
+                
+                stopwatch.Start();
+                await command.Index();
+                
+                host.Logger.LogDebug(
+                    "Finished indexing for command {Command} in {Elapsed:F2}ms", 
+                    command.Name, 
+                    stopwatch.Elapsed.TotalMilliseconds
+                );
+            }
         });
     }
 
