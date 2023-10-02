@@ -33,13 +33,13 @@ public class StartPluginBootstrap<TContext> : IBootstrap
         foreach (var host in hosts)
         {
             await host.Plugin.OnInit(host, _context);
-            _logger.LogInformation("{ID} plugin initialised for {Stage} ({Context})", host.ID, _config.ID, typeof(TContext).Name);
+            _logger.LogInformation("Initialised plugin {ID} for {Stage} ({Context})", host.ID, _config.ID, typeof(TContext).Name);
         }
 
         foreach (var host in hosts)
         {
             await host.Plugin.OnStart(host, _context);
-            _logger.LogInformation("{ID} plugin started for {Stage} ({Context})", host.ID, _config.ID, typeof(TContext).Name);
+            _logger.LogInformation("Started plugin {ID} for {Stage} ({Context})", host.ID, _config.ID, typeof(TContext).Name);
         }
     }
 
@@ -50,7 +50,7 @@ public class StartPluginBootstrap<TContext> : IBootstrap
         foreach (var host in hosts)
         {
             await host.Plugin.OnStop();
-            _logger.LogInformation("{ID} plugin stopped for {Stage} ({Context})", host.ID, _config.ID, typeof(TContext).Name);
+            _logger.LogInformation("Stopped plugin {ID} for {Stage} ({Context})", host.ID, _config.ID, typeof(TContext).Name);
         }
     }
 }
