@@ -1,4 +1,5 @@
-﻿using Edelstein.Plugin.Rue.Commands;
+﻿using System.Diagnostics;
+using Edelstein.Plugin.Rue.Commands;
 using Edelstein.Plugin.Rue.Commands.Admin;
 using Edelstein.Plugin.Rue.Commands.Common;
 using Edelstein.Plugin.Rue.Plugs;
@@ -21,37 +22,49 @@ public class RueGamePlugin : IGamePlugin
         return Task.CompletedTask;
     }
 
-    public Task OnStart(IPluginHost<GameContext> host, GameContext ctx)
+    public async Task OnStart(IPluginHost<GameContext> host, GameContext ctx)
     {
         var commandManager = new CommandManager();
 
-        commandManager.Insert(new HelpCommand(commandManager));
-        commandManager.Insert(new AliasCommand(commandManager));
+        await commandManager.Insert(new HelpCommand(commandManager));
+        await commandManager.Insert(new AliasCommand(commandManager));
 
-        commandManager.Insert(new FieldCommand(
+        await commandManager.Insert(new FieldCommand(
             ctx.Managers.Field,
             ctx.Templates.Field,
             ctx.Templates.FieldString
         ));
-        commandManager.Insert(new ItemCommand(
+        await commandManager.Insert(new ItemCommand(
             ctx.Templates.Item,
             ctx.Templates.ItemString
         ));
-        commandManager.Insert(new SkillCommand(
+        await commandManager.Insert(new SkillCommand(
             ctx.Templates.Skill,
             ctx.Templates.SkillString
         ));
-        commandManager.Insert(new QuestCommand(
+        await commandManager.Insert(new QuestCommand(
             ctx.Templates.Quest
         ));
-        commandManager.Insert(new EquipCommand());
-        commandManager.Insert(new StatCommand());
-        commandManager.Insert(new TemporaryStatCommand());
-        commandManager.Insert(new MobTemporaryStatCommand());
-        commandManager.Insert(new DebugCommand());
+        await commandManager.Insert(new EquipCommand());
+        await commandManager.Insert(new StatCommand());
+        await commandManager.Insert(new TemporaryStatCommand());
+        await commandManager.Insert(new MobTemporaryStatCommand());
+        await commandManager.Insert(new DebugCommand());
 
         ctx.Pipelines.FieldOnPacketUserChat.Add(PipelinePriority.High, new FieldOnPacketUserChatCommandPlug(commandManager));
-        return Task.CompletedTask;
+
+        _ = Task.Run(async () =>
+        {
+            await Task.WhenAll((await commandManager.RetrieveAll())
+                .OfType<IIndexedCommand>()
+                .Select(async c =>
+                {
+                    var stopwatch = new Stopwatch();
+                    stopwatch.Start();
+                    await c.Index();
+                    host.Logger.LogDebug("Finished indexing for command {Command} in {Elapsed:F2}ms", c.Name, stopwatch.Elapsed.TotalMilliseconds);
+                }));
+        });
     }
 
     public Task OnStop()

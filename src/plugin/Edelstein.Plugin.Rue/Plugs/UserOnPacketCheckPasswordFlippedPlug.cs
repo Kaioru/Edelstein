@@ -2,7 +2,6 @@
 using Edelstein.Plugin.Rue.Contracts;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Gameplay.Login.Contracts;
-using Edelstein.Protocol.Services.Auth.Contracts;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Microsoft.Extensions.Logging;
 
