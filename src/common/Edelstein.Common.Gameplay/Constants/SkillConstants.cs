@@ -135,4 +135,21 @@ public static class SkillConstants
         
         return 0;
     }
+
+    public static bool IsShootAction(int action)
+        => action is >= 31 and <= 36 or 75 or 116 or 111 or 100 or 109 or 110 or 122 or 115 or 123 or 142 or 268 or 269 or 200 or 203;
+
+    public static bool IsProneStabAction(int action)
+        => action  is 41 or 57;
+    
+    public static bool IsJaguarMeleeAttackSkill(int skillID)
+        => skillID switch
+        {
+            Skill.WildhunterJaguarNuckback => true,
+            Skill.WildhunterSwallowDummyAttack => true,
+            Skill.WildhunterCrossRoad => true,
+            Skill.WildhunterClawCut => true,
+            Skill.WildhunterElrectronicshock => true,
+            _ => false
+        };
 }
