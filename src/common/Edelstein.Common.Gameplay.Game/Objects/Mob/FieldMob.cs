@@ -28,6 +28,7 @@ public class FieldMob :
         IMobTemplate template,
         IPoint2D position,
         IFieldFoothold? foothold = null,
+        IFieldFoothold? footholdHome = null,
         bool isFacingLeft = true
     ) : base(new FieldMobMoveAction(template.MoveAbility, isFacingLeft), position, foothold)
     {
@@ -35,6 +36,8 @@ public class FieldMob :
         LastUpdateBurned = DateTime.UtcNow;
         
         Template = template;
+        
+        FootholdHome = footholdHome;
 
         Stats = new FieldMobStats();
         TemporaryStats = new MobTemporaryStats();
@@ -48,6 +51,8 @@ public class FieldMob :
 
     public IMobTemplate Template { get; }
     
+    public IFieldFoothold? FootholdHome { get; }
+
     public IFieldMobStats Stats { get; }
     public IMobTemporaryStats TemporaryStats { get; }
     public int HP { get; private set; }
@@ -173,7 +178,7 @@ public class FieldMob :
         writer.WritePoint2D(Position);
         writer.WriteByte(Action.Raw);
         writer.WriteShort((short)(Foothold?.ID ?? 0));
-        writer.WriteShort(0); // Foothold again? TODO
+        writer.WriteShort((short)(FootholdHome?.ID ?? 0));
 
         writer.WriteByte((byte)appear);
         if (appear is FieldMobAppearType.Revived or >= 0)
