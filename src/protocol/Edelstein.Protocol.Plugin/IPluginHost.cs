@@ -8,6 +8,9 @@ public interface IPluginHost<TContext> : IIdentifiable<string>
 {
     ILogger Logger { get; }
     IConfiguration Config { get; }
-    
+
+    string DirectoryHost { get; }
+    string DirectoryPlugin { get; }
+
     IPlugin<TContext> Plugin { get; }
 }

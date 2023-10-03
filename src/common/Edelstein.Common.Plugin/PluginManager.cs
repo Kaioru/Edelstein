@@ -43,9 +43,11 @@ public class PluginManager<TContext> : Repository<string, IPluginHost<TContext>>
                     _logger.LogWarning("Failed to start plugin of type {Type}", type);
                     continue;
                 }
-                
+
+                var directoryHost = AppDomain.CurrentDomain.BaseDirectory;
+                var directoryPlugin = Path.GetDirectoryName(path) ?? directoryHost;
                 var configuration = new ConfigurationBuilder()
-                    .SetBasePath(Path.GetDirectoryName(path) ?? AppDomain.CurrentDomain.BaseDirectory)
+                    .SetBasePath(directoryPlugin)
                     .AddJsonFile("appsettings.json", true)
                     .AddJsonFile($"appsettings.{_environment.EnvironmentName}.json", true)
                     .Build();
@@ -53,6 +55,8 @@ public class PluginManager<TContext> : Repository<string, IPluginHost<TContext>>
                 await Insert(new PluginHost<TContext>(
                     _loggerFactory.CreateLogger(type),
                     configuration,
+                    directoryHost,
+                    directoryPlugin,
                     plugin
                 ));
             }

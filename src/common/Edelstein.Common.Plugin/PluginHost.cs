@@ -7,6 +7,8 @@ namespace Edelstein.Common.Plugin;
 public record PluginHost<TContext>(
     ILogger Logger,
     IConfiguration Config,
+    string DirectoryHost,
+    string DirectoryPlugin,
     IPlugin<TContext> Plugin
 ) : IPluginHost<TContext>
 {
