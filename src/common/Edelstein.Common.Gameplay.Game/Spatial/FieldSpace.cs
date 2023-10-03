@@ -37,9 +37,12 @@ public class FieldSpace<TObject> : IFieldSpace<TObject> where TObject : IFieldSp
 
     public IEnumerable<TObject> Find(IObject2D obj) => _space.Find(obj);
 
-    public IEnumerable<TObject> FindClosest(IPoint2D point, int n = 1) => _space.FindClosest(point, n);
+    public IEnumerable<TObject> FindClosest(IPoint2D point, int n = 1) 
+        => _space
+            .FindClosest(point, n);
 
-    public IEnumerable<TObject> FindBelow(IPoint2D point) => _space.Find(
-        new Segment2D(point, new Point2D(point.X, Bounds.Bottom))
-    );
+    public IEnumerable<TObject> FindBelow(IPoint2D point) 
+        => _space
+            .Find(new Segment2D(point, new Point2D(point.X, Bounds.Bottom)))
+            .OrderBy(o => o.MinY);
 }
