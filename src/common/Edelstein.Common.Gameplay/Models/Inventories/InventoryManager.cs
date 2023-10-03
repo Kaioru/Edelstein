@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
@@ -153,6 +154,7 @@ public class InventoryManager : IInventoryManager
         
         var bundles = items
             .OfType<IItemSlotBundle>()
+            .Where(b => !ItemConstants.IsRechargeableItem(b.ID))
             .ToImmutableList();
         var bundlesMerged = new List<IItemSlotBundle>();
         
