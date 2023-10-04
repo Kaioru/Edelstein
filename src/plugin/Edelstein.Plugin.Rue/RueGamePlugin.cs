@@ -34,6 +34,9 @@ public class RueGamePlugin : IGamePlugin
             ctx.Templates.Field,
             ctx.Templates.FieldString
         ));
+        await commandManager.Insert(new ContiMoveCommand(
+            ctx.Managers.ContiMove
+        ));
         await commandManager.Insert(new ItemCommand(
             ctx.Templates.Item,
             ctx.Templates.ItemString
