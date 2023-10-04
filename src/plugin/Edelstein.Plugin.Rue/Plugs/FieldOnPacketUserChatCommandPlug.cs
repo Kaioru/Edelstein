@@ -14,7 +14,7 @@ public class FieldOnPacketUserChatCommandPlug : IPipelinePlug<FieldOnPacketUserC
     {
         if (message.Message.StartsWith("!") || message.Message.StartsWith("@"))
         {
-            await _commandManager.Process(message.User, message.Message[1..]);
+            _ = Task.Run(() => _commandManager.Process(message.User, message.Message[1..]));
             ctx.Cancel();
         }
     }
