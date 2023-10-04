@@ -47,6 +47,7 @@ public record GameContextPipelines(
     IPipeline<FieldOnPacketUserQuestScriptStartRequest> FieldOnPacketUserQuestScriptStartRequest,
     IPipeline<FieldOnPacketUserQuestScriptEndRequest> FieldOnPacketUserQuestScriptEndRequest,
     IPipeline<FieldOnPacketUserThrowGrenade> FieldOnPacketUserThrowGrenade,
+    IPipeline<FieldOnPacketUserClientTimerEndRequest> FieldOnPacketUserClientTimerEndRequest,
 
     IPipeline<FieldOnPacketPartyCreateRequest> FieldOnPacketPartyCreateRequest,
     IPipeline<FieldOnPacketPartyLeaveRequest> FieldOnPacketPartyLeaveRequest,
