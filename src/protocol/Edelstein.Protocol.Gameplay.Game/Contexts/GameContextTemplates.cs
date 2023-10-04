@@ -20,6 +20,8 @@ public record GameContextTemplates(
     ITemplateManager<IFieldTemplate> Field,
     ITemplateManager<IFieldStringTemplate> FieldString,
     ITemplateManager<INPCTemplate> NPC,
+    ITemplateManager<INPCStringTemplate> NPCString,
     ITemplateManager<IMobTemplate> Mob,
+    ITemplateManager<IMobStringTemplate> MobString,
     ITemplateManager<IContiMoveTemplate> ContiMove
 );
