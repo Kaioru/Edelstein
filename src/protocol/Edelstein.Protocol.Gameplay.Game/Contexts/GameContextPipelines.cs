@@ -78,5 +78,7 @@ public record GameContextPipelines(
     
     IPipeline<FieldOnPacketNPCMove> FieldOnPacketNPCMove,
     
-    IPipeline<FieldOnPacketDropPickupRequest> FieldOnPacketDropPickupRequest
+    IPipeline<FieldOnPacketDropPickupRequest> FieldOnPacketDropPickupRequest,
+    
+    IPipeline<FieldOnPacketUserContiState> FieldOnPacketUserContiState
 );
