@@ -34,6 +34,15 @@ public class RueGamePlugin : IGamePlugin
             ctx.Templates.Field,
             ctx.Templates.FieldString
         ));
+        await commandManager.Insert(new NPCCommand(
+            ctx.Templates.NPC,
+            ctx.Templates.NPCString
+        ));
+        await commandManager.Insert(new MobTemporaryStatCommand());
+        await commandManager.Insert(new MobCommand(
+            ctx.Templates.Mob,
+            ctx.Templates.MobString
+        ));
         await commandManager.Insert(new ContiMoveCommand(
             ctx.Managers.ContiMove
         ));
@@ -51,7 +60,6 @@ public class RueGamePlugin : IGamePlugin
         await commandManager.Insert(new EquipCommand());
         await commandManager.Insert(new StatCommand());
         await commandManager.Insert(new TemporaryStatCommand());
-        await commandManager.Insert(new MobTemporaryStatCommand());
         await commandManager.Insert(new DebugCommand());
 
         ctx.Pipelines.FieldOnPacketUserChat.Add(PipelinePriority.High, new FieldOnPacketUserChatCommandPlug(commandManager));
