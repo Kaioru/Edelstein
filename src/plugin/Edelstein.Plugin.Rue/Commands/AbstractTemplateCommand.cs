@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using DotNet.Globbing;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Utilities.Templates;
+using Gma.DataStructures.StringSearch;
 using PowerArgs;
 
 namespace Edelstein.Plugin.Rue.Commands;
@@ -26,35 +26,51 @@ public abstract class AbstractTemplateCommand<TTemplate> : AbstractTemplateComma
     }
 }
 
-public abstract class AbstractTemplateCommand<TTemplate, TArgs> : AbstractCommand<TArgs>
+public abstract class AbstractTemplateCommand<TTemplate, TArgs> : AbstractCommand<TArgs>, IIndexedCommand
     where TTemplate : class, ITemplate
     where TArgs : TemplateCommandArgs
 {
     private readonly ITemplateManager<TTemplate> _templates;
-    private readonly GlobOptions _options = new() { Evaluation = { CaseInsensitive = true } };
+    private readonly ITrie<TemplateCommandIndex> _trie;
+    private bool isIndexing;
+    private bool isIndexed;
 
     protected AbstractTemplateCommand(
         ITemplateManager<TTemplate> templates
     )
     {
         _templates = templates;
+        _trie = new UkkonenTrie<TemplateCommandIndex>();
     }
 
     protected abstract Task<IEnumerable<TemplateCommandIndex>> Indices();
     protected abstract Task Execute(IFieldUser user, TTemplate template, TArgs args);
 
+    public async Task Index()
+    {
+        if (isIndexed || isIndexing) return;
+        isIndexing = true;
+        foreach (var index in await Indices())
+            _trie.Add(index.SearchString.ToLower(), index);
+        isIndexing = false;
+        isIndexed = true;
+    }
+    
     protected override async Task Execute(IFieldUser user, TArgs args)
     {
+        if (isIndexing || !isIndexed)
+        {
+            await user.Message("Templates have not finished indexing yet, please try again later..");
+            return;
+        }
+        
         var stopwatch = new Stopwatch();
 
         await user.Message($"Searching for '{args.Search}', this might take awhile..");
         stopwatch.Start();
 
-        var glob = Glob.Parse(args.Search, _options);
-        var data = await Indices();
-
-        var results = data
-            .Where(d => glob.IsMatch(d.SearchString))
+        var results = _trie
+            .Retrieve(args.Search.ToLower())
             .DistinctBy(d => d.ID)
             .ToList();
         var elapsed = stopwatch.Elapsed;
@@ -91,7 +107,7 @@ public abstract class AbstractTemplateCommand<TTemplate, TArgs> : AbstractComman
                     if (currentPage < maxPage) menu.Add(-10, "#rNext page#k");
                     if (currentPage > minPage) menu.Add(-20, "#rPrevious page#k");
 
-                    var selection = target.AskMenu($"Found {results.Count} results for '{args.Search}' in {elapsed.TotalSeconds:F} seconds (page {currentPage} of {maxPage})", menu);
+                    var selection = target.AskMenu($"Found {results.Count} results for '{args.Search}' in {elapsed.TotalMilliseconds:F2}ms (page {currentPage} of {maxPage})", menu);
 
                     if (selection == -10) { currentPage++; continue; }
                     if (selection == -20) { currentPage--; continue; }

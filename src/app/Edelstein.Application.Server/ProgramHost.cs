@@ -135,6 +135,7 @@ public class ProgramHost : IHostedService
                         b
                             .RegisterInstance(options)
                             .As<ILoginStageOptions>()
+                            .As<ProgramConfigStage>()
                             .As<ProgramConfigStageLogin>()
                             .SingleInstance();
                         b.RegisterType<LoginContext>().SingleInstance();
@@ -191,6 +192,7 @@ public class ProgramHost : IHostedService
                         b
                             .RegisterInstance(options)
                             .As<IGameStageOptions>()
+                            .As<ProgramConfigStage>()
                             .As<ProgramConfigStageGame>()
                             .SingleInstance();
                         b.RegisterType<GameContext>().SingleInstance();
@@ -237,6 +239,7 @@ public class ProgramHost : IHostedService
                         b
                             .RegisterInstance(options)
                             .As<IShopStageOptions>()
+                            .As<ProgramConfigStage>()
                             .As<ProgramConfigStageShop>()
                             .SingleInstance();
                         b.RegisterType<ShopContext>().SingleInstance();
@@ -278,6 +281,7 @@ public class ProgramHost : IHostedService
                         b
                             .RegisterInstance(options)
                             .As<ITradeStageOptions>()
+                            .As<ProgramConfigStage>()
                             .As<ProgramConfigStageTrade>()
                             .SingleInstance();
                         b.RegisterType<TradeContext>().SingleInstance();

@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Plugin;
+﻿using Edelstein.Application.Server.Configs;
+using Edelstein.Protocol.Plugin;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Application.Server.Bootstraps;
@@ -6,20 +7,23 @@ namespace Edelstein.Application.Server.Bootstraps;
 public class StartPluginBootstrap<TContext> : IBootstrap
 {
     private readonly ILogger _logger;
+    private readonly ProgramConfigStage _config;
     private readonly TContext _context;
     private readonly IPluginManager<TContext> _manager;
-
+    
     public StartPluginBootstrap(
-        ILogger<StartPluginBootstrap<TContext>> logger,
-        TContext context,
+        ILogger<StartPluginBootstrap<TContext>> logger, 
+        ProgramConfigStage config, 
+        TContext context, 
         IPluginManager<TContext> manager
     )
     {
         _logger = logger;
+        _config = config;
         _context = context;
         _manager = manager;
     }
-
+    
     public int Priority => BootstrapPriority.Start;
 
     public async Task Start()
@@ -29,13 +33,13 @@ public class StartPluginBootstrap<TContext> : IBootstrap
         foreach (var host in hosts)
         {
             await host.Plugin.OnInit(host, _context);
-            _logger.LogInformation("{Context} plugin {ID} initialised", typeof(TContext).Name, host.ID);
+            _logger.LogInformation("Initialised plugin {ID} for {Stage} ({Context})", host.ID, _config.ID, typeof(TContext).Name);
         }
 
         foreach (var host in hosts)
         {
             await host.Plugin.OnStart(host, _context);
-            _logger.LogInformation("{Context} plugin {ID} started", typeof(TContext).Name, host.ID);
+            _logger.LogInformation("Started plugin {ID} for {Stage} ({Context})", host.ID, _config.ID, typeof(TContext).Name);
         }
     }
 
@@ -46,7 +50,7 @@ public class StartPluginBootstrap<TContext> : IBootstrap
         foreach (var host in hosts)
         {
             await host.Plugin.OnStop();
-            _logger.LogInformation("{Context} plugin {ID} stopped", typeof(TContext).Name, host.ID);
+            _logger.LogInformation("Stopped plugin {ID} for {Stage} ({Context})", host.ID, _config.ID, typeof(TContext).Name);
         }
     }
 }

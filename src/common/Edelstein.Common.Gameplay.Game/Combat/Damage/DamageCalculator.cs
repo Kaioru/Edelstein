@@ -200,7 +200,42 @@ public class DamageCalculator : IDamageCalculator
             if (weaponType is WeaponType.Wand or WeaponType.Staff)
                 damage *= 0.2;
 
-            if (attack.AttackAction is 41 or 57)
+            if (!SkillConstants.IsShootAction(attack.AttackAction) &&
+                !SkillConstants.IsJaguarMeleeAttackSkill(attack.AttackAction) &&
+                attack.SkillID != Skill.WildhunterFlashRain &&
+                character.TemporaryStats.RideVehicleRecord?.Value != 1932016)
+            {
+                switch (weaponType)
+                {
+                    case WeaponType.Bow or WeaponType.Crossbow:
+                        damage *= 0.6;
+                        break;
+                    case WeaponType.ThrowingGlove when
+                        attack.SkillID != Skill.NightlordNinjaStorm &&
+                        attack.SkillID != Skill.ShadowerAssassination &&
+                        attack.SkillID != Skill.NightwalkerVampire &&
+                        attack.SkillID != Skill.NightwalkerPoisonBomb:
+                        damage *= 0.4;
+                        break;
+                    case WeaponType.Gun when
+                        attack.AttackAction != 118 &&
+                        attack.AttackAction != 119 &&
+                        attack.SkillID != Skill.GunslingerThrowingBomb &&
+                        attack.SkillID != Skill.CaptainAirStrike &&
+                        attack.SkillID != Skill.CaptainBattleshipCannon &&
+                        attack.SkillID != Skill.CaptainBattleshipTorpedo &&
+                        attack.SkillID != Skill.Dual5MonsterBomb:
+                    {
+                        damage *= 0.4;
+                    
+                        if (attack.AttackAction is 102 or 101)
+                            damage *= 1.8;
+                        break;
+                    }
+                }
+            }
+
+            if (SkillConstants.IsProneStabAction(attack.AttackAction))
                 damage *= 0.1;
             
             if (!isLuckySevenOrTripleThrow)

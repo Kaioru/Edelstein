@@ -63,7 +63,7 @@ public static class ShopStageUserExtensions
         p.WriteShort((short)(user.AccountWorld?.Locker.Items.Count ?? 0));
         foreach (var slot in user.AccountWorld?.Locker.Items ?? ImmutableList<IItemLockerSlot>.Empty)
             p.WriteItemLockerData(slot);
-        p.WriteShort(user.AccountWorld?.Locker.SlotMax ?? 0);
+        p.WriteShort(user.AccountWorld?.Trunk.SlotMax ?? 0);
         p.WriteShort((short)(user.AccountWorld?.CharacterSlotMax ?? 3));
         p.WriteShort((short)((user.AccountWorld?.CharacterSlotMax ?? 0) - 3));
         p.WriteShort(1);

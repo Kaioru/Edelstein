@@ -23,19 +23,28 @@ public class LoadTemplateBootstrap : IBootstrap
 
     public async Task Start()
     {
+        var watch0 = new Stopwatch();
+        
+        watch0.Start();
+        
         foreach (var loader in _loaders)
         {
-            var stopwatch = new Stopwatch();
+            var watch1 = new Stopwatch();
 
-            stopwatch.Start();
+            watch1.Start();
 
             var count = await loader.Load();
 
             _logger.LogInformation(
-                "{Loader} loaded {Count} templates in {Elapsed}",
-                loader.GetType().Name, count, stopwatch.Elapsed
+                "{Loader} loaded {Count} templates in {Elapsed:F2}ms",
+                loader.GetType().Name, count, watch1.Elapsed.TotalMilliseconds
             );
         }
+        
+        _logger.LogInformation(
+            "Finished executing {Count} template loaders in {Elapsed:F2}s",
+            _loaders.Count, watch0.Elapsed.TotalSeconds
+        );
     }
 
     public Task Stop() => Task.CompletedTask;

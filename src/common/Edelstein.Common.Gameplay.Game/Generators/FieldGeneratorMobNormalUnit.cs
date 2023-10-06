@@ -27,6 +27,7 @@ public class FieldGeneratorMobNormalUnit : IFieldGeneratorUnit
             _template,
             _life.Position,
             _field.Template.Footholds.FindByID(_life.FootholdID),
+            _field.Template.Footholds.FindByID(_life.FootholdID),
             _life.IsFacingLeft
         );
 }

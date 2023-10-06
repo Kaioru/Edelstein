@@ -1,4 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Game.Objects.Drop;
+using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Contracts;
 using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
@@ -22,7 +23,10 @@ public class FieldOnPacketUserChangeSlotPositionRequestPlug : IPipelinePlug<Fiel
             if (item == null) return;
 
             var foothold = message.User.Field?.Template.Footholds
-                .FindBelow(message.User.Position)
+                .FindBelow(new Point2D(
+                    message.User.Position.X,
+                    message.User.Position.Y - 100
+                ))
                 .FirstOrDefault();
             var position = foothold?.Line.AtX(message.User.Position.X);
 

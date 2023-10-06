@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Constants;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify.Operations;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
@@ -43,7 +44,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         {
             case ItemSlotBundle bundle:
                 if (_manager.Retrieve(bundle.ID).Result is not IItemBundleTemplate template) goto default;
-                // if (ItemConstants.IsRechargeableItem(bundle.TemplateID)) goto default; // TODO: rechargeable constants
+                if (ItemConstants.IsRechargeableItem(template.ID)) goto default;
                 if (bundle.Number < 1) bundle.Number = 1;
 
                 var mergeable = _inventory.Items
@@ -98,7 +99,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         foreach (var kv in match)
         {
             if (removed >= count) return;
-            if (kv.Value is ItemSlotBundle bundle) // TODO: rechargable
+            if (kv.Value is ItemSlotBundle bundle && !ItemConstants.IsRechargeableItem(bundle.ID))
             {
                 var diff = count - removed;
 
@@ -158,6 +159,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         var inventoryCopy = _inventory.Items
             .Where(kv => kv.Key > 0)
             .OrderBy(kv => kv.Value.ID)
+            .ThenByDescending(kv => kv.Value is IItemSlotBundle bundle ? bundle.Number : 1)
             .ToList();
 
         inventoryCopy.ForEach(kv => RemoveSlot(kv.Key));
@@ -261,7 +263,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
     {
         var item = this[slot];
 
-        if (item is IItemSlotBundle bundle)
+        if (item is IItemSlotBundle bundle && !ItemConstants.IsRechargeableItem(bundle.ID))
         {
             if (bundle.Number > count)
             {

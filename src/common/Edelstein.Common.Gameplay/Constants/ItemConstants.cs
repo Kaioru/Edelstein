@@ -3,7 +3,7 @@
 public static class ItemConstants
 {
     public static WeaponType GetWeaponType(int templateID)
-        => (WeaponType)(templateID / 10000 % 100);
+        => templateID == 0 ? WeaponType.Barehand : (WeaponType)(templateID / 10000 % 100);
 
     public static double GetMasteryConstByWeaponType(WeaponType weaponType)
         => weaponType switch
