@@ -2,17 +2,31 @@
   "version": 1,
   "dependencies": {
     "net8.0": {
-      "DotNet.Glob": {
+      "Microsoft.Extensions.Configuration.Binder": {
         "type": "Direct",
-        "requested": "[3.1.3, )",
-        "resolved": "3.1.3",
-        "contentHash": "hOfHw7MLJw/tbXaFwR1oiDb+dIXDp8URTxp5Pco42OOhiw77wrUNx6v6syNygHZbWwYdXQocL2Mo1l5FnfDVjg=="
+        "requested": "[7.0.4, )",
+        "resolved": "7.0.4",
+        "contentHash": "8+XPvJnHZsYgHOQlcMuQe7QNF5KdVKHH1F/wW3nd8/u81Gk/XFAYMDP0Lpz18h7/AM95M662vvqMorcYxCBB4w==",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "7.0.0"
+        }
       },
       "PowerArgs": {
         "type": "Direct",
         "requested": "[4.0.2, )",
         "resolved": "4.0.2",
         "contentHash": "OvnFpO5T68RcZ14XTbHPGrPV3iXv8pxitTbP3oPTY87UZmnFyx6DzFWCjNIzrE8ACHm2PaNcTSfpCJD29/cTng=="
+      },
+      "TrieNet": {
+        "type": "Direct",
+        "requested": "[1.0.3.26316, )",
+        "resolved": "1.0.3.26316",
+        "contentHash": "H9Qo4oF+jVlhFznnDbic/gZ1vlEiXI3XTkfWGWK0tES1yh6lXHtYrRiZGRlhx6FGbkcwCCSCxr0ZvqgKu9usmw=="
+      },
+      "BCrypt.Net-Next": {
+        "type": "Transitive",
+        "resolved": "4.0.3",
+        "contentHash": "W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA=="
       },
       "Duey": {
         "type": "Transitive",
@@ -152,6 +166,14 @@
           "Stateless": "[5.13.0, )"
         }
       },
+      "edelstein.common.gameplay.login": {
+        "type": "Project",
+        "dependencies": {
+          "BCrypt.Net-Next": "[4.0.3, )",
+          "Edelstein.Common.Gameplay": "[1.0.0, )",
+          "Edelstein.Protocol.Gameplay.Login": "[1.0.0, )"
+        }
+      },
       "edelstein.common.utilities": {
         "type": "Project",
         "dependencies": {
@@ -182,6 +204,15 @@
           "Edelstein.Protocol.Services.Social": "[1.0.0, )"
         }
       },
+      "edelstein.protocol.gameplay.login": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Data": "[1.0.0, )",
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Server": "[1.0.0, )"
+        }
+      },
       "edelstein.protocol.network": {
         "type": "Project",
         "dependencies": {
@@ -200,6 +231,13 @@
         "type": "Project",
         "dependencies": {
           "Edelstein.Protocol.Gameplay.Game": "[1.0.0, )",
+          "Edelstein.Protocol.Plugin": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.plugin.login": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Gameplay.Login": "[1.0.0, )",
           "Edelstein.Protocol.Plugin": "[1.0.0, )"
         }
       },

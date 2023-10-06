@@ -33,6 +33,7 @@ public record MobStringTemplateLoader : ITemplateLoader
                 ));
             }) ?? Array.Empty<Task>());
         
+        _manager.Freeze();
         return _manager.Count;
     }
 }
