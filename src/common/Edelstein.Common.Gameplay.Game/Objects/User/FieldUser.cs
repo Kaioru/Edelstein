@@ -75,6 +75,9 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public bool IsInstantiated { get; set; }
     public bool IsConversing => ActiveConversation != null;
     public bool IsDialoguing => ActiveDialogue != null;
+    
+    public short? ActiveChair { get; private set; }
+    public int ActivePortableChair { get; private set; }
 
     public bool IsDirectionMode { get; private set; }
     public bool IsStandAloneMode { get; private set; }
@@ -313,6 +316,35 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         if (ActiveDialogue == null) return;
         await (handleLeave?.Invoke(ActiveDialogue) ?? ActiveDialogue.HandleLeave(this));
         ActiveDialogue = null;
+    }
+    
+    public Task SetActiveChair(short? chairID)
+    {
+        ActiveChair = chairID;
+        
+        var p = new PacketWriter(PacketSendOperations.UserSitResult);
+
+        if (chairID != null)
+        {
+            p.WriteBool(true);
+            p.WriteShort(chairID.Value);
+        }
+        else
+            p.WriteBool(false);
+
+        return Dispatch(p.Build());
+    }
+
+    public async Task SetActivePortableChair(int templateID)
+    {
+        ActivePortableChair = templateID;
+        
+        var p = new PacketWriter(PacketSendOperations.UserSetActivePortableChair);
+        p.WriteInt(Character.ID);
+        p.WriteInt(ActivePortableChair);
+        
+        if (FieldSplit != null)
+            await FieldSplit.Dispatch(p.Build(), this);
     }
 
     public Task SetDirectionMode(bool enable, int delay = 0)
