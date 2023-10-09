@@ -149,7 +149,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         packet.WriteInt(0);
         packet.WriteInt(0);
         packet.WriteInt(0);
-        packet.WriteInt(0);
+        packet.WriteInt(ActivePortableChair);
 
         packet.WritePoint2D(Position);
         packet.WriteByte(Action.Raw);
