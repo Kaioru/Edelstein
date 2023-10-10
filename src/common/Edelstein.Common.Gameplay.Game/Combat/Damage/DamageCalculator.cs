@@ -328,6 +328,29 @@ public class DamageCalculator : IDamageCalculator
                     skillDamageR = advancedChargeLevel?.Damage ?? skillDamageR;
                     break;
                 }
+                
+                case Skill.ArcherArrowBlow:
+                case Skill.ArcherDoubleShot:
+                {
+                    foreach (var skillID in new List<int>
+                             {
+                                 Skill.HunterImproveBasic,
+                                 Skill.CrossbowmanImproveBasic,
+                             }.Where(skillID => stats.SkillLevels[skillID] > 0))
+                    {
+                        var archerImproveBasicSkill = await _skills.Retrieve(skillID);
+                        var archerImproveBasicLevel = archerImproveBasicSkill?[stats.SkillLevels[skillID]];
+
+                        if (archerImproveBasicLevel == null) break;
+
+                        skillDamageR += attack.SkillID == Skill.ArcherArrowBlow
+                            ? archerImproveBasicLevel.X
+                            : archerImproveBasicLevel.Y;
+                        break;
+                    }
+
+                    break;
+                }
                 case Skill.SniperStrafe:
                     var ultimateStrafeSkill = await _skills.Retrieve(Skill.CrossbowmasterUltimateStrafe);
                     var ultimateStrafeLevel = ultimateStrafeSkill?[stats.SkillLevels[Skill.CrossbowmasterUltimateStrafe]];
