@@ -33,6 +33,9 @@ public interface IFieldUser :
     bool IsConversing { get; }
     bool IsDialoguing { get; }
     
+    short? ActiveChair { get; }
+    int ActivePortableChair { get; }
+    
     bool IsDirectionMode { get; }
     bool IsStandAloneMode { get; }
     
@@ -61,6 +64,9 @@ public interface IFieldUser :
     Task Dialogue(IDialogue dialogue, Func<IDialogue, Task<bool>>? handleEnter = null);
     Task EndDialogue(Func<IDialogue, Task<bool>>? handleLeave = null);
 
+    Task SetActiveChair(short? chairID);
+    Task SetActivePortableChair(int templateID);
+    
     Task SetDirectionMode(bool enable, int delay = 0);
     Task SetStandAloneMode(bool enable);
 

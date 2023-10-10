@@ -76,6 +76,8 @@ public record FieldUserStats : IFieldUserStats
     public int DamageMin { get; private set; }
     public int DamageMax { get; private set; }
     
+    public int CompletedSetItemID { get; private set; }
+
     public IFieldUserStatsSkillLevels SkillLevels { get; }
     
     public async Task Apply(IFieldUser user)
@@ -104,6 +106,8 @@ public record FieldUserStats : IFieldUserStats
         
         DamageMin = 1;
         DamageMax = 1;
+
+        CompletedSetItemID = 0;
 
         SkillLevels.Records.Clear();
         
@@ -224,12 +228,14 @@ public record FieldUserStats : IFieldUserStats
             .Where(kv => kv.Value is ItemSlotEquip)
             .Select(kv => (kv.Key, (ItemSlotEquip)kv.Value))
             .ToImmutableArray() ?? ImmutableArray<(short Key, ItemSlotEquip)>.Empty;
+        var setCompletion = new Dictionary<int, int>();
 
         foreach (var (slot, item) in equipped)
         {
             var template = await user.StageUser.Context.Templates.Item.Retrieve(item.ID);
 
             if (template is not IItemEquipTemplate equip) continue;
+            
             STR += item.STR;
             DEX += item.DEX;
             INT += item.INT;
@@ -279,6 +285,43 @@ public record FieldUserStats : IFieldUserStats
                     await ApplyItemOption(user, item.Option3, level);
                 }
             }
+
+            if (equip.SetItemID > 0)
+                setCompletion[equip.SetItemID] = (setCompletion.TryGetValue(equip.SetItemID, out var count) ? count : 0) + 1;
+        }
+        
+        foreach (var (setItemID, count) in setCompletion)
+        {
+            var setItemTemplate = await user.StageUser.Context.Templates.ItemSet.Retrieve(setItemID);
+            if (setItemTemplate == null) continue;
+
+            for (var i = 1; i <= count; i++)
+            {
+                var setItemEffect = setItemTemplate.Effects.TryGetValue(i, out var effect) ? effect : null;
+                if (setItemEffect == null) continue;
+                STR += setItemEffect.IncSTR;
+                DEX += setItemEffect.IncDEX;
+                INT += setItemEffect.IncINT;
+                LUK += setItemEffect.IncLUK;
+                
+                MaxHP += setItemEffect.IncMaxHP;
+                MaxMP += setItemEffect.IncMaxMP;
+                
+                PAD += setItemEffect.IncPAD;
+                MAD += setItemEffect.IncMAD;
+                PDD += setItemEffect.IncPDD;
+                MDD += setItemEffect.IncMDD;
+                
+                ACC += setItemEffect.IncACC;
+                EVA += setItemEffect.IncEVA;
+                
+                Craft += setItemEffect.IncCraft;
+                Speed += setItemEffect.IncSpeed;
+                Jump += setItemEffect.IncJump;
+            }
+
+            if (count == setItemTemplate.SetCompleteCount)
+                CompletedSetItemID = setItemID;
         }
 
         var weaponType = ItemConstants.GetWeaponType(
@@ -303,50 +346,42 @@ public record FieldUserStats : IFieldUserStats
 
     private async Task ApplyItemOption(IFieldUser user, int option, int level)
     {
-        try
-        {
-            var template = await user.StageUser.Context.Templates.ItemOption.Retrieve(option);
-            if (template == null) return;
-            if (!template.Levels.ContainsKey(level)) return;
-            var levelTemplate = template.Levels[level];
-            
-            STR += levelTemplate.IncSTR;
-            DEX += levelTemplate.IncDEX;
-            LUK += levelTemplate.IncLUK;
-            INT += levelTemplate.IncINT;
-
-            MaxHP += levelTemplate.IncMaxHP;
-            MaxMP += levelTemplate.IncMaxMP;
-
-            PAD += levelTemplate.IncPAD;
-            PDD += levelTemplate.IncPDD;
-            MAD += levelTemplate.IncMAD;
-            MDD += levelTemplate.IncMDD;
-            ACC += levelTemplate.IncACC;
-            EVA += levelTemplate.IncEVA;
-
-            Speed += levelTemplate.IncSpeed;
-            Jump += levelTemplate.IncJump;
+        var template = await user.StageUser.Context.Templates.ItemOption.Retrieve(option);
+        if (template == null) return;
+        if (!template.Levels.TryGetValue(level, out var levelTemplate)) return;
         
-            STRr += levelTemplate.IncSTRr;
-            DEXr += levelTemplate.IncDEXr;
-            LUKr += levelTemplate.IncLUKr;
-            INTr += levelTemplate.IncINTr;
-        
-            MaxHPr += levelTemplate.IncMaxHPr;
-            MaxMPr += levelTemplate.IncMaxMPr;
-        
-            PADr += levelTemplate.IncPADr;
-            PDDr += levelTemplate.IncPDDr;
-            MADr += levelTemplate.IncMADr;
-            MDDr += levelTemplate.IncMDDr;
-            ACCr += levelTemplate.IncACCr;
-            EVAr += levelTemplate.IncEVAr;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
+        STR += levelTemplate.IncSTR;
+        DEX += levelTemplate.IncDEX;
+        LUK += levelTemplate.IncLUK;
+        INT += levelTemplate.IncINT;
+
+        MaxHP += levelTemplate.IncMaxHP;
+        MaxMP += levelTemplate.IncMaxMP;
+
+        PAD += levelTemplate.IncPAD;
+        PDD += levelTemplate.IncPDD;
+        MAD += levelTemplate.IncMAD;
+        MDD += levelTemplate.IncMDD;
+        ACC += levelTemplate.IncACC;
+        EVA += levelTemplate.IncEVA;
+
+        Speed += levelTemplate.IncSpeed;
+        Jump += levelTemplate.IncJump;
+    
+        STRr += levelTemplate.IncSTRr;
+        DEXr += levelTemplate.IncDEXr;
+        LUKr += levelTemplate.IncLUKr;
+        INTr += levelTemplate.IncINTr;
+    
+        MaxHPr += levelTemplate.IncMaxHPr;
+        MaxMPr += levelTemplate.IncMaxMPr;
+    
+        PADr += levelTemplate.IncPADr;
+        PDDr += levelTemplate.IncPDDr;
+        MADr += levelTemplate.IncMADr;
+        MDDr += levelTemplate.IncMDDr;
+        ACCr += levelTemplate.IncACCr;
+        EVAr += levelTemplate.IncEVAr;
     }
     
     private async Task ApplySkills(IFieldUser user)
@@ -444,22 +479,23 @@ public record FieldUserStats : IFieldUserStats
             ACC += quickMotionLevel?.X ?? 0;
             EVA += quickMotionLevel?.Y ?? 0;
         }
-
-        if (JobConstants.GetJobRace(user.Character.Job) == 3 &&
-            JobConstants.GetJobType(user.Character.Job) == 3 &&
-            user.Character.TemporaryStats.RideVehicleRecord?.Reason == Skill.WildhunterJaguarRiding)
+        
+        if (JobConstants.GetJobRace(user.Character.Job) == 2 &&
+            JobConstants.GetJobType(user.Character.Job) == 2)
         {
-            var jaguarRidingSkill = await user.StageUser.Context.Templates.Skill.Retrieve(Skill.WildhunterJaguarRiding);
-            var jaguarRidingLevel = jaguarRidingSkill?[SkillLevels[Skill.WildhunterJaguarRiding]];
+            var dragonSoulSkill = await user.StageUser.Context.Templates.Skill.Retrieve(Skill.EvanDragonSoul);
+            var dragonSoulLevel = dragonSoulSkill?[SkillLevels[Skill.EvanDragonSoul]];
 
-            MaxHPr += jaguarRidingLevel?.W ?? 0;
-            Speed += jaguarRidingLevel?.X ?? 0;
-            EVA += jaguarRidingLevel?.Y ?? 0;
-            Cr += jaguarRidingLevel?.Z ?? 0;
+            MAD += dragonSoulLevel?.MAD ?? 0;
+            
+            var criticalMagicSkill = await user.StageUser.Context.Templates.Skill.Retrieve(Skill.EvanMagicCritical);
+            var criticalMagicLevel = criticalMagicSkill?[SkillLevels[Skill.EvanMagicCritical]];
+
+            Cr += criticalMagicLevel?.Prop ?? 0;
         }
     }
     
-    private Task ApplyTemporaryStats(IFieldUser user)
+    private async Task ApplyTemporaryStats(IFieldUser user)
     {
         STRr += user.Character.TemporaryStats[TemporaryStatType.BasicStatUp]?.Value ?? 0;
         DEXr += user.Character.TemporaryStats[TemporaryStatType.BasicStatUp]?.Value ?? 0;
@@ -483,7 +519,33 @@ public record FieldUserStats : IFieldUserStats
 
         MaxHPr += user.Character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
         MaxMPr += user.Character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
-        return Task.CompletedTask;
+
+        var sharpEyesStat = user.Character.TemporaryStats[TemporaryStatType.SharpEyes];
+        if (sharpEyesStat != null)
+        {
+            Cr += sharpEyesStat.Value >> 8;
+            CDMax += sharpEyesStat.Value & 0xFF;
+        }
+        
+        var thornsEffectStat = user.Character.TemporaryStats[TemporaryStatType.ThornsEffect];
+        if (thornsEffectStat != null)
+        {
+            Cr += thornsEffectStat.Value >> 8;
+            CDMax += thornsEffectStat.Value & 0xFF;
+        }
+
+        if (JobConstants.GetJobRace(user.Character.Job) == 3 &&
+            JobConstants.GetJobType(user.Character.Job) == 3 &&
+            user.Character.TemporaryStats.RideVehicleRecord?.Reason == Skill.WildhunterJaguarRiding)
+        {
+            var jaguarRidingSkill = await user.StageUser.Context.Templates.Skill.Retrieve(Skill.WildhunterJaguarRiding);
+            var jaguarRidingLevel = jaguarRidingSkill?[SkillLevels[Skill.WildhunterJaguarRiding]];
+
+            MaxHPr += jaguarRidingLevel?.W ?? 0;
+            Speed += jaguarRidingLevel?.X ?? 0;
+            EVA += jaguarRidingLevel?.Y ?? 0;
+            Cr += jaguarRidingLevel?.Z ?? 0;
+        }
     }
 
     private async Task<Tuple<int, int>> GetMastery(IFieldUser user, int skillID)

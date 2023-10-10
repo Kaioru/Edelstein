@@ -12,6 +12,28 @@ public class FieldOnPacketUserTransferFieldRequestPlug : IPipelinePlug<FieldOnPa
     
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserTransferFieldRequest message)
     {
+        if (message.User.Character.HP <= 0)
+        {
+            if (message.User.Field == null) return;
+            
+            var target = await _fieldManager.Retrieve(message.User.Field.Template.FieldReturn ?? message.User.Field.Template.ID);
+            
+            if (target == null) return;
+            
+            await message.User.Modify(m =>
+            {
+                m.TemporaryStats(s => s.ResetAll());
+                m.Stats(s =>
+                {
+                    // TODO exp calc
+                    s.HP = 1;
+                    s.MP = 1;
+                });
+            });
+            await target.Enter(message.User);
+            return;
+        }
+        
         if (message.FieldID != -1/* && message.User.Account.GradeCode.HasFlag(AccountGradeCode.AdminLevel1)*/)
         {
             var target = await _fieldManager.Retrieve(message.FieldID);

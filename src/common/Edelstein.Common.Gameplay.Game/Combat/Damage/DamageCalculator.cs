@@ -70,6 +70,9 @@ public class DamageCalculator : IDamageCalculator
     )
     {
         var random = new Rotational<uint>(new uint[RndSize]);
+        
+        _rndGenForCharacter.Next(random.Array);
+        
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
         var skillActingID = attack.SkillID;
 
@@ -89,15 +92,23 @@ public class DamageCalculator : IDamageCalculator
             : 0;
         var weaponType = ItemConstants.GetWeaponType(weapon);
         var damagePerMob = attack.Type == AttackType.Shoot 
-            ? skillLevel?.BulletCount ?? 1
+            ? Math.Max(skillLevel?.BulletCount ?? 1, skillLevel?.AttackCount ?? 1)
             : skillLevel?.AttackCount ?? 1;
 
         damagePerMob = Math.Max((short)1, damagePerMob);
 
         if (attack is { SkillID: 0, AttackActionType: AttackActionType.DualDagger })
             damagePerMob = 2;
+        
+        switch (attack.SkillID)
+        {
+            case Skill.SniperStrafe:
+                var ultimateStrafeSkill = await _skills.Retrieve(Skill.CrossbowmasterUltimateStrafe);
+                var ultimateStrafeLevel = ultimateStrafeSkill?[stats.SkillLevels[Skill.CrossbowmasterUltimateStrafe]];
 
-        _rndGenForCharacter.Next(random.Array);
+                damagePerMob = ultimateStrafeLevel?.BulletCount ?? damagePerMob;
+                break;
+        }
 
         var darkForceSkill = await _skills.Retrieve(Skill.DarkknightDarkForce);
         var darkForceLevel = darkForceSkill?[stats.SkillLevels[Skill.DarkknightDarkForce]];
@@ -317,6 +328,44 @@ public class DamageCalculator : IDamageCalculator
                     skillDamageR = advancedChargeLevel?.Damage ?? skillDamageR;
                     break;
                 }
+                
+                case Skill.ArcherArrowBlow:
+                case Skill.ArcherDoubleShot:
+                {
+                    foreach (var skillID in new List<int>
+                             {
+                                 Skill.HunterImproveBasic,
+                                 Skill.CrossbowmanImproveBasic,
+                             }.Where(skillID => stats.SkillLevels[skillID] > 0))
+                    {
+                        var archerImproveBasicSkill = await _skills.Retrieve(skillID);
+                        var archerImproveBasicLevel = archerImproveBasicSkill?[stats.SkillLevels[skillID]];
+
+                        if (archerImproveBasicLevel == null) break;
+
+                        skillDamageR += attack.SkillID == Skill.ArcherArrowBlow
+                            ? archerImproveBasicLevel.X
+                            : archerImproveBasicLevel.Y;
+                        break;
+                    }
+
+                    break;
+                }
+                case Skill.SniperStrafe:
+                    var ultimateStrafeSkill = await _skills.Retrieve(Skill.CrossbowmasterUltimateStrafe);
+                    var ultimateStrafeLevel = ultimateStrafeSkill?[stats.SkillLevels[Skill.CrossbowmasterUltimateStrafe]];
+                    
+                    skillDamageR = ultimateStrafeLevel?.Damage ?? skillDamageR;
+                    break;
+                case Skill.WildhunterFlashRain:
+                    if (i == damagePerMob - 1)
+                    {
+                        var flashRainSkill = await _skills.Retrieve(Skill.WildhunterFlashRain);
+                        var flashRainLevel = flashRainSkill?[stats.SkillLevels[Skill.WildhunterFlashRain]];
+
+                        skillDamageR = flashRainLevel?.X ?? skillDamageR;
+                    }
+                    break;
             }
 
             damage *= skillDamageR / 100d;

@@ -60,6 +60,8 @@ public interface IFieldUserStats
     int DamageMin { get; }
     int DamageMax { get; }
     
+    int CompletedSetItemID { get; }
+    
     IFieldUserStatsSkillLevels SkillLevels { get; }
 
     Task Apply(IFieldUser user);
