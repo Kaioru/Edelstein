@@ -70,6 +70,9 @@ public class DamageCalculator : IDamageCalculator
     )
     {
         var random = new Rotational<uint>(new uint[RndSize]);
+        
+        _rndGenForCharacter.Next(random.Array);
+        
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
         var skillActingID = attack.SkillID;
 
@@ -96,8 +99,6 @@ public class DamageCalculator : IDamageCalculator
 
         if (attack is { SkillID: 0, AttackActionType: AttackActionType.DualDagger })
             damagePerMob = 2;
-
-        _rndGenForCharacter.Next(random.Array);
         
         switch (attack.SkillID)
         {
