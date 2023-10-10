@@ -31,10 +31,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '7.0.x'
         cache: true
+        cache-dependency-path: '*/**/packages.lock.json'
     - run: dotnet restore --locked-mode
     - name: Pack
       run: dotnet pack --configuration Release --version-suffix "nightly.${{ needs.setup.outputs.date }}" --output artifacts
@@ -65,10 +66,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '7.0.x'
         cache: true
+        cache-dependency-path: '*/**/packages.lock.json'
     - run: dotnet restore --locked-mode
     - name: Install EntityFramework Core tools
       run: dotnet tool install --global dotnet-ef
