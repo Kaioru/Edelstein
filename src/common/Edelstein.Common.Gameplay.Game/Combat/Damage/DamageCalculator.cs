@@ -98,6 +98,16 @@ public class DamageCalculator : IDamageCalculator
             damagePerMob = 2;
 
         _rndGenForCharacter.Next(random.Array);
+        
+        switch (attack.SkillID)
+        {
+            case Skill.SniperStrafe:
+                var ultimateStrafeSkill = await _skills.Retrieve(Skill.CrossbowmasterUltimateStrafe);
+                var ultimateStrafeLevel = ultimateStrafeSkill?[stats.SkillLevels[Skill.CrossbowmasterUltimateStrafe]];
+
+                damagePerMob = ultimateStrafeLevel?.BulletCount ?? damagePerMob;
+                break;
+        }
 
         var darkForceSkill = await _skills.Retrieve(Skill.DarkknightDarkForce);
         var darkForceLevel = darkForceSkill?[stats.SkillLevels[Skill.DarkknightDarkForce]];
@@ -317,6 +327,12 @@ public class DamageCalculator : IDamageCalculator
                     skillDamageR = advancedChargeLevel?.Damage ?? skillDamageR;
                     break;
                 }
+                case Skill.SniperStrafe:
+                    var ultimateStrafeSkill = await _skills.Retrieve(Skill.CrossbowmasterUltimateStrafe);
+                    var ultimateStrafeLevel = ultimateStrafeSkill?[stats.SkillLevels[Skill.CrossbowmasterUltimateStrafe]];
+                    
+                    skillDamageR = ultimateStrafeLevel?.Damage ?? skillDamageR;
+                    break;
                 case Skill.WildhunterFlashRain:
                     if (i == damagePerMob - 1)
                     {
