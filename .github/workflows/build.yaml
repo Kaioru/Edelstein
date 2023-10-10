@@ -13,8 +13,12 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '7.0.x'
-        cache: true
-        cache-dependency-path: '*/**/packages.lock.json'
+    - uses: actions/cache@v1
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
     - run: dotnet restore --locked-mode
     - name: Build
       run: dotnet build --configuration Release
