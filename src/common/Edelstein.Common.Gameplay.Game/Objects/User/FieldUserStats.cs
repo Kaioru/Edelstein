@@ -346,50 +346,42 @@ public record FieldUserStats : IFieldUserStats
 
     private async Task ApplyItemOption(IFieldUser user, int option, int level)
     {
-        try
-        {
-            var template = await user.StageUser.Context.Templates.ItemOption.Retrieve(option);
-            if (template == null) return;
-            if (!template.Levels.ContainsKey(level)) return;
-            var levelTemplate = template.Levels[level];
-            
-            STR += levelTemplate.IncSTR;
-            DEX += levelTemplate.IncDEX;
-            LUK += levelTemplate.IncLUK;
-            INT += levelTemplate.IncINT;
-
-            MaxHP += levelTemplate.IncMaxHP;
-            MaxMP += levelTemplate.IncMaxMP;
-
-            PAD += levelTemplate.IncPAD;
-            PDD += levelTemplate.IncPDD;
-            MAD += levelTemplate.IncMAD;
-            MDD += levelTemplate.IncMDD;
-            ACC += levelTemplate.IncACC;
-            EVA += levelTemplate.IncEVA;
-
-            Speed += levelTemplate.IncSpeed;
-            Jump += levelTemplate.IncJump;
+        var template = await user.StageUser.Context.Templates.ItemOption.Retrieve(option);
+        if (template == null) return;
+        if (!template.Levels.TryGetValue(level, out var levelTemplate)) return;
         
-            STRr += levelTemplate.IncSTRr;
-            DEXr += levelTemplate.IncDEXr;
-            LUKr += levelTemplate.IncLUKr;
-            INTr += levelTemplate.IncINTr;
-        
-            MaxHPr += levelTemplate.IncMaxHPr;
-            MaxMPr += levelTemplate.IncMaxMPr;
-        
-            PADr += levelTemplate.IncPADr;
-            PDDr += levelTemplate.IncPDDr;
-            MADr += levelTemplate.IncMADr;
-            MDDr += levelTemplate.IncMDDr;
-            ACCr += levelTemplate.IncACCr;
-            EVAr += levelTemplate.IncEVAr;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
+        STR += levelTemplate.IncSTR;
+        DEX += levelTemplate.IncDEX;
+        LUK += levelTemplate.IncLUK;
+        INT += levelTemplate.IncINT;
+
+        MaxHP += levelTemplate.IncMaxHP;
+        MaxMP += levelTemplate.IncMaxMP;
+
+        PAD += levelTemplate.IncPAD;
+        PDD += levelTemplate.IncPDD;
+        MAD += levelTemplate.IncMAD;
+        MDD += levelTemplate.IncMDD;
+        ACC += levelTemplate.IncACC;
+        EVA += levelTemplate.IncEVA;
+
+        Speed += levelTemplate.IncSpeed;
+        Jump += levelTemplate.IncJump;
+    
+        STRr += levelTemplate.IncSTRr;
+        DEXr += levelTemplate.IncDEXr;
+        LUKr += levelTemplate.IncLUKr;
+        INTr += levelTemplate.IncINTr;
+    
+        MaxHPr += levelTemplate.IncMaxHPr;
+        MaxMPr += levelTemplate.IncMaxMPr;
+    
+        PADr += levelTemplate.IncPADr;
+        PDDr += levelTemplate.IncPDDr;
+        MADr += levelTemplate.IncMADr;
+        MDDr += levelTemplate.IncMDDr;
+        ACCr += levelTemplate.IncACCr;
+        EVAr += levelTemplate.IncEVAr;
     }
     
     private async Task ApplySkills(IFieldUser user)
