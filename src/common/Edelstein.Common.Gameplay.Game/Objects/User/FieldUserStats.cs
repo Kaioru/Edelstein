@@ -483,6 +483,21 @@ public record FieldUserStats : IFieldUserStats
 
         MaxHPr += user.Character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
         MaxMPr += user.Character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
+
+        var sharpEyesStat = user.Character.TemporaryStats[TemporaryStatType.SharpEyes];
+        if (sharpEyesStat != null)
+        {
+            Cr += sharpEyesStat.Value >> 8;
+            CDMax += sharpEyesStat.Value & 0xFF;
+        }
+        
+        var thornsEffectStat = user.Character.TemporaryStats[TemporaryStatType.ThornsEffect];
+        if (thornsEffectStat != null)
+        {
+            Cr += thornsEffectStat.Value >> 8;
+            CDMax += thornsEffectStat.Value & 0xFF;
+        }
+        
         return Task.CompletedTask;
     }
 
