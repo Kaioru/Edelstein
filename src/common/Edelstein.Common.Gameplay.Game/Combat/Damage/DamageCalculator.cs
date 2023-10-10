@@ -89,7 +89,7 @@ public class DamageCalculator : IDamageCalculator
             : 0;
         var weaponType = ItemConstants.GetWeaponType(weapon);
         var damagePerMob = attack.Type == AttackType.Shoot 
-            ? skillLevel?.BulletCount ?? 1
+            ? Math.Max(skillLevel?.BulletCount ?? 1, skillLevel?.AttackCount ?? 1)
             : skillLevel?.AttackCount ?? 1;
 
         damagePerMob = Math.Max((short)1, damagePerMob);
@@ -317,6 +317,15 @@ public class DamageCalculator : IDamageCalculator
                     skillDamageR = advancedChargeLevel?.Damage ?? skillDamageR;
                     break;
                 }
+                case Skill.WildhunterFlashRain:
+                    if (i == damagePerMob - 1)
+                    {
+                        var flashRainSkill = await _skills.Retrieve(Skill.WildhunterFlashRain);
+                        var flashRainLevel = flashRainSkill?[stats.SkillLevels[Skill.WildhunterFlashRain]];
+
+                        skillDamageR = flashRainLevel?.X ?? skillDamageR;
+                    }
+                    break;
             }
 
             damage *= skillDamageR / 100d;
