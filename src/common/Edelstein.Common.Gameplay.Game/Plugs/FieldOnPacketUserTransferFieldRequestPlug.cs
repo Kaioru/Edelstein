@@ -20,16 +20,17 @@ public class FieldOnPacketUserTransferFieldRequestPlug : IPipelinePlug<FieldOnPa
             
             if (target == null) return;
             
-            await target.Enter(message.User);
             await message.User.Modify(m =>
             {
                 m.TemporaryStats(s => s.ResetAll());
                 m.Stats(s =>
                 {
-                    s.HP = message.User.Stats.MaxHP;
-                    s.MP = message.User.Stats.MaxMP;
+                    // TODO exp calc
+                    s.HP = 1;
+                    s.MP = 1;
                 });
             });
+            await target.Enter(message.User);
             return;
         }
         
