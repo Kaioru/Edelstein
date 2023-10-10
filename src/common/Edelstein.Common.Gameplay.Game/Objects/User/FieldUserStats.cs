@@ -76,6 +76,8 @@ public record FieldUserStats : IFieldUserStats
     public int DamageMin { get; private set; }
     public int DamageMax { get; private set; }
     
+    public int CompletedSetItemID { get; private set; }
+
     public IFieldUserStatsSkillLevels SkillLevels { get; }
     
     public async Task Apply(IFieldUser user)
@@ -104,6 +106,8 @@ public record FieldUserStats : IFieldUserStats
         
         DamageMin = 1;
         DamageMax = 1;
+
+        CompletedSetItemID = 0;
 
         SkillLevels.Records.Clear();
         
@@ -224,12 +228,14 @@ public record FieldUserStats : IFieldUserStats
             .Where(kv => kv.Value is ItemSlotEquip)
             .Select(kv => (kv.Key, (ItemSlotEquip)kv.Value))
             .ToImmutableList() ?? ImmutableList<(short Key, ItemSlotEquip)>.Empty;
+        var setCompletion = new Dictionary<int, int>();
 
         foreach (var (slot, item) in equipped)
         {
             var template = await user.StageUser.Context.Templates.Item.Retrieve(item.ID);
 
             if (template is not IItemEquipTemplate equip) continue;
+            
             STR += item.STR;
             DEX += item.DEX;
             INT += item.INT;
@@ -279,6 +285,43 @@ public record FieldUserStats : IFieldUserStats
                     await ApplyItemOption(user, item.Option3, level);
                 }
             }
+
+            if (equip.SetItemID > 0)
+                setCompletion[equip.SetItemID] = (setCompletion.TryGetValue(equip.SetItemID, out var count) ? count : 0) + 1;
+        }
+        
+        foreach (var (setItemID, count) in setCompletion)
+        {
+            var setItemTemplate = await user.StageUser.Context.Templates.ItemSet.Retrieve(setItemID);
+            if (setItemTemplate == null) continue;
+
+            for (var i = 1; i <= count; i++)
+            {
+                var setItemEffect = setItemTemplate.Effects.TryGetValue(i, out var effect) ? effect : null;
+                if (setItemEffect == null) continue;
+                STR += setItemEffect.IncSTR;
+                DEX += setItemEffect.IncDEX;
+                INT += setItemEffect.IncINT;
+                LUK += setItemEffect.IncLUK;
+                
+                MaxHP += setItemEffect.IncMaxHP;
+                MaxMP += setItemEffect.IncMaxMP;
+                
+                PAD += setItemEffect.IncPAD;
+                MAD += setItemEffect.IncMAD;
+                PDD += setItemEffect.IncPDD;
+                MDD += setItemEffect.IncMDD;
+                
+                ACC += setItemEffect.IncACC;
+                EVA += setItemEffect.IncEVA;
+                
+                Craft += setItemEffect.IncCraft;
+                Speed += setItemEffect.IncSpeed;
+                Jump += setItemEffect.IncJump;
+            }
+
+            if (count == setItemTemplate.SetCompleteCount)
+                CompletedSetItemID = setItemID;
         }
 
         var weaponType = ItemConstants.GetWeaponType(
