@@ -21,11 +21,14 @@ public class FieldOnPacketUserTransferFieldRequestPlug : IPipelinePlug<FieldOnPa
             if (target == null) return;
             
             await target.Enter(message.User);
-            await message.User.ModifyTemporaryStats(s => s.ResetAll());
-            await message.User.ModifyStats(s =>
+            await message.User.Modify(m =>
             {
-                s.HP = message.User.Stats.MaxHP;
-                s.MP = message.User.Stats.MaxMP;
+                m.TemporaryStats(s => s.ResetAll());
+                m.Stats(s =>
+                {
+                    s.HP = message.User.Stats.MaxHP;
+                    s.MP = message.User.Stats.MaxMP;
+                });
             });
             return;
         }
