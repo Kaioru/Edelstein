@@ -452,6 +452,11 @@ public record FieldUserStats : IFieldUserStats
             var dragonSoulLevel = dragonSoulSkill?[SkillLevels[Skill.EvanDragonSoul]];
 
             MAD += dragonSoulLevel?.MAD ?? 0;
+            
+            var criticalMagicSkill = await user.StageUser.Context.Templates.Skill.Retrieve(Skill.EvanMagicCritical);
+            var criticalMagicLevel = criticalMagicSkill?[SkillLevels[Skill.EvanMagicCritical]];
+
+            Cr += criticalMagicLevel?.Prop ?? 0;
         }
     }
     
