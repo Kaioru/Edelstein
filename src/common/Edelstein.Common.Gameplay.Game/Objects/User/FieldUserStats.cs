@@ -444,22 +444,18 @@ public record FieldUserStats : IFieldUserStats
             ACC += quickMotionLevel?.X ?? 0;
             EVA += quickMotionLevel?.Y ?? 0;
         }
-
-        if (JobConstants.GetJobRace(user.Character.Job) == 3 &&
-            JobConstants.GetJobType(user.Character.Job) == 3 &&
-            user.Character.TemporaryStats.RideVehicleRecord?.Reason == Skill.WildhunterJaguarRiding)
+        
+        if (JobConstants.GetJobRace(user.Character.Job) == 2 &&
+            JobConstants.GetJobType(user.Character.Job) == 2)
         {
-            var jaguarRidingSkill = await user.StageUser.Context.Templates.Skill.Retrieve(Skill.WildhunterJaguarRiding);
-            var jaguarRidingLevel = jaguarRidingSkill?[SkillLevels[Skill.WildhunterJaguarRiding]];
+            var dragonSoulSkill = await user.StageUser.Context.Templates.Skill.Retrieve(Skill.EvanDragonSoul);
+            var dragonSoulLevel = dragonSoulSkill?[SkillLevels[Skill.EvanDragonSoul]];
 
-            MaxHPr += jaguarRidingLevel?.W ?? 0;
-            Speed += jaguarRidingLevel?.X ?? 0;
-            EVA += jaguarRidingLevel?.Y ?? 0;
-            Cr += jaguarRidingLevel?.Z ?? 0;
+            MAD += dragonSoulLevel?.MAD ?? 0;
         }
     }
     
-    private Task ApplyTemporaryStats(IFieldUser user)
+    private async Task ApplyTemporaryStats(IFieldUser user)
     {
         STRr += user.Character.TemporaryStats[TemporaryStatType.BasicStatUp]?.Value ?? 0;
         DEXr += user.Character.TemporaryStats[TemporaryStatType.BasicStatUp]?.Value ?? 0;
@@ -497,8 +493,19 @@ public record FieldUserStats : IFieldUserStats
             Cr += thornsEffectStat.Value >> 8;
             CDMax += thornsEffectStat.Value & 0xFF;
         }
-        
-        return Task.CompletedTask;
+
+        if (JobConstants.GetJobRace(user.Character.Job) == 3 &&
+            JobConstants.GetJobType(user.Character.Job) == 3 &&
+            user.Character.TemporaryStats.RideVehicleRecord?.Reason == Skill.WildhunterJaguarRiding)
+        {
+            var jaguarRidingSkill = await user.StageUser.Context.Templates.Skill.Retrieve(Skill.WildhunterJaguarRiding);
+            var jaguarRidingLevel = jaguarRidingSkill?[SkillLevels[Skill.WildhunterJaguarRiding]];
+
+            MaxHPr += jaguarRidingLevel?.W ?? 0;
+            Speed += jaguarRidingLevel?.X ?? 0;
+            EVA += jaguarRidingLevel?.Y ?? 0;
+            Cr += jaguarRidingLevel?.Z ?? 0;
+        }
     }
 
     private async Task<Tuple<int, int>> GetMastery(IFieldUser user, int skillID)
