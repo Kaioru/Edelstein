@@ -29,8 +29,8 @@ public class AskSlideMenuRequest : AbstractConversationMessageRequest<int>
         writer.WriteInt(_slideMenuType);
         writer.WriteInt(_selected);
         writer.WriteString(string.Join(
-            "\r\n",
-            _menu.Select(p => "#L" + p.Key + "#" + p.Value + "#l")
+            string.Empty,
+            _menu.Select(p => "#" + p.Key + "#" + p.Value)
         ));
     }
 }
