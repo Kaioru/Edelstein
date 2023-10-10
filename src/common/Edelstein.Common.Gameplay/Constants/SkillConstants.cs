@@ -16,6 +16,7 @@ public static class SkillConstants
             case Skill.BishopMasterMagic:
             case Skill.BowmasterMarkmanShip:
             case Skill.CrossbowmasterMarkmanShip:
+            case Skill.CrossbowmasterUltimateStrafe:
             case Skill.NightlordExpertJavelin:
             case Skill.ShadowerGrid:
             case Skill.ViperCounterAttack:
