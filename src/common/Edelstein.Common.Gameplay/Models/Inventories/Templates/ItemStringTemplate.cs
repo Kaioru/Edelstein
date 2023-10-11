@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 
 namespace Edelstein.Common.Gameplay.Models.Inventories.Templates;
@@ -10,14 +10,14 @@ public record ItemStringTemplate : IItemStringTemplate
     public string Name { get; }
     public string Desc { get; }
     
-    public ItemStringTemplate(int id, IDataProperty property)
+    public ItemStringTemplate(int id, IDataNode node)
     {
         ID = id;
 
         try
         {
-            Name = property.ResolveOrDefault<string>("name") ?? string.Empty;
-            Desc = property.ResolveOrDefault<string>("desc") ?? string.Empty;
+            Name = node.ResolveString("name") ?? string.Empty;
+            Desc = node.ResolveString("desc") ?? string.Empty;
         }
         catch (InvalidCastException)
         {

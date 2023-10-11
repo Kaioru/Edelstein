@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
@@ -7,32 +7,32 @@ namespace Edelstein.Common.Gameplay.Game.Objects.Mob.Templates;
 
 public class MobTemplate : IMobTemplate
 {
-    public MobTemplate(int id, IDataProperty property, IDataProperty info)
+    public MobTemplate(int id, IDataNode node, IDataNode info)
     {
         ID = id;
 
-        if (property.Resolve("fly") != null) MoveAbility = MoveAbilityType.Fly;
-        else if (property.Resolve("jump") != null) MoveAbility = MoveAbilityType.Jump;
-        else if (property.Resolve("move") != null) MoveAbility = MoveAbilityType.Walk;
+        if (node.ResolvePath("fly") != null) MoveAbility = MoveAbilityType.Fly;
+        else if (node.ResolvePath("jump") != null) MoveAbility = MoveAbilityType.Jump;
+        else if (node.ResolvePath("move") != null) MoveAbility = MoveAbilityType.Walk;
         else MoveAbility = MoveAbilityType.Stop;
 
-        Level = info.Resolve<short>("level") ?? 0;
+        Level = info.ResolveShort("level") ?? 0;
 
-        IsBoss = (info.Resolve<int>("boss") ?? 0) > 0;
+        IsBoss = (info.ResolveInt("boss") ?? 0) > 0;
 
-        MaxHP = info.Resolve<int>("maxHP") ?? 1;
-        MaxMP = info.Resolve<int>("maxMP") ?? 0;
+        MaxHP = info.ResolveInt("maxHP") ?? 1;
+        MaxMP = info.ResolveInt("maxMP") ?? 0;
 
-        PAD = info.Resolve<int>("PADamage") ?? 0;
-        PDD = info.Resolve<int>("PDDamage") ?? 0;
-        PDR = info.Resolve<int>("PDRate") ?? 0;
-        MAD = info.Resolve<int>("MADamage") ?? 0;
-        MDD = info.Resolve<int>("PDDamage") ?? 0;
-        MDR = info.Resolve<int>("MDRate") ?? 0;
-        ACC = info.Resolve<int>("acc") ?? 0;
-        EVA = info.Resolve<int>("eva") ?? 0;
+        PAD = info.ResolveInt("PADamage") ?? 0;
+        PDD = info.ResolveInt("PDDamage") ?? 0;
+        PDR = info.ResolveInt("PDRate") ?? 0;
+        MAD = info.ResolveInt("MADamage") ?? 0;
+        MDD = info.ResolveInt("PDDamage") ?? 0;
+        MDR = info.ResolveInt("MDRate") ?? 0;
+        ACC = info.ResolveInt("acc") ?? 0;
+        EVA = info.ResolveInt("eva") ?? 0;
 
-        EXP = info.Resolve<int>("exp") ?? 0;
+        EXP = info.ResolveInt("exp") ?? 0;
 
         ElementAttributes = new Dictionary<Element, ElementAttribute>
         {
@@ -47,7 +47,7 @@ public class MobTemplate : IMobTemplate
         };
 
         var elemCount = 0;
-        var elemAttrs = info.ResolveOrDefault<string>("elemAttr") ?? string.Empty;
+        var elemAttrs = info.ResolveString("elemAttr") ?? string.Empty;
         
         foreach (var group in elemAttrs.GroupBy(_ => elemCount++ / 2).ToList())
         {

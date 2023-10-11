@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Constants;
-using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;

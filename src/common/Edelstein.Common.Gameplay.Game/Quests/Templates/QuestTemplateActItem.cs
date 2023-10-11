@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 
@@ -6,20 +6,20 @@ namespace Edelstein.Common.Gameplay.Game.Quests.Templates;
 
 public record QuestTemplateActItem : IQuestTemplateActItem
 {
-    public QuestTemplateActItem(int order, IDataProperty property)
+    public QuestTemplateActItem(int order, IDataNode node)
     {
         Order = order;
 
-        ItemID = property.Resolve<int>("id") ?? 0;
-        Count = property.Resolve<int>("count") ?? 0;
+        ItemID = node.ResolveInt("id") ?? 0;
+        Count = node.ResolveInt("count") ?? 0;
 
-        IsNamed = property.Resolve<int>("name") > 0;
-        Period = property.Resolve<int>("period");
-        JobFlags = (QuestJobFlags?)property.Resolve<int>("job");
-        JobExFlags = (QuestJobExFlags?)property.Resolve<int>("jobEx");
-        Gender = property.Resolve<int>("gender");
-        Prob = property.Resolve<int>("prop");
-        Variation = (ItemVariationOption?)property.Resolve<int>("var");
+        IsNamed = node.ResolveInt("name") > 0;
+        Period = node.ResolveInt("period");
+        JobFlags = (QuestJobFlags?)node.ResolveInt("job");
+        JobExFlags = (QuestJobExFlags?)node.ResolveInt("jobEx");
+        Gender = node.ResolveInt("gender");
+        Prob = node.ResolveInt("prop");
+        Variation = (ItemVariationOption?)node.ResolveInt("var");
     }
     
     public int Order { get; }

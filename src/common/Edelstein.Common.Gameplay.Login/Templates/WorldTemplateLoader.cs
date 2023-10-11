@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Templates;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Login.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -7,10 +7,10 @@ namespace Edelstein.Common.Gameplay.Login.Templates;
 
 public class WorldTemplateLoader : ITemplateLoader
 {
-    private readonly IDataManager _data;
+    private readonly IDataNamespace _data;
     private readonly ITemplateManager<IWorldTemplate> _manager;
 
-    public WorldTemplateLoader(IDataManager data, ITemplateManager<IWorldTemplate> manager)
+    public WorldTemplateLoader(IDataNamespace data, ITemplateManager<IWorldTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -18,7 +18,7 @@ public class WorldTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var directory = _data.Resolve("Server/World.img");
+        var directory = _data.ResolvePath("Server/World.img");
 
         if (directory == null) return 0;
         foreach (var node in directory)

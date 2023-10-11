@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
+using Duey.Abstractions;
 using Edelstein.Common.Gameplay.Game.Spatial;
 using Edelstein.Common.Utilities.Spatial;
-using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Game.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Spatial;
@@ -15,32 +15,32 @@ public record FieldTemplate : IFieldTemplate
         int id,
         IDataNode foothold,
         IDataNode portal,
-        IDataProperty ladderRope,
+        IDataNode ladderRope,
         IDataNode life,
-        IDataProperty info
+        IDataNode info
     )
     {
         ID = id;
 
-        Limit = (FieldLimitType)(info.Resolve<int>("fieldLimit") ?? 0);
+        Limit = (FieldLimitType)(info.ResolveInt("fieldLimit") ?? 0);
 
-        FieldReturn = info.Resolve<int>("returnMap");
-        ForcedReturn = info.Resolve<int>("forcedReturn");
+        FieldReturn = info.ResolveInt("returnMap");
+        ForcedReturn = info.ResolveInt("forcedReturn");
         if (FieldReturn == 999999999) FieldReturn = null;
         if (ForcedReturn == 999999999) ForcedReturn = null;
 
-        ScriptFirstUserEnter = info.ResolveOrDefault<string>("onFirstUserEnter");
-        ScriptUserEnter = info.ResolveOrDefault<string>("onUserEnter");
+        ScriptFirstUserEnter = info.ResolveString("onFirstUserEnter");
+        ScriptUserEnter = info.ResolveString("onUserEnter");
         if (string.IsNullOrWhiteSpace(ScriptFirstUserEnter)) ScriptFirstUserEnter = null;
         if (string.IsNullOrWhiteSpace(ScriptUserEnter)) ScriptUserEnter = null;
 
         var footholds = foothold.Children
             .SelectMany(c => c.Children)
             .SelectMany(c => c.Children)
-            .Select(p => new FieldFoothold(Convert.ToInt32(p.Name), p.ResolveAll()))
+            .Select(p => new FieldFoothold(Convert.ToInt32(p.Name), p.Cache()))
             .ToImmutableList();
         var portals = portal.Children
-            .Select(p => new FieldPortal(Convert.ToInt32(p.Name), p.ResolveAll()))
+            .Select(p => new FieldPortal(Convert.ToInt32(p.Name), p.Cache()))
             .ToImmutableList();
 
         var leftTop = new Point2D(
@@ -53,12 +53,12 @@ public record FieldTemplate : IFieldTemplate
         );
 
         leftTop = new Point2D(
-            info.Resolve<int>("VRLeft") ?? leftTop.X,
-            info.Resolve<int>("VRTop") ?? leftTop.Y
+            info.ResolveInt("VRLeft") ?? leftTop.X,
+            info.ResolveInt("VRTop") ?? leftTop.Y
         );
         rightBottom = new Point2D(
-            info.Resolve<int>("VRRight") ?? rightBottom.X,
-            info.Resolve<int>("VRBottom") ?? rightBottom.Y
+            info.ResolveInt("VRRight") ?? rightBottom.X,
+            info.ResolveInt("VRBottom") ?? rightBottom.Y
         );
 
         Bounds = new Rectangle2D(leftTop, rightBottom);
@@ -73,10 +73,10 @@ public record FieldTemplate : IFieldTemplate
         Portals.Insert(portals);
 
         Life = life.Children
-            .Select(p => new FieldTemplateLife(p.ResolveAll()))
+            .Select(p => new FieldTemplateLife(p.Cache()))
             .ToImmutableList<IFieldTemplateLife>();
 
-        MobRate = info.Resolve<double>("mobRate") ?? 1.0;
+        MobRate = info.ResolveDouble("mobRate") ?? 1.0;
 
         var mobCapacity = Bounds.Height * Bounds.Width * MobRate * 0.0000078125;
 

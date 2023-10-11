@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Templates;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -7,10 +7,10 @@ namespace Edelstein.Common.Gameplay.Game.Templates;
 
 public class FieldTemplateLoader : ITemplateLoader
 {
-    private readonly IDataManager _data;
+    private readonly IDataNamespace _data;
     private readonly ITemplateManager<IFieldTemplate> _manager;
 
-    public FieldTemplateLoader(IDataManager data, ITemplateManager<IFieldTemplate> manager)
+    public FieldTemplateLoader(IDataNamespace data, ITemplateManager<IFieldTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -18,7 +18,7 @@ public class FieldTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var directory = _data.Resolve("Map/Map");
+        var directory = _data.ResolvePath("Map/Map");
 
         if (directory == null) return 0;
 
@@ -32,11 +32,11 @@ public class FieldTemplateLoader : ITemplateLoader
                     id,
                     () => new FieldTemplate(
                         id,
-                        n.Resolve("foothold")!.ResolveAll(),
-                        n.Resolve("portal")!.ResolveAll(),
-                        n.Resolve("ladderRope")!.ResolveAll(),
-                        n.Resolve("life")!.ResolveAll(),
-                        n.Resolve("info")!.ResolveAll()
+                        n.ResolvePath("foothold")!.Cache(),
+                        n.ResolvePath("portal")!.Cache(),
+                        n.ResolvePath("ladderRope")!.Cache(),
+                        n.ResolvePath("life")!.Cache(),
+                        n.ResolvePath("info")!.Cache()
                     )
                 ));
             }));

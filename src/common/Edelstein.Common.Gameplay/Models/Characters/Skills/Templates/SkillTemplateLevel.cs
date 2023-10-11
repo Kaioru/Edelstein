@@ -1,6 +1,5 @@
-﻿using Duey.Types;
+﻿using Duey.Abstractions;
 using Edelstein.Common.Utilities.Spatial;
-using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
 namespace Edelstein.Common.Gameplay.Models.Characters.Skills.Templates;
@@ -126,128 +125,128 @@ public class SkillTemplateLevel : ISkillTemplateLevel
     public short W { get; }
     public short T { get; }
 
-    public SkillTemplateLevel(int level, IDataProperty property)
+    public SkillTemplateLevel(int level, IDataNode node)
     {
         Level = level;
         
-        HP = property.Resolve<short>("hp") ?? 0;
-        MP = property.Resolve<short>("mp") ?? 0;
+        HP = node.ResolveShort("hp") ?? 0;
+        MP = node.ResolveShort("mp") ?? 0;
 
-        PAD = property.Resolve<short>("pad") ?? 0;
-        PDD = property.Resolve<short>("pdd") ?? 0;
-        MAD = property.Resolve<short>("mad") ?? 0;
-        MDD = property.Resolve<short>("mdd") ?? 0;
-        ACC = property.Resolve<short>("acc") ?? 0;
-        EVA = property.Resolve<short>("eva") ?? 0;
-        Craft = property.Resolve<short>("craft") ?? 0;
+        PAD = node.ResolveShort("pad") ?? 0;
+        PDD = node.ResolveShort("pdd") ?? 0;
+        MAD = node.ResolveShort("mad") ?? 0;
+        MDD = node.ResolveShort("mdd") ?? 0;
+        ACC = node.ResolveShort("acc") ?? 0;
+        EVA = node.ResolveShort("eva") ?? 0;
+        Craft = node.ResolveShort("craft") ?? 0;
 
-        Speed = property.Resolve<short>("speed") ?? 0;
-        Jump = property.Resolve<short>("jump") ?? 0;
+        Speed = node.ResolveShort("speed") ?? 0;
+        Jump = node.ResolveShort("jump") ?? 0;
 
-        Morph = property.Resolve<short>("morph") ?? 0;
+        Morph = node.ResolveShort("morph") ?? 0;
 
-        HPCon = property.Resolve<short>("hpCon") ?? 0;
-        MPCon = property.Resolve<short>("mpCon") ?? 0;
-        MoneyCon = property.Resolve<short>("moneyCon") ?? 0;
-        ItemCon = property.Resolve<short>("itemCon") ?? 0;
-        ItemConNo = property.Resolve<short>("itemConNo") ?? 0;
+        HPCon = node.ResolveShort("hpCon") ?? 0;
+        MPCon = node.ResolveShort("mpCon") ?? 0;
+        MoneyCon = node.ResolveShort("moneyCon") ?? 0;
+        ItemCon = node.ResolveShort("itemCon") ?? 0;
+        ItemConNo = node.ResolveShort("itemConNo") ?? 0;
 
-        Damage = property.Resolve<short>("damage") ?? 0;
-        FixDamage = property.Resolve<short>("fixdamage") ?? 0;
+        Damage = node.ResolveShort("damage") ?? 0;
+        FixDamage = node.ResolveShort("fixdamage") ?? 0;
 
-        SelfDestruction = property.Resolve<short>("selfDestruction") ?? 0;
+        SelfDestruction = node.ResolveShort("selfDestruction") ?? 0;
 
-        Time = property.Resolve<short>("time") ?? 0;
-        SubTime = property.Resolve<short>("subTime") ?? 0;
+        Time = node.ResolveShort("time") ?? 0;
+        SubTime = node.ResolveShort("subTime") ?? 0;
 
-        Prop = property.Resolve<short>("prop") ?? 0;
-        SubProp = property.Resolve<short>("subProp") ?? 0;
+        Prop = node.ResolveShort("prop") ?? 0;
+        SubProp = node.ResolveShort("subProp") ?? 0;
 
-        AttackCount = property.Resolve<short>("attackCount") ?? 1;
-        BulletCount = property.Resolve<short>("bulletCount") ?? 0;
-        BulletConsume = property.Resolve<short>("bulletConsume") ?? 0;
+        AttackCount = node.ResolveShort("attackCount") ?? 1;
+        BulletCount = node.ResolveShort("bulletCount") ?? 0;
+        BulletConsume = node.ResolveShort("bulletConsume") ?? 0;
 
-        Mastery = property.Resolve<short>("mastery") ?? 0;
+        Mastery = node.ResolveShort("mastery") ?? 0;
 
-        MobCount = property.Resolve<short>("mobCount") ?? 0;
+        MobCount = node.ResolveShort("mobCount") ?? 0;
 
-        X = property.Resolve<short>("x") ?? 0;
-        Y = property.Resolve<short>("y") ?? 0;
-        Z = property.Resolve<short>("z") ?? 0;
+        X = node.ResolveShort("x") ?? 0;
+        Y = node.ResolveShort("y") ?? 0;
+        Z = node.ResolveShort("z") ?? 0;
 
-        Action = property.Resolve<short>("action") ?? 0;
+        Action = node.ResolveShort("action") ?? 0;
 
-        EMHP = property.Resolve<short>("emhp") ?? 0;
-        EMMP = property.Resolve<short>("emmp") ?? 0;
-        EPAD = property.Resolve<short>("epad") ?? 0;
-        EPDD = property.Resolve<short>("epdd") ?? 0;
-        EMDD = property.Resolve<short>("emdd") ?? 0;
+        EMHP = node.ResolveShort("emhp") ?? 0;
+        EMMP = node.ResolveShort("emmp") ?? 0;
+        EPAD = node.ResolveShort("epad") ?? 0;
+        EPDD = node.ResolveShort("epdd") ?? 0;
+        EMDD = node.ResolveShort("emdd") ?? 0;
 
-        Range = property.Resolve<short>("range") ?? 0;
+        Range = node.ResolveShort("range") ?? 0;
 
-        Cooltime = property.Resolve<short>("cooltime") ?? 0;
+        Cooltime = node.ResolveShort("cooltime") ?? 0;
 
-        var lt = property.ResolveOrDefault<NXVector>("lt") ?? new NXVector(0, 0);
-        var rb = property.ResolveOrDefault<NXVector>("rb") ?? new NXVector(0, 0);
+        var (l, t) = node.ResolveVector("lt") ?? new ValueTuple<int, int>(0, 0);
+        var (r, b) = node.ResolveVector("rb") ?? new ValueTuple<int, int>(0, 0);
 
-        Bounds = new Rectangle2D(new Point2D(lt.X, lt.Y), new Point2D(rb.X, rb.Y));
+        Bounds = new Rectangle2D(new Point2D(l, t), new Point2D(r, b));
 
-        MHPr = property.Resolve<short>("mhpR") ?? 0;
-        MMPr = property.Resolve<short>("mmpR") ?? 0;
+        MHPr = node.ResolveShort("mhpR") ?? 0;
+        MMPr = node.ResolveShort("mmpR") ?? 0;
 
-        Cr = property.Resolve<short>("cr") ?? 0;
-        CDMin = property.Resolve<short>("criticaldamageMin") ?? 0;
-        CDMax = property.Resolve<short>("criticaldamageMax") ?? 0;
+        Cr = node.ResolveShort("cr") ?? 0;
+        CDMin = node.ResolveShort("criticaldamageMin") ?? 0;
+        CDMax = node.ResolveShort("criticaldamageMax") ?? 0;
 
-        ACCr = property.Resolve<short>("accR") ?? 0;
-        EVAr = property.Resolve<short>("evaR") ?? 0;
-        Ar = property.Resolve<short>("ar") ?? 0;
-        Er = property.Resolve<short>("er") ?? 0;
+        ACCr = node.ResolveShort("accR") ?? 0;
+        EVAr = node.ResolveShort("evaR") ?? 0;
+        Ar = node.ResolveShort("ar") ?? 0;
+        Er = node.ResolveShort("er") ?? 0;
 
-        PDDr = property.Resolve<short>("pddR") ?? 0;
-        MDDr = property.Resolve<short>("mddR") ?? 0;
-        PDr = property.Resolve<short>("pdr") ?? 0;
-        MDr = property.Resolve<short>("mdr") ?? 0;
+        PDDr = node.ResolveShort("pddR") ?? 0;
+        MDDr = node.ResolveShort("mddR") ?? 0;
+        PDr = node.ResolveShort("pdr") ?? 0;
+        MDr = node.ResolveShort("mdr") ?? 0;
 
-        DIPr = property.Resolve<short>("damR") ?? 0;
+        DIPr = node.ResolveShort("damR") ?? 0;
 
-        PDamr = property.Resolve<short>("pdR") ?? 0;
-        MDamr = property.Resolve<short>("mdR") ?? 0;
+        PDamr = node.ResolveShort("pdR") ?? 0;
+        MDamr = node.ResolveShort("mdR") ?? 0;
 
-        PADr = property.Resolve<short>("padR") ?? 0;
-        MADr = property.Resolve<short>("madR") ?? 0;
+        PADr = node.ResolveShort("padR") ?? 0;
+        MADr = node.ResolveShort("madR") ?? 0;
 
-        EXPr = property.Resolve<short>("expR") ?? 0;
+        EXPr = node.ResolveShort("expR") ?? 0;
 
-        Dot = property.Resolve<short>("dot") ?? 0;
-        DotInterval = property.Resolve<short>("dotInterval") ?? 0;
-        DotTime = property.Resolve<short>("dotTime") ?? 0;
+        Dot = node.ResolveShort("dot") ?? 0;
+        DotInterval = node.ResolveShort("dotInterval") ?? 0;
+        DotTime = node.ResolveShort("dotTime") ?? 0;
 
-        //IMPr = property.Resolve<short>("ignoreMobpdpR") ?? 0;
-        ASRr = property.Resolve<short>("asrR") ?? 0;
-        TERr = property.Resolve<short>("terR") ?? 0;
+        //IMPr = node.ResolveShort("ignoreMobpdpR") ?? 0;
+        ASRr = node.ResolveShort("asrR") ?? 0;
+        TERr = node.ResolveShort("terR") ?? 0;
 
-        MESOr = property.Resolve<short>("mesoR") ?? 0;
+        MESOr = node.ResolveShort("mesoR") ?? 0;
 
-        PADx = property.Resolve<short>("padX") ?? 0;
-        MADx = property.Resolve<short>("madX") ?? 0;
+        PADx = node.ResolveShort("padX") ?? 0;
+        MADx = node.ResolveShort("madX") ?? 0;
 
-        IMDr = property.Resolve<short>("ignoreMobpdpR") ?? 0;
+        IMDr = node.ResolveShort("ignoreMobpdpR") ?? 0;
 
-        PsdJump = property.Resolve<short>("psdJump") ?? 0;
-        PsdSpeed = property.Resolve<short>("psdSpeed") ?? 0;
+        PsdJump = node.ResolveShort("psdJump") ?? 0;
+        PsdSpeed = node.ResolveShort("psdSpeed") ?? 0;
 
-        OCr = property.Resolve<short>("overChargeR") ?? 0;
-        DCr = property.Resolve<short>("disCountR") ?? 0;
+        OCr = node.ResolveShort("overChargeR") ?? 0;
+        DCr = node.ResolveShort("disCountR") ?? 0;
 
-        ReqGL = property.Resolve<short>("reqGuildLevel") ?? 0;
+        ReqGL = node.ResolveShort("reqGuildLevel") ?? 0;
 
-        Price = property.Resolve<short>("price") ?? 0;
+        Price = node.ResolveShort("price") ?? 0;
 
-        S = property.Resolve<short>("s") ?? 0;
-        U = property.Resolve<short>("u") ?? 0;
-        V = property.Resolve<short>("v") ?? 0;
-        W = property.Resolve<short>("w") ?? 0;
-        T = property.Resolve<short>("t") ?? 0;
+        S = node.ResolveShort("s") ?? 0;
+        U = node.ResolveShort("u") ?? 0;
+        V = node.ResolveShort("v") ?? 0;
+        W = node.ResolveShort("w") ?? 0;
+        T = node.ResolveShort("t") ?? 0;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using Edelstein.Protocol.Data;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -15,7 +15,7 @@ public record NPCShopTemplate : INPCShop, ITemplate
     {
         ID = id;
         Items = property.Children
-            .Select(p => (INPCShopItem)new NPCShopTemplateItem(Convert.ToInt32(p.Name), p.ResolveAll()))
+            .Select(p => (INPCShopItem)new NPCShopTemplateItem(Convert.ToInt32(p.Name), p.Cache()))
             .ToImmutableSortedSet(new NPCShopTemplateItemComparer()) ?? ImmutableSortedSet<INPCShopItem>.Empty;
     }
 }

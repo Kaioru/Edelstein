@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Spatial;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Spatial;
 using Edelstein.Protocol.Utilities.Spatial;
 
@@ -8,16 +8,16 @@ namespace Edelstein.Common.Gameplay.Game.Spatial;
 public record FieldFoothold : IFieldFoothold
 {
 
-    public FieldFoothold(int id, IDataProperty property)
+    public FieldFoothold(int id, IDataNode node)
     {
         ID = id;
 
-        NextID = property.Resolve<int>("next") ?? 0;
-        PrevID = property.Resolve<int>("prev") ?? 0;
+        NextID = node.ResolveInt("next") ?? 0;
+        PrevID = node.ResolveInt("prev") ?? 0;
 
         Line = new Segment2D(
-            new Point2D(property.Resolve<int>("x1") ?? 0, property.Resolve<int>("y1") ?? 0),
-            new Point2D(property.Resolve<int>("x2") ?? 0, property.Resolve<int>("y2") ?? 0)
+            new Point2D(node.ResolveInt("x1") ?? 0, node.ResolveInt("y1") ?? 0),
+            new Point2D(node.ResolveInt("x2") ?? 0, node.ResolveInt("y2") ?? 0)
         );
     }
     public int ID { get; }

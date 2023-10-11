@@ -1,32 +1,32 @@
 ﻿using System.Collections.Immutable;
-using Edelstein.Protocol.Data;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Quests.Templates;
 
 public record QuestTemplateAct : IQuestTemplateAct
 {
-    public QuestTemplateAct(IDataProperty? property)
+    public QuestTemplateAct(IDataNode? node)
     {
-        IncEXP = property?.Resolve<int>("exp");
-        IncMoney = property?.Resolve<int>("money");
-        IncPOP = property?.Resolve<int>("pop");
-        IncPetTameness = property?.Resolve<int>("pop");
-        PetSpeed = property?.Resolve<int>("petspeed");
-        BuffItemID = property?.Resolve<int>("buffitemID");
-        Info = property?.ResolveOrDefault<string>("info");
-        NPCAction = property?.ResolveOrDefault<string>("npcAct");
+        IncEXP = node?.ResolveInt("exp");
+        IncMoney = node?.ResolveInt("money");
+        IncPOP = node?.ResolveInt("pop");
+        IncPetTameness = node?.ResolveInt("pop");
+        PetSpeed = node?.ResolveInt("petspeed");
+        BuffItemID = node?.ResolveInt("buffitemID");
+        Info = node?.ResolveString("info");
+        NPCAction = node?.ResolveString("npcAct");
         
-        NextQuest = property?.Resolve<int>("nextQuest");
+        NextQuest = node?.ResolveInt("nextQuest");
         
-        Items = property?.Resolve("item")?.Children
-            .Select(p => (IQuestTemplateActItem)new QuestTemplateActItem(Convert.ToInt32(p.Name), p.ResolveAll()))
+        Items = node?.ResolvePath("item")?.Children
+            .Select(p => (IQuestTemplateActItem)new QuestTemplateActItem(Convert.ToInt32(p.Name), p.Cache()))
             .ToImmutableList();
-        Skills = property?.Resolve("skill")?.Children
-            .Select(p => (IQuestTemplateActSkill)new QuestTemplateActSkill(p.ResolveAll()))
+        Skills = node?.ResolvePath("skill")?.Children
+            .Select(p => (IQuestTemplateActSkill)new QuestTemplateActSkill(p.Cache()))
             .ToImmutableList();
-        SP = property?.Resolve("sp")?.Children
-            .Select(p => (IQuestTemplateActSP)new QuestTemplateActSP(p.ResolveAll()))
+        SP = node?.ResolvePath("sp")?.Children
+            .Select(p => (IQuestTemplateActSP)new QuestTemplateActSP(p.Cache()))
             .ToImmutableList();
     }
     
