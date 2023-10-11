@@ -30,10 +30,10 @@ public record QuestTemplate : IQuestTemplate
         IsAutoComplete = (info?.ResolveInt("autoComplete") ?? 0) > 0;
         IsAutoPreComplete = (info?.ResolveInt("autoPreComplete") ?? 0) > 0;
 
-        ActStart = new QuestTemplateAct(act?.ResolvePath("0")?.ResolveAll());
-        ActEnd = new QuestTemplateAct(act?.ResolvePath("1")?.ResolveAll());
+        ActStart = new QuestTemplateAct(act?.ResolvePath("0")?.Cache());
+        ActEnd = new QuestTemplateAct(act?.ResolvePath("1")?.Cache());
 
-        CheckStart = new QuestTemplateCheck(check?.ResolvePath("0")?.ResolveAll());
-        CheckEnd = new QuestTemplateCheck(check?.ResolvePath("1")?.ResolveAll());
+        CheckStart = new QuestTemplateCheck(check?.ResolvePath("0")?.Cache());
+        CheckEnd = new QuestTemplateCheck(check?.ResolvePath("1")?.Cache());
     }
 }

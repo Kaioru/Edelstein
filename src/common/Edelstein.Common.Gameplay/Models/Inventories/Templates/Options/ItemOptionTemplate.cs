@@ -21,7 +21,7 @@ public record ItemOptionTemplate : IItemOptionTemplate
         Levels = level?.Children
             .ToImmutableDictionary(
                 l => Convert.ToInt32(l.Name),
-                l => (IItemOptionTemplateLevel)new ItemOptionTemplateLevel(Convert.ToInt32(l.Name), l.ResolveAll())
+                l => (IItemOptionTemplateLevel)new ItemOptionTemplateLevel(Convert.ToInt32(l.Name), l.Cache())
             ) ?? ImmutableDictionary<int, IItemOptionTemplateLevel>.Empty;
     }
     

@@ -26,7 +26,7 @@ public class ItemOptionTemplateLoader : ITemplateLoader
                     id,
                     new ItemOptionTemplate(
                         id,
-                        n.ResolveAll()
+                        n.Cache()
                     )
                 ));
             }) ?? Array.Empty<Task>());

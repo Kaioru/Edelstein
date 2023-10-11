@@ -31,7 +31,7 @@ public class FieldStringTemplateLoader : ITemplateLoader
                     id,
                     new FieldStringTemplate(
                         id,
-                        n.ResolveAll()
+                        n.Cache()
                     )
                 ));
             }));

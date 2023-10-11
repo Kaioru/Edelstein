@@ -18,10 +18,10 @@ public class QuestTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var quest = _data.ResolvePath("Quest")?.ResolveAll();
-        var infos = quest?.ResolvePath("QuestInfo.img")?.ResolveAll();
-        var acts = quest?.ResolvePath("Act.img")?.ResolveAll();
-        var checks = quest?.ResolvePath("Check.img")?.ResolveAll();
+        var quest = _data.ResolvePath("Quest")?.Cache();
+        var infos = quest?.ResolvePath("QuestInfo.img")?.Cache();
+        var acts = quest?.ResolvePath("Act.img")?.Cache();
+        var checks = quest?.ResolvePath("Check.img")?.Cache();
         
         await Task.WhenAll(infos?.Children
             .Select(async n =>
@@ -31,9 +31,9 @@ public class QuestTemplateLoader : ITemplateLoader
                     id,
                     new QuestTemplate(
                         id,
-                        n.ResolveAll(),
-                        acts?.ResolvePath(n.Name)?.ResolveAll(),
-                        checks?.ResolvePath(n.Name)?.ResolveAll()
+                        n.Cache(),
+                        acts?.ResolvePath(n.Name)?.Cache(),
+                        checks?.ResolvePath(n.Name)?.Cache()
                     )
                 ));
             }) ?? Array.Empty<Task>());

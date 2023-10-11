@@ -37,10 +37,10 @@ public record FieldTemplate : IFieldTemplate
         var footholds = foothold.Children
             .SelectMany(c => c.Children)
             .SelectMany(c => c.Children)
-            .Select(p => new FieldFoothold(Convert.ToInt32(p.Name), p.ResolveAll()))
+            .Select(p => new FieldFoothold(Convert.ToInt32(p.Name), p.Cache()))
             .ToImmutableList();
         var portals = portal.Children
-            .Select(p => new FieldPortal(Convert.ToInt32(p.Name), p.ResolveAll()))
+            .Select(p => new FieldPortal(Convert.ToInt32(p.Name), p.Cache()))
             .ToImmutableList();
 
         var leftTop = new Point2D(
@@ -73,7 +73,7 @@ public record FieldTemplate : IFieldTemplate
         Portals.Insert(portals);
 
         Life = life.Children
-            .Select(p => new FieldTemplateLife(p.ResolveAll()))
+            .Select(p => new FieldTemplateLife(p.Cache()))
             .ToImmutableList<IFieldTemplateLife>();
 
         MobRate = info.ResolveDouble("mobRate") ?? 1.0;

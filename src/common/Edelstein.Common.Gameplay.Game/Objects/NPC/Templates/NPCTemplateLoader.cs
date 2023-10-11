@@ -18,7 +18,7 @@ public class NPCTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var directory = _data.ResolvePath("Npc")?.ResolveAll();
+        var directory = _data.ResolvePath("Npc")?.Cache();
 
         if (directory == null) return 0;
 
@@ -30,8 +30,8 @@ public class NPCTemplateLoader : ITemplateLoader
                     id,
                     () => new NPCTemplate(
                         id,
-                        n.ResolveAll(),
-                        n.ResolvePath("info")!.ResolveAll()
+                        n.Cache(),
+                        n.ResolvePath("info")!.Cache()
                     )
                 ));
             }));

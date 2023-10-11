@@ -28,7 +28,7 @@ public class SkillStringTemplateLoader : ITemplateLoader
                     id,
                     new SkillStringTemplate(
                         id,
-                        n.ResolveAll()
+                        n.Cache()
                     )
                 ));
             }) ?? Array.Empty<Task>());

@@ -30,11 +30,11 @@ public class ContiMoveTemplateLoader : ITemplateLoader
                     id,
                     () => new ContiMoveTemplate(
                         id,
-                        n.ResolveAll(),
-                        n.ResolvePath("field")!.ResolveAll(),
-                        n.ResolvePath("scheduler")!.ResolveAll(),
-                        n.ResolvePath("genMob")?.ResolveAll(),
-                        n.ResolvePath("time")!.ResolveAll()
+                        n.Cache(),
+                        n.ResolvePath("field")!.Cache(),
+                        n.ResolvePath("scheduler")!.Cache(),
+                        n.ResolvePath("genMob")?.Cache(),
+                        n.ResolvePath("time")!.Cache()
                     )
                 ));
             }));

@@ -29,7 +29,7 @@ public class ItemStringTemplateLoader : ITemplateLoader
                     id,
                     new ItemStringTemplate(
                         id,
-                        n.ResolveAll()
+                        n.Cache()
                     )
                 ));
             }) ?? Array.Empty<Task>());
@@ -44,7 +44,7 @@ public class ItemStringTemplateLoader : ITemplateLoader
                     id,
                     new ItemStringTemplate(
                         id,
-                        n.ResolveAll()
+                        n.Cache()
                     )
                 ));
             }) ?? Array.Empty<Task>());
@@ -59,7 +59,7 @@ public class ItemStringTemplateLoader : ITemplateLoader
                         id,
                         new ItemStringTemplate(
                             id,
-                            n.ResolveAll()
+                            n.Cache()
                         )
                     ));
                 }) ?? Array.Empty<Task>());

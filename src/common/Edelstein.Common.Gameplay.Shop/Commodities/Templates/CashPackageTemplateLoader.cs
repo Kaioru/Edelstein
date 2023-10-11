@@ -24,7 +24,7 @@ public class CashPackageTemplateLoader : ITemplateLoader
                 var sn = Convert.ToInt32(n.Name);
                 await _manager.Insert(new TemplateProviderLazy<ICashPackageTemplate>(
                     sn,
-                    () => new CashPackageTemplate(sn, n.ResolveAll())
+                    () => new CashPackageTemplate(sn, n.Cache())
                 ));
             }) ?? Array.Empty<Task>());
 

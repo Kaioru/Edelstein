@@ -23,7 +23,7 @@ public class CommodityTemplateLoader : ITemplateLoader
             {
                 await _manager.Insert(new TemplateProviderLazy<ICommodityTemplate>(
                     n.ResolveInt("SN")!.Value,
-                    () => new CommodityTemplate(n.ResolveAll())
+                    () => new CommodityTemplate(n.Cache())
                 ));
             }) ?? Array.Empty<Task>());
 

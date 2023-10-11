@@ -23,7 +23,7 @@ public class ModifiedQuestTimeTemplateLoader : ITemplateLoader
                 var id = Convert.ToInt32(n.Name);
                 await _manager.Insert(new TemplateProviderEager<ModifiedQuestTimeTemplate>(
                     id,
-                    new ModifiedQuestTimeTemplate(id, n.ResolveAll())
+                    new ModifiedQuestTimeTemplate(id, n.Cache())
                 ));
             }) ?? Array.Empty<Task>());
 

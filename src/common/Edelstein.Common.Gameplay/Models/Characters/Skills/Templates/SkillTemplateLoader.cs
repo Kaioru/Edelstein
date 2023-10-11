@@ -18,7 +18,7 @@ public class SkillTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var dirSkills = _data.ResolvePath("Skill")?.ResolveAll();
+        var dirSkills = _data.ResolvePath("Skill")?.Cache();
 
         if (dirSkills == null) return 0;
         
@@ -31,7 +31,7 @@ public class SkillTemplateLoader : ITemplateLoader
                 var id = Convert.ToInt32(n.Name);
                 await _manager.Insert(new TemplateProviderLazy<ISkillTemplate>(
                     id,
-                    () => new SkillTemplate(id, n.ResolveAll())
+                    () => new SkillTemplate(id, n.Cache())
                 ));
             }));
         

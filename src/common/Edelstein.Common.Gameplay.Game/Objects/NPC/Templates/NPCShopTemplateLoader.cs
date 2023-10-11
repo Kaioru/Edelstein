@@ -23,7 +23,7 @@ public class NPCShopTemplateLoader : ITemplateLoader
                 var id = Convert.ToInt32(n.Name);
                 await _manager.Insert(new TemplateProviderEager<NPCShopTemplate>(
                     id,
-                    new NPCShopTemplate(id, n.ResolveAll())
+                    new NPCShopTemplate(id, n.Cache())
                 ));
             }) ?? Array.Empty<Task>());
 

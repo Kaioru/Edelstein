@@ -18,7 +18,7 @@ public record ItemSetTemplate : IItemSetTemplate
         Effects = node.ResolvePath("Effect")?.Children
             .ToImmutableDictionary(
                 c => Convert.ToInt32(c.Name),
-                c => (IItemSetTemplateEffect)new ItemSetTemplateEffect(Convert.ToInt32(c.Name), c.ResolveAll())
+                c => (IItemSetTemplateEffect)new ItemSetTemplateEffect(Convert.ToInt32(c.Name), c.Cache())
             ) ?? ImmutableDictionary<int, IItemSetTemplateEffect>.Empty;
     }
     

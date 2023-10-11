@@ -19,8 +19,8 @@ public class ItemTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var dirCharacter = _data.ResolvePath("Character")?.ResolveAll();
-        var dirItem = _data.ResolvePath("Item")?.ResolveAll();
+        var dirCharacter = _data.ResolvePath("Character")?.Cache();
+        var dirItem = _data.ResolvePath("Item")?.Cache();
 
         var nodesEquip = new List<IDataNode?>
         {
@@ -55,7 +55,7 @@ public class ItemTemplateLoader : ITemplateLoader
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name.Split(".")[0]);
-                var node = n.ResolvePath("info")?.ResolveAll();
+                var node = n.ResolvePath("info")?.Cache();
                 if (node == null) return;
                 await _manager.Insert(new TemplateProviderLazy<IItemTemplate>(
                     id,
@@ -70,7 +70,7 @@ public class ItemTemplateLoader : ITemplateLoader
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name);
-                var node = n.ResolvePath("info")?.ResolveAll();
+                var node = n.ResolvePath("info")?.Cache();
                 if (node == null) return;
                 await _manager.Insert(new TemplateProviderLazy<IItemTemplate>(
                     id,
@@ -82,7 +82,7 @@ public class ItemTemplateLoader : ITemplateLoader
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name.Split(".")[0]);
-                var node = n.ResolvePath("info")?.ResolveAll();
+                var node = n.ResolvePath("info")?.Cache();
                 if (node == null) return;
                 await _manager.Insert(new TemplateProviderLazy<IItemTemplate>(
                     id,

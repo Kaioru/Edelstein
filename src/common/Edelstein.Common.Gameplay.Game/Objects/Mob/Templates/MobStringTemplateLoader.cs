@@ -26,7 +26,7 @@ public record MobStringTemplateLoader : ITemplateLoader
                     id,
                     new MobStringTemplate(
                         id,
-                        n.ResolveAll()
+                        n.Cache()
                     )
                 ));
             }) ?? Array.Empty<Task>());

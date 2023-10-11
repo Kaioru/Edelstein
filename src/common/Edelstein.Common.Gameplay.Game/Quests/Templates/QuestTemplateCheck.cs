@@ -37,10 +37,10 @@ public record QuestTemplateCheck : IQuestTemplateCheck
         SubJobFlags = node?.ResolveInt("subJobFlags");
 
         CheckItem = node?.ResolvePath("item")?.Children
-            .Select(p => (IQuestTemplateCheckItem)new QuestTemplateCheckItem(p.ResolveAll()))
+            .Select(p => (IQuestTemplateCheckItem)new QuestTemplateCheckItem(p.Cache()))
             .ToImmutableList();
         CheckMob = node?.ResolvePath("mob")?.Children
-            .Select(p => (IQuestTemplateCheckMob)new QuestTemplateCheckMob(Convert.ToInt32(p.Name), p.ResolveAll()))
+            .Select(p => (IQuestTemplateCheckMob)new QuestTemplateCheckMob(Convert.ToInt32(p.Name), p.Cache()))
             .ToImmutableSortedSet(new QuestTemplateCheckMobComparer());
     }
 

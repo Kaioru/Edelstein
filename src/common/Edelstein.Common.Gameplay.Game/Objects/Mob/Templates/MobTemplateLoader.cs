@@ -18,7 +18,7 @@ public class MobTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var directory = _data.ResolvePath("Mob")?.ResolveAll();
+        var directory = _data.ResolvePath("Mob")?.Cache();
 
         if (directory == null) return 0;
 
@@ -31,8 +31,8 @@ public class MobTemplateLoader : ITemplateLoader
                     id,
                     () => new MobTemplate(
                         id,
-                        n.ResolveAll(),
-                        n.ResolvePath("info")!.ResolveAll()
+                        n.Cache(),
+                        n.ResolvePath("info")!.Cache()
                     )
                 ));
             }));

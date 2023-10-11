@@ -26,7 +26,7 @@ public class ItemSetTemplateLoader : ITemplateLoader
                     id,
                     new ItemSetTemplate(
                         id,
-                        n.ResolveAll()
+                        n.Cache()
                     )
                 ));
             }) ?? Array.Empty<Task>());

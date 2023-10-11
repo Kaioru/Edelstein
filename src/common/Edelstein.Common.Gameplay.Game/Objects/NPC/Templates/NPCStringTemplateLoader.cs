@@ -26,7 +26,7 @@ public class NPCStringTemplateLoader : ITemplateLoader
                     id,
                     new NPCStringTemplate(
                         id,
-                        n.ResolveAll()
+                        n.Cache()
                     )
                 ));
             }) ?? Array.Empty<Task>());

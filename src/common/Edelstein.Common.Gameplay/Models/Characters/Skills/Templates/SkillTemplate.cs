@@ -74,7 +74,7 @@ public class SkillTemplate : ISkillTemplate
                 .Range(1, maxLevel + (IsCombatOrders ? 2 : 0))
                 .ToImmutableDictionary(
                     i => i,
-                    i => (ISkillTemplateLevel)new SkillTemplateLevelCommon(i, common.ResolveAll())
+                    i => (ISkillTemplateLevel)new SkillTemplateLevelCommon(i, common.Cache())
                 );
             MaxLevel = (short)maxLevel;
         }
@@ -84,7 +84,7 @@ public class SkillTemplate : ISkillTemplate
 
             Levels = level?.Children.ToImmutableDictionary(
                 c => Convert.ToInt32(c.Name),
-                c => (ISkillTemplateLevel)new SkillTemplateLevel(Convert.ToInt32(c.Name), c.ResolveAll())
+                c => (ISkillTemplateLevel)new SkillTemplateLevel(Convert.ToInt32(c.Name), c.Cache())
             ) ?? ImmutableDictionary<int, ISkillTemplateLevel>.Empty;
             MaxLevel = (short)(Levels?.Count ?? 0);
         }

@@ -20,13 +20,13 @@ public record QuestTemplateAct : IQuestTemplateAct
         NextQuest = node?.ResolveInt("nextQuest");
         
         Items = node?.ResolvePath("item")?.Children
-            .Select(p => (IQuestTemplateActItem)new QuestTemplateActItem(Convert.ToInt32(p.Name), p.ResolveAll()))
+            .Select(p => (IQuestTemplateActItem)new QuestTemplateActItem(Convert.ToInt32(p.Name), p.Cache()))
             .ToImmutableList();
         Skills = node?.ResolvePath("skill")?.Children
-            .Select(p => (IQuestTemplateActSkill)new QuestTemplateActSkill(p.ResolveAll()))
+            .Select(p => (IQuestTemplateActSkill)new QuestTemplateActSkill(p.Cache()))
             .ToImmutableList();
         SP = node?.ResolvePath("sp")?.Children
-            .Select(p => (IQuestTemplateActSP)new QuestTemplateActSP(p.ResolveAll()))
+            .Select(p => (IQuestTemplateActSP)new QuestTemplateActSP(p.Cache()))
             .ToImmutableList();
     }
     

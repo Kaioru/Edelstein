@@ -32,11 +32,11 @@ public class FieldTemplateLoader : ITemplateLoader
                     id,
                     () => new FieldTemplate(
                         id,
-                        n.ResolvePath("foothold")!.ResolveAll(),
-                        n.ResolvePath("portal")!.ResolveAll(),
-                        n.ResolvePath("ladderRope")!.ResolveAll(),
-                        n.ResolvePath("life")!.ResolveAll(),
-                        n.ResolvePath("info")!.ResolveAll()
+                        n.ResolvePath("foothold")!.Cache(),
+                        n.ResolvePath("portal")!.Cache(),
+                        n.ResolvePath("ladderRope")!.Cache(),
+                        n.ResolvePath("life")!.Cache(),
+                        n.ResolvePath("info")!.Cache()
                     )
                 ));
             }));
