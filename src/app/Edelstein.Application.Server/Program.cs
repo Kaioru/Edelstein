@@ -1,6 +1,7 @@
 ﻿using Autofac.Extensions.DependencyInjection;
 using Duey.Abstractions;
 using Duey.Provider.NX;
+using Duey.Provider.WZ;
 using Edelstein.Application.Server;
 using Edelstein.Application.Server.Configs;
 using Edelstein.Common.Database;
@@ -78,7 +79,20 @@ await Host.CreateDefaultBuilder(args)
             p.GetRequiredService<ProgramConfig>().TicksPerSecond
         ));
 
-        services.AddSingleton<IDataNamespace>(new NXNamespace(ctx.Configuration.GetSection("Data")["Directory"] ?? throw new InvalidOperationException()));
+        switch (ctx.Configuration.GetSection("Data")["Type"])
+        {
+            case "NX":
+                services.AddSingleton<IDataNamespace>(
+                    new NXNamespace(ctx.Configuration.GetSection("Data")["Directory"] ?? throw new InvalidOperationException())
+                );
+                break;
+            case "WZ":
+                services.AddSingleton<IDataNamespace>(new WZNamespace(
+                    ctx.Configuration.GetSection("Data")["Directory"] ?? throw new InvalidOperationException(),
+                    ctx.Configuration.GetSection("Data")["Key"] ?? throw new InvalidOperationException()));
+                break;
+        }
+
         services.AddSingleton<IScriptEngine>(new LuaScriptEngine(ctx.Configuration.GetSection("Scripts")["Directory"] ?? throw new InvalidOperationException()));
         services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));
     })

@@ -10,7 +10,7 @@ public record FieldTemplateLife : IFieldTemplateLife
 
     public FieldTemplateLife(IDataNode node)
     {
-        ID = node.ResolveInt("id") ?? -1;
+        ID = Convert.ToInt32(node.ResolveString("id") ?? "-1");
 
         Type = node.ResolveString("type")?.ToLower() == "n"
             ? FieldLifeType.NPC
