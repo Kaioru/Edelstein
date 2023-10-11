@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Spatial;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Spatial;
 
@@ -8,26 +8,26 @@ namespace Edelstein.Common.Gameplay.Game.Templates;
 public record FieldTemplateLife : IFieldTemplateLife
 {
 
-    public FieldTemplateLife(IDataProperty property)
+    public FieldTemplateLife(IDataNode node)
     {
-        ID = property.Resolve<int>("id") ?? -1;
+        ID = node.ResolveInt("id") ?? -1;
 
-        Type = property.ResolveOrDefault<string>("type")?.ToLower() == "n"
+        Type = node.ResolveString("type")?.ToLower() == "n"
             ? FieldLifeType.NPC
             : FieldLifeType.Monster;
 
-        MobTime = property.Resolve<int>("mobTime") ?? 0;
+        MobTime = node.ResolveInt("mobTime") ?? 0;
 
-        IsFacingLeft = !(property.Resolve<bool>("f") ?? false);
+        IsFacingLeft = !(node.ResolveBool("f") ?? false);
         Position = new Point2D(
-            property.Resolve<int>("x") ?? int.MinValue,
-            property.Resolve<int>("y") ?? int.MinValue
+            node.ResolveInt("x") ?? int.MinValue,
+            node.ResolveInt("y") ?? int.MinValue
         );
         Bounds = new Rectangle2D(
-            new Point2D(property.Resolve<int>("rx0") ?? int.MinValue, Position.Y),
-            new Point2D(property.Resolve<int>("rx1") ?? int.MaxValue, Position.Y)
+            new Point2D(node.ResolveInt("rx0") ?? int.MinValue, Position.Y),
+            new Point2D(node.ResolveInt("rx1") ?? int.MaxValue, Position.Y)
         );
-        FootholdID = property.Resolve<int>("fh") ?? 0;
+        FootholdID = node.ResolveInt("fh") ?? 0;
     }
     public int ID { get; }
 

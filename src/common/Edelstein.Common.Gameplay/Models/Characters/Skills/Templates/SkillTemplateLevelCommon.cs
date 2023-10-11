@@ -1,6 +1,5 @@
-﻿using Duey.Types;
+﻿using Duey.Abstractions;
 using Edelstein.Common.Utilities.Spatial;
-using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using org.mariuszgromada.math.mxparser;
 
@@ -127,7 +126,7 @@ public class SkillTemplateLevelCommon : ISkillTemplateLevel
     public short W { get; }
     public short T { get; }
 
-    public SkillTemplateLevelCommon(int level, IDataProperty property)
+    public SkillTemplateLevelCommon(int level, IDataNode node)
     {
         Level = level;
         
@@ -136,125 +135,125 @@ public class SkillTemplateLevelCommon : ISkillTemplateLevel
         var u = new Function("u", "ceil(x)", "x");
         var d = new Function("d", "floor(x)", "x");
 
-        HP = ResolveExpression(property.ResolveOrDefault<string>("hp"), x, u, d);
-        MP = ResolveExpression(property.ResolveOrDefault<string>("mp"), x, u, d);
+        HP = ResolveExpression(node.ResolveString("hp"), x, u, d);
+        MP = ResolveExpression(node.ResolveString("mp"), x, u, d);
 
-        PAD = ResolveExpression(property.ResolveOrDefault<string>("pad"), x, u, d);
-        PDD = ResolveExpression(property.ResolveOrDefault<string>("pdd"), x, u, d);
-        MAD = ResolveExpression(property.ResolveOrDefault<string>("mad"), x, u, d);
-        MDD = ResolveExpression(property.ResolveOrDefault<string>("mdd"), x, u, d);
-        ACC = ResolveExpression(property.ResolveOrDefault<string>("acc"), x, u, d);
-        EVA = ResolveExpression(property.ResolveOrDefault<string>("eva"), x, u, d);
-        Craft = ResolveExpression(property.ResolveOrDefault<string>("craft"), x, u, d);
+        PAD = ResolveExpression(node.ResolveString("pad"), x, u, d);
+        PDD = ResolveExpression(node.ResolveString("pdd"), x, u, d);
+        MAD = ResolveExpression(node.ResolveString("mad"), x, u, d);
+        MDD = ResolveExpression(node.ResolveString("mdd"), x, u, d);
+        ACC = ResolveExpression(node.ResolveString("acc"), x, u, d);
+        EVA = ResolveExpression(node.ResolveString("eva"), x, u, d);
+        Craft = ResolveExpression(node.ResolveString("craft"), x, u, d);
 
-        Speed = ResolveExpression(property.ResolveOrDefault<string>("speed"), x, u, d);
-        Jump = ResolveExpression(property.ResolveOrDefault<string>("jump"), x, u, d);
+        Speed = ResolveExpression(node.ResolveString("speed"), x, u, d);
+        Jump = ResolveExpression(node.ResolveString("jump"), x, u, d);
 
-        Morph = ResolveExpression(property.ResolveOrDefault<string>("morph"), x, u, d);
+        Morph = ResolveExpression(node.ResolveString("morph"), x, u, d);
 
-        HPCon = ResolveExpression(property.ResolveOrDefault<string>("hpCon"), x, u, d);
-        MPCon = ResolveExpression(property.ResolveOrDefault<string>("mpCon"), x, u, d);
-        MoneyCon = ResolveExpression(property.ResolveOrDefault<string>("moneyCon"), x, u, d);
-        ItemCon = ResolveExpression(property.ResolveOrDefault<string>("itemCon"), x, u, d);
-        ItemConNo = ResolveExpression(property.ResolveOrDefault<string>("itemConNo"), x, u, d);
+        HPCon = ResolveExpression(node.ResolveString("hpCon"), x, u, d);
+        MPCon = ResolveExpression(node.ResolveString("mpCon"), x, u, d);
+        MoneyCon = ResolveExpression(node.ResolveString("moneyCon"), x, u, d);
+        ItemCon = ResolveExpression(node.ResolveString("itemCon"), x, u, d);
+        ItemConNo = ResolveExpression(node.ResolveString("itemConNo"), x, u, d);
 
-        Damage = ResolveExpression(property.ResolveOrDefault<string>("damage"), x, u, d);
-        FixDamage = ResolveExpression(property.ResolveOrDefault<string>("fixdamage"), x, u, d);
+        Damage = ResolveExpression(node.ResolveString("damage"), x, u, d);
+        FixDamage = ResolveExpression(node.ResolveString("fixdamage"), x, u, d);
 
-        SelfDestruction = ResolveExpression(property.ResolveOrDefault<string>("selfDestruction"), x, u, d);
+        SelfDestruction = ResolveExpression(node.ResolveString("selfDestruction"), x, u, d);
 
-        Time = ResolveExpression(property.ResolveOrDefault<string>("time"), x, u, d);
-        SubTime = ResolveExpression(property.ResolveOrDefault<string>("subTime"), x, u, d);
+        Time = ResolveExpression(node.ResolveString("time"), x, u, d);
+        SubTime = ResolveExpression(node.ResolveString("subTime"), x, u, d);
 
-        Prop = ResolveExpression(property.ResolveOrDefault<string>("prop"), x, u, d);
-        SubProp = ResolveExpression(property.ResolveOrDefault<string>("subProp"), x, u, d);
+        Prop = ResolveExpression(node.ResolveString("prop"), x, u, d);
+        SubProp = ResolveExpression(node.ResolveString("subProp"), x, u, d);
 
-        AttackCount = ResolveExpression(property.ResolveOrDefault<string>("attackCount") ?? "1", x, u, d);
-        BulletCount = ResolveExpression(property.ResolveOrDefault<string>("bulletCount"), x, u, d);
-        BulletConsume = ResolveExpression(property.ResolveOrDefault<string>("bulletConsume"), x, u, d);
+        AttackCount = ResolveExpression(node.ResolveString("attackCount") ?? "1", x, u, d);
+        BulletCount = ResolveExpression(node.ResolveString("bulletCount"), x, u, d);
+        BulletConsume = ResolveExpression(node.ResolveString("bulletConsume"), x, u, d);
 
-        Mastery = ResolveExpression(property.ResolveOrDefault<string>("mastery"), x, u, d);
+        Mastery = ResolveExpression(node.ResolveString("mastery"), x, u, d);
 
-        MobCount = ResolveExpression(property.ResolveOrDefault<string>("mobCount"), x, u, d);
+        MobCount = ResolveExpression(node.ResolveString("mobCount"), x, u, d);
 
-        X = ResolveExpression(property.ResolveOrDefault<string>("x"), x, u, d);
-        Y = ResolveExpression(property.ResolveOrDefault<string>("y"), x, u, d);
-        Z = ResolveExpression(property.ResolveOrDefault<string>("z"), x, u, d);
+        X = ResolveExpression(node.ResolveString("x"), x, u, d);
+        Y = ResolveExpression(node.ResolveString("y"), x, u, d);
+        Z = ResolveExpression(node.ResolveString("z"), x, u, d);
 
-        Action = ResolveExpression(property.ResolveOrDefault<string>("action"), x, u, d);
+        Action = ResolveExpression(node.ResolveString("action"), x, u, d);
 
-        EMHP = ResolveExpression(property.ResolveOrDefault<string>("emhp"), x, u, d);
-        EMMP = ResolveExpression(property.ResolveOrDefault<string>("emmp"), x, u, d);
-        EPAD = ResolveExpression(property.ResolveOrDefault<string>("epad"), x, u, d);
-        EPDD = ResolveExpression(property.ResolveOrDefault<string>("epdd"), x, u, d);
-        EMDD = ResolveExpression(property.ResolveOrDefault<string>("emdd"), x, u, d);
+        EMHP = ResolveExpression(node.ResolveString("emhp"), x, u, d);
+        EMMP = ResolveExpression(node.ResolveString("emmp"), x, u, d);
+        EPAD = ResolveExpression(node.ResolveString("epad"), x, u, d);
+        EPDD = ResolveExpression(node.ResolveString("epdd"), x, u, d);
+        EMDD = ResolveExpression(node.ResolveString("emdd"), x, u, d);
 
-        Range = ResolveExpression(property.ResolveOrDefault<string>("range"), x, u, d);
+        Range = ResolveExpression(node.ResolveString("range"), x, u, d);
 
-        Cooltime = ResolveExpression(property.ResolveOrDefault<string>("cooltime"), x, u, d);
+        Cooltime = ResolveExpression(node.ResolveString("cooltime"), x, u, d);
 
-        var lt = property.ResolveOrDefault<NXVector>("lt") ?? new NXVector(0, 0);
-        var rb = property.ResolveOrDefault<NXVector>("rb") ?? new NXVector(0, 0);
-        
-        Bounds = new Rectangle2D(new Point2D(lt.X, lt.Y), new Point2D(rb.X, rb.Y));
+        var (l, t) = node.ResolveVector("lt") ?? new ValueTuple<int, int>(0, 0);
+        var (r, b) = node.ResolveVector("rb") ?? new ValueTuple<int, int>(0, 0);
 
-        MHPr = ResolveExpression(property.ResolveOrDefault<string>("mhpR"), x, u, d);
-        MMPr = ResolveExpression(property.ResolveOrDefault<string>("mmpR"), x, u, d);
+        Bounds = new Rectangle2D(new Point2D(l, t), new Point2D(r, b));
 
-        Cr = ResolveExpression(property.ResolveOrDefault<string>("cr"), x, u, d);
-        CDMin = ResolveExpression(property.ResolveOrDefault<string>("criticaldamageMin"), x, u, d);
-        CDMax = ResolveExpression(property.ResolveOrDefault<string>("criticaldamageMax"), x, u, d);
+        MHPr = ResolveExpression(node.ResolveString("mhpR"), x, u, d);
+        MMPr = ResolveExpression(node.ResolveString("mmpR"), x, u, d);
 
-        ACCr = ResolveExpression(property.ResolveOrDefault<string>("accR"), x, u, d);
-        EVAr = ResolveExpression(property.ResolveOrDefault<string>("evaR"), x, u, d);
-        Ar = ResolveExpression(property.ResolveOrDefault<string>("ar"), x, u, d);
-        Er = ResolveExpression(property.ResolveOrDefault<string>("er"), x, u, d);
+        Cr = ResolveExpression(node.ResolveString("cr"), x, u, d);
+        CDMin = ResolveExpression(node.ResolveString("criticaldamageMin"), x, u, d);
+        CDMax = ResolveExpression(node.ResolveString("criticaldamageMax"), x, u, d);
 
-        PDDr = ResolveExpression(property.ResolveOrDefault<string>("pddR"), x, u, d);
-        MDDr = ResolveExpression(property.ResolveOrDefault<string>("mddR"), x, u, d);
-        PDr = ResolveExpression(property.ResolveOrDefault<string>("pdr"), x, u, d);
-        MDr = ResolveExpression(property.ResolveOrDefault<string>("mdr"), x, u, d);
+        ACCr = ResolveExpression(node.ResolveString("accR"), x, u, d);
+        EVAr = ResolveExpression(node.ResolveString("evaR"), x, u, d);
+        Ar = ResolveExpression(node.ResolveString("ar"), x, u, d);
+        Er = ResolveExpression(node.ResolveString("er"), x, u, d);
 
-        DIPr = ResolveExpression(property.ResolveOrDefault<string>("damR"), x, u, d);
+        PDDr = ResolveExpression(node.ResolveString("pddR"), x, u, d);
+        MDDr = ResolveExpression(node.ResolveString("mddR"), x, u, d);
+        PDr = ResolveExpression(node.ResolveString("pdr"), x, u, d);
+        MDr = ResolveExpression(node.ResolveString("mdr"), x, u, d);
 
-        PDamr = ResolveExpression(property.ResolveOrDefault<string>("pdR"), x, u, d);
-        MDamr = ResolveExpression(property.ResolveOrDefault<string>("mdR"), x, u, d);
+        DIPr = ResolveExpression(node.ResolveString("damR"), x, u, d);
 
-        PADr = ResolveExpression(property.ResolveOrDefault<string>("padR"), x, u, d);
-        MADr = ResolveExpression(property.ResolveOrDefault<string>("madR"), x, u, d);
+        PDamr = ResolveExpression(node.ResolveString("pdR"), x, u, d);
+        MDamr = ResolveExpression(node.ResolveString("mdR"), x, u, d);
 
-        EXPr = ResolveExpression(property.ResolveOrDefault<string>("expR"), x, u, d);
+        PADr = ResolveExpression(node.ResolveString("padR"), x, u, d);
+        MADr = ResolveExpression(node.ResolveString("madR"), x, u, d);
 
-        Dot = ResolveExpression(property.ResolveOrDefault<string>("dot"), x, u, d);
-        DotInterval = ResolveExpression(property.ResolveOrDefault<string>("dotInterval"), x, u, d);
-        DotTime = ResolveExpression(property.ResolveOrDefault<string>("dotTime"), x, u, d);
+        EXPr = ResolveExpression(node.ResolveString("expR"), x, u, d);
 
-        //IMPr = ResolveExpression(property.ResolveOrDefault<string>("ignoreMobpdpR"), x, u, d);
-        ASRr = ResolveExpression(property.ResolveOrDefault<string>("asrR"), x, u, d);
-        TERr = ResolveExpression(property.ResolveOrDefault<string>("terR"), x, u, d);
+        Dot = ResolveExpression(node.ResolveString("dot"), x, u, d);
+        DotInterval = ResolveExpression(node.ResolveString("dotInterval"), x, u, d);
+        DotTime = ResolveExpression(node.ResolveString("dotTime"), x, u, d);
 
-        MESOr = ResolveExpression(property.ResolveOrDefault<string>("mesoR"), x, u, d);
+        //IMPr = ResolveExpression(node.ResolveString("ignoreMobpdpR"), x, u, d);
+        ASRr = ResolveExpression(node.ResolveString("asrR"), x, u, d);
+        TERr = ResolveExpression(node.ResolveString("terR"), x, u, d);
 
-        PADx = ResolveExpression(property.ResolveOrDefault<string>("padX"), x, u, d);
-        MADx = ResolveExpression(property.ResolveOrDefault<string>("madX"), x, u, d);
+        MESOr = ResolveExpression(node.ResolveString("mesoR"), x, u, d);
 
-        IMDr = ResolveExpression(property.ResolveOrDefault<string>("ignoreMobpdpR"), x, u, d);
+        PADx = ResolveExpression(node.ResolveString("padX"), x, u, d);
+        MADx = ResolveExpression(node.ResolveString("madX"), x, u, d);
 
-        PsdJump = ResolveExpression(property.ResolveOrDefault<string>("psdJump"), x, u, d);
-        PsdSpeed = ResolveExpression(property.ResolveOrDefault<string>("psdSpeed"), x, u, d);
+        IMDr = ResolveExpression(node.ResolveString("ignoreMobpdpR"), x, u, d);
 
-        OCr = ResolveExpression(property.ResolveOrDefault<string>("overChargeR"), x, u, d);
-        DCr = ResolveExpression(property.ResolveOrDefault<string>("disCountR"), x, u, d);
+        PsdJump = ResolveExpression(node.ResolveString("psdJump"), x, u, d);
+        PsdSpeed = ResolveExpression(node.ResolveString("psdSpeed"), x, u, d);
 
-        ReqGL = ResolveExpression(property.ResolveOrDefault<string>("reqGuildLevel"), x, u, d);
+        OCr = ResolveExpression(node.ResolveString("overChargeR"), x, u, d);
+        DCr = ResolveExpression(node.ResolveString("disCountR"), x, u, d);
 
-        Price = ResolveExpression(property.ResolveOrDefault<string>("price"), x, u, d);
+        ReqGL = ResolveExpression(node.ResolveString("reqGuildLevel"), x, u, d);
 
-        S = ResolveExpression(property.ResolveOrDefault<string>("s"), x, u, d);
-        U = ResolveExpression(property.ResolveOrDefault<string>("u"), x, u, d);
-        V = ResolveExpression(property.ResolveOrDefault<string>("v"), x, u, d);
-        W = ResolveExpression(property.ResolveOrDefault<string>("w"), x, u, d);
-        T = ResolveExpression(property.ResolveOrDefault<string>("t"), x, u, d);
+        Price = ResolveExpression(node.ResolveString("price"), x, u, d);
+
+        S = ResolveExpression(node.ResolveString("s"), x, u, d);
+        U = ResolveExpression(node.ResolveString("u"), x, u, d);
+        V = ResolveExpression(node.ResolveString("v"), x, u, d);
+        W = ResolveExpression(node.ResolveString("w"), x, u, d);
+        T = ResolveExpression(node.ResolveString("t"), x, u, d);
     }
 
     private static short ResolveExpression(string? expression, params PrimitiveElement[] elements)

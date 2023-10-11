@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.NPC.Templates;
@@ -22,23 +22,23 @@ public record NPCShopTemplateItem : INPCShopItem
     public short MaxPerSlot { get; }
     public int Quantity { get; }
 
-    public NPCShopTemplateItem(int order, IDataProperty property)
+    public NPCShopTemplateItem(int order, IDataNode node)
     {
         Order = order;
         
-        TemplateID = property.Resolve<int>("item") ?? 0;
+        TemplateID = node.ResolveInt("item") ?? 0;
 
-        Price = property.Resolve<int>("price") ?? 0;
-        DiscountRate = property.Resolve<byte>("discountRate") ?? 0;
+        Price = node.ResolveInt("price") ?? 0;
+        DiscountRate = node.ResolveByte("discountRate") ?? 0;
 
-        TokenTemplateID = property.Resolve<int>("token") ?? 0;
-        TokenPrice = property.Resolve<int>("tokenPrice") ?? 0;
+        TokenTemplateID = node.ResolveInt("token") ?? 0;
+        TokenPrice = node.ResolveInt("tokenPrice") ?? 0;
 
-        ItemPeriod = property.Resolve<int>("period") ?? 0;
-        LevelLimited = property.Resolve<int>("levelLimit") ?? 0;
+        ItemPeriod = node.ResolveInt("period") ?? 0;
+        LevelLimited = node.ResolveInt("levelLimit") ?? 0;
         
-        UnitPrice = property.Resolve<double>("unitPrice") ?? 0.0;
-        MaxPerSlot = property.Resolve<short>("maxPerSlot") ?? 100;
-        Quantity = property.Resolve<short>("quantity") ?? 1;
+        UnitPrice = node.ResolveDouble("unitPrice") ?? 0.0;
+        MaxPerSlot = node.ResolveShort("maxPerSlot") ?? 100;
+        Quantity = node.ResolveShort("quantity") ?? 1;
     }
 }

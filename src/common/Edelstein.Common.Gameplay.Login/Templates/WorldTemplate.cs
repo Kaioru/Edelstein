@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Login.Templates;
 
 namespace Edelstein.Common.Gameplay.Login.Templates;
@@ -6,13 +6,13 @@ namespace Edelstein.Common.Gameplay.Login.Templates;
 public record WorldTemplate : IWorldTemplate
 {
 
-    public WorldTemplate(int id, IDataProperty property)
+    public WorldTemplate(int id, IDataNode node)
     {
         ID = id;
 
-        Name = property.ResolveOrDefault<string>("name") ?? "NO-NAME";
-        State = property.Resolve<byte>("state") ?? 0;
-        BlockCharCreation = property.Resolve<bool>("blockCharCreation") ?? false;
+        Name = node.ResolveString("name") ?? "NO-NAME";
+        State = node.ResolveByte("state") ?? 0;
+        BlockCharCreation = node.ResolveBool("blockCharCreation") ?? false;
     }
     public int ID { get; }
 

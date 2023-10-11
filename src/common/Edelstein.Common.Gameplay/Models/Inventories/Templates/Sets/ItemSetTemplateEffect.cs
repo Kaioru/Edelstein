@@ -1,27 +1,27 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Sets;
 
 namespace Edelstein.Common.Gameplay.Models.Inventories.Templates.Sets;
 
 public record ItemSetTemplateEffect : IItemSetTemplateEffect
 {
-    public ItemSetTemplateEffect(int id, IDataProperty property)
+    public ItemSetTemplateEffect(int id, IDataNode node)
     {
-        IncSTR = property.Resolve<short>("incSTR") ?? 0;
-        IncDEX = property.Resolve<short>("incDEX") ?? 0;
-        IncINT = property.Resolve<short>("incINT") ?? 0;
-        IncLUK = property.Resolve<short>("incLUK") ?? 0;
-        IncMaxHP = property.Resolve<short>("incMHP") ?? 0;
-        IncMaxMP = property.Resolve<short>("incMMP") ?? 0;
-        IncPAD = property.Resolve<short>("incPAD") ?? 0;
-        IncMAD = property.Resolve<short>("incMAD") ?? 0;
-        IncPDD = property.Resolve<short>("incPDD") ?? 0;
-        IncMDD = property.Resolve<short>("incMDD") ?? 0;
-        IncACC = property.Resolve<short>("incACC") ?? 0;
-        IncEVA = property.Resolve<short>("incEVA") ?? 0;
-        IncCraft = property.Resolve<short>("incCraft") ?? 0;
-        IncSpeed = property.Resolve<short>("incSpeed") ?? 0;
-        IncJump = property.Resolve<short>("incJump") ?? 0;
+        IncSTR = node.ResolveShort("incSTR") ?? 0;
+        IncDEX = node.ResolveShort("incDEX") ?? 0;
+        IncINT = node.ResolveShort("incINT") ?? 0;
+        IncLUK = node.ResolveShort("incLUK") ?? 0;
+        IncMaxHP = node.ResolveShort("incMHP") ?? 0;
+        IncMaxMP = node.ResolveShort("incMMP") ?? 0;
+        IncPAD = node.ResolveShort("incPAD") ?? 0;
+        IncMAD = node.ResolveShort("incMAD") ?? 0;
+        IncPDD = node.ResolveShort("incPDD") ?? 0;
+        IncMDD = node.ResolveShort("incMDD") ?? 0;
+        IncACC = node.ResolveShort("incACC") ?? 0;
+        IncEVA = node.ResolveShort("incEVA") ?? 0;
+        IncCraft = node.ResolveShort("incCraft") ?? 0;
+        IncSpeed = node.ResolveShort("incSpeed") ?? 0;
+        IncJump = node.ResolveShort("incJump") ?? 0;
     }
     
     public short IncSTR { get; }

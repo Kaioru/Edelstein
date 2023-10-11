@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Edelstein.Application.Server.Configs;
+﻿using Edelstein.Application.Server.Configs;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Shop;

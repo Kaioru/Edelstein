@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Templates;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -7,10 +7,10 @@ namespace Edelstein.Common.Gameplay.Models.Characters.Skills.Templates;
 
 public class SkillTemplateLoader : ITemplateLoader
 {
-    private readonly IDataManager _data;
+    private readonly IDataNamespace _data;
     private readonly ITemplateManager<ISkillTemplate> _manager;
     
-    public SkillTemplateLoader(IDataManager data, ITemplateManager<ISkillTemplate> manager)
+    public SkillTemplateLoader(IDataNamespace data, ITemplateManager<ISkillTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -18,14 +18,14 @@ public class SkillTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var dirSkills = _data.Resolve("Skill")?.ResolveAll();
+        var dirSkills = _data.ResolvePath("Skill")?.ResolveAll();
 
         if (dirSkills == null) return 0;
         
         await Task.WhenAll(dirSkills.Children
             .Where(c => c.Name.Split(".")[0].All(char.IsDigit))
-            .Where(c => c.Resolve("skill") != null)
-            .SelectMany(c => c.Resolve("skill")!.Children)
+            .Where(c => c.ResolvePath("skill") != null)
+            .SelectMany(c => c.ResolvePath("skill")!.Children)
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name);

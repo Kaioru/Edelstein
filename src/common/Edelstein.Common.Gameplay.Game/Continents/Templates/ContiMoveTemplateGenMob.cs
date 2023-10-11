@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Spatial;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Continents.Templates;
 using Edelstein.Protocol.Utilities.Spatial;
 
@@ -7,12 +7,12 @@ namespace Edelstein.Common.Gameplay.Game.Continents.Templates;
 
 public record ContiMoveTemplateGenMob : IContiMoveTemplateGenMob
 {
-    public ContiMoveTemplateGenMob(IDataProperty genMob)
+    public ContiMoveTemplateGenMob(IDataNode genMob)
     {
-        ItemID = genMob.Resolve<int>("genMobItemID") ?? 0;
+        ItemID = genMob.ResolveInt("genMobItemID") ?? 0;
         Position = new Point2D(
-            genMob.Resolve<int>("genMobPosition_x") ?? 0,
-            genMob.Resolve<int>("genMobPosition_y") ?? 0
+            genMob.ResolveInt("genMobPosition_x") ?? 0,
+            genMob.ResolveInt("genMobPosition_y") ?? 0
         );
     }
 

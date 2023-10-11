@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Templates;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Options;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -7,10 +7,10 @@ namespace Edelstein.Common.Gameplay.Models.Inventories.Templates.Options;
 
 public class ItemOptionTemplateLoader : ITemplateLoader
 {
-    private readonly IDataManager _data;
+    private readonly IDataNamespace _data;
     private readonly ITemplateManager<IItemOptionTemplate> _manager;
 
-    public ItemOptionTemplateLoader(IDataManager data, ITemplateManager<IItemOptionTemplate> manager)
+    public ItemOptionTemplateLoader(IDataNamespace data, ITemplateManager<IItemOptionTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -18,7 +18,7 @@ public class ItemOptionTemplateLoader : ITemplateLoader
     
     public async Task<int> Load()
     {
-        await Task.WhenAll(_data.Resolve("Item/ItemOption.img")?.Children
+        await Task.WhenAll(_data.ResolvePath("Item/ItemOption.img")?.Children
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name);

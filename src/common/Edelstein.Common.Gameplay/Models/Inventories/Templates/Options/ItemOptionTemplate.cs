@@ -1,22 +1,22 @@
 ﻿using System.Collections.Immutable;
-using Edelstein.Protocol.Data;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Options;
 
 namespace Edelstein.Common.Gameplay.Models.Inventories.Templates.Options;
 
 public record ItemOptionTemplate : IItemOptionTemplate
 {
-    public ItemOptionTemplate(int id, IDataProperty property)
+    public ItemOptionTemplate(int id, IDataNode node)
     {
         ID = id;
 
-        var info = property.Resolve("info");
-        var level = property.Resolve("level");
+        var info = node.ResolvePath("info");
+        var level = node.ResolvePath("level");
         
         Grade = (ItemOptionGrade)(id / 10000);
-        Type = (ItemOptionType)(info?.Resolve<short>("optionType") ?? 0);
+        Type = (ItemOptionType)(info?.ResolveShort("optionType") ?? 0);
         
-        ReqLevel = info?.Resolve<short>("reqLevel") ?? 0;
+        ReqLevel = info?.ResolveShort("reqLevel") ?? 0;
 
         Levels = level?.Children
             .ToImmutableDictionary(

@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 
 namespace Edelstein.Common.Gameplay.Models.Inventories.Templates;
@@ -10,45 +10,45 @@ public record ItemEquipTemplate : ItemTemplate, IItemEquipTemplate
     // public int Transform { get;  }
     // public int IUCMax { get;  }
 
-    public ItemEquipTemplate(int id, IDataProperty info) : base(id, info)
+    public ItemEquipTemplate(int id, IDataNode info) : base(id, info)
     {
-        ReqSTR = info.Resolve<short>("reqSTR") ?? 0;
-        ReqDEX = info.Resolve<short>("reqDEX") ?? 0;
-        ReqINT = info.Resolve<short>("reqINT") ?? 0;
-        ReqLUK = info.Resolve<short>("reqLUK") ?? 0;
-        ReqPOP = info.Resolve<short>("reqPOP") ?? 0;
-        ReqJob = info.Resolve<short>("reqJob") ?? 0;
-        ReqLevel = info.Resolve<byte>("reqLevel") ?? 0;
+        ReqSTR = info.ResolveShort("reqSTR") ?? 0;
+        ReqDEX = info.ResolveShort("reqDEX") ?? 0;
+        ReqINT = info.ResolveShort("reqINT") ?? 0;
+        ReqLUK = info.ResolveShort("reqLUK") ?? 0;
+        ReqPOP = info.ResolveShort("reqPOP") ?? 0;
+        ReqJob = info.ResolveShort("reqJob") ?? 0;
+        ReqLevel = info.ResolveByte("reqLevel") ?? 0;
 
-        TUC = info.Resolve<byte>("tuc") ?? 0;
-        IncSTR = info.Resolve<short>("incSTR") ?? 0;
-        IncDEX = info.Resolve<short>("incDEX") ?? 0;
-        IncINT = info.Resolve<short>("incINT") ?? 0;
-        IncLUK = info.Resolve<short>("incLUK") ?? 0;
-        IncMaxHP = info.Resolve<int>("incMHP") ?? 0;
-        IncMaxMP = info.Resolve<int>("incMMP") ?? 0;
-        IncMaxHPr = info.Resolve<int>("incMHPr") ?? 0;
-        IncMaxMPr = info.Resolve<int>("incMMPr") ?? 0;
-        IncPAD = info.Resolve<short>("incPAD") ?? 0;
-        IncMAD = info.Resolve<short>("incMAD") ?? 0;
-        IncPDD = info.Resolve<short>("incPDD") ?? 0;
-        IncMDD = info.Resolve<short>("incMDD") ?? 0;
-        IncACC = info.Resolve<short>("incACC") ?? 0;
-        IncEVA = info.Resolve<short>("incEVA") ?? 0;
-        IncCraft = info.Resolve<short>("incCraft") ?? 0;
-        IncSpeed = info.Resolve<short>("incSpeed") ?? 0;
-        IncJump = info.Resolve<short>("incJump") ?? 0;
+        TUC = info.ResolveByte("tuc") ?? 0;
+        IncSTR = info.ResolveShort("incSTR") ?? 0;
+        IncDEX = info.ResolveShort("incDEX") ?? 0;
+        IncINT = info.ResolveShort("incINT") ?? 0;
+        IncLUK = info.ResolveShort("incLUK") ?? 0;
+        IncMaxHP = info.ResolveInt("incMHP") ?? 0;
+        IncMaxMP = info.ResolveInt("incMMP") ?? 0;
+        IncMaxHPr = info.ResolveInt("incMHPr") ?? 0;
+        IncMaxMPr = info.ResolveInt("incMMPr") ?? 0;
+        IncPAD = info.ResolveShort("incPAD") ?? 0;
+        IncMAD = info.ResolveShort("incMAD") ?? 0;
+        IncPDD = info.ResolveShort("incPDD") ?? 0;
+        IncMDD = info.ResolveShort("incMDD") ?? 0;
+        IncACC = info.ResolveShort("incACC") ?? 0;
+        IncEVA = info.ResolveShort("incEVA") ?? 0;
+        IncCraft = info.ResolveShort("incCraft") ?? 0;
+        IncSpeed = info.ResolveShort("incSpeed") ?? 0;
+        IncJump = info.ResolveShort("incJump") ?? 0;
 
-        OnlyEquip = info.Resolve<bool>("onlyEquip") ?? false;
-        TradeBlockEquip = info.Resolve<bool>("equipTradeBlock") ?? false;
+        OnlyEquip = info.ResolveBool("onlyEquip") ?? false;
+        TradeBlockEquip = info.ResolveBool("equipTradeBlock") ?? false;
 
-        NotExtend = info.Resolve<bool>("notExtend") ?? false;
-        SharableOnce = info.Resolve<bool>("sharableOnce") ?? false;
+        NotExtend = info.ResolveBool("notExtend") ?? false;
+        SharableOnce = info.ResolveBool("sharableOnce") ?? false;
 
-        AppliableKarmaType = info.Resolve<byte>("tradeAvailable") ?? 0;
+        AppliableKarmaType = info.ResolveByte("tradeAvailable") ?? 0;
 
-        SetItemID = info.Resolve<int>("setItemID") ?? 0;
-        Durability = info.Resolve<int>("durability") ?? -1;
+        SetItemID = info.ResolveInt("setItemID") ?? 0;
+        Durability = info.ResolveInt("durability") ?? -1;
     }
     public short ReqSTR { get; }
     public short ReqDEX { get; }

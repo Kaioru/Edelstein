@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Templates;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Shop.Commodities.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -7,10 +7,10 @@ namespace Edelstein.Common.Gameplay.Shop.Commodities.Templates;
 
 public class CashPackageTemplateLoader : ITemplateLoader
 {
-    private readonly IDataManager _data;
+    private readonly IDataNamespace _data;
     private readonly ITemplateManager<ICashPackageTemplate> _manager;
     
-    public CashPackageTemplateLoader(IDataManager data, ITemplateManager<ICashPackageTemplate> manager)
+    public CashPackageTemplateLoader(IDataNamespace data, ITemplateManager<ICashPackageTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -18,7 +18,7 @@ public class CashPackageTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        await Task.WhenAll(_data.Resolve("Etc/CashPackage.img")?.Children
+        await Task.WhenAll(_data.ResolvePath("Etc/CashPackage.img")?.Children
             .Select(async n =>
             {
                 var sn = Convert.ToInt32(n.Name);

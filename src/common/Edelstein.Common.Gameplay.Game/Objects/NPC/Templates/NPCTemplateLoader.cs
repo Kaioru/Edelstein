@@ -1,5 +1,5 @@
+using Duey.Abstractions;
 using Edelstein.Common.Utilities.Templates;
-using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -7,10 +7,10 @@ namespace Edelstein.Common.Gameplay.Game.Objects.NPC.Templates;
 
 public class NPCTemplateLoader : ITemplateLoader
 {
-    private readonly IDataManager _data;
+    private readonly IDataNamespace _data;
     private readonly ITemplateManager<INPCTemplate> _manager;
 
-    public NPCTemplateLoader(IDataManager data, ITemplateManager<INPCTemplate> manager)
+    public NPCTemplateLoader(IDataNamespace data, ITemplateManager<INPCTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -18,7 +18,7 @@ public class NPCTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var directory = _data.Resolve("Npc")?.ResolveAll();
+        var directory = _data.ResolvePath("Npc")?.ResolveAll();
 
         if (directory == null) return 0;
 
@@ -31,7 +31,7 @@ public class NPCTemplateLoader : ITemplateLoader
                     () => new NPCTemplate(
                         id,
                         n.ResolveAll(),
-                        n.Resolve("info")!.ResolveAll()
+                        n.ResolvePath("info")!.ResolveAll()
                     )
                 ));
             }));

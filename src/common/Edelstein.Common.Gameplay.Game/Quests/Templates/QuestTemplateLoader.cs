@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Templates;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -7,10 +7,10 @@ namespace Edelstein.Common.Gameplay.Game.Quests.Templates;
 
 public class QuestTemplateLoader : ITemplateLoader
 {
-    private readonly IDataManager _data;
+    private readonly IDataNamespace _data;
     private readonly ITemplateManager<IQuestTemplate> _manager;
     
-    public QuestTemplateLoader(IDataManager data, ITemplateManager<IQuestTemplate> manager)
+    public QuestTemplateLoader(IDataNamespace data, ITemplateManager<IQuestTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -18,10 +18,10 @@ public class QuestTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var quest = _data.Resolve("Quest")?.ResolveAll();
-        var infos = quest?.Resolve("QuestInfo.img")?.ResolveAll();
-        var acts = quest?.Resolve("Act.img")?.ResolveAll();
-        var checks = quest?.Resolve("Check.img")?.ResolveAll();
+        var quest = _data.ResolvePath("Quest")?.ResolveAll();
+        var infos = quest?.ResolvePath("QuestInfo.img")?.ResolveAll();
+        var acts = quest?.ResolvePath("Act.img")?.ResolveAll();
+        var checks = quest?.ResolvePath("Check.img")?.ResolveAll();
         
         await Task.WhenAll(infos?.Children
             .Select(async n =>
@@ -32,8 +32,8 @@ public class QuestTemplateLoader : ITemplateLoader
                     new QuestTemplate(
                         id,
                         n.ResolveAll(),
-                        acts?.Resolve(n.Name)?.ResolveAll(),
-                        checks?.Resolve(n.Name)?.ResolveAll()
+                        acts?.ResolvePath(n.Name)?.ResolveAll(),
+                        checks?.ResolvePath(n.Name)?.ResolveAll()
                     )
                 ));
             }) ?? Array.Empty<Task>());

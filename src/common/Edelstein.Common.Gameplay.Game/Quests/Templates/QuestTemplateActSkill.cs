@@ -1,19 +1,19 @@
 ﻿using System.Collections.Immutable;
-using Edelstein.Protocol.Data;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Quests;
 
 public record QuestTemplateActSkill : IQuestTemplateActSkill
 {
-    public QuestTemplateActSkill(IDataProperty property)
+    public QuestTemplateActSkill(IDataNode node)
     {
-        SkillID = property.Resolve<int>("id") ?? 0;
-        SkillLevel = property.Resolve<int>("skillLevel") ?? 0;
-        MasterLevel = property.Resolve<int>("masterLevel") ?? 0;
-        IsOnlyMasterLevel = property.Resolve<int>("onlyMasterLevel") > 0;
-        Jobs = property.Resolve("job")?.Children
-            .Select(p => p.Resolve<int>())
+        SkillID = node.ResolveInt("id") ?? 0;
+        SkillLevel = node.ResolveInt("skillLevel") ?? 0;
+        MasterLevel = node.ResolveInt("masterLevel") ?? 0;
+        IsOnlyMasterLevel = node.ResolveInt("onlyMasterLevel") > 0;
+        Jobs = node.ResolvePath("job")?.Children
+            .Select(p => p.ResolveInt())
             .Where(i => i.HasValue)
             .Select(i => i.Value)
             .ToImmutableList();

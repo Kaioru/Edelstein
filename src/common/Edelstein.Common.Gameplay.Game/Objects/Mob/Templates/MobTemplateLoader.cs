@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Templates;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -7,10 +7,10 @@ namespace Edelstein.Common.Gameplay.Game.Objects.Mob.Templates;
 
 public class MobTemplateLoader : ITemplateLoader
 {
-    private readonly IDataManager _data;
+    private readonly IDataNamespace _data;
     private readonly ITemplateManager<IMobTemplate> _manager;
 
-    public MobTemplateLoader(IDataManager data, ITemplateManager<IMobTemplate> manager)
+    public MobTemplateLoader(IDataNamespace data, ITemplateManager<IMobTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -18,7 +18,7 @@ public class MobTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var directory = _data.Resolve("Mob")?.ResolveAll();
+        var directory = _data.ResolvePath("Mob")?.ResolveAll();
 
         if (directory == null) return 0;
 
@@ -32,7 +32,7 @@ public class MobTemplateLoader : ITemplateLoader
                     () => new MobTemplate(
                         id,
                         n.ResolveAll(),
-                        n.Resolve("info")!.ResolveAll()
+                        n.ResolvePath("info")!.ResolveAll()
                     )
                 ));
             }));

@@ -1,29 +1,29 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 
 namespace Edelstein.Common.Gameplay.Models.Inventories.Templates;
 
 public record ItemTemplate : IItemTemplate
 {
-    public ItemTemplate(int id, IDataProperty info)
+    public ItemTemplate(int id, IDataNode info)
     {
         ID = id;
 
-        SellPrice = info.Resolve<int>("price") ?? 0;
-        TimeLimited = info.Resolve<bool>("timeLimited") ?? false;
+        SellPrice = info.ResolveInt("price") ?? 0;
+        TimeLimited = info.ResolveBool("timeLimited") ?? false;
 
         // TODO: replace
 
-        Quest = info.Resolve<bool>("quest") ?? false;
-        PartyQuest = info.Resolve<bool>("pquest") ?? false;
-        Only = info.Resolve<bool>("only") ?? false;
-        TradeBlock = info.Resolve<bool>("tradeBlock") ?? false;
-        NotSale = info.Resolve<bool>("notSale") ?? false;
-        BigSize = info.Resolve<bool>("bigSize") ?? false;
-        ExpireOnLogout = info.Resolve<bool>("expireOnLogout") ?? false;
-        AccountSharable = info.Resolve<bool>("accountSharable") ?? false;
+        Quest = info.ResolveBool("quest") ?? false;
+        PartyQuest = info.ResolveBool("pquest") ?? false;
+        Only = info.ResolveBool("only") ?? false;
+        TradeBlock = info.ResolveBool("tradeBlock") ?? false;
+        NotSale = info.ResolveBool("notSale") ?? false;
+        BigSize = info.ResolveBool("bigSize") ?? false;
+        ExpireOnLogout = info.ResolveBool("expireOnLogout") ?? false;
+        AccountSharable = info.ResolveBool("accountSharable") ?? false;
 
-        Cash = info.Resolve<bool>("cash") ?? false;
+        Cash = info.ResolveBool("cash") ?? false;
     }
     
     public int ID { get; }

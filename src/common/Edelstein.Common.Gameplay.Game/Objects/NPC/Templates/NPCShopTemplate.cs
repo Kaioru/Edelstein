@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using Edelstein.Protocol.Data;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 using Edelstein.Protocol.Utilities.Templates;
 

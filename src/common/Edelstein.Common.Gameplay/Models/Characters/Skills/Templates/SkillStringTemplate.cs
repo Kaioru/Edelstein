@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
 namespace Edelstein.Common.Gameplay.Models.Characters.Skills.Templates;
@@ -10,11 +10,11 @@ public class SkillStringTemplate : ISkillStringTemplate
     public string Name { get; }
     public string Desc { get; }
     
-    public SkillStringTemplate(int id, IDataProperty property)
+    public SkillStringTemplate(int id, IDataNode node)
     {
         ID = id;
 
-        Name = property.ResolveOrDefault<string>("name") ?? string.Empty;
-        Desc = property.ResolveOrDefault<string>("desc") ?? string.Empty;
+        Name = node.ResolveString("name") ?? string.Empty;
+        Desc = node.ResolveString("desc") ?? string.Empty;
     }
 }

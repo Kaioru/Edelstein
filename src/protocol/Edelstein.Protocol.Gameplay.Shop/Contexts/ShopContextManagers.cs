@@ -1,11 +1,11 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Shop.Commodities;
 using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Protocol.Gameplay.Shop.Contexts;
 
 public record ShopContextManagers(
-    IDataManager Data,
+    IDataNamespace Data,
     ITickerManager Ticker,
     
     INotSaleManager NotSale,

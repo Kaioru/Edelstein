@@ -1,5 +1,5 @@
 using System.Collections.Immutable;
-using Edelstein.Protocol.Data;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.NPC.Templates;
@@ -7,19 +7,19 @@ namespace Edelstein.Common.Gameplay.Game.Objects.NPC.Templates;
 public record NPCTemplate : INPCTemplate
 {
 
-    public NPCTemplate(int id, IDataProperty property, IDataProperty info)
+    public NPCTemplate(int id, IDataNode node, IDataNode info)
     {
         ID = id;
 
-        Move = property.Resolve("move") != null;
+        Move = node.ResolvePath("move") != null;
 
-        IsStoreBank = info.Resolve<bool>("storeBank") ?? false;
-        IsParcel = info.Resolve<bool>("parcel") ?? false;
+        IsStoreBank = info.ResolveBool("storeBank") ?? false;
+        IsParcel = info.ResolveBool("parcel") ?? false;
 
-        TrunkPut = info.Resolve<int>("trunkPut") ?? 0;
-        TrunkGet = info.Resolve<int>("trunkGet") ?? 0;
+        TrunkPut = info.ResolveInt("trunkPut") ?? 0;
+        TrunkGet = info.ResolveInt("trunkGet") ?? 0;
 
-        Scripts = info.Resolve("script")?.Children
+        Scripts = info.ResolvePath("script")?.Children
                       .Where(p => p.Name.All(char.IsDigit)) // 1057006 causes errors
                       .Select(p => new NPCTemplateScript(Convert.ToInt32(p.Name), p))
                       .ToImmutableList()

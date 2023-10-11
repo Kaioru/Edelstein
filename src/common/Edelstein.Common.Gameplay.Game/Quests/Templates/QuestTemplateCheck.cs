@@ -1,45 +1,45 @@
 ﻿using System.Collections.Immutable;
 using System.Globalization;
-using Edelstein.Protocol.Data;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Quests.Templates;
 
 public record QuestTemplateCheck : IQuestTemplateCheck
 {
-    public QuestTemplateCheck(IDataProperty? property)
+    public QuestTemplateCheck(IDataNode? node)
     {
-        ScriptStart = property?.ResolveOrDefault<string>("startscript");
-        ScriptEnd = property?.ResolveOrDefault<string>("endscript");
+        ScriptStart = node?.ResolveString("startscript");
+        ScriptEnd = node?.ResolveString("endscript");
         
-        WorldMin = property?.Resolve<int>("worldmin");
-        WorldMax = property?.Resolve<int>("worldmax");
+        WorldMin = node?.ResolveInt("worldmin");
+        WorldMax = node?.ResolveInt("worldmax");
 
-        TamingMobLevelMin = property?.Resolve<int>("tamingmoblevelmin");
-        TamingMobLevelMax = property?.Resolve<int>("tamingmoblevelmax");
-        PetTamenessMin = property?.Resolve<int>("pettamenessmin");
-        PetTamenessMax = property?.Resolve<int>("pettamenessmax");
+        TamingMobLevelMin = node?.ResolveInt("tamingmoblevelmin");
+        TamingMobLevelMax = node?.ResolveInt("tamingmoblevelmax");
+        PetTamenessMin = node?.ResolveInt("pettamenessmin");
+        PetTamenessMax = node?.ResolveInt("pettamenessmax");
 
-        LevelMin = property?.Resolve<int>("lvmin");
-        LevelMax = property?.Resolve<int>("lvmax");
+        LevelMin = node?.ResolveInt("lvmin");
+        LevelMax = node?.ResolveInt("lvmax");
         
-        POP = property?.Resolve<int>("pop");
+        POP = node?.ResolveInt("pop");
 
-        var start = property?.ResolveOrDefault<string>("start");
-        var end = property?.ResolveOrDefault<string>("end");
+        var start = node?.ResolveString("start");
+        var end = node?.ResolveString("end");
 
         if (start != null) DateStart = DateTime.ParseExact(start[..10], "yyyyMMddHH", CultureInfo.InvariantCulture);
         if (end != null) DateEnd = DateTime.ParseExact(end[..10], "yyyyMMddHH", CultureInfo.InvariantCulture);
 
-        Jobs = property?.Resolve("job")?.Children
-            .Select(c => c.Resolve<int>() ?? -1)
+        Jobs = node?.ResolvePath("job")?.Children
+            .Select(c => c.ResolveInt() ?? -1)
             .ToImmutableList();
-        SubJobFlags = property?.Resolve<int>("subJobFlags");
+        SubJobFlags = node?.ResolveInt("subJobFlags");
 
-        CheckItem = property?.Resolve("item")?.Children
+        CheckItem = node?.ResolvePath("item")?.Children
             .Select(p => (IQuestTemplateCheckItem)new QuestTemplateCheckItem(p.ResolveAll()))
             .ToImmutableList();
-        CheckMob = property?.Resolve("mob")?.Children
+        CheckMob = node?.ResolvePath("mob")?.Children
             .Select(p => (IQuestTemplateCheckMob)new QuestTemplateCheckMob(Convert.ToInt32(p.Name), p.ResolveAll()))
             .ToImmutableSortedSet(new QuestTemplateCheckMobComparer());
     }
