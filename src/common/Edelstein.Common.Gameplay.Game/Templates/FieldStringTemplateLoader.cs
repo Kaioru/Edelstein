@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Templates;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -7,10 +7,10 @@ namespace Edelstein.Common.Gameplay.Game.Templates;
 
 public class FieldStringTemplateLoader : ITemplateLoader
 {
-    private readonly IDataManager _data;
+    private readonly IDataNamespace _data;
     private readonly ITemplateManager<IFieldStringTemplate> _manager;
 
-    public FieldStringTemplateLoader(IDataManager data, ITemplateManager<IFieldStringTemplate> manager)
+    public FieldStringTemplateLoader(IDataNamespace data, ITemplateManager<IFieldStringTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -18,7 +18,7 @@ public class FieldStringTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var directory = _data.Resolve("String/Map.img");
+        var directory = _data.ResolvePath("String/Map.img");
 
         if (directory == null) return 0;
 
@@ -31,7 +31,7 @@ public class FieldStringTemplateLoader : ITemplateLoader
                     id,
                     new FieldStringTemplate(
                         id,
-                        n.ResolveAll()
+                        n.Cache()
                     )
                 ));
             }));

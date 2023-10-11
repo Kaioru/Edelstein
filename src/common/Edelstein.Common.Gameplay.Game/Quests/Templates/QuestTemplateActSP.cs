@@ -1,16 +1,16 @@
 ﻿using System.Collections.Frozen;
-using Edelstein.Protocol.Data;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Quests.Templates;
 
 public record QuestTemplateActSP : IQuestTemplateActSP
 {
-    public QuestTemplateActSP(IDataProperty property)
+    public QuestTemplateActSP(IDataNode node)
     {
-        SP = property.Resolve<int>("sp_value") ?? 0;
-        Jobs = property.Resolve("job")?.Children
-            .Select(p => p.Resolve<int>())
+        SP = node.ResolveInt("sp_value") ?? 0;
+        Jobs = node.ResolvePath("job")?.Children
+            .Select(p => p.ResolveInt())
             .Where(i => i.HasValue)
             .Select(i => i.Value)
             .ToFrozenSet();

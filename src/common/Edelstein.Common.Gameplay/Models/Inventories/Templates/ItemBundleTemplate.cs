@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 
 namespace Edelstein.Common.Gameplay.Models.Inventories.Templates;
@@ -6,14 +6,14 @@ namespace Edelstein.Common.Gameplay.Models.Inventories.Templates;
 public record ItemBundleTemplate : ItemTemplate, IItemBundleTemplate
 {
 
-    public ItemBundleTemplate(int id, IDataProperty info) : base(id, info)
+    public ItemBundleTemplate(int id, IDataNode info) : base(id, info)
     {
-        UnitPrice = info.Resolve<double>("unitPrice") ?? 0.0;
+        UnitPrice = info.ResolveDouble("unitPrice") ?? 0.0;
 
-        ReqLevel = info.Resolve<int>("reqLevel") ?? 0;
-        IncPAD = info.Resolve<int>("incPAD") ?? 0;
+        ReqLevel = info.ResolveInt("reqLevel") ?? 0;
+        IncPAD = info.ResolveInt("incPAD") ?? 0;
         
-        MaxPerSlot = info.Resolve<short>("slotMax") ?? 100;
+        MaxPerSlot = info.ResolveShort("slotMax") ?? 100;
     }
     public double UnitPrice { get; }
     

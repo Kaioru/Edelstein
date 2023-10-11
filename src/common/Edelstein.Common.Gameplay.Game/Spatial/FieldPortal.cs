@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Utilities.Spatial;
-using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
+using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Spatial;
@@ -9,18 +9,18 @@ namespace Edelstein.Common.Gameplay.Game.Spatial;
 public record FieldPortal : IFieldPortal
 {
 
-    public FieldPortal(int id, IDataProperty property)
+    public FieldPortal(int id, IDataNode node)
     {
         ID = id;
 
-        Name = property.ResolveOrDefault<string>("pn")!;
-        Type = (FieldPortalType)(property.Resolve<int>("pt") ?? 0);
-        Script = property.ResolveOrDefault<string>("script");
-        ToMap = property.Resolve<int>("tm") ?? int.MinValue;
-        ToName = property.ResolveOrDefault<string>("tn");
+        Name = node.ResolveString("pn")!;
+        Type = (FieldPortalType)(node.ResolveInt("pt") ?? 0);
+        Script = node.ResolveString("script");
+        ToMap = node.ResolveInt("tm") ?? int.MinValue;
+        ToName = node.ResolveString("tn");
         Position = new Point2D(
-            property.Resolve<int>("x") ?? int.MinValue,
-            property.Resolve<int>("y") ?? int.MinValue
+            node.ResolveInt("x") ?? int.MinValue,
+            node.ResolveInt("y") ?? int.MinValue
         );
     }
     public int ID { get; }

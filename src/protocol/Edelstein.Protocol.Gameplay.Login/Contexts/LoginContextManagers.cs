@@ -1,9 +1,9 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Protocol.Gameplay.Login.Contexts;
 
 public record LoginContextManagers(
-    IDataManager Data,
+    IDataNamespace Data,
     ITickerManager Ticker
 );

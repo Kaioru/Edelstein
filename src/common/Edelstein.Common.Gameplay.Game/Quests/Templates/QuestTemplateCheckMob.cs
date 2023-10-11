@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Quests.Templates;
@@ -10,11 +10,11 @@ public record QuestTemplateCheckMob : IQuestTemplateCheckMob
     public int MobID { get; }
     public int Count { get; }
 
-    public QuestTemplateCheckMob(int order, IDataProperty property)
+    public QuestTemplateCheckMob(int order, IDataNode node)
     {
         Order = order;
         
-        MobID = property.Resolve<int>("id") ?? 0;
-        Count = property.Resolve<int>("count") ?? 0;
+        MobID = node.ResolveInt("id") ?? 0;
+        Count = node.ResolveInt("count") ?? 0;
     }
 }

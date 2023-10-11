@@ -3,7 +3,6 @@
   <Import Project="..\Protocol.targets" />
 
   <ItemGroup>
-    <ProjectReference Include="..\Edelstein.Protocol.Data\Edelstein.Protocol.Data.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Services.Auth\Edelstein.Protocol.Services.Auth.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Services.Server\Edelstein.Protocol.Services.Server.csproj" />
@@ -12,6 +11,10 @@
 
   <ItemGroup>
     <Folder Include="Movements" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Duey.Abstractions" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

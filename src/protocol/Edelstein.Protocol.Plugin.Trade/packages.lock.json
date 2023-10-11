@@ -2,6 +2,11 @@
   "version": 1,
   "dependencies": {
     "net8.0": {
+      "Duey.Abstractions": {
+        "type": "Transitive",
+        "resolved": "2.0.0",
+        "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
+      },
       "Microsoft.Extensions.Configuration.Abstractions": {
         "type": "Transitive",
         "resolved": "8.0.0-rc.1.23419.4",
@@ -33,9 +38,6 @@
           "RBush": "[3.2.0, )"
         }
       },
-      "edelstein.protocol.data": {
-        "type": "Project"
-      },
       "edelstein.protocol.gameplay": {
         "type": "Project",
         "dependencies": {
@@ -48,7 +50,7 @@
       "edelstein.protocol.gameplay.trade": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Protocol.Data": "[1.0.0, )",
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",

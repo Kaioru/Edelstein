@@ -10,6 +10,8 @@
     <PackageReference Include="Autofac" Version="7.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Duey.Provider.NX" Version="2.0.0" />
+    <PackageReference Include="Duey.Provider.WZ" Version="2.0.0" />
     <PackageReference Include="Foundatio.JsonNet" Version="10.6.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-rc.1.23419.4" />
@@ -23,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Data.NX\Edelstein.Common.Data.NX.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Database\Edelstein.Common.Database.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Game\Edelstein.Common.Gameplay.Game.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Login\Edelstein.Common.Gameplay.Login.csproj" />

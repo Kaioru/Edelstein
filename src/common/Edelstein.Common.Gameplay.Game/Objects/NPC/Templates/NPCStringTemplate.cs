@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.NPC.Templates;
@@ -9,10 +9,10 @@ public record NPCStringTemplate : INPCStringTemplate
     public string Name { get; }
     public string Func { get; }
 
-    public NPCStringTemplate(int id, IDataProperty property)
+    public NPCStringTemplate(int id, IDataNode node)
     {
         ID = id;
-        Name = property.ResolveOrDefault<string>("name") ?? string.Empty;
-        Func = property.ResolveOrDefault<string>("func") ?? string.Empty;
+        Name = node.ResolveString("name") ?? string.Empty;
+        Func = node.ResolveString("func") ?? string.Empty;
     }
 }

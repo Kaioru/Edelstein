@@ -1,5 +1,6 @@
 ﻿using System.Collections.Frozen;
-using Edelstein.Protocol.Data;
+using System.Collections.Immutable;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Shop.Commodities;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -7,38 +8,38 @@ namespace Edelstein.Common.Gameplay.Shop.Commodities.Templates;
 
 public record ModifiedCommodityTemplate : IModifiedCommodity, ITemplate
 {
-    public ModifiedCommodityTemplate(int sn, IDataProperty property)
+    public ModifiedCommodityTemplate(int sn, IDataNode node)
     {
         ID = sn;
-        ItemID = property.Resolve<int>("ItemId");
-        Count = property.Resolve<short>("Count");
-        Priority = property.Resolve<byte>("Priority");
+        ItemID = node.ResolveInt("ItemId");
+        Count = node.ResolveShort("Count");
+        Priority = node.ResolveByte("Priority");
         
-        Price = property.Resolve<int>("Price");
-        Bonus = property.Resolve<int>("Bonus") > 0;
+        Price = node.ResolveInt("Price");
+        Bonus = node.ResolveInt("Bonus") > 0;
         
-        Period = property.Resolve<short>("Period");
-        ReqPOP = property.Resolve<short>("ReqPOP");
-        ReqLevel = property.Resolve<short>("ReqLEV");
+        Period = node.ResolveShort("Period");
+        ReqPOP = node.ResolveShort("ReqPOP");
+        ReqLevel = node.ResolveShort("ReqLEV");
         
-        MaplePoint = property.Resolve<int>("MaplePoint");
-        Meso = property.Resolve<int>("Meso");
+        MaplePoint = node.ResolveInt("MaplePoint");
+        Meso = node.ResolveInt("Meso");
         
-        ForPremiumUser = property.Resolve<int>("Premium") > 0;
+        ForPremiumUser = node.ResolveInt("Premium") > 0;
         
-        Gender = property.Resolve<byte>("Gender");
+        Gender = node.ResolveByte("Gender");
             
-        OnSale = property.Resolve<int>("OnSale") > 0;
-        Class = property.Resolve<byte>("Class");
-        Limit = property.Resolve<byte>("Limit");
+        OnSale = node.ResolveInt("OnSale") > 0;
+        Class = node.ResolveByte("Class");
+        Limit = node.ResolveByte("Limit");
         
-        PbCash = property.Resolve<short>("PbCash");
-        PbPoint = property.Resolve<short>("PbPoint");
-        PbGift = property.Resolve<short>("PbGift");
+        PbCash = node.ResolveShort("PbCash");
+        PbPoint = node.ResolveShort("PbPoint");
+        PbGift = node.ResolveShort("PbGift");
         
-        PackageSN = property
-            .Resolve("PackageSN")?
-            .Select(c => c.Resolve<int>() ?? 0)
+        PackageSN = node
+            .ResolvePath("PackageSN")?
+            .Select(c => c.ResolveInt() ?? 0)
             .ToFrozenSet() ?? null;
 
         if (ItemID != null) Flags |= CommodityFlags.ItemID;

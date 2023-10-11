@@ -1,9 +1,9 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Protocol.Gameplay.Trade.Contexts;
 
 public record TradeContextManagers(
-    IDataManager Data,
+    IDataNamespace Data,
     ITickerManager Ticker
 );

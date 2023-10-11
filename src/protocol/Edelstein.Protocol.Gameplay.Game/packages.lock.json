@@ -2,6 +2,12 @@
   "version": 1,
   "dependencies": {
     "net8.0": {
+      "Duey.Abstractions": {
+        "type": "Direct",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
+      },
       "Microsoft.Extensions.Logging.Abstractions": {
         "type": "Transitive",
         "resolved": "7.0.0",
@@ -19,9 +25,6 @@
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )",
           "RBush": "[3.2.0, )"
         }
-      },
-      "edelstein.protocol.data": {
-        "type": "Project"
       },
       "edelstein.protocol.gameplay": {
         "type": "Project",

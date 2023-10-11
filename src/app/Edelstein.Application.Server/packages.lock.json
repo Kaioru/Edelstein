@@ -31,6 +31,25 @@
           "Microsoft.Extensions.Options": "6.0.0"
         }
       },
+      "Duey.Provider.NX": {
+        "type": "Direct",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "+rUyVKH5twoxsv7Rfy0GUDvA78t0M0vKCGGtfMzljDcsX/RyeeNj0ZJENZ9w7va0J+Nm69XMPEjrxZyWMV5uVQ==",
+        "dependencies": {
+          "Duey.Abstractions": "2.0.0",
+          "K4os.Compression.LZ4": "1.3.6"
+        }
+      },
+      "Duey.Provider.WZ": {
+        "type": "Direct",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "byBI5tAqQvJ8u/Lqyhg0Dg8AkrdKuAP3rF2pA0RkQSBcgdRCsKKLP4ogisCadrt5x+xjN0OMEYOrxjUc1axYoA==",
+        "dependencies": {
+          "Duey.Abstractions": "2.0.0"
+        }
+      },
       "Foundatio.JsonNet": {
         "type": "Direct",
         "requested": "[10.6.1, )",
@@ -217,13 +236,10 @@
           "DotNetty.Common": "0.7.5"
         }
       },
-      "Duey": {
+      "Duey.Abstractions": {
         "type": "Transitive",
-        "resolved": "1.0.4",
-        "contentHash": "lBOhp81i/VhsOxpn17TBEoGrbuIVht2/AL1bKvf83K9pav8wobbGQODPxAPM53IF8y4DqE9vYgzXRD03mKX6ow==",
-        "dependencies": {
-          "K4os.Compression.LZ4": "1.1.11"
-        }
+        "resolved": "2.0.0",
+        "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
       },
       "Foundatio": {
         "type": "Transitive",
@@ -239,11 +255,8 @@
       },
       "K4os.Compression.LZ4": {
         "type": "Transitive",
-        "resolved": "1.1.11",
-        "contentHash": "RNvJw0UGkedPhCqVBNIogtfQebY+bQt0PN7xDbVe5LWLra0ZEqPfjPSl7iStj3rgDnkqkkTTpm+vCX3hU1qKmA==",
-        "dependencies": {
-          "System.Memory": "4.5.3"
-        }
+        "resolved": "1.3.6",
+        "contentHash": "RxGhoJBjZCgGeZgDqOP4Krs1cR9PHInbz6d2N19Dic0Y6ZACzVKbR3uSpqfEZf4RiUbHk9aiog2eS22nQPTc2A=="
       },
       "MathParser.org-mXparser": {
         "type": "Transitive",
@@ -585,11 +598,6 @@
         "resolved": "7.0.0",
         "contentHash": "eUDP47obqQm3SFJfP6z+Fx2nJ4KKTQbXB4Q9Uesnzw9SbYdhjyoGXuvDn/gEmFY6N5Z3bFFbpAQGA7m6hrYJCw=="
       },
-      "System.Memory": {
-        "type": "Transitive",
-        "resolved": "4.5.3",
-        "contentHash": "3oDzvc/zzetpTKWMShs1AADwZjQ/36HnsufHRPcOjyRAAMLDlu2iD33MBI2opxnezcVUtXyqDXXjoFMOU9c7SA=="
-      },
       "System.Runtime.CompilerServices.Unsafe": {
         "type": "Transitive",
         "resolved": "5.0.0",
@@ -611,13 +619,6 @@
       "edelstein.common.crypto": {
         "type": "Project"
       },
-      "edelstein.common.data.nx": {
-        "type": "Project",
-        "dependencies": {
-          "Duey": "[1.0.4, )",
-          "Edelstein.Protocol.Data": "[1.0.0, )"
-        }
-      },
       "edelstein.common.database": {
         "type": "Project",
         "dependencies": {
@@ -634,9 +635,8 @@
       "edelstein.common.gameplay": {
         "type": "Project",
         "dependencies": {
-          "Duey": "[1.0.4, )",
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Common.Utilities": "[1.0.0, )",
-          "Edelstein.Protocol.Data": "[1.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",
           "Edelstein.Protocol.Services.Social": "[1.0.0, )",
@@ -758,9 +758,6 @@
           "RBush": "[3.2.0, )"
         }
       },
-      "edelstein.protocol.data": {
-        "type": "Project"
-      },
       "edelstein.protocol.gameplay": {
         "type": "Project",
         "dependencies": {
@@ -773,7 +770,7 @@
       "edelstein.protocol.gameplay.game": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Protocol.Data": "[1.0.0, )",
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",
@@ -783,7 +780,7 @@
       "edelstein.protocol.gameplay.login": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Protocol.Data": "[1.0.0, )",
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )"
@@ -792,7 +789,7 @@
       "edelstein.protocol.gameplay.shop": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Protocol.Data": "[1.0.0, )",
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",
@@ -802,7 +799,7 @@
       "edelstein.protocol.gameplay.trade": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Protocol.Data": "[1.0.0, )",
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",

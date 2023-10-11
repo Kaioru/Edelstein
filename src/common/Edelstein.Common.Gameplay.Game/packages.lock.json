@@ -21,21 +21,10 @@
         "resolved": "5.13.0",
         "contentHash": "M4Rb4b31TUEfhCd4en0WlRfuFgQ2rwva9e1CuXnto5vNGvRsNVimHENnvjegf6nKG9ZH+51McAZ/huqRtTziYg=="
       },
-      "Duey": {
+      "Duey.Abstractions": {
         "type": "Transitive",
-        "resolved": "1.0.4",
-        "contentHash": "lBOhp81i/VhsOxpn17TBEoGrbuIVht2/AL1bKvf83K9pav8wobbGQODPxAPM53IF8y4DqE9vYgzXRD03mKX6ow==",
-        "dependencies": {
-          "K4os.Compression.LZ4": "1.1.11"
-        }
-      },
-      "K4os.Compression.LZ4": {
-        "type": "Transitive",
-        "resolved": "1.1.11",
-        "contentHash": "RNvJw0UGkedPhCqVBNIogtfQebY+bQt0PN7xDbVe5LWLra0ZEqPfjPSl7iStj3rgDnkqkkTTpm+vCX3hU1qKmA==",
-        "dependencies": {
-          "System.Memory": "4.5.3"
-        }
+        "resolved": "2.0.0",
+        "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
       },
       "MathParser.org-mXparser": {
         "type": "Transitive",
@@ -79,11 +68,6 @@
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         }
       },
-      "System.Memory": {
-        "type": "Transitive",
-        "resolved": "4.5.3",
-        "contentHash": "3oDzvc/zzetpTKWMShs1AADwZjQ/36HnsufHRPcOjyRAAMLDlu2iD33MBI2opxnezcVUtXyqDXXjoFMOU9c7SA=="
-      },
       "System.Runtime.CompilerServices.Unsafe": {
         "type": "Transitive",
         "resolved": "6.0.0",
@@ -109,9 +93,8 @@
       "edelstein.common.gameplay": {
         "type": "Project",
         "dependencies": {
-          "Duey": "[1.0.4, )",
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Common.Utilities": "[1.0.0, )",
-          "Edelstein.Protocol.Data": "[1.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",
           "Edelstein.Protocol.Services.Social": "[1.0.0, )",
@@ -127,9 +110,6 @@
           "RBush": "[3.2.0, )"
         }
       },
-      "edelstein.protocol.data": {
-        "type": "Project"
-      },
       "edelstein.protocol.gameplay": {
         "type": "Project",
         "dependencies": {
@@ -142,7 +122,7 @@
       "edelstein.protocol.gameplay.game": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Protocol.Data": "[1.0.0, )",
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",

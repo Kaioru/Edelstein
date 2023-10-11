@@ -1,5 +1,6 @@
 ﻿using System.Collections.Frozen;
-using Edelstein.Protocol.Data;
+using System.Collections.Immutable;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
 namespace Edelstein.Common.Gameplay.Models.Characters.Skills.Templates;
@@ -26,17 +27,17 @@ public class SkillTemplate : ISkillTemplate
     public IDictionary<int, int> ReqSkill { get; }
     public IDictionary<int, ISkillTemplateLevel> Levels { get; }
     
-    public SkillTemplate(int id, IDataProperty property)
+    public SkillTemplate(int id, IDataNode node)
     {
         ID = id;
 
-        IsPSD = (property.Resolve<int>("psd") ?? 0) > 0;
-        IsPrepared = property.Resolve("prepare") != null;
-        IsSummon = property.Resolve("summon") != null;
-        IsInvisible = (property.Resolve<int>("invisible") ?? 0) > 0;
-        IsCombatOrders = (property.Resolve<int>("combatOrders") ?? 0) > 0;
+        IsPSD = (node.ResolveInt("psd") ?? 0) > 0;
+        IsPrepared = node.ResolvePath("prepare") != null;
+        IsSummon = node.ResolvePath("summon") != null;
+        IsInvisible = (node.ResolveInt("invisible") ?? 0) > 0;
+        IsCombatOrders = (node.ResolveInt("combatOrders") ?? 0) > 0;
 
-        var elemAttr = property.ResolveOrDefault<string>("elemAttr") ?? string.Empty;
+        var elemAttr = node.ResolveString("elemAttr") ?? string.Empty;
 
         Element = Element.Physical;
         if (elemAttr.Length > 0)
@@ -53,38 +54,38 @@ public class SkillTemplate : ISkillTemplate
                 _ => Element.Physical
             };
 
-        Delay = property.Resolve("effect")?.Children.Sum(c => c.Resolve<int>("delay") ?? 0) ?? 0;
+        Delay = node.ResolvePath("effect")?.Children.Sum(c => c.ResolveInt("delay") ?? 0) ?? 0;
 
-        PsdSkill = property.Resolve("psdSkill")?
+        PsdSkill = node.ResolvePath("psdSkill")?
             .Select(c => Convert.ToInt32(c.Name))
             .ToFrozenSet() ?? FrozenSet<int>.Empty;
-        ReqSkill = property.Resolve("req")?.Children
+        ReqSkill = node.ResolvePath("req")?.Children
             .ToFrozenDictionary(
                 c => Convert.ToInt32(c.Name),
-                c => c.Resolve<int>() ?? 0
+                c => c.ResolveInt() ?? 0
             ) ?? FrozenDictionary<int, int>.Empty;
 
-        var common = property.Resolve("common");
+        var common = node.ResolvePath("common");
 
         if (common != null)
         {
-            var maxLevel = common.Resolve<int>("maxLevel") ?? 0;
+            var maxLevel = common.ResolveInt("maxLevel") ?? 0;
             
             Levels = Enumerable
                 .Range(1, maxLevel + (IsCombatOrders ? 2 : 0))
                 .ToFrozenDictionary(
                     i => i,
-                    i => (ISkillTemplateLevel)new SkillTemplateLevelCommon(i, common.ResolveAll())
+                    i => (ISkillTemplateLevel)new SkillTemplateLevelCommon(i, common.Cache())
                 );
             MaxLevel = (short)maxLevel;
         }
         else
         {
-            var level = property.Resolve("level");
+            var level = node.ResolvePath("level");
 
             Levels = level?.Children.ToFrozenDictionary(
                 c => Convert.ToInt32(c.Name),
-                c => (ISkillTemplateLevel)new SkillTemplateLevel(Convert.ToInt32(c.Name), c.ResolveAll())
+                c => (ISkillTemplateLevel)new SkillTemplateLevel(Convert.ToInt32(c.Name), c.Cache())
             ) ?? FrozenDictionary<int, ISkillTemplateLevel>.Empty;
             MaxLevel = (short)(Levels?.Count ?? 0);
         }

@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Data;
+﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Quests.Templates;
@@ -19,21 +19,21 @@ public record QuestTemplate : IQuestTemplate
     public IQuestTemplateCheck CheckStart { get; }
     public IQuestTemplateCheck CheckEnd { get; }
 
-    public QuestTemplate(int id, IDataProperty? info, IDataProperty? act, IDataProperty? check)
+    public QuestTemplate(int id, IDataNode? info, IDataNode? act, IDataNode? check)
     {
         ID = id;
 
-        Name = info?.ResolveOrDefault<string>("name") ?? "NO-NAME";
+        Name = info?.ResolveString("name") ?? "NO-NAME";
             
-        IsAutoAccept = (info?.Resolve<int>("autoAccept") ?? 0) > 0;
-        IsAutoStart = (info?.Resolve<int>("autoStart") ?? 0) > 0;
-        IsAutoComplete = (info?.Resolve<int>("autoComplete") ?? 0) > 0;
-        IsAutoPreComplete = (info?.Resolve<int>("autoPreComplete") ?? 0) > 0;
+        IsAutoAccept = (info?.ResolveInt("autoAccept") ?? 0) > 0;
+        IsAutoStart = (info?.ResolveInt("autoStart") ?? 0) > 0;
+        IsAutoComplete = (info?.ResolveInt("autoComplete") ?? 0) > 0;
+        IsAutoPreComplete = (info?.ResolveInt("autoPreComplete") ?? 0) > 0;
 
-        ActStart = new QuestTemplateAct(act?.Resolve("0")?.ResolveAll());
-        ActEnd = new QuestTemplateAct(act?.Resolve("1")?.ResolveAll());
+        ActStart = new QuestTemplateAct(act?.ResolvePath("0")?.Cache());
+        ActEnd = new QuestTemplateAct(act?.ResolvePath("1")?.Cache());
 
-        CheckStart = new QuestTemplateCheck(check?.Resolve("0")?.ResolveAll());
-        CheckEnd = new QuestTemplateCheck(check?.Resolve("1")?.ResolveAll());
+        CheckStart = new QuestTemplateCheck(check?.ResolvePath("0")?.Cache());
+        CheckEnd = new QuestTemplateCheck(check?.ResolvePath("1")?.Cache());
     }
 }

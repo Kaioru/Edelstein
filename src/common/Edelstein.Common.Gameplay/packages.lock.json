@@ -2,14 +2,11 @@
   "version": 1,
   "dependencies": {
     "net8.0": {
-      "Duey": {
+      "Duey.Abstractions": {
         "type": "Direct",
-        "requested": "[1.0.4, )",
-        "resolved": "1.0.4",
-        "contentHash": "lBOhp81i/VhsOxpn17TBEoGrbuIVht2/AL1bKvf83K9pav8wobbGQODPxAPM53IF8y4DqE9vYgzXRD03mKX6ow==",
-        "dependencies": {
-          "K4os.Compression.LZ4": "1.1.11"
-        }
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
       },
       "MathParser.org-mXparser": {
         "type": "Direct",
@@ -23,23 +20,10 @@
         "resolved": "7.0.0",
         "contentHash": "kmn78+LPVMOWeITUjIlfxUPDsI0R6G0RkeAMBmQxAJ7vBJn4q2dTva7pWi65ceN5vPGjJ9q/Uae2WKgvfktJAw=="
       },
-      "K4os.Compression.LZ4": {
-        "type": "Transitive",
-        "resolved": "1.1.11",
-        "contentHash": "RNvJw0UGkedPhCqVBNIogtfQebY+bQt0PN7xDbVe5LWLra0ZEqPfjPSl7iStj3rgDnkqkkTTpm+vCX3hU1qKmA==",
-        "dependencies": {
-          "System.Memory": "4.5.3"
-        }
-      },
       "RBush": {
         "type": "Transitive",
         "resolved": "3.2.0",
         "contentHash": "ijGh9N0zZ7JfXk3oQkWCwK8SwSSByexbyh/MjbCjNxOft9eG5ZqKC1vdgiYq78h4IZRFmN4s3JZ/b10Jipud5w=="
-      },
-      "System.Memory": {
-        "type": "Transitive",
-        "resolved": "4.5.3",
-        "contentHash": "3oDzvc/zzetpTKWMShs1AADwZjQ/36HnsufHRPcOjyRAAMLDlu2iD33MBI2opxnezcVUtXyqDXXjoFMOU9c7SA=="
       },
       "edelstein.common.utilities": {
         "type": "Project",
@@ -48,9 +32,6 @@
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )",
           "RBush": "[3.2.0, )"
         }
-      },
-      "edelstein.protocol.data": {
-        "type": "Project"
       },
       "edelstein.protocol.gameplay": {
         "type": "Project",

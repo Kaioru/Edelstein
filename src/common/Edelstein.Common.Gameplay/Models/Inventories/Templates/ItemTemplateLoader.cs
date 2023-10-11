@@ -1,6 +1,6 @@
-﻿using System.Collections.Frozen;
+using System.Collections.Frozen;
+using Duey.Abstractions;
 using Edelstein.Common.Utilities.Templates;
-using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -8,10 +8,10 @@ namespace Edelstein.Common.Gameplay.Models.Inventories.Templates;
 
 public class ItemTemplateLoader : ITemplateLoader
 {
-    private readonly IDataManager _data;
+    private readonly IDataNamespace _data;
     private readonly ITemplateManager<IItemTemplate> _manager;
     
-    public ItemTemplateLoader(IDataManager data, ITemplateManager<IItemTemplate> manager)
+    public ItemTemplateLoader(IDataNamespace data, ITemplateManager<IItemTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -19,35 +19,35 @@ public class ItemTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        var dirCharacter = _data.Resolve("Character")?.ResolveAll();
-        var dirItem = _data.Resolve("Item")?.ResolveAll();
+        var dirCharacter = _data.ResolvePath("Character")?.Cache();
+        var dirItem = _data.ResolvePath("Item")?.Cache();
 
         var nodesEquip = new List<IDataNode?>
         {
-            dirCharacter?.Resolve("Accessory"),
-            dirCharacter?.Resolve("Cap"),
-            dirCharacter?.Resolve("Cape"),
-            dirCharacter?.Resolve("Coat"),
-            dirCharacter?.Resolve("Dragon"),
-            dirCharacter?.Resolve("Glove"),
-            dirCharacter?.Resolve("Longcoat"),
-            dirCharacter?.Resolve("Mechanic"),
-            dirCharacter?.Resolve("Pants"),
-            dirCharacter?.Resolve("PetEquip"),
-            dirCharacter?.Resolve("Ring"),
-            dirCharacter?.Resolve("Shield"),
-            dirCharacter?.Resolve("Shoes"),
-            dirCharacter?.Resolve("TamingMob"),
-            dirCharacter?.Resolve("Weapon")
+            dirCharacter?.ResolvePath("Accessory"),
+            dirCharacter?.ResolvePath("Cap"),
+            dirCharacter?.ResolvePath("Cape"),
+            dirCharacter?.ResolvePath("Coat"),
+            dirCharacter?.ResolvePath("Dragon"),
+            dirCharacter?.ResolvePath("Glove"),
+            dirCharacter?.ResolvePath("Longcoat"),
+            dirCharacter?.ResolvePath("Mechanic"),
+            dirCharacter?.ResolvePath("Pants"),
+            dirCharacter?.ResolvePath("PetEquip"),
+            dirCharacter?.ResolvePath("Ring"),
+            dirCharacter?.ResolvePath("Shield"),
+            dirCharacter?.ResolvePath("Shoes"),
+            dirCharacter?.ResolvePath("TamingMob"),
+            dirCharacter?.ResolvePath("Weapon")
         };
         var nodesBundle = new List<IDataNode?>
         {
-            dirItem?.Resolve("Cash"),
-            dirItem?.Resolve("Consume"),
-            dirItem?.Resolve("Etc"),
-            dirItem?.Resolve("Install")
+            dirItem?.ResolvePath("Cash"),
+            dirItem?.ResolvePath("Consume"),
+            dirItem?.ResolvePath("Etc"),
+            dirItem?.ResolvePath("Install")
         };
-        var nodesPet = dirItem?.Resolve("Pet");
+        var nodesPet = dirItem?.ResolvePath("Pet");
 
         var loadEquip = nodesEquip
             .Where(n => n != null)
@@ -55,7 +55,7 @@ public class ItemTemplateLoader : ITemplateLoader
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name.Split(".")[0]);
-                var node = n.Resolve("info")?.ResolveAll();
+                var node = n.ResolvePath("info")?.Cache();
                 if (node == null) return;
                 await _manager.Insert(new TemplateProviderLazy<IItemTemplate>(
                     id,
@@ -70,7 +70,7 @@ public class ItemTemplateLoader : ITemplateLoader
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name);
-                var node = n.Resolve("info")?.ResolveAll();
+                var node = n.ResolvePath("info")?.Cache();
                 if (node == null) return;
                 await _manager.Insert(new TemplateProviderLazy<IItemTemplate>(
                     id,
@@ -82,7 +82,7 @@ public class ItemTemplateLoader : ITemplateLoader
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name.Split(".")[0]);
-                var node = n.Resolve("info")?.ResolveAll();
+                var node = n.ResolvePath("info")?.Cache();
                 if (node == null) return;
                 await _manager.Insert(new TemplateProviderLazy<IItemTemplate>(
                     id,

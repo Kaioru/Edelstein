@@ -1,18 +1,16 @@
-﻿using Edelstein.Common.Gameplay.Game.Objects.NPC.Templates;
+﻿using Duey.Abstractions;
 using Edelstein.Common.Utilities.Templates;
-using Edelstein.Protocol.Data;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
-using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob.Templates;
 
 public record MobStringTemplateLoader : ITemplateLoader
 {
-    private readonly IDataManager _data;
+    private readonly IDataNamespace _data;
     private readonly ITemplateManager<IMobStringTemplate> _manager;
 
-    public MobStringTemplateLoader(IDataManager data, ITemplateManager<IMobStringTemplate> manager)
+    public MobStringTemplateLoader(IDataNamespace data, ITemplateManager<IMobStringTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -20,7 +18,7 @@ public record MobStringTemplateLoader : ITemplateLoader
 
     public async Task<int> Load()
     {
-        await Task.WhenAll(_data.Resolve("String/Mob.img")?.Children
+        await Task.WhenAll(_data.ResolvePath("String/Mob.img")?.Children
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name);
@@ -28,7 +26,7 @@ public record MobStringTemplateLoader : ITemplateLoader
                     id,
                     new MobStringTemplate(
                         id,
-                        n.ResolveAll()
+                        n.Cache()
                     )
                 ));
             }) ?? Array.Empty<Task>());

@@ -87,26 +87,15 @@
           "Npgsql": "7.0.4"
         }
       },
-      "Duey": {
+      "Duey.Abstractions": {
         "type": "Transitive",
-        "resolved": "1.0.4",
-        "contentHash": "lBOhp81i/VhsOxpn17TBEoGrbuIVht2/AL1bKvf83K9pav8wobbGQODPxAPM53IF8y4DqE9vYgzXRD03mKX6ow==",
-        "dependencies": {
-          "K4os.Compression.LZ4": "1.1.11"
-        }
+        "resolved": "2.0.0",
+        "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
       },
       "Humanizer.Core": {
         "type": "Transitive",
         "resolved": "2.14.1",
         "contentHash": "lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw=="
-      },
-      "K4os.Compression.LZ4": {
-        "type": "Transitive",
-        "resolved": "1.1.11",
-        "contentHash": "RNvJw0UGkedPhCqVBNIogtfQebY+bQt0PN7xDbVe5LWLra0ZEqPfjPSl7iStj3rgDnkqkkTTpm+vCX3hU1qKmA==",
-        "dependencies": {
-          "System.Memory": "4.5.3"
-        }
       },
       "MathParser.org-mXparser": {
         "type": "Transitive",
@@ -269,11 +258,6 @@
         "resolved": "4.4.0",
         "contentHash": "2sCCb7doXEwtYAbqzbF/8UAeDRMNmPaQbU2q50Psg1J9KzumyVVCgKQY8s53WIPTufNT0DpSe9QRvVjOzfDWBA=="
       },
-      "System.Memory": {
-        "type": "Transitive",
-        "resolved": "4.5.3",
-        "contentHash": "3oDzvc/zzetpTKWMShs1AADwZjQ/36HnsufHRPcOjyRAAMLDlu2iD33MBI2opxnezcVUtXyqDXXjoFMOU9c7SA=="
-      },
       "System.Text.Encodings.Web": {
         "type": "Transitive",
         "resolved": "7.0.0",
@@ -290,9 +274,8 @@
       "edelstein.common.gameplay": {
         "type": "Project",
         "dependencies": {
-          "Duey": "[1.0.4, )",
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Common.Utilities": "[1.0.0, )",
-          "Edelstein.Protocol.Data": "[1.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",
           "Edelstein.Protocol.Services.Social": "[1.0.0, )",
@@ -307,9 +290,6 @@
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )",
           "RBush": "[3.2.0, )"
         }
-      },
-      "edelstein.protocol.data": {
-        "type": "Project"
       },
       "edelstein.protocol.gameplay": {
         "type": "Project",
