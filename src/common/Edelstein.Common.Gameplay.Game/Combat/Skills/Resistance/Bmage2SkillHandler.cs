@@ -15,6 +15,9 @@ public class Bmage2SkillHandler : Bmage1SkillHandler
         {
             case Skill.BmageAuraBlue:
             {
+                if (user.Character.TemporaryStats[TemporaryStatType.SuperBody] != null)
+                    return;
+                
                 context.TargetParty();
                 context.ResetTemporaryStatAuras();
 
@@ -41,6 +44,9 @@ public class Bmage2SkillHandler : Bmage1SkillHandler
             }
             case Skill.BmageAuraYellow:
             {
+                if (user.Character.TemporaryStats[TemporaryStatType.SuperBody] != null)
+                    return;
+                
                 context.TargetParty();
                 context.ResetTemporaryStatAuras();
 

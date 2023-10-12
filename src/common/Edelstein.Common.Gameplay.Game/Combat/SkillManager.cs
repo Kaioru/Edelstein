@@ -64,14 +64,17 @@ public sealed class SkillManager :
         switch (skillID)
         {
             case Skill.BmageAuraDark:
+                if (user.Character.TemporaryStats[TemporaryStatType.SuperBody] != null) return;
                 await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.DarkAura));
                 await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.Aura));
                 break;
             case Skill.BmageAuraBlue:
+                if (user.Character.TemporaryStats[TemporaryStatType.SuperBody] != null) return;
                 await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.BlueAura));
                 await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.Aura));
                 break;
             case Skill.BmageAuraYellow:
+                if (user.Character.TemporaryStats[TemporaryStatType.SuperBody] != null) return;
                 await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.YellowAura));
                 await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.Aura));
                 break;

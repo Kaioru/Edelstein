@@ -34,7 +34,7 @@ public class Bmage3SkillHandler : Bmage2SkillHandler
         await base.HandleAttackMob(context, user, mob);
     }
 
-    public override Task HandleSkillUse(ISkillContext context, IFieldUser user)
+    public override async Task HandleSkillUse(ISkillContext context, IFieldUser user)
     {
         switch (context.Skill?.ID)
         {
@@ -42,10 +42,27 @@ public class Bmage3SkillHandler : Bmage2SkillHandler
                 context.AddTemporaryStat(TemporaryStatType.Conversion, context.SkillLevel!.X);
                 break;
             case Skill.BmageSuperBody:
-            case Skill.BmageSuperBodyDark:
-            case Skill.BmageSuperBodyBlue:
-            case Skill.BmageSuperBodyYellow:
-                // TODO
+                int? superBodyID =
+                    user.Character.TemporaryStats[TemporaryStatType.DarkAura] != null
+                        ? Skill.BmageSuperBodyDark
+                        : user.Character.TemporaryStats[TemporaryStatType.BlueAura] != null
+                            ? Skill.BmageSuperBodyBlue
+                            : user.Character.TemporaryStats[TemporaryStatType.YellowAura] != null
+                                ? Skill.BmageSuperBodyYellow
+                                : null;
+                if (superBodyID == null) break;
+
+                var superBodySkill = await user.StageUser.Context.Templates.Skill.Retrieve(superBodyID.Value);
+                var superBodyLevel = superBodySkill?[user.Stats.SkillLevels[Skill.BmageSuperBody]];
+
+                if (superBodyLevel == null) break;
+
+                context.AddTemporaryStat(
+                    TemporaryStatType.SuperBody, 
+                    context.SkillLevel!.Level,
+                    superBodyID,
+                    DateTime.UtcNow.AddSeconds(superBodyLevel.Time)
+                );
                 break;
             case Skill.BmageRevive:
                 // TODO
@@ -56,6 +73,6 @@ public class Bmage3SkillHandler : Bmage2SkillHandler
                 break;
         }
 
-        return base.HandleSkillUse(context, user);
+        await base.HandleSkillUse(context, user);
     }
 }

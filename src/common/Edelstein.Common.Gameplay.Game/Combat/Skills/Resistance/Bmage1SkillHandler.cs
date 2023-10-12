@@ -14,6 +14,9 @@ public class Bmage1SkillHandler : CitizenSkillHandler
         switch (context.Skill?.ID)
         {
             case Skill.BmageAuraDark:
+                if (user.Character.TemporaryStats[TemporaryStatType.SuperBody] != null)
+                    return;
+                
                 context.TargetParty();
                 context.ResetTemporaryStatAuras();
 
