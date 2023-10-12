@@ -17,7 +17,7 @@ public class Bmage3SkillHandler : Bmage2SkillHandler
         if (user.Character.TemporaryStats[TemporaryStatType.Revive] != null && context.Skill?.ID != Skill.BmageRevive)
         {
             var reviveSkill = await user.StageUser.Context.Templates.Skill.Retrieve(Skill.BmageRevive);
-            var reviveLevel = reviveSkill?.Levels[user.Stats.SkillLevels[Skill.BmageRevive]];
+            var reviveLevel = reviveSkill?[user.Stats.SkillLevels[Skill.BmageRevive]];
 
             if (reviveLevel != null && context.Random.Next(0, 100) <= reviveLevel.Prop)
                 context.AddSummoned(

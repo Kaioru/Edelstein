@@ -68,7 +68,13 @@ public class SkillTemplate : ISkillTemplate
 
         if (common != null)
         {
-            var maxLevel = common.ResolveInt("maxLevel") ?? 0;
+            var maxLevelNode = common.ResolvePath("maxLevel");
+            var maxLevel = maxLevelNode?.ResolveInt() ?? 0;
+            var maxLevelStr = maxLevelNode?.ResolveString();
+
+            // Fixes Advanced Yellow Aura
+            if (maxLevelStr != null)
+                maxLevel = Convert.ToInt32(maxLevelStr);
             
             Levels = Enumerable
                 .Range(1, maxLevel + (IsCombatOrders ? 2 : 0))

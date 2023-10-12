@@ -1,8 +1,10 @@
-﻿using Edelstein.Common.Utilities.Repositories;
+﻿using Edelstein.Common.Constants;
+using Edelstein.Common.Utilities.Repositories;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
+using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Combat;
@@ -59,7 +61,25 @@ public sealed class SkillManager :
 
     public async Task HandleSkillCancel(IFieldUser user, int skillID)
     {
-        await user.ModifyTemporaryStats(s => s.ResetByReason(skillID));
+        switch (skillID)
+        {
+            case Skill.BmageAuraDark:
+                await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.DarkAura));
+                await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.Aura));
+                break;
+            case Skill.BmageAuraBlue:
+                await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.BlueAura));
+                await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.Aura));
+                break;
+            case Skill.BmageAuraYellow:
+                await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.YellowAura));
+                await user.ModifyTemporaryStats(s => s.ResetByType(TemporaryStatType.Aura));
+                break;
+            default:
+                await user.ModifyTemporaryStats(s => s.ResetByReason(skillID));
+                break;
+        }
+        
         var context = await CreateContext(user, skillID, user.Stats.SkillLevels[skillID]);
         if (context == null) return;
         var handler = await Retrieve(user.Character.Job);

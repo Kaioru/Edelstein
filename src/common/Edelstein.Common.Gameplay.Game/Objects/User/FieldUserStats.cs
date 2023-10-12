@@ -539,9 +539,15 @@ public record FieldUserStats : IFieldUserStats
             PADr += darkAuraStat.Value;
             MADr += darkAuraStat.Value;
         }
+        
         var yellowAuraStat = user.Character.TemporaryStats[TemporaryStatType.YellowAura];
-        if (yellowAuraStat != null) 
-            Speed += yellowAuraStat.Value;
+        if (yellowAuraStat != null)
+        {
+            var yellowAuraSkill = await user.StageUser.Context.Templates.Skill.Retrieve(yellowAuraStat.Reason);
+            var yellowAuraLevel = yellowAuraSkill?[SkillLevels[yellowAuraStat.Reason]];
+            
+            Speed += yellowAuraLevel?.X ?? 0;
+        }
 
         if (JobConstants.GetJobRace(user.Character.Job) == 3 &&
             JobConstants.GetJobType(user.Character.Job) == 3 &&
