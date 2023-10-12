@@ -1,4 +1,5 @@
-﻿using DotNetty.Buffers;
+﻿using System.Buffers;
+using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Crypto;
@@ -70,9 +71,9 @@ public class NettyPacketDecoder : ReplayingDecoder<NettyPacketState>
                     return;
                 }
 
-                var buffer = new byte[_length];
+                var buffer = ArrayPool<byte>.Shared.Rent(_length);
 
-                input.ReadBytes(buffer);
+                input.ReadBytes(buffer, 0, _length);
                 Checkpoint(NettyPacketState.DecodingHeader);
 
                 if (_length < 0x2) return;
@@ -87,8 +88,8 @@ public class NettyPacketDecoder : ReplayingDecoder<NettyPacketState>
 
                     if (socket.IsDataEncrypted)
                     {
-                        _aesCipher.Transform(buffer, seqRecv);
-                        ShandaCipher.DecryptTransform(buffer);
+                        _aesCipher.Transform(buffer, _length, seqRecv);
+                        ShandaCipher.DecryptTransform(buffer, _length);
                     }
 
                     socket.SeqRecv = _igCipher.Hash(seqRecv, 4, 0);

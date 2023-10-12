@@ -1,4 +1,5 @@
-﻿using DotNetty.Transport.Channels;
+﻿using System.Buffers;
+using DotNetty.Transport.Channels;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
@@ -54,6 +55,8 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
 
             _ = _sockets.Insert(newSocket);
         }
+        
+        ArrayPool<byte>.Shared.Return(packet.Buffer);
     }
 
     public override void ChannelInactive(IChannelHandlerContext context)

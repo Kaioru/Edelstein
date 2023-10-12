@@ -23,9 +23,8 @@ public class AESCipher
         _cipher.Mode = CipherMode.ECB;
     }
 
-    public void Transform(Span<byte> input, uint pSrc)
+    public void Transform(Span<byte> input, int remaining, uint pSrc)
     {
-        var remaining = input.Length;
         var length = 0x5B0;
         var start = 0;
 

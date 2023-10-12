@@ -1,4 +1,5 @@
-﻿using DotNetty.Transport.Channels;
+﻿using System.Buffers;
+using DotNetty.Transport.Channels;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
@@ -68,13 +69,15 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
-        adapter?.OnPacket((IPacket)message);
+        var packet = (IPacket)message;
+        
+        adapter?.OnPacket(packet);
+        ArrayPool<byte>.Shared.Return(packet.Buffer);
     }
 
     public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
-
         adapter?.OnException(exception);
     }
 }
