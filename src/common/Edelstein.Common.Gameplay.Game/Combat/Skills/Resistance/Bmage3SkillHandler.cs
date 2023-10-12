@@ -14,7 +14,7 @@ public class Bmage3SkillHandler : Bmage2SkillHandler
 
     public override async Task HandleAttackMob(ISkillContext context, IFieldUser user, IFieldMob mob)
     {
-        if (user.Character.TemporaryStats[TemporaryStatType.Revive] != null)
+        if (user.Character.TemporaryStats[TemporaryStatType.Revive] != null && context.Skill?.ID != Skill.BmageRevive)
         {
             var reviveSkill = await user.StageUser.Context.Templates.Skill.Retrieve(Skill.BmageRevive);
             var reviveLevel = reviveSkill?.Levels[user.Stats.SkillLevels[Skill.BmageRevive]];
@@ -26,7 +26,7 @@ public class Bmage3SkillHandler : Bmage2SkillHandler
                     Skill.BmageRevive, 
                     reviveLevel.Level, 
                     true,
-                    DateTime.UtcNow.AddSeconds(reviveLevel.Time),
+                    DateTime.UtcNow.AddSeconds(reviveLevel.X),
                     mob.Position
                 );
         }

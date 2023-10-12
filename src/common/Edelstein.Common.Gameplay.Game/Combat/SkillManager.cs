@@ -39,7 +39,6 @@ public sealed class SkillManager :
     {
         if (damage == 0) return;
         await mob.Damage(damage, user);
-        if (mob.HP <= 0) return;
         var context = await CreateContext(user, skillID, user.Stats.SkillLevels[skillID], mob: mob);
         if (context == null) return;
         var handler = await Retrieve(user.Character.Job);
