@@ -27,8 +27,8 @@ public class FieldOnPacketPartyCreateRequestPlug : IPipelinePlug<FieldOnPacketPa
             PartyResult.FailedAlreadyInParty => PartyResultOperations.CreateNewPartyAlreayJoined,
             _ => PartyResultOperations.CreateNewPartyUnknown
         };
-        var p = new PacketWriter(PacketSendOperations.PartyResult);
-        p.WriteByte((byte)result);
-        await message.User.Dispatch(p.Build());
+        using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+        packet.WriteByte((byte)result);
+        await message.User.Dispatch(packet.Build());
     }
 }

@@ -15,33 +15,33 @@ public class DialogueNPCShop : IDialogueNPCShop
     
     public async Task<bool> HandleEnter(IFieldUser user)
     {
-        var p = new PacketWriter(PacketSendOperations.OpenShopDlg);
+        using var packet = new PacketWriter(PacketSendOperations.OpenShopDlg);
 
-        p.WriteInt(Shop.ID);
-        p.WriteShort((short)Shop.Items.Count);
+        packet.WriteInt(Shop.ID);
+        packet.WriteShort((short)Shop.Items.Count);
         
         foreach (var item in Shop.Items)
         {
-            p.WriteInt(item.TemplateID);
+            packet.WriteInt(item.TemplateID);
             
-            p.WriteInt(item.Price);
-            p.WriteByte(item.DiscountRate);
+            packet.WriteInt(item.Price);
+            packet.WriteByte(item.DiscountRate);
             
-            p.WriteInt(item.TokenTemplateID);
-            p.WriteInt(item.TokenPrice);
+            packet.WriteInt(item.TokenTemplateID);
+            packet.WriteInt(item.TokenPrice);
             
-            p.WriteInt(item.ItemPeriod);
-            p.WriteInt(item.LevelLimited);
+            packet.WriteInt(item.ItemPeriod);
+            packet.WriteInt(item.LevelLimited);
 
             if (ItemConstants.IsRechargeableItem(item.TemplateID))
-                p.WriteDouble(item.UnitPrice);
+                packet.WriteDouble(item.UnitPrice);
             else
-                p.WriteShort((short)item.Quantity);
+                packet.WriteShort((short)item.Quantity);
 
-            p.WriteShort(item.MaxPerSlot);
+            packet.WriteShort(item.MaxPerSlot);
         }
 
-        await user.Dispatch(p.Build());
+        await user.Dispatch(packet.Build());
         return true;
     }
     public Task<bool> HandleLeave(IFieldUser user) => Task.FromResult(true);

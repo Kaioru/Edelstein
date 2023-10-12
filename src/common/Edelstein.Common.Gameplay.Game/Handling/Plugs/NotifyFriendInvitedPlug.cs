@@ -17,14 +17,14 @@ public class NotifyFriendInvitedPlug : IPipelinePlug<NotifyFriendInvited>
     {
         var user = await _stage.Users.Retrieve(message.FriendID);
         if (user == null) return;
-        var p = new PacketWriter(PacketSendOperations.FriendResult);
-        p.WriteByte((byte)FriendResultOperations.Invite);
-        p.WriteInt(message.InviterID);
-        p.WriteString(message.InviterName);
-        p.WriteInt(message.InviterLevel);
-        p.WriteInt(message.InviterJob);
-        p.WriteFriendInfo(message.Friend);
-        p.WriteBool(false);
-        _ = user.Dispatch(p.Build());
+        using var packet = new PacketWriter(PacketSendOperations.FriendResult);
+        packet.WriteByte((byte)FriendResultOperations.Invite);
+        packet.WriteInt(message.InviterID);
+        packet.WriteString(message.InviterName);
+        packet.WriteInt(message.InviterLevel);
+        packet.WriteInt(message.InviterJob);
+        packet.WriteFriendInfo(message.Friend);
+        packet.WriteBool(false);
+        _ = user.Dispatch(packet.Build());
     }
 }

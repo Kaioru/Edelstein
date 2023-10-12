@@ -56,13 +56,13 @@ public class ShopOnPacketCashItemBuyPackageRequestPlug : IPipelinePlug<ShopOnPac
         
         message.User.IncCash(message.Cash, -commodity.Price);
 
-        var p = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
+        using var packet = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
     
-        p.WriteByte((byte)ShopResultOperations.BuyPackage_Done);
-        p.WriteByte((byte)items.Count);
+        packet.WriteByte((byte)ShopResultOperations.BuyPackage_Done);
+        packet.WriteByte((byte)items.Count);
         foreach (var item in items)
-            p.WriteItemLockerData(item);
-        p.WriteShort(0);
-        await message.User.Dispatch(p.Build());
+            packet.WriteItemLockerData(item);
+        packet.WriteShort(0);
+        await message.User.Dispatch(packet.Build());
     }
 }

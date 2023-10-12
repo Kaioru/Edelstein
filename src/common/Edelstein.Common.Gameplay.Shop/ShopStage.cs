@@ -20,7 +20,7 @@ public class ShopStage : AbstractStage<IShopStageUser>, IShopStage
             return;
         }
         
-        var packet = new PacketWriter(PacketSendOperations.SetCashShop);
+        using var packet = new PacketWriter(PacketSendOperations.SetCashShop);
         
         packet.WriteCharacterData(
             user.Character, 

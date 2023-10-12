@@ -32,7 +32,7 @@ public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
     )
     {
         var socket = context.Channel.GetAttribute(NettyAttributes.SocketKey).Get();
-        var dataLen = (short)message.Buffer.Length;
+        var dataLen = message.Length;
         var buffer = ArrayPool<byte>.Shared.Rent(dataLen);
         
         Array.Copy(message.Buffer, buffer, dataLen);

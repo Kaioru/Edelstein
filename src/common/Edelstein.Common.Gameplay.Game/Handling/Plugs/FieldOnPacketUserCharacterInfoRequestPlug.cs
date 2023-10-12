@@ -11,7 +11,7 @@ public class FieldOnPacketUserCharacterInfoRequestPlug : IPipelinePlug<FieldOnPa
 {
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserCharacterInfoRequest message)
     {
-        var packet = new PacketWriter(PacketSendOperations.CharacterInfo);
+        using var packet = new PacketWriter(PacketSendOperations.CharacterInfo);
 
         packet.WriteInt(message.Target.Character.ID);
         packet.WriteByte(message.Target.Character.Level);

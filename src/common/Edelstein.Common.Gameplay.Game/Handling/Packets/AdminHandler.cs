@@ -48,12 +48,12 @@ public class AdminHandler : AbstractFieldHandler
                 if (canUseCommonCommand)
                 {
                     var hidden = reader.ReadBool();
+                    using var packet =  new PacketWriter(PacketSendOperations.AdminResult)
+                        .WriteByte(0x12)
+                        .WriteBool(hidden);
                     
                     await user.Hide(hidden);
-                    await user.Dispatch(new PacketWriter(PacketSendOperations.AdminResult)
-                        .WriteByte(0x12)
-                        .WriteBool(hidden)
-                        .Build());
+                    await user.Dispatch(packet.Build());
                 }
                 break;
             case 0x1F: // /job <arg1>

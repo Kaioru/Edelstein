@@ -20,16 +20,16 @@ public class NotifyPartyCreatedPlug : IPipelinePlug<NotifyPartyCreated>
         
         user.Party = message.Party;
         
-        var p = new PacketWriter(PacketSendOperations.PartyResult);
-        p.WriteByte((byte)PartyResultOperations.CreateNewPartyDone);
-        p.WriteInt(message.Party.ID);
+        using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+        packet.WriteByte((byte)PartyResultOperations.CreateNewPartyDone);
+        packet.WriteInt(message.Party.ID);
         
-        p.WriteInt(0);
-        p.WriteInt(0);
-        p.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
+        packet.WriteInt(0);
         
-        p.WriteShort(0);
-        p.WriteShort(0);
-        _ = user.Dispatch(p.Build());
+        packet.WriteShort(0);
+        packet.WriteShort(0);
+        _ = user.Dispatch(packet.Build());
     }
 }

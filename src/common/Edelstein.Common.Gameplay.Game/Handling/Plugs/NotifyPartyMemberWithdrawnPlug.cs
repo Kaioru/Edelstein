@@ -25,19 +25,19 @@ public class NotifyPartyMemberWithdrawnPlug : IPipelinePlug<NotifyPartyMemberWit
             
             user.Party.Members.Remove(message.CharacterID);
             
-            var p = new PacketWriter(PacketSendOperations.PartyResult);
-            p.WriteByte((byte)PartyResultOperations.WithdrawPartyDone);
-            p.WriteInt(message.PartyID);
-            p.WriteInt(message.CharacterID);
-            p.WriteBool(true);
-            p.WriteBool(message.IsKicked);
-            p.WriteString(message.CharacterName);
-            p.WritePartyInfo(user.Party);
+            using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+            packet.WriteByte((byte)PartyResultOperations.WithdrawPartyDone);
+            packet.WriteInt(message.PartyID);
+            packet.WriteInt(message.CharacterID);
+            packet.WriteBool(true);
+            packet.WriteBool(message.IsKicked);
+            packet.WriteString(message.CharacterName);
+            packet.WritePartyInfo(user.Party);
 
             if (user.Party.CharacterID == message.CharacterID)
                 user.Party = null;
             
-            _ = user.Dispatch(p.Build());
+            _ = user.Dispatch(packet.Build());
         }
     }
 }

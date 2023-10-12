@@ -66,6 +66,7 @@ public class UserOnPacketWorldRequestPlug : IPipelinePlug<UserOnPacketWorldReque
             await message.User.Dispatch(packet.Build());
         }
 
-        await message.User.Dispatch(new PacketWriter(PacketSendOperations.WorldInformation).WriteByte(0xFF).Build());
+        using var failedPacket = new PacketWriter(PacketSendOperations.WorldInformation).WriteByte(0xFF);
+        await message.User.Dispatch(failedPacket.Build());
     }
 }

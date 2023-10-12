@@ -17,23 +17,23 @@ public class FieldOnPacketUserQuestCompleteRequestPlug : IPipelinePlug<FieldOnPa
         if (message.Template.CheckEnd.ScriptEnd != null) return;
        
         var result = await _manager.Complete(message.User, message.Template.ID);
-        var p = new PacketWriter(PacketSendOperations.UserQuestResult);
+        using var packet = new PacketWriter(PacketSendOperations.UserQuestResult);
         
-        p.WriteByte((byte)result);
+        packet.WriteByte((byte)result);
         switch (result)
         {
             case QuestResultType.FailedInventory:
             case QuestResultType.ResetQuestTimer:
             case QuestResultType.FailedTimeOver:
-                p.WriteShort((short)message.Template.ID);
+                packet.WriteShort((short)message.Template.ID);
                 break;
             case QuestResultType.Success:
-                p.WriteShort((short)message.Template.ID);
-                p.WriteInt(message.NPCTemplateID ?? 0);
-                p.WriteShort((short)(message.Template.ActEnd.NextQuest ?? 0));
+                packet.WriteShort((short)message.Template.ID);
+                packet.WriteInt(message.NPCTemplateID ?? 0);
+                packet.WriteShort((short)(message.Template.ActEnd.NextQuest ?? 0));
                 break;
         }
         
-        await message.User.Dispatch(p.Build());
+        await message.User.Dispatch(packet.Build());
     }
 }

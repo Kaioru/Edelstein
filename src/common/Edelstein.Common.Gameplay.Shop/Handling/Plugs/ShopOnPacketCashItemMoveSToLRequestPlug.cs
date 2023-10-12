@@ -37,10 +37,10 @@ public class ShopOnPacketCashItemMoveSToLRequestPlug : IPipelinePlug<ShopOnPacke
         context.RemoveSlot(slot);
         message.User.AccountWorld.Locker.Items.Add(lockerSlot);
         
-        var p = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
+        using var packet = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
 
-        p.WriteByte((byte)ShopResultOperations.MoveStoL_Done);
-        p.WriteItemLockerData(lockerSlot);
-        await message.User.Dispatch(p.Build());
+        packet.WriteByte((byte)ShopResultOperations.MoveStoL_Done);
+        packet.WriteItemLockerData(lockerSlot);
+        await message.User.Dispatch(packet.Build());
     }
 }

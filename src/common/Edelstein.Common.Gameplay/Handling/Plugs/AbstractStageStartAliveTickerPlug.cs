@@ -23,10 +23,14 @@ public abstract class AbstractStageStartAliveTickerPlug<TStageUser> : IPipelineP
 
     public async Task OnTick(DateTime now)
     {
-        foreach (var user in (await _stage.Users.RetrieveAll()).Where(u => now - u.Socket.LastAliveSent > TimeSpan.FromMinutes(2)))
+        using var packet =  new PacketWriter(PacketSendOperations.AliveReq);
+        var built = packet.Build();
+        
+        foreach (var user in (await _stage.Users.RetrieveAll())
+                 .Where(u => now - u.Socket.LastAliveSent > TimeSpan.FromMinutes(2)))
         {
             user.Socket.LastAliveSent = now;
-            await user.Socket.Dispatch(new PacketWriter(PacketSendOperations.AliveReq).Build());
+            await user.Socket.Dispatch(built);
         }
     }
 }

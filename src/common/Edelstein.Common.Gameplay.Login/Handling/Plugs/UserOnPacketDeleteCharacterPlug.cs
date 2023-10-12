@@ -38,11 +38,10 @@ public class UserOnPacketDeleteCharacterPlug : IPipelinePlug<UserOnPacketDeleteC
         }
         catch (Exception)
         {
-            await message.User.Dispatch(new PacketWriter(PacketSendOperations.DeleteCharacterResult)
+            using var failedPacket = new PacketWriter(PacketSendOperations.DeleteCharacterResult)
                 .WriteInt(message.CharacterID)
-                .WriteByte((byte)LoginResult.DBFail)
-                .Build()
-            );
+                .WriteByte((byte)LoginResult.DBFail);
+            await message.User.Dispatch(failedPacket.Build());
         }
     }
 }

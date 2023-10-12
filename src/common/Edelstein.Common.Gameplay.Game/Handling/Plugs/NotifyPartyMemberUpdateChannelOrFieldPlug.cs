@@ -34,11 +34,11 @@ public class NotifyPartyMemberUpdateChannelOrFieldPlug : IPipelinePlug<NotifyPar
                 member.FieldID = message.FieldID;
             }
             
-            var p = new PacketWriter(PacketSendOperations.PartyResult);
-            p.WriteByte((byte)PartyResultOperations.UserMigration);
-            p.WriteInt(message.PartyID);
-            p.WritePartyInfo(user.Party);
-            _ = user.Dispatch(p.Build());
+            using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+            packet.WriteByte((byte)PartyResultOperations.UserMigration);
+            packet.WriteInt(message.PartyID);
+            packet.WritePartyInfo(user.Party);
+            _ = user.Dispatch(packet.Build());
         }
     }
 }

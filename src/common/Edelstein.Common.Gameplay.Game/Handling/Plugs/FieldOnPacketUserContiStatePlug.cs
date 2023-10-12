@@ -17,11 +17,11 @@ public class FieldOnPacketUserContiStatePlug : IPipelinePlug<FieldOnPacketUserCo
         if (message.User.Field == null) return;
         var contimove = await _manager.RetrieveByField(message.User.Field);
         if (contimove == null) return;
-        var p = new PacketWriter(PacketSendOperations.CONTISTATE);
+        using var packet = new PacketWriter(PacketSendOperations.CONTISTATE);
 
-        p.WriteByte((byte)contimove.State);
-        p.WriteBool(contimove.State == ContiMoveState.Event);
+        packet.WriteByte((byte)contimove.State);
+        packet.WriteBool(contimove.State == ContiMoveState.Event);
 
-        await message.User.Dispatch(p.Build());
+        await message.User.Dispatch(packet.Build());
     }
 }

@@ -32,7 +32,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         var skillLevel = skillID > 0 ? message.User.Stats.SkillLevels[skillID] : 0;
         var isPDamage = message.Attack.Type != AttackType.Magic;
         var operation = (PacketSendOperations)((int)PacketSendOperations.UserMeleeAttack + (int)message.Attack.Type);
-        var packet = new PacketWriter(operation);
+        using var packet = new PacketWriter(operation);
 
         if (message.Attack is
             {

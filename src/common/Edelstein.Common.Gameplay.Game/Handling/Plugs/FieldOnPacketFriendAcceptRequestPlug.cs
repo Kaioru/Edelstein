@@ -24,9 +24,9 @@ public class FieldOnPacketFriendAcceptRequestPlug : IPipelinePlug<FieldOnPacketF
         
         if (response.Result == FriendResult.Success) return;
         
-        var p = new PacketWriter(PacketSendOperations.FriendResult);
-        p.WriteByte((byte)FriendResultOperations.AcceptFriendUnknown);
-        p.WriteBool(false);
-        await message.User.Dispatch(p.Build());
+        using var packet = new PacketWriter(PacketSendOperations.FriendResult);
+        packet.WriteByte((byte)FriendResultOperations.AcceptFriendUnknown);
+        packet.WriteBool(false);
+        await message.User.Dispatch(packet.Build());
     }
 }

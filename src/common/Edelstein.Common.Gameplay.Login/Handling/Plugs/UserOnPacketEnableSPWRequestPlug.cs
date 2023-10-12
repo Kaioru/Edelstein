@@ -39,21 +39,19 @@ public class UserOnPacketEnableSPWRequestPlug : IPipelinePlug<UserOnPacketEnable
 
             if (character == null)
             {
-                await message.User.Dispatch(new PacketWriter(PacketSendOperations.EnableSPWResult)
+                using var failedPacket = new PacketWriter(PacketSendOperations.EnableSPWResult)
                     .WriteBool(false)
-                    .WriteByte((byte)LoginResult.NotAuthorized)
-                    .Build()
-                );
+                    .WriteByte((byte)LoginResult.NotAuthorized);
+                await message.User.Dispatch(failedPacket.Build());
                 return;
             }
 
             if (response.Result != ServerResult.Success || response.Server == null)
             {
-                await message.User.Dispatch(new PacketWriter(PacketSendOperations.EnableSPWResult)
+                using var failedPacket = new PacketWriter(PacketSendOperations.EnableSPWResult)
                     .WriteBool(false)
-                    .WriteByte((byte)LoginResult.NotConnectableWorld)
-                    .Build()
-                );
+                    .WriteByte((byte)LoginResult.NotConnectableWorld);
+                await message.User.Dispatch(failedPacket.Build());
                 return;
             }
 

@@ -9,16 +9,16 @@ public class FieldOnPacketUserThrowGrenadePlug : IPipelinePlug<FieldOnPacketUser
 {
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserThrowGrenade message)
     {
-        var p = new PacketWriter(PacketSendOperations.UserThrowGrenade);
+        using var packet = new PacketWriter(PacketSendOperations.UserThrowGrenade);
 
-        p.WriteInt(message.User.Character.ID);
-        p.WriteInt(message.Position.X);
-        p.WriteInt(message.Position.Y);
-        p.WriteInt(message.Keydown);
-        p.WriteInt(message.SkillID);
-        p.WriteInt(message.SkillLevel);
+        packet.WriteInt(message.User.Character.ID);
+        packet.WriteInt(message.Position.X);
+        packet.WriteInt(message.Position.Y);
+        packet.WriteInt(message.Keydown);
+        packet.WriteInt(message.SkillID);
+        packet.WriteInt(message.SkillLevel);
 
         if (message.User.FieldSplit != null)
-            await message.User.FieldSplit.Dispatch(p.Build(), message.User);
+            await message.User.FieldSplit.Dispatch(packet.Build(), message.User);
     }
 }

@@ -19,11 +19,11 @@ public class ShopOnPacketCashItemIncSlotCountRequestPlug : IPipelinePlug<ShopOnP
         inventory.SlotMax += 4;
         message.User.IncCash(message.Cash, -4000);
         
-        var p = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
+        using var packet = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
     
-        p.WriteByte((byte)ShopResultOperations.IncSlotCount_Done);
-        p.WriteByte((byte)message.Type);
-        p.WriteShort(inventory.SlotMax);
-        await message.User.Dispatch(p.Build());
+        packet.WriteByte((byte)ShopResultOperations.IncSlotCount_Done);
+        packet.WriteByte((byte)message.Type);
+        packet.WriteShort(inventory.SlotMax);
+        await message.User.Dispatch(packet.Build());
     }
 }

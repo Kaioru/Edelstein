@@ -11,7 +11,7 @@ public class PacketReader : IPacketReader
 
     public PacketReader(byte[] buffer)
     {
-        _stream = new MemoryStream(buffer);
+        _stream = PacketMemoryStream.Shared.GetStream(buffer);
         _reader = new BinaryReader(_stream);
     }
 

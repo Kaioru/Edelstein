@@ -10,7 +10,7 @@ public class FieldOnPacketUserChatPlug : IPipelinePlug<FieldOnPacketUserChat>
 {
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserChat message)
     {
-        var chatPacket1 = new PacketWriter(PacketSendOperations.UserChat);
+        using var chatPacket1 = new PacketWriter(PacketSendOperations.UserChat);
 
         chatPacket1.WriteInt(message.User.Character.ID);
         chatPacket1.WriteBool(message.User.Account.GradeCode > 0 || message.User.Account.SubGradeCode > 0);
@@ -21,7 +21,7 @@ public class FieldOnPacketUserChatPlug : IPipelinePlug<FieldOnPacketUserChat>
 
         if (message.IsOnlyBalloon) return;
 
-        var chatPacket2 = new PacketWriter(PacketSendOperations.UserChatNLCPQ);
+        using var chatPacket2 = new PacketWriter(PacketSendOperations.UserChatNLCPQ);
 
         chatPacket2.WriteInt(message.User.Character.ID);
         chatPacket2.WriteBool(message.User.Account.GradeCode > 0 || message.User.Account.SubGradeCode > 0);

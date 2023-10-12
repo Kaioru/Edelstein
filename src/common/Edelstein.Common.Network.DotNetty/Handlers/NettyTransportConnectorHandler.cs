@@ -24,7 +24,7 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
-        var packet = (IPacket)message;
+        using var packet = (IPacket)message;
 
         if (adapter != null)
         {
@@ -55,8 +55,6 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
 
             _ = _sockets.Insert(newSocket);
         }
-        
-        ArrayPool<byte>.Shared.Return(packet.Buffer);
     }
 
     public override void ChannelInactive(IChannelHandlerContext context)

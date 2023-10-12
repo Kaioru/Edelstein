@@ -23,12 +23,12 @@ public class NotifyFriendUpdateChannelPlug : IPipelinePlug<NotifyFriendUpdateCha
             friend.ChannelID = message.ChannelID;
             if (friend.Flag > 0) return;
 
-            var p = new PacketWriter(PacketSendOperations.FriendResult);
-            p.WriteByte((byte)FriendResultOperations.Notify);
-            p.WriteInt(message.CharacterID);
-            p.WriteBool(false);
-            p.WriteInt(message.ChannelID);
-            _ = user.Dispatch(p.Build());
+            using var packet = new PacketWriter(PacketSendOperations.FriendResult);
+            packet.WriteByte((byte)FriendResultOperations.Notify);
+            packet.WriteInt(message.CharacterID);
+            packet.WriteBool(false);
+            packet.WriteInt(message.ChannelID);
+            _ = user.Dispatch(packet.Build());
         }
     }
 }

@@ -35,7 +35,7 @@ public class FieldDragon :
     
     public override IPacket GetEnterFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.DragonEnterField);
+        using var packet = new PacketWriter(PacketSendOperations.DragonEnterField);
 
         packet.WriteInt(Owner.Character.ID);
         packet.WriteInt(Position.X);
@@ -48,7 +48,7 @@ public class FieldDragon :
 
     public override IPacket GetLeaveFieldPacket()
     {
-        var packet = new PacketWriter(PacketSendOperations.DragonLeaveField);
+        using var packet = new PacketWriter(PacketSendOperations.DragonLeaveField);
         
         packet.WriteInt(Owner.Character.ID);
         return packet.Build();
@@ -56,7 +56,7 @@ public class FieldDragon :
 
     protected override IPacket GetMovePacket(IFieldDragonMovePath ctx)
     {
-        var packet = new PacketWriter(PacketSendOperations.DragonMove);
+        using var packet = new PacketWriter(PacketSendOperations.DragonMove);
         
         packet.WriteInt(Owner.Character.ID);
         packet.Write(ctx);

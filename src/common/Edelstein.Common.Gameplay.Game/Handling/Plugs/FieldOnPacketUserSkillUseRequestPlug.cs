@@ -20,8 +20,8 @@ public class FieldOnPacketUserSkillUseRequestPlug : IPipelinePlug<FieldOnPacketU
 
         await _skillManager.HandleSkillUse(message.User, message.SkillID);
         
-        await message.User.Dispatch(new PacketWriter(PacketSendOperations.SkillUseResult)
-            .WriteBool(true)
-            .Build());
+        using var packet = new PacketWriter(PacketSendOperations.SkillUseResult)
+            .WriteBool(true);
+        await message.User.Dispatch(packet.Build());
     }
 }

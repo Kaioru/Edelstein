@@ -30,13 +30,13 @@ public class FieldOnPacketUserSkillCancelRequestPlug : IPipelinePlug<FieldOnPack
 
             if (skill?.IsPrepared ?? false)
             {
-                var p = new PacketWriter(PacketSendOperations.UserSkillCancel);
+                using var packet = new PacketWriter(PacketSendOperations.UserSkillCancel);
 
-                p.WriteInt(message.User.Character.ID);
-                p.WriteInt(message.SkillID);
+                packet.WriteInt(message.User.Character.ID);
+                packet.WriteInt(message.SkillID);
 
                 if (message.User.FieldSplit != null)
-                    await message.User.FieldSplit.Dispatch(p.Build());
+                    await message.User.FieldSplit.Dispatch(packet.Build());
             }
         }
         

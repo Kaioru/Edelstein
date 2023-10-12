@@ -28,10 +28,10 @@ public class FieldOnPacketPartyInviteRequestPlug : IPipelinePlug<FieldOnPacketPa
             PartyResult.FailedAlreadyInvited => PartyResultOperations.InvitePartyAlreadyInvitedByInviter,
             _ => PartyResultOperations.InvitePartyAlreadyInvited
         };
-        var p = new PacketWriter(PacketSendOperations.PartyResult);
-        p.WriteByte((byte)result);
+        using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+        packet.WriteByte((byte)result);
         if (result == PartyResultOperations.InvitePartySent)
-            p.WriteString(message.CharacterName);
-        await message.User.Dispatch(p.Build());
+            packet.WriteString(message.CharacterName);
+        await message.User.Dispatch(packet.Build());
     }
 }

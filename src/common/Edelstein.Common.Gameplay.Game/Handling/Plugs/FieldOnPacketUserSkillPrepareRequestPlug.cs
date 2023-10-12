@@ -9,15 +9,15 @@ public class FieldOnPacketUserSkillPrepareRequestPlug : IPipelinePlug<FieldOnPac
 {
     public async Task Handle(IPipelineContext ctx, FieldOnPacketUserSkillPrepareRequest message)
     {
-        var p = new PacketWriter(PacketSendOperations.UserSkillPrepare);
+        using var packet = new PacketWriter(PacketSendOperations.UserSkillPrepare);
 
-        p.WriteInt(message.User.Character.ID);
-        p.WriteInt(message.SkillID);
-        p.WriteByte(message.SkillLevel);
-        p.WriteShort(message.MoveAction);
-        p.WriteByte(message.ActionSpeed);
+        packet.WriteInt(message.User.Character.ID);
+        packet.WriteInt(message.SkillID);
+        packet.WriteByte(message.SkillLevel);
+        packet.WriteShort(message.MoveAction);
+        packet.WriteByte(message.ActionSpeed);
 
         if (message.User.FieldSplit != null)
-            await message.User.FieldSplit.Dispatch(p.Build(), message.User);
+            await message.User.FieldSplit.Dispatch(packet.Build(), message.User);
     }
 }

@@ -16,11 +16,11 @@ public class ShopOnPacketCashItemSetWishRequestPlug : IPipelinePlug<ShopOnPacket
         for (var i = 0; i < 10; i++)
             message.User.Character.Wishlist.Records.Add(message.Wishlist[i]);
 
-        var p = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
+        using var packet = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
 
-        p.WriteByte((byte)ShopResultOperations.SetWish_Done);
+        packet.WriteByte((byte)ShopResultOperations.SetWish_Done);
         for (var i = 0; i < 10; i++)
-            p.WriteInt(message.User.Character.Wishlist.Records[i]);
-        await message.User.Dispatch(p.Build());
+            packet.WriteInt(message.User.Character.Wishlist.Records[i]);
+        await message.User.Dispatch(packet.Build());
     }
 }

@@ -45,10 +45,10 @@ public class FieldOnPacketFriendSetRequestPlug : IPipelinePlug<FieldOnPacketFrie
             FriendResult.FailedCharacterNotFound => FriendResultOperations.SetFriendUnknownUser,
             _ => FriendResultOperations.SetFriendUnknown
         };
-        var p = new PacketWriter(PacketSendOperations.FriendResult);
-        p.WriteByte((byte)result);
+        using var packet = new PacketWriter(PacketSendOperations.FriendResult);
+        packet.WriteByte((byte)result);
         if (result == FriendResultOperations.SetFriendUnknown)
-            p.WriteBool(false);
-        await message.User.Dispatch(p.Build());
+            packet.WriteBool(false);
+        await message.User.Dispatch(packet.Build());
     }
 }

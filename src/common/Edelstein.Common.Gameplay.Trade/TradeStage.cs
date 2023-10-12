@@ -19,7 +19,7 @@ public class TradeStage : AbstractStage<ITradeStageUser>, ITradeStage
             return;
         }
         
-        var packet = new PacketWriter(PacketSendOperations.SetITC);
+        using var packet = new PacketWriter(PacketSendOperations.SetITC);
         
         packet.WriteCharacterData(
             user.Character, 

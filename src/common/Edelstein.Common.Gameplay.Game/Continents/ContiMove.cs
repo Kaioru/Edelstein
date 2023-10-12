@@ -63,26 +63,24 @@ public class ContiMove : AbstractFieldObjectPool, IContiMove, ITickable
             .Configure(ContiMoveState.Move)
             .OnEntryFromAsync(ContiMoveStateTrigger.Start, async () =>
             {
+                using var packet =  new PacketWriter(PacketSendOperations.CONTIMOVE)
+                    .WriteByte((byte)ContiMoveTarget.TargetStartShipMoveField)
+                    .WriteByte((byte)ContiMoveStateTrigger.Start);
+                
                 await Move(WaitField, MoveField);
-                await StartShipMoveField.Dispatch(
-                    new PacketWriter(PacketSendOperations.CONTIMOVE)
-                        .WriteByte((byte)ContiMoveTarget.TargetStartShipMoveField)
-                        .WriteByte((byte)ContiMoveStateTrigger.Start)
-                        .Build()
-                );
+                await StartShipMoveField.Dispatch(packet.Build());
             })
             .OnExitAsync(async () =>
             {
+                using var packet =  new PacketWriter(PacketSendOperations.CONTIMOVE)
+                    .WriteByte((byte)ContiMoveTarget.TargetEndShipMoveField)
+                    .WriteByte((byte)ContiMoveStateTrigger.End);
+                
                 await Move(MoveField, EndField);
                 if (CabinField != null)
                     await Move(CabinField, EndField);
 
-                await EndShipMoveField.Dispatch(
-                    new PacketWriter(PacketSendOperations.CONTIMOVE)
-                        .WriteByte((byte)ContiMoveTarget.TargetEndShipMoveField)
-                        .WriteByte((byte)ContiMoveStateTrigger.End)
-                        .Build()
-                );
+                await EndShipMoveField.Dispatch(packet.Build());
 
                 NextBoarding = NextBoarding.AddMinutes(Template.Term);
                 ResetEvent();
@@ -102,12 +100,11 @@ public class ContiMove : AbstractFieldObjectPool, IContiMove, ITickable
                 );
 
                 // TODO: Mobspawns
+                using var packet =  new PacketWriter(PacketSendOperations.CONTIMOVE)
+                    .WriteByte((byte)ContiMoveTarget.TargetMoveField)
+                    .WriteByte((byte)ContiMoveStateTrigger.MobGen);
 
-                await MoveField.Dispatch(
-                    new PacketWriter(PacketSendOperations.CONTIMOVE)
-                        .WriteByte((byte)ContiMoveTarget.TargetMoveField)
-                        .WriteByte((byte)ContiMoveStateTrigger.MobGen)
-                        .Build()
+                await MoveField.Dispatch(packet.Build()
                 );
             })
             .OnExitAsync(async () =>
@@ -118,12 +115,12 @@ public class ContiMove : AbstractFieldObjectPool, IContiMove, ITickable
                 );
 
                 // TODO: Mobspawns
+                
+                using var packet =  new PacketWriter(PacketSendOperations.CONTIMOVE)
+                    .WriteByte((byte)ContiMoveTarget.TargetMoveField)
+                    .WriteByte((byte)ContiMoveStateTrigger.MobDestroy);
 
-                await MoveField.Dispatch(
-                    new PacketWriter(PacketSendOperations.CONTIMOVE)
-                        .WriteByte((byte)ContiMoveTarget.TargetMoveField)
-                        .WriteByte((byte)ContiMoveStateTrigger.MobDestroy)
-                        .Build()
+                await MoveField.Dispatch(packet.Build()
                 );
             })
             .Permit(ContiMoveStateTrigger.MobDestroy, ContiMoveState.Move);

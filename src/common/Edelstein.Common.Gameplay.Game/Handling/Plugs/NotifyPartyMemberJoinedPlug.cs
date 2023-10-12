@@ -34,12 +34,12 @@ public class NotifyPartyMemberJoinedPlug : IPipelinePlug<NotifyPartyMemberJoined
 
             if (user.Party == null) continue;
             
-            var p = new PacketWriter(PacketSendOperations.PartyResult);
-            p.WriteByte((byte)PartyResultOperations.JoinPartyDone);
-            p.WriteInt(message.PartyID);
-            p.WriteString(message.PartyMember.CharacterName);
-            p.WritePartyInfo(user.Party);
-            _ = user.Dispatch(p.Build());
+            using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+            packet.WriteByte((byte)PartyResultOperations.JoinPartyDone);
+            packet.WriteInt(message.PartyID);
+            packet.WriteString(message.PartyMember.CharacterName);
+            packet.WritePartyInfo(user.Party);
+            _ = user.Dispatch(packet.Build());
         }
     }
 }

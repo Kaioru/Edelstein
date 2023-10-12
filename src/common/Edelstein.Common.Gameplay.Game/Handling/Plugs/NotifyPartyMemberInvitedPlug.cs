@@ -18,13 +18,13 @@ public class NotifyPartyMemberInvitedPlug : IPipelinePlug<NotifyPartyMemberInvit
         var user = await _stage.Users.Retrieve(message.CharacterID);
         if (user == null) return;
         
-        var p = new PacketWriter(PacketSendOperations.PartyResult);
-        p.WriteByte((byte)PartyRequestOperations.InviteParty);
-        p.WriteInt(message.PartyID);
-        p.WriteString(message.InviterName);
-        p.WriteInt(message.InviterLevel);
-        p.WriteInt(message.InviterJob);
-        p.WriteByte(0);
-        _ = user.Dispatch(p.Build());
+        using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+        packet.WriteByte((byte)PartyRequestOperations.InviteParty);
+        packet.WriteInt(message.PartyID);
+        packet.WriteString(message.InviterName);
+        packet.WriteInt(message.InviterLevel);
+        packet.WriteInt(message.InviterJob);
+        packet.WriteByte(0);
+        _ = user.Dispatch(packet.Build());
     }
 }

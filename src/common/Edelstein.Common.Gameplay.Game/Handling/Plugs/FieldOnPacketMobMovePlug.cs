@@ -9,16 +9,16 @@ public class FieldOnPacketMobMovePlug : IPipelinePlug<FieldOnPacketMobMove>
 {
     public async Task Handle(IPipelineContext ctx, FieldOnPacketMobMove message)
     {
-        using var p = new PacketWriter(PacketSendOperations.MobCtrlAck);
+        using var packet = new PacketWriter(PacketSendOperations.MobCtrlAck);
 
-        p.WriteInt(message.Mob.ObjectID ?? 0);
-        p.WriteShort(message.Path.MobCtrlSN);
-        p.WriteBool(message.Path.NextAttackPossible);
-        p.WriteShort(0); // nMP
-        p.WriteByte(0); // SkillCommand
-        p.WriteByte(0); // SLV
+        packet.WriteInt(message.Mob.ObjectID ?? 0);
+        packet.WriteShort(message.Path.MobCtrlSN);
+        packet.WriteBool(message.Path.NextAttackPossible);
+        packet.WriteShort(0); // nMP
+        packet.WriteByte(0); // SkillCommand
+        packet.WriteByte(0); // SLV
         
-        await message.User.Dispatch(p.Build());
+        await message.User.Dispatch(packet.Build());
         await message.Mob.Move(message.Path, message.User);
     }
 }

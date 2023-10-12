@@ -39,31 +39,28 @@ public class UserOnPacketCheckSPWRequestPlug : IPipelinePlug<UserOnPacketCheckSP
 
             if (character == null)
             {
-                await message.User.Dispatch(new PacketWriter(PacketSendOperations.CheckSPWResult)
+                using var failedPacket = new PacketWriter(PacketSendOperations.CheckSPWResult)
                     .WriteBool(false)
-                    .WriteByte((byte)LoginResult.NotAuthorized)
-                    .Build()
-                );
+                    .WriteByte((byte)LoginResult.NotAuthorized);
+                await message.User.Dispatch(failedPacket.Build());
                 return;
             }
 
             if (response.Result != ServerResult.Success || response.Server == null)
             {
-                await message.User.Dispatch(new PacketWriter(PacketSendOperations.CheckSPWResult)
+                using var failedPacket = new PacketWriter(PacketSendOperations.CheckSPWResult)
                     .WriteBool(false)
-                    .WriteByte((byte)LoginResult.NotConnectableWorld)
-                    .Build()
-                );
+                    .WriteByte((byte)LoginResult.NotConnectableWorld);
+                await message.User.Dispatch(failedPacket.Build());
                 return;
             }
 
             if (!BCrypt.Net.BCrypt.Verify(message.SPW, message.User.Account!.SPW))
             {
-                await message.User.Dispatch(new PacketWriter(PacketSendOperations.CheckSPWResult)
+                using var failedPacket = new PacketWriter(PacketSendOperations.CheckSPWResult)
                     .WriteBool(false)
-                    .WriteByte((byte)LoginResult.IncorrectSPW)
-                    .Build()
-                );
+                    .WriteByte((byte)LoginResult.IncorrectSPW);
+                await message.User.Dispatch(failedPacket.Build());
                 return;
             }
 

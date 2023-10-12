@@ -26,8 +26,8 @@ public class FieldOnPacketPartyChangeLeaderRequestPlug : IPipelinePlug<FieldOnPa
         {
             _ => PartyResultOperations.ChangePartyBossUnknown
         };
-        var p = new PacketWriter(PacketSendOperations.PartyResult);
-        p.WriteByte((byte)result);
-        await message.User.Dispatch(p.Build());
+        using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+        packet.WriteByte((byte)result);
+        await message.User.Dispatch(packet.Build());
     }
 }

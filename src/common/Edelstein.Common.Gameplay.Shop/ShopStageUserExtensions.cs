@@ -47,36 +47,36 @@ public static class ShopStageUserExtensions
     
     public static Task DispatchUpdateCash(this IShopStageUser user)
     {
-        var p = new PacketWriter(PacketSendOperations.CashShopQueryCashResult);
+        using var packet = new PacketWriter(PacketSendOperations.CashShopQueryCashResult);
 
-        p.WriteInt(user.Account?.NexonCash ?? -1);
-        p.WriteInt(user.Account?.MaplePoint ?? -1);
-        p.WriteInt(user.Account?.PrepaidNXCash ?? -1);
-        return user.Dispatch(p.Build());
+        packet.WriteInt(user.Account?.NexonCash ?? -1);
+        packet.WriteInt(user.Account?.MaplePoint ?? -1);
+        packet.WriteInt(user.Account?.PrepaidNXCash ?? -1);
+        return user.Dispatch(packet.Build());
     }
 
     public static Task DispatchUpdateLocker(this IShopStageUser user)
     {
-        var p = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
+        using var packet = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
 
-        p.WriteByte((byte)ShopResultOperations.LoadLocker_Done);
-        p.WriteShort((short)(user.AccountWorld?.Locker.Items.Count ?? 0));
+        packet.WriteByte((byte)ShopResultOperations.LoadLocker_Done);
+        packet.WriteShort((short)(user.AccountWorld?.Locker.Items.Count ?? 0));
         foreach (var slot in user.AccountWorld?.Locker.Items ?? ImmutableList<IItemLockerSlot>.Empty)
-            p.WriteItemLockerData(slot);
-        p.WriteShort(user.AccountWorld?.Trunk.SlotMax ?? 0);
-        p.WriteShort((short)(user.AccountWorld?.CharacterSlotMax ?? 3));
-        p.WriteShort((short)((user.AccountWorld?.CharacterSlotMax ?? 0) - 3));
-        p.WriteShort(1);
-        return user.Dispatch(p.Build());
+            packet.WriteItemLockerData(slot);
+        packet.WriteShort(user.AccountWorld?.Trunk.SlotMax ?? 0);
+        packet.WriteShort((short)(user.AccountWorld?.CharacterSlotMax ?? 3));
+        packet.WriteShort((short)((user.AccountWorld?.CharacterSlotMax ?? 0) - 3));
+        packet.WriteShort(1);
+        return user.Dispatch(packet.Build());
     }
     
     public static Task DispatchUpdateWish(this IShopStageUser user)
     {
-        var p = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
+        using var packet = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
 
-        p.WriteByte((byte)ShopResultOperations.LoadWish_Done);
+        packet.WriteByte((byte)ShopResultOperations.LoadWish_Done);
         for (var i = 0; i < 10; i++)
-            p.WriteInt(user.Character?.Wishlist.Records.ElementAtOrDefault(i) ?? 0);
-        return user.Dispatch(p.Build());
+            packet.WriteInt(user.Character?.Wishlist.Records.ElementAtOrDefault(i) ?? 0);
+        return user.Dispatch(packet.Build());
     }
 }

@@ -95,7 +95,7 @@ public class NettyPacketDecoder : ReplayingDecoder<NettyPacketState>
                     socket.SeqRecv = _igCipher.Hash(seqRecv, 4, 0);
                 }
 
-                output.Add(new Packet(buffer));
+                output.Add(new Packet(buffer.ToArray()));
                 return;
         }
     }

@@ -31,11 +31,11 @@ public class ShopOnPacketCashItemMoveLToSRequestPlug : IPipelinePlug<ShopOnPacke
         message.User.AccountWorld.Locker.Items.Remove(slot);
         var target = context.Add(slot.Item);
 
-        var p = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
+        using var packet = new PacketWriter(PacketSendOperations.CashShopCashItemResult);
 
-        p.WriteByte((byte)ShopResultOperations.MoveLtoS_Done);
-        p.WriteShort(target);
-        p.WriteItemData(slot.Item);
-        await message.User.Dispatch(p.Build());
+        packet.WriteByte((byte)ShopResultOperations.MoveLtoS_Done);
+        packet.WriteShort(target);
+        packet.WriteItemData(slot.Item);
+        await message.User.Dispatch(packet.Build());
     }
 }

@@ -23,17 +23,18 @@ public class FieldOnPacketUserTransferChannelRequestPlug : IPipelinePlug<FieldOn
         ));
         var server = response.Server;
         if (server == null) return;
-        
-        var packet = new PacketWriter(PacketSendOperations.MigrateCommand);
+
+        using var packet = new PacketWriter(PacketSendOperations.MigrateCommand);
         var endpoint = new IPEndPoint(IPAddress.Parse(server.Host), server.Port);
         var address = endpoint.Address.MapToIPv4().GetAddressBytes();
         var port = (short)endpoint.Port;
-        
+
         packet.WriteBool(true);
-        foreach (var b in address) 
+        foreach (var b in address)
             packet.WriteByte(b);
         packet.WriteShort(port);
-        
+
         await message.User.StageUser.Migrate(server.ID, packet.Build());
+
     }
 }

@@ -19,13 +19,13 @@ public class NotifyFriendUpdateListPlug : IPipelinePlug<NotifyFriendUpdateList>
         if (user == null) return;
         user.Friends = message.FriendList;
 
-        var p = new PacketWriter(PacketSendOperations.FriendResult);
-        p.WriteByte((byte)FriendResultOperations.SetFriend_Done);
-        p.WriteByte((byte)message.FriendList.Records.Count);
+        using var packet = new PacketWriter(PacketSendOperations.FriendResult);
+        packet.WriteByte((byte)FriendResultOperations.SetFriend_Done);
+        packet.WriteByte((byte)message.FriendList.Records.Count);
         foreach (var friend in message.FriendList.Records.Values)
-            p.WriteFriendInfo(friend);
+            packet.WriteFriendInfo(friend);
         foreach (var friend in message.FriendList.Records.Values)
-            p.WriteInt(0);
-        _ = user.Dispatch(p.Build());
+            packet.WriteInt(0);
+        _ = user.Dispatch(packet.Build());
     }
 }

@@ -25,12 +25,12 @@ public class NotifyPartyDisbandedPlug : IPipelinePlug<NotifyPartyDisbanded>
 
             user.Party = null;
             
-            var p = new PacketWriter(PacketSendOperations.PartyResult);
-            p.WriteByte((byte)PartyResultOperations.WithdrawPartyDone);
-            p.WriteInt(message.PartyID);
-            p.WriteInt(message.CharacterID);
-            p.WriteBool(false);
-            _ = user.Dispatch(p.Build());
+            using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+            packet.WriteByte((byte)PartyResultOperations.WithdrawPartyDone);
+            packet.WriteInt(message.PartyID);
+            packet.WriteInt(message.CharacterID);
+            packet.WriteBool(false);
+            _ = user.Dispatch(packet.Build());
         }
     }
 }

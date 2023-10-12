@@ -34,12 +34,12 @@ public class NotifyPartyMemberUpdateLevelOrJobPlug : IPipelinePlug<NotifyPartyMe
                 member.Job = message.Job;
             }
 
-            var p = new PacketWriter(PacketSendOperations.PartyResult);
-            p.WriteByte((byte)PartyResultOperations.ChangeLevelOrJob);
-            p.WriteInt(message.CharacterID);
-            p.WriteInt(message.Level);
-            p.WriteInt(message.Job);
-            _ = user.Dispatch(p.Build());
+            using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+            packet.WriteByte((byte)PartyResultOperations.ChangeLevelOrJob);
+            packet.WriteInt(message.CharacterID);
+            packet.WriteInt(message.Level);
+            packet.WriteInt(message.Job);
+            _ = user.Dispatch(packet.Build());
         }
     }
 }

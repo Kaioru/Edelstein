@@ -26,7 +26,7 @@ public class FieldOnPacketSummonedAttackPlug : IPipelinePlug<FieldOnPacketSummon
             kv => kv.MobID,
             kv => message.User.Field?.GetObject<IFieldMob>(kv.MobID)
         );
-        var packet = new PacketWriter(PacketSendOperations.SummonedAttack);
+        using var packet = new PacketWriter(PacketSendOperations.SummonedAttack);
 
         packet.WriteInt(message.User.Character.ID);
         packet.WriteInt(message.Summoned.ObjectID ?? 0);

@@ -24,11 +24,11 @@ public class NotifyPartyChangedBossPlug : IPipelinePlug<NotifyPartyChangedBoss>
             if (user.Party == null) continue;
             user.Party.BossCharacterID = message.BossID;
 
-            var p = new PacketWriter(PacketSendOperations.PartyResult);
-            p.WriteByte((byte)PartyResultOperations.ChangePartyBossDone);
-            p.WriteInt(message.BossID);
-            p.WriteBool(message.IsDisconnected);
-            _ = user.Dispatch(p.Build());
+            using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+            packet.WriteByte((byte)PartyResultOperations.ChangePartyBossDone);
+            packet.WriteInt(message.BossID);
+            packet.WriteBool(message.IsDisconnected);
+            _ = user.Dispatch(packet.Build());
         }
     }
 }
