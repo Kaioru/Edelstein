@@ -7,4 +7,8 @@
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handling\" />
+  </ItemGroup>
+
 </Project>

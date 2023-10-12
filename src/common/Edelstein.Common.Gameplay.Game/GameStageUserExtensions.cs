@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Social;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game;

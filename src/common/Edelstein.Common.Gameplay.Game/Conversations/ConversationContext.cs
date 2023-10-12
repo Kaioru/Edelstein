@@ -1,5 +1,5 @@
 ﻿using System.Threading.Channels;
-using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Messages;

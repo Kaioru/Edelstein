@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Constants;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify.Operations;
 using Edelstein.Protocol.Gameplay.Models.Inventories;

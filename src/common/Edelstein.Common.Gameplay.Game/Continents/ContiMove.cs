@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Objects;
-using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Continents;

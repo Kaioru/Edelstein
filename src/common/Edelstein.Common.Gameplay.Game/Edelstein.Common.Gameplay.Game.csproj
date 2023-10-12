@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Handling\" />
     <Folder Include="Movements" />
   </ItemGroup>
 

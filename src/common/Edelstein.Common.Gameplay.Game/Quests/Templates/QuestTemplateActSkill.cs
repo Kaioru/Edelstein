@@ -2,7 +2,7 @@
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
-namespace Edelstein.Common.Gameplay.Game.Quests;
+namespace Edelstein.Common.Gameplay.Game.Quests.Templates;
 
 public record QuestTemplateActSkill : IQuestTemplateActSkill
 {

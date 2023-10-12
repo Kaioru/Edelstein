@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Common.Gameplay.Constants;
+﻿namespace Edelstein.Common.Constants;
 
 public class QuestRecords
 {

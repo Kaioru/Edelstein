@@ -1,6 +1,6 @@
 ﻿using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
-namespace Edelstein.Common.Gameplay.Constants;
+namespace Edelstein.Common.Constants;
 
 public static class SkillConstants
 {

@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Constants;
-using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Constants;
+using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Dialogues;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
