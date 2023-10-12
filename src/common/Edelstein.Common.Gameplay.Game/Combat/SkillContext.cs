@@ -186,14 +186,24 @@ public class SkillContext : ISkillContext
             interval ?? TimeSpan.FromSeconds(SkillLevel?.DotInterval ?? 0),
             expire ?? _now.AddSeconds(SkillLevel?.DotTime ?? 0)
         ));
-
-    public void AddSummoned(MoveAbilityType moveAbilityType, SummonedAssistType summonedAssistType, int? skillID = null, int? skillLevel = null, DateTime? expire = null)
+    
+    public void AddSummoned(
+        MoveAbilityType moveAbilityType, 
+        SummonedAssistType summonedAssistType, 
+        int? skillID = null, 
+        int? skillLevel = null, 
+        bool? allowDuplicate = false, 
+        DateTime? expire = null, 
+        IPoint2D? position = null
+    )   
         => _addSummoned.Add(new SkillContextSummoned(
-                moveAbilityType,
-                summonedAssistType,
-                skillID ?? Skill?.ID ?? 0,
-                skillLevel ?? SkillLevel?.Level ?? 0,
-                expire ?? _now.AddSeconds(SkillLevel?.Time ?? 0)
+            moveAbilityType,
+            summonedAssistType,
+            skillID ?? Skill?.ID ?? 0,
+            skillLevel ?? SkillLevel?.Level ?? 0,
+            allowDuplicate ?? false,
+            expire ?? _now.AddSeconds(SkillLevel?.Time ?? 0),
+            position ?? _user.Position
         ));
 
     public void AddAffectedArea(AffectedAreaType type, int? skillID = null, int? skillLevel = null, int? info = null, int? phase = null, IRectangle2D? bounds = null, DateTime? expire = null)
@@ -370,15 +380,18 @@ public class SkillContext : ISkillContext
         {
             foreach (var summoned in _addSummoned)
             {
-                var existing = _user.Owned
-                    .OfType<IFieldSummoned>()
-                    .FirstOrDefault(o => o.SkillID == summoned.SkillID);
-
-                if (existing != null)
+                if (!summoned.AllowDuplicate)
                 {
-                    _user.Owned.Remove(existing);
-                    if (_user.Field != null)
-                        await _user.Field.Leave(existing);
+                    var existing = _user.Owned
+                        .OfType<IFieldSummoned>()
+                        .FirstOrDefault(o => o.SkillID == summoned.SkillID);
+
+                    if (existing != null)
+                    {
+                        _user.Owned.Remove(existing);
+                        if (_user.Field != null)
+                            await _user.Field.Leave(existing);
+                    }
                 }
 
                 var obj = new FieldSummoned(
@@ -387,8 +400,10 @@ public class SkillContext : ISkillContext
                     (byte)summoned.SkillLevel,
                     summoned.MoveAbilityType,
                     summoned.SummonedAssistType,
-                    _user.Position,
-                    _user.Foothold,
+                    summoned.Position,
+                    _user.Field?.Template.Footholds
+                        .FindBelow(summoned.Position)
+                        .FirstOrDefault(),
                     summoned.Expire
                 );
                 
