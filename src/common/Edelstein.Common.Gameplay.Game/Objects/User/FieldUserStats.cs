@@ -532,6 +532,16 @@ public record FieldUserStats : IFieldUserStats
             Cr += thornsEffectStat.Value >> 8;
             CDMax += thornsEffectStat.Value & 0xFF;
         }
+        
+        var darkAuraStat = user.Character.TemporaryStats[TemporaryStatType.DarkAura];
+        if (darkAuraStat != null)
+        {
+            PADr += darkAuraStat.Value;
+            MADr += darkAuraStat.Value;
+        }
+        var yellowAuraStat = user.Character.TemporaryStats[TemporaryStatType.YellowAura];
+        if (yellowAuraStat != null) 
+            Speed += yellowAuraStat.Value;
 
         if (JobConstants.GetJobRace(user.Character.Job) == 3 &&
             JobConstants.GetJobType(user.Character.Job) == 3 &&
