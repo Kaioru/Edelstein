@@ -29,6 +29,9 @@ public class Bmage4SkillHandler : Bmage3SkillHandler
     {
         switch (context.Skill?.ID)
         {
+            case Skill.BmageCyclone:
+                context.AddTemporaryStat(TemporaryStatType.Cyclone, 1);
+                break;
             case Skill.BmageStance:
                 context.AddTemporaryStat(TemporaryStatType.Stance, context.SkillLevel!.Prop);
                 break;
