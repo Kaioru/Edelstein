@@ -96,6 +96,7 @@ public class NettyPacketDecoder : ReplayingDecoder<NettyPacketState>
                 }
 
                 output.Add(new Packet(buffer));
+                ArrayPool<byte>.Shared.Return(buffer);
                 return;
         }
     }
