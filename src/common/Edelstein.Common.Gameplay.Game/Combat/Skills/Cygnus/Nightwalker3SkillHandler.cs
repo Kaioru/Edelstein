@@ -33,10 +33,6 @@ public class Nightwalker3SkillHandler : Nightwalker2SkillHandler
             case Skill.NightwalkerShadowPartner:
                 context.AddTemporaryStat(TemporaryStatType.ShadowPartner, 1);
                 break;
-            case Skill.NightwalkerShadowWeb:
-                context.TargetField();
-                context.AddMobTemporaryStat(MobTemporaryStatType.Speed, context.SkillLevel!.X);
-                break;
         }
         
         return base.HandleSkillUse(context, user);
