@@ -3,7 +3,7 @@ using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Options;
 using Edelstein.Protocol.Utilities.Templates;
 
-namespace Edelstein.Common.Gameplay.Models.Inventories.Templates.Options;
+namespace Edelstein.Common.Gameplay.Models.Inventories.Items.Templates.Options;
 
 public class ItemOptionTemplateLoader : ITemplateLoader
 {

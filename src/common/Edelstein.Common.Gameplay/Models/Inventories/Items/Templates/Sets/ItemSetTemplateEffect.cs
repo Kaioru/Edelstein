@@ -1,7 +1,7 @@
 ﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Sets;
 
-namespace Edelstein.Common.Gameplay.Models.Inventories.Templates.Sets;
+namespace Edelstein.Common.Gameplay.Models.Inventories.Items.Templates.Sets;
 
 public record ItemSetTemplateEffect : IItemSetTemplateEffect
 {

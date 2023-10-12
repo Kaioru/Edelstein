@@ -1,7 +1,7 @@
 ﻿using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 
-namespace Edelstein.Common.Gameplay.Models.Inventories.Templates;
+namespace Edelstein.Common.Gameplay.Models.Inventories.Items.Templates;
 
 public record ItemEquipTemplate : ItemTemplate, IItemEquipTemplate
 {

@@ -2,7 +2,7 @@
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Options;
 
-namespace Edelstein.Common.Gameplay.Models.Inventories.Templates.Options;
+namespace Edelstein.Common.Gameplay.Models.Inventories.Items.Templates.Options;
 
 public record ItemOptionTemplate : IItemOptionTemplate
 {
