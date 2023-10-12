@@ -131,7 +131,7 @@ public class FieldUserModify : IFieldUserModify
 
             await _user.Dispatch(resetLocalPacket.Build());
             if (_user.FieldSplit != null) 
-                await _user.FieldSplit.Dispatch(resetRemotePacket.Build());
+                await _user.FieldSplit.Dispatch(resetRemotePacket.Build(), _user);
         }
 
         if (isUpdateSet)
@@ -149,7 +149,7 @@ public class FieldUserModify : IFieldUserModify
 
             await _user.Dispatch(setLocalPacket.Build());
             if (_user.FieldSplit != null) 
-                await _user.FieldSplit.Dispatch(setRemotePacket.Build());
+                await _user.FieldSplit.Dispatch(setRemotePacket.Build(), _user);
         }
     }
 }
