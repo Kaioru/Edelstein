@@ -11,6 +11,6 @@ public interface IFieldLife<in TMovePath, out TMoveAction> : IFieldObject
     TMoveAction Action { get; }
     IFieldFoothold? Foothold { get; }
 
-    Task Move(IPoint2D position, bool init = false);
+    Task Move(IPoint2D position, IFieldFoothold? foothold, bool init = false);
     Task Move(TMovePath ctx, IFieldObject? controller = null);
 }

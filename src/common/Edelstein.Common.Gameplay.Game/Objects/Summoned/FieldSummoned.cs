@@ -47,8 +47,8 @@ public class FieldSummoned :
 
     public override FieldObjectType Type => FieldObjectType.Summoned;
     
-    public Task Move(IPoint2D position)
-        => Move(position, true);
+    public Task Move(IPoint2D position, IFieldFoothold? foothold)
+        => Move(position, foothold, true);
     
     public override IPacket GetEnterFieldPacket()
         => GetEnterFieldPacket(0);

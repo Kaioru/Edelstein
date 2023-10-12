@@ -134,7 +134,11 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
 
             user.Character.FieldID = ID;
             if (portal != null)
-                await user.Move(portal.Position, true);
+                await user.Move(
+                    portal.Position, 
+                    Template.Footholds.Find(portal.Position).FirstOrDefault(), 
+                    true
+                );
 
             await user.Dispatch(user.GetSetFieldPacket());
             
@@ -177,7 +181,7 @@ public class Field : AbstractFieldObjectPool, IField, ITickable
         if (obj is IFieldUser owner)
             foreach (var owned in owner.Owned)
             {
-                await owned.Move(owner.Position);
+                await owned.Move(owner.Position, owner.Foothold);
                 await Enter(owned);
             }
     }

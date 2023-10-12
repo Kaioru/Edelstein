@@ -21,12 +21,10 @@ public abstract class AbstractFieldLife<TMovePath, TMoveAction> :
     public TMoveAction Action { get; protected set; }
     public IFieldFoothold? Foothold { get; private set; }
 
-    public async Task Move(IPoint2D position, bool init = false)
+    public async Task Move(IPoint2D position, IFieldFoothold? foothold, bool init = false)
     {
         Position = position;
-        Foothold = Field?.Template.Footholds
-            .Find(Position)
-            .FirstOrDefault(f => f.Line.Intersects(Position));
+        Foothold = foothold;
         if (!init)
             await UpdateFieldSplit();
     }
