@@ -15,6 +15,7 @@ public class Bmage1SkillHandler : CitizenSkillHandler
         {
             case Skill.BmageAuraDark:
                 // TODO advanced
+                context.TargetParty();
                 context.ResetTemporaryStatAuras();
                 context.AddTemporaryStat(TemporaryStatType.DarkAura, context.SkillLevel!.X, expire: DateTime.MaxValue);
                 break;

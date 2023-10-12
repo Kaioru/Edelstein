@@ -15,11 +15,13 @@ public class Bmage2SkillHandler : Bmage1SkillHandler
         {
             case Skill.BmageAuraBlue:
                 // TODO advanced
+                context.TargetParty();
                 context.ResetTemporaryStatAuras();
                 context.AddTemporaryStat(TemporaryStatType.BlueAura, context.SkillLevel!.X, expire: DateTime.MaxValue);
                 break;
             case Skill.BmageAuraYellow:
                 // TODO advanced
+                context.TargetParty();
                 context.ResetTemporaryStatAuras();
                 context.AddTemporaryStat(TemporaryStatType.YellowAura, context.SkillLevel!.X, expire: DateTime.MaxValue);
                 break;
