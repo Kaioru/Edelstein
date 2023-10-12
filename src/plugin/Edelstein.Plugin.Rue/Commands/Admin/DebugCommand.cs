@@ -1,5 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
-using Edelstein.Protocol.Gameplay.Game.Objects.User;
+﻿using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using PowerArgs;
 
 namespace Edelstein.Plugin.Rue.Commands.Admin;
@@ -18,9 +17,6 @@ public class DebugCommand : AbstractCommand<DebugCommandArgs>
 
     protected override async Task Execute(IFieldUser user, DebugCommandArgs args)
     {
-        await user.Message(new IncEXPMessage(1000, true));
-        await user.Message(new IncMoneyMessage(1000));
-
         var answer = await user.Prompt(target => target.AskMenu(
             "What would you like to debug?", new Dictionary<int, string>
             {
