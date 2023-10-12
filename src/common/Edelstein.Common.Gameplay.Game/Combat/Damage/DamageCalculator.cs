@@ -461,7 +461,18 @@ public class DamageCalculator : IDamageCalculator
     {
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
-        var skillLevel = skill?[stats.SkillLevels[attack.SkillID]];
+        var skillActingID = attack.SkillID;
+        
+        if (skillActingID is 
+            Skill.BmageFinishAttack or 
+            Skill.BmageFinishAttack1 or 
+            Skill.BmageFinishAttack2 or 
+            Skill.BmageFinishAttack3 or 
+            Skill.BmageFinishAttack4 or 
+            Skill.BmageFinishAttack5)
+            skillActingID = Skill.BmageFinishAttack;
+        
+        var skillLevel = skill?[stats.SkillLevels[skillActingID]];
         var damagePerMob = skillLevel?.AttackCount ?? 1;
         var result = new IDamage[damagePerMob];
 

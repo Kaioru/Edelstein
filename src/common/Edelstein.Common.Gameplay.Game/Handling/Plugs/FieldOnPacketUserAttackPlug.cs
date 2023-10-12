@@ -45,6 +45,22 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
                 Skill.BmageTeleportMastery
             }
            ) isPDamage = false;
+        
+        if (message.Attack is
+            {
+                Type: AttackType.Melee,
+                SkillID:
+                Skill.BmageTripleBlow or
+                Skill.BmageQuadBlow or
+                Skill.BmageFinishBlow or 
+                Skill.BmageFinishAttack or 
+                Skill.BmageFinishAttack1 or 
+                Skill.BmageFinishAttack2 or 
+                Skill.BmageFinishAttack3 or 
+                Skill.BmageFinishAttack4 or 
+                Skill.BmageFinishAttack5
+            }
+           ) isPDamage = false;
 
         packet.WriteInt(message.User.Character.ID);
         packet.WriteByte((byte)(
