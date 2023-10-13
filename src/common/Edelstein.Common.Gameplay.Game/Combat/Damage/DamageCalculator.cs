@@ -773,13 +773,7 @@ public class DamageCalculator : IDamageCalculator
     private static double GetRandomInRange(uint rand, double f0, double f1)
     {
         if (Math.Abs(f0 - f1) < 0.0001) return f0;
-        if (f0 > f1)
-        {
-            var tmp = f1;
-            f0 = f1;
-            f1 = tmp;
-        }
-        
+        if (f0 > f1) (f0, f1) = (f1, f0);
         return f0 + rand % 10000000 * (f1 - f0) / 9999999.0;
     }
 
