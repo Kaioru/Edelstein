@@ -61,7 +61,7 @@ jobs:
         name: packages-${{ github.event.inputs.version }}
         path: packages-${{ github.event.inputs.version }}.zip
 
-  publish_artifact:
+  publish_artifacts:
     strategy:
       matrix:
         runtime: [win-x64, win-arm64, osx-x64, osx-arm64, linux-x64, linux-arm64]
