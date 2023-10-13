@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
+    
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
@@ -53,9 +53,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: Kaioru/Edelstein/.github/workflows/publish.yml@dev
-        with:
-          version: ${{ needs.versioning.outputs.version }}
-          tag: latest
-          prerelease: true
-          draft: false
+    
+    - uses: actions/checkout@v4
+
+    - uses: ./.github/workflows/publish.yml
+      with:
+        version: ${{ needs.versioning.outputs.version }}
+        tag: latest
+        prerelease: true
+        draft: false
