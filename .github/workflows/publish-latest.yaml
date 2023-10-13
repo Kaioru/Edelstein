@@ -51,6 +51,7 @@ jobs:
     needs: [setup, versioning]
     if: ${{ needs.setup.outputs.should_run != 'false' }}
     
+    secrets: inherit
     uses: ./.github/workflows/publish.yaml
     with:
       version: "${{ needs.versioning.outputs.version }}"

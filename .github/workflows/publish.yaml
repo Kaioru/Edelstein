@@ -40,26 +40,26 @@ jobs:
       run: dotnet restore --locked-mode
 
     - name: Pack
-      run: dotnet pack --configuration Release --output artifacts /p:PackageVersion=${{ github.event.inputs.version }}
+      run: dotnet pack --configuration Release --output artifacts /p:PackageVersion=${{ inputs.version }}
 
     - name: Publish
       run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
     
     - name: Add VERSION, COMMIT, LICENSE, and README files
       run: |
-        echo ${{ github.event.inputs.version }} > artifacts/VERSION
+        echo ${{ inputs.version }} > artifacts/VERSION
         echo ${{ github.sha }} > artifacts/COMMIT
         cp LICENSE artifacts
         cp README.md artifacts
   
     - name: Compress
-      run: cd artifacts; zip ../packages-${{ github.event.inputs.version }}.zip *; cd ..
+      run: cd artifacts; zip ../packages-${{ inputs.version }}.zip *; cd ..
       
     - name: Store artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: packages-${{ github.event.inputs.version }}
-        path: packages-${{ github.event.inputs.version }}.zip
+        name: packages-${{ inputs.version }}
+        path: packages-${{ inputs.version }}.zip
 
   publish_artifacts:
     strategy:
@@ -105,7 +105,7 @@ jobs:
 
     - name: Add VERSION, COMMIT, LICENSE, and README files
       run: |
-        echo ${{ github.event.inputs.version }} > artifacts-${{ matrix.runtime }}/VERSION
+        echo ${{ inputs.version }} > artifacts-${{ matrix.runtime }}/VERSION
         echo ${{ github.sha }} > artifacts-${{ matrix.runtime }}/COMMIT
         cp LICENSE artifacts-${{ matrix.runtime }}
         cp README.md artifacts-${{ matrix.runtime }}
@@ -123,13 +123,13 @@ jobs:
         done
     
     - name: Compress artifacts
-      run: cd artifacts-${{ matrix.runtime }}; zip -r ../server-${{ matrix.runtime }}-${{ github.event.inputs.version }}.zip . ; cd ..
+      run: cd artifacts-${{ matrix.runtime }}; zip -r ../server-${{ matrix.runtime }}-${{ inputs.version }}.zip . ; cd ..
 
     - name: Store artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: server-${{ matrix.runtime }}-${{ github.event.inputs.version }}
-        path: server-${{ matrix.runtime }}-${{ github.event.inputs.version }}.zip
+        name: server-${{ matrix.runtime }}-${{ inputs.version }}
+        path: server-${{ matrix.runtime }}-${{ inputs.version }}.zip
 
   publish_release:
     needs: [publish_artifacts]
@@ -144,8 +144,8 @@ jobs:
     - uses: "marvinpinto/action-automatic-releases@v1.2.1"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "${{ github.event.inputs.tag }}"
-        prerelease: ${{ github.event.inputs.prerelease }}
-        draft: ${{ github.event.inputs.draft }}
-        title: "${{ github.event.inputs.version }}"
+        automatic_release_tag: "${{ inputs.tag }}"
+        prerelease: ${{ inputs.prerelease }}
+        draft: ${{ inputs.draft }}
+        title: "${{ inputs.version }}"
         files: "*/*.zip"
