@@ -17,7 +17,6 @@ jobs:
     - id: should_run
       continue-on-error: true
       name: Check for new commits
-      if: ${{ github.event_name == 'schedule' }}
       run: test -z $(git rev-list --after="24 hours" ${{ github.sha }}) && echo "should_run=false" >> $GITHUB_OUTPUT
 
   versioning:
