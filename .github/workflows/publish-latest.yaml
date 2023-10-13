@@ -27,6 +27,9 @@ jobs:
     name: Versioning
     runs-on: ubuntu-latest
 
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
     steps:
     
     - uses: actions/checkout@v4
@@ -51,7 +54,7 @@ jobs:
     
     uses: ./.github/workflows/publish.yaml
     with:
-      version: ${{ needs.versioning.outputs.version }}
-      tag: latest
+      version: "${{ needs.versioning.outputs.version }}"
+      tag: "latest"
       prerelease: true
       draft: false
