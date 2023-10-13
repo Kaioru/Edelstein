@@ -47,6 +47,12 @@ public class Mechanic2SkillHandler : Mechanic1SkillHandler
             case Skill.MechanicBooster:
                 context.AddTemporaryStat(TemporaryStatType.Booster, context.SkillLevel!.X);
                 break;
+            case Skill.MechanicPerfectArmor:
+                if (user.Character.TemporaryStats[TemporaryStatType.Guard] != null)
+                    context.ResetTemporaryStatBySkill();
+                else
+                    context.AddTemporaryStat(TemporaryStatType.Guard, context.SkillLevel!.X);
+                break;
         }
 
         await base.HandleSkillUse(context, user);
