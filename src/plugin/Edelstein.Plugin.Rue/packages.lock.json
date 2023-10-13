@@ -23,37 +23,10 @@
         "resolved": "1.0.3.26316",
         "contentHash": "H9Qo4oF+jVlhFznnDbic/gZ1vlEiXI3XTkfWGWK0tES1yh6lXHtYrRiZGRlhx6FGbkcwCCSCxr0ZvqgKu9usmw=="
       },
-      "BCrypt.Net-Next": {
-        "type": "Transitive",
-        "resolved": "4.0.3",
-        "contentHash": "W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA=="
-      },
       "Duey.Abstractions": {
         "type": "Transitive",
         "resolved": "2.0.0",
         "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
-      },
-      "Foundatio": {
-        "type": "Transitive",
-        "resolved": "10.6.1",
-        "contentHash": "c5LXLzjaCwBlzozpIiumQeuFhalZgE5L38uaGu6IVlB8HMOd2Wnf7WmylRUo15BWySgqi/mpoq2ikVZCUrrpKg==",
-        "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "6.0.0",
-          "Microsoft.Extensions.DependencyInjection": "6.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "6.0.0",
-          "System.Diagnostics.DiagnosticSource": "6.0.0",
-          "System.Text.Json": "6.0.0"
-        }
-      },
-      "MathParser.org-mXparser": {
-        "type": "Transitive",
-        "resolved": "4.4.3",
-        "contentHash": "QhHsP4nzyjC3G2kJ+dbT3NFuE0M0rKfa0wQjCcn5UyK0VnXN8OeYMy9KEYGzNKI9ealcwOQJd/4Xcq4PE+Vl7g=="
-      },
-      "Microsoft.Bcl.AsyncInterfaces": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "UcSjPsst+DfAdJGVDsu346FX0ci0ah+lw3WRtn18NUwEqRt70HaOQ7lI72vy3+1LxtqI3T5GWwV39rQSrCzAeg=="
       },
       "Microsoft.Extensions.Configuration.Abstractions": {
         "type": "Transitive",
@@ -62,20 +35,6 @@
         "dependencies": {
           "Microsoft.Extensions.Primitives": "8.0.0-rc.1.23419.4"
         }
-      },
-      "Microsoft.Extensions.DependencyInjection": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "k6PWQMuoBDGGHOQTtyois2u4AwyVcIwL2LaSLlTZQm2CYcJ1pxbt6jfAnpWmzENA/wfrYRI/X9DTLoUkE4AsLw==",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        }
-      },
-      "Microsoft.Extensions.DependencyInjection.Abstractions": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "xlzi2IYREJH3/m6+lUrQlujzX8wDitm4QGnUu6kUXTQAWPuZY8i+ticFJbzfqaetLA6KR/rO6Ew/HuYD+bxifg=="
       },
       "Microsoft.Extensions.Logging.Abstractions": {
         "type": "Transitive",
@@ -87,74 +46,20 @@
         "resolved": "8.0.0-rc.1.23419.4",
         "contentHash": "zyoB4zblhvpylS9VOmKyBuGH+RjKDsfi0cTB2KRPPDD6tFinpP+vGr3dictaNYLhGUg6jaBmq+2H/WZMCnvGDQ=="
       },
+      "Microsoft.IO.RecyclableMemoryStream": {
+        "type": "Transitive",
+        "resolved": "2.3.2",
+        "contentHash": "Oh1qXXFdJFcHozvb4H6XYLf2W0meZFuG0A+TfapFPj9z5fd4vxiARGEhAaLj/6XWQaMYIv4SH/9Q6H78Hw0E2Q=="
+      },
       "RBush": {
         "type": "Transitive",
         "resolved": "3.2.0",
         "contentHash": "ijGh9N0zZ7JfXk3oQkWCwK8SwSSByexbyh/MjbCjNxOft9eG5ZqKC1vdgiYq78h4IZRFmN4s3JZ/b10Jipud5w=="
       },
-      "Stateless": {
-        "type": "Transitive",
-        "resolved": "5.13.0",
-        "contentHash": "M4Rb4b31TUEfhCd4en0WlRfuFgQ2rwva9e1CuXnto5vNGvRsNVimHENnvjegf6nKG9ZH+51McAZ/huqRtTziYg=="
-      },
-      "System.Diagnostics.DiagnosticSource": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "frQDfv0rl209cKm1lnwTgFPzNigy2EKk1BS3uAvHvlBVKe5cymGyHO+Sj+NLv5VF/AhHsqPIUUwya5oV4CHMUw==",
-        "dependencies": {
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        }
-      },
-      "System.Runtime.CompilerServices.Unsafe": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg=="
-      },
-      "System.Text.Encodings.Web": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "Vg8eB5Tawm1IFqj4TVK1czJX89rhFxJo9ELqc/Eiq0eXy13RK00eubyU6TJE6y+GQXjyV5gSfiewDUZjQgSE0w==",
-        "dependencies": {
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        }
-      },
-      "System.Text.Json": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "zaJsHfESQvJ11vbXnNlkrR46IaMULk/gHxYsJphzSF+07kTjPHv+Oc14w6QEOfo3Q4hqLJgStUaYB9DBl0TmWg==",
-        "dependencies": {
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0",
-          "System.Text.Encodings.Web": "6.0.0"
-        }
-      },
-      "edelstein.common.gameplay": {
+      "edelstein.common.constants": {
         "type": "Project",
         "dependencies": {
-          "Duey.Abstractions": "[2.0.0, )",
-          "Edelstein.Common.Utilities": "[1.0.0, )",
-          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
-          "Edelstein.Protocol.Services.Server": "[1.0.0, )",
-          "Edelstein.Protocol.Services.Social": "[1.0.0, )",
-          "MathParser.org-mXparser": "[4.4.3, )",
-          "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )"
-        }
-      },
-      "edelstein.common.gameplay.game": {
-        "type": "Project",
-        "dependencies": {
-          "Edelstein.Common.Gameplay": "[1.0.0, )",
-          "Edelstein.Protocol.Gameplay.Game": "[1.0.0, )",
-          "Edelstein.Protocol.Scripting": "[1.0.0, )",
-          "Foundatio": "[10.6.1, )",
-          "Stateless": "[5.13.0, )"
-        }
-      },
-      "edelstein.common.gameplay.login": {
-        "type": "Project",
-        "dependencies": {
-          "BCrypt.Net-Next": "[4.0.3, )",
-          "Edelstein.Common.Gameplay": "[1.0.0, )",
-          "Edelstein.Protocol.Gameplay.Login": "[1.0.0, )"
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )"
         }
       },
       "edelstein.common.utilities": {
@@ -162,6 +67,7 @@
         "dependencies": {
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )",
+          "Microsoft.IO.RecyclableMemoryStream": "[2.3.2, )",
           "RBush": "[3.2.0, )"
         }
       },
@@ -220,9 +126,6 @@
           "Edelstein.Protocol.Gameplay.Login": "[1.0.0, )",
           "Edelstein.Protocol.Plugin": "[1.0.0, )"
         }
-      },
-      "edelstein.protocol.scripting": {
-        "type": "Project"
       },
       "edelstein.protocol.services.auth": {
         "type": "Project"

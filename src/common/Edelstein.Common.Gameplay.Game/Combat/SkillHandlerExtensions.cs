@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Constants;
+﻿using Edelstein.Common.Constants;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
@@ -74,5 +74,18 @@ public static class SkillHandlerExtensions
         if (context.SkillLevel?.Jump > 0)
             context.AddTemporaryStat(TemporaryStatType.Jump, context.SkillLevel.Jump);
         return Task.CompletedTask;
+    }
+
+    public static async Task HandleSkillUseBeginner(this ISkillHandler handler, ISkillContext context, IFieldUser user)
+    {
+        if (context.Skill == null) return;
+        if (JobConstants.GetJobLevel(context.Skill.ID / 10000) != 0) return;
+        
+        switch (context.Skill.ID % 10000)
+        {
+            case Skill.NoviceFlyingSkill:
+                context.AddTemporaryStat(TemporaryStatType.Flying, 1);
+                break;
+        }
     }
 }

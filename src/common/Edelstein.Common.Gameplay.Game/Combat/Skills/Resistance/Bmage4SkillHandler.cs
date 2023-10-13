@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Constants;
+﻿using Edelstein.Common.Constants;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Objects.AffectedArea;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
@@ -29,6 +29,9 @@ public class Bmage4SkillHandler : Bmage3SkillHandler
     {
         switch (context.Skill?.ID)
         {
+            case Skill.BmageCyclone:
+                context.AddTemporaryStat(TemporaryStatType.Cyclone, 1);
+                break;
             case Skill.BmageStance:
                 context.AddTemporaryStat(TemporaryStatType.Stance, context.SkillLevel!.Prop);
                 break;

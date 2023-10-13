@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Models.Characters;
-using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Shop;
 using Edelstein.Protocol.Gameplay.Shop.Commodities;
@@ -20,7 +20,7 @@ public class ShopStage : AbstractStage<IShopStageUser>, IShopStage
             return;
         }
         
-        var packet = new PacketWriter(PacketSendOperations.SetCashShop);
+        using var packet = new PacketWriter(PacketSendOperations.SetCashShop);
         
         packet.WriteCharacterData(
             user.Character, 

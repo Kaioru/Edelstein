@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Buffers;
+using System.Security.Cryptography;
 
 namespace Edelstein.Common.Crypto;
 
@@ -24,18 +25,18 @@ public class AESCipher
         _transformer = cipher.CreateEncryptor();
     }
 
-    public void Transform(Span<byte> input, uint pSrc)
+    public void Transform(Span<byte> input, int remaining, uint pSrc)
     {
-        var remaining = input.Length;
         var length = 0x5B0;
         var start = 0;
 
-        var srcExp = new byte[sizeof(int) * 4];
+        const int srcExpL = sizeof(int) * 4;
+        var srcExp = ArrayPool<byte>.Shared.Rent(srcExpL);
         var srcBytes = BitConverter.GetBytes(pSrc);
 
         while (remaining > 0)
         {
-            for (var i = 0; i < srcExp.Length; ++i)
+            for (var i = 0; i < srcExpL; ++i)
                 srcExp[i] = srcBytes[i % 4];
 
             if (remaining < length)
@@ -45,18 +46,17 @@ public class AESCipher
             {
                 var sub = i - start;
 
-                if (sub % srcExp.Length == 0)
-                {
-                    var result = _transformer.TransformFinalBlock(srcExp, 0, srcExp.Length);
-                    Array.Copy(result, srcExp, srcExp.Length);
-                }
+                if (sub % srcExpL == 0)
+                    _transformer.TransformBlock(srcExp, 0, srcExpL, srcExp, 0);
 
-                input[i] ^= srcExp[sub % srcExp.Length];
+                input[i] ^= srcExp[sub % srcExpL];
             }
 
             start += length;
             remaining -= length;
             length = 0x5B4;
         }
+        
+        ArrayPool<byte>.Shared.Return(srcExp);
     }
 }

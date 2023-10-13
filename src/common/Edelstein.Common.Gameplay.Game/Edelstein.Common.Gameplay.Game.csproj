@@ -5,10 +5,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Game\Edelstein.Protocol.Gameplay.Game.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Scripting\Edelstein.Protocol.Scripting.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Constants\Edelstein.Common.Constants.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Handling\" />
     <Folder Include="Movements" />
   </ItemGroup>
 

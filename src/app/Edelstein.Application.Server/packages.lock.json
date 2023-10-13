@@ -535,6 +535,11 @@
         "resolved": "8.0.0-rc.1.23419.4",
         "contentHash": "zyoB4zblhvpylS9VOmKyBuGH+RjKDsfi0cTB2KRPPDD6tFinpP+vGr3dictaNYLhGUg6jaBmq+2H/WZMCnvGDQ=="
       },
+      "Microsoft.IO.RecyclableMemoryStream": {
+        "type": "Transitive",
+        "resolved": "2.3.2",
+        "contentHash": "Oh1qXXFdJFcHozvb4H6XYLf2W0meZFuG0A+TfapFPj9z5fd4vxiARGEhAaLj/6XWQaMYIv4SH/9Q6H78Hw0E2Q=="
+      },
       "MoonSharp": {
         "type": "Transitive",
         "resolved": "2.0.0",
@@ -616,6 +621,12 @@
           "System.Text.Encodings.Web": "7.0.0"
         }
       },
+      "edelstein.common.constants": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )"
+        }
+      },
       "edelstein.common.crypto": {
         "type": "Project"
       },
@@ -636,6 +647,7 @@
         "type": "Project",
         "dependencies": {
           "Duey.Abstractions": "[2.0.0, )",
+          "Edelstein.Common.Constants": "[1.0.0, )",
           "Edelstein.Common.Utilities": "[1.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",
@@ -647,6 +659,7 @@
       "edelstein.common.gameplay.game": {
         "type": "Project",
         "dependencies": {
+          "Edelstein.Common.Constants": "[1.0.0, )",
           "Edelstein.Common.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Gameplay.Game": "[1.0.0, )",
           "Edelstein.Protocol.Scripting": "[1.0.0, )",
@@ -755,6 +768,7 @@
         "dependencies": {
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )",
+          "Microsoft.IO.RecyclableMemoryStream": "[2.3.2, )",
           "RBush": "[3.2.0, )"
         }
       },

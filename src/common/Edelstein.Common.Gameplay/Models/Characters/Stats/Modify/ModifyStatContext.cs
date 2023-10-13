@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Constants;
+﻿using Edelstein.Common.Constants;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Utilities.Packets;

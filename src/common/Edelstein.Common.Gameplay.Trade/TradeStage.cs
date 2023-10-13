@@ -1,5 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Models.Characters;
-using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Trade;
 
@@ -19,7 +19,7 @@ public class TradeStage : AbstractStage<ITradeStageUser>, ITradeStage
             return;
         }
         
-        var packet = new PacketWriter(PacketSendOperations.SetITC);
+        using var packet = new PacketWriter(PacketSendOperations.SetITC);
         
         packet.WriteCharacterData(
             user.Character, 

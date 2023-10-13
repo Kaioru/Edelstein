@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats.Modify;
-using Edelstein.Common.Gameplay.Packets;
+using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
@@ -73,7 +73,7 @@ public class FieldMob :
 
             if (attacker != null && damage > 0)
             {
-                var indicatorPacket = new PacketWriter(PacketSendOperations.MobHPIndicator);
+                using var indicatorPacket = new PacketWriter(PacketSendOperations.MobHPIndicator);
                 var indicator = HP / (float)Template.MaxHP * 100f;
 
                 indicator = Math.Min(100, indicator);
@@ -107,7 +107,7 @@ public class FieldMob :
 
         if (context.HistoryReset.Records.Any() || context.HistoryReset.BurnedInfo.Any())
         {
-            var resetPacket = new PacketWriter(PacketSendOperations.MobStatReset);
+            using var resetPacket = new PacketWriter(PacketSendOperations.MobStatReset);
 
             resetPacket.WriteInt(ObjectID ?? 0);
             resetPacket.WriteMobTemporaryStatsFlag(context.HistoryReset);
@@ -131,7 +131,7 @@ public class FieldMob :
 
         if (context.HistorySet.Records.Any() || context.HistorySet.BurnedInfo.Any())
         {
-            var setPacket = new PacketWriter(PacketSendOperations.MobStatSet);
+            using var setPacket = new PacketWriter(PacketSendOperations.MobStatSet);
 
             setPacket.WriteInt(ObjectID ?? 0);
             setPacket.WriteMobTemporaryStats(context.HistorySet);

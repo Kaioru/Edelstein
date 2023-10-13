@@ -1,4 +1,5 @@
-﻿using DotNetty.Buffers;
+﻿using System.Buffers;
+using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Crypto;
@@ -31,9 +32,11 @@ public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
     )
     {
         var socket = context.Channel.GetAttribute(NettyAttributes.SocketKey).Get();
-        var dataLen = (short)message.Buffer.Length;
-        var buffer = message.Buffer.ToArray();
-
+        var dataLen = message.Length;
+        var buffer = ArrayPool<byte>.Shared.Rent(dataLen);
+        
+        Array.Copy(message.Buffer, buffer, dataLen);
+        
         if (socket != null)
         {
             var seqSend = socket.SeqSend;
@@ -41,22 +44,22 @@ public class NettyPacketEncoder : MessageToByteEncoder<IPacket>
 
             if (socket.IsDataEncrypted)
             {
-                dataLen ^= rawSeq;
-
-                ShandaCipher.EncryptTransform(buffer);
-                _aesCipher.Transform(buffer, seqSend);
+                ShandaCipher.EncryptTransform(buffer, dataLen);
+                _aesCipher.Transform(buffer, dataLen, seqSend);
             }
 
             output.WriteShortLE(rawSeq);
-            output.WriteShortLE(dataLen);
-            output.WriteBytes(buffer);
+            output.WriteShortLE(dataLen ^ rawSeq);
+            output.WriteBytes(buffer, 0, dataLen);
 
             socket.SeqSend = _igCipher.Hash(seqSend, 4, 0);
         }
         else
         {
             output.WriteShortLE(dataLen);
-            output.WriteBytes(buffer);
+            output.WriteBytes(buffer, 0, dataLen);
         }
+        
+        ArrayPool<byte>.Shared.Return(buffer);
     }
 }

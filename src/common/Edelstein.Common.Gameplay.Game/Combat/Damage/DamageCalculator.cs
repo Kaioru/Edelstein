@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Constants;
+﻿using Edelstein.Common.Constants;
 using Edelstein.Common.Utilities;
 using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
@@ -461,7 +461,18 @@ public class DamageCalculator : IDamageCalculator
     {
         var random = new Rotational<uint>(new uint[RndSize]);
         var skill = attack.SkillID > 0 ? await _skills.Retrieve(attack.SkillID) : null;
-        var skillLevel = skill?[stats.SkillLevels[attack.SkillID]];
+        var skillActingID = attack.SkillID;
+        
+        if (skillActingID is 
+            Skill.BmageFinishAttack or 
+            Skill.BmageFinishAttack1 or 
+            Skill.BmageFinishAttack2 or 
+            Skill.BmageFinishAttack3 or 
+            Skill.BmageFinishAttack4 or 
+            Skill.BmageFinishAttack5)
+            skillActingID = Skill.BmageFinishAttack;
+        
+        var skillLevel = skill?[stats.SkillLevels[skillActingID]];
         var damagePerMob = skillLevel?.AttackCount ?? 1;
         var result = new IDamage[damagePerMob];
 
@@ -762,13 +773,7 @@ public class DamageCalculator : IDamageCalculator
     private static double GetRandomInRange(uint rand, double f0, double f1)
     {
         if (Math.Abs(f0 - f1) < 0.0001) return f0;
-        if (f0 > f1)
-        {
-            var tmp = f1;
-            f0 = f1;
-            f1 = tmp;
-        }
-        
+        if (f0 > f1) (f0, f1) = (f1, f0);
         return f0 + rand % 10000000 * (f1 - f0) / 9999999.0;
     }
 

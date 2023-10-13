@@ -1,4 +1,5 @@
-﻿using DotNetty.Transport.Channels;
+﻿using System.Buffers;
+using DotNetty.Transport.Channels;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
@@ -23,7 +24,7 @@ public class NettyTransportConnectorHandler : ChannelHandlerAdapter
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
-        var packet = (IPacket)message;
+        using var packet = (IPacket)message;
 
         if (adapter != null)
         {

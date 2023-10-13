@@ -17,6 +17,7 @@ public abstract class AbstractSkillHandler : ISkillHandler
     public virtual async Task HandleSkillUse(ISkillContext context, IFieldUser user)
     {
         await this.HandleSkillUseBasic(context, user);
+        await this.HandleSkillUseBeginner(context, user);
     }
 
     public virtual Task HandleSkillCancel(ISkillContext context, IFieldUser user)

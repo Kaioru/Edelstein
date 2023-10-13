@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Movements;
 using Edelstein.Protocol.Gameplay.Game.Objects;
@@ -47,8 +47,8 @@ public class FieldSummoned :
 
     public override FieldObjectType Type => FieldObjectType.Summoned;
     
-    public Task Move(IPoint2D position)
-        => Move(position, true);
+    public Task Move(IPoint2D position, IFieldFoothold? foothold)
+        => Move(position, foothold, true);
     
     public override IPacket GetEnterFieldPacket()
         => GetEnterFieldPacket(0);

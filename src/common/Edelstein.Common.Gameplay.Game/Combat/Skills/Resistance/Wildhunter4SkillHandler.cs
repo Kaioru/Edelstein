@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Constants;
+﻿using Edelstein.Common.Constants;
 
 namespace Edelstein.Common.Gameplay.Game.Combat.Skills.Resistance;
 

@@ -1,9 +1,9 @@
 ﻿using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
+using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Common.Gameplay.Models.Characters.Stats;
 using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify;
-using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
@@ -36,7 +36,7 @@ public class FieldUserModify : IFieldUserModify
         
         if (!_user.IsInstantiated) return;
         
-        var packet = new PacketWriter(PacketSendOperations.StatChanged);
+        using var packet = new PacketWriter(PacketSendOperations.StatChanged);
 
         packet.WriteBool(exclRequest);
         packet.Write(context);
@@ -93,7 +93,7 @@ public class FieldUserModify : IFieldUserModify
     {
         IsRequireUpdate = true;
         
-        var packet = new PacketWriter(PacketSendOperations.ChangeSkillRecordResult);
+        using var packet = new PacketWriter(PacketSendOperations.ChangeSkillRecordResult);
 
         packet.WriteBool(exclRequest);
         packet.Write(context);
@@ -120,8 +120,8 @@ public class FieldUserModify : IFieldUserModify
 
         if (isUpdateReset)
         {
-            var resetLocalPacket = new PacketWriter(PacketSendOperations.TemporaryStatReset);
-            var resetRemotePacket = new PacketWriter(PacketSendOperations.UserTemporaryStatReset);
+            using var resetLocalPacket = new PacketWriter(PacketSendOperations.TemporaryStatReset);
+            using var resetRemotePacket = new PacketWriter(PacketSendOperations.UserTemporaryStatReset);
 
             resetLocalPacket.WriteTemporaryStatsFlag(context.HistoryReset);
             resetLocalPacket.WriteBool(false); // IsMovementAffectingStat
@@ -131,25 +131,25 @@ public class FieldUserModify : IFieldUserModify
 
             await _user.Dispatch(resetLocalPacket.Build());
             if (_user.FieldSplit != null) 
-                await _user.FieldSplit.Dispatch(resetRemotePacket.Build());
+                await _user.FieldSplit.Dispatch(resetRemotePacket.Build(), _user);
         }
 
         if (isUpdateSet)
         {
-            var setLocalPacket = new PacketWriter(PacketSendOperations.TemporaryStatSet);
-            var setRemotePacket = new PacketWriter(PacketSendOperations.UserTemporaryStatSet);
+            using var setLocalPacket = new PacketWriter(PacketSendOperations.TemporaryStatSet);
+            using var setRemotePacket = new PacketWriter(PacketSendOperations.UserTemporaryStatSet);
 
             setLocalPacket.WriteTemporaryStatsToLocal(context.HistorySet);
             setLocalPacket.WriteShort(0); // tDelay
             setLocalPacket.WriteBool(false); // IsMovementAffectingStat
 
             setRemotePacket.WriteInt(_user.Character.ID);
-            setRemotePacket.WriteTemporaryStatsToLocal(context.HistorySet);
+            setRemotePacket.WriteTemporaryStatsToRemote(context.HistorySet);
             setRemotePacket.WriteShort(0); // tDelay
 
             await _user.Dispatch(setLocalPacket.Build());
             if (_user.FieldSplit != null) 
-                await _user.FieldSplit.Dispatch(setRemotePacket.Build());
+                await _user.FieldSplit.Dispatch(setRemotePacket.Build(), _user);
         }
     }
 }

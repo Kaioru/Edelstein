@@ -28,6 +28,7 @@ public interface ISkillContext
     void SetTwoStateDashSpeed(int value, int? reason = null, TimeSpan? term = null);
     void SetTwoStateDashJump(int value, int? reason = null, TimeSpan? term = null);
     void SetTwoStateRideVehicle(int value, int? reason = null);
+    void SetTwoStatePartyBooster(int value, int? reason = null, DateTime? dateStart = null, TimeSpan? term = null);
     void SetTwoStateGuidedBullet(int value, int mobID, int? reason = null);
     
     void AddTemporaryStat(TemporaryStatType type, int value, int? reason = null, DateTime? expire = null);
@@ -35,7 +36,7 @@ public interface ISkillContext
     void AddMobTemporaryStat(MobTemporaryStatType type, int value, int? reason = null, DateTime? expire = null);
     void AddMobBurnedInfo(int damage, int? skillID = null, TimeSpan? interval = null, DateTime? expire = null);
     
-    void AddSummoned(MoveAbilityType moveAbilityType, SummonedAssistType summonedAssistType, int? skillID = null, int? skillLevel = null, DateTime? expire = null);
+    void AddSummoned(MoveAbilityType moveAbilityType, SummonedAssistType summonedAssistType, int? skillID = null, int? skillLevel = null, bool? allowDuplicate = false, DateTime? expire = null, IPoint2D? position = null);
 
     void AddAffectedArea(AffectedAreaType type, int? skillID = null, int? skillLevel = null, int? info = null, int? phase = null, IRectangle2D? bounds = null, DateTime? expire = null);
     void AddAffectedAreaBurnedInfo(int? skillID = null, int? skillLevel = null, TimeSpan? interval = null, TimeSpan? duration = null, IFieldUser? user = null);
@@ -47,7 +48,8 @@ public interface ISkillContext
     void ResetTwoStateDashSpeed();
     void ResetTwoStateDashJump();
     void ResetTwoStateRideVehicle();
-    void ResetGuidedBullet();
+    void ResetTwoStatePartyBooster();
+    void ResetTwoStateGuidedBullet();
 
     void ResetMobTemporaryStatBySkill(int? skillID = null);
     void ResetMobTemporaryStatByType(MobTemporaryStatType type);

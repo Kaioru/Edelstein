@@ -3,9 +3,7 @@
   <Import Project="..\Plugin.targets" />
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Game\Edelstein.Common.Gameplay.Game.csproj" />
-    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Login\Edelstein.Common.Gameplay.Login.csproj" />
-    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Constants\Edelstein.Common.Constants.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Utilities\Edelstein.Common.Utilities.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin.Game\Edelstein.Protocol.Plugin.Game.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin.Login\Edelstein.Protocol.Plugin.Login.csproj" />

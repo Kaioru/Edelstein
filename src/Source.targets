@@ -11,8 +11,15 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <Authors>Kaioru</Authors>
+    
     <RepositoryUrl>https://github.com/Kaioru/Edelstein</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+
+    <PackageProjectUrl>https://github.com/Kaioru/Edelstein</PackageProjectUrl>
+    
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -20,4 +27,9 @@
     <DebugType>None</DebugType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="../../../README.md" Pack="true" PackagePath="/"/>
+    <None Include="../../../LICENSE" Pack="true" PackagePath="/"/>
+  </ItemGroup>
+  
 </Project>

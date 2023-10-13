@@ -20,16 +20,28 @@
         "resolved": "7.0.0",
         "contentHash": "kmn78+LPVMOWeITUjIlfxUPDsI0R6G0RkeAMBmQxAJ7vBJn4q2dTva7pWi65ceN5vPGjJ9q/Uae2WKgvfktJAw=="
       },
+      "Microsoft.IO.RecyclableMemoryStream": {
+        "type": "Transitive",
+        "resolved": "2.3.2",
+        "contentHash": "Oh1qXXFdJFcHozvb4H6XYLf2W0meZFuG0A+TfapFPj9z5fd4vxiARGEhAaLj/6XWQaMYIv4SH/9Q6H78Hw0E2Q=="
+      },
       "RBush": {
         "type": "Transitive",
         "resolved": "3.2.0",
         "contentHash": "ijGh9N0zZ7JfXk3oQkWCwK8SwSSByexbyh/MjbCjNxOft9eG5ZqKC1vdgiYq78h4IZRFmN4s3JZ/b10Jipud5w=="
+      },
+      "edelstein.common.constants": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )"
+        }
       },
       "edelstein.common.utilities": {
         "type": "Project",
         "dependencies": {
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )",
+          "Microsoft.IO.RecyclableMemoryStream": "[2.3.2, )",
           "RBush": "[3.2.0, )"
         }
       },

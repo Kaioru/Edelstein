@@ -56,6 +56,9 @@ public interface IFieldUserStats
     int BossDamR { get; }
 
     int Mastery { get; }
+    
+    int AttackSpeedBase { get; }
+    int AttackSpeed { get; }
 
     int DamageMin { get; }
     int DamageMax { get; }

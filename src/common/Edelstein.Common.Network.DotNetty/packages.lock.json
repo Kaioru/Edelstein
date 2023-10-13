@@ -99,6 +99,11 @@
         "resolved": "5.0.0",
         "contentHash": "cI/VWn9G1fghXrNDagX9nYaaB/nokkZn0HYAawGaELQrl8InSezfe9OnfPZLcJq3esXxygh3hkq2c3qoV3SDyQ=="
       },
+      "Microsoft.IO.RecyclableMemoryStream": {
+        "type": "Transitive",
+        "resolved": "2.3.2",
+        "contentHash": "Oh1qXXFdJFcHozvb4H6XYLf2W0meZFuG0A+TfapFPj9z5fd4vxiARGEhAaLj/6XWQaMYIv4SH/9Q6H78Hw0E2Q=="
+      },
       "RBush": {
         "type": "Transitive",
         "resolved": "3.2.0",
@@ -122,6 +127,7 @@
         "dependencies": {
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
           "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )",
+          "Microsoft.IO.RecyclableMemoryStream": "[2.3.2, )",
           "RBush": "[3.2.0, )"
         }
       },

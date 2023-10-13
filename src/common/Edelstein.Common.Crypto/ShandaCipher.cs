@@ -2,9 +2,8 @@
 
 public class ShandaCipher
 {
-    public static void EncryptTransform(Span<byte> input)
+    public static void EncryptTransform(Span<byte> input, int size)
     {
-        var size = input.Length;
         for (var i = 0; i < 3; i++)
         {
             byte a = 0;
@@ -23,7 +22,7 @@ public class ShandaCipher
             }
 
             a = 0;
-            for (var j = input.Length; j > 0; j--)
+            for (var j = size; j > 0; j--)
             {
                 c = input[j - 1];
                 c = RollLeft(c, 4);
@@ -37,9 +36,8 @@ public class ShandaCipher
         }
     }
 
-    public static void DecryptTransform(Span<byte> input)
+    public static void DecryptTransform(Span<byte> input, int size)
     {
-        var size = input.Length;
         for (var i = 0; i < 3; i++)
         {
             byte a;

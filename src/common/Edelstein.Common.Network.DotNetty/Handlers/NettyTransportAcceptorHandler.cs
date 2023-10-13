@@ -1,4 +1,5 @@
-﻿using DotNetty.Transport.Channels;
+﻿using System.Buffers;
+using DotNetty.Transport.Channels;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
@@ -37,15 +38,14 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
         handshake.WriteInt((int)newSocket.SeqSend);
         handshake.WriteByte(_version.Locale);
 
-        _ = newSocket.Dispatch(
-            new PacketWriter()
-                .WriteShort(_version.Major)
-                .WriteString(_version.Patch)
-                .WriteInt((int)newSocket.SeqRecv)
-                .WriteInt((int)newSocket.SeqSend)
-                .WriteByte(_version.Locale)
-                .Build()
-        );
+        var packet = new PacketWriter()
+            .WriteShort(_version.Major)
+            .WriteString(_version.Patch)
+            .WriteInt((int)newSocket.SeqRecv)
+            .WriteInt((int)newSocket.SeqSend)
+            .WriteByte(_version.Locale);
+
+        _ = newSocket.Dispatch(packet.Build());
 
         context.Channel.GetAttribute(NettyAttributes.SocketKey).Set(newSocket);
         context.Channel.GetAttribute(NettyAttributes.AdapterKey).Set(newAdapter);
@@ -68,13 +68,14 @@ public class NettyTransportAcceptorHandler : ChannelHandlerAdapter
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
-        adapter?.OnPacket((IPacket)message);
+        using var packet = (IPacket)message;
+        
+        adapter?.OnPacket(packet);
     }
 
     public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
     {
         var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
-
         adapter?.OnException(exception);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Gameplay.Packets;
+﻿using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Social;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game;
@@ -9,56 +9,56 @@ public static class GameStageUserExtensions
 {
     public static Task DispatchInitFuncKeys(this IGameStageUser user)
     {
-        var p = new PacketWriter(PacketSendOperations.FuncKeyMappedInit);
+        using var packet = new PacketWriter(PacketSendOperations.FuncKeyMappedInit);
         
-        p.WriteBool(user.Character?.FuncKeys.Records.Count == 0);
+        packet.WriteBool(user.Character?.FuncKeys.Records.Count == 0);
         if (user.Character?.FuncKeys.Records.Count > 0)
         {
             for (byte i = 0; i < 90; i++)
             {
                 if (user.Character.FuncKeys.Records.TryGetValue(i, out var value))
                 {
-                    p.WriteByte(value.Type);
-                    p.WriteInt(value.Action);
+                    packet.WriteByte(value.Type);
+                    packet.WriteInt(value.Action);
                 }
                 else
                 {
-                    p.WriteByte(0);
-                    p.WriteInt(0);
+                    packet.WriteByte(0);
+                    packet.WriteInt(0);
                 }
             }
         }
 
-        return user.Dispatch(p.Build());
+        return user.Dispatch(packet.Build());
     }
     
     public static Task DispatchInitQuickSlotKeys(this IGameStageUser user)
     {
-        var p = new PacketWriter(PacketSendOperations.QuickslotMappedInit);
+        using var packet = new PacketWriter(PacketSendOperations.QuickslotMappedInit);
         
-        p.WriteBool(user.Character?.QuickslotKeys.Records.Count > 0);
+        packet.WriteBool(user.Character?.QuickslotKeys.Records.Count > 0);
         if (user.Character?.QuickslotKeys.Records.Count > 0)
             for (byte i = 0; i < 8; i++)
-                p.WriteInt(user.Character.QuickslotKeys.Records.TryGetValue(i, out var value) 
+                packet.WriteInt(user.Character.QuickslotKeys.Records.TryGetValue(i, out var value) 
                     ? value 
                     : 0
                 );
-        return user.Dispatch(p.Build());
+        return user.Dispatch(packet.Build());
     }
     
     public async static Task DispatchInitFriends(this IGameStageUser user)
     {
         if (user.Friends != null)
         {
-            var p = new PacketWriter(PacketSendOperations.FriendResult);
+            using var packet = new PacketWriter(PacketSendOperations.FriendResult);
 
-            p.WriteByte((byte)FriendResultOperations.LoadFriend_Done);
-            p.WriteByte((byte)user.Friends.Records.Count);
+            packet.WriteByte((byte)FriendResultOperations.LoadFriend_Done);
+            packet.WriteByte((byte)user.Friends.Records.Count);
             foreach (var record in user.Friends.Records.Values)
-                p.WriteFriendInfo(record);
+                packet.WriteFriendInfo(record);
             foreach (var _ in user.Friends.Records.Values)
-                p.WriteInt(0);
-            await user.Dispatch(p.Build());
+                packet.WriteInt(0);
+            await user.Dispatch(packet.Build());
         }
     }
     
@@ -66,26 +66,26 @@ public static class GameStageUserExtensions
     {
         if (user.Party != null)
         {
-            var p = new PacketWriter(PacketSendOperations.PartyResult);
-            p.WriteByte((byte)PartyResultOperations.LoadPartyDone);
-            p.WriteInt(user.Party.ID);
-            p.WritePartyInfo(user.Party);
-            await user.Dispatch(p.Build());
+            using var packet = new PacketWriter(PacketSendOperations.PartyResult);
+            packet.WriteByte((byte)PartyResultOperations.LoadPartyDone);
+            packet.WriteInt(user.Party.ID);
+            packet.WritePartyInfo(user.Party);
+            await user.Dispatch(packet.Build());
         }
     }
 
     public async static Task DispatchInitQuestTime(this IGameStageUser user)
     {
         var records = await user.Context.Managers.QuestTime.RetrieveAll();
-        var p = new PacketWriter(PacketSendOperations.SetQuestTime);
+        using var packet = new PacketWriter(PacketSendOperations.SetQuestTime);
 
-        p.WriteByte((byte)records.Count);
+        packet.WriteByte((byte)records.Count);
         foreach (var record in records)
         {
-            p.WriteInt(record.ID);
-            p.WriteDateTime(record.DateStart);
-            p.WriteDateTime(record.DateEnd);
+            packet.WriteInt(record.ID);
+            packet.WriteDateTime(record.DateStart);
+            packet.WriteDateTime(record.DateEnd);
         }
-        await user.Dispatch(p.Build());
+        await user.Dispatch(packet.Build());
     }
 }

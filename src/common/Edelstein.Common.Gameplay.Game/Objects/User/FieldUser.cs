@@ -1,13 +1,13 @@
 ﻿using System.Collections.Immutable;
-using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Constants;
 using Edelstein.Common.Gameplay.Game.Combat.Damage;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Game.Objects.Dragon;
 using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Models.Characters;
 using Edelstein.Common.Gameplay.Models.Characters.Stats;
-using Edelstein.Common.Gameplay.Packets;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game;
@@ -182,10 +182,12 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         return packet.Build();
     }
 
-    public override IPacket GetLeaveFieldPacket() =>
-        new PacketWriter(PacketSendOperations.UserLeaveField)
-            .WriteInt(Character.ID)
-            .Build();
+    public override IPacket GetLeaveFieldPacket()
+    {
+        using var packet = new PacketWriter(PacketSendOperations.UserLeaveField)
+            .WriteInt(Character.ID);
+        return packet.Build();
+    }
 
     public Task OnPacket(IPacket packet) => StageUser.OnPacket(packet);
     public Task OnException(Exception exception) => StageUser.OnException(exception);
@@ -198,21 +200,21 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     
     public Task Message(IPacketWritable writable)
     {
-        var packet = new PacketWriter(PacketSendOperations.Message);
+        using var packet = new PacketWriter(PacketSendOperations.Message);
         packet.Write(writable);
         return Dispatch(packet.Build());
     }
     
     public Task MessageScriptProgress(string message)
     {
-        var packet = new PacketWriter(PacketSendOperations.ScriptProgressMessage);
+        using var packet = new PacketWriter(PacketSendOperations.ScriptProgressMessage);
         packet.WriteString(message);
         return Dispatch(packet.Build());
     }
 
     public Task MessageBalloon(string message, short? width = null, short? duration = null, IPoint2D? position = null)
     {
-        var packet = new PacketWriter(PacketSendOperations.UserBalloonMsg);
+        using var packet = new PacketWriter(PacketSendOperations.UserBalloonMsg);
         packet.WriteString(message);
         packet.WriteShort((short)(width ?? message.Length * 5));
         packet.WriteShort(duration ?? 5);
@@ -227,23 +229,21 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
 
     public async Task Effect(IPacketWritable writable, bool isLocal = true, bool isRemote = true)
     {
-        var localPacket = new PacketWriter(PacketSendOperations.UserEffectLocal)
-            .Write(writable)
-            .Build();
-        var remotePacket = new PacketWriter(PacketSendOperations.UserEffectRemote)
+        using var localPacket = new PacketWriter(PacketSendOperations.UserEffectLocal)
+            .Write(writable);
+        using var remotePacket = new PacketWriter(PacketSendOperations.UserEffectRemote)
             .WriteInt(Character.ID)
-            .Write(writable)
-            .Build();
+            .Write(writable);
 
         if (isLocal)
-            await Dispatch(localPacket);
+            await Dispatch(localPacket.Build());
         if (isRemote && FieldSplit != null) 
-            await FieldSplit.Dispatch(remotePacket, this);
+            await FieldSplit.Dispatch(remotePacket.Build(), this);
     }
     
     public Task EffectField(IPacketWritable writable)
     {
-        var packet = new PacketWriter(PacketSendOperations.FieldEffect);
+        using var packet = new PacketWriter(PacketSendOperations.FieldEffect);
         packet.Write(writable);
         return Dispatch(packet.Build());
     }
@@ -322,48 +322,48 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     {
         ActiveChair = chairID;
         
-        var p = new PacketWriter(PacketSendOperations.UserSitResult);
+        using var packet = new PacketWriter(PacketSendOperations.UserSitResult);
 
         if (chairID != null)
         {
-            p.WriteBool(true);
-            p.WriteShort(chairID.Value);
+            packet.WriteBool(true);
+            packet.WriteShort(chairID.Value);
         }
         else
-            p.WriteBool(false);
+            packet.WriteBool(false);
 
-        return Dispatch(p.Build());
+        return Dispatch(packet.Build());
     }
 
     public async Task SetActivePortableChair(int templateID)
     {
         ActivePortableChair = templateID;
         
-        var p = new PacketWriter(PacketSendOperations.UserSetActivePortableChair);
-        p.WriteInt(Character.ID);
-        p.WriteInt(ActivePortableChair);
+        using var packet = new PacketWriter(PacketSendOperations.UserSetActivePortableChair);
+        packet.WriteInt(Character.ID);
+        packet.WriteInt(ActivePortableChair);
         
         if (FieldSplit != null)
-            await FieldSplit.Dispatch(p.Build(), this);
+            await FieldSplit.Dispatch(packet.Build(), this);
     }
 
     public Task SetDirectionMode(bool enable, int delay = 0)
     {
         IsDirectionMode = enable;
         
-        var p = new PacketWriter(PacketSendOperations.SetDirectionMode);
-        p.WriteBool(enable);
-        p.WriteInt(delay);
-        return Dispatch(p.Build());
+        using var packet = new PacketWriter(PacketSendOperations.SetDirectionMode);
+        packet.WriteBool(enable);
+        packet.WriteInt(delay);
+        return Dispatch(packet.Build());
     }
     
     public Task SetStandAloneMode(bool enable)
     {
         IsStandAloneMode = enable;
         
-        var p = new PacketWriter(PacketSendOperations.SetStandAloneMode);
-        p.WriteBool(enable);
-        return Dispatch(p.Build());
+        using var packet = new PacketWriter(PacketSendOperations.SetStandAloneMode);
+        packet.WriteBool(enable);
+        return Dispatch(packet.Build());
     }
     
     public async Task Modify(Action<IFieldUserModify> action)
@@ -450,7 +450,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     
     private async Task UpdateAvatar()
     {
-        var avatarPacket = new PacketWriter(PacketSendOperations.UserAvatarModified);
+        using var avatarPacket = new PacketWriter(PacketSendOperations.UserAvatarModified);
 
         avatarPacket.WriteInt(Character.ID);
         avatarPacket.WriteByte(0x1); // Flag
