@@ -144,7 +144,7 @@ public class FieldUserModify : IFieldUserModify
             setLocalPacket.WriteBool(false); // IsMovementAffectingStat
 
             setRemotePacket.WriteInt(_user.Character.ID);
-            setRemotePacket.WriteTemporaryStatsToLocal(context.HistorySet);
+            setRemotePacket.WriteTemporaryStatsToRemote(context.HistorySet);
             setRemotePacket.WriteShort(0); // tDelay
 
             await _user.Dispatch(setLocalPacket.Build());
