@@ -1,6 +1,8 @@
-name: Publish (Latest)
+name: Publish (Nightly)
 
-on: [push]
+on: 
+  schedule:
+  - cron: "0 0 * * *"
   
 jobs:
 
@@ -15,6 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - id: should_run
+      if: ${{ github.event_name == 'schedule' }}
       continue-on-error: true
       name: Check for new commits
       run: test -z $(git rev-list --after="24 hours" ${{ github.sha }}) && echo "should_run=false" >> $GITHUB_OUTPUT
@@ -55,6 +58,6 @@ jobs:
     uses: ./.github/workflows/publish.yaml
     with:
       version: "${{ needs.versioning.outputs.version }}"
-      tag: "latest"
+      tag: "nightly"
       prerelease: true
       draft: false
