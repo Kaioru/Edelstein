@@ -1,0 +1,151 @@
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      tag:
+        type: string
+      prerelease:
+        required: true
+        default: false
+        type: boolean
+      draft:
+        required: true
+        default: true
+        type: boolean
+
+jobs:
+
+  publish_nuget:
+    name: Publish to Github Packages
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
+
+    - uses: actions/cache@v1
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Restore
+      run: dotnet restore --locked-mode
+
+    - name: Pack
+      run: dotnet pack --configuration Release --output artifacts /p:PackageVersion=${{ github.event.inputs.version }}
+
+    - name: Publish
+      run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+    
+    - name: Add VERSION, COMMIT, LICENSE, and README files
+      run: |
+        echo ${{ github.event.inputs.version }} > artifacts/VERSION
+        echo ${{ github.sha }} > artifacts/COMMIT
+        cp LICENSE artifacts
+        cp README.md artifacts
+  
+    - name: Compress
+      run: cd artifacts; zip ../packages-${{ github.event.inputs.version }}.zip *; cd ..
+      
+    - name: Store artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: packages-${{ github.event.inputs.version }}
+        path: packages-${{ github.event.inputs.version }}.zip
+
+  publish_artifact:
+    strategy:
+      matrix:
+        runtime: [win-x64, win-arm64, osx-x64, osx-arm64, linux-x64, linux-arm64]
+
+    name: Publish artifacts (${{ matrix.runtime }})
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
+
+    - uses: actions/cache@v1
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Restore
+      run: dotnet restore --locked-mode
+
+    - name: Install EntityFramework Core tools
+      run: dotnet tool install --global dotnet-ef
+
+    - name: Publish (apps)
+      run: |
+        for project in src/app/*/ ; do
+          dotnet publish $project -c Release -r ${{ matrix.runtime }} --output artifacts-${{ matrix.runtime }} -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:SelfContained=true
+        done
+
+    - name: Bundle migrations (scripts)
+      run: |
+        dotnet ef migrations script --project src/common/Edelstein.Common.Database/ --output artifacts-${{ matrix.runtime }}/migrate-01-gameplay.sql --idempotent
+        dotnet ef migrations script --project src/common/Edelstein.Common.Services.Auth/ --output artifacts-${{ matrix.runtime }}/migrate-02-auth.sql --idempotent
+        dotnet ef migrations script --project src/common/Edelstein.Common.Services.Server/ --output artifacts-${{ matrix.runtime }}/migrate-03-server.sql --idempotent
+        dotnet ef migrations script --project src/common/Edelstein.Common.Services.Social/ --output artifacts-${{ matrix.runtime }}/migrate-04-social.sql --idempotent
+
+    - name: Add VERSION, COMMIT, LICENSE, and README files
+      run: |
+        echo ${{ github.event.inputs.version }} > artifacts-${{ matrix.runtime }}/VERSION
+        echo ${{ github.sha }} > artifacts-${{ matrix.runtime }}/COMMIT
+        cp LICENSE artifacts-${{ matrix.runtime }}
+        cp README.md artifacts-${{ matrix.runtime }}
+
+    - name: Create data, scripts, and plugins directories
+      run: |
+        mkdir artifacts-${{ matrix.runtime }}/data
+        mkdir artifacts-${{ matrix.runtime }}/scripts
+        mkdir artifacts-${{ matrix.runtime }}/plugins
+
+    - name: Publish (plugins)
+      run: |
+        for project in src/plugin/*/ ; do
+          dotnet publish $project -c Release --output artifacts-${{ matrix.runtime }}/plugins/$(basename $project)
+        done
+    
+    - name: Compress artifacts
+      run: cd artifacts-${{ matrix.runtime }}; zip -r ../server-${{ matrix.runtime }}-${{ github.event.inputs.version }}.zip . ; cd ..
+
+    - name: Store artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: server-${{ matrix.runtime }}-${{ github.event.inputs.version }}
+        path: server-${{ matrix.runtime }}-${{ github.event.inputs.version }}.zip
+
+  publish_release:
+    needs: [publish_artifacts]
+
+    name: Publish to Github releases
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+
+    - uses: "marvinpinto/action-automatic-releases@v1.2.1"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ github.event.inputs.tag }}"
+        prerelease: ${{ github.event.inputs.prerelease }}
+        draft: ${{ github.event.inputs.draft }}
+        title: "${{ github.event.inputs.version }}"
+        files: "*/*.zip"

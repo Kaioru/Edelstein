@@ -18,12 +18,6 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
-    <MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
-    <MinVerTagPrefix>v</MinVerTagPrefix>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <DebugSymbols>False</DebugSymbols>
     <DebugType>None</DebugType>
@@ -34,10 +28,4 @@
     <None Include="../../../LICENSE" Pack="true" PackagePath="/"/>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MinVer" Version="4.3.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
-  
 </Project>
