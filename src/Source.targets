@@ -12,6 +12,8 @@
     <RepositoryUrl>https://github.com/Kaioru/Edelstein</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
 
+    <PackageProjectUrl>https://github.com/Kaioru/Edelstein</PackageProjectUrl>
+    
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
