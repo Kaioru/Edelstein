@@ -48,17 +48,10 @@ jobs:
   publish:
     needs: [setup, versioning]
     if: ${{ needs.setup.outputs.should_run != 'false' }}
-
-    name: Publish
-    runs-on: ubuntu-latest
-
-    steps:
     
-    - uses: actions/checkout@v4
-
-    - uses: ./.github/workflows/publish.yml
-      with:
-        version: ${{ needs.versioning.outputs.version }}
-        tag: latest
-        prerelease: true
-        draft: false
+    uses: ./.github/workflows/publish.yml
+    with:
+      version: ${{ needs.versioning.outputs.version }}
+      tag: latest
+      prerelease: true
+      draft: false
