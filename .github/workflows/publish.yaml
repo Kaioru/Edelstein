@@ -93,7 +93,7 @@ jobs:
     - name: Publish (apps)
       run: |
         for project in src/app/*/ ; do
-          dotnet publish $project -c Release -r ${{ matrix.runtime }} --output artifacts-${{ matrix.runtime }} -p:PublishReadyToRun=true -p:PublishSingleFile=true -p:SelfContained=true
+          dotnet publish $project -c Release -r ${{ matrix.runtime }} --output artifacts-${{ matrix.runtime }}
         done
 
     - name: Bundle migrations (scripts)
