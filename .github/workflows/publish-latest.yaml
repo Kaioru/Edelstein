@@ -1,8 +1,6 @@
-name: Publish (Nightly)
+name: Publish (Latest)
 
-on: 
-  schedule:
-   - cron: "0 0 * * *"
+on: [push]
   
 jobs:
 
@@ -57,6 +55,6 @@ jobs:
       - uses: ./.github/workflows/publish.yml
         with:
           version: ${{ needs.versioning.outputs.version }}
-          tag: nightly
+          tag: latest
           prerelease: true
           draft: false
