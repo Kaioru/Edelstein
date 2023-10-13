@@ -29,6 +29,8 @@ public interface IItemEquipTemplate : IItemTemplate
     short IncSpeed { get; }
     short IncJump { get; }
 
+    int? AttackSpeed { get; }
+    
     // fs, swim, tamingmob
     // int IUC { get;  }
     // byte MinGrade { get;  }

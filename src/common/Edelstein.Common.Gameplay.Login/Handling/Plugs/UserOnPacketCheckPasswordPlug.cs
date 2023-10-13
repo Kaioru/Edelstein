@@ -99,9 +99,8 @@ public class UserOnPacketCheckPasswordPlug : IPipelinePlug<UserOnPacketCheckPass
 
             await message.User.Dispatch(packet.Build());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine(e);
             using var packet = new PacketWriter(PacketSendOperations.CheckPasswordResult);
 
             packet.WriteByte((byte)LoginResult.DBFail);

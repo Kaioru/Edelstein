@@ -75,7 +75,6 @@ public class Bmage2SkillHandler : Bmage1SkillHandler
                 // TODO
                 break;
             case Skill.BmageStaffBooster:
-                Console.WriteLine(context.SkillLevel!.X);
                 context.AddTemporaryStat(TemporaryStatType.Booster, context.SkillLevel!.X);
                 break;
         }

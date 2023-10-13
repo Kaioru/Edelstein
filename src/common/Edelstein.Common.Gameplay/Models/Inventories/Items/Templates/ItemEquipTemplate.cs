@@ -5,7 +5,6 @@ namespace Edelstein.Common.Gameplay.Models.Inventories.Items.Templates;
 
 public record ItemEquipTemplate : ItemTemplate, IItemEquipTemplate
 {
-
     // public int EnchantCategory { get;  }
     // public int Transform { get;  }
     // public int IUCMax { get;  }
@@ -38,6 +37,8 @@ public record ItemEquipTemplate : ItemTemplate, IItemEquipTemplate
         IncCraft = info.ResolveShort("incCraft") ?? 0;
         IncSpeed = info.ResolveShort("incSpeed") ?? 0;
         IncJump = info.ResolveShort("incJump") ?? 0;
+        
+        AttackSpeed = info.ResolveInt("attackSpeed");
 
         OnlyEquip = info.ResolveBool("onlyEquip") ?? false;
         TradeBlockEquip = info.ResolveBool("equipTradeBlock") ?? false;
@@ -76,6 +77,8 @@ public record ItemEquipTemplate : ItemTemplate, IItemEquipTemplate
     public short IncCraft { get; }
     public short IncSpeed { get; }
     public short IncJump { get; }
+    
+    public int? AttackSpeed { get; }
 
     // fs, swim, tamingmob
     // public int IUC { get;  }

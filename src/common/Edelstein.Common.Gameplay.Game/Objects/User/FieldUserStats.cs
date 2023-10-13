@@ -71,6 +71,9 @@ public record FieldUserStats : IFieldUserStats
     public int BossDamR { get; private set; }
     
     public int Mastery { get; private set; }
+    
+    public int AttackSpeedBase { get; private set; }
+    public int AttackSpeed { get; private set; }
 
     public int DamageMin { get; private set; }
     public int DamageMax { get; private set; }
@@ -102,6 +105,9 @@ public record FieldUserStats : IFieldUserStats
         CDMax = 50;
         
         Mastery = 0;
+        
+        AttackSpeedBase = 6;
+        AttackSpeed = 6;
         
         DamageMin = 1;
         DamageMax = 1;
@@ -153,6 +159,9 @@ public record FieldUserStats : IFieldUserStats
         Jump = Math.Min(Math.Max(Jump, 100), 123);
         
         CDMin = Math.Min(CDMin, CDMax);
+        
+        AttackSpeedBase = Math.Min(Math.Max(AttackSpeedBase, 2), 10);
+        AttackSpeed = Math.Min(Math.Max(AttackSpeed, 2), 10);
         
         await ApplyDamage(user);
         
@@ -287,6 +296,12 @@ public record FieldUserStats : IFieldUserStats
 
             if (equip.SetItemID > 0)
                 setCompletion[equip.SetItemID] = (setCompletion.TryGetValue(equip.SetItemID, out var count) ? count : 0) + 1;
+
+            if (slot == -(short)BodyPart.Weapon)
+            {
+                AttackSpeedBase = equip.AttackSpeed ?? AttackSpeed;
+                AttackSpeed = equip.AttackSpeed ?? AttackSpeed;
+            }
         }
         
         foreach (var (setItemID, count) in setCompletion)
@@ -519,6 +534,8 @@ public record FieldUserStats : IFieldUserStats
         MaxHPr += user.Character.TemporaryStats[TemporaryStatType.MaxHP]?.Value ?? 0;
         MaxMPr += user.Character.TemporaryStats[TemporaryStatType.MaxMP]?.Value ?? 0;
 
+        AttackSpeed += user.Character.TemporaryStats[TemporaryStatType.Booster]?.Value ?? 0;
+
         var sharpEyesStat = user.Character.TemporaryStats[TemporaryStatType.SharpEyes];
         if (sharpEyesStat != null)
         {
@@ -532,6 +549,8 @@ public record FieldUserStats : IFieldUserStats
             Cr += thornsEffectStat.Value >> 8;
             CDMax += thornsEffectStat.Value & 0xFF;
         }
+            
+        var superBodyStat = user.Character.TemporaryStats[TemporaryStatType.SuperBody];
         
         var darkAuraStat = user.Character.TemporaryStats[TemporaryStatType.DarkAura];
         if (darkAuraStat != null)
@@ -543,10 +562,11 @@ public record FieldUserStats : IFieldUserStats
         var yellowAuraStat = user.Character.TemporaryStats[TemporaryStatType.YellowAura];
         if (yellowAuraStat != null)
         {
-            var yellowAuraSkill = await user.StageUser.Context.Templates.Skill.Retrieve(yellowAuraStat.Reason);
-            var yellowAuraLevel = yellowAuraSkill?[SkillLevels[yellowAuraStat.Reason]];
+            var yellowAuraSkill = await user.StageUser.Context.Templates.Skill.Retrieve(superBodyStat?.Reason ?? yellowAuraStat.Reason);
+            var yellowAuraLevel = yellowAuraSkill?[SkillLevels[superBodyStat != null ? Skill.BmageAuraYellow : yellowAuraStat.Reason]];
             
             Speed += yellowAuraLevel?.X ?? 0;
+            AttackSpeed += yellowAuraLevel?.Y ?? 0;
         }
 
         if (JobConstants.GetJobRace(user.Character.Job) == 3 &&
@@ -560,6 +580,17 @@ public record FieldUserStats : IFieldUserStats
             Speed += jaguarRidingLevel?.X ?? 0;
             EVA += jaguarRidingLevel?.Y ?? 0;
             Cr += jaguarRidingLevel?.Z ?? 0;
+        }
+
+        if (user.Character.TemporaryStats.PartyBoosterRecord?.IsActive() ?? false)
+            AttackSpeed += user.Character.TemporaryStats.PartyBoosterRecord.Value;
+
+        if (user.Character.TemporaryStats[TemporaryStatType.Frozen] != null)
+        {
+            if (AttackSpeedBase < 10) 
+                AttackSpeedBase += (int)((user.Character.TemporaryStats[TemporaryStatType.Frozen]?.Value ?? 0) * (10 - AttackSpeedBase) / 100d);;
+            if (AttackSpeed < 10)
+                AttackSpeed += (int)((user.Character.TemporaryStats[TemporaryStatType.Frozen]?.Value ?? 0) * (10 - AttackSpeed) / 100d);;
         }
     }
 

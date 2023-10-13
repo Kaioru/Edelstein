@@ -18,7 +18,6 @@ public class Striker3SkillHandler : Striker2SkillHandler
                 break;
             case Skill.StrikerWindBooster:
                 context.TargetParty();
-                Console.WriteLine(context.SkillLevel?.Time);
                 context.SetTwoStatePartyBooster(context.SkillLevel!.X);
                 break;
             case Skill.StrikerSpark:
