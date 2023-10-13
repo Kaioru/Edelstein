@@ -1,4 +1,4 @@
-﻿using Edelstein.Common.Utilities.Spatial;
+﻿using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
@@ -63,7 +63,7 @@ public interface ISkillTemplateLevel
 
     short Cooltime { get; }
 
-    Rectangle2D Bounds { get; }
+    IRectangle2D Bounds { get; }
 
     short MHPr { get; }
     short MMPr { get; }
