@@ -3,9 +3,6 @@ name: Publish
 on:
   workflow_call:
     inputs:
-      version:
-        required: true
-        type: string
       tag:
         type: string
       prerelease:
@@ -18,8 +15,33 @@ on:
         type: boolean
 
 jobs:
+  versioning:
+    name: Versioning
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+    
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
+
+    - name: Install Minver
+      run: dotnet tool install --global minver-cli --version 4.3.0
+
+    - name: Calculating version
+      id: version
+      run: echo "version=$(minver -m 1.0 -p preview -v e)" >> $GITHUB_OUTPUT
 
   publish_nuget:
+    needs: versioning
     name: Publish to Github Packages
     runs-on: ubuntu-latest
 
@@ -42,28 +64,29 @@ jobs:
       run: dotnet restore --locked-mode
 
     - name: Pack
-      run: dotnet pack --configuration Release --output artifacts /p:PackageVersion=${{ inputs.version }}
+      run: dotnet pack --configuration Release --output artifacts
 
     - name: Publish
       run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
     
     - name: Add VERSION, COMMIT, LICENSE, and README files
       run: |
-        echo ${{ inputs.version }} > artifacts/VERSION
+        echo ${{ needs.versioning.outputs.version }} > artifacts/VERSION
         echo ${{ github.sha }} > artifacts/COMMIT
         cp LICENSE artifacts
         cp README.md artifacts
   
     - name: Compress
-      run: cd artifacts; zip ../packages-${{ inputs.version }}.zip *; cd ..
+      run: cd artifacts; zip ../packages-${{ needs.versioning.outputs.version }}.zip *; cd ..
       
     - name: Store artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: packages-${{ inputs.version }}
-        path: packages-${{ inputs.version }}.zip
+        name: packages-${{ needs.versioning.outputs.version }}
+        path: packages-${{ needs.versioning.outputs.version }}.zip
 
   publish_artifacts:
+    needs: versioning
     strategy:
       matrix:
         runtime: [win-x64, win-arm64, osx-x64, osx-arm64, linux-x64, linux-arm64]
@@ -107,7 +130,7 @@ jobs:
 
     - name: Add VERSION, COMMIT, LICENSE, and README files
       run: |
-        echo ${{ inputs.version }} > artifacts-${{ matrix.runtime }}/VERSION
+        echo ${{ needs.versioning.outputs.version }} > artifacts-${{ matrix.runtime }}/VERSION
         echo ${{ github.sha }} > artifacts-${{ matrix.runtime }}/COMMIT
         cp LICENSE artifacts-${{ matrix.runtime }}
         cp README.md artifacts-${{ matrix.runtime }}
@@ -125,13 +148,13 @@ jobs:
         done
     
     - name: Compress artifacts
-      run: cd artifacts-${{ matrix.runtime }}; zip -r ../server-${{ matrix.runtime }}-${{ inputs.version }}.zip . ; cd ..
+      run: cd artifacts-${{ matrix.runtime }}; zip -r ../server-${{ matrix.runtime }}-${{ needs.versioning.outputs.version }}.zip . ; cd ..
 
     - name: Store artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: server-${{ matrix.runtime }}-${{ inputs.version }}
-        path: server-${{ matrix.runtime }}-${{ inputs.version }}.zip
+        name: server-${{ matrix.runtime }}-${{ needs.versioning.outputs.version }}
+        path: server-${{ matrix.runtime }}-${{ needs.versioning.outputs.version }}.zip
 
   publish_release:
     needs: [publish_artifacts]
@@ -149,5 +172,5 @@ jobs:
         automatic_release_tag: "${{ inputs.tag }}"
         prerelease: ${{ inputs.prerelease }}
         draft: ${{ inputs.draft }}
-        title: "${{ inputs.version }}"
+        title: "${{ needs.versioning.outputs.version }}"
         files: "*/*.zip"

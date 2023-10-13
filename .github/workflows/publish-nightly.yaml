@@ -22,42 +22,13 @@ jobs:
       name: Check for new commits
       run: test -z $(git rev-list --after="24 hours" ${{ github.sha }}) && echo "should_run=false" >> $GITHUB_OUTPUT
 
-  versioning:
-    needs: setup
-    if: ${{ needs.setup.outputs.should_run != 'false' }}
-
-    name: Versioning
-    runs-on: ubuntu-latest
-
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-
-    steps:
-    
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '7.0.x'
-
-    - name: Install Minver
-      run: dotnet tool install --global minver-cli --version 4.3.0
-
-    - name: Calculating version
-      id: version
-      run: echo "version=$(minver -m 1.0 -p preview -v e)" >> $GITHUB_OUTPUT
-
   publish:
-    needs: [setup, versioning]
+    needs: [setup]
     if: ${{ needs.setup.outputs.should_run != 'false' }}
     
     secrets: inherit
     uses: ./.github/workflows/publish.yaml
     with:
-      version: "${{ needs.versioning.outputs.version }}"
       tag: "nightly"
       prerelease: true
       draft: false
