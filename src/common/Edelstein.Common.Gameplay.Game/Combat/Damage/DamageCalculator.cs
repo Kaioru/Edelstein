@@ -82,6 +82,10 @@ public class DamageCalculator : IDamageCalculator
             skillActingID = Skill.AranOverSwing;
         if (skillActingID is Skill.Dual3HustleRush)
             skillActingID = Skill.Dual3HustleDash;
+        if (skillActingID is Skill.MechanicFlamethrowerUp)
+            skillActingID = Skill.MechanicGunMastery;
+        if (skillActingID is Skill.MechanicGatlingUp)
+            skillActingID = Skill.MechanicGunMastery;
         
         var skillLevel = skill?[stats.SkillLevels[skillActingID]];
         var equipped = character.Inventories[ItemInventoryType.Equip];
