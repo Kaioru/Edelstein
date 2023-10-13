@@ -35,7 +35,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         
         if (message.Attack.AttackSpeed != message.User.Stats.AttackSpeed)
             _logger.LogInformation(
-            "{Character} triggered a {Type} attack speed calculation mismatch with skill id: {Skill} (Client: {SpeedClient}, Server: {SpeedDamage})",
+            "{Character} triggered a {Type} attack speed calculation mismatch with skill id: {Skill} (Client: {SpeedClient}, Server: {SpeedServer})",
                 message.User.Character.Name,
                 message.Attack.Type,
                 message.Attack.SkillID,
