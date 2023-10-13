@@ -29,7 +29,7 @@ public class AESCipher
         var length = 0x5B0;
         var start = 0;
 
-        var srcExpL = sizeof(int) * 4;
+        const int srcExpL = sizeof(int) * 4;
         var srcExp = ArrayPool<byte>.Shared.Rent(srcExpL);
         var srcBytes = BitConverter.GetBytes(pSrc);
 
