@@ -49,7 +49,7 @@ jobs:
     needs: [setup, versioning]
     if: ${{ needs.setup.outputs.should_run != 'false' }}
     
-    uses: ./.github/workflows/publish.yml
+    uses: ./.github/workflows/publish.yaml
     with:
       version: ${{ needs.versioning.outputs.version }}
       tag: latest
