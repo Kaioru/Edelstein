@@ -20,7 +20,7 @@ public class Mechanic2SkillHandler : Mechanic1SkillHandler
                 context.AddMobTemporaryStat(MobTemporaryStatType.Stun, 1);
                 break;
             case Skill.MechanicFlamethrowerUp:
-                var flamethrowerSkillLevel = user.Stats.SkillLevels[Skill.MechanicGunMastery];
+                var flamethrowerSkillLevel = user.Stats.SkillLevels[Skill.MechanicWeaponmastery];
                 var flamethrowerLevel = context.Skill[flamethrowerSkillLevel];
                 
                 context.AddMobBurnedInfo(
