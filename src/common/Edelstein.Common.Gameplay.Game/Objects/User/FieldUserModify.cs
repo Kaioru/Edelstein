@@ -1,4 +1,5 @@
 ﻿using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
+using Edelstein.Common.Gameplay.Game.Objects.User.Modify;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Common.Gameplay.Models.Characters.Stats;
@@ -6,6 +7,7 @@ using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Modify;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Game.Objects.User.Modify;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
@@ -56,6 +58,51 @@ public class FieldUserModify : IFieldUserModify
                 _user.Character.ID,
                 _user.Character.Level,
                 _user.Character.Job));
+    }
+    
+    public Task StatsForced(Action<IModifyStatForcedContext>? action = null)
+    {
+        var context = new ModifyStatForcedContext(_user.StatsForced);
+        action?.Invoke(context);
+        return StatsForced(context);
+    }
+    
+    public async Task StatsForced(IModifyStatForcedContext context)
+    {
+        if (context.Flag > 0 || context.IsReset)
+            IsRequireUpdate = true;
+
+        if (context.IsReset)
+        {
+            using var resetPacket = new PacketWriter(PacketSendOperations.ForcedStatReset);
+            await _user.Dispatch(resetPacket.Build());
+        }
+
+        if (context.Flag > 0)
+        {
+            using var setPacket = new PacketWriter(PacketSendOperations.ForcedStatSet);
+            
+            setPacket.WriteInt((int)context.Flag);
+            
+            if ((context.Flag & ModifyStatForcedType.STR) != 0) setPacket.WriteShort(context.STR);
+            if ((context.Flag & ModifyStatForcedType.DEX) != 0) setPacket.WriteShort(context.DEX);
+            if ((context.Flag & ModifyStatForcedType.INT) != 0) setPacket.WriteShort(context.INT);
+            if ((context.Flag & ModifyStatForcedType.LUK) != 0) setPacket.WriteShort(context.LUK);
+            
+            if ((context.Flag & ModifyStatForcedType.PAD) != 0) setPacket.WriteShort(context.PAD);
+            if ((context.Flag & ModifyStatForcedType.PDD) != 0) setPacket.WriteShort(context.PDD);
+            if ((context.Flag & ModifyStatForcedType.MAD) != 0) setPacket.WriteShort(context.MAD);
+            if ((context.Flag & ModifyStatForcedType.MDD) != 0) setPacket.WriteShort(context.MDD);
+            if ((context.Flag & ModifyStatForcedType.EVA) != 0) setPacket.WriteShort(context.EVA);
+            if ((context.Flag & ModifyStatForcedType.ACC) != 0) setPacket.WriteShort(context.ACC);
+            
+            if ((context.Flag & ModifyStatForcedType.Speed) != 0) setPacket.WriteByte(context.Speed);
+            if ((context.Flag & ModifyStatForcedType.Jump) != 0) setPacket.WriteByte(context.Jump);
+            
+            if ((context.Flag & ModifyStatForcedType.SpeedMax) != 0) setPacket.WriteByte(context.SpeedMax);
+            
+            await _user.Dispatch(setPacket.Build());
+        }
     }
 
     public Task Inventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)

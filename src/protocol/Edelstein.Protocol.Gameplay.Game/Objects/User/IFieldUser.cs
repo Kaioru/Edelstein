@@ -2,6 +2,7 @@
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Dialogues;
+using Edelstein.Protocol.Gameplay.Game.Objects.User.Modify;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
@@ -24,6 +25,7 @@ public interface IFieldUser :
     ICharacter Character { get; }
     
     IFieldUserStats Stats { get; }
+    IFieldUserStatsForced StatsForced { get; }
     IDamageCalculator Damage { get; }
     
     IConversationContext? ActiveConversation { get; }
@@ -71,8 +73,12 @@ public interface IFieldUser :
     Task SetStandAloneMode(bool enable);
 
     Task Modify(Action<IFieldUserModify> action);
+    
     Task ModifyStats(Action<IModifyStatContext>? action = null, bool exclRequest = false);
     Task ModifyStats(IModifyStatContext context, bool exclRequest = false);
+    
+    Task ModifyStatsForced(Action<IModifyStatForcedContext>? action = null);
+    Task ModifyStatsForced(IModifyStatForcedContext context);
     
     Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false);
     Task ModifyInventory(IModifyInventoryGroupContext context, bool exclRequest = false);

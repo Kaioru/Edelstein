@@ -64,6 +64,12 @@ public class GameStage : AbstractStage<IGameStageUser>, IGameStage
                 user.Context.Options.ChannelID,
                 field.ID
             ));
+
+        await user.FieldUser.ModifyStatsForced(s =>
+        {
+            s.Reset();
+            s.ACC = 1000;
+        });
     }
 
     public new async Task Leave(IGameStageUser user)
