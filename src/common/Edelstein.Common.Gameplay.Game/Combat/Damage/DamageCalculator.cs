@@ -174,6 +174,12 @@ public class DamageCalculator : IDamageCalculator
                 result[i] = new Damage(0);
                 continue;
             }
+            
+            if (skillLevel?.FixDamage > 0)
+            {
+                result[i] = new Damage(skillLevel.FixDamage);
+                continue;
+            }
 
             if (attack.SkillID is
                 Skill.HeroRush or
@@ -520,6 +526,12 @@ public class DamageCalculator : IDamageCalculator
             if (hitRate < GetRandomInRange(random.Next(), 0, 100))
             {
                 result[i] = new Damage(0);
+                continue;
+            }
+            
+            if (skillLevel?.FixDamage > 0)
+            {
+                result[i] = new Damage(skillLevel.FixDamage);
                 continue;
             }
             
