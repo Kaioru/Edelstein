@@ -15,7 +15,6 @@ public class GameStageUser : AbstractStageUser<IGameStageUser>, IGameStageUser
     ) : base(socket)
     {
         Context = context;
-        _ = Context.Templates.Mob.Retrieve(9400504).Result;
     }
     
     public GameContext Context { get; }
