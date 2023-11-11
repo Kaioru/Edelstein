@@ -611,6 +611,31 @@ public record FieldUserStats : IFieldUserStats
             if (AttackSpeed < 10)
                 AttackSpeed += (int)((user.Character.TemporaryStats[TemporaryStatType.Frozen]?.Value ?? 0) * (10 - AttackSpeed) / 100d);;
         }
+
+        if (user.Character.TemporaryStats[TemporaryStatType.Dice] != null)
+        {
+            MaxHPr += user.Character.TemporaryStats.DiceInfo.MHPr;
+            MaxMPr += user.Character.TemporaryStats.DiceInfo.MMPr;
+            Cr += user.Character.TemporaryStats.DiceInfo.Cr;
+            CDMin += user.Character.TemporaryStats.DiceInfo.CDMin;
+            EVAr += user.Character.TemporaryStats.DiceInfo.EVAr;
+            Ar += user.Character.TemporaryStats.DiceInfo.Ar;
+            Er += user.Character.TemporaryStats.DiceInfo.Er;
+            PDDr += user.Character.TemporaryStats.DiceInfo.PDDr;
+            MDDr += user.Character.TemporaryStats.DiceInfo.MDDr;
+            // PDr += user.Character.TemporaryStats.DiceInfo.PDr;
+            // MDr += user.Character.TemporaryStats.DiceInfo.MDr;
+            // DIPr += user.Character.TemporaryStats.DiceInfo.DIPr;
+            PDamR += user.Character.TemporaryStats.DiceInfo.PDamr;
+            MDamR += user.Character.TemporaryStats.DiceInfo.MDamr;
+            PADr += user.Character.TemporaryStats.DiceInfo.PADr;
+            MADr += user.Character.TemporaryStats.DiceInfo.MADr;
+            // EXPr += user.Character.TemporaryStats.DiceInfo.EXPr;
+            // IMPr += user.Character.TemporaryStats.DiceInfo.IMPr;
+            // ASRr += user.Character.TemporaryStats.DiceInfo.ASRr;
+            // TERr += user.Character.TemporaryStats.DiceInfo.TERr;
+            // MESOr += user.Character.TemporaryStats.DiceInfo.MESOr;
+        }
     }
 
     private async Task<Tuple<int, int>> GetMastery(IFieldUser user, int skillID)
