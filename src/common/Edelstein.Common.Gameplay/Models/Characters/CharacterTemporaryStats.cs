@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Models.Characters;
+﻿using Edelstein.Common.Gameplay.Models.Characters.Stats;
+using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats.TwoState;
 
@@ -8,7 +9,9 @@ public class CharacterTemporaryStats : ICharacterTemporaryStats
 {
     public ITemporaryStatRecord? this[TemporaryStatType type] => Records.TryGetValue(type, out var record) ? record : null;
     public IDictionary<TemporaryStatType, ITemporaryStatRecord> Records { get; } = new Dictionary<TemporaryStatType, ITemporaryStatRecord>();
-    
+
+    public ITemporaryStatDiceInfo DiceInfo { get; } = new TemporaryStatDiceInfo();
+
     public ITwoStateTemporaryStatRecordDynamicTerm? EnergyChargedRecord { get; set; }
     public ITwoStateTemporaryStatRecordDynamicTerm? DashSpeedRecord { get; set; }
     public ITwoStateTemporaryStatRecordDynamicTerm? DashJumpRecord { get; set; }

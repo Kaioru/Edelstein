@@ -66,7 +66,29 @@ public static class TemporaryStatsPackets
             writer.WriteByte(0);
 
         if (stats[TemporaryStatType.Dice] != null)
-            writer.WriteBytes(new byte[22]);
+        {
+            writer.WriteInt(stats.DiceInfo.MHPr);
+            writer.WriteInt(stats.DiceInfo.MMPr);
+            writer.WriteInt(stats.DiceInfo.Cr);
+            writer.WriteInt(stats.DiceInfo.CDMin);
+            writer.WriteInt(stats.DiceInfo.EVAr);
+            writer.WriteInt(stats.DiceInfo.Ar);
+            writer.WriteInt(stats.DiceInfo.Er);
+            writer.WriteInt(stats.DiceInfo.PDDr);
+            writer.WriteInt(stats.DiceInfo.MDDr);
+            writer.WriteInt(stats.DiceInfo.PDr);
+            writer.WriteInt(stats.DiceInfo.MDr);
+            writer.WriteInt(stats.DiceInfo.DIPr);
+            writer.WriteInt(stats.DiceInfo.PDamr);
+            writer.WriteInt(stats.DiceInfo.MDamr);
+            writer.WriteInt(stats.DiceInfo.PADr);
+            writer.WriteInt(stats.DiceInfo.MADr);
+            writer.WriteInt(stats.DiceInfo.EXPr);
+            writer.WriteInt(stats.DiceInfo.IMPr);
+            writer.WriteInt(stats.DiceInfo.ASRr);
+            writer.WriteInt(stats.DiceInfo.TERr);
+            writer.WriteInt(stats.DiceInfo.MESOr);
+        }
 
         if (stats[TemporaryStatType.BlessingArmor] != null)
             writer.WriteInt(0);
