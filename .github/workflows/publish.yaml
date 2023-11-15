@@ -62,7 +62,7 @@ jobs:
       run: dotnet restore --locked-mode
 
     - name: Pack
-      run: dotnet pack --configuration Release --output artifacts
+      run: dotnet pack --configuration Release --output artifacts /p:Version=${{ needs.versioning.outputs.version }}
 
     - name: Publish
       run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
