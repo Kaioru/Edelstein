@@ -1,6 +1,8 @@
 ﻿using System.Collections.Frozen;
 using Duey.Abstractions;
+using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
+using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Models.Characters.Skills.Templates;
 
@@ -8,7 +10,7 @@ public class SkillTemplate : ISkillTemplate
 {
     public int ID { get; }
 
-    public ISkillTemplateLevel? this[int level] => Levels.TryGetValue(level, out var result) ? result : null;
+    public ISkillTemplateLevel? this[int level] => Levels.Retrieve(level).Result;
 
     public short MaxLevel { get; }
     
@@ -24,7 +26,7 @@ public class SkillTemplate : ISkillTemplate
     
     public ICollection<int> PsdSkill { get; }
     public IDictionary<int, int> ReqSkill { get; }
-    public IDictionary<int, ISkillTemplateLevel> Levels { get; }
+    public ITemplateCollection<ISkillTemplateLevel> Levels { get; }
     
     public SkillTemplate(int id, IDataNode node)
     {
@@ -76,22 +78,29 @@ public class SkillTemplate : ISkillTemplate
             if (maxLevelStr != null)
                 maxLevel = Convert.ToInt32(maxLevelStr);
             
-            Levels = Enumerable
+            Levels = new TemplateCollectionProvider<ISkillTemplateLevel>(Enumerable
                 .Range(1, maxLevel + (IsCombatOrders ? 2 : 0))
                 .ToFrozenDictionary(
                     i => i,
-                    i => (ISkillTemplateLevel)new SkillTemplateLevelCommon(i, common.Cache())
-                );
+                    i => (ITemplateProvider<ISkillTemplateLevel>)new TemplateProviderLazy<ISkillTemplateLevel>(
+                        i,
+                        () => new SkillTemplateLevelCommon(i, common.Cache())
+                    )
+                ));
             MaxLevel = (short)maxLevel;
         }
         else
         {
             var level = node.ResolvePath("level");
 
-            Levels = level?.Children.ToFrozenDictionary(
-                c => Convert.ToInt32(c.Name),
-                c => (ISkillTemplateLevel)new SkillTemplateLevel(Convert.ToInt32(c.Name), c.Cache())
-            ) ?? FrozenDictionary<int, ISkillTemplateLevel>.Empty;
+            Levels = new TemplateCollectionProvider<ISkillTemplateLevel>(
+                level?.Children.ToFrozenDictionary(
+                    c => Convert.ToInt32(c.Name),
+                    c => (ITemplateProvider<ISkillTemplateLevel>)new TemplateProviderEager<ISkillTemplateLevel>(
+                        Convert.ToInt32(c.Name),
+                        new SkillTemplateLevel(Convert.ToInt32(c.Name), c.Cache()))
+                    ) ?? FrozenDictionary<int, ITemplateProvider<ISkillTemplateLevel>>.Empty
+                );
             MaxLevel = (short)(Levels?.Count ?? 0);
         }
     }

@@ -1,8 +1,9 @@
 ﻿using Edelstein.Protocol.Utilities.Spatial;
+using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
-public interface ISkillTemplateLevel
+public interface ISkillTemplateLevel : ITemplate
 {
     int Level { get; }
     

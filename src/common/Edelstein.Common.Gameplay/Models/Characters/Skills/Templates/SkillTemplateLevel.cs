@@ -7,6 +7,8 @@ namespace Edelstein.Common.Gameplay.Models.Characters.Skills.Templates;
 
 public class SkillTemplateLevel : ISkillTemplateLevel
 {
+    public int ID => Level;
+    
     public int Level { get; }
     
     public short HP { get; }
