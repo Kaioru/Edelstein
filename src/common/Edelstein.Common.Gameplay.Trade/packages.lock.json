@@ -58,7 +58,7 @@
       "edelstein.protocol.gameplay": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Common.Utilities": "[1.0.0, )",
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Protocol.Network": "[1.0.0, )",
           "Edelstein.Protocol.Services.Social": "[1.0.0, )",
           "Edelstein.Protocol.Utilities": "[1.0.0, )"

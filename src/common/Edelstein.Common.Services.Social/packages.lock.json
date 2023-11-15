@@ -100,6 +100,11 @@
           "Npgsql": "7.0.4"
         }
       },
+      "Duey.Abstractions": {
+        "type": "Transitive",
+        "resolved": "2.0.0",
+        "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
+      },
       "Humanizer.Core": {
         "type": "Transitive",
         "resolved": "2.14.1",
@@ -240,11 +245,6 @@
         "resolved": "8.0.0-rc.1.23419.4",
         "contentHash": "zyoB4zblhvpylS9VOmKyBuGH+RjKDsfi0cTB2KRPPDD6tFinpP+vGr3dictaNYLhGUg6jaBmq+2H/WZMCnvGDQ=="
       },
-      "Microsoft.IO.RecyclableMemoryStream": {
-        "type": "Transitive",
-        "resolved": "2.3.2",
-        "contentHash": "Oh1qXXFdJFcHozvb4H6XYLf2W0meZFuG0A+TfapFPj9z5fd4vxiARGEhAaLj/6XWQaMYIv4SH/9Q6H78Hw0E2Q=="
-      },
       "Mono.TextTemplating": {
         "type": "Transitive",
         "resolved": "2.2.1",
@@ -260,11 +260,6 @@
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "6.0.0"
         }
-      },
-      "RBush": {
-        "type": "Transitive",
-        "resolved": "3.2.0",
-        "contentHash": "ijGh9N0zZ7JfXk3oQkWCwK8SwSSByexbyh/MjbCjNxOft9eG5ZqKC1vdgiYq78h4IZRFmN4s3JZ/b10Jipud5w=="
       },
       "System.CodeDom": {
         "type": "Transitive",
@@ -297,19 +292,10 @@
           "System.Text.Encodings.Web": "7.0.0"
         }
       },
-      "edelstein.common.utilities": {
-        "type": "Project",
-        "dependencies": {
-          "Edelstein.Protocol.Utilities": "[1.0.0, )",
-          "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )",
-          "Microsoft.IO.RecyclableMemoryStream": "[2.3.2, )",
-          "RBush": "[3.2.0, )"
-        }
-      },
       "edelstein.protocol.gameplay": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Common.Utilities": "[1.0.0, )",
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Protocol.Network": "[1.0.0, )",
           "Edelstein.Protocol.Services.Social": "[1.0.0, )",
           "Edelstein.Protocol.Utilities": "[1.0.0, )"
