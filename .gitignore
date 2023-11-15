@@ -10,6 +10,8 @@
 !**/appsettings.json
 !**/devsettings.json
 
+!**/packages.lock.json
+
 .env
 scripts.zip
 data.zip

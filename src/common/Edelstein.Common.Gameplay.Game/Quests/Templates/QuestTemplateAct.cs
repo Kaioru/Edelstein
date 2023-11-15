@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
@@ -21,13 +21,13 @@ public record QuestTemplateAct : IQuestTemplateAct
         
         Items = node?.ResolvePath("item")?.Children
             .Select(p => (IQuestTemplateActItem)new QuestTemplateActItem(Convert.ToInt32(p.Name), p.Cache()))
-            .ToImmutableList();
+            .ToFrozenSet();
         Skills = node?.ResolvePath("skill")?.Children
             .Select(p => (IQuestTemplateActSkill)new QuestTemplateActSkill(p.Cache()))
-            .ToImmutableList();
+            .ToFrozenSet();
         SP = node?.ResolvePath("sp")?.Children
             .Select(p => (IQuestTemplateActSP)new QuestTemplateActSP(p.Cache()))
-            .ToImmutableList();
+            .ToFrozenSet();
     }
     
     public int? IncEXP { get; }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
 
@@ -13,7 +13,7 @@ public record QuestTemplateActSP : IQuestTemplateActSP
             .Select(p => p.ResolveInt())
             .Where(i => i.HasValue)
             .Select(i => i.Value)
-            .ToImmutableList();
+            .ToFrozenSet();
     }
     
     public int SP { get; }

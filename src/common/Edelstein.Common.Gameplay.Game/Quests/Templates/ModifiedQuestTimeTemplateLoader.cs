@@ -27,6 +27,7 @@ public class ModifiedQuestTimeTemplateLoader : ITemplateLoader
                 ));
             }) ?? Array.Empty<Task>());
 
+        _manager.Freeze();
         return _manager.Count;
     }
 }

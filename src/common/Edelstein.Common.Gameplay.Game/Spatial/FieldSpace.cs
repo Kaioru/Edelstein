@@ -19,13 +19,13 @@ public class FieldSpace<TObject> : IFieldSpace<TObject> where TObject : IFieldSp
         _space = new RBushSpace2D<TObject>();
     }
 
-    public IReadOnlyCollection<TObject> Objects => _objects.Values.ToImmutableList();
+    public IReadOnlyCollection<TObject> Objects => _objects.Values.ToImmutableArray();
     public IRectangle2D Bounds { get; }
 
 
     public void Insert(IEnumerable<TObject> obj)
     {
-        var objects = obj.ToImmutableList();
+        var objects = obj.ToImmutableArray();
         foreach (var o in objects)
             _objects.Add(o.ID, o);
         _space.Insert(objects);

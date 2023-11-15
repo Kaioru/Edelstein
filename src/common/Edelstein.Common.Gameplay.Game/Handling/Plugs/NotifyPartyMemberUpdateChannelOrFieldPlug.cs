@@ -17,7 +17,9 @@ public class NotifyPartyMemberUpdateChannelOrFieldPlug : IPipelinePlug<NotifyPar
     public async Task Handle(IPipelineContext ctx, NotifyPartyMemberUpdateChannelOrField message)
     {
         var users = await _stage.Users.RetrieveAll();
-        var partied = users.Where(u => u.Party?.PartyID == message.PartyID).ToImmutableList();
+        var partied = users
+            .Where(u => u.Party?.PartyID == message.PartyID)
+            .ToImmutableArray();
         
         foreach (var user in partied)
         {

@@ -184,7 +184,9 @@ public class QuestManager : IQuestManager
         var actTemplate = action == QuestAction.Start
             ? template.ActStart
             : template.ActEnd;
-        var rewardsBase = actTemplate.Items?.Where(i => i.Prob == null).ToImmutableList();
+        var rewardsBase = actTemplate.Items?
+            .Where(i => i.Prob == null)
+            .ToImmutableArray() ?? ImmutableArray<IQuestTemplateActItem>.Empty;
         var rewardsRandom = actTemplate.Items?
             .Where(i => i.Gender is null or 2 || i.Gender == user.Character.Gender)
             .Where(i =>
@@ -242,11 +244,13 @@ public class QuestManager : IQuestManager
                 return check;
             })
             .Where(i => i.Prob > 0)
-            .ToImmutableList();
-        var rewardsSelect = actTemplate.Items?.Where(i => i.Prob == -1).ToDictionary(
-            i => i.Order,
-            i => i
-        );
+            .ToImmutableArray() ?? ImmutableArray<IQuestTemplateActItem>.Empty;
+        var rewardsSelect = actTemplate.Items?
+            .Where(i => i.Prob == -1)
+            .ToImmutableDictionary(
+                i => i.Order,
+                i => i
+            );
         var rewardSelect = select != null ? rewardsSelect?.GetValueOrDefault(select.Value) : null;
         var rewardsCheck = new List<Tuple<int, short>>();
 
@@ -347,7 +351,7 @@ public class QuestManager : IQuestManager
             await user.ModifyInventory(inventory);
             await user.Effect(new QuestEffect(rewards
                 .Select(r => Tuple.Create(r.ItemID, r.Count))
-                .ToImmutableList()));
+                .ToImmutableArray()));
         }
         
         return QuestResultType.Success;

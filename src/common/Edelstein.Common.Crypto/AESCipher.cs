@@ -5,7 +5,7 @@ namespace Edelstein.Common.Crypto;
 
 public class AESCipher
 {
-    private readonly SymmetricAlgorithm _cipher;
+    private readonly ICryptoTransform _transformer;
 
     public AESCipher() : this(new byte[] { 0x13, 0x08, 0x06, 0xb4, 0x1b, 0x0f, 0x33, 0x52 })
     {
@@ -14,14 +14,15 @@ public class AESCipher
     public AESCipher(ReadOnlySpan<byte> userKey)
     {
         var expandedKey = new byte[userKey.Length * 4];
+        var cipher = Aes.Create();
 
         for (var i = 0; i < userKey.Length; i++)
             expandedKey[i * 4] = userKey[i];
-
-        _cipher = Aes.Create();
-        _cipher.KeySize = 256;
-        _cipher.Key = expandedKey;
-        _cipher.Mode = CipherMode.ECB;
+        
+        cipher.KeySize = 256;
+        cipher.Key = expandedKey;
+        cipher.Mode = CipherMode.ECB;
+        _transformer = cipher.CreateEncryptor();
     }
 
     public void Transform(Span<byte> input, int remaining, uint pSrc)
@@ -32,8 +33,6 @@ public class AESCipher
         const int srcExpL = sizeof(int) * 4;
         var srcExp = ArrayPool<byte>.Shared.Rent(srcExpL);
         var srcBytes = BitConverter.GetBytes(pSrc);
-
-        using var crypt = _cipher.CreateEncryptor();
 
         while (remaining > 0)
         {
@@ -48,7 +47,7 @@ public class AESCipher
                 var sub = i - start;
 
                 if (sub % srcExpL == 0)
-                    crypt.TransformBlock(srcExp, 0, srcExpL, srcExp, 0);
+                    _transformer.TransformBlock(srcExp, 0, srcExpL, srcExp, 0);
 
                 input[i] ^= srcExp[sub % srcExpL];
             }

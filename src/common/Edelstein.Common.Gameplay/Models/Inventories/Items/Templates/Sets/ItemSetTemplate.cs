@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Sets;
 
@@ -14,12 +14,12 @@ public record ItemSetTemplate : IItemSetTemplate
 
         Items = node.ResolvePath("ItemID")?.Children
             .Select(c => c.ResolveInt() ?? 0)
-            .ToImmutableList() ?? ImmutableList<int>.Empty;
+            .ToFrozenSet() ?? FrozenSet<int>.Empty;
         Effects = node.ResolvePath("Effect")?.Children
-            .ToImmutableDictionary(
+            .ToFrozenDictionary(
                 c => Convert.ToInt32(c.Name),
                 c => (IItemSetTemplateEffect)new ItemSetTemplateEffect(Convert.ToInt32(c.Name), c.Cache())
-            ) ?? ImmutableDictionary<int, IItemSetTemplateEffect>.Empty;
+            ) ?? FrozenDictionary<int, IItemSetTemplateEffect>.Empty;
     }
     
     public int ID { get; }

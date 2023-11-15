@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Utilities.Templates;
 using Gma.DataStructures.StringSearch;
@@ -72,7 +73,7 @@ public abstract class AbstractTemplateCommand<TTemplate, TArgs> : AbstractComman
         var results = _trie
             .Retrieve(args.Search.ToLower())
             .DistinctBy(d => d.ID)
-            .ToList();
+            .ToImmutableArray();
         var elapsed = stopwatch.Elapsed;
 
         if (args.Search.All(char.IsDigit) && !results.Any())
@@ -90,7 +91,7 @@ public abstract class AbstractTemplateCommand<TTemplate, TArgs> : AbstractComman
             {
                 var maxPerPage = 6;
                 var minPage = 1;
-                var maxPage = (int)Math.Ceiling((double)results.Count / maxPerPage);
+                var maxPage = (int)Math.Ceiling((double)results.Length / maxPerPage);
                 var currentPage = 1;
 
                 while (true)
@@ -98,7 +99,7 @@ public abstract class AbstractTemplateCommand<TTemplate, TArgs> : AbstractComman
                     var items = results
                         .Skip(maxPerPage * (currentPage - 1))
                         .Take(maxPerPage)
-                        .ToList();
+                        .ToImmutableArray();
                     var menu = items.ToDictionary(
                         r => r.ID,
                         r => $"{r.DisplayString} ({r.ID})"
@@ -107,7 +108,7 @@ public abstract class AbstractTemplateCommand<TTemplate, TArgs> : AbstractComman
                     if (currentPage < maxPage) menu.Add(-10, "#rNext page#k");
                     if (currentPage > minPage) menu.Add(-20, "#rPrevious page#k");
 
-                    var selection = target.AskMenu($"Found {results.Count} results for '{args.Search}' in {elapsed.TotalMilliseconds:F2}ms (page {currentPage} of {maxPage})", menu);
+                    var selection = target.AskMenu($"Found {results.Length} results for '{args.Search}' in {elapsed.TotalMilliseconds:F2}ms (page {currentPage} of {maxPage})", menu);
 
                     if (selection == -10) { currentPage++; continue; }
                     if (selection == -20) { currentPage--; continue; }

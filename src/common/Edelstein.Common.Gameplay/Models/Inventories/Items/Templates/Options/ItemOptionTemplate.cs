@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Options;
 
@@ -19,10 +19,10 @@ public record ItemOptionTemplate : IItemOptionTemplate
         ReqLevel = info?.ResolveShort("reqLevel") ?? 0;
 
         Levels = level?.Children
-            .ToImmutableDictionary(
+            .ToFrozenDictionary(
                 l => Convert.ToInt32(l.Name),
                 l => (IItemOptionTemplateLevel)new ItemOptionTemplateLevel(Convert.ToInt32(l.Name), l.Cache())
-            ) ?? ImmutableDictionary<int, IItemOptionTemplateLevel>.Empty;
+            ) ?? FrozenDictionary<int, IItemOptionTemplateLevel>.Empty;
     }
     
     public int ID { get; }

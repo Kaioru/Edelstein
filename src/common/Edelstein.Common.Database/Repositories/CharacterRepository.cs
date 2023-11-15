@@ -86,6 +86,6 @@ public class CharacterRepository : ICharacterRepository
             .ToListAsync();
         return results
             .Select(m => _mapper.Map<Character>(m))
-            .ToImmutableList();
+            .ToImmutableArray();
     }
 }

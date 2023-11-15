@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net8.0": {
+      "Duey.Abstractions": {
+        "type": "Transitive",
+        "resolved": "2.0.0",
+        "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
+      },
+      "Microsoft.Extensions.Configuration.Abstractions": {
+        "type": "Transitive",
+        "resolved": "8.0.0-rc.1.23419.4",
+        "contentHash": "tY5wKwXNZ6cBeyHxvxyLy57TxUaA6H82/vW8vTTmikG9bkfRzfyS0EEDloiPzL4ln8P+3aZxeAestjPC6942Kg==",
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "8.0.0-rc.1.23419.4"
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions": {
+        "type": "Transitive",
+        "resolved": "7.0.0",
+        "contentHash": "kmn78+LPVMOWeITUjIlfxUPDsI0R6G0RkeAMBmQxAJ7vBJn4q2dTva7pWi65ceN5vPGjJ9q/Uae2WKgvfktJAw=="
+      },
+      "Microsoft.Extensions.Primitives": {
+        "type": "Transitive",
+        "resolved": "8.0.0-rc.1.23419.4",
+        "contentHash": "zyoB4zblhvpylS9VOmKyBuGH+RjKDsfi0cTB2KRPPDD6tFinpP+vGr3dictaNYLhGUg6jaBmq+2H/WZMCnvGDQ=="
+      },
+      "edelstein.protocol.gameplay": {
+        "type": "Project",
+        "dependencies": {
+          "Duey.Abstractions": "[2.0.0, )",
+          "Edelstein.Protocol.Network": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Social": "[1.0.0, )",
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.gameplay.login": {
+        "type": "Project",
+        "dependencies": {
+          "Duey.Abstractions": "[2.0.0, )",
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Server": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.network": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.plugin": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )",
+          "Microsoft.Extensions.Configuration.Abstractions": "[8.0.0-rc.1.23419.4, )",
+          "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )"
+        }
+      },
+      "edelstein.protocol.services.auth": {
+        "type": "Project"
+      },
+      "edelstein.protocol.services.server": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.services.social": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.utilities": {
+        "type": "Project"
+      }
+    }
+  }
+}

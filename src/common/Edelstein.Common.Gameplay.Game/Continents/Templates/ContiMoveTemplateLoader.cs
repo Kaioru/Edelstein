@@ -39,6 +39,7 @@ public class ContiMoveTemplateLoader : ITemplateLoader
                 ));
             }));
 
+        _manager.Freeze();
         return _manager.Count;
     }
 }

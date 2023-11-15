@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Constants;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Constants;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills;
@@ -59,13 +60,13 @@ public class ModifySkillContext : IModifySkillContext
     {
         foreach (var kv in _character.Skills.Records
                      .Where(kv => JobConstants.GetJobLevel(jobLevel) == jobLevel)
-                     .ToList())
+                     .ToImmutableArray())
             Set(kv.Key, 0);
     }
 
     public void ResetAll()
     {
-        foreach (var kv in _character.Skills.Records.ToList())
+        foreach (var kv in _character.Skills.Records.ToImmutableArray())
             Set(kv.Key, 0);
     }
 

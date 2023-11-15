@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using DotNetty.Transport.Channels;
+﻿using DotNetty.Transport.Channels;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;

@@ -17,7 +17,9 @@ public class NotifyPartyMemberWithdrawnPlug : IPipelinePlug<NotifyPartyMemberWit
     public async Task Handle(IPipelineContext ctx, NotifyPartyMemberWithdrawn message)
     {
         var users = await _stage.Users.RetrieveAll();
-        var partied = users.Where(u => u.Party?.PartyID == message.PartyID).ToImmutableList();
+        var partied = users
+            .Where(u => u.Party?.PartyID == message.PartyID)
+            .ToImmutableArray();
         
         foreach (var user in partied)
         {

@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Spatial" />
-    <Folder Include="Templates" />
     <Folder Include="Tickers" />
   </ItemGroup>
 

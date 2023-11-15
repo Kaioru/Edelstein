@@ -254,7 +254,7 @@ public record FieldUserStats : IFieldUserStats
             .Where(kv => kv.Key < 0)
             .Where(kv => kv.Value is ItemSlotEquip)
             .Select(kv => (kv.Key, (ItemSlotEquip)kv.Value))
-            .ToImmutableList() ?? ImmutableList<(short Key, ItemSlotEquip)>.Empty;
+            .ToImmutableArray() ?? ImmutableArray<(short Key, ItemSlotEquip)>.Empty;
         var setCompletion = new Dictionary<int, int>();
 
         foreach (var (slot, item) in equipped)

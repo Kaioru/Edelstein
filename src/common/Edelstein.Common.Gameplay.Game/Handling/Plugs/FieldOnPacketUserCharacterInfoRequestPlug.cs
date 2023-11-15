@@ -31,9 +31,9 @@ public class FieldOnPacketUserCharacterInfoRequestPlug : IPipelinePlug<FieldOnPa
 
         var wishlist = message.Target.Character.Wishlist.Records
             .Where(c => c > 0)
-            .ToImmutableList();
+            .ToImmutableArray();
         
-        packet.WriteByte((byte)wishlist.Count);
+        packet.WriteByte((byte)wishlist.Length);
         foreach (var commodity in wishlist)
             packet.WriteInt(commodity);
 
@@ -44,9 +44,9 @@ public class FieldOnPacketUserCharacterInfoRequestPlug : IPipelinePlug<FieldOnPa
             .Select(kv => kv.Value)
             .Select(i => i.ID)
             .Where(i => i / 10000 == 301)
-            .ToList() ?? new List<int>();
+            .ToImmutableArray() ?? ImmutableArray<int>.Empty;
         
-        packet.WriteInt(chairs.Count);
+        packet.WriteInt(chairs.Length);
         foreach (var chair in chairs)
             packet.WriteInt(chair);
 

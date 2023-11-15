@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Shop.Commodities;
 using Edelstein.Protocol.Utilities.Templates;
@@ -39,7 +39,7 @@ public record ModifiedCommodityTemplate : IModifiedCommodity, ITemplate
         PackageSN = node
             .ResolvePath("PackageSN")?
             .Select(c => c.ResolveInt() ?? 0)
-            .ToImmutableList() ?? null;
+            .ToFrozenSet() ?? null;
 
         if (ItemID != null) Flags |= CommodityFlags.ItemID;
         if (Count != null) Flags |= CommodityFlags.Count;

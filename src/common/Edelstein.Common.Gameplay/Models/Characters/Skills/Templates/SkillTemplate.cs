@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 
@@ -57,12 +57,12 @@ public class SkillTemplate : ISkillTemplate
 
         PsdSkill = node.ResolvePath("psdSkill")?
             .Select(c => Convert.ToInt32(c.Name))
-            .ToImmutableList() ?? ImmutableList<int>.Empty;
+            .ToFrozenSet() ?? FrozenSet<int>.Empty;
         ReqSkill = node.ResolvePath("req")?.Children
-            .ToImmutableDictionary(
+            .ToFrozenDictionary(
                 c => Convert.ToInt32(c.Name),
                 c => c.ResolveInt() ?? 0
-            ) ?? ImmutableDictionary<int, int>.Empty;
+            ) ?? FrozenDictionary<int, int>.Empty;
 
         var common = node.ResolvePath("common");
 
@@ -78,7 +78,7 @@ public class SkillTemplate : ISkillTemplate
             
             Levels = Enumerable
                 .Range(1, maxLevel + (IsCombatOrders ? 2 : 0))
-                .ToImmutableDictionary(
+                .ToFrozenDictionary(
                     i => i,
                     i => (ISkillTemplateLevel)new SkillTemplateLevelCommon(i, common.Cache())
                 );
@@ -88,10 +88,10 @@ public class SkillTemplate : ISkillTemplate
         {
             var level = node.ResolvePath("level");
 
-            Levels = level?.Children.ToImmutableDictionary(
+            Levels = level?.Children.ToFrozenDictionary(
                 c => Convert.ToInt32(c.Name),
                 c => (ISkillTemplateLevel)new SkillTemplateLevel(Convert.ToInt32(c.Name), c.Cache())
-            ) ?? ImmutableDictionary<int, ISkillTemplateLevel>.Empty;
+            ) ?? FrozenDictionary<int, ISkillTemplateLevel>.Empty;
             MaxLevel = (short)(Levels?.Count ?? 0);
         }
     }

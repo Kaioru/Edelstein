@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Shop.Commodities.Templates;
 
@@ -15,6 +15,6 @@ public class CashPackageTemplate : ICashPackageTemplate
         SN = node
             .ResolvePath("SN")?
             .Select(c => c.ResolveInt() ?? 0)
-            .ToImmutableList() ?? ImmutableList<int>.Empty;
+            .ToFrozenSet() ?? FrozenSet<int>.Empty;
     }
 }

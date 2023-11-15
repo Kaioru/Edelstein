@@ -58,7 +58,7 @@ public class ModifyMobTemporaryStatsContext : IModifyMobTemporaryStatContext
         foreach (var type in _stats.Records
                      .Where(kv => kv.Value.Reason == reason)
                      .Select(kv => kv.Key)
-                     .ToImmutableList())
+                     .ToImmutableArray())
             ResetByType(type);
     }
 
@@ -92,7 +92,7 @@ public class ModifyMobTemporaryStatsContext : IModifyMobTemporaryStatContext
     
     public void ResetBurnedInfoAll()
     {
-        foreach (var burned in _stats.BurnedInfo.ToImmutableList())
+        foreach (var burned in _stats.BurnedInfo.ToImmutableArray())
         {
             _stats.BurnedInfo.Remove(burned);
             HistoryReset.BurnedInfo.Add(burned);

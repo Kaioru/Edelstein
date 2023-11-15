@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Objects.User;
+﻿using System.Collections.Immutable;
+using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 
@@ -11,11 +12,12 @@ public class EquipCommand : AbstractCommand
 
     public override async Task Execute(IFieldUser user, string[] args)
     {
-        var equipped = user.Character.Inventories[ItemInventoryType.Equip]?.Items.ToList() ?? new List<KeyValuePair<short, IItemSlot>>();
-        if (equipped.Count == 0) return;
+        var equipped = user.Character.Inventories[ItemInventoryType.Equip]?.Items
+            .ToImmutableArray() ?? ImmutableArray<KeyValuePair<short, IItemSlot>>.Empty;
+        if (equipped.Length == 0) return;
 
         var slot = await user.Prompt(target => target.AskMenu("Which equipment would you like to modify?", equipped
-            .ToDictionary(
+            .ToImmutableDictionary(
                 i => (int)i.Key,
                 i => $"{i.Value.ID}"
             )), -1);

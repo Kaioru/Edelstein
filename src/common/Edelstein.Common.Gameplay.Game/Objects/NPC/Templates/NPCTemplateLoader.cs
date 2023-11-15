@@ -36,6 +36,7 @@ public class NPCTemplateLoader : ITemplateLoader
                 ));
             }));
 
+        _manager.Freeze();
         return _manager.Count;
     }
 }

@@ -31,6 +31,7 @@ public class ItemSetTemplateLoader : ITemplateLoader
                 ));
             }) ?? Array.Empty<Task>());
         
+        _manager.Freeze();
         return _manager.Count;
     }
 }

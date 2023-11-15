@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net8.0": {
+      "Microsoft.Extensions.Configuration.Binder": {
+        "type": "Direct",
+        "requested": "[7.0.4, )",
+        "resolved": "7.0.4",
+        "contentHash": "8+XPvJnHZsYgHOQlcMuQe7QNF5KdVKHH1F/wW3nd8/u81Gk/XFAYMDP0Lpz18h7/AM95M662vvqMorcYxCBB4w==",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "7.0.0"
+        }
+      },
+      "PowerArgs": {
+        "type": "Direct",
+        "requested": "[4.0.2, )",
+        "resolved": "4.0.2",
+        "contentHash": "OvnFpO5T68RcZ14XTbHPGrPV3iXv8pxitTbP3oPTY87UZmnFyx6DzFWCjNIzrE8ACHm2PaNcTSfpCJD29/cTng=="
+      },
+      "TrieNet": {
+        "type": "Direct",
+        "requested": "[1.0.3.26316, )",
+        "resolved": "1.0.3.26316",
+        "contentHash": "H9Qo4oF+jVlhFznnDbic/gZ1vlEiXI3XTkfWGWK0tES1yh6lXHtYrRiZGRlhx6FGbkcwCCSCxr0ZvqgKu9usmw=="
+      },
+      "Duey.Abstractions": {
+        "type": "Transitive",
+        "resolved": "2.0.0",
+        "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
+      },
+      "Microsoft.Extensions.Configuration.Abstractions": {
+        "type": "Transitive",
+        "resolved": "8.0.0-rc.1.23419.4",
+        "contentHash": "tY5wKwXNZ6cBeyHxvxyLy57TxUaA6H82/vW8vTTmikG9bkfRzfyS0EEDloiPzL4ln8P+3aZxeAestjPC6942Kg==",
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "8.0.0-rc.1.23419.4"
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions": {
+        "type": "Transitive",
+        "resolved": "7.0.0",
+        "contentHash": "kmn78+LPVMOWeITUjIlfxUPDsI0R6G0RkeAMBmQxAJ7vBJn4q2dTva7pWi65ceN5vPGjJ9q/Uae2WKgvfktJAw=="
+      },
+      "Microsoft.Extensions.Primitives": {
+        "type": "Transitive",
+        "resolved": "8.0.0-rc.1.23419.4",
+        "contentHash": "zyoB4zblhvpylS9VOmKyBuGH+RjKDsfi0cTB2KRPPDD6tFinpP+vGr3dictaNYLhGUg6jaBmq+2H/WZMCnvGDQ=="
+      },
+      "Microsoft.IO.RecyclableMemoryStream": {
+        "type": "Transitive",
+        "resolved": "2.3.2",
+        "contentHash": "Oh1qXXFdJFcHozvb4H6XYLf2W0meZFuG0A+TfapFPj9z5fd4vxiARGEhAaLj/6XWQaMYIv4SH/9Q6H78Hw0E2Q=="
+      },
+      "RBush": {
+        "type": "Transitive",
+        "resolved": "3.2.0",
+        "contentHash": "ijGh9N0zZ7JfXk3oQkWCwK8SwSSByexbyh/MjbCjNxOft9eG5ZqKC1vdgiYq78h4IZRFmN4s3JZ/b10Jipud5w=="
+      },
+      "edelstein.common.constants": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )"
+        }
+      },
+      "edelstein.common.utilities": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )",
+          "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )",
+          "Microsoft.IO.RecyclableMemoryStream": "[2.3.2, )",
+          "RBush": "[3.2.0, )"
+        }
+      },
+      "edelstein.protocol.gameplay": {
+        "type": "Project",
+        "dependencies": {
+          "Duey.Abstractions": "[2.0.0, )",
+          "Edelstein.Protocol.Network": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Social": "[1.0.0, )",
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.gameplay.game": {
+        "type": "Project",
+        "dependencies": {
+          "Duey.Abstractions": "[2.0.0, )",
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Server": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Social": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.gameplay.login": {
+        "type": "Project",
+        "dependencies": {
+          "Duey.Abstractions": "[2.0.0, )",
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Server": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.network": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.plugin": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )",
+          "Microsoft.Extensions.Configuration.Abstractions": "[8.0.0-rc.1.23419.4, )",
+          "Microsoft.Extensions.Logging.Abstractions": "[7.0.0, )"
+        }
+      },
+      "edelstein.protocol.plugin.game": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Gameplay.Game": "[1.0.0, )",
+          "Edelstein.Protocol.Plugin": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.plugin.login": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Gameplay.Login": "[1.0.0, )",
+          "Edelstein.Protocol.Plugin": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.services.auth": {
+        "type": "Project"
+      },
+      "edelstein.protocol.services.server": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.services.social": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.utilities": {
+        "type": "Project"
+      }
+    }
+  }
+}

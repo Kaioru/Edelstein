@@ -94,7 +94,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         var match = _inventory.Items
             .Where(kv => kv.Key > 0)
             .Where(kv => kv.Value.ID == templateID)
-            .ToImmutableList();
+            .ToImmutableArray();
 
         foreach (var kv in match)
         {
@@ -133,7 +133,7 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
     {
         var match = _inventory.Items
             .Where(kv => kv.Value.ID == templateID)
-            .ToImmutableList();
+            .ToImmutableArray();
 
         foreach (var kv in match)
             RemoveSlot(kv.Key);
@@ -147,11 +147,13 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
         var inventoryCopy = _inventory.Items
             .Where(kv => kv.Key > 0)
             .OrderBy(kv => kv.Key)
-            .ToList();
+            .ToImmutableArray();
         short position = 1;
 
-        inventoryCopy.ForEach(kv => RemoveSlot(kv.Key));
-        inventoryCopy.ForEach(kv => SetSlot(position++, kv.Value));
+        foreach (var kv in inventoryCopy)
+            RemoveSlot(kv.Key);
+        foreach (var kv in inventoryCopy)
+            SetSlot(position++, kv.Value);
     }
 
     public override void Sort()
@@ -160,15 +162,17 @@ public class ModifyInventoryContext : AbstractModifyInventory, IModifyInventoryC
             .Where(kv => kv.Key > 0)
             .OrderBy(kv => kv.Value.ID)
             .ThenByDescending(kv => kv.Value is IItemSlotBundle bundle ? bundle.Number : 1)
-            .ToList();
+            .ToImmutableArray();
 
-        inventoryCopy.ForEach(kv => RemoveSlot(kv.Key));
-        inventoryCopy.ForEach(kv => Add(kv.Value));
+        foreach (var kv in inventoryCopy)
+            RemoveSlot(kv.Key);
+        foreach (var kv in inventoryCopy)
+            Add(kv.Value);
     }
     public override void Clear() =>
         _inventory.Items
             .Where(kv => kv.Key > 0)
-            .ToList()
+            .ToImmutableList()
             .ForEach(kv => RemoveSlot(kv.Key));
 
     public override short Add(int templateID) =>

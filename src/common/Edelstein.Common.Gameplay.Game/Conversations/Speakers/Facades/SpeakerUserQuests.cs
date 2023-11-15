@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+﻿using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
 using Edelstein.Common.Gameplay.Models.Characters.Quests;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers.Facades;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
@@ -25,9 +24,7 @@ public class SpeakerUserQuests : ISpeakerUserQuests
             );
 
     private string GetRecordFromDictionary(IDictionary<string, string> dictionary)
-        => string.Join(';', dictionary
-            .Select(kv => kv.Key + "=" + kv.Value)
-            .ToImmutableHashSet());
+        => string.Join(';', dictionary.Select(kv => kv.Key + "=" + kv.Value));
 
     public void SetRecord(short questID, string value)
     {

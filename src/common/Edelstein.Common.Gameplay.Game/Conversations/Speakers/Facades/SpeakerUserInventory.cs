@@ -1,4 +1,5 @@
-﻿using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
+﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers.Facades;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 
@@ -37,5 +38,5 @@ public class SpeakerUserInventory : ISpeakerUserInventory
     public bool HasSlotFor(IDictionary<int, short> templates) 
         => _user.StageUser.Context.Managers.Inventory.HasSlotFor(_user.Character.Inventories, templates
             .Select(kv => Tuple.Create(kv.Key, kv.Value))
-            .ToList());
+            .ToImmutableArray());
 }

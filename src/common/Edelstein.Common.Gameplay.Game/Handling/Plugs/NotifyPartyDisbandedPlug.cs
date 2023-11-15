@@ -17,7 +17,9 @@ public class NotifyPartyDisbandedPlug : IPipelinePlug<NotifyPartyDisbanded>
     public async Task Handle(IPipelineContext ctx, NotifyPartyDisbanded message)
     {
         var users = await _stage.Users.RetrieveAll();
-        var partied = users.Where(u => u.Party?.PartyID == message.PartyID).ToImmutableList();
+        var partied = users
+            .Where(u => u.Party?.PartyID == message.PartyID)
+            .ToImmutableArray();
 
         foreach (var user in partied)
         {

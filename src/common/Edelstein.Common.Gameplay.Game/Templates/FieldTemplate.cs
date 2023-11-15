@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Frozen;
 using Duey.Abstractions;
 using Edelstein.Common.Gameplay.Game.Spatial;
 using Edelstein.Common.Utilities.Spatial;
@@ -38,11 +38,11 @@ public record FieldTemplate : IFieldTemplate
             .SelectMany(c => c.Children)
             .SelectMany(c => c.Children)
             .Select(p => new FieldFoothold(Convert.ToInt32(p.Name), p.Cache()))
-            .ToImmutableList();
+            .ToFrozenSet();
         var portals = portal.Children
             .Select(p => new FieldPortal(Convert.ToInt32(p.Name), p.Cache()))
-            .ToImmutableList();
-
+            .ToFrozenSet();
+        
         var leftTop = new Point2D(
             footholds.Min(f => f.MinX),
             footholds.Min(f => f.MinY)
@@ -74,7 +74,7 @@ public record FieldTemplate : IFieldTemplate
 
         Life = life.Children
             .Select(p => new FieldTemplateLife(p.Cache()))
-            .ToImmutableList<IFieldTemplateLife>();
+            .ToFrozenSet<IFieldTemplateLife>();
 
         MobRate = info.ResolveDouble("mobRate") ?? 1.0;
 

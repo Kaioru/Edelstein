@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+using System.Collections.Frozen;
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
 
@@ -22,8 +22,8 @@ public record NPCTemplate : INPCTemplate
         Scripts = info.ResolvePath("script")?.Children
                       .Where(p => p.Name.All(char.IsDigit)) // 1057006 causes errors
                       .Select(p => new NPCTemplateScript(Convert.ToInt32(p.Name), p))
-                      .ToImmutableList()
-                  ?? ImmutableList<NPCTemplateScript>.Empty;
+                      .ToFrozenSet()
+                  ?? FrozenSet<NPCTemplateScript>.Empty;
     }
     public int ID { get; }
 

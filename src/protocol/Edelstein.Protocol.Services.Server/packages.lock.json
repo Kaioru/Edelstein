@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net8.0": {
+      "Duey.Abstractions": {
+        "type": "Transitive",
+        "resolved": "2.0.0",
+        "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
+      },
+      "edelstein.protocol.gameplay": {
+        "type": "Project",
+        "dependencies": {
+          "Duey.Abstractions": "[2.0.0, )",
+          "Edelstein.Protocol.Network": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Social": "[1.0.0, )",
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.network": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.services.social": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.utilities": {
+        "type": "Project"
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
 using Edelstein.Common.Gameplay.Models.Characters.Stats.TwoState;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
@@ -228,7 +228,7 @@ public class ModifyTemporaryStatContext : IModifyTemporaryStatContext
         foreach (var type in _stats.Records
                      .Where(kv => kv.Value.Reason == reason)
                      .Select(kv => kv.Key)
-                     .ToImmutableList())
+                     .ToFrozenSet())
             ResetByType(type);
     }
 

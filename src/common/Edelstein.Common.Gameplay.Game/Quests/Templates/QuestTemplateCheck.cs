@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Globalization;
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
@@ -33,12 +34,12 @@ public record QuestTemplateCheck : IQuestTemplateCheck
 
         Jobs = node?.ResolvePath("job")?.Children
             .Select(c => c.ResolveInt() ?? -1)
-            .ToImmutableList();
+            .ToFrozenSet();
         SubJobFlags = node?.ResolveInt("subJobFlags");
 
         CheckItem = node?.ResolvePath("item")?.Children
             .Select(p => (IQuestTemplateCheckItem)new QuestTemplateCheckItem(p.Cache()))
-            .ToImmutableList();
+            .ToFrozenSet();
         CheckMob = node?.ResolvePath("mob")?.Children
             .Select(p => (IQuestTemplateCheckMob)new QuestTemplateCheckMob(Convert.ToInt32(p.Name), p.Cache()))
             .ToImmutableSortedSet(new QuestTemplateCheckMobComparer());

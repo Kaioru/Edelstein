@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using Edelstein.Protocol.Utilities.Tickers;
+﻿using Edelstein.Protocol.Utilities.Tickers;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Utilities.Tickers;
@@ -18,9 +17,7 @@ public class TickerManager : ITickerManager, ITickable
 
     public async Task OnTick(DateTime now)
     {
-        var tickables = _tickables.ToImmutableList();
-
-        await Task.WhenAll(tickables.Select(b =>
+        await Task.WhenAll(_tickables.Select(b =>
             Task.Run(async () =>
             {
                 if (!b.IsRequestedCancellation && now >= b.TickNext)
@@ -28,7 +25,7 @@ public class TickerManager : ITickerManager, ITickable
             })
         ));
 
-        foreach (var b in tickables.Where(b => b.IsRequestedCancellation))
+        foreach (var b in _tickables.Where(b => b.IsRequestedCancellation))
             _tickables.Remove(b);
     }
 
