@@ -14,5 +14,6 @@ public interface IPluginHost<TContext> : IIdentifiable<string>
     string DirectoryHost { get; }
     string DirectoryPlugin { get; }
 
+    IPluginManager<TContext> Manager { get; }
     IPlugin<TContext> Plugin { get; }
 }

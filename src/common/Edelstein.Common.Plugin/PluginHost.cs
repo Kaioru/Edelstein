@@ -10,6 +10,7 @@ public record PluginHost<TContext>(
     IConfiguration Config,
     string DirectoryHost,
     string DirectoryPlugin,
+    IPluginManager<TContext> Manager,
     IPlugin<TContext> Plugin
 ) : IPluginHost<TContext>
 {

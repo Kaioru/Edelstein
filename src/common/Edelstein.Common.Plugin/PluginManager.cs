@@ -60,6 +60,7 @@ public class PluginManager<TContext> : Repository<string, IPluginHost<TContext>>
                     configuration,
                     directoryHost,
                     directoryPlugin,
+                    this,
                     plugin
                 ));
             }
