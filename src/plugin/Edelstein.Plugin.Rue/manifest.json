@@ -1,0 +1,6 @@
+{
+  "Name": "Rue",
+  "Description": "A collection of essential defaults for Edelstein",
+  
+  "EntryPoint": "Edelstein.Plugin.Rue.dll"
+}

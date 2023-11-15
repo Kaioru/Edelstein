@@ -19,8 +19,10 @@ public class PluginManager<TContext> : Repository<string, IPluginHost<TContext>>
         _loggerFactory = loggerFactory;
         _logger = logger;
     }
+
+    public Task LoadFromFile(string path) => LoadFromFile(path, null);
     
-    public async Task LoadFromFile(string path)
+    public async Task LoadFromFile(string path, IPluginHostManifest? manifest)
     {
         if (!File.Exists(path))
         {
@@ -53,6 +55,7 @@ public class PluginManager<TContext> : Repository<string, IPluginHost<TContext>>
                     .Build();
                 
                 await Insert(new PluginHost<TContext>(
+                    manifest,
                     _loggerFactory.CreateLogger(type),
                     configuration,
                     directoryHost,
@@ -66,6 +69,7 @@ public class PluginManager<TContext> : Repository<string, IPluginHost<TContext>>
             }
         }
     }
+    
     public async Task LoadFromDirectory(string directory)
     {
         if (!Directory.Exists(directory))
@@ -78,8 +82,22 @@ public class PluginManager<TContext> : Repository<string, IPluginHost<TContext>>
         {
             var name = Path.GetFileName(subdirectory);
             var file = Path.Combine(subdirectory, name);
+            var manifest = new PluginHostManifest();
+            
+            if (File.Exists(Path.Combine(subdirectory, Path.GetFileName("manifest.json"))))
+            {
+                var manifestConfiguration = new ConfigurationBuilder()
+                    .SetBasePath(subdirectory)
+                    .AddJsonFile("manifest.json", true)
+                    .Build();
+                
+                manifestConfiguration.Bind(manifest);
 
-            await LoadFromFile($"{file}.dll");
+                name = manifest.EntryPoint;
+                file = Path.Combine(subdirectory, name);
+            } 
+            
+            await LoadFromFile(Path.ChangeExtension(file, "dll"), manifest);
         }
     }
 }

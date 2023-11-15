@@ -6,6 +6,8 @@ namespace Edelstein.Protocol.Plugin;
 
 public interface IPluginHost<TContext> : IIdentifiable<string>
 {
+    IPluginHostManifest? Manifest { get; }
+    
     ILogger Logger { get; }
     IConfiguration Config { get; }
 
