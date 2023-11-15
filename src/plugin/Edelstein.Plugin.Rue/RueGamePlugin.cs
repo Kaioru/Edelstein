@@ -60,6 +60,8 @@ public class RueGamePlugin : IGamePlugin
         await commandManager.Insert(new EquipCommand());
         await commandManager.Insert(new StatCommand());
         await commandManager.Insert(new TemporaryStatCommand());
+        
+        await commandManager.Insert(new PluginCommand(host.Manager));
         await commandManager.Insert(new DebugCommand());
 
         ctx.Pipelines.FieldOnPacketUserChat.Add(PipelinePriority.High, new FieldOnPacketUserChatCommandPlug(commandManager));
