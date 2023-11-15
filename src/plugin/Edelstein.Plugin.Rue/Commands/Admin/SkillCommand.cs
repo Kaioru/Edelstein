@@ -26,7 +26,7 @@ public sealed class SkillCommand : AbstractTemplateCommand<ISkillTemplate>
     protected override async Task<IEnumerable<TemplateCommandIndex>> Indices()
     {
         var result = new List<TemplateCommandIndex>();
-        var strings = (await _strings.RetrieveAll()).ToList();
+        var strings = await _strings.RetrieveAll();
 
         result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.ID.ToString(), s.Name)));
         result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.Name, s.Name)));

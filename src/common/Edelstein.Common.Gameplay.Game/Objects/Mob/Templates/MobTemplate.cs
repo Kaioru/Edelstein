@@ -1,4 +1,5 @@
-﻿using Duey.Abstractions;
+﻿using System.Collections.Immutable;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
@@ -49,9 +50,9 @@ public class MobTemplate : IMobTemplate
         var elemCount = 0;
         var elemAttrs = info.ResolveString("elemAttr") ?? string.Empty;
         
-        foreach (var group in elemAttrs.GroupBy(_ => elemCount++ / 2).ToList())
+        foreach (var group in elemAttrs.GroupBy(_ => elemCount++ / 2).ToImmutableArray())
         {
-            var groupList = group.ToList();
+            var groupList = group.ToImmutableArray();
             var elem = groupList[0] switch
             {
                 'P' => Element.Physical,

@@ -44,9 +44,9 @@ public class FieldOnPacketUserCharacterInfoRequestPlug : IPipelinePlug<FieldOnPa
             .Select(kv => kv.Value)
             .Select(i => i.ID)
             .Where(i => i / 10000 == 301)
-            .ToList() ?? new List<int>();
+            .ToImmutableArray() ?? ImmutableArray<int>.Empty;
         
-        packet.WriteInt(chairs.Count);
+        packet.WriteInt(chairs.Length);
         foreach (var chair in chairs)
             packet.WriteInt(chair);
 

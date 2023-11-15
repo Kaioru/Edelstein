@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Services.Social;
+﻿using System.Collections.Immutable;
+using Edelstein.Protocol.Services.Social;
 using Edelstein.Protocol.Utilities.Packets;
 
 namespace Edelstein.Common.Gameplay.Social;
@@ -7,7 +8,7 @@ public static class PartyExtensions
 {
     public static void WritePartyInfo(this IPacketWriter writer, IPartyMembership party)
     {
-        var members = party.Members.Values.ToList();
+        var members = party.Members.Values.ToImmutableList();
         
         for (var i = 0; i < 6; i++)
             writer.WriteInt(members.ElementAtOrDefault(i)?.CharacterID ?? 0);

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Frozen;
-using System.Collections.Immutable;
 using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates.Sets;
 
