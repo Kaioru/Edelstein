@@ -80,7 +80,10 @@ public class CharacterRepository : ICharacterRepository
     public async Task<IEnumerable<ICharacter>> RetrieveAllByAccountWorld(int accountWorld)
     {
         await using var db = await _dbFactory.CreateDbContextAsync();
-        var results = await db.Characters.Where(c => c.AccountWorldID == accountWorld).ToListAsync();
+        var results = await db.Characters
+            .Where(c => c.AccountWorldID == accountWorld)
+            .OrderBy(c => c.ID)
+            .ToListAsync();
         return results
             .Select(m => _mapper.Map<Character>(m))
             .ToImmutableArray();

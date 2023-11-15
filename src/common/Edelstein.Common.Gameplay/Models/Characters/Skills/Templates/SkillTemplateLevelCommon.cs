@@ -1,6 +1,7 @@
 ﻿using Duey.Abstractions;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
+using Edelstein.Protocol.Utilities.Spatial;
 using org.mariuszgromada.math.mxparser;
 
 namespace Edelstein.Common.Gameplay.Models.Characters.Skills.Templates;
@@ -66,7 +67,7 @@ public class SkillTemplateLevelCommon : ISkillTemplateLevel
 
     public short Cooltime { get; }
 
-    public Rectangle2D Bounds { get; }
+    public IRectangle2D Bounds { get; }
 
     public short MHPr { get; }
     public short MMPr { get; }

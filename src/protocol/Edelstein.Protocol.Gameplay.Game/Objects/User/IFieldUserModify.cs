@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
+﻿using Edelstein.Protocol.Gameplay.Game.Objects.User.Modify;
+using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Modify;
 
@@ -11,6 +12,9 @@ public interface IFieldUserModify
     
     Task Stats(Action<IModifyStatContext>? action = null, bool exclRequest = false);
     Task Stats(IModifyStatContext context, bool exclRequest = false);
+
+    Task StatsForced(Action<IModifyStatForcedContext>? action = null);
+    Task StatsForced(IModifyStatForcedContext context);
     
     Task Inventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false);
     Task Inventory(IModifyInventoryGroupContext context, bool exclRequest = false);

@@ -7,6 +7,8 @@ public interface ITemporaryStats
     ITemporaryStatRecord? this[TemporaryStatType type] { get; }
     IDictionary<TemporaryStatType, ITemporaryStatRecord> Records { get; }
     
+    ITemporaryStatDiceInfo DiceInfo { get; }
+    
     ITwoStateTemporaryStatRecordDynamicTerm? EnergyChargedRecord { get; set; }
     ITwoStateTemporaryStatRecordDynamicTerm? DashSpeedRecord { get; set; }
     ITwoStateTemporaryStatRecordDynamicTerm? DashJumpRecord { get; set; }

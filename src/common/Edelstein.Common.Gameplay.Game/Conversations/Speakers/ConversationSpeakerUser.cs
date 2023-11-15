@@ -180,6 +180,9 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
 
     public void EffectPlayPortalSE()
         => _user.Effect(new PlayPortalSEEffect(), isRemote: false);
+    
+    public void EffectSquib(string path)
+        => _user.Effect(new SquibEffect(path), isRemote: false);
 
     public void EffectReserved(string path)
         => _user.Effect(new ReservedEffect(path), isRemote: false);

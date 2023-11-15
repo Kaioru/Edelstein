@@ -54,6 +54,7 @@ public interface IConversationSpeakerUser : IConversationSpeaker
     void MessageBalloon(string message, short? width = null, short? duration = null, IPoint2D? position = null);
     
     void EffectPlayPortalSE();
+    void EffectSquib(string path);
     void EffectReserved(string path);
     void EffectAvatarOriented(string path);
     

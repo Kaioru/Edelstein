@@ -82,6 +82,10 @@ public class DamageCalculator : IDamageCalculator
             skillActingID = Skill.AranOverSwing;
         if (skillActingID is Skill.Dual3HustleRush)
             skillActingID = Skill.Dual3HustleDash;
+        if (skillActingID is Skill.MechanicFlamethrowerUp)
+            skillActingID = Skill.MechanicWeaponmastery;
+        if (skillActingID is Skill.MechanicGatlingUp)
+            skillActingID = Skill.MechanicWeaponmastery;
         
         var skillLevel = skill?[stats.SkillLevels[skillActingID]];
         var equipped = character.Inventories[ItemInventoryType.Equip];
@@ -168,6 +172,12 @@ public class DamageCalculator : IDamageCalculator
             if (hitRate < GetRandomInRange(random.Next(), 0, 100))
             {
                 result[i] = new Damage(0);
+                continue;
+            }
+            
+            if (skillLevel?.FixDamage > 0)
+            {
+                result[i] = new Damage(skillLevel.FixDamage);
                 continue;
             }
 
@@ -516,6 +526,12 @@ public class DamageCalculator : IDamageCalculator
             if (hitRate < GetRandomInRange(random.Next(), 0, 100))
             {
                 result[i] = new Damage(0);
+                continue;
+            }
+            
+            if (skillLevel?.FixDamage > 0)
+            {
+                result[i] = new Damage(skillLevel.FixDamage);
                 continue;
             }
             

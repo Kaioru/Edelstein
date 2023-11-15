@@ -127,13 +127,28 @@ public record FieldUserStats : IFieldUserStats
         LUK += (int)(LUK * (LUKr / 100d));
         MaxHP += (int)(MaxHP * (MaxHPr / 100d));
         MaxMP += (int)(MaxMP * (MaxMPr / 100d));
+
+        STR = user.StatsForced.STR ?? STR;
+        DEX = user.StatsForced.DEX ?? DEX;
+        INT = user.StatsForced.INT ?? INT;
+        LUK = user.StatsForced.LUK ?? LUK;
         
         PAD += (int)(PAD * (PADr / 100d));
-        PDD += (int)(STR * 1.2 + LUK * 0.5 + DEX * 0.5 + INT * 0.4);
+        PAD = user.StatsForced.PAD ?? PAD;
+        
         PDD += (int)(PDD * (PDDr / 100d));
+        PDD = user.StatsForced.PDD ?? PDD;
+        PDD += (int)(STR * 1.2 + LUK * 0.5 + DEX * 0.5 + INT * 0.4);
+        
         MAD += (int)(MAD * (MADr / 100d));
-        MDD += (int)(INT * 1.2 + DEX * 0.5 + LUK * 0.5 + STR * 0.4);
+        MAD = user.StatsForced.MAD ?? MAD;
+        
         MDD += (int)(MDD * (MDDr / 100d));
+        MDD = user.StatsForced.MDD ?? MDD;
+        MDD += (int)(INT * 1.2 + DEX * 0.5 + LUK * 0.5 + STR * 0.4);
+        
+        ACC = user.StatsForced.ACC ?? ACC;
+        EVA = user.StatsForced.EVA ?? EVA;
         
         PACC = (int)(DEX * 1.2 + LUK) + ACC;
         PACC += (int)(PACC * (ACCr / 100d));
@@ -143,6 +158,9 @@ public record FieldUserStats : IFieldUserStats
         PEVA += (int)(PEVA * (EVAr / 100d));
         MEVA = LUK * 2 + INT + EVA;
         MEVA += (int)(MEVA * (EVAr / 100d));
+
+        Speed = user.StatsForced.Speed ?? Speed;
+        Jump = user.StatsForced.Jump ?? Jump;
         
         MaxHP = Math.Min(MaxHP, 99999);
         MaxMP = Math.Min(MaxMP, 99999);
@@ -155,7 +173,8 @@ public record FieldUserStats : IFieldUserStats
         MACC = Math.Min(MACC, 9999);
         PEVA = Math.Min(PEVA, 9999);
         MEVA = Math.Min(MEVA, 9999);
-        Speed = Math.Min(Math.Max(Speed, 100), 140);
+        
+        Speed = Math.Min(Math.Max(Speed, 100), user.StatsForced.SpeedMax ?? 140);
         Jump = Math.Min(Math.Max(Jump, 100), 123);
         
         CDMin = Math.Min(CDMin, CDMax);
@@ -591,6 +610,31 @@ public record FieldUserStats : IFieldUserStats
                 AttackSpeedBase += (int)((user.Character.TemporaryStats[TemporaryStatType.Frozen]?.Value ?? 0) * (10 - AttackSpeedBase) / 100d);;
             if (AttackSpeed < 10)
                 AttackSpeed += (int)((user.Character.TemporaryStats[TemporaryStatType.Frozen]?.Value ?? 0) * (10 - AttackSpeed) / 100d);;
+        }
+
+        if (user.Character.TemporaryStats[TemporaryStatType.Dice] != null)
+        {
+            MaxHPr += user.Character.TemporaryStats.DiceInfo.MHPr;
+            MaxMPr += user.Character.TemporaryStats.DiceInfo.MMPr;
+            Cr += user.Character.TemporaryStats.DiceInfo.Cr;
+            CDMin += user.Character.TemporaryStats.DiceInfo.CDMin;
+            EVAr += user.Character.TemporaryStats.DiceInfo.EVAr;
+            Ar += user.Character.TemporaryStats.DiceInfo.Ar;
+            Er += user.Character.TemporaryStats.DiceInfo.Er;
+            PDDr += user.Character.TemporaryStats.DiceInfo.PDDr;
+            MDDr += user.Character.TemporaryStats.DiceInfo.MDDr;
+            // PDr += user.Character.TemporaryStats.DiceInfo.PDr;
+            // MDr += user.Character.TemporaryStats.DiceInfo.MDr;
+            // DIPr += user.Character.TemporaryStats.DiceInfo.DIPr;
+            PDamR += user.Character.TemporaryStats.DiceInfo.PDamr;
+            MDamR += user.Character.TemporaryStats.DiceInfo.MDamr;
+            PADr += user.Character.TemporaryStats.DiceInfo.PADr;
+            MADr += user.Character.TemporaryStats.DiceInfo.MADr;
+            // EXPr += user.Character.TemporaryStats.DiceInfo.EXPr;
+            // IMPr += user.Character.TemporaryStats.DiceInfo.IMPr;
+            // ASRr += user.Character.TemporaryStats.DiceInfo.ASRr;
+            // TERr += user.Character.TemporaryStats.DiceInfo.TERr;
+            // MESOr += user.Character.TemporaryStats.DiceInfo.MESOr;
         }
     }
 

@@ -18,6 +18,7 @@ using Edelstein.Protocol.Gameplay.Game.Dialogues;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Dragon;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Game.Objects.User.Modify;
 using Edelstein.Protocol.Gameplay.Models.Accounts;
 using Edelstein.Protocol.Gameplay.Models.Characters;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Modify;
@@ -45,6 +46,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         Character = character;
 
         Stats = new FieldUserStats();
+        StatsForced = new FieldUserStatsForced();
         Damage = new DamageCalculator(
             user.Context.Templates.Skill    
         );
@@ -67,6 +69,7 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
     public ICharacter Character { get; }
 
     public IFieldUserStats Stats { get; }
+    public IFieldUserStatsForced StatsForced { get; }
     public IDamageCalculator Damage { get; }
 
     public IConversationContext? ActiveConversation { get; private set; }
@@ -382,6 +385,11 @@ public class FieldUser : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAct
         => Modify(m => m.Stats(action, exclRequest));
     public Task ModifyStats(IModifyStatContext context, bool exclRequest = false)
         => Modify(m => m.Stats(context, exclRequest));
+    
+    public Task ModifyStatsForced(Action<IModifyStatForcedContext>? action = null)
+        => Modify(m => m.StatsForced(action));
+    public Task ModifyStatsForced(IModifyStatForcedContext context) 
+        => Modify(m => m.StatsForced(context));
 
     public Task ModifyInventory(Action<IModifyInventoryGroupContext>? action = null, bool exclRequest = false)
         => Modify(m => m.Inventory(action, exclRequest));
