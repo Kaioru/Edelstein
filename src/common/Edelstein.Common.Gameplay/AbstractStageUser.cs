@@ -10,9 +10,9 @@ namespace Edelstein.Common.Gameplay;
 public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser>
     where TStageUser : IStageUser<TStageUser>
 {
-
     protected AbstractStageUser(ISocket socket)
         => Socket = socket;
+    
     public int ID => Character?.ID ?? -1;
 
     public ISocket Socket { get; }
@@ -26,7 +26,7 @@ public abstract class AbstractStageUser<TStageUser> : IStageUser<TStageUser>
     public IFriendList? Friends { get; set; }
     public IPartyMembership? Party { get; set; }
 
-    public long Key { get; set; }
+    public long Key { get; set; } = Random.Shared.NextInt64();
 
     public bool IsMigrating { get; set; }
 
