@@ -3,6 +3,7 @@
 public class IGCipher
 {
     private readonly byte[] _shuffle;
+    private readonly uint _key;
 
     public IGCipher() : this(new byte[]
     {
@@ -26,14 +27,16 @@ public class IGCipher
     {
     }
 
-    public IGCipher(byte[] shuffle) => _shuffle = shuffle;
+    public IGCipher(byte[] shuffle, uint key = 0xC65053F2)
+    {
+        _shuffle = shuffle;
+        _key = key;
+    }
 
     public unsafe uint Hash(uint pSrc, int nLen, uint dwKey)
     {
-        const uint dwDefaultKey = 0xC65053F2;
-
-        if (dwKey == 0) dwKey = dwDefaultKey;
-        if (nLen <= 0) return dwDefaultKey;
+        if (dwKey == 0) dwKey = _key;
+        if (nLen <= 0) return _key;
 
         var ptrDwKey = &dwKey;
 
