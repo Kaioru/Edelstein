@@ -41,7 +41,7 @@ public abstract class AbstractFieldDrop : AbstractFieldObject, IFieldDrop
     public override IPacket GetLeaveFieldPacket()
         => GetLeaveFieldPacket(1);
 
-    public IPacket GetEnterFieldPacket(byte enterType, IPoint2D? sourcePosition = null, short z = 0)
+    public IPacket GetEnterFieldPacket(byte enterType, IPoint2D? sourcePosition = null, short delay = 0)
     {
         using var packet = new PacketWriter(PacketSendOperations.DropEnterField);
 
@@ -61,7 +61,7 @@ public abstract class AbstractFieldDrop : AbstractFieldObject, IFieldDrop
         if (enterType is 0 or 1 or 3 or 4)
         {
             packet.WritePoint2D(sourcePosition ?? Position);
-            packet.WriteShort(z);
+            packet.WriteShort(delay);
         }
 
         if (!IsMoney) // TODO: handle this properly

@@ -8,6 +8,7 @@ using Edelstein.Common.Utilities.Packets;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Objects;
+using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats.Modify;
@@ -94,29 +95,59 @@ public class FieldMob :
             {
                 if (attacker != null)
                 {
+                    var random = new Random();
                     var rewardPool = attacker.StageUser.Context.Managers.MobRewardPool;
                     var rewards = await rewardPool.CalculateRewards(attacker, this);
+                    var offset = 0;
+                    var index = 0;
                     
                     foreach (var reward in rewards)
                     {
-                        if (reward.ItemID == null) continue;
-                        var template = await attacker.StageUser.Context.Templates.Item.Retrieve(reward.ItemID.Value);
-                        if (template == null) continue;
-
                         var position = positionHit ?? Position;
+                        var positionOffset = position.X + offset;
+
+                        positionOffset = Math.Min(Field.Template.Bounds.MaxX - 25, positionOffset);
+                        positionOffset = Math.Max(Field.Template.Bounds.MinX + 25, positionOffset);
+                        
                         var foothold = Field.Template.Footholds
                             .FindBelow(new Point2D(
-                                position.X,
+                                positionOffset,
                                 position.Y - 100
                             ))
                             .FirstOrDefault();
-                        var drop = new FieldDropItem(
-                            foothold?.Line.AtX(position.X) ?? position,
-                            template.ToItemSlot(ItemVariationOption.Normal),
-                            sourceID: ObjectID ?? 0
-                        );
+                        AbstractFieldDrop? drop = null;
 
-                        await Field.Enter(drop, () => drop.GetEnterFieldPacket(1, position));
+                        if (reward.ItemID > 0)
+                        {
+                            if (reward.ItemID == null) continue;
+                            var template = await attacker.StageUser.Context.Templates.Item.Retrieve(reward.ItemID.Value);
+                            if (template == null) continue;
+                            var item = template.ToItemSlot(ItemVariationOption.Normal);
+
+                            if (item is ItemSlotBundle bundle)
+                                bundle.Number = (short)random.Next(reward.NumberMin ?? 1, reward.NumberMax ?? 1);
+                            
+                            drop = new FieldDropItem(
+                                foothold?.Line.AtX(positionOffset) ?? position,
+                                item,
+                                sourceID: ObjectID ?? 0
+                            );
+                        } 
+                        else if (reward.Money > 0)
+                        {
+                            drop = new FieldDropMoney(
+                                foothold?.Line.AtX(positionOffset) ?? position,
+                                (int)(reward.Money.Value * (random.Next(75, 100) / 100D)),
+                                sourceID: ObjectID ?? 0
+                            );
+                        }
+
+                        if (drop == null) continue;
+                        
+                        await Field.Enter(drop, () => drop.GetEnterFieldPacket(1, position, (short)(0 * index)));
+
+                        offset = offset < 0 ? Math.Abs(offset) : -(offset + 25);
+                        index++;
                     }
                     
                     _ = attacker.StageUser.Context.Managers.Quest.UpdateMobKill(attacker, Template.ID);
