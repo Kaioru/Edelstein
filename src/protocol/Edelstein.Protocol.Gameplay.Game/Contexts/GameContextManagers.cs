@@ -2,6 +2,7 @@
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Rewards;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Game.Quests;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
@@ -18,6 +19,7 @@ public record GameContextManagers(
     IContiMoveManager ContiMove,
     INamedConversationManager Conversation,
     INPCShopManager NPCShop,
+    IMobRewardPoolManager MobRewardPool,
     ISkillManager Skill,
     IQuestManager Quest,
     IModifiedQuestTimeManager QuestTime
