@@ -3,7 +3,8 @@
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob.Rewards;
 
 public record MobReward(
-    int ID
+    int ID,
+    double Proc = 1.0
 ) : IMobReward
 {
     public int? ItemID { get; init; }

@@ -16,14 +16,20 @@ public class MobRewardPoolManager :
 
     public async Task<ICollection<IMobReward>> CalculateRewards(IFieldUser user, IFieldMob mob)
     {
+        var random = new Random();
         var pool = await Retrieve(mob.Template.ID);
-        var items = new List<IMobReward>();
         
-        if (pool != null)
-            items.AddRange(await pool.RetrieveAll());
-        items.AddRange(await Global.RetrieveAll());
-
-        return items
+        return 
+            (pool != null 
+                ? await pool.RetrieveAll()
+                : new List<IMobReward>())
+            .Concat(await Global.RetrieveAll())
+            .Where(r =>
+            {
+                // TODO filters
+                
+                return random.NextSingle() <= r.Proc;
+            })
             .OrderBy(i => Random.Shared.Next())
             .ToImmutableArray();
     }

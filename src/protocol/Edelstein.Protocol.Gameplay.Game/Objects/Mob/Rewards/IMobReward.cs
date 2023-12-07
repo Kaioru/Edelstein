@@ -21,4 +21,6 @@ public interface IMobReward : IReward
     
     DateTime? DateStart { get; }
     DateTime? DateEnd { get; }
+    
+    double Proc { get; }
 }

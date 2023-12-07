@@ -26,6 +26,8 @@ public class MobRewardTemplate : ITemplate, IMobReward
     public DateTime? DateStart { get; }
     public DateTime? DateEnd { get; }
     
+    public double Proc { get; }
+
     public MobRewardTemplate(int id, IDataNode property)
     {
         ID = id;
@@ -36,5 +38,7 @@ public class MobRewardTemplate : ITemplate, IMobReward
         
         NumberMin = property.ResolveInt("min");
         NumberMax = property.ResolveInt("max");
+
+        Proc = property.ResolveDouble("prob") ?? 1.0;
     }
 }
