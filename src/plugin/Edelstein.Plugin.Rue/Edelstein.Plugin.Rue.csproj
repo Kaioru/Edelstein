@@ -15,8 +15,4 @@
     <PackageReference Include="TrieNet" Version="1.0.3.26316" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\v2\" />
-  </ItemGroup>
-
 </Project>
