@@ -178,7 +178,7 @@ public class FieldOnPacketUserAttackPlug : IPipelinePlug<FieldOnPacketUserAttack
         {
             var mob = mobs.TryGetValue(entry.MobID, out var e) ? e : null;
             if (mob == null) continue;
-            await _skillManager.HandleAttackMob(message.User, mob, message.Attack.SkillID, entry.Damage.Sum());
+            await _skillManager.HandleAttackMob(message.User, mob, message.Attack.SkillID, entry.Damage.Sum(), entry.PositionHit);
         }
     }
 }

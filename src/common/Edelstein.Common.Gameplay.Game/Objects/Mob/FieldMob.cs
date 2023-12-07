@@ -5,6 +5,8 @@ using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats.Modify;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Common.Utilities.Packets;
+using Edelstein.Common.Utilities.Spatial;
+using Edelstein.Protocol.Gameplay.Game.Combat.Damage;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
@@ -63,7 +65,7 @@ public class FieldMob :
     
     private DateTime LastUpdateBurned { get; set; }
     
-    public async Task Damage(int damage, IFieldUser? attacker = null)
+    public async Task Damage(int damage, IFieldUser? attacker = null, IPoint2D? positionHit = null)
     {
         await _lock.WaitAsync();
         
@@ -101,9 +103,15 @@ public class FieldMob :
                         var template = await attacker.StageUser.Context.Templates.Item.Retrieve(reward.ItemID.Value);
                         if (template == null) continue;
 
-                        var position = Position;
+                        var position = positionHit ?? Position;
+                        var foothold = Field.Template.Footholds
+                            .FindBelow(new Point2D(
+                                position.X,
+                                position.Y - 100
+                            ))
+                            .FirstOrDefault();
                         var drop = new FieldDropItem(
-                            position,
+                            foothold?.Line.AtX(position.X) ?? position,
                             template.ToItemSlot(ItemVariationOption.Normal),
                             sourceID: ObjectID ?? 0
                         );

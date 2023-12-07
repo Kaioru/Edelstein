@@ -5,6 +5,7 @@ using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Models.Characters.Skills.Templates;
 using Edelstein.Protocol.Gameplay.Models.Characters.Stats;
+using Edelstein.Protocol.Utilities.Spatial;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Combat;
@@ -37,10 +38,10 @@ public sealed class SkillManager :
         await context.Execute();
     }
 
-    public async Task HandleAttackMob(IFieldUser user, IFieldMob mob, int skillID, int damage)
+    public async Task HandleAttackMob(IFieldUser user, IFieldMob mob, int skillID, int damage, IPoint2D positionHit)
     {
         if (damage == 0) return;
-        await mob.Damage(damage, user);
+        await mob.Damage(damage, user, positionHit);
         var context = await CreateContext(user, skillID, user.Stats.SkillLevels[skillID], mob: mob);
         if (context == null) return;
         var handler = await Retrieve(user.Character.Job);

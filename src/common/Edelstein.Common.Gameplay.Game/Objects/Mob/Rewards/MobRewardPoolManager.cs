@@ -23,6 +23,8 @@ public class MobRewardPoolManager :
             items.AddRange(await pool.RetrieveAll());
         items.AddRange(await Global.RetrieveAll());
 
-        return items.ToImmutableArray();
+        return items
+            .OrderBy(i => Random.Shared.Next())
+            .ToImmutableArray();
     }
 }
