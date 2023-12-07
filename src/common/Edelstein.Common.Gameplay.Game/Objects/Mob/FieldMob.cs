@@ -1,7 +1,9 @@
 ﻿using System.Collections.Immutable;
+using Edelstein.Common.Gameplay.Game.Objects.Drop;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats.Modify;
 using Edelstein.Common.Gameplay.Handling;
+using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Common.Utilities.Packets;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
@@ -10,6 +12,7 @@ using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Spatial;
+using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 using Edelstein.Protocol.Utilities.Packets;
 using Edelstein.Protocol.Utilities.Spatial;
 using Edelstein.Protocol.Utilities.Tickers;
@@ -87,10 +90,31 @@ public class FieldMob :
 
             if (HP <= 0)
             {
-                await Field.Leave(this, () => GetLeaveFieldPacket(FieldMobLeaveType.Etc));
+                if (attacker != null)
+                {
+                    var rewardPool = attacker.StageUser.Context.Managers.MobRewardPool;
+                    var rewards = await rewardPool.CalculateRewards(attacker, this);
+                    
+                    foreach (var reward in rewards)
+                    {
+                        if (reward.ItemID == null) continue;
+                        var template = await attacker.StageUser.Context.Templates.Item.Retrieve(reward.ItemID.Value);
+                        if (template == null) continue;
 
-                if (attacker != null) 
+                        var position = Position;
+                        var drop = new FieldDropItem(
+                            position,
+                            template.ToItemSlot(ItemVariationOption.Normal),
+                            sourceID: ObjectID ?? 0
+                        );
+
+                        await Field.Enter(drop, () => drop.GetEnterFieldPacket(1, position));
+                    }
+                    
                     _ = attacker.StageUser.Context.Managers.Quest.UpdateMobKill(attacker, Template.ID);
+                }
+                
+                await Field.Leave(this, () => GetLeaveFieldPacket(FieldMobLeaveType.Etc));
             }
         }
         finally

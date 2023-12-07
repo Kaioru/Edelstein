@@ -2,7 +2,9 @@
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob.Rewards;
 
-public record MobReward : IMobReward
+public record MobReward(
+    int ID
+) : IMobReward
 {
     public int? ItemID { get; init; }
     

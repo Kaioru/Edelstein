@@ -6,16 +6,16 @@ using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob.Templates;
 
-public class MobRewardsTemplate : ITemplate
+public class MobRewardPoolTemplate : ITemplate
 {
     public int ID { get; }
-    public ICollection<MobRewardsTemplateItem> Items { get; }
+    public ICollection<MobRewardTemplate> Items { get; }
     
-    public MobRewardsTemplate(int id, IDataNode property)
+    public MobRewardPoolTemplate(int id, IDataNode property)
     {
         ID = id;
         Items = property.Children
-            .Select(p => new MobRewardsTemplateItem(Convert.ToInt32(p.Name), p.Cache()))
+            .Select(p => new MobRewardTemplate(Convert.ToInt32(p.Name), p.Cache()))
             .ToImmutableArray();
     }
 }

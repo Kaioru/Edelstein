@@ -1,6 +1,8 @@
-﻿namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob.Rewards;
+﻿using Edelstein.Protocol.Gameplay.Game.Rewards;
 
-public interface IMobReward
+namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob.Rewards;
+
+public interface IMobReward : IReward
 {
     int? ItemID { get; }
     

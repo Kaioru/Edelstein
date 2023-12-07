@@ -180,7 +180,7 @@ public class ProgramHost : IHostedService
                         b.RegisterType<ContiMoveManager>().As<IContiMoveManager>().SingleInstance();
                         b.RegisterType<ScriptedConversationManager>().As<INamedConversationManager>().SingleInstance();
                         b.RegisterType<NPCShopManager>().As<INPCShopManager>().SingleInstance();
-                        b.RegisterType<MobRewardManager>().As<IMobRewardManager>().SingleInstance();
+                        b.RegisterType<MobRewardPoolManager>().As<IMobRewardPoolManager>().SingleInstance();
                         b.RegisterType<SkillManager>().As<ISkillManager>().SingleInstance();
                         b.RegisterType<ModifiedQuestTimeManager>().As<IModifiedQuestTimeManager>().SingleInstance();
                         b.RegisterType<QuestManager>().As<IQuestManager>().SingleInstance();

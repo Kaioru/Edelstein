@@ -4,7 +4,7 @@ using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob.Templates;
 
-public class MobRewardsTemplateItem : ITemplate, IMobReward
+public class MobRewardTemplate : ITemplate, IMobReward
 {
     public int ID { get; }
     
@@ -26,7 +26,7 @@ public class MobRewardsTemplateItem : ITemplate, IMobReward
     public DateTime? DateStart { get; }
     public DateTime? DateEnd { get; }
     
-    public MobRewardsTemplateItem(int id, IDataNode property)
+    public MobRewardTemplate(int id, IDataNode property)
     {
         ID = id;
 

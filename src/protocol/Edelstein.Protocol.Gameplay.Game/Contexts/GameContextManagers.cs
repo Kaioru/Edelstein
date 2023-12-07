@@ -19,7 +19,7 @@ public record GameContextManagers(
     IContiMoveManager ContiMove,
     INamedConversationManager Conversation,
     INPCShopManager NPCShop,
-    IMobRewardManager MobReward,
+    IMobRewardPoolManager MobRewardPool,
     ISkillManager Skill,
     IQuestManager Quest,
     IModifiedQuestTimeManager QuestTime

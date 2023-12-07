@@ -5,12 +5,12 @@ using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Mob.Templates;
 
-public class MobRewardsTemplateLoader : ITemplateLoader
+public class MobRewardPoolTemplateLoader : ITemplateLoader
 {
     private readonly IDataNamespace _data;
-    private readonly ITemplateManager<MobRewardsTemplate> _manager;
+    private readonly ITemplateManager<MobRewardPoolTemplate> _manager;
     
-    public MobRewardsTemplateLoader(IDataNamespace data, ITemplateManager<MobRewardsTemplate> manager)
+    public MobRewardPoolTemplateLoader(IDataNamespace data, ITemplateManager<MobRewardPoolTemplate> manager)
     {
         _data = data;
         _manager = manager;
@@ -22,9 +22,9 @@ public class MobRewardsTemplateLoader : ITemplateLoader
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name);
-                await _manager.Insert(new TemplateProviderEager<MobRewardsTemplate>(
+                await _manager.Insert(new TemplateProviderEager<MobRewardPoolTemplate>(
                     id,
-                    new MobRewardsTemplate(id, n.Cache())
+                    new MobRewardPoolTemplate(id, n.Cache())
                 ));
             }) ?? Array.Empty<Task>());
 
