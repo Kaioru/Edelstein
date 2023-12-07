@@ -4,6 +4,4 @@ namespace Edelstein.Protocol.Gameplay.Game;
 
 public interface IFieldManager :
     IRepositoryMethodRetrieve<int, IField>,
-    IRepositoryMethodRetrieveAll<int, IField>
-{
-}
+    IRepositoryMethodRetrieveAll<int, IField>;

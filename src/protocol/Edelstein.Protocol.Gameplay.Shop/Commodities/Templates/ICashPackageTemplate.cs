@@ -2,7 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Shop.Commodities.Templates;
 
-public interface ICashPackageTemplate : ICashPackage, ITemplate
-{
-    
-}
+public interface ICashPackageTemplate : ICashPackage, ITemplate;

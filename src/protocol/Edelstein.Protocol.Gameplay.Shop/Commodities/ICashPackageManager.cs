@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Shop.Commodities;
 
-public interface ICashPackageManager : IRepositoryMethodRetrieve<int, ICashPackage>
-{
-}
+public interface ICashPackageManager : IRepositoryMethodRetrieve<int, ICashPackage>;

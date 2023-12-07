@@ -3,6 +3,4 @@ using Edelstein.Protocol.Gameplay.Shop;
 
 namespace Edelstein.Common.Gameplay.Shop.Handling.Plugs;
 
-public class UserOnPacketAliveAckPlug : AbstractUserOnPacketAliveAckPlug<IShopStageUser>
-{
-}
+public class UserOnPacketAliveAckPlug : AbstractUserOnPacketAliveAckPlug<IShopStageUser>;

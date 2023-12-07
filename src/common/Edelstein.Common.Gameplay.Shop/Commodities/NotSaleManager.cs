@@ -5,6 +5,4 @@ namespace Edelstein.Common.Gameplay.Shop.Commodities;
 
 public class NotSaleManager :
     Repository<int, INotSale>,
-    INotSaleManager
-{
-}
+    INotSaleManager;

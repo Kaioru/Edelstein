@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Plugin.Login;
 
-public interface ILoginPlugin : IPlugin<LoginContext>
-{
-}
+public interface ILoginPlugin : IPlugin<LoginContext>;

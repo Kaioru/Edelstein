@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Models.Inventories.Items;
 
-public interface IItemSlot : IIdentifiable<int>
-{
-}
+public interface IItemSlot : IIdentifiable<int>;

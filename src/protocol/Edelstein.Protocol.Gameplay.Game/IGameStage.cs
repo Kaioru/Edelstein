@@ -1,5 +1,3 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Game;
 
-public interface IGameStage : IStage<IGameStageUser>
-{
-}
+public interface IGameStage : IStage<IGameStageUser>;

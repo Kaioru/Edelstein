@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Game.Conversations;
 
-public interface INamedConversation : IConversation, IIdentifiable<string>
-{
-}
+public interface INamedConversation : IConversation, IIdentifiable<string>;

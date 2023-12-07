@@ -6,6 +6,4 @@ public interface ITemplateManager<TTemplate> :
     ITemplateCollection<TTemplate>,
     IRepositoryMethodInsert<int, ITemplateProvider<TTemplate>>,
     IRepositoryMethodFreeze
-    where TTemplate : ITemplate
-{
-}
+    where TTemplate : ITemplate;

@@ -1,5 +1,3 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Login;
 
-public interface ILoginStage : IStage<ILoginStageUser>
-{
-}
+public interface ILoginStage : IStage<ILoginStageUser>;

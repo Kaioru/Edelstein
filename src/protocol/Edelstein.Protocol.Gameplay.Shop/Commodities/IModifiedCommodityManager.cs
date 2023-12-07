@@ -6,6 +6,4 @@ public interface IModifiedCommodityManager :
     IRepositoryMethodInsert<int, IModifiedCommodity>,
     IRepositoryMethodRetrieve<int, IModifiedCommodity>,
     IRepositoryMethodRetrieveAll<int, IModifiedCommodity>,
-    IRepositoryMethodDelete<int, IModifiedCommodity>
-{
-}
+    IRepositoryMethodDelete<int, IModifiedCommodity>;

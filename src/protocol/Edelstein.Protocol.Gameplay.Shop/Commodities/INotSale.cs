@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Shop.Commodities;
 
-public interface INotSale : IIdentifiable<int>
-{
-}
+public interface INotSale : IIdentifiable<int>;

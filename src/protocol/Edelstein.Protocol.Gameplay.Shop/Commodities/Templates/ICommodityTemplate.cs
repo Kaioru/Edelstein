@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Shop.Commodities.Templates;
 
-public interface ICommodityTemplate : ICommodity, ITemplate
-{
-}
+public interface ICommodityTemplate : ICommodity, ITemplate;

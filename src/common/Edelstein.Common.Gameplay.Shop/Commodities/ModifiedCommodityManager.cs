@@ -5,6 +5,4 @@ namespace Edelstein.Common.Gameplay.Shop.Commodities;
 
 public class ModifiedCommodityManager : 
     Repository<int, IModifiedCommodity>, 
-    IModifiedCommodityManager
-{
-}
+    IModifiedCommodityManager;

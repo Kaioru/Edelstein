@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.User;
 
-public interface IFieldUserMoveAction : IMoveAction
-{
-}
+public interface IFieldUserMoveAction : IMoveAction;

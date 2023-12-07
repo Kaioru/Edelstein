@@ -1,5 +1,3 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Trade;
 
-public interface ITradeStage : IStage<ITradeStageUser>
-{
-}
+public interface ITradeStage : IStage<ITradeStageUser>;

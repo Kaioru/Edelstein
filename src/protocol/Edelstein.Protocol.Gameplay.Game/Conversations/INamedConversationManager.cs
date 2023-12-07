@@ -6,6 +6,4 @@ public interface INamedConversationManager :
     IRepositoryMethodInsert<string, INamedConversation>,
     IRepositoryMethodDelete<string, INamedConversation>,
     IRepositoryMethodRetrieve<string, INamedConversation>,
-    IRepositoryMethodRetrieveAll<string, INamedConversation>
-{
-}
+    IRepositoryMethodRetrieveAll<string, INamedConversation>;

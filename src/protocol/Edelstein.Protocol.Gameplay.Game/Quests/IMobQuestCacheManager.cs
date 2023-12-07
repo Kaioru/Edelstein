@@ -3,7 +3,4 @@
 namespace Edelstein.Protocol.Gameplay.Game.Quests;
 
 public interface IMobQuestCacheManager :
-    IRepositoryMethodRetrieve<int, IMobQuestCache>
-{
-    
-}
+    IRepositoryMethodRetrieve<int, IMobQuestCache>;

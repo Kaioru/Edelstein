@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Plugin.Shop;
 
-public interface IShopPlugin : IPlugin<ShopContext>
-{
-}
+public interface IShopPlugin : IPlugin<ShopContext>;

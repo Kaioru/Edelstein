@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Plugin.Trade;
 
-public interface ITradePlugin : IPlugin<TradeContext>
-{
-}
+public interface ITradePlugin : IPlugin<TradeContext>;

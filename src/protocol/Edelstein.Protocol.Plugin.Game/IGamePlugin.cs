@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Plugin.Game;
 
-public interface IGamePlugin : IPlugin<GameContext>
-{
-}
+public interface IGamePlugin : IPlugin<GameContext>;

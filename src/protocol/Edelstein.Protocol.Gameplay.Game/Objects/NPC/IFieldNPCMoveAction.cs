@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 
-public interface IFieldNPCMoveAction : IMoveAction
-{
-}
+public interface IFieldNPCMoveAction : IMoveAction;

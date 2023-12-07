@@ -6,6 +6,4 @@ public interface IModifiedQuestTimeManager :
     IRepositoryMethodInsert<int, IModifiedQuestTime>,
     IRepositoryMethodRetrieve<int, IModifiedQuestTime>,
     IRepositoryMethodRetrieveAll<int, IModifiedQuestTime>,
-    IRepositoryMethodDelete<int, IModifiedQuestTime>
-{
-}
+    IRepositoryMethodDelete<int, IModifiedQuestTime>;

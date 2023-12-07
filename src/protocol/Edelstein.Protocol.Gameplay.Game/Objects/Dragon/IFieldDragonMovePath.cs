@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Dragon;
 
-public interface IFieldDragonMovePath : IMovePath<IFieldDragonMoveAction>
-{
-}
+public interface IFieldDragonMovePath : IMovePath<IFieldDragonMoveAction>;

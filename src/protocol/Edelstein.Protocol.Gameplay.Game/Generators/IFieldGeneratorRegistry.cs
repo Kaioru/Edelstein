@@ -5,6 +5,4 @@ namespace Edelstein.Protocol.Gameplay.Game.Generators;
 public interface IFieldGeneratorRegistry :
     IRepositoryMethodInsert<string, IFieldGenerator>,
     IRepositoryMethodDelete<string, IFieldGenerator>,
-    IRepositoryMethodRetrieveAll<string, IFieldGenerator>
-{
-}
+    IRepositoryMethodRetrieveAll<string, IFieldGenerator>;

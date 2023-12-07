@@ -8,6 +8,4 @@ public interface IRepository<in TKey, TEntry> :
     IRepositoryMethodUpdate<TKey, TEntry>,
     IRepositoryMethodDelete<TKey, TEntry>
     where TKey : notnull
-    where TEntry : IIdentifiable<TKey>
-{
-}
+    where TEntry : IIdentifiable<TKey>;

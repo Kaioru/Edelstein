@@ -1,5 +1,3 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Shop;
 
-public interface IShopStage : IStage<IShopStageUser>
-{
-}
+public interface IShopStage : IStage<IShopStageUser>;

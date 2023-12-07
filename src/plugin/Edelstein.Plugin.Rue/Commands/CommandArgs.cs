@@ -1,5 +1,3 @@
 ﻿namespace Edelstein.Plugin.Rue.Commands;
 
-public class CommandArgs
-{
-}
+public class CommandArgs;

@@ -3,6 +3,4 @@ using Edelstein.Protocol.Utilities.Spatial.Collections;
 
 namespace Edelstein.Protocol.Gameplay.Game.Spatial;
 
-public interface IFieldSpaceObject : IIdentifiable<int>, IObject2D
-{
-}
+public interface IFieldSpaceObject : IIdentifiable<int>, IObject2D;

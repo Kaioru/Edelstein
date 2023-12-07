@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Models.Characters;
 
-public interface ICharacterTemporaryStats : ITemporaryStats
-{
-}
+public interface ICharacterTemporaryStats : ITemporaryStats;

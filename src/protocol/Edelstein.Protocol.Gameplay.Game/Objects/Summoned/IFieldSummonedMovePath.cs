@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Summoned;
 
-public interface IFieldSummonedMovePath : IMovePath<IFieldSummonedMoveAction>
-{
-}
+public interface IFieldSummonedMovePath : IMovePath<IFieldSummonedMoveAction>;

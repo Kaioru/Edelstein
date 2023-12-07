@@ -2,6 +2,4 @@
 
 namespace Edelstein.Common.Services.Server.Entities;
 
-public record ServerLoginEntity : ServerEntity, IServerLogin
-{
-}
+public record ServerLoginEntity : ServerEntity, IServerLogin;

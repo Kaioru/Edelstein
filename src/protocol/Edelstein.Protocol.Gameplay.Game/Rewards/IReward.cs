@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Gameplay.Game.Rewards;
 
-public interface IReward : IIdentifiable<int>
-{
-}
+public interface IReward : IIdentifiable<int>;

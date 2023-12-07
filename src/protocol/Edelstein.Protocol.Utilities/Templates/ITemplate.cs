@@ -2,6 +2,4 @@
 
 namespace Edelstein.Protocol.Utilities.Templates;
 
-public interface ITemplate : IIdentifiable<int>
-{
-}
+public interface ITemplate : IIdentifiable<int>;

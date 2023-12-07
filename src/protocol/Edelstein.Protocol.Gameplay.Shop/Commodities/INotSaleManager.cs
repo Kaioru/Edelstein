@@ -6,6 +6,4 @@ public interface INotSaleManager :
     IRepositoryMethodInsert<int, INotSale>,
     IRepositoryMethodRetrieve<int, INotSale>,
     IRepositoryMethodRetrieveAll<int, INotSale>,
-    IRepositoryMethodDelete<int, INotSale>
-{
-}
+    IRepositoryMethodDelete<int, INotSale>;
