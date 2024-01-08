@@ -34,6 +34,9 @@ public class FieldOnPacketUserAbilityMassUpRequestPlug : IPipelinePlug<FieldOnPa
     
     public static void HandleStatUp(ModifyStatContext stats, ModifyStatType type, int value = 1)
     {
+        if (stats.AP < value)
+            return;
+        
         switch (type)
         {
             case ModifyStatType.STR:
