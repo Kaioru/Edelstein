@@ -16,7 +16,7 @@ public static class ItemConstants
                 WeaponType.Gun => 0.15,
             _ => 0.20,
         };
-    
+
     public static bool IsRechargeableItem(int id)
         => id / 10000 == 207 || id / 10000 == 233;
 }
