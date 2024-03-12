@@ -9,9 +9,10 @@ public static class JobConstants
                     ? (job - 430) / 2
                     : job % 10
                 ) + 2;
+
         return job % 1000 == 0 || job == 2001 ? 0 : 1;
     }
-    
+
     public static int GetJobRace(int job)
         => job / 1000;
 
@@ -23,13 +24,17 @@ public static class JobConstants
 
     public static int GetBeginnerJob(int job)
     {
-        if (GetJobRace(job) == JobRace.Third && GetJobType(job) == JobType.Magician)
-            return Job.EvanJr;
+        if (IsThirdRaceMagician(job)) return Job.EvanJr;
+
         return GetJobRace(job) * 1000;
     }
-    
+
     public static bool IsExtendSPJob(int job)
-        => GetJobRace(job) == JobRace.Resistance ||
-           GetJobRace(job) == JobRace.Third && GetJobType(job) == JobType.Magician ||
-           job == Job.EvanJr;
+        => GetJobRace(job) == JobRace.Resistance || IsEvanJob(job);
+
+    public static bool IsThirdRaceMagician(int job)
+        => GetJobRace(job) == JobRace.Third && GetJobType(job) == JobType.Magician;
+
+    public static bool IsEvanJob(int job)
+        => IsThirdRaceMagician(job) || job == Job.EvanJr;
 }
