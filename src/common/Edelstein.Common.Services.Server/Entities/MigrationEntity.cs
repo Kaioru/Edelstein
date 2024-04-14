@@ -14,4 +14,7 @@ public record MigrationEntity : IMigrationEntry
     public required string ToServerID { get; set; }
     
     public required long Key { get; set; }
+    
+    public DateTime DateUpdated { get; set; }
+    public DateTime DateExpire { get; set; }
 }
