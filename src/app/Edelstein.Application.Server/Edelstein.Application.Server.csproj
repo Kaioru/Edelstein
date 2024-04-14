@@ -14,7 +14,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="Stages\*.json">
+    <None Update="Properties\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <TargetPath>%(Filename)%(Extension)</TargetPath>
