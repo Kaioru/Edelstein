@@ -1,0 +1,8 @@
+<Project>
+  
+  <ItemGroup>
+    <PackageVersion Include="MinVer" Version="5.0.0" />
+    <PackageVersion Include="protobuf-net.Grpc" Version="1.1.1" />
+  </ItemGroup>
+  
+</Project>
