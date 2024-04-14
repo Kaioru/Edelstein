@@ -5,5 +5,5 @@ namespace Edelstein.Protocol.Services.Server.Contracts.Requests;
 [DataContract]
 public record ServerGetShopByWorldRequest
 {
-    [DataMember(Order = 1)] public required string WorldID { get; init; }
+    [DataMember(Order = 1)] public required int WorldID { get; init; }
 }

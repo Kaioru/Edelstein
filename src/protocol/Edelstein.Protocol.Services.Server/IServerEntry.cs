@@ -3,6 +3,7 @@
 public interface IServerEntry
 {
     string ID { get; }
+    
     string Host { get; }
     int Port { get; }
 }
