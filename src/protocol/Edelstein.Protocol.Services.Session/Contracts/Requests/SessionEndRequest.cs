@@ -6,4 +6,5 @@ namespace Edelstein.Protocol.Services.Session.Contracts.Requests;
 public record SessionEndRequest
 {
     [DataMember(Order = 1)] public required int AccountID { get; init; }
+    [DataMember(Order = 2)] public required long Key { get; init; }
 }

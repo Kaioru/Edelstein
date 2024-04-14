@@ -7,5 +7,6 @@ public enum SessionResult
     FailedUnknown = 0x2,
     FailedAlreadyStarted = 0x3,
     FailedNotStarted = 0x4,
-    FailedNotFound = 0x5
+    FailedNotFound = 0x5,
+    FailedInvalidKey = 0x6
 }
