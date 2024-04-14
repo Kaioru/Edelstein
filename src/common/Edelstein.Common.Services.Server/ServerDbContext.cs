@@ -5,7 +5,7 @@ namespace Edelstein.Common.Services.Server;
 
 public class ServerDbContext(DbContextOptions<ServerDbContext> options) : DbContext(options)
 {
-    public const string ConnectionStringKey = "Server";
+    public const string ConnectionStringKey = "Pgsql";
 
     public DbSet<ServerEntity> Servers { get; set; } = null!;
     public DbSet<ServerEntityLogin> LoginServers { get; set; } = null!;
