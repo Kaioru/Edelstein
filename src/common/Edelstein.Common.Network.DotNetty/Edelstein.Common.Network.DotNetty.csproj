@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="DotNetty.Buffers" />
+    <PackageReference Include="DotNetty.Codecs" />
+    <PackageReference Include="DotNetty.Common" />
+    <PackageReference Include="DotNetty.Handlers" />
+    <PackageReference Include="DotNetty.Transport" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Crypto\Edelstein.Common.Crypto.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Utilities\Edelstein.Common.Utilities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
+  </ItemGroup>
+</Project>

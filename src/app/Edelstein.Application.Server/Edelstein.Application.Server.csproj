@@ -21,4 +21,8 @@
       <TargetPath>%(Filename)%(Extension)</TargetPath>
     </None>
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Bindings\" />
+  </ItemGroup>
 </Project>

@@ -65,11 +65,20 @@
           "System.Private.ServiceModel": "4.5.3"
         }
       },
+      "edelstein.protocol.network": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
       "edelstein.protocol.services.server": {
         "type": "Project",
         "dependencies": {
           "protobuf-net.Grpc": "[1.1.1, )"
         }
+      },
+      "edelstein.protocol.utilities": {
+        "type": "Project"
       },
       "protobuf-net.Grpc": {
         "type": "CentralTransitive",

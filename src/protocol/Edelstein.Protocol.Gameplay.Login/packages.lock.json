@@ -68,7 +68,14 @@
       "edelstein.protocol.gameplay": {
         "type": "Project",
         "dependencies": {
+          "Edelstein.Protocol.Network": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.network": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
         }
       },
       "edelstein.protocol.services.server": {
@@ -76,6 +83,9 @@
         "dependencies": {
           "protobuf-net.Grpc": "[1.1.1, )"
         }
+      },
+      "edelstein.protocol.utilities": {
+        "type": "Project"
       },
       "protobuf-net.Grpc": {
         "type": "CentralTransitive",

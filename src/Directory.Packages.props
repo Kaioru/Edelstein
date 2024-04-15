@@ -1,12 +1,18 @@
 <Project>
   <ItemGroup>
     <PackageVersion Include="AutoMapper" Version="13.0.1" />
+    <PackageVersion Include="DotNetty.Buffers" Version="0.7.6" />
+    <PackageVersion Include="DotNetty.Codecs" Version="0.7.6" />
+    <PackageVersion Include="DotNetty.Common" Version="0.7.6" />
+    <PackageVersion Include="DotNetty.Handlers" Version="0.7.6" />
+    <PackageVersion Include="DotNetty.Transport" Version="0.7.6" />
     <PackageVersion Include="Injectio" Version="3.1.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.3.24172.4" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-preview.3.24172.4" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0-preview.3.24172.4" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.0" />
     <PackageVersion Include="MinVer" Version="5.0.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     <PackageVersion Include="protobuf-net.Grpc" Version="1.1.1" />
