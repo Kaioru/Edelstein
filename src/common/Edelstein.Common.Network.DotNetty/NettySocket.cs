@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 using Edelstein.Protocol.Network;
@@ -25,9 +24,6 @@ public class NettySocket(
     public uint SeqRecv { get; set; } = seqRecv;
 
     public bool IsDataEncrypted { get; } = isDataEncrypted;
-
-    public DateTime LastAliveSent { get; set; }
-    public DateTime LastAliveRecv { get; set; }
 
     public async Task Dispatch(IPacket packet)
     {

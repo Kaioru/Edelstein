@@ -1,4 +1,5 @@
 ﻿using System;
+using DotNetty.Common.Utilities;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Utilities.Buffers;
 using Edelstein.Protocol.Network;
@@ -8,21 +9,24 @@ using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Common.Network.DotNetty.Handlers;
 
-public class NettyTransportConnectorHandler(
+public class NettyTransportConnectorHandler<TSocketUser>(
     TransportVersion transportVersion,
-    IAdapterInitializer initializer, 
+    ISocketUserCreator<TSocketUser> creator,
+    ISocketAdapter<TSocketUser> socketAdapter,
     IRepository<string, ISocket> sockets
 ) : ChannelHandlerAdapter
+    where TSocketUser : class, ISocketUser
 {
-
+    private readonly AttributeKey<TSocketUser> _userKey = AttributeKey<TSocketUser>.ValueOf("User");
+    
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
-        var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
+        var user = context.Channel.GetAttribute(_userKey).Get();
         using var packet = (IPacket)message;
 
-        if (adapter != null)
+        if (user != null)
         {
-            adapter.OnPacket(packet);
+            socketAdapter.OnPacket(user, packet);
         }
         else
         {
@@ -42,10 +46,10 @@ public class NettyTransportConnectorHandler(
                 seqSend,
                 seqRecv
             );
-            var newAdapter = initializer.Initialize(newSocket);
+            var newAdapter = creator.CreateUser(newSocket);
 
             context.Channel.GetAttribute(NettyAttributes.SocketKey).Set(newSocket);
-            context.Channel.GetAttribute(NettyAttributes.AdapterKey).Set(newAdapter);
+            context.Channel.GetAttribute(_userKey).Set(newAdapter);
 
             _ = sockets.Insert(newSocket);
         }
@@ -53,21 +57,23 @@ public class NettyTransportConnectorHandler(
 
     public override void ChannelInactive(IChannelHandlerContext context)
     {
-        var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
+        var user = context.Channel.GetAttribute(_userKey).Get();
 
-        adapter?.OnDisconnect();
+        socketAdapter.OnDisconnect(user);
         base.ChannelInactive(context);
 
-        if (adapter == null) return;
+        if (user == null) return;
 
-        _ = sockets.Delete(adapter.Socket);
+        _ = sockets.Delete(user.Socket);
     }
 
 
     public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
     {
-        var adapter = context.Channel.GetAttribute(NettyAttributes.AdapterKey).Get();
-
-        adapter?.OnException(exception);
+        var user = context.Channel.GetAttribute(_userKey).Get();
+        
+        if (user == null) return;
+        
+        socketAdapter.OnException(user, exception);
     }
 }

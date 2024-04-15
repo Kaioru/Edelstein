@@ -3,4 +3,7 @@
     <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Services.Server\Edelstein.Protocol.Services.Server.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+  </ItemGroup>
 </Project>

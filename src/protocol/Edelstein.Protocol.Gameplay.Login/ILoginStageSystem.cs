@@ -1,3 +1,6 @@
-namespace Edelstein.Protocol.Gameplay.Login;
+﻿namespace Edelstein.Protocol.Gameplay.Login;
 
-public interface ILoginStageSystem : IStageSystem<ILoginStageSystemOptions>;
+public interface ILoginStageSystem : IStageSystem<ILoginStageUser, ILoginStageSystem>
+{
+    ILoginStageSystemOptions Options { get; }
+}

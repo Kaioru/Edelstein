@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Network.Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Crypto", "src\common\Edelstein.Common.Crypto\Edelstein.Common.Crypto.csproj", "{2B8D2564-3DF1-42B2-9A50-0AAD2E8A8AE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Gameplay", "src\common\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj", "{F66379E6-CAB8-4E63-BB0C-94B98F021A29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,7 @@ Global
 		{406AF08D-7BF4-4C00-A959-60D5D4601295} = {82D7864B-19AD-484C-BD2E-897F05B5852C}
 		{F94D12DC-FDC8-48F2-9EF0-7F229AF1A9CC} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
 		{2B8D2564-3DF1-42B2-9A50-0AAD2E8A8AE8} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
+		{F66379E6-CAB8-4E63-BB0C-94B98F021A29} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5AA56CCA-0711-4F1E-956D-6A9ECB62AA6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -130,5 +133,9 @@ Global
 		{2B8D2564-3DF1-42B2-9A50-0AAD2E8A8AE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B8D2564-3DF1-42B2-9A50-0AAD2E8A8AE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B8D2564-3DF1-42B2-9A50-0AAD2E8A8AE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F66379E6-CAB8-4E63-BB0C-94B98F021A29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F66379E6-CAB8-4E63-BB0C-94B98F021A29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F66379E6-CAB8-4E63-BB0C-94B98F021A29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F66379E6-CAB8-4E63-BB0C-94B98F021A29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

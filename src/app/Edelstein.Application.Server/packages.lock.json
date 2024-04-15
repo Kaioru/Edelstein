@@ -96,6 +96,12 @@
           "Serilog": "2.10.0"
         }
       },
+      "System.CommandLine": {
+        "type": "Direct",
+        "requested": "[2.0.0-beta4.22272.1, )",
+        "resolved": "2.0.0-beta4.22272.1",
+        "contentHash": "1uqED/q2H0kKoLJ4+hI2iPSBSEdTuhfCYADeJrAqERmiGQ2NNacYKRNEQ+gFbU4glgVyK8rxI+ZOe1onEtr/Pg=="
+      },
       "Grpc.Core.Api": {
         "type": "Transitive",
         "resolved": "2.51.0",
@@ -287,14 +293,6 @@
           "Microsoft.Extensions.Options": "9.0.0-preview.3.24172.9"
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions": {
-        "type": "Transitive",
-        "resolved": "9.0.0-preview.3.24172.9",
-        "contentHash": "b9wNSdoc20aarUp1ktpS2ERzO9MDqLflH2TmW/CXmjEnCli8CQ5gI+BeTyHa3j4RXwuhJiV4ssvthXYQj5rpWQ==",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-preview.3.24172.9"
-        }
-      },
       "Microsoft.Extensions.Logging.Configuration": {
         "type": "Transitive",
         "resolved": "8.0.0",
@@ -389,14 +387,6 @@
         "resolved": "2.1.0",
         "contentHash": "ok+RPAtESz/9MUXeIEz6Lv5XAGQsaNmEYXMsgVALj4D7kqC8gveKWXWXbufLySR2fWrwZf8smyN5RmHu0e4BHA=="
       },
-      "Npgsql": {
-        "type": "Transitive",
-        "resolved": "8.0.2",
-        "contentHash": "MuJzLoWCaQhQAR3oh66YR0Ir6mxuezncGX3f8wxvAc21g0+9HICktJQlqMoODhxztZKXE5k9GxRxqUAN+vPb4g==",
-        "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "8.0.0"
-        }
-      },
       "protobuf-net": {
         "type": "Transitive",
         "resolved": "2.4.8",
@@ -413,6 +403,11 @@
           "Microsoft.Extensions.Logging": "8.0.0",
           "Serilog": "3.1.1"
         }
+      },
+      "System.Collections.Immutable": {
+        "type": "Transitive",
+        "resolved": "1.5.0",
+        "contentHash": "EXKiDFsChZW0RjrZ4FYHu9aW6+P4MCgEDCklsVseRfhoO0F+dXeMSsMRAlVXIo06kGJ/zv+2w1a2uc2+kxxSaQ=="
       },
       "System.Diagnostics.DiagnosticSource": {
         "type": "Transitive",
@@ -444,6 +439,11 @@
         "resolved": "4.5.0",
         "contentHash": "+UW1hq11TNSeb+16rIk8hRQ02o339NFyzMc4ma/FqmxBzM30l1c2IherBB4ld1MNcenS48fz8tbt50OW4rVULA=="
       },
+      "System.Runtime.CompilerServices.Unsafe": {
+        "type": "Transitive",
+        "resolved": "5.0.0",
+        "contentHash": "ZD9TMpsmYJLrxbbmdvhwt9YEgG5WntEnZ/d1eH8JBX9LBp+Ju8BSBhUGbZMNVHHomWo2KVImJhTDl2hIgw/6MA=="
+      },
       "System.Security.Principal.Windows": {
         "type": "Transitive",
         "resolved": "4.5.0",
@@ -473,22 +473,63 @@
           "System.Text.Encodings.Web": "8.0.0"
         }
       },
-      "edelstein.common.services.server": {
+      "edelstein.common.crypto": {
+        "type": "Project"
+      },
+      "edelstein.common.gameplay": {
         "type": "Project",
         "dependencies": {
-          "AutoMapper": "[13.0.1, )",
-          "Edelstein.Protocol.Services.Migration": "[1.0.0, )",
+          "Edelstein.Common.Utilities": "[1.0.0, )",
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",
-          "Edelstein.Protocol.Services.Session": "[1.0.0, )",
-          "Microsoft.EntityFrameworkCore": "[9.0.0-preview.3.24172.4, )",
-          "Microsoft.Extensions.Configuration.Json": "[8.0.0, )",
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "[8.0.2, )"
+          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-preview.3.24172.9, )"
         }
       },
-      "edelstein.protocol.services.migration": {
+      "edelstein.common.gameplay.login": {
         "type": "Project",
         "dependencies": {
-          "protobuf-net.Grpc": "[1.1.1, )"
+          "Edelstein.Common.Gameplay": "[1.0.0, )",
+          "Edelstein.Protocol.Gameplay.Login": "[1.0.0, )"
+        }
+      },
+      "edelstein.common.network.dotnetty": {
+        "type": "Project",
+        "dependencies": {
+          "DotNetty.Buffers": "[0.7.6, )",
+          "DotNetty.Codecs": "[0.7.6, )",
+          "DotNetty.Common": "[0.7.6, )",
+          "DotNetty.Handlers": "[0.7.6, )",
+          "DotNetty.Transport": "[0.7.6, )",
+          "Edelstein.Common.Crypto": "[1.0.0, )",
+          "Edelstein.Common.Utilities": "[1.0.0, )",
+          "Edelstein.Protocol.Network": "[1.0.0, )"
+        }
+      },
+      "edelstein.common.utilities": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )",
+          "Microsoft.IO.RecyclableMemoryStream": "[3.0.0, )"
+        }
+      },
+      "edelstein.protocol.gameplay": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Network": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Server": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.gameplay.login": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Server": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.network": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
         }
       },
       "edelstein.protocol.services.server": {
@@ -497,22 +538,61 @@
           "protobuf-net.Grpc": "[1.1.1, )"
         }
       },
-      "edelstein.protocol.services.session": {
-        "type": "Project",
-        "dependencies": {
-          "protobuf-net.Grpc": "[1.1.1, )"
-        }
-      },
       "edelstein.protocol.utilities": {
         "type": "Project"
       },
-      "AutoMapper": {
+      "DotNetty.Buffers": {
         "type": "CentralTransitive",
-        "requested": "[13.0.1, )",
-        "resolved": "13.0.1",
-        "contentHash": "/Fx1SbJ16qS7dU4i604Sle+U9VLX+WSNVJggk6MupKVkYvvBm4XqYaeFuf67diHefHKHs50uQIS2YEDFhPCakQ==",
+        "requested": "[0.7.6, )",
+        "resolved": "0.7.6",
+        "contentHash": "JVYypDugRG4m3hbS0drCC79vX93zqjn5w+U4ti/KXjTIzcQ/UVHrCgs7ZgJfWRUQLfgfQB0daYQtE18lKD8pHg==",
         "dependencies": {
-          "Microsoft.Extensions.Options": "6.0.0"
+          "DotNetty.Common": "0.7.6",
+          "System.Runtime.CompilerServices.Unsafe": "5.0.0"
+        }
+      },
+      "DotNetty.Codecs": {
+        "type": "CentralTransitive",
+        "requested": "[0.7.6, )",
+        "resolved": "0.7.6",
+        "contentHash": "XBZy/m3+V8PBUHHHbFKaRBE0+knTCitcE8oKCQn4jZybH25mCZ1vTwj3BRuPYdNpzh74Op32Hj4ZXF+DMx/oAg==",
+        "dependencies": {
+          "DotNetty.Buffers": "0.7.6",
+          "DotNetty.Common": "0.7.6",
+          "DotNetty.Transport": "0.7.6",
+          "System.Collections.Immutable": "1.5.0"
+        }
+      },
+      "DotNetty.Common": {
+        "type": "CentralTransitive",
+        "requested": "[0.7.6, )",
+        "resolved": "0.7.6",
+        "contentHash": "dmK8Njfh2Y4qnz99lLK0evoc46FPL5WOnHMLlavNZ6zqC5/bKgqGsJFoXbhVPkSYDp58g2euI64dhY0cvOUOZQ==",
+        "dependencies": {
+          "Microsoft.Extensions.Logging": "5.0.0",
+          "System.Runtime.CompilerServices.Unsafe": "5.0.0"
+        }
+      },
+      "DotNetty.Handlers": {
+        "type": "CentralTransitive",
+        "requested": "[0.7.6, )",
+        "resolved": "0.7.6",
+        "contentHash": "6sSMp0Md8DbpyOAV9IjiR30uzaLrxAbJTcwFFpMJM1+EJhvPz6Ywt0RqoV6+lseq6zqBjMq2jbPTKcqPoqNYIA==",
+        "dependencies": {
+          "DotNetty.Buffers": "0.7.6",
+          "DotNetty.Codecs": "0.7.6",
+          "DotNetty.Common": "0.7.6",
+          "DotNetty.Transport": "0.7.6"
+        }
+      },
+      "DotNetty.Transport": {
+        "type": "CentralTransitive",
+        "requested": "[0.7.6, )",
+        "resolved": "0.7.6",
+        "contentHash": "EVQ5FihFPdWmw7v6l/4iyMepj49vZT11kWQNJ0ApC4KzkdJJ6LM/7NDUgghyxbO0e25nfQRtkGLP5EZAEo7QDA==",
+        "dependencies": {
+          "DotNetty.Buffers": "0.7.6",
+          "DotNetty.Common": "0.7.6"
         }
       },
       "Microsoft.EntityFrameworkCore": {
@@ -540,17 +620,20 @@
           "System.Text.Json": "8.0.0"
         }
       },
-      "Npgsql.EntityFrameworkCore.PostgreSQL": {
+      "Microsoft.Extensions.Logging.Abstractions": {
         "type": "CentralTransitive",
-        "requested": "[8.0.2, )",
-        "resolved": "8.0.2",
-        "contentHash": "eoZPynwkZTWFTgnocvXORuCL2yFZtscrUdqVhjxiRULpC7BMg9zhLM5oDZAU5PoX1PgN77hmkKE4a3PQiHqh7Q==",
+        "requested": "[9.0.0-preview.3.24172.9, )",
+        "resolved": "9.0.0-preview.3.24172.9",
+        "contentHash": "b9wNSdoc20aarUp1ktpS2ERzO9MDqLflH2TmW/CXmjEnCli8CQ5gI+BeTyHa3j4RXwuhJiV4ssvthXYQj5rpWQ==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "8.0.2",
-          "Microsoft.EntityFrameworkCore.Abstractions": "8.0.2",
-          "Microsoft.EntityFrameworkCore.Relational": "8.0.2",
-          "Npgsql": "8.0.2"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-preview.3.24172.9"
         }
+      },
+      "Microsoft.IO.RecyclableMemoryStream": {
+        "type": "CentralTransitive",
+        "requested": "[3.0.0, )",
+        "resolved": "3.0.0",
+        "contentHash": "irv0HuqoH8Ig5i2fO+8dmDNdFdsrO+DoQcedwIlb810qpZHBNQHZLW7C/AHBQDgLLpw2T96vmMAy/aE4Yj55Sg=="
       },
       "protobuf-net.Grpc": {
         "type": "CentralTransitive",

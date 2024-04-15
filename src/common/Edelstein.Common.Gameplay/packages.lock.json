@@ -11,6 +11,15 @@
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
         }
       },
+      "Microsoft.Extensions.Logging.Abstractions": {
+        "type": "Direct",
+        "requested": "[9.0.0-preview.3.24172.9, )",
+        "resolved": "9.0.0-preview.3.24172.9",
+        "contentHash": "b9wNSdoc20aarUp1ktpS2ERzO9MDqLflH2TmW/CXmjEnCli8CQ5gI+BeTyHa3j4RXwuhJiV4ssvthXYQj5rpWQ==",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-preview.3.24172.9"
+        }
+      },
       "MinVer": {
         "type": "Direct",
         "requested": "[5.0.0, )",
@@ -79,15 +88,6 @@
           "System.Private.ServiceModel": "4.5.3"
         }
       },
-      "edelstein.common.gameplay": {
-        "type": "Project",
-        "dependencies": {
-          "Edelstein.Common.Utilities": "[1.0.0, )",
-          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
-          "Edelstein.Protocol.Services.Server": "[1.0.0, )",
-          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-preview.3.24172.9, )"
-        }
-      },
       "edelstein.common.utilities": {
         "type": "Project",
         "dependencies": {
@@ -99,13 +99,6 @@
         "type": "Project",
         "dependencies": {
           "Edelstein.Protocol.Network": "[1.0.0, )",
-          "Edelstein.Protocol.Services.Server": "[1.0.0, )"
-        }
-      },
-      "edelstein.protocol.gameplay.login": {
-        "type": "Project",
-        "dependencies": {
-          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )"
         }
       },
@@ -123,15 +116,6 @@
       },
       "edelstein.protocol.utilities": {
         "type": "Project"
-      },
-      "Microsoft.Extensions.Logging.Abstractions": {
-        "type": "CentralTransitive",
-        "requested": "[9.0.0-preview.3.24172.9, )",
-        "resolved": "9.0.0-preview.3.24172.9",
-        "contentHash": "b9wNSdoc20aarUp1ktpS2ERzO9MDqLflH2TmW/CXmjEnCli8CQ5gI+BeTyHa3j4RXwuhJiV4ssvthXYQj5rpWQ==",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-preview.3.24172.9"
-        }
       },
       "Microsoft.IO.RecyclableMemoryStream": {
         "type": "CentralTransitive",

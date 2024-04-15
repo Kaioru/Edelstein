@@ -9,14 +9,15 @@ using Edelstein.Common.Utilities.Repositories;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Utilities.Repositories;
-using Injectio.Attributes;
 
 namespace Edelstein.Common.Network.DotNetty.Transports;
 
-public class NettyTransportConnector(
-    IAdapterInitializer initializer, 
-    TransportVersion version
+public class NettyTransportConnector<TSocketUser>(
+    TransportVersion version,
+    ISocketUserCreator<TSocketUser> creator,
+    ISocketAdapter<TSocketUser> socketAdapter
 ) : ITransportConnector
+    where TSocketUser : class, ISocketUser
 {
     private readonly IRepository<string, ISocket> _sockets = new Repository<string, ISocket>();
 
@@ -34,7 +35,7 @@ public class NettyTransportConnector(
             {
                 ch.Pipeline.AddLast(
                     new NettyPacketDecoder(version, aesCipher, igCipher),
-                    new NettyTransportConnectorHandler(version, initializer, _sockets),
+                    new NettyTransportConnectorHandler<TSocketUser>(version, creator, socketAdapter, _sockets),
                     new NettyPacketEncoder(version, aesCipher, igCipher)
                 );
             }))

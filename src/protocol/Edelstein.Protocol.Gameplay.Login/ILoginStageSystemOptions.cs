@@ -1,4 +1,4 @@
-using Edelstein.Protocol.Services.Server;
+﻿using Edelstein.Protocol.Services.Server;
 
 namespace Edelstein.Protocol.Gameplay.Login;
 

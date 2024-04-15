@@ -1,19 +1,18 @@
-﻿using Edelstein.Common.Services.Server;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Serilog;
+﻿using System;
+using System.CommandLine;
+using System.IO;
+using Edelstein.Application.Server;
 
-var builder = Host.CreateApplicationBuilder();
+var commandRoot = new RootCommand(
+    "A mushroom game server emulator"
+);
+var argumentFile = new Argument<FileInfo>(
+    "file or directory path", 
+    () => new FileInfo(AppDomain.CurrentDomain.BaseDirectory), 
+    "The file or directory path to stage json file(s)"
+);
 
-builder.Services.AddSerilog((_, logger) 
-    => logger.ReadFrom.Configuration(builder.Configuration));
+commandRoot.AddArgument(argumentFile);
+commandRoot.SetHandler(ProgramHandler.ExecuteRoot, argumentFile);
 
-builder.Services.AddDbContextFactory<ServerDbContext>(options 
-    => options.UseNpgsql(builder.Configuration.GetConnectionString(ServerDbContext.ConnectionStringKey)));
-builder.Services.AddAutoMapper(typeof(ServerDbContext));
-
-var host = builder.Build();
-
-await host.RunAsync();
+await commandRoot.InvokeAsync(args);

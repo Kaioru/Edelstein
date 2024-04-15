@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Utilities.Buffers;
 using Edelstein.Protocol.Utilities.Repositories;
@@ -15,9 +14,6 @@ public interface ISocket : IRepositoryEntry<string>
     uint SeqRecv { get; set; }
 
     bool IsDataEncrypted { get; }
-
-    DateTime LastAliveSent { get; set; }
-    DateTime LastAliveRecv { get; set; }
 
     Task Dispatch(IPacket packet);
     Task Close();

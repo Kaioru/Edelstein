@@ -1,9 +1,11 @@
-using Edelstein.Protocol.Services.Server;
+﻿using Edelstein.Protocol.Network;
+using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Protocol.Gameplay;
 
-public interface IStageSystem<out TStageOptions>
-    where TStageOptions : IServerEntry
-{
-    TStageOptions Options { get; }
-}
+public interface IStageSystem<TStageUser, TStageSystem> : 
+    IRepositoryEntry<string>, 
+    ISocketUserCreator<TStageUser>, 
+    ISocketAdapter<TStageUser> 
+    where TStageUser : IStageUser<TStageUser, TStageSystem> 
+    where TStageSystem : IStageSystem<TStageUser, TStageSystem>;

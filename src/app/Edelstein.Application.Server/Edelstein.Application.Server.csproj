@@ -7,11 +7,7 @@
     <PackageReference Include="Serilog.Settings.Configuration" />
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.File" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj" />
-    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj" />
+    <PackageReference Include="System.CommandLine" />
   </ItemGroup>
   
   <ItemGroup>
@@ -23,6 +19,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Bindings\" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Login\Edelstein.Common.Gameplay.Login.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
   </ItemGroup>
 </Project>

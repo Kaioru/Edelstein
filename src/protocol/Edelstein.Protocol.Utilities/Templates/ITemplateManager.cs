@@ -1,0 +1,8 @@
+﻿using Edelstein.Protocol.Utilities.Repositories.Methods;
+
+namespace Edelstein.Protocol.Utilities.Templates;
+
+public interface ITemplateManager<TTemplate> :
+    ITemplateCollection<TTemplate>,
+    IRepositoryMethodInsert<int, ITemplateCollectionProvider<TTemplate>>
+    where TTemplate : ITemplate;

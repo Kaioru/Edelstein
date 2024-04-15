@@ -1,14 +1,11 @@
-using System.Threading.Tasks;
-using Edelstein.Protocol.Services.Server;
+﻿using System.Threading.Tasks;
 
 namespace Edelstein.Protocol.Gameplay;
 
-public interface IStage<TStageSystem, TStageOptions>
-    where TStageSystem : IStageSystem<TStageOptions> 
-    where TStageOptions : IServerEntry
+public interface IStage<in TStageUser, out TStageSystem>
+    where TStageSystem : IStageSystem<TStageUser, TStageSystem> 
+    where TStageUser : IStageUser<TStageUser, TStageSystem>
 {
-    TStageSystem System { get; }
-
-    Task Enter(IStageUser<TStageSystem, TStageOptions> user);
-    Task Leave(IStageUser<TStageSystem, TStageOptions> user);
+    Task Enter(TStageUser user);
+    Task Leave(TStageUser user);
 }

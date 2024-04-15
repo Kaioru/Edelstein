@@ -256,14 +256,6 @@
           "Microsoft.Extensions.Options": "9.0.0-preview.3.24172.9"
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions": {
-        "type": "Transitive",
-        "resolved": "9.0.0-preview.3.24172.9",
-        "contentHash": "b9wNSdoc20aarUp1ktpS2ERzO9MDqLflH2TmW/CXmjEnCli8CQ5gI+BeTyHa3j4RXwuhJiV4ssvthXYQj5rpWQ==",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-preview.3.24172.9"
-        }
-      },
       "Microsoft.Extensions.Options": {
         "type": "Transitive",
         "resolved": "9.0.0-preview.3.24172.9",
@@ -463,6 +455,15 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "9.0.0-preview.3.24172.4",
           "Microsoft.Extensions.Configuration.Abstractions": "9.0.0-preview.3.24172.9"
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[9.0.0-preview.3.24172.9, )",
+        "resolved": "9.0.0-preview.3.24172.9",
+        "contentHash": "b9wNSdoc20aarUp1ktpS2ERzO9MDqLflH2TmW/CXmjEnCli8CQ5gI+BeTyHa3j4RXwuhJiV4ssvthXYQj5rpWQ==",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-preview.3.24172.9"
         }
       },
       "protobuf-net.Grpc": {
