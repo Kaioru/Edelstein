@@ -19,7 +19,7 @@ internal static class ProgramHandler
     public async static Task ExecuteRoot(FileInfo file)
     {
         var builder = Host.CreateApplicationBuilder();
-
+        
         builder.Services.AddSerilog((_, configuration) => configuration.ReadFrom.Configuration(builder.Configuration));
 
         builder.Services.AddEdelsteinCommonUtilities();

@@ -34,7 +34,7 @@ public class NettyTransportConnectorState(
 #if (DEBUG)
         await group0.ShutdownGracefullyAsync(TimeSpan.Zero, TimeSpan.Zero);
 #else
-        await _group0.ShutdownGracefullyAsync(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(5));
+        await group0.ShutdownGracefullyAsync(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(5));
 #endif
     }
 }
