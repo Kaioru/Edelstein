@@ -29,34 +29,41 @@ internal static class ProgramHandler
         var configFileInfos = (file.Attributes & FileAttributes.Directory) != 0
             ? file.Directory?.GetFiles() ?? Array.Empty<FileInfo>()
             : new[]{ file };
-    
+        var version = new TransportVersion(95, "1", 8);
+        
         foreach (var configFile in configFileInfos.Where(f => f.Extension == ".json"))
         {
-            var version = new TransportVersion(95, "1", 8);
             var config = new ConfigurationBuilder()
                 .AddJsonFile(configFile.FullName, false, false)
                 .Build();
 
-            switch (config["Type"])
+            try
             {
-                case "Login":
-                    builder.Services.AddHostedService(p =>
-                    {
-                        var loginConfig = new StageConfigLogin();
-                        var loginSystem = new LoginStageSystem(loginConfig);
-                
-                        config.Bind(loginConfig);
-                        
-                        return new ServiceHostStage<ILoginStageUser, ILoginStageSystem>(
-                            p.GetRequiredService<ILogger<ServiceHostStage<ILoginStageUser, ILoginStageSystem>>>(),
-                            version,
-                            loginConfig, 
-                            loginSystem
-                        );
-                    });
-                    break;
-                default:
-                    continue;
+                switch (config["Type"])
+                {
+                    case "Login":
+                        builder.Services.AddSingleton<IHostedService>(p =>
+                        {
+                            var loginConfig = new StageConfigLogin();
+                            var loginSystem = new LoginStageSystem(loginConfig);
+
+                            config.Bind(loginConfig);
+
+                            return new ServiceHostStage<ILoginStageUser, ILoginStageSystem>(
+                                p.GetRequiredService<ILogger<ServiceHostStage<ILoginStageUser, ILoginStageSystem>>>(),
+                                version,
+                                loginConfig,
+                                loginSystem
+                            );
+                        });
+                        break;
+                    default:
+                        continue;
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
             }
         }
     
