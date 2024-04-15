@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Services.Server\Edelstein.Protocol.Services.Server.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Services.Migration;
+﻿using System;
+using Edelstein.Protocol.Services.Migration;
 
 namespace Edelstein.Common.Services.Server.Entities;
 

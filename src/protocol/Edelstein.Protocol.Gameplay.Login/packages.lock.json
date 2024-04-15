@@ -8,16 +8,6 @@
         "resolved": "5.0.0",
         "contentHash": "ybkgpQMtt0Fo91l5rYtE3TZtD+Nmy5Ko091xvfXXOosQdMi30XO2EZ2+ShZt89gdu7RMmJqZaJ+e1q6d+6+KNw=="
       },
-      "protobuf-net.Grpc": {
-        "type": "Direct",
-        "requested": "[1.1.1, )",
-        "resolved": "1.1.1",
-        "contentHash": "uThFb/iUplzuXEa/cztJaNGpKLRQRb515STtQX99IS1MKh8Qsunw6MjjU+9rjo8s9UymR6lN9Ab6xT3adBlyDg==",
-        "dependencies": {
-          "Grpc.Core.Api": "2.51.0",
-          "protobuf-net": "2.4.8"
-        }
-      },
       "Grpc.Core.Api": {
         "type": "Transitive",
         "resolved": "2.51.0",
@@ -73,6 +63,28 @@
         "contentHash": "Wc9Hgg4Cmqi416zvEgq2sW1YYCGuhwWzspDclJWlFZqY6EGhFUPZU+kVpl5z9kAgrSOQP7/Uiik+PtSQtmq+5A==",
         "dependencies": {
           "System.Private.ServiceModel": "4.5.3"
+        }
+      },
+      "edelstein.protocol.gameplay": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Services.Server": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.services.server": {
+        "type": "Project",
+        "dependencies": {
+          "protobuf-net.Grpc": "[1.1.1, )"
+        }
+      },
+      "protobuf-net.Grpc": {
+        "type": "CentralTransitive",
+        "requested": "[1.1.1, )",
+        "resolved": "1.1.1",
+        "contentHash": "uThFb/iUplzuXEa/cztJaNGpKLRQRb515STtQX99IS1MKh8Qsunw6MjjU+9rjo8s9UymR6lN9Ab6xT3adBlyDg==",
+        "dependencies": {
+          "Grpc.Core.Api": "2.51.0",
+          "protobuf-net": "2.4.8"
         }
       }
     }
