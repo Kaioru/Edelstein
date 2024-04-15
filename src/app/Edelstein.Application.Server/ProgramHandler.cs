@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Edelstein.Application.Server.Bindings;
 using Edelstein.Common.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login;
+using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Network.Transports;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,7 +46,10 @@ internal static class ProgramHandler
                         builder.Services.AddSingleton<IHostedService>(p =>
                         {
                             var loginConfig = new StageConfigLogin();
-                            var loginSystem = new LoginStageSystem(loginConfig);
+                            var loginSystem = new LoginStageSystem(
+                                loginConfig,
+                                p.GetRequiredService<ILoginContextPipelines>()
+                            );
 
                             config.Bind(loginConfig);
 
