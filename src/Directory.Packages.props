@@ -1,5 +1,8 @@
 <Project>
   <ItemGroup>
+    <PackageVersion Include="BinarySerializer" Version="8.6.4.1" />
+    <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
+    <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
     <PackageVersion Include="MinVer" Version="5.0.0" />
   </ItemGroup>
 </Project>
