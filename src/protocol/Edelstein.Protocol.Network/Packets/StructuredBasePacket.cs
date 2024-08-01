@@ -1,3 +1,10 @@
-﻿namespace Edelstein.Protocol.Network.Packets;
+﻿using System.IO;
+using System.Threading.Tasks;
 
-public record StructuredBasePacket;
+namespace Edelstein.Protocol.Network.Packets;
+
+public record StructuredBasePacket : IDispatchable
+{
+    public void DispatchTo(Stream output) 
+        => StructuredPacketSerializer.Shared.Serialize(output, this);
+}

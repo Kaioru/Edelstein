@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Network.Packets;
 
-public interface IRawPacketWriter : IDisposable
+public interface IRawPacketWriter : IDispatchable, IDisposable
 {
     long Length { get; }
 
@@ -22,6 +22,4 @@ public interface IRawPacketWriter : IDisposable
 
     IRawPacketWriter WriteString(string value, short? length = null);
     IRawPacketWriter WriteBytes(byte[] value);
-
-    IRawPacket Build();
 }

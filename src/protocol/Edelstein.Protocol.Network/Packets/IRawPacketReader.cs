@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Network.Packets;
 
-public interface IRawPacketReader : IDisposable
+public interface IRawPacketReader : IDispatchable, IDisposable
 {
     long Cursor { get; }
     long Available { get; }

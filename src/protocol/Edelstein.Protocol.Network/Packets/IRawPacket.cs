@@ -2,8 +2,7 @@
 
 namespace Edelstein.Protocol.Network.Packets;
 
-public interface IRawPacket : IDisposable
+public interface IRawPacket : IDispatchable
 {
-    int Length { get; }
-    Memory<byte> Buffer { get; }
+    ReadOnlyMemory<byte> Buffer { get; }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using CommunityToolkit.HighPerformance.Buffers;
 using Microsoft.IO;
 
 namespace Edelstein.Protocol.Network.Packets;
@@ -13,11 +14,12 @@ public class RawPacketWriter : IRawPacketWriter
 
     public RawPacketWriter()
     {
-        _stream = RawPacketMemory.Shared.GetStream(null, 32);
+        _stream = RawPacketMemory.Shared.GetStream();
         _writer = new BinaryWriter(_stream);
     }
 
-    public RawPacketWriter(IFormattable operation) : this() => WriteShort(Convert.ToInt16(operation));
+    public RawPacketWriter(IFormattable operation) : this() 
+        => WriteShort(Convert.ToInt16(operation));
 
     public long Length => _stream.Length;
 
@@ -97,9 +99,12 @@ public class RawPacketWriter : IRawPacketWriter
         return this;
     }
 
-    public IRawPacket Build() 
-        => new RawPacket(_stream);
-
+    public void DispatchTo(Stream output)
+    {
+        foreach (var memory in _stream.GetReadOnlySequence())
+            output.Write(memory.Span);
+    }
+    
     public void Dispose()
     {
         GC.SuppressFinalize(this);

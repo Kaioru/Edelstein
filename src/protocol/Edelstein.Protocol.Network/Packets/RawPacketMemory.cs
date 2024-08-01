@@ -4,5 +4,8 @@ namespace Edelstein.Protocol.Network.Packets;
 
 internal static class RawPacketMemory
 {
-    internal static readonly RecyclableMemoryStreamManager Shared = new();
+    internal static readonly RecyclableMemoryStreamManager Shared = new(new RecyclableMemoryStreamManager.Options
+    {
+        
+    });
 }

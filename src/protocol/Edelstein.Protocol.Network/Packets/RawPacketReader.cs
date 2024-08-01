@@ -8,14 +8,16 @@ namespace Edelstein.Protocol.Network.Packets;
 public class RawPacketReader : IRawPacketReader
 {
     private readonly Encoding _encoding = Encoding.ASCII;
+    private readonly IRawPacket _packet;
     private readonly Stream _stream;
     private readonly BinaryReader _reader;
     
     public long Cursor => _stream.Position;
     public long Available => _stream.Length - _stream.Position;
-    
+
     public RawPacketReader(IRawPacket packet)
     {
+        _packet = packet;
         _stream = packet.Buffer.AsStream();
         _reader = new BinaryReader(_stream);
     }
@@ -43,7 +45,10 @@ public class RawPacketReader : IRawPacketReader
         ReadBytes(length);
         return this;
     }
-    
+
+    public void DispatchTo(Stream output) 
+        => output.Write(_packet.Buffer.Span);
+
     public void Dispose()
     {
         GC.SuppressFinalize(this);
