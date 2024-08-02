@@ -11,6 +11,8 @@ public class RawPacketWriter : IRawPacketWriter
     private readonly RecyclableMemoryStream _stream;
     private readonly BinaryWriter _writer;
 
+    public long Length => _stream.Length;
+
     public RawPacketWriter()
     {
         _stream = RawPacketMemory.Shared.GetStream();
@@ -19,8 +21,6 @@ public class RawPacketWriter : IRawPacketWriter
 
     public RawPacketWriter(IFormattable operation) : this() 
         => WriteShort(Convert.ToInt16(operation));
-
-    public long Length => _stream.Length;
 
     public IRawPacketWriter WriteByte(byte value)
     {
