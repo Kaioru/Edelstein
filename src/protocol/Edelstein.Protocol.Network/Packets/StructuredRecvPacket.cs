@@ -5,5 +5,5 @@ namespace Edelstein.Protocol.Network.Packets;
 public record StructuredRecvPacket : StructuredBasePacket
 {
     [FieldOrder(0)]
-    public PacketRecvOperation Operation { get; init; }
+    public required PacketRecvOperation Operation { get; init; }
 }
