@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <DotNettyVersion>0.7.6</DotNettyVersion>
+    <DotNettyVersion>0.7.2012.2221</DotNettyVersion>
   </PropertyGroup>
   
   <ItemGroup>

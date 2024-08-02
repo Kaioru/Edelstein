@@ -10,49 +10,49 @@
       },
       "SpanNetty.Buffers": {
         "type": "Direct",
-        "requested": "[0.7.6, )",
-        "resolved": "0.7.2006.2621",
-        "contentHash": "4zkbw3dbLEMai43tD/kswDGciRKlxKjCSxpMEGOAX1EzyB2v0numozp/5+6sOJpeEDaFaA3fThQxlot/AWsrcQ==",
+        "requested": "[0.7.2012.2221, )",
+        "resolved": "0.7.2012.2221",
+        "contentHash": "PzJfu0wzYSjU23Aq/ry9rC6AdYvksGOQNzUSYqYu/ZXyvSkJf/I8Aa3kRJpwEhDQaKywu9QOUF+WJ876I+fAtQ==",
         "dependencies": {
-          "SpanNetty.Common": "0.7.2006.2621"
+          "SpanNetty.Common": "0.7.2012.2221"
         }
       },
       "SpanNetty.Codecs": {
         "type": "Direct",
-        "requested": "[0.7.6, )",
-        "resolved": "0.7.2006.2621",
-        "contentHash": "YYMhTtsYObSQFQJm89ZpsrGomMndqMNNiirbBdHNY3WH6L1d+iJHK3l1dJ0RlLImofWSv7ypz46ZPK0s6ysCEg==",
+        "requested": "[0.7.2012.2221, )",
+        "resolved": "0.7.2012.2221",
+        "contentHash": "cGrVYyFK/XbxaYjiZ/hY5c+jJsvD/e7fieCrwYdEGSfdIm/O7kjMQi2dR5B8OC/9w9r4zDodnYZghOyF7qJhRw==",
         "dependencies": {
-          "SpanNetty.Transport": "0.7.2006.2621",
+          "SpanNetty.Transport": "0.7.2012.2221",
           "System.Collections.Immutable": "1.7.1"
         }
       },
       "SpanNetty.Common": {
         "type": "Direct",
-        "requested": "[0.7.6, )",
-        "resolved": "0.7.2006.2621",
-        "contentHash": "cWWz+Na5LABAoDKZZ+t2ztveNuOSBEiPvNvPkGnhRNstwxW1c0axLoEouQY/qv3YIEPj7TQVECAWo6HhsdQlgA==",
+        "requested": "[0.7.2012.2221, )",
+        "resolved": "0.7.2012.2221",
+        "contentHash": "7bYCbjnKHRy9ChI8uqgk7APsGrMrvD7myE3NpjotOGRKpV1czwzJpRDhg7tyFGgqncEX6FLImqezoevdWHY19w==",
         "dependencies": {
-          "Microsoft.Extensions.Logging": "3.1.5"
+          "Microsoft.Extensions.Logging": "3.1.8"
         }
       },
       "SpanNetty.Handlers": {
         "type": "Direct",
-        "requested": "[0.7.6, )",
-        "resolved": "0.7.2006.2621",
-        "contentHash": "/JYPKNgwj9x7LoJengTGKbf5QPKvHilLEKivB6lxLGCcnfOqvmVT+kt01A5CjL5EYS17yA4E36Rd/jhsdkJgHA==",
+        "requested": "[0.7.2012.2221, )",
+        "resolved": "0.7.2012.2221",
+        "contentHash": "0/Le2NrY8hudJHN7pAqXxpX6mX9HWgqGlig2mCAUQx9vPwZeqBzXAS/NLzvuZQXFqP42UTqwgTyFlbLyPF2SVQ==",
         "dependencies": {
-          "SpanNetty.Codecs": "0.7.2006.2621",
-          "SpanNetty.Transport.Libuv": "0.7.2006.2621"
+          "SpanNetty.Codecs": "0.7.2012.2221",
+          "SpanNetty.Transport.Libuv": "0.7.2012.2221"
         }
       },
       "SpanNetty.Transport": {
         "type": "Direct",
-        "requested": "[0.7.6, )",
-        "resolved": "0.7.2006.2621",
-        "contentHash": "hNy7fJHhfo/ZCiFobn8SG7I5vHWiu0Ko8O9JjzDV6RXscf8RPnoc7Qyyk34zPUM3brtP54nHvX/RgDOjp8Gdyg==",
+        "requested": "[0.7.2012.2221, )",
+        "resolved": "0.7.2012.2221",
+        "contentHash": "fsFvX+hNdOTXZlCtcKABz0wi3QLM9CfH4Mw6imYcBD3o/2ifApQfOxeKEMr8EWCDthXLeBwK/Y6LMloAU3bIfg==",
         "dependencies": {
-          "SpanNetty.Buffers": "0.7.2006.2621"
+          "SpanNetty.Buffers": "0.7.2012.2221"
         }
       },
       "Libuv": {
@@ -65,70 +65,70 @@
       },
       "Microsoft.Extensions.Configuration": {
         "type": "Transitive",
-        "resolved": "3.1.5",
-        "contentHash": "LZfdAP8flK4hkaniUv6TlstDX9FXLmJMX1A4mpLghAsZxTaJIgf+nzBNiPRdy/B5Vrs74gRONX3JrIUJQrebmA==",
+        "resolved": "3.1.8",
+        "contentHash": "xWvtu/ra8xDOy62ZXzQj1ElmmH3GpZBSKvw4LbfNXKCy+PaziS5Uh0gQ47D4H4w3u+PJfhNWCCGCp9ORNEzkRw==",
         "dependencies": {
-          "Microsoft.Extensions.Configuration.Abstractions": "3.1.5"
+          "Microsoft.Extensions.Configuration.Abstractions": "3.1.8"
         }
       },
       "Microsoft.Extensions.Configuration.Abstractions": {
         "type": "Transitive",
-        "resolved": "3.1.5",
-        "contentHash": "VBcAk6s9izZr04WCzNqOh1Sxz2RbVSh0G79MfpHSDv16cUJtSEYEHody9ZnF71LBEktzdu6cvDFBOFMh43q0iA==",
+        "resolved": "3.1.8",
+        "contentHash": "0qbNyxGpuNP/fuQ3FLHesm1Vn/83qYcAgVsi1UQCQN1peY4YH1uiizOh4xbYkQyxiVMD/c/zhiYYv94G0DXSSA==",
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "3.1.5"
+          "Microsoft.Extensions.Primitives": "3.1.8"
         }
       },
       "Microsoft.Extensions.Configuration.Binder": {
         "type": "Transitive",
-        "resolved": "3.1.5",
-        "contentHash": "ZR/zjBxkvdnnWhRoBHDT95uz1ZgJFhv1QazmKCIcDqy/RXqi+6dJ/PfxDhEnzPvk9HbkcGfFsPEu1vSIyxDqBQ==",
+        "resolved": "3.1.8",
+        "contentHash": "l/oqIWRM4YF62mlCOrIKGUOCemsaID/lngK2SZEtpYI8LrktpjPd4QzvENWj5GebbLbqOtsFhF6Ko6dgzmUnBw==",
         "dependencies": {
-          "Microsoft.Extensions.Configuration": "3.1.5"
+          "Microsoft.Extensions.Configuration": "3.1.8"
         }
       },
       "Microsoft.Extensions.DependencyInjection": {
         "type": "Transitive",
-        "resolved": "3.1.5",
-        "contentHash": "I+RTJQi7TtenIHZqL2zr6523PYXfL88Ruu4UIVmspIxdw14GHd8zZ+2dGLSdwX7fn41Hth4d42S1e1iHWVOJyQ==",
+        "resolved": "3.1.8",
+        "contentHash": "tUpYcVxFqwh8wVD8O+6A8gJnVtl6L4N1Vd9bLJgQSJ0gjBTUQ/eKwJn0LglkkaDU7GAxODDv4eexgZn3QSE0NQ==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.5"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.8"
         }
       },
       "Microsoft.Extensions.DependencyInjection.Abstractions": {
         "type": "Transitive",
-        "resolved": "3.1.5",
-        "contentHash": "2VSCj2TZPMdeEi279Lawi6qJQu4+sEWizSOYrhY6hapyS1jxn1jVUZT1Ugv68bya+x8+3lD4+RqhUZql9PhISQ=="
+        "resolved": "3.1.8",
+        "contentHash": "YP0kEBkSLTVl3znqZEux+xyJpz5iVNwFZf0OPS7nupdKbojSlO7Fa+JuQjLYpWfpAshaMcznu27tjWzfXRJnOA=="
       },
       "Microsoft.Extensions.Logging": {
         "type": "Transitive",
-        "resolved": "3.1.5",
-        "contentHash": "C85NYDym6xy03o70vxX+VQ4ZEjj5Eg5t5QoGW0t100vG5MmPL6+G3XXcQjIIn1WRQrjzGWzQwuKf38fxXEWIWA==",
+        "resolved": "3.1.8",
+        "contentHash": "Bch88WGwrgJUabSOiTbPgne/jkCcWTyP97db8GWzQH9RcGi6TThiRm8ggsD+OXBW2UBwAYx1Zb1ns1elsMiomQ==",
         "dependencies": {
-          "Microsoft.Extensions.Configuration.Binder": "3.1.5",
-          "Microsoft.Extensions.DependencyInjection": "3.1.5",
-          "Microsoft.Extensions.Logging.Abstractions": "3.1.5",
-          "Microsoft.Extensions.Options": "3.1.5"
+          "Microsoft.Extensions.Configuration.Binder": "3.1.8",
+          "Microsoft.Extensions.DependencyInjection": "3.1.8",
+          "Microsoft.Extensions.Logging.Abstractions": "3.1.8",
+          "Microsoft.Extensions.Options": "3.1.8"
         }
       },
       "Microsoft.Extensions.Logging.Abstractions": {
         "type": "Transitive",
-        "resolved": "3.1.5",
-        "contentHash": "ZvwowjRSWXewdPI+whPFXgwF4Qme6Q9KV9SCPEITSGiqHLArct7q5hTBtTzj3GPsVLjTqehvTg6Bd/EQk9JS0A=="
+        "resolved": "3.1.8",
+        "contentHash": "LxQPR/KE4P9nx304VcFipWPcW8ZOZOGHuiYlG0ncAQJItogDzR9nyYUNvziLObx2MfX2Z9iCTdAqEtoImaQOYg=="
       },
       "Microsoft.Extensions.Options": {
         "type": "Transitive",
-        "resolved": "3.1.5",
-        "contentHash": "f+JT/7lkKBMp/Ak2tVjO+TD7o+UoCfjnExkZNn0PZIso8kIXrqNy6x42Lrxf4Q0pW3JMf9ExmL2EQlvk2XnFAg==",
+        "resolved": "3.1.8",
+        "contentHash": "mpkwjNg5sr1XHEJwVS8G1w6dsh5/72vQOOe4aqhg012j93m8OOmfyIBwoQN4SE0KRRS+fatdW3qqUrHbRwlWOA==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.5",
-          "Microsoft.Extensions.Primitives": "3.1.5"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.8",
+          "Microsoft.Extensions.Primitives": "3.1.8"
         }
       },
       "Microsoft.Extensions.Primitives": {
         "type": "Transitive",
-        "resolved": "3.1.5",
-        "contentHash": "6bLdjSAQix82oP2tsuX9MM2yjgUFFOkSZYyRSKoUULilw2cg0Y0H+dnugwYlfj8Jd7yjd/+QSdNBqEyYhTYv0w=="
+        "resolved": "3.1.8",
+        "contentHash": "XcIoXQhT0kwnEhOKv/LmpWR6yF6QWmBTy9Fcsz4aHuCOgTJ7Zd23ELtUA4BfwlYoFlSedavS+vURz9tNekd44g=="
       },
       "Microsoft.NETCore.Platforms": {
         "type": "Transitive",
@@ -310,11 +310,11 @@
       },
       "SpanNetty.Transport.Libuv": {
         "type": "Transitive",
-        "resolved": "0.7.2006.2621",
-        "contentHash": "He4If20gQU74gvfXH0gkqZ4g9wpfIEYRS2LQn9Iyi7etrLJ+H8phVShtDvDEbed3/THr5CC6jJ+9wqhfS3zpCQ==",
+        "resolved": "0.7.2012.2221",
+        "contentHash": "0CynrzDPxeCNh/bdJngVxKq+p5GT4UMu8ze6zqhrW62TawCDGekeN43pGG86zv4IkCw2YyPV7vwqE/LHE4/e/A==",
         "dependencies": {
           "Libuv": "1.10.0",
-          "SpanNetty.Transport": "0.7.2006.2621"
+          "SpanNetty.Transport": "0.7.2012.2221"
         }
       },
       "System.AppContext": {
