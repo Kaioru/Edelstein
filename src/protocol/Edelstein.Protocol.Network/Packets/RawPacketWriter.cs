@@ -105,10 +105,7 @@ public class RawPacketWriter : IRawPacketWriter
     }
 
     public void DispatchTo(Stream output)
-    {
-        foreach (var memory in _stream.GetReadOnlySequence())
-            output.Write(memory.Span);
-    }
+        => _stream.WriteTo(output, 0, _stream.Length);
     
     public void Dispose()
     {
