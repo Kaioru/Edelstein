@@ -2,9 +2,31 @@
 using Edelstein.Protocol.Network.Packets;
 using Edelstein.Protocol.Network.Packets.Types;
 
-namespace Edelstein.Protocol.Gameplay.Login.Contracts.Packets;
+namespace Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Send;
 
-public record LoginAccountInfoFrame : StructuredBasePacket
+public record CheckPasswordResult() : StructuredSendPacket(PacketSendOperation.CheckPasswordResult)
+{
+    [FieldOrder(0)] public required LoginResultCode Result { get; init; }
+    
+    [FieldOrder(1)] public byte Unk1 { get; init; } = 0; // nRegStatID
+    [FieldOrder(2)] public int Unk2 { get; init; } = 0; // nUseDay
+    
+    [FieldOrder(3)]
+    [SerializeWhen(nameof(Result), LoginResultCode.Blocked)]
+    public BlockReason? BlockReason { get; init; }
+    
+    [FieldOrder(4)]
+    [SerializeWhen(nameof(Result), LoginResultCode.Success)]
+    public AccountInfo? AccountInfo { get; init; }
+}
+
+public record BlockReason : StructuredBasePacket
+{
+    [FieldOrder(0)] public required byte Reason { get; init; }
+    [FieldOrder(1)] public required FDateTime UnblockDate { get; init; }
+}
+
+public record AccountInfo : StructuredBasePacket
 {
     [FieldOrder(0)] public required int ID { get; init; }
     [FieldOrder(1)] public byte Gender { get; init; }

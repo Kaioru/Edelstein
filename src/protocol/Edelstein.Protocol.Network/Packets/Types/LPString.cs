@@ -9,6 +9,8 @@ public record LPString(
     string Value
 )
 {
+    public LPString() : this("") {}
+    
     [FieldOrder(0)] 
     [SerializeAs(SerializedType.Int2)]
     public int Length { get; init; } = Value.Length;

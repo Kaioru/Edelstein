@@ -4,7 +4,7 @@ using Edelstein.Protocol.Network.Packets.Types;
 
 namespace Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Recv;
 
-public record CheckPasswordPacket : StructuredRecvPacket
+public record CheckPassword : StructuredRecvPacket
 {
     [FieldOrder(0)] public required LPString Username { get; init; }
     [FieldOrder(1)] public required LPString Password { get; init; }
