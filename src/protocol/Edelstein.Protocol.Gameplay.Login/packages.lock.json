@@ -902,6 +902,13 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
+      "edelstein.protocol.gameplay": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Network": "[1.0.0, )",
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
       "edelstein.protocol.network": {
         "type": "Project",
         "dependencies": {
@@ -909,6 +916,9 @@
           "CommunityToolkit.HighPerformance": "[8.2.2, )",
           "Microsoft.IO.RecyclableMemoryStream": "[3.0.1, )"
         }
+      },
+      "edelstein.protocol.utilities": {
+        "type": "Project"
       },
       "BinarySerializer": {
         "type": "CentralTransitive",

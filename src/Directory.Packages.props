@@ -2,10 +2,10 @@
   <PropertyGroup>
     <DotNettyVersion>0.7.2012.2221</DotNettyVersion>
   </PropertyGroup>
-  
   <ItemGroup>
     <PackageVersion Include="BinarySerializer" Version="8.6.4.1" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-preview.6.24327.7" />
     <PackageVersion Include="SpanNetty.Buffers" Version="$(DotNettyVersion)" />
     <PackageVersion Include="SpanNetty.Codecs" Version="$(DotNettyVersion)" />
     <PackageVersion Include="SpanNetty.Common" Version="$(DotNettyVersion)" />

@@ -2,11 +2,25 @@
   "version": 2,
   "dependencies": {
     "net9.0": {
+      "Microsoft.Extensions.Logging.Abstractions": {
+        "type": "Direct",
+        "requested": "[9.0.0-preview.6.24327.7, )",
+        "resolved": "9.0.0-preview.6.24327.7",
+        "contentHash": "NegkZfTcD4KMDhoUZdJBeveV49W9K9RYRfnJuTqgToNoqoTROMwxQD4PCpoQAsORmk7Y9I/p8YjA9iKpro/Ysg==",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-preview.6.24327.7"
+        }
+      },
       "MinVer": {
         "type": "Direct",
         "requested": "[5.0.0, )",
         "resolved": "5.0.0",
         "contentHash": "ybkgpQMtt0Fo91l5rYtE3TZtD+Nmy5Ko091xvfXXOosQdMi30XO2EZ2+ShZt89gdu7RMmJqZaJ+e1q6d+6+KNw=="
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions": {
+        "type": "Transitive",
+        "resolved": "9.0.0-preview.6.24327.7",
+        "contentHash": "yz7PttoN1yClo8tBpL+QuaJuaS750iKcI7lvue5G4dD0xJQ1axMOB6aiIukchZJa31f/jpRtB9jErcZLn+V6xQ=="
       },
       "Microsoft.NETCore.Platforms": {
         "type": "Transitive",
@@ -900,6 +914,21 @@
           "System.Text.Encoding": "4.3.0",
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
+        }
+      },
+      "edelstein.protocol.gameplay": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Network": "[1.0.0, )",
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
+      "edelstein.protocol.gameplay.login": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Gameplay": "[1.0.0, )",
+          "Edelstein.Protocol.Network": "[1.0.0, )",
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
         }
       },
       "edelstein.protocol.network": {

@@ -111,11 +111,6 @@
           "Microsoft.Extensions.Options": "3.1.8"
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions": {
-        "type": "Transitive",
-        "resolved": "3.1.8",
-        "contentHash": "LxQPR/KE4P9nx304VcFipWPcW8ZOZOGHuiYlG0ncAQJItogDzR9nyYUNvziLObx2MfX2Z9iCTdAqEtoImaQOYg=="
-      },
       "Microsoft.Extensions.Options": {
         "type": "Transitive",
         "resolved": "3.1.8",
@@ -1075,6 +1070,12 @@
         "requested": "[8.2.2, )",
         "resolved": "8.2.2",
         "contentHash": "+zIp8d3sbtYaRbM6hqDs4Ui/z34j7DcUmleruZlYLE4CVxXq+MO8XJyIs42vzeTYFX+k0Iq1dEbBUnQ4z/Gnrw=="
+      },
+      "Microsoft.Extensions.Logging.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[9.0.0-preview.6.24327.7, )",
+        "resolved": "3.1.8",
+        "contentHash": "LxQPR/KE4P9nx304VcFipWPcW8ZOZOGHuiYlG0ncAQJItogDzR9nyYUNvziLObx2MfX2Z9iCTdAqEtoImaQOYg=="
       },
       "Microsoft.IO.RecyclableMemoryStream": {
         "type": "CentralTransitive",
