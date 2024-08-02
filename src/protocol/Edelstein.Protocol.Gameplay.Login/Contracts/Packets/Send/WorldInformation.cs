@@ -7,48 +7,46 @@ namespace Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Send;
 
 public record WorldInformation() : StructuredSendPacket(PacketSendOperation.WorldInformation)
 {
-    [FieldOrder(0)] public required byte ID { get; init; }
+    [FieldOrder(0)] 
+    public required byte ID { get; init; }
     
     [FieldOrder(1)]
     [SerializeWhen(nameof(ID), 0, ComparisonOperator.NotEqual)]
+    public WorldInformationData? Data { get; init; }
+}
+
+public record WorldInformationData : StructuredBasePacket
+{
+    [FieldOrder(0)]
     public LPString Name { get; init; } = new();
     
-    [FieldOrder(2)]
-    [SerializeWhen(nameof(ID), 0, ComparisonOperator.NotEqual)]
+    [FieldOrder(1)]
     public byte State { get; init; }
     
-    [FieldOrder(3)]
-    [SerializeWhen(nameof(ID), 0, ComparisonOperator.NotEqual)]
+    [FieldOrder(2)]
     public LPString EventDesc { get; init; } = new();
     
-    [FieldOrder(4)]
-    [SerializeWhen(nameof(ID), 0, ComparisonOperator.NotEqual)]
+    [FieldOrder(3)]
     public short EventEXP_WSE { get; init; }
     
-    [FieldOrder(5)]
-    [SerializeWhen(nameof(ID), 0, ComparisonOperator.NotEqual)]
+    [FieldOrder(4)]
     public short EventDrop_WSE { get; init; }
     
-    [FieldOrder(6)]
-    [SerializeWhen(nameof(ID), 0, ComparisonOperator.NotEqual)]
+    [FieldOrder(5)]
     public bool IsBlockCharCreation { get; init; }
     
-    [FieldOrder(7)]
-    [SerializeWhen(nameof(ID), 0, ComparisonOperator.NotEqual)]
+    [FieldOrder(6)]
     public byte ChannelCount { get; init; }
 
-    [FieldOrder(8)] 
+    [FieldOrder(7)] 
     [FieldLength(nameof(ChannelCount))]
-    [SerializeWhen(nameof(ID), 0, ComparisonOperator.NotEqual)]
     public List<WorldInformationChannel> Channels { get; init; } = new();
     
-    [FieldOrder(9)]
-    [SerializeWhen(nameof(ID), 0, ComparisonOperator.NotEqual)]
+    [FieldOrder(8)]
     public byte BalloonCount { get; init; }
     
-    [FieldOrder(10)] 
+    [FieldOrder(9)] 
     [FieldLength(nameof(BalloonCount))]
-    [SerializeWhen(nameof(ID), 0, ComparisonOperator.NotEqual)]
     public List<WorldInformationBalloon> Balloons { get; init; } = new();
 }
 
