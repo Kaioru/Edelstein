@@ -1,7 +1,7 @@
 ﻿namespace Edelstein.Protocol.Network.Transports;
 
-public record TransportVersion(
-    short Version,
+public record struct TransportVersion(
+    short Major,
     string Patch,
     byte Locale
 );

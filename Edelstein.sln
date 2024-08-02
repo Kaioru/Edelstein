@@ -27,6 +27,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protocol", "protocol", "{82
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Network", "src\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj", "{AF5AC908-62BB-48CE-99E8-83388738CCB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Network.DotNetty", "src\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj", "{0ED46D09-2617-4FBE-BFB4-D8B49BCE5C01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Crypto", "src\common\Edelstein.Common.Crypto\Edelstein.Common.Crypto.csproj", "{875EE192-E044-4C8D-941F-86C24C3FABF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,11 +44,21 @@ Global
 		{E50DFCDF-39D5-4D0D-A46E-94D11D795087} = {0C8602E7-AED6-43A4-BA0F-165EAB963D07}
 		{82D7864B-19AD-484C-BD2E-897F05B5852C} = {0C8602E7-AED6-43A4-BA0F-165EAB963D07}
 		{AF5AC908-62BB-48CE-99E8-83388738CCB1} = {82D7864B-19AD-484C-BD2E-897F05B5852C}
+		{0ED46D09-2617-4FBE-BFB4-D8B49BCE5C01} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
+		{875EE192-E044-4C8D-941F-86C24C3FABF7} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AF5AC908-62BB-48CE-99E8-83388738CCB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AF5AC908-62BB-48CE-99E8-83388738CCB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF5AC908-62BB-48CE-99E8-83388738CCB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF5AC908-62BB-48CE-99E8-83388738CCB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ED46D09-2617-4FBE-BFB4-D8B49BCE5C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ED46D09-2617-4FBE-BFB4-D8B49BCE5C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ED46D09-2617-4FBE-BFB4-D8B49BCE5C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ED46D09-2617-4FBE-BFB4-D8B49BCE5C01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{875EE192-E044-4C8D-941F-86C24C3FABF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{875EE192-E044-4C8D-941F-86C24C3FABF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{875EE192-E044-4C8D-941F-86C24C3FABF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{875EE192-E044-4C8D-941F-86C24C3FABF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

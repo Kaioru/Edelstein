@@ -1,7 +1,16 @@
 <Project>
+  <PropertyGroup>
+    <DotNettyVersion>0.7.6</DotNettyVersion>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageVersion Include="BinarySerializer" Version="8.6.4.1" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
+    <PackageVersion Include="SpanNetty.Buffers" Version="$(DotNettyVersion)" />
+    <PackageVersion Include="SpanNetty.Codecs" Version="$(DotNettyVersion)" />
+    <PackageVersion Include="SpanNetty.Common" Version="$(DotNettyVersion)" />
+    <PackageVersion Include="SpanNetty.Handlers" Version="$(DotNettyVersion)" />
+    <PackageVersion Include="SpanNetty.Transport" Version="$(DotNettyVersion)" />
     <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
     <PackageVersion Include="MinVer" Version="5.0.0" />
   </ItemGroup>

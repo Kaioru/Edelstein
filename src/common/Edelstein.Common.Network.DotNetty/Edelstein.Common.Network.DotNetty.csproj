@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="SpanNetty.Buffers" />
+    <PackageReference Include="SpanNetty.Codecs" />
+    <PackageReference Include="SpanNetty.Common" />
+    <PackageReference Include="SpanNetty.Handlers" />
+    <PackageReference Include="SpanNetty.Transport" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Crypto\Edelstein.Common.Crypto.csproj" />
+  </ItemGroup>
+</Project>
