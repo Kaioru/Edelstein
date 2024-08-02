@@ -2,7 +2,6 @@
 
 public enum PacketSendOperation : short
 {
-    BEGIN_SOCKET = 0x0,
     CheckPasswordResult = 0x0,
     GuestIDLoginResult = 0x1,
     AccountInfoResult = 0x2,
@@ -31,8 +30,7 @@ public enum PacketSendOperation : short
     RecommendWorldMessage = 0x19,
     CheckExtraCharInfoResult = 0x1A,
     CheckSPWResult = 0x1B,
-    END_SOCKET = 0x1B,
-    BEGIN_CHARACTERDATA = 0x1C,
+    
     InventoryOperation = 0x1C,
     InventoryGrow = 0x1D,
     StatChanged = 0x1E,
@@ -146,18 +144,15 @@ public enum PacketSendOperation : short
     TransferChannel = 0x8A,
     DisallowedDeliveryQuestList = 0x8B,
     MacroSysDataInit = 0x8C,
-    END_CHARACTERDATA = 0x8C,
-    BEGIN_STAGE = 0x8D,
+    
     SetField = 0x8D,
     SetITC = 0x8E,
     SetCashShop = 0x8F,
-    END_STAGE = 0x8F,
-    BEGIN_MAP = 0x90,
+    
     SetBackgroundEffect = 0x90,
     SetMapObjectVisible = 0x91,
     ClearBackgroundEffect = 0x92,
-    END_MAP = 0x92,
-    BEGIN_FIELD = 0x93,
+    
     TransferFieldReqIgnored = 0x93,
     TransferChannelReqIgnored = 0x94,
     FieldSpecificData = 0x95,
@@ -190,10 +185,10 @@ public enum PacketSendOperation : short
     FootHoldInfo = 0xB0,
     RequestFootHoldInfo = 0xB1,
     FieldKillCount = 0xB2,
-    BEGIN_USERPOOL = 0xB3,
+    
     UserEnterField = 0xB3,
     UserLeaveField = 0xB4,
-    BEGIN_USERCOMMON = 0xB5,
+    
     UserChat = 0xB5,
     UserChatNLCPQ = 0xB6,
     UserADBoard = 0xB7,
@@ -211,7 +206,7 @@ public enum PacketSendOperation : short
     UserSetPhase = 0xC3,
     SetPortalUsable = 0xC4,
     ShowPamsSongResult = 0xC5,
-    BEGIN_PET = 0xC6,
+    
     PetActivated = 0xC6,
     PetEvol = 0xC7,
     PetTransferField = 0xC8,
@@ -220,14 +215,11 @@ public enum PacketSendOperation : short
     PetNameChanged = 0xCB,
     PetLoadExceptionList = 0xCC,
     PetActionCommand = 0xCD,
-    END_PET = 0xCD,
-    BEGIN_DRAGON = 0xCE,
+    
     DragonEnterField = 0xCE,
     DragonMove = 0xCF,
     DragonLeaveField = 0xD0,
-    END_DRAGON = 0xD0,
-    END_USERCOMMON = 0xD1,
-    BEGIN_USERREMOTE = 0xD2,
+    
     UserMove = 0xD2,
     UserMeleeAttack = 0xD3,
     UserShootAttack = 0xD4,
@@ -249,8 +241,7 @@ public enum PacketSendOperation : short
     UserGuildNameChanged = 0xE4,
     UserGuildMarkChanged = 0xE5,
     UserThrowGrenade = 0xE6,
-    END_USERREMOTE = 0xE6,
-    BEGIN_USERLOCAL = 0xE7,
+    
     UserSitResult = 0xE7,
     UserEmotionLocal = 0xE8,
     UserEffectLocal = 0xE9,
@@ -297,21 +288,18 @@ public enum PacketSendOperation : short
     QuestGuideResult = 0x112,
     UserDeliveryQuest = 0x113,
     SkillCooltimeSet = 0x114,
-    END_USERLOCAL = 0x114,
-    END_USERPOOL = 0x115,
-    BEGIN_SUMMONED = 0x116,
+    
     SummonedEnterField = 0x116,
     SummonedLeaveField = 0x117,
     SummonedMove = 0x118,
     SummonedAttack = 0x119,
     SummonedSkill = 0x11A,
     SummonedHit = 0x11B,
-    END_SUMMONED = 0x11B,
-    BEGIN_MOBPOOL = 0x11C,
+    
     MobEnterField = 0x11C,
     MobLeaveField = 0x11D,
     MobChangeController = 0x11E,
-    BEGIN_MOB = 0x11F,
+    
     MobMove = 0x11F,
     MobCtrlAck = 0x120,
     MobCtrlHint = 0x121,
@@ -335,55 +323,43 @@ public enum PacketSendOperation : short
     MobEscortReturnBefore = 0x133,
     MobNextAttack = 0x134,
     MobAttackedByMob = 0x135,
-    END_MOB = 0x135,
-    END_MOBPOOL = 0x136,
-    BEGIN_NPCPOOL = 0x137,
+    
     NpcEnterField = 0x137,
     NpcLeaveField = 0x138,
     NpcChangeController = 0x139,
-    BEGIN_NPC = 0x13A,
+    
     NpcMove = 0x13A,
     NpcUpdateLimitedInfo = 0x13B,
     NpcSpecialAction = 0x13C,
-    END_NPC = 0x13C,
-    BEGIN_NPCTEMPLATE = 0x13D,
+    
     NpcSetScript = 0x13D,
-    END_NPCTEMPLATE = 0x13D,
-    END_NPCPOOL = 0x13E,
-    BEGIN_EMPLOYEEPOOL = 0x13F,
+    
     EmployeeEnterField = 0x13F,
     EmployeeLeaveField = 0x140,
     EmployeeMiniRoomBalloon = 0x141,
-    END_EMPLOYEEPOOL = 0x141,
-    BEGIN_DROPPOOL = 0x142,
+    
     DropEnterField = 0x142,
     DropReleaseAllFreeze = 0x143,
     DropLeaveField = 0x144,
-    END_DROPPOOL = 0x144,
-    BEGIN_MESSAGEBOXPOOL = 0x145,
+    
     CreateMessageBoxFailed = 0x145,
     MessageBoxEnterField = 0x146,
     MessageBoxLeaveField = 0x147,
-    END_MESSAGEBOXPOOL = 0x147,
-    BEGIN_AFFECTEDAREAPOOL = 0x148,
+    
     AffectedAreaCreated = 0x148,
     AffectedAreaRemoved = 0x149,
-    END_AFFECTEDAREAPOOL = 0x149,
-    BEGIN_TOWNPORTALPOOL = 0x14A,
+    
     TownPortalCreated = 0x14A,
     TownPortalRemoved = 0x14B,
-    END_TOWNPORTALPOOL = 0x14B,
-    BEGIN_OPENGATEPOOL = 0x14C,
+    
     OpenGateCreated = 0x14C,
     OpenGateRemoved = 0x14D,
-    END_OPENGATEPOOL = 0x14D,
-    BEGIN_REACTORPOOL = 0x14E,
+    
     ReactorChangeState = 0x14E,
     ReactorMove = 0x14F,
     ReactorEnterField = 0x150,
     ReactorLeaveField = 0x151,
-    END_REACTORPOOL = 0x151,
-    BEGIN_ETCFIELDOBJ = 0x152,
+    
     SnowBallState = 0x152,
     SnowBallHit = 0x153,
     SnowBallMsg = 0x154,
@@ -409,40 +385,35 @@ public enum PacketSendOperation : short
     ChaosZakumTimer = 0x168,
     HontailTimer = 0x169,
     ZakumTimer = 0x16A,
-    END_ETCFIELDOBJ = 0x16A,
-    BEGIN_SCRIPT = 0x16B,
+    
     ScriptMessage = 0x16B,
-    END_SCRIPT = 0x16B,
-    BEGIN_SHOP = 0x16C,
+    
     OpenShopDlg = 0x16C,
     ShopResult = 0x16D,
-    END_SHOP = 0x16D,
-    BEGIN_ADMINSHOP = 0x16E,
+    
     AdminShopResult = 0x16E,
     AdminShopCommodity = 0x16F,
-    END_ADMINSHOP = 0x16F,
+    
     TrunkResult = 0x170,
-    BEGIN_STOREBANK = 0x171,
+    
     StoreBankGetAllResult = 0x171,
     StoreBankResult = 0x172,
-    END_STOREBANK = 0x172,
+    
     RPSGame = 0x173,
     Messenger = 0x174,
     MiniRoom = 0x175,
-    BEGIN_TOURNAMENT = 0x176,
+    
     Tournament = 0x176,
     TournamentMatchTable = 0x177,
     TournamentSetPrize = 0x178,
     TournamentNoticeUEW = 0x179,
     TournamentAvatarInfo = 0x17A,
-    END_TOURNAMENT = 0x17A,
-    BEGIN_WEDDING = 0x17B,
+    
     WeddingProgress = 0x17B,
     WeddingCremonyEnd = 0x17C,
-    END_WEDDING = 0x17C,
+    
     Parcel = 0x17D,
-    END_FIELD = 0x17D,
-    BEGIN_CASHSHOP = 0x17E,
+    
     CashShopChargeParamResult = 0x17E,
     CashShopQueryCashResult = 0x17F,
     CashShopCashItemResult = 0x180,
@@ -459,55 +430,48 @@ public enum PacketSendOperation : short
     CashShopOneADay = 0x18B,
     CashShopNoticeFreeCashItem = 0x18C,
     CashShopMemberShopResult = 0x18D,
-    END_CASHSHOP = 0x18D,
-    BEGIN_FUNCKEYMAPPED = 0x18E,
+    
     FuncKeyMappedInit = 0x18E,
     PetConsumeItemInit = 0x18F,
     PetConsumeMPItemInit = 0x190,
-    END_FUNCKEYMAPPED = 0x190,
+    
     CheckSSN2OnCreateNewCharacterResult = 0x191,
     CheckSPWOnCreateNewCharacterResult = 0x192,
     FirstSSNOnCreateNewCharacterResult = 0x193,
-    BEGIN_MAPLETV = 0x194,
+    
     MapleTVUpdateMessage = 0x195,
     MapleTVClearMessage = 0x196,
     MapleTVSendMessageResult = 0x197,
     BroadSetFlashChangeEvent = 0x198,
-    END_MAPLETV = 0x199,
-    BEGIN_ITC = 0x19A,
+    
     ITCChargeParamResult = 0x19A,
     ITCQueryCashResult = 0x19B,
     ITCNormalItemResult = 0x19C,
-    END_ITC = 0x19C,
-    BEGIN_CHARACTERSALE = 0x19D,
+    
     CheckDuplicatedIDResultInCS = 0x19D,
     CreateNewCharacterResultInCS = 0x19E,
     CreateNewCharacterFailInCS = 0x19F,
     CharacterSale = 0x1A0,
-    END_CHARACTERSALE = 0x1A0,
-    BEGIN_GOLDHAMMER = 0x1A1,
+    
     GoldHammere_s = 0x1A1,
     GoldHammerResult = 0x1A2,
     GoldHammere_e = 0x1A3,
-    END_GOLDHAMMER = 0x1A3,
-    BEGIN_BATTLERECORD = 0x1A4,
+    
     BattleRecord_s = 0x1A4,
     BattleRecordDotDamageInfo = 0x1A5,
     BattleRecordRequestResult = 0x1A6,
     BattleRecord_e = 0x1A7,
-    END_BATTLERECORD = 0x1A7,
-    BEGIN_ITEMUPGRADE = 0x1A8,
+    
     ItemUpgrade_s = 0x1A8,
     ItemUpgradeResult = 0x1A9,
     ItemUpgradeFail = 0x1AA,
     ItemUpgrade_e = 0x1AB,
-    END_ITEMUPGRADE = 0x1AB,
-    BEGIN_VEGA = 0x1AC,
+    
     Vega_s = 0x1AC,
     VegaResult = 0x1AD,
     VegaFail = 0x1AE,
     Vega_e = 0x1AF,
-    END_VEGA = 0x1AF,
+    
     LogoutGift = 0x1B0,
     NO = 0x1B1
 }

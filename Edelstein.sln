@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Network.Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Crypto", "src\common\Edelstein.Common.Crypto\Edelstein.Common.Crypto.csproj", "{875EE192-E044-4C8D-941F-86C24C3FABF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Gameplay", "src\protocol\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj", "{6EE946AC-42B7-4581-A12D-00BD57504225}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Gameplay.Login", "src\protocol\Edelstein.Protocol.Gameplay.Login\Edelstein.Protocol.Gameplay.Login.csproj", "{0C635DAF-1DF9-4DC1-9691-37B9F681C779}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,8 @@ Global
 		{AF5AC908-62BB-48CE-99E8-83388738CCB1} = {82D7864B-19AD-484C-BD2E-897F05B5852C}
 		{0ED46D09-2617-4FBE-BFB4-D8B49BCE5C01} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
 		{875EE192-E044-4C8D-941F-86C24C3FABF7} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
+		{6EE946AC-42B7-4581-A12D-00BD57504225} = {82D7864B-19AD-484C-BD2E-897F05B5852C}
+		{0C635DAF-1DF9-4DC1-9691-37B9F681C779} = {82D7864B-19AD-484C-BD2E-897F05B5852C}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AF5AC908-62BB-48CE-99E8-83388738CCB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -60,5 +66,13 @@ Global
 		{875EE192-E044-4C8D-941F-86C24C3FABF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{875EE192-E044-4C8D-941F-86C24C3FABF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{875EE192-E044-4C8D-941F-86C24C3FABF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EE946AC-42B7-4581-A12D-00BD57504225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EE946AC-42B7-4581-A12D-00BD57504225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EE946AC-42B7-4581-A12D-00BD57504225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EE946AC-42B7-4581-A12D-00BD57504225}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C635DAF-1DF9-4DC1-9691-37B9F681C779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C635DAF-1DF9-4DC1-9691-37B9F681C779}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C635DAF-1DF9-4DC1-9691-37B9F681C779}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C635DAF-1DF9-4DC1-9691-37B9F681C779}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
