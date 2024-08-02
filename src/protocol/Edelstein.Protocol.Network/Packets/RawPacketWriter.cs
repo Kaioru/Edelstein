@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using CommunityToolkit.HighPerformance.Buffers;
 using Microsoft.IO;
 
 namespace Edelstein.Protocol.Network.Packets;
@@ -96,6 +95,12 @@ public class RawPacketWriter : IRawPacketWriter
     public IRawPacketWriter WriteBytes(byte[] value)
     {
         _writer.Write(value);
+        return this;
+    }
+
+    public IRawPacketWriter WriteStructured<T>(T obj) where T : StructuredBasePacket
+    {
+        StructuredPacketSerializer.Shared.Serialize(_stream, obj);
         return this;
     }
 

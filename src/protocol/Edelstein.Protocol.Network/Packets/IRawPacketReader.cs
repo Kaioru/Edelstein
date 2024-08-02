@@ -24,5 +24,7 @@ public interface IRawPacketReader : IDispatchable, IDisposable
     string ReadString(short? length = null);
     byte[] ReadBytes(short length);
 
+    T ReadStructured<T>() where T : StructuredBasePacket;
+
     IRawPacketReader Skip(short length);
 }

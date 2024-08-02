@@ -22,4 +22,6 @@ public interface IRawPacketWriter : IDispatchable, IDisposable
 
     IRawPacketWriter WriteString(string value, short? length = null);
     IRawPacketWriter WriteBytes(byte[] value);
+
+    IRawPacketWriter WriteStructured<T>(T obj) where T : StructuredBasePacket;
 }

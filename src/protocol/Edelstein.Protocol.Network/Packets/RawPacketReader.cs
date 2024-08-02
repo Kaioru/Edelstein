@@ -40,6 +40,8 @@ public class RawPacketReader : IRawPacketReader
 
     public byte[] ReadBytes(short length) => _reader.ReadBytes(length);
 
+    public T ReadStructured<T>() where T : StructuredBasePacket => StructuredPacketSerializer.Shared.Deserialize<T>(_stream);
+
     public IRawPacketReader Skip(short length)
     {
         ReadBytes(length);
