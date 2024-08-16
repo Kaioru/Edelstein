@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Login;
 
-public interface ILoginStageSystem : IStageSystem<ILoginStageSystemUser, ILoginStageSystem>
+public interface ILoginStageSystem : IStageSystem<ILoginStageSystem, ILoginStageSystemUser>
 {
     LoginContext Context { get; }
 }

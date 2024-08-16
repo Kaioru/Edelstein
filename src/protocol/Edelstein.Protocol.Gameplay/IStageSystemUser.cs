@@ -2,10 +2,10 @@
 
 namespace Edelstein.Protocol.Gameplay;
 
-public interface IStageSystemUser<TStageSystemUser, out TStageSystem> : 
+public interface IStageSystemUser<out TStageSystem, TStageSystemUser> : 
     ISocketUser
-    where TStageSystem : IStageSystem<TStageSystemUser, TStageSystem> 
-    where TStageSystemUser : IStageSystemUser<TStageSystemUser, TStageSystem>
+    where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser> 
+    where TStageSystemUser : IStageSystemUser<TStageSystem, TStageSystemUser>
 {
     TStageSystem System { get; }
 }

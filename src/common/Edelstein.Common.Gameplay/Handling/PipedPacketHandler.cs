@@ -6,12 +6,12 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Handling;
 
-public class PipedPacketHandler<TStageSystemUser, TStageSystem, TMessage>(
+public class PipedPacketHandler<TStageSystem, TStageSystemUser, TMessage>(
     short operation,
-    IPipeline<PipedPacketMessage<TStageSystemUser, TMessage>> pipeline
-) : IPacketHandler<TStageSystemUser, TStageSystem>
-    where TStageSystemUser : IStageSystemUser<TStageSystemUser, TStageSystem>
-    where TStageSystem : IStageSystem<TStageSystemUser, TStageSystem>
+    IPipeline<PipedPacketMessage<TStageSystem, TStageSystemUser, TMessage>> pipeline
+) : IPacketHandler<TStageSystem, TStageSystemUser>
+    where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser>
+    where TStageSystemUser : IStageSystemUser<TStageSystem, TStageSystemUser>
     where TMessage : StructuredBasePacket
 {
     public short Operation { get; } = operation;
@@ -21,6 +21,6 @@ public class PipedPacketHandler<TStageSystemUser, TStageSystem, TMessage>(
         using var reader = new RawPacketReader(packet);
         var message = reader.ReadStructured<TMessage>();
 
-        return pipeline.Process(new PipedPacketMessage<TStageSystemUser, TMessage>(user, message));
+        return pipeline.Process(new PipedPacketMessage<TStageSystem, TStageSystemUser, TMessage>(user, message));
     }
 }

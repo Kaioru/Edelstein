@@ -7,9 +7,9 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Login.Handling.Pipes;
 
-public class CheckPasswordPipe : IPipe<PipedPacketMessage<ILoginStageSystemUser, CheckPassword>>
+public class CheckPasswordPipe : IPipe<PipedPacketMessage<ILoginStageSystem, ILoginStageSystemUser, CheckPassword>>
 {
-    public Task Handle(IPipelineContext ctx, PipedPacketMessage<ILoginStageSystemUser, CheckPassword> message)
+    public Task Handle(IPipelineContext ctx, PipedPacketMessage<ILoginStageSystem, ILoginStageSystemUser, CheckPassword> message)
     {
         Console.WriteLine(message.Packet);
         return Task.CompletedTask;

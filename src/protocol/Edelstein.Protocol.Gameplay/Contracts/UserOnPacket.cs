@@ -2,9 +2,9 @@
 
 namespace Edelstein.Protocol.Gameplay.Contracts;
 
-public record UserOnPacket<TStageSystemUser, TStageSystem>(
+public record UserOnPacket<TStageSystem, TStageSystemUser>(
     TStageSystemUser User,
     IRawPacket Packet
 )
-    where TStageSystemUser : IStageSystemUser<TStageSystemUser, TStageSystem>
-    where TStageSystem : IStageSystem<TStageSystemUser, TStageSystem>;
+    where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser>
+    where TStageSystemUser : IStageSystemUser<TStageSystem, TStageSystemUser>;

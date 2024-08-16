@@ -8,23 +8,23 @@ using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Handling;
 
-public class PacketHandlerManager<TStageSystemUser, TStageSystem>(
+public class PacketHandlerManager<TStageSystem, TStageSystemUser>(
     ILogger logger
-) : IPacketHandlerManager<TStageSystemUser, TStageSystem>
-    where TStageSystemUser : IStageSystemUser<TStageSystemUser, TStageSystem>
-    where TStageSystem : IStageSystem<TStageSystemUser, TStageSystem>
+) : IPacketHandlerManager<TStageSystem, TStageSystemUser>
+    where TStageSystemUser : IStageSystemUser<TStageSystem, TStageSystemUser>
+    where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser>
 {
-    private readonly Dictionary<short, IPacketHandler<TStageSystemUser, TStageSystem>> _handlers = new();
+    private readonly Dictionary<short, IPacketHandler<TStageSystem, TStageSystemUser>> _handlers = new();
 
     public PacketHandlerManager(
         ILogger logger,
-        IEnumerable<IPacketHandler<TStageSystemUser, TStageSystem>> handlers) : 
+        IEnumerable<IPacketHandler<TStageSystem, TStageSystemUser>> handlers) : 
         this(logger)
     {
         foreach (var handler in handlers) Add(handler);
     }
 
-    public void Add(IPacketHandler<TStageSystemUser, TStageSystem> handler)
+    public void Add(IPacketHandler<TStageSystem, TStageSystemUser> handler)
     {
         if (_handlers.ContainsKey(handler.Operation))
             logger.LogPacketHandlerOverridden(
@@ -42,7 +42,7 @@ public class PacketHandlerManager<TStageSystemUser, TStageSystem>(
         _handlers[handler.Operation] = handler;
     }
 
-    public void Remove(IPacketHandler<TStageSystemUser, TStageSystem> handler)
+    public void Remove(IPacketHandler<TStageSystem, TStageSystemUser> handler)
         => _handlers.Remove(handler.Operation);
 
     public void Remove(short operation) 

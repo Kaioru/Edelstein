@@ -9,9 +9,9 @@ public record LoginContextPipelines(
     IPipeline<SystemOnStart> SystemOnStart,
     IPipeline<SystemOnStop> SystemOnStop,
 
-    IPipeline<UserOnPacket<ILoginStageSystemUser, ILoginStageSystem>> UserOnPacket,
-    IPipeline<UserOnException<ILoginStageSystemUser, ILoginStageSystem>> UserOnException,
-    IPipeline<UserOnDisconnect<ILoginStageSystemUser, ILoginStageSystem>> UserOnDisconnect,
+    IPipeline<UserOnPacket<ILoginStageSystem, ILoginStageSystemUser>> UserOnPacket,
+    IPipeline<UserOnException<ILoginStageSystem, ILoginStageSystemUser>> UserOnException,
+    IPipeline<UserOnDisconnect<ILoginStageSystem, ILoginStageSystemUser>> UserOnDisconnect,
 
-    IPipeline<PipedPacketMessage<ILoginStageSystemUser, CheckPassword>> UserOnPacketCheckPassword 
+    IPipeline<PipedPacketMessage<ILoginStageSystem, ILoginStageSystemUser, CheckPassword>> UserOnPacketCheckPassword 
 );
