@@ -4,7 +4,7 @@ using Edelstein.Protocol.Network.Packets.Types;
 
 namespace Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Send;
 
-public record CheckPasswordResult() : StructuredSendPacket(PacketSendOperation.CheckPasswordResult)
+public record CheckPasswordResult() : StructuredSendPacket((short)PacketSendOperation.CheckPasswordResult)
 {
     [FieldOrder(0)] public required LoginResultCode Result { get; init; }
     

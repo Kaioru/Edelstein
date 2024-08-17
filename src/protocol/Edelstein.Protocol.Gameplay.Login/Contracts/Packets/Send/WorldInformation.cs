@@ -5,7 +5,7 @@ using Edelstein.Protocol.Network.Packets.Types;
 
 namespace Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Send;
 
-public record WorldInformation() : StructuredSendPacket(PacketSendOperation.WorldInformation)
+public record WorldInformation() : StructuredSendPacket((short)PacketSendOperation.WorldInformation)
 {
     [FieldOrder(0)] 
     public required byte ID { get; init; }
