@@ -16,6 +16,15 @@ public class PacketHandlerManager<TStageSystem, TStageSystemUser>(
 {
     private readonly Dictionary<short, IPacketHandler<TStageSystem, TStageSystemUser>> _handlers = new();
 
+    public PacketHandlerManager(
+        ILogger<PacketHandlerManager<TStageSystem, TStageSystemUser>> logger,
+        IEnumerable<IPacketHandlerManagerEntry<TStageSystem, TStageSystemUser>> entries
+    ) : this(logger)
+    {
+        foreach (var entry in entries)
+            _handlers[entry.Operation] = entry;
+    }
+    
     public void Add(short operation, IPacketHandler<TStageSystem, TStageSystemUser> handler)
     {
         if (_handlers.ContainsKey(operation))

@@ -9,9 +9,17 @@
     <PackageVersion Include="Duey.Abstractions" Version="2.0.0" />
     <PackageVersion Include="McMaster.NETCore.Plugins" Version="1.4.0" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(DotNetPackageVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="$(DotNetPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="$(DotNetPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="$(DotNetPackageVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(DotNetPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNetPackageVersion)" />
+    <PackageVersion Include="Scrutor" Version="4.2.2" />
+    <PackageVersion Include="Serilog" Version="4.0.2-dev-02220" />
+    <PackageVersion Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+    <PackageVersion Include="Serilog.Settings.Configuration" Version="8.0.2" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="Serilog.Sinks.RollingFile" Version="3.3.1-dev-00771" />
     <PackageVersion Include="SpanNetty.Buffers" Version="$(DotNettyVersion)" />
     <PackageVersion Include="SpanNetty.Codecs" Version="$(DotNettyVersion)" />
     <PackageVersion Include="SpanNetty.Common" Version="$(DotNettyVersion)" />
@@ -19,5 +27,8 @@
     <PackageVersion Include="SpanNetty.Transport" Version="$(DotNettyVersion)" />
     <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
     <PackageVersion Include="MinVer" Version="5.0.0" />
+    <PackageVersion Include="Spectre.Console" Version="0.49.2-preview.0.16" />
+    <PackageVersion Include="Spectre.Console.Cli" Version="0.49.2-preview.0.16" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
   </ItemGroup>
 </Project>

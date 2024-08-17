@@ -7,10 +7,13 @@ using Edelstein.Protocol.Utilities.Pipelines;
 namespace Edelstein.Common.Gameplay.Login;
 
 public class LoginStageSystem(
+    ILoginStageSystemOptions options,
     LoginContext context
 ) : AbstractStageSystem<ILoginStageSystem, ILoginStageSystemUser>, ILoginStageSystem
 {
-    public override string ID => "TODO"; // TODO
+    public override string ID => options.ID;
+    
+    public ILoginStageSystemOptions Options { get; } = options;
     public LoginContext Context { get; } = context;
 
     protected override IPipeline<UserOnPacket<ILoginStageSystem, ILoginStageSystemUser>> OnPacketPipeline 
