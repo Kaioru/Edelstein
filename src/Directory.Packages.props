@@ -6,6 +6,7 @@
   <ItemGroup>
     <PackageVersion Include="BinarySerializer" Version="8.6.4.1" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
+    <PackageVersion Include="Duey.Abstractions" Version="2.0.0" />
     <PackageVersion Include="McMaster.NETCore.Plugins" Version="1.4.0" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(DotNetPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="$(DotNetPackageVersion)" />

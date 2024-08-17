@@ -10,6 +10,7 @@ public class Repository<TKey, TEntry> : IRepository<TKey, TEntry>
     where TEntry : IRepositoryEntry<TKey>
 {
     private readonly IDictionary<TKey, TEntry> _dictionary = new ConcurrentDictionary<TKey, TEntry>();
+    public int Count => _dictionary.Count;
 
     public virtual Task<TEntry?> Retrieve(TKey key)
         => Task.FromResult(_dictionary.TryGetValue(key, out var result) ? result : default);

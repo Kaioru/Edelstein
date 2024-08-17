@@ -4,4 +4,7 @@
     <ProjectReference Include="..\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
     <ProjectReference Include="..\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Duey.Abstractions" />
+  </ItemGroup>
 </Project>
