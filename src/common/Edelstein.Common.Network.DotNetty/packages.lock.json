@@ -1075,7 +1075,7 @@
       },
       "Microsoft.Extensions.Logging.Abstractions": {
         "type": "CentralTransitive",
-        "requested": "[9.0.0-preview.6.24327.7, )",
+        "requested": "[9.0.0-preview.7.24405.7, )",
         "resolved": "3.1.8",
         "contentHash": "LxQPR/KE4P9nx304VcFipWPcW8ZOZOGHuiYlG0ncAQJItogDzR9nyYUNvziLObx2MfX2Z9iCTdAqEtoImaQOYg=="
       },
