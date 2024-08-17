@@ -7,8 +7,8 @@ public interface IPacketHandlerManager<TStageSystem, TStageSystemUser>
     where TStageSystemUser : IStageSystemUser<TStageSystem, TStageSystemUser> 
     where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser>
 {
-    void Add(IPacketHandler<TStageSystem, TStageSystemUser> handler);
-    void Remove(IPacketHandler<TStageSystem, TStageSystemUser> handler);
+    void Add(short operation, IPacketHandler<TStageSystem, TStageSystemUser> handler);
+    void Remove(short operation, IPacketHandler<TStageSystem, TStageSystemUser> handler);
     void Remove(short operation);
 
     Task Process(TStageSystemUser user, IRawPacket packet);

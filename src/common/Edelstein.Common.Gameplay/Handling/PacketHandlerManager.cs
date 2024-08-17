@@ -16,34 +16,26 @@ public class PacketHandlerManager<TStageSystem, TStageSystemUser>(
 {
     private readonly Dictionary<short, IPacketHandler<TStageSystem, TStageSystemUser>> _handlers = new();
 
-    public PacketHandlerManager(
-        ILogger logger,
-        IEnumerable<IPacketHandler<TStageSystem, TStageSystemUser>> handlers) : 
-        this(logger)
+    public void Add(short operation, IPacketHandler<TStageSystem, TStageSystemUser> handler)
     {
-        foreach (var handler in handlers) Add(handler);
-    }
-
-    public void Add(IPacketHandler<TStageSystem, TStageSystemUser> handler)
-    {
-        if (_handlers.ContainsKey(handler.Operation))
+        if (_handlers.ContainsKey(operation))
             logger.LogPacketHandlerOverridden(
-                handler.Operation, 
-                Enum.GetName((PacketRecvOperation)handler.Operation)!, 
+                operation, 
+                Enum.GetName((PacketRecvOperation)operation)!, 
                 handler.GetType().Name
             );
         else
             logger.LogPacketHandlerAdded(
-                handler.Operation, 
-                Enum.GetName((PacketRecvOperation)handler.Operation)!, 
+                operation, 
+                Enum.GetName((PacketRecvOperation)operation)!, 
                 handler.GetType().Name
             );
         
-        _handlers[handler.Operation] = handler;
+        _handlers[operation] = handler;
     }
 
-    public void Remove(IPacketHandler<TStageSystem, TStageSystemUser> handler)
-        => _handlers.Remove(handler.Operation);
+    public void Remove(short operation, IPacketHandler<TStageSystem, TStageSystemUser> handler)
+        => _handlers.Remove(operation);
 
     public void Remove(short operation) 
         => _handlers.Remove(operation);
