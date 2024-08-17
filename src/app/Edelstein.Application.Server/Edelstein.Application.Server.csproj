@@ -13,7 +13,6 @@
     <PackageReference Include="Spectre.Console" />
     <PackageReference Include="Spectre.Console.Cli" />
     <PackageReference Include="Spectre.Console.Cli.Extensions.DependencyInjection" />
-    <PackageReference Include="System.CommandLine" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Properties\*.json">
