@@ -2,7 +2,7 @@
 
 namespace Edelstein.Application.Server.Bindings;
 
-public record SystemHostConfigLogin : ILoginStageSystemOptions
+public record LoginStageSystemConfig : ILoginStageSystemOptions
 {
     public required string ID { get; init; }
     

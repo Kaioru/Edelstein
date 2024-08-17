@@ -50,7 +50,7 @@ public class StartCommand : AsyncCommand<StartCommand.Settings>
                             ILoginStageSystemUser,
                             ILoginStageSystemOptions,
                             LoginStageSystem,
-                            SystemHostConfigLogin,
+                            LoginStageSystemConfig,
                             LoginContext
                         >(version, config);
                         break;
