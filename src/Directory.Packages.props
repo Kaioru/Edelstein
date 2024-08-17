@@ -5,6 +5,10 @@
   <ItemGroup>
     <PackageVersion Include="BinarySerializer" Version="8.6.4.1" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
+    <PackageVersion Include="McMaster.NETCore.Plugins" Version="1.4.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="9.0.0-preview.7.24405.7" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0-preview.7.24405.7" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0-preview.7.24405.7" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-preview.6.24327.7" />
     <PackageVersion Include="SpanNetty.Buffers" Version="$(DotNettyVersion)" />
     <PackageVersion Include="SpanNetty.Codecs" Version="$(DotNettyVersion)" />

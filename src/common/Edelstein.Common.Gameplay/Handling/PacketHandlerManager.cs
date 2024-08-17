@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace Edelstein.Common.Gameplay.Handling;
 
 public class PacketHandlerManager<TStageSystem, TStageSystemUser>(
-    ILogger logger
+    ILogger<PacketHandlerManager<TStageSystem, TStageSystemUser>> logger
 ) : IPacketHandlerManager<TStageSystem, TStageSystemUser>
     where TStageSystemUser : IStageSystemUser<TStageSystem, TStageSystemUser>
     where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser>
