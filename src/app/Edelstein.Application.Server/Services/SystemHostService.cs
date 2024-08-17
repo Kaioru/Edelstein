@@ -49,9 +49,9 @@ public class SystemHostService<TStageSystem, TStageSystemUser, TContext>(
         
         if (Context != null)
             await Context.Close();
-        
-        await plugins.InvokeStop();
 
         logger.LogSystemHostServiceStopped(info.ID);
+        
+        await plugins.InvokeStop();
     }
 }
