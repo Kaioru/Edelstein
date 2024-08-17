@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Application.Server.Bindings;
+using Edelstein.Application.Server.Extensions;
 using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Utilities.Bootstrap;
 using Edelstein.Protocol.Gameplay.Login;
@@ -12,18 +13,20 @@ using Edelstein.Protocol.Network.Transports;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Spectre.Console.Cli;
 
 namespace Edelstein.Application.Server.Commands;
 
 public class StartCommand : AsyncCommand<StartCommand.Settings>
 {
-    public class Settings : CommandSettings
+    public class Settings(
+        IOptions<ProgramHostConfig> config
+    ) : CommandSettings
     {
         [Description("The path to directory with stage config files")]
         [CommandArgument(0, "[Path]")]
-        public required string Path { get; init; } = "stages";
+        public required string Path { get; init; } = config.Value.StageDirectory;
     }
 
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
@@ -42,21 +45,14 @@ public class StartCommand : AsyncCommand<StartCommand.Settings>
                 switch (config["Type"])
                 {
                     case "Login":
-                        builder.Services.AddSingleton<IHostedService>(p =>
-                        {
-                            var option = config.Get<StageSystemConfigLogin>();
-                            var system = new LoginStageSystem(
-                                option!,
-                                p.GetRequiredService<LoginContext>()
-                            );
-
-                            return new SystemHost<ILoginStageSystem, ILoginStageSystemUser>(
-                                p.GetRequiredService<ILogger<SystemHost<ILoginStageSystem, ILoginStageSystemUser>>>(),
-                                system,
-                                option!,
-                                version
-                            );
-                        });
+                        builder.Services.AddSystemHostService<
+                            ILoginStageSystem,
+                            ILoginStageSystemUser,
+                            ILoginStageSystemOptions,
+                            LoginStageSystem,
+                            SystemHostConfigLogin,
+                            LoginContext
+                        >(version, config);
                         break;
                     default:
                         continue;

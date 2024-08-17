@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Edelstein.Application.Server.Bindings;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Plugin;
 using Edelstein.Common.Utilities.Bootstrap;
@@ -20,6 +21,8 @@ internal static class ProgramHostBuilder
     internal static HostApplicationBuilder CreateBuilder()
     {
         var builder = Host.CreateApplicationBuilder();
+
+        builder.Services.Configure<ProgramHostConfig>(builder.Configuration.GetSection("Host"));
         
         builder.Services.AddSerilog((_, configuration) => configuration.ReadFrom.Configuration(builder.Configuration));
         builder.Services.AddSingleton(typeof(ITemplateManagerContext<>), typeof(TemplateManagerContext<>));

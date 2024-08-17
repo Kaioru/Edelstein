@@ -95,4 +95,9 @@ public class PluginManager<TContext>(
             await LoadFromFile(Path.ChangeExtension(file, "dll"), manifest);
         }
     }
+    public async Task InvokeStart(TContext context)
+        => await Task.WhenAll((await base.RetrieveAll()).Select(p => p.Plugin.OnStart(p.Host, context)));
+    
+    public async Task InvokeStop()
+        => await Task.WhenAll((await base.RetrieveAll()).Select(p => p.Plugin.OnStop()));
 }
