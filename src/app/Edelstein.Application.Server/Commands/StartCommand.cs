@@ -26,7 +26,7 @@ public class StartCommand : AsyncCommand<StartCommand.Settings>
 
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
-        var builder = SystemHostBuilder.CreateBuilder();
+        var builder = ProgramHostBuilder.CreateBuilder();
         
         foreach (var file in new DirectoryInfo(settings.Path).EnumerateFiles("*.json"))
         {

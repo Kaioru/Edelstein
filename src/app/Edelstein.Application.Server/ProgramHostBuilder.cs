@@ -12,7 +12,7 @@ using Serilog;
 
 namespace Edelstein.Application.Server;
 
-internal static class SystemHostBuilder
+internal static class ProgramHostBuilder
 {
     internal static HostApplicationBuilder CreateBuilder()
     {
