@@ -7,8 +7,8 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Login.Handling.Packets;
 
-public class CheckPasswordHandler(IPipeline<PipedPacketMessage<ILoginStageSystemUser, CheckPassword>> pipeline) :
-    PipedPacketHandler<ILoginStageSystemUser, ILoginStageSystem, CheckPassword>(
+public class CheckPasswordHandler(IPipeline<PipedPacketMessage<ILoginStageSystem, ILoginStageSystemUser, CheckPassword>> pipeline) :
+    PipedPacketHandler<ILoginStageSystem, ILoginStageSystemUser, CheckPassword>(
         (short)PacketRecvOperation.CheckPassword, 
         pipeline
     );
