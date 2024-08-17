@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Application.Server.Bindings;
 using Edelstein.Common.Gameplay.Login;
+using Edelstein.Common.Utilities.Bootstrap;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Network.Transports;
@@ -67,7 +69,9 @@ public class StartCommand : AsyncCommand<StartCommand.Settings>
         }
 
         var host = builder.Build();
-
+        var loaders = host.Services.GetServices<IBootLoader>();
+        
+        await Task.WhenAll(loaders.AsParallel().Select(l => l.Load()));
         await host.RunAsync();
         return 0;
     }

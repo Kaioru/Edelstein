@@ -147,6 +147,16 @@
           "Spectre.Console": "0.49.2-preview.0.16"
         }
       },
+      "Spectre.Console.Cli.Extensions.DependencyInjection": {
+        "type": "Direct",
+        "requested": "[0.2.0, )",
+        "resolved": "0.2.0",
+        "contentHash": "okJMSXgLHRndiMXcCnFj63CGwsnGXtCOSiIhQsSjcC+g8YrVyrUVE4kPJp8lQ48ArWDedTCCO5Lm5w4oRuFlIA==",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection": "8.0.0-rc.2.23479.6",
+          "Spectre.Console.Cli": "0.47.0"
+        }
+      },
       "System.CommandLine": {
         "type": "Direct",
         "requested": "[2.0.0-beta4.22272.1, )",
@@ -160,6 +170,11 @@
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.0.1"
         }
+      },
+      "Microsoft.DotNet.PlatformAbstractions": {
+        "type": "Transitive",
+        "resolved": "3.1.6",
+        "contentHash": "jek4XYaQ/PGUwDKKhwR8K47Uh1189PFzMeLqO83mXrXQVIpARZCcfuDedH50YDTepBkfijCZN5U/vZi++erxtg=="
       },
       "Microsoft.Extensions.Configuration.CommandLine": {
         "type": "Transitive",
@@ -1341,6 +1356,7 @@
         "type": "Project",
         "dependencies": {
           "Edelstein.Common.Gameplay": "[1.0.0, )",
+          "Edelstein.Common.Utilities": "[1.0.0, )",
           "Edelstein.Protocol.Gameplay.Login": "[1.0.0, )"
         }
       },
@@ -1356,10 +1372,23 @@
           "SpanNetty.Transport": "[0.7.2012.2221, )"
         }
       },
+      "edelstein.common.plugin": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Common.Utilities": "[1.0.0, )",
+          "Edelstein.Protocol.Plugin": "[1.0.0, )",
+          "McMaster.NETCore.Plugins": "[1.4.0, )",
+          "Microsoft.Extensions.Configuration": "[9.0.0-preview.7.24405.7, )",
+          "Microsoft.Extensions.Configuration.Binder": "[9.0.0-preview.7.24405.7, )",
+          "Microsoft.Extensions.Configuration.Json": "[9.0.0-preview.7.24405.7, )",
+          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-preview.7.24405.7, )"
+        }
+      },
       "edelstein.common.utilities": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+          "Edelstein.Protocol.Utilities": "[1.0.0, )",
+          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-preview.7.24405.7, )"
         }
       },
       "edelstein.protocol.gameplay": {
@@ -1384,6 +1413,12 @@
           "BinarySerializer": "[8.6.4.1, )",
           "CommunityToolkit.HighPerformance": "[8.2.2, )",
           "Microsoft.IO.RecyclableMemoryStream": "[3.0.1, )"
+        }
+      },
+      "edelstein.protocol.plugin": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
         }
       },
       "edelstein.protocol.utilities": {
@@ -1421,6 +1456,16 @@
         "requested": "[2.0.0, )",
         "resolved": "2.0.0",
         "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
+      },
+      "McMaster.NETCore.Plugins": {
+        "type": "CentralTransitive",
+        "requested": "[1.4.0, )",
+        "resolved": "1.4.0",
+        "contentHash": "UKw5Z2/QHhkR7kiAJmqdCwVDMQV0lwsfj10+FG676r8DsJWIpxtachtEjE0qBs9WoK5GUQIqxgyFeYUSwuPszg==",
+        "dependencies": {
+          "Microsoft.DotNet.PlatformAbstractions": "3.1.6",
+          "Microsoft.Extensions.DependencyModel": "5.0.0"
+        }
       },
       "Microsoft.Extensions.Configuration.Binder": {
         "type": "CentralTransitive",

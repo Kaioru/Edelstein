@@ -923,6 +923,12 @@
           "Microsoft.IO.RecyclableMemoryStream": "[3.0.1, )"
         }
       },
+      "edelstein.protocol.plugin": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+        }
+      },
       "edelstein.protocol.utilities": {
         "type": "Project"
       },

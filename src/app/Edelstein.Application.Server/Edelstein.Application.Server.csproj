@@ -12,6 +12,7 @@
     <PackageReference Include="Serilog.Sinks.RollingFile" />
     <PackageReference Include="Spectre.Console" />
     <PackageReference Include="Spectre.Console.Cli" />
+    <PackageReference Include="Spectre.Console.Cli.Extensions.DependencyInjection" />
     <PackageReference Include="System.CommandLine" />
   </ItemGroup>
   <ItemGroup>
@@ -24,8 +25,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Login\Edelstein.Common.Gameplay.Login.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Plugin\Edelstein.Common.Plugin.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Utilities\Edelstein.Common.Utilities.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Login\Edelstein.Protocol.Gameplay.Login.csproj" />
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin\Edelstein.Protocol.Plugin.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj" />
   </ItemGroup>
 </Project>

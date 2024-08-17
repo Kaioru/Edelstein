@@ -2,5 +2,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Login\Edelstein.Protocol.Gameplay.Login.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Utilities\Edelstein.Common.Utilities.csproj" />
   </ItemGroup>
 </Project>
