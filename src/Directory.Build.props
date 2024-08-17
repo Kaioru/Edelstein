@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
     
