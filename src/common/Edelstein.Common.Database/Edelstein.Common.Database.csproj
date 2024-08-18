@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
+    <ProjectReference Include="..\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Mapster" />

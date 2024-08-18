@@ -5,12 +5,14 @@ using Edelstein.Common.Database.Pgsql;
 using Edelstein.Common.Database.Sqlite;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Plugin;
+using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Utilities.Bootstrap;
 using Edelstein.Common.Utilities.Pipelines;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Plugin;
+using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Repositories;
 using Edelstein.Protocol.Utilities.Templates;
@@ -48,6 +50,9 @@ internal static class ProgramHostBuilder
             .FromAssemblyOf<GameDbContext>()
             .AddClasses(classes => classes.AssignableTo(typeof(IQueriedRepository<,>))).AsImplementedInterfaces()
             .WithSingletonLifetime());
+
+        // TODO gRPC
+        builder.Services.AddSingleton<IAuthService, AuthService>();
         
         builder.Services.AddSerilog((_, configuration) => configuration.ReadFrom.Configuration(builder.Configuration));
         builder.Services.AddSingleton(typeof(ITemplateManagerContext<>), typeof(TemplateManagerContext<>));

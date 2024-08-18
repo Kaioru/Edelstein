@@ -5,6 +5,7 @@
     <DotNettyVersion>0.7.2012.2221</DotNettyVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageVersion Include="BinarySerializer" Version="8.6.4.1" />
     <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
     <PackageVersion Include="Duey.Abstractions" Version="2.0.0" />
@@ -25,6 +26,7 @@
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(DotNetPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNetPackageVersion)" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-preview.3" />
+    <PackageVersion Include="protobuf-net.Grpc" Version="1.1.1" />
     <PackageVersion Include="Scrutor" Version="4.2.2" />
     <PackageVersion Include="Serilog" Version="4.0.2-dev-02220" />
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="8.0.0" />
@@ -41,5 +43,6 @@
     <PackageVersion Include="Spectre.Console" Version="0.49.2-preview.0.16" />
     <PackageVersion Include="Spectre.Console.Cli" Version="0.49.2-preview.0.16" />
     <PackageVersion Include="Spectre.Console.Cli.Extensions.DependencyInjection" Version="0.2.0" />
+    <PackageVersion Include="System.ServiceModel.Primitives" Version="8.0.0" />
   </ItemGroup>
 </Project>

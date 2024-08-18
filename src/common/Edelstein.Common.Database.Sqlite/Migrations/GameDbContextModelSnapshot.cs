@@ -92,6 +92,28 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                     b.ToTable("account_world_data", (string)null);
                 });
 
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Auth.DbIdentity", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("identities", (string)null);
+                });
+
             modelBuilder.Entity("Edelstein.Common.Database.Entities.DbAccountWorldData", b =>
                 {
                     b.HasOne("Edelstein.Common.Database.Entities.DbAccount", "Account")

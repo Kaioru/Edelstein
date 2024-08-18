@@ -1,7 +1,8 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Login.Contexts;
 
 public record LoginContext(
-    LoginContextManagers Managers,
     LoginContextRepositories Repositories,
+    LoginContextServices Services,
+    LoginContextManagers Managers,
     LoginContextPipelines Pipelines
 );
