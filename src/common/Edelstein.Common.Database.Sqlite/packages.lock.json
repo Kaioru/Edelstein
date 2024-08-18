@@ -80,6 +80,11 @@
         "resolved": "2.14.1",
         "contentHash": "lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw=="
       },
+      "Mapster.Core": {
+        "type": "Transitive",
+        "resolved": "1.2.2-pre01",
+        "contentHash": "FuNCfTHytW9yeSuGHZ9f8u4cgbzhPL0GqoypA4LD99m0zkafs73IcaMxmbUtYjRThof+Z+jcEQ/suVYTkMpTkA=="
+      },
       "Microsoft.Bcl.AsyncInterfaces": {
         "type": "Transitive",
         "resolved": "7.0.0",
@@ -1286,6 +1291,8 @@
         "type": "Project",
         "dependencies": {
           "Edelstein.Common.Gameplay": "[1.0.0, )",
+          "Mapster": "[7.4.1-pre01, )",
+          "Mapster.EFCore": "[5.1.2-pre01, )",
           "Microsoft.EntityFrameworkCore": "[9.0.0-preview.3.24172.4, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[9.0.0-preview.3.24172.4, )",
           "Microsoft.EntityFrameworkCore.Relational": "[9.0.0-preview.3.24172.4, )"
@@ -1358,6 +1365,25 @@
         "requested": "[2.0.0, )",
         "resolved": "2.0.0",
         "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
+      },
+      "Mapster": {
+        "type": "CentralTransitive",
+        "requested": "[7.4.1-pre01, )",
+        "resolved": "7.4.1-pre01",
+        "contentHash": "b7YEDoh4nuODGF7wUjgkxA3bTLLt7TxfPkKiFQTgCrNYHem1VVaJyXgsG9RVeQQ44+hoo69IfqENNKn0ox9ddg==",
+        "dependencies": {
+          "Mapster.Core": "1.2.2-pre01"
+        }
+      },
+      "Mapster.EFCore": {
+        "type": "CentralTransitive",
+        "requested": "[5.1.2-pre01, )",
+        "resolved": "5.1.2-pre01",
+        "contentHash": "cuXP2ZxOhWrWK12eA+pxY9bVNW/NG+Afl0Di05NwOyO9PGJGPzEOKe59tuMdycNfEyBO4iFvp4GyaETwvTh2eg==",
+        "dependencies": {
+          "Mapster": "7.4.1-pre01",
+          "Microsoft.EntityFrameworkCore": "6.0.1"
+        }
       },
       "Microsoft.EntityFrameworkCore.Abstractions": {
         "type": "CentralTransitive",

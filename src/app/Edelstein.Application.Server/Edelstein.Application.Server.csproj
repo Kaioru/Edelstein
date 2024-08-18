@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <PackageReference Include="Mapster.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Configuration" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
@@ -22,6 +23,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\common\Edelstein.Common.Database.Pgsql\Edelstein.Common.Database.Pgsql.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Database.Sqlite\Edelstein.Common.Database.Sqlite.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Database\Edelstein.Common.Database.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Login\Edelstein.Common.Gameplay.Login.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Plugin\Edelstein.Common.Plugin.csproj" />

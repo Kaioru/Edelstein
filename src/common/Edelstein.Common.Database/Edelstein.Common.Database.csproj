@@ -3,6 +3,8 @@
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Mapster" />
+    <PackageReference Include="Mapster.EFCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
