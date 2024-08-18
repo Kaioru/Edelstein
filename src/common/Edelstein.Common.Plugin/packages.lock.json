@@ -171,7 +171,7 @@
         }
       }
     },
-    "net9.0/win-x64": {
+    "net9.0/osx-arm64": {
       "System.Text.Encodings.Web": {
         "type": "Transitive",
         "resolved": "9.0.0-preview.7.24405.7",

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Application.Server.Bindings;
 using Edelstein.Common.Network.DotNetty.Transports;
@@ -27,7 +28,7 @@ public class SystemHostService<TStageSystem, TStageSystemUser, TContext>(
     
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        await plugins.LoadFromDirectory(config.Value.PluginDirectory);
+        await plugins.LoadFromDirectory(Path.GetFullPath(config.Value.PluginDirectory));
         await plugins.InvokeStart(context);
         
         Context = await new NettyTransportAcceptor<TStageSystemUser>(

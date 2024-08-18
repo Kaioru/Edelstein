@@ -70,7 +70,7 @@ public class PluginManager<TContext>(
             return;
         }
 
-        foreach (var subdirectory in Directory.GetDirectories(directory))
+        foreach (var subdirectory in Directory.GetDirectories(Path.GetFullPath(directory)))
         {
             var name = Path.GetFileName(subdirectory);
             var file = Path.Combine(subdirectory, name);
