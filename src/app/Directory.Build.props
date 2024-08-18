@@ -6,4 +6,10 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+  </PropertyGroup>
+  
 </Project>
