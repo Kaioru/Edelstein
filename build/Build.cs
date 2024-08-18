@@ -1,13 +1,9 @@
+using JetBrains.Annotations;
 using Nuke.Common;
-using Nuke.Common.CI.GitHubActions;
+using Nuke.Common.IO;
+using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 
-[GitHubActions(
-    "build",
-    GitHubActionsImage.UbuntuLatest,
-    On = new[] { GitHubActionsTrigger.Push },
-    InvokedTargets = new[] { nameof(Compile) }
-)]
 partial class Build : NukeBuild
 {
     /// Support plugins are available for:
@@ -21,9 +17,18 @@ partial class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
+    [Solution] 
+    readonly Solution Solution;
+
+    AbsolutePath OutputDirectory => RootDirectory / "artifacts";
+
     Target Clean => d => d
         .Before(Restore)
         .Executes(() => DotNetTasks.DotNetClean());
+    
+    Target CleanArtifacts => d => d
+        .Before(Restore)
+        .Executes(() => OutputDirectory.CreateOrCleanDirectory());
 
     Target Restore => d => d
         .Executes(() => DotNetTasks.DotNetRestore());

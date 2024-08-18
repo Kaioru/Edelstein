@@ -73,10 +73,17 @@
             "type": "string",
             "enum": [
               "Clean",
+              "CleanArtifacts",
               "Compile",
+              "Pack",
+              "Publish",
               "Restore"
             ]
           }
+        },
+        "Solution": {
+          "type": "string",
+          "description": "Path to a solution file that is automatically loaded"
         },
         "Target": {
           "type": "array",
@@ -85,7 +92,10 @@
             "type": "string",
             "enum": [
               "Clean",
+              "CleanArtifacts",
               "Compile",
+              "Pack",
+              "Publish",
               "Restore"
             ]
           }
