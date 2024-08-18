@@ -59,6 +59,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugin", "plugin", "{E037F3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Plugin.Rue", "src\plugin\Edelstein.Plugin.Rue\Edelstein.Plugin.Rue.csproj", "{AAFAAEFF-090E-4AE5-B278-BD33F8BEA841}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Database", "src\common\Edelstein.Common.Database\Edelstein.Common.Database.csproj", "{84FE3DCF-9CFB-4B29-9532-924FE42F86EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Database.Sqlite", "src\common\Edelstein.Common.Database.Sqlite\Edelstein.Common.Database.Sqlite.csproj", "{198F92CE-3D7C-4524-9536-17A8B91CDC74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Database.Pgsql", "src\common\Edelstein.Common.Database.Pgsql\Edelstein.Common.Database.Pgsql.csproj", "{45285DB8-5443-486B-B761-9B4713A9A5D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +92,9 @@ Global
 		{982EAFDE-0785-4542-BB6C-0716DFC6B0DA} = {FED60761-FD6B-4EBD-B896-FAFB2D991E13}
 		{E037F392-38D9-43ED-86EA-740EB51A475B} = {0C8602E7-AED6-43A4-BA0F-165EAB963D07}
 		{AAFAAEFF-090E-4AE5-B278-BD33F8BEA841} = {E037F392-38D9-43ED-86EA-740EB51A475B}
+		{84FE3DCF-9CFB-4B29-9532-924FE42F86EA} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
+		{198F92CE-3D7C-4524-9536-17A8B91CDC74} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
+		{45285DB8-5443-486B-B761-9B4713A9A5D0} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AF5AC908-62BB-48CE-99E8-83388738CCB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -144,5 +153,17 @@ Global
 		{AAFAAEFF-090E-4AE5-B278-BD33F8BEA841}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAFAAEFF-090E-4AE5-B278-BD33F8BEA841}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAFAAEFF-090E-4AE5-B278-BD33F8BEA841}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84FE3DCF-9CFB-4B29-9532-924FE42F86EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84FE3DCF-9CFB-4B29-9532-924FE42F86EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84FE3DCF-9CFB-4B29-9532-924FE42F86EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84FE3DCF-9CFB-4B29-9532-924FE42F86EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{198F92CE-3D7C-4524-9536-17A8B91CDC74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{198F92CE-3D7C-4524-9536-17A8B91CDC74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{198F92CE-3D7C-4524-9536-17A8B91CDC74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{198F92CE-3D7C-4524-9536-17A8B91CDC74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45285DB8-5443-486B-B761-9B4713A9A5D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45285DB8-5443-486B-B761-9B4713A9A5D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45285DB8-5443-486B-B761-9B4713A9A5D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45285DB8-5443-486B-B761-9B4713A9A5D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

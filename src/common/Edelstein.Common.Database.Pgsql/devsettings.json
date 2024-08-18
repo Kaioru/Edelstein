@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "Pgsql": "Host=localhost;Database=edelstein;"
+  }
+}
