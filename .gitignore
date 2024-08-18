@@ -1,13 +1,14 @@
 # --- Application specific ignores --- #
 **/*.aes
 **/*.db
-**/*.json
 **/*.nx
 **/*.wz
 !*.nx/
 !*.wz/
 !**/*.example.json
 !**/manifest.json
+**/appsettings.*.json
+**/devsettings.*.json
 !**/appsettings.json
 !**/devsettings.json
 !**/stage*.json
