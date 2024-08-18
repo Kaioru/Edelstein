@@ -4,8 +4,10 @@ using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.EntityFramework;
+using Nuke.Common.Tools.MinVer;
 
 partial class Build
 {
@@ -33,10 +35,13 @@ partial class Build
             
             if (SourceAppSolutionFolder?.Projects == null) return;
 
+            var version = MinVerTasks.MinVer("-m 1.0 -p preview -v e").First().Text;
+
             foreach (var runtime in Runtimes)
             {
-                var outputRuntimeDirectory = OutputExeDirectory / $"{runtime}";
+                var outputRuntimeDirectory = OutputExeDirectory / $"{runtime}-{version}";
                 var outputRuntimePluginsDirectory = outputRuntimeDirectory / "plugins";
+                var outputRuntimeMigrationsDirectory = outputRuntimeDirectory / "migrations";
 
                 outputRuntimeDirectory.CreateOrCleanDirectory();
                 
@@ -61,7 +66,7 @@ partial class Build
                             EntityFrameworkTasks.EntityFrameworkMigrationsScript(s => s
                                 .SetProject(project)
                                 .SetConfiguration(Configuration)
-                                .SetOutput(outputRuntimeDirectory / $"db-migrate-{provider}.sql"));
+                                .SetOutput(outputRuntimeMigrationsDirectory / $"migrate-{provider}.sql"));
                         }
                     }
 

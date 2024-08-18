@@ -1,8 +1,10 @@
-using JetBrains.Annotations;
+using System.Linq;
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.MinVer;
 
 partial class Build : NukeBuild
 {
