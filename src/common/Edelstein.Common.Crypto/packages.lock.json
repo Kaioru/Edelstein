@@ -2,19 +2,12 @@
   "version": 2,
   "dependencies": {
     "net9.0": {
-      "Microsoft.NET.ILLink.Tasks": {
-        "type": "Direct",
-        "requested": "[9.0.0-preview.7.24405.7, )",
-        "resolved": "9.0.0-preview.7.24405.7",
-        "contentHash": "N8whKNvlP3nz9k7C59ggvawQMyBq539AxAAjawym72tSft8gw+Jq4LC0RQtCBPgvCEjwf6zC1hCtkp1iMb5Ygg=="
-      },
       "MinVer": {
         "type": "Direct",
         "requested": "[5.0.0, )",
         "resolved": "5.0.0",
         "contentHash": "ybkgpQMtt0Fo91l5rYtE3TZtD+Nmy5Ko091xvfXXOosQdMi30XO2EZ2+ShZt89gdu7RMmJqZaJ+e1q6d+6+KNw=="
       }
-    },
-    "net9.0/osx-arm64": {}
+    }
   }
 }

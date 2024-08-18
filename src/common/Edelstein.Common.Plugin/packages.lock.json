@@ -54,12 +54,6 @@
           "System.Diagnostics.DiagnosticSource": "9.0.0-preview.7.24405.7"
         }
       },
-      "Microsoft.NET.ILLink.Tasks": {
-        "type": "Direct",
-        "requested": "[9.0.0-preview.7.24405.7, )",
-        "resolved": "9.0.0-preview.7.24405.7",
-        "contentHash": "N8whKNvlP3nz9k7C59ggvawQMyBq539AxAAjawym72tSft8gw+Jq4LC0RQtCBPgvCEjwf6zC1hCtkp1iMb5Ygg=="
-      },
       "MinVer": {
         "type": "Direct",
         "requested": "[5.0.0, )",
@@ -169,13 +163,6 @@
         "dependencies": {
           "Microsoft.Extensions.Primitives": "9.0.0-preview.7.24405.7"
         }
-      }
-    },
-    "net9.0/osx-arm64": {
-      "System.Text.Encodings.Web": {
-        "type": "Transitive",
-        "resolved": "9.0.0-preview.7.24405.7",
-        "contentHash": "zrapRzQMn0vnk7Ztk8RtJwu4vG1RoOkO0ZozBppgsrfn9JM03E1cT3oUqbvDCtLHxyvu20W25H+0xdYVPeGgxg=="
       }
     }
   }
