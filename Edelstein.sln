@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Database.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Database.Pgsql", "src\common\Edelstein.Common.Database.Pgsql\Edelstein.Common.Database.Pgsql.csproj", "{45285DB8-5443-486B-B761-9B4713A9A5D0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{6527D18C-B0E2-49BA-B649-4D5DB6216069}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,8 @@ Global
 		{45285DB8-5443-486B-B761-9B4713A9A5D0} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6527D18C-B0E2-49BA-B649-4D5DB6216069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6527D18C-B0E2-49BA-B649-4D5DB6216069}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF5AC908-62BB-48CE-99E8-83388738CCB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AF5AC908-62BB-48CE-99E8-83388738CCB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF5AC908-62BB-48CE-99E8-83388738CCB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
