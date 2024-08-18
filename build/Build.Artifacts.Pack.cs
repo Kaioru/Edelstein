@@ -7,7 +7,7 @@ partial class Build
     AbsolutePath OutputPkgDirectory => OutputDirectory / "packages";
     
     Target Pack => d => d
-        .Produces(OutputPkgDirectory / "*.zip")
+        .Produces(OutputPkgDirectory / "*.nupkg")
         .Executes(() =>
         {
             OutputPkgDirectory.CreateOrCleanDirectory();
