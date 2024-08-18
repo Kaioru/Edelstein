@@ -3,5 +3,6 @@
 namespace Edelstein.Protocol.Gameplay.Login.Contexts;
 
 public record LoginContextRepositories(
-    IAccountRepository Account
+    IAccountRepository Account,
+    IAccountWorldDataRepository AccountWorldData
 );
