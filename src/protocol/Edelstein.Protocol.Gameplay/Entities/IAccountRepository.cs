@@ -3,7 +3,7 @@ using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Entities;
 
-public interface IAccountRepository : IQueriedRepository<int, IAccount>
+public interface IAccountRepository : IQueriedRepository<int, Account>
 {
-    Task<IAccount?> RetrieveByUsername(string username);
+    Task<Account?> RetrieveByUsername(string username);
 }

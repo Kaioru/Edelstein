@@ -1,8 +1,8 @@
-﻿using Edelstein.Protocol.Gameplay.Entities;
+﻿using Edelstein.Protocol.Utilities.Repositories;
 
-namespace Edelstein.Common.Gameplay.Entities;
+namespace Edelstein.Protocol.Gameplay.Entities;
 
-public record Account : IAccount
+public record Account : IRepositoryEntry<int>
 {
     public int ID { get; set; }
 
