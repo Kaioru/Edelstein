@@ -114,6 +114,41 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                     b.ToTable("identities", (string)null);
                 });
 
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Host")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Port")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("server_info", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Server");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Server.DbServerInfoLogin", b =>
+                {
+                    b.HasBaseType("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo");
+
+                    b.ToTable("server_info", (string)null);
+
+                    b.HasDiscriminator().HasValue("Login");
+                });
+
             modelBuilder.Entity("Edelstein.Common.Database.Entities.DbAccountWorldData", b =>
                 {
                     b.HasOne("Edelstein.Common.Database.Entities.DbAccount", "Account")

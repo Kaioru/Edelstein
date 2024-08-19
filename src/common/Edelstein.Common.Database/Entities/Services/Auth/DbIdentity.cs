@@ -2,4 +2,4 @@
 
 namespace Edelstein.Common.Database.Entities.Services.Auth;
 
-public class DbIdentity : Identity;
+public record DbIdentity : Identity;

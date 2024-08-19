@@ -8,7 +8,7 @@ namespace Edelstein.Common.Database.Entities;
 public class DbAccountWorldDataRepository(
     IDbContextFactory<GameDbContext> factory,
     IMapper mapper
-) : DbRepository<DbAccountWorldData, AccountWorldData>(factory, mapper, db => db.AccountWorldData), 
+) : DbRepository<int, DbAccountWorldData, AccountWorldData>(factory, mapper, db => db.AccountWorldData), 
     IAccountWorldDataRepository
 {
     public async Task<AccountWorldData?> RetrieveByAccountAndWorld(int accountID, int worldID)

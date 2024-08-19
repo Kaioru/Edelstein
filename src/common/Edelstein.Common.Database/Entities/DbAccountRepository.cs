@@ -8,7 +8,7 @@ namespace Edelstein.Common.Database.Entities;
 public class DbAccountRepository(
     IDbContextFactory<GameDbContext> factory,
     IMapper mapper
-) : DbRepository<DbAccount, Account>(factory, mapper, db => db.Accounts), 
+) : DbRepository<int, DbAccount, Account>(factory, mapper, db => db.Accounts), 
     IAccountRepository
 {
     public async Task<Account?> RetrieveByUsername(string username)

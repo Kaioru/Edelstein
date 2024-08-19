@@ -7,15 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Database.Entities;
 
-public class DbRepository<TEntityDb, TEntityDto>(
+public class DbRepository<TKey, TEntityDb, TEntityDto>(
     IDbContextFactory<GameDbContext> factory,
     IMapper mapper,
     Func<GameDbContext, DbSet<TEntityDb>> selector
-) : IQueriedRepository<int, TEntityDto> 
-    where TEntityDb : class, IRepositoryEntry<int>, TEntityDto
-    where TEntityDto : class, IRepositoryEntry<int>
+) : IQueriedRepository<TKey, TEntityDto> 
+    where TKey : IEquatable<TKey>
+    where TEntityDb : class, IRepositoryEntry<TKey>
+    where TEntityDto : class, IRepositoryEntry<TKey>
 {
-    public async Task<TEntityDto?> Retrieve(int key)
+    public async Task<TEntityDto?> Retrieve(TKey key)
     {
         await using var db = await factory.CreateDbContextAsync();
         var entity = await selector.Invoke(db).FindAsync(key);
@@ -40,15 +41,14 @@ public class DbRepository<TEntityDb, TEntityDto>(
         return mapper.Map<TEntityDto>(entity);
     }
 
-    public async Task Delete(int key)
+    public async Task Delete(TKey key)
     {
         await using var db = await factory.CreateDbContextAsync();
-        await selector.Invoke(db).Where(a => a.ID == key).ExecuteDeleteAsync();
+        await selector.Invoke(db).Where(a => a.ID.Equals(key)).ExecuteDeleteAsync();
     }
-    
     public async Task Delete(TEntityDto entry)
     {
         await using var db = await factory.CreateDbContextAsync();
-        await selector.Invoke(db).Where(a => a.ID == entry.ID).ExecuteDeleteAsync();
+        await selector.Invoke(db).Where(a => a.ID.Equals(entry.ID)).ExecuteDeleteAsync();
     }
 }

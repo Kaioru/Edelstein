@@ -8,7 +8,7 @@ namespace Edelstein.Common.Database.Entities.Services.Auth;
 public class DbIdentityRepository(
     IDbContextFactory<GameDbContext> factory,
     IMapper mapper
-) : DbRepository<DbIdentity, Identity>(factory, mapper, db => db.Identities), 
+) : DbRepository<int, DbIdentity, Identity>(factory, mapper, db => db.Identities), 
     IIdentityRepository
 {
     public async Task<Identity?> RetrieveByUsername(string username)

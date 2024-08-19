@@ -2,7 +2,7 @@
 
 namespace Edelstein.Common.Services.Auth;
 
-public class Identity : IRepositoryEntry<int>
+public record Identity : IRepositoryEntry<int>
 {
     public int ID { get; set; }
     
