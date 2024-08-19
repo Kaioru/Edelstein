@@ -100,6 +100,12 @@
         "resolved": "5.0.0",
         "contentHash": "ybkgpQMtt0Fo91l5rYtE3TZtD+Nmy5Ko091xvfXXOosQdMi30XO2EZ2+ShZt89gdu7RMmJqZaJ+e1q6d+6+KNw=="
       },
+      "R3": {
+        "type": "Direct",
+        "requested": "[1.2.7, )",
+        "resolved": "1.2.7",
+        "contentHash": "bb9HK3W04IDdB75YsK9V0qcuqLn+6HuUCvrnF0j8XyjNDM3nWNadOdzNU2zoPq4mLDyyaoamvhgDoBKH52QzJQ=="
+      },
       "Scrutor": {
         "type": "Direct",
         "requested": "[4.2.2, )",

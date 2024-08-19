@@ -18,7 +18,7 @@ public partial class ServerService
             var now = DateTime.UtcNow;
             var count = await db.ServerInfo
                 .Where(i => i.ID == request.ID)
-                .Where(i => i.DateExpire < now)
+                .Where(i => i.DateExpire > now)
                 .Where(i => i.Secret == request.Secret)
                 .ExecuteDeleteAsync();
             

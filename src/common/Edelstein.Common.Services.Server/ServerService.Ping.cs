@@ -18,10 +18,11 @@ public partial class ServerService
             var now = DateTime.UtcNow;
             var count = await db.ServerInfo
                 .Where(i => i.ID == request.ID)
-                .Where(i => i.DateExpire < now)
+                .Where(i => i.DateExpire > now)
                 .Where(i => i.Secret == request.Secret)
-                .ExecuteUpdateAsync(s => s.
-                    SetProperty(p => p.DateExpire, now.Add(Expiry)));
+                .ExecuteUpdateAsync(s => s
+                    .SetProperty(p => p.DateUpdated, now)
+                    .SetProperty(p => p.DateExpire, now.Add(Expiry)));
             
             if (count == 0)
                 return new ServerServiceResponse

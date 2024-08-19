@@ -4,6 +4,7 @@ using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Services.Server;
+using MapsterMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -53,5 +54,11 @@ internal static class ServiceCollectionExtensions
                 subProvider.GetRequiredService<TContext>()
             );
         });
+        collection.AddHostedService(p => new SystemServerRegistryHostService<TServerInfo>(
+            p.GetRequiredService<ILogger<SystemServerRegistryHostService<TServerInfo>>>(),
+            p.GetRequiredService<IMapper>(),
+            p.GetRequiredService<IServerService>(),
+            config.Get<TServerInfoImpl>()!
+        ));
     }
 }

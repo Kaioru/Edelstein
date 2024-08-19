@@ -6,5 +6,5 @@ namespace Edelstein.Protocol.Services.Server.Contracts;
 public class ServerServiceDeregisterRequest
 {
     [DataMember(Order = 1)] public required string ID { get; init; }
-    [DataMember(Order = 2)] public required int Secret { get; init; }
+    [DataMember(Order = 2)] public required long Secret { get; init; }
 }

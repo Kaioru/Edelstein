@@ -17,7 +17,7 @@ public partial class ServerService
             await using var db = await factory.CreateDbContextAsync();
             var now = DateTime.UtcNow;
             var info = await db.ServerInfo
-                .Where(i => i.DateExpire < now)
+                .Where(i => i.DateExpire > now)
                 .ToHashSetAsync();
             
             return new ServerServiceGetAllResponse<ServerServiceServerInfo>

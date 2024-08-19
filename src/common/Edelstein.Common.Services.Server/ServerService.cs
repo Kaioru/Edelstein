@@ -6,6 +6,7 @@ using Edelstein.Common.Database;
 using Edelstein.Common.Database.Entities.Services.Server;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
+using EntityFramework.Exceptions.Common;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,10 +25,10 @@ public partial class ServerService(
         {
             await using var db = await factory.CreateDbContextAsync();
             var now = DateTime.UtcNow;
-            
+
             await db.ServerInfo
                 .Where(i => i.ID == info.ID)
-                .Where(i => i.DateExpire > now)
+                .Where(i => i.DateExpire < now)
                 .ExecuteDeleteAsync();
 
             info.DateUpdated = now;
@@ -49,6 +50,13 @@ public partial class ServerService(
             {
                 Result = ServerServiceResult.Success,
                 Secret = info.Secret
+            };
+        }
+        catch (UniqueConstraintException)
+        {
+            return new ServerServiceRegisterResponse
+            {
+                Result = ServerServiceResult.FailedAlreadyRegistered
             };
         }
         catch (DbException)
