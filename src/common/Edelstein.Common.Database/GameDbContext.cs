@@ -1,6 +1,7 @@
 ﻿using Edelstein.Common.Database.Entities;
 using Edelstein.Common.Database.Entities.Services.Auth;
 using Edelstein.Common.Database.Entities.Services.Server;
+using Edelstein.Common.Database.Entities.Services.Session;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Database;
@@ -11,6 +12,8 @@ public class GameDbContext(DbContextOptions<GameDbContext> options) : DbContext(
     
     public DbSet<DbServerInfo> ServerInfo => Set<DbServerInfo>();
     public DbSet<DbServerInfoLogin> ServerInfoLogin => Set<DbServerInfoLogin>();
+    
+    public DbSet<DbSessionInfo> SessionInfo => Set<DbSessionInfo>();
     
     public DbSet<DbAccount> Accounts => Set<DbAccount>();
     public DbSet<DbAccountWorldData> AccountWorldData => Set<DbAccountWorldData>();
