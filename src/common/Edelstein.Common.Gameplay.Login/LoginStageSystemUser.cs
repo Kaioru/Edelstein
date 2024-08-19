@@ -10,4 +10,6 @@ public class LoginStageSystemUser(
 {
     public ISocket Socket { get; } = socket;
     public ILoginStageSystem System { get; } = system;
+    
+    public long Key { get; set; }
 }
