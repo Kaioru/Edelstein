@@ -8,5 +8,5 @@ public class ServerServiceGetAllResponse<TServerInfo>
     where TServerInfo : class, IServerInfo
 {
     [DataMember(Order = 1)] public required ServerServiceResult Result { get; init; }
-    [DataMember(Order = 2)] public required ICollection<TServerInfo?> Info { get; init; }
+    [DataMember(Order = 2)] public ICollection<TServerInfo>? Info { get; init; }
 }

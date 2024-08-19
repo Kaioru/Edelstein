@@ -7,6 +7,5 @@ public enum ServerServiceResult
     FailedUnknown = 0x2,
     FailedAlreadyRegistered = 0x3,
     FailedNotRegistered = 0x4,
-    FailedNotFound = 0x5,
-    FailedInvalidSecret = 0x6
+    FailedNotFound = 0x5
 }
