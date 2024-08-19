@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Edelstein.Common.Database.Sqlite.Migrations
+namespace Edelstein.Common.Database.Pgsql.Migrations
 {
     /// <inheritdoc />
-    public partial class AddMigrationInfo : Migration
+    public partial class AddSessionMigrationRelation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,14 +15,13 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                 name: "migration_info",
                 columns: table => new
                 {
-                    AccountID = table.Column<int>(type: "INTEGER", nullable: false),
-                    AccountWorldDataID = table.Column<int>(type: "INTEGER", nullable: false),
-                    CharacterID = table.Column<int>(type: "INTEGER", nullable: false),
-                    DateUpdated = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DateExpire = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Secret = table.Column<long>(type: "INTEGER", nullable: false),
-                    FromServerID = table.Column<string>(type: "TEXT", nullable: false),
-                    ToServerID = table.Column<string>(type: "TEXT", nullable: false)
+                    AccountID = table.Column<int>(type: "integer", nullable: false),
+                    AccountWorldDataID = table.Column<int>(type: "integer", nullable: false),
+                    CharacterID = table.Column<int>(type: "integer", nullable: false),
+                    DateUpdated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateExpire = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    FromServerID = table.Column<string>(type: "text", nullable: false),
+                    ToServerID = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,6 +49,12 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                         column: x => x.ToServerID,
                         principalTable: "server_info",
                         principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_migration_info_session_info_AccountID",
+                        column: x => x.AccountID,
+                        principalTable: "session_info",
+                        principalColumn: "ActiveAccount",
                         onDelete: ReferentialAction.Cascade);
                 });
 

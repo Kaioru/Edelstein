@@ -7,6 +7,7 @@ using Edelstein.Common.Database.Sqlite;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Plugin;
 using Edelstein.Common.Services.Auth;
+using Edelstein.Common.Services.Migration;
 using Edelstein.Common.Services.Server;
 using Edelstein.Common.Services.Session;
 using Edelstein.Common.Utilities.Bootstrap;
@@ -17,6 +18,7 @@ using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Services.Auth;
+using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Utilities.Pipelines;
@@ -85,6 +87,7 @@ internal static class ProgramHostBuilder
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<IServerService, ServerService>();
         builder.Services.AddSingleton<ISessionService, SessionService>();
+        builder.Services.AddSingleton<IMigrationService, MigrationService>();
         
         builder.Services.AddSingleton(typeof(ITemplateManagerContext<>), typeof(TemplateManagerContext<>));
         builder.Services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));

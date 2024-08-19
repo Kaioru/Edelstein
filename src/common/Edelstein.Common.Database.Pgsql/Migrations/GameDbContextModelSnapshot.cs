@@ -147,9 +147,6 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("Secret")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("ToServerID")
                         .IsRequired()
                         .HasColumnType("text");
@@ -254,6 +251,12 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
 
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", b =>
                 {
+                    b.HasOne("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", "Session")
+                        .WithOne("Migration")
+                        .HasForeignKey("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", "AccountID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Edelstein.Common.Database.Entities.DbAccount", "Account")
                         .WithOne("Migration")
                         .HasForeignKey("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", "AccountID")
@@ -283,6 +286,8 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                     b.Navigation("AccountWorldData");
 
                     b.Navigation("FromServer");
+
+                    b.Navigation("Session");
 
                     b.Navigation("ToServer");
                 });
@@ -317,6 +322,11 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                     b.Navigation("MigrationOut");
 
                     b.Navigation("Sessions");
+                });
+
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", b =>
+                {
+                    b.Navigation("Migration");
                 });
 #pragma warning restore 612, 618
         }

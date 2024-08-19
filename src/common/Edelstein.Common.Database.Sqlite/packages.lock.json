@@ -1380,6 +1380,7 @@
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Network": "[1.0.0, )",
           "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Migration": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",
           "Edelstein.Protocol.Services.Session": "[1.0.0, )",
           "Edelstein.Protocol.Utilities": "[1.0.0, )"

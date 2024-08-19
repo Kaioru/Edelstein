@@ -26,6 +26,12 @@ public class DbMigrationInfoConfiguration : IEntityTypeConfiguration<DbMigration
             .OnDelete(DeleteBehavior.Cascade);
         
         builder
+            .HasOne(e => e.Session)
+            .WithOne(p => p.Migration)
+            .HasForeignKey<DbMigrationInfo>(e => e.AccountID)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder
             .HasOne(m => m.FromServer)
             .WithMany(p => p.MigrationOut)
             .HasForeignKey(m => m.FromServerID)

@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using Edelstein.Protocol.Services.Migration.Entities;
 
 namespace Edelstein.Protocol.Services.Migration.Contracts;
 

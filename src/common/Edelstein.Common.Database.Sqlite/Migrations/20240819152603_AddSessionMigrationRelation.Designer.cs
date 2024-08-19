@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Edelstein.Common.Database.Sqlite.Migrations
 {
     [DbContext(typeof(GameDbContext))]
-    [Migration("20240819151627_AddMigrationInfo")]
-    partial class AddMigrationInfo
+    [Migration("20240819152603_AddSessionMigrationRelation")]
+    partial class AddSessionMigrationRelation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,9 +139,6 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("Secret")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("ToServerID")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -244,6 +241,12 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
 
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", b =>
                 {
+                    b.HasOne("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", "Session")
+                        .WithOne("Migration")
+                        .HasForeignKey("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", "AccountID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Edelstein.Common.Database.Entities.DbAccount", "Account")
                         .WithOne("Migration")
                         .HasForeignKey("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", "AccountID")
@@ -273,6 +276,8 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                     b.Navigation("AccountWorldData");
 
                     b.Navigation("FromServer");
+
+                    b.Navigation("Session");
 
                     b.Navigation("ToServer");
                 });
@@ -307,6 +312,11 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                     b.Navigation("MigrationOut");
 
                     b.Navigation("Sessions");
+                });
+
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", b =>
+                {
+                    b.Navigation("Migration");
                 });
 #pragma warning restore 612, 618
         }
