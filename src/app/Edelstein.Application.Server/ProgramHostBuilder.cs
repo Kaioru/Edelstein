@@ -49,6 +49,10 @@ internal static class ProgramHostBuilder
                 options.TargetTicksPoolCount
             );
         });
+        builder.Services.Scan(scan => scan
+            .FromAssemblyDependencies(Assembly.GetEntryAssembly()!)
+            .AddClasses(classes => classes.AssignableTo<ITickerAction>()).AsImplementedInterfaces()
+            .WithSingletonLifetime());
         builder.Services.AddHostedService<TickerHostService>();
 
         builder.Services.AddMapster();

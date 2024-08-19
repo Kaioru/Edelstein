@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Cysharp.Threading;
 using Edelstein.Protocol.Utilities.Tickers;
 
@@ -18,5 +19,8 @@ public class Ticker(
         });
 
     public void Dispose()
-        => _looper.Dispose();
+    {
+        GC.SuppressFinalize(this);
+        _looper.Dispose();
+    }
 }

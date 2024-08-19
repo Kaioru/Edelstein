@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Auth.Contracts;
 using ProtoBuf.Grpc;
