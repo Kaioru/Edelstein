@@ -143,6 +143,7 @@
         "type": "Project",
         "dependencies": {
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
+          "LogicLooper": "[1.6.0, )",
           "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-preview.7.24405.7, )"
         }
       },
@@ -154,6 +155,12 @@
       },
       "edelstein.protocol.utilities": {
         "type": "Project"
+      },
+      "LogicLooper": {
+        "type": "CentralTransitive",
+        "requested": "[1.6.0, )",
+        "resolved": "1.6.0",
+        "contentHash": "qbQ+kukflXfbsLbqZtMfqLPPo0oUgKISLt7ylqrEt3PbIfFVci2dlU9X94k7B++g2h7Rp4oOhL1aY2VCXovzag=="
       },
       "Microsoft.Extensions.Configuration.Abstractions": {
         "type": "CentralTransitive",

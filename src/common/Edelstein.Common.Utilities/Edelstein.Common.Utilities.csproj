@@ -3,6 +3,7 @@
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Utilities\Edelstein.Protocol.Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="LogicLooper" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 </Project>

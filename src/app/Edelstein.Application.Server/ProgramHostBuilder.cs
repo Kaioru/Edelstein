@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Edelstein.Application.Server.Bindings;
+using Edelstein.Application.Server.Services;
 using Edelstein.Common.Database;
 using Edelstein.Common.Database.Pgsql;
 using Edelstein.Common.Database.Sqlite;
@@ -9,6 +10,7 @@ using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Utilities.Bootstrap;
 using Edelstein.Common.Utilities.Pipelines;
 using Edelstein.Common.Utilities.Templates;
+using Edelstein.Common.Utilities.Tickers;
 using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Plugin;
@@ -16,11 +18,13 @@ using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Repositories;
 using Edelstein.Protocol.Utilities.Templates;
+using Edelstein.Protocol.Utilities.Tickers;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Serilog;
 using SqliteExceptionProcessorExtensions = EntityFramework.Exceptions.Sqlite.ExceptionProcessorExtensions;
 using PgSqlExceptionProcessorExtensions = EntityFramework.Exceptions.PostgreSQL.ExceptionProcessorExtensions;
@@ -33,7 +37,19 @@ internal static class ProgramHostBuilder
     {
         var builder = Host.CreateApplicationBuilder();
 
+        builder.Services.AddSerilog((_, configuration) => configuration.ReadFrom.Configuration(builder.Configuration));
         builder.Services.Configure<ProgramHostConfig>(builder.Configuration.GetSection("Host"));
+
+        builder.Services.AddSingleton<ITicker>(p =>
+        {
+            var options = p.GetRequiredService<IOptions<ProgramHostConfig>>().Value;
+            
+            return new TickerPool(
+                options.TargetTicksPerSecond, 
+                options.TargetTicksPoolCount
+            );
+        });
+        builder.Services.AddHostedService<TickerHostService>();
 
         builder.Services.AddMapster();
         builder.Services.AddPooledDbContextFactory<GameDbContext>(options =>
@@ -60,7 +76,6 @@ internal static class ProgramHostBuilder
         // TODO gRPC
         builder.Services.AddSingleton<IAuthService, AuthService>();
         
-        builder.Services.AddSerilog((_, configuration) => configuration.ReadFrom.Configuration(builder.Configuration));
         builder.Services.AddSingleton(typeof(ITemplateManagerContext<>), typeof(TemplateManagerContext<>));
         builder.Services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));
         

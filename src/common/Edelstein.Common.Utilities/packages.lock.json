@@ -2,6 +2,12 @@
   "version": 2,
   "dependencies": {
     "net9.0": {
+      "LogicLooper": {
+        "type": "Direct",
+        "requested": "[1.6.0, )",
+        "resolved": "1.6.0",
+        "contentHash": "qbQ+kukflXfbsLbqZtMfqLPPo0oUgKISLt7ylqrEt3PbIfFVci2dlU9X94k7B++g2h7Rp4oOhL1aY2VCXovzag=="
+      },
       "Microsoft.Extensions.Logging.Abstractions": {
         "type": "Direct",
         "requested": "[9.0.0-preview.7.24405.7, )",
