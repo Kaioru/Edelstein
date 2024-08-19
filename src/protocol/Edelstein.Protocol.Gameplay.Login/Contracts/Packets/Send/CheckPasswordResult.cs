@@ -1,4 +1,5 @@
 ﻿using BinarySerialization;
+using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Network.Packets;
 using Edelstein.Protocol.Network.Packets.Types;
 
@@ -30,8 +31,8 @@ public record AccountInfo : StructuredBasePacket
 {
     [FieldOrder(0)] public required int ID { get; init; }
     [FieldOrder(1)] public byte Gender { get; init; }
-    [FieldOrder(2)] public byte GradeCode { get; init; }
-    [FieldOrder(3)] public short SubGradeCode { get; init; }
+    [FieldOrder(2)] public AccountGradeCode GradeCode { get; init; }
+    [FieldOrder(3)] public AccountSubGradeCode SubGradeCode { get; init; }
     [FieldOrder(4)] public byte CountryID { get; init; }
     [FieldOrder(5)] public required LPString NexonClubID { get; init; }
     
