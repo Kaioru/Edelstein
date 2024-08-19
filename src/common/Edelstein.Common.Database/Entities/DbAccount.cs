@@ -5,5 +5,5 @@ namespace Edelstein.Common.Database.Entities;
 
 public record DbAccount : Account
 {
-    public required ICollection<DbAccountWorldData> AccountWorldData { get; set; }
+    public ICollection<DbAccountWorldData> AccountWorldData { get; set; } = new List<DbAccountWorldData>();
 }

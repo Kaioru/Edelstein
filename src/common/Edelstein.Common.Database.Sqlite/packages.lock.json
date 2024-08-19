@@ -1340,6 +1340,7 @@
         "dependencies": {
           "Edelstein.Common.Gameplay": "[1.0.0, )",
           "Edelstein.Common.Services.Auth": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Session": "[1.0.0, )",
           "Mapster": "[7.4.1-pre01, )",
           "Mapster.EFCore": "[5.1.2-pre01, )",
           "Microsoft.EntityFrameworkCore": "[9.0.0-preview.3.24172.4, )",
@@ -1401,6 +1402,13 @@
         "type": "Project",
         "dependencies": {
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
+          "System.ServiceModel.Primitives": "[8.0.0, )",
+          "protobuf-net.Grpc": "[1.1.1, )"
+        }
+      },
+      "edelstein.protocol.services.session": {
+        "type": "Project",
+        "dependencies": {
           "System.ServiceModel.Primitives": "[8.0.0, )",
           "protobuf-net.Grpc": "[1.1.1, )"
         }

@@ -1,6 +1,7 @@
 ﻿using System.ServiceModel;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Server.Contracts;
+using Edelstein.Protocol.Services.Server.Entities;
 using ProtoBuf.Grpc;
 
 namespace Edelstein.Protocol.Services.Server;

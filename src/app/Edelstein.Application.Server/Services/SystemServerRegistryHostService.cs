@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
+using Edelstein.Protocol.Services.Server.Entities;
 using MapsterMapper;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

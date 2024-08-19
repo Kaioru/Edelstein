@@ -150,6 +150,26 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", b =>
+                {
+                    b.Property<int>("ActiveAccount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ActiveCharacter")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ServerID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ActiveAccount");
+
+                    b.HasIndex("ServerID");
+
+                    b.ToTable("session_info", (string)null);
+                });
+
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Server.DbServerInfoLogin", b =>
                 {
                     b.HasBaseType("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo");
@@ -170,9 +190,25 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", b =>
+                {
+                    b.HasOne("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo", "Server")
+                        .WithMany("Sessions")
+                        .HasForeignKey("ServerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Server");
+                });
+
             modelBuilder.Entity("Edelstein.Common.Database.Entities.DbAccount", b =>
                 {
                     b.Navigation("AccountWorldData");
+                });
+
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo", b =>
+                {
+                    b.Navigation("Sessions");
                 });
 #pragma warning restore 612, 618
         }

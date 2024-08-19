@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Edelstein.Protocol.Services.Server.Contracts;
+namespace Edelstein.Protocol.Services.Server.Entities;
 
 [DataContract]
 public record ServerServiceServerInfo : IServerInfo
