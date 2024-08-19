@@ -7,5 +7,5 @@ public record DbSessionInfo : SessionServiceSessionInfo
 {
     public long Secret { get; set; }
     
-    public required DbServerInfo Server { get; set; }
+    public DbServerInfo Server { get; set; }
 }

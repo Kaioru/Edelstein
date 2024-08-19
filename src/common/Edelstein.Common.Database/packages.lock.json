@@ -1113,6 +1113,13 @@
           "protobuf-net.Grpc": "[1.1.1, )"
         }
       },
+      "edelstein.protocol.services.migration": {
+        "type": "Project",
+        "dependencies": {
+          "System.ServiceModel.Primitives": "[8.0.0, )",
+          "protobuf-net.Grpc": "[1.1.1, )"
+        }
+      },
       "edelstein.protocol.services.server": {
         "type": "Project",
         "dependencies": {

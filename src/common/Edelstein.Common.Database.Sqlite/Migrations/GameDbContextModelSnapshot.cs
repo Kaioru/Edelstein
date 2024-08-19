@@ -115,6 +115,52 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                     b.ToTable("identities", (string)null);
                 });
 
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", b =>
+                {
+                    b.Property<int>("AccountID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AccountWorldDataID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CharacterID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateExpire")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FromServerID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("Secret")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ToServerID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AccountID", "AccountWorldDataID", "CharacterID");
+
+                    b.HasIndex("AccountID")
+                        .IsUnique();
+
+                    b.HasIndex("AccountWorldDataID")
+                        .IsUnique();
+
+                    b.HasIndex("CharacterID")
+                        .IsUnique();
+
+                    b.HasIndex("FromServerID");
+
+                    b.HasIndex("ToServerID");
+
+                    b.ToTable("migration_info", (string)null);
+                });
+
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo", b =>
                 {
                     b.Property<string>("ID")
@@ -193,6 +239,41 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", b =>
+                {
+                    b.HasOne("Edelstein.Common.Database.Entities.DbAccount", "Account")
+                        .WithOne("Migration")
+                        .HasForeignKey("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", "AccountID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Edelstein.Common.Database.Entities.DbAccountWorldData", "AccountWorldData")
+                        .WithOne("Migration")
+                        .HasForeignKey("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", "AccountWorldDataID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo", "FromServer")
+                        .WithMany("MigrationOut")
+                        .HasForeignKey("FromServerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo", "ToServer")
+                        .WithMany("MigrationIn")
+                        .HasForeignKey("ToServerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("AccountWorldData");
+
+                    b.Navigation("FromServer");
+
+                    b.Navigation("ToServer");
+                });
+
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", b =>
                 {
                     b.HasOne("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo", "Server")
@@ -207,10 +288,21 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
             modelBuilder.Entity("Edelstein.Common.Database.Entities.DbAccount", b =>
                 {
                     b.Navigation("AccountWorldData");
+
+                    b.Navigation("Migration");
+                });
+
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.DbAccountWorldData", b =>
+                {
+                    b.Navigation("Migration");
                 });
 
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo", b =>
                 {
+                    b.Navigation("MigrationIn");
+
+                    b.Navigation("MigrationOut");
+
                     b.Navigation("Sessions");
                 });
 #pragma warning restore 612, 618

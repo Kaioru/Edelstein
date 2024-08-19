@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Migration\Edelstein.Protocol.Services.Migration.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Gameplay\Edelstein.Common.Gameplay.csproj" />
     <ProjectReference Include="..\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
