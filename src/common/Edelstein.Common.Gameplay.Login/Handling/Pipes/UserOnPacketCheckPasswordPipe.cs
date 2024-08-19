@@ -73,7 +73,8 @@ public class UserOnPacketCheckPasswordPipe(
                     ? new AccountInfo
                     {
                         ID = account.ID,
-                        NexonClubID = new LPString(account.Username)
+                        NexonClubID = new LPString(account.Username),
+                        ClientKey = message.User.Key
                     }
                     : null
             });
