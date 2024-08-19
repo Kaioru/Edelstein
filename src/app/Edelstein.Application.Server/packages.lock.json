@@ -118,9 +118,9 @@
       },
       "Serilog": {
         "type": "Direct",
-        "requested": "[4.0.2-dev-02220, )",
-        "resolved": "4.0.2-dev-02220",
-        "contentHash": "4AGNdYMWA7JC1zXPHYoR98/uYNGzejUW6VTfVBZLiykpzgg7GLmuWfQpMaAlY6bfxEx1Lh3G19jIuxpRoTmE8w=="
+        "requested": "[4.0.1, )",
+        "resolved": "4.0.1",
+        "contentHash": "pzeDRXdpSLSsgBHpZcmpIDxqMy845Ab4s+dfnBg0sN9h8q/4Wo3vAoe0QCGPze1Q06EVtEPupS+UvLm8iXQmTQ=="
       },
       "Serilog.Extensions.Hosting": {
         "type": "Direct",
@@ -155,17 +155,13 @@
           "Serilog": "4.0.0"
         }
       },
-      "Serilog.Sinks.RollingFile": {
+      "Serilog.Sinks.File": {
         "type": "Direct",
-        "requested": "[3.3.1-dev-00771, )",
-        "resolved": "3.3.1-dev-00771",
-        "contentHash": "ZqT4qp+BIEOYloDodia3at6I733dONgust+zjhQWES/NBbM1Jqa/PELLiYexROt6MMquMBdwbO2k4yZl59Td7g==",
+        "requested": "[6.0.0, )",
+        "resolved": "6.0.0",
+        "contentHash": "lxjg89Y8gJMmFxVkbZ+qDgjl+T4yC5F7WSLTvA+5q0R04tfKVLRL/EHpYoJ/MEQd2EeCKDuylBIVnAYMotmh2A==",
         "dependencies": {
-          "Serilog.Sinks.File": "3.2.0",
-          "System.IO": "4.1.0",
-          "System.IO.FileSystem.Primitives": "4.0.1",
-          "System.Runtime.InteropServices": "4.1.0",
-          "System.Text.Encoding.Extensions": "4.0.11"
+          "Serilog": "4.0.0"
         }
       },
       "Spectre.Console": {
@@ -694,20 +690,6 @@
         "dependencies": {
           "Microsoft.Extensions.Logging": "8.0.0",
           "Serilog": "3.1.1"
-        }
-      },
-      "Serilog.Sinks.File": {
-        "type": "Transitive",
-        "resolved": "3.2.0",
-        "contentHash": "VHbo68pMg5hwSWrzLEdZv5b/rYmIgHIRhd4d5rl8GnC5/a8Fr+RShT5kWyeJOXax1el6mNJ+dmHDOVgnNUQxaw==",
-        "dependencies": {
-          "Serilog": "2.3.0",
-          "System.IO": "4.1.0",
-          "System.IO.FileSystem": "4.0.1",
-          "System.IO.FileSystem.Primitives": "4.0.1",
-          "System.Text.Encoding.Extensions": "4.0.11",
-          "System.Threading": "4.0.11",
-          "System.Threading.Timer": "4.0.1"
         }
       },
       "SpanNetty.Transport.Libuv": {

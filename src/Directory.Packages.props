@@ -33,11 +33,11 @@
     <PackageVersion Include="protobuf-net.Grpc" Version="1.1.1" />
     <PackageVersion Include="R3" Version="1.2.7" />
     <PackageVersion Include="Scrutor" Version="4.2.2" />
-    <PackageVersion Include="Serilog" Version="4.0.2-dev-02220" />
+    <PackageVersion Include="Serilog" Version="4.0.1" />
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="8.0.0" />
     <PackageVersion Include="Serilog.Settings.Configuration" Version="8.0.2" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
-    <PackageVersion Include="Serilog.Sinks.RollingFile" Version="3.3.1-dev-00771" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
     <PackageVersion Include="SpanNetty.Buffers" Version="$(DotNettyVersion)" />
     <PackageVersion Include="SpanNetty.Codecs" Version="$(DotNettyVersion)" />
     <PackageVersion Include="SpanNetty.Common" Version="$(DotNettyVersion)" />
