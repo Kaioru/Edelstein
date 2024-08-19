@@ -9,7 +9,6 @@ using MapsterMapper;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using R3;
-using Serilog;
 
 namespace Edelstein.Application.Server.Services;
 

@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Edelstein.Common.Database.Entities.Services.Session;
-using Edelstein.Protocol.Services.Server;
+using Edelstein.Protocol.Services.Server.Entities;
 
 namespace Edelstein.Common.Database.Entities.Services.Server;
 
-public record DbServerInfo : IServerInfo
+public record DbServerInfo : ServerServiceServerInfo
 {
-    public required string ID { get; set; }
-    
-    public required string Host { get; set; }
-    public required int Port { get; set; }
-    
     public DateTime DateUpdated { get; set; }
     public DateTime DateExpire { get; set; }
     

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Application.Server.Bindings;
@@ -11,7 +10,6 @@ using Edelstein.Protocol.Services.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using R3;
 
 namespace Edelstein.Application.Server.Services;
 
