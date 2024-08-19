@@ -8,6 +8,7 @@ using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Plugin;
 using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Server;
+using Edelstein.Common.Services.Session;
 using Edelstein.Common.Utilities.Bootstrap;
 using Edelstein.Common.Utilities.Pipelines;
 using Edelstein.Common.Utilities.Templates;
@@ -17,6 +18,7 @@ using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Server;
+using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Repositories;
 using Edelstein.Protocol.Utilities.Templates;
@@ -82,6 +84,7 @@ internal static class ProgramHostBuilder
         // TODO gRPC
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<IServerService, ServerService>();
+        builder.Services.AddSingleton<ISessionService, SessionService>();
         
         builder.Services.AddSingleton(typeof(ITemplateManagerContext<>), typeof(TemplateManagerContext<>));
         builder.Services.AddSingleton(typeof(ITemplateManager<>), typeof(TemplateManager<>));

@@ -9,7 +9,7 @@ namespace Edelstein.Protocol.Services.Session;
 public interface ISessionService
 {
     [OperationContract] 
-    Task<SessionServiceResponse> Start(SessionServiceStartRequest request, CallContext context = default);
+    Task<SessionServiceStartResponse> Start(SessionServiceStartRequest request, CallContext context = default);
     
     [OperationContract] 
     Task<SessionServiceResponse> End(SessionServiceEndRequest request, CallContext context = default);

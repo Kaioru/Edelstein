@@ -1,9 +1,11 @@
 ﻿using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Server;
+using Edelstein.Protocol.Services.Session;
 
 namespace Edelstein.Protocol.Gameplay.Login.Contexts;
 
 public record LoginContextServices(
     IAuthService Auth,
-    IServerService Server
+    IServerService Server,
+    ISessionService Session
 );

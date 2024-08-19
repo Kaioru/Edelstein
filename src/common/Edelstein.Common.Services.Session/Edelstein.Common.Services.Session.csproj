@@ -1,9 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  
+    <ItemGroup>
+      <PackageReference Include="Mapster" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    </ItemGroup>
+  
+    <ItemGroup>
+      <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj" />
+      <ProjectReference Include="..\Edelstein.Common.Database\Edelstein.Common.Database.csproj" />
+    </ItemGroup>
+  
+    <ItemGroup>
+      <ProjectReference Include="..\Edelstein.Common.Database\Edelstein.Common.Database.csproj" />
+    </ItemGroup>
 
 </Project>

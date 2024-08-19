@@ -159,6 +159,9 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                     b.Property<int?>("ActiveCharacter")
                         .HasColumnType("INTEGER");
 
+                    b.Property<long>("Secret")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ServerID")
                         .IsRequired()
                         .HasColumnType("TEXT");

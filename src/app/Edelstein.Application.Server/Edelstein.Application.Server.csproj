@@ -33,6 +33,7 @@
     <ProjectReference Include="..\..\common\Edelstein.Common.Network.DotNetty\Edelstein.Common.Network.DotNetty.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Plugin\Edelstein.Common.Plugin.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Services.Session\Edelstein.Common.Services.Session.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Utilities\Edelstein.Common.Utilities.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Gameplay.Login\Edelstein.Protocol.Gameplay.Login.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin\Edelstein.Protocol.Plugin.csproj" />

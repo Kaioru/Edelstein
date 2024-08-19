@@ -978,6 +978,7 @@
           "Edelstein.Protocol.Network": "[1.0.0, )",
           "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Session": "[1.0.0, )",
           "Edelstein.Protocol.Utilities": "[1.0.0, )"
         }
       },
@@ -1000,6 +1001,13 @@
         "type": "Project",
         "dependencies": {
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
+          "System.ServiceModel.Primitives": "[8.0.0, )",
+          "protobuf-net.Grpc": "[1.1.1, )"
+        }
+      },
+      "edelstein.protocol.services.session": {
+        "type": "Project",
+        "dependencies": {
           "System.ServiceModel.Primitives": "[8.0.0, )",
           "protobuf-net.Grpc": "[1.1.1, )"
         }
