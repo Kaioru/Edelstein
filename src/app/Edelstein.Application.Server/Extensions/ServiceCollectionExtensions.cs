@@ -3,6 +3,7 @@ using Edelstein.Application.Server.Services;
 using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
+using Edelstein.Protocol.Services.Server;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,7 +28,7 @@ internal static class ServiceCollectionExtensions
     ) 
         where TStageSystem : class, IStageSystem<TStageSystem, TStageSystemUser>
         where TStageSystemUser : class, IStageSystemUser<TStageSystem, TStageSystemUser>
-        where TServerInfo : class, IStageSystemInfo
+        where TServerInfo : class, IServerInfo
         where TStageSystemImpl : class, TStageSystem
         where TServerInfoImpl : class, TServerInfo
         where TContext : class

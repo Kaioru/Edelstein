@@ -1378,6 +1378,7 @@
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Network": "[1.0.0, )",
           "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
+          "Edelstein.Protocol.Services.Server": "[1.0.0, )",
           "Edelstein.Protocol.Utilities": "[1.0.0, )"
         }
       },
@@ -1392,6 +1393,14 @@
       "edelstein.protocol.services.auth": {
         "type": "Project",
         "dependencies": {
+          "System.ServiceModel.Primitives": "[8.0.0, )",
+          "protobuf-net.Grpc": "[1.1.1, )"
+        }
+      },
+      "edelstein.protocol.services.server": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )",
           "System.ServiceModel.Primitives": "[8.0.0, )",
           "protobuf-net.Grpc": "[1.1.1, )"
         }

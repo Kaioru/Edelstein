@@ -6,6 +6,7 @@ using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
+using Edelstein.Protocol.Services.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,7 +17,7 @@ public class SystemHostService<TStageSystem, TStageSystemUser, TContext>(
     ILogger<SystemHostService<TStageSystem, TStageSystemUser, TContext>> logger,
     IOptions<ProgramHostConfig> config,
     IStageSystem<TStageSystem, TStageSystemUser> system,
-    IStageSystemInfo info,
+    IServerInfo info,
     TransportVersion version,
     IPluginManager<TContext> plugins,
     TContext context

@@ -1,3 +1,5 @@
-﻿namespace Edelstein.Protocol.Gameplay.Login;
+﻿using Edelstein.Protocol.Services.Server;
 
-public interface ILoginStageSystemOptions : IStageSystemInfo;
+namespace Edelstein.Protocol.Gameplay.Login;
+
+public interface ILoginStageSystemOptions : IServerInfoLogin;
