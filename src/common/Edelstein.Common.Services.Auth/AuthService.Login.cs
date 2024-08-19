@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Auth.Contracts;
 using ProtoBuf.Grpc;
@@ -29,7 +30,7 @@ public partial class AuthService
                 Result = AuthServiceResult.Success
             };
         }
-        catch (Exception)
+        catch (DbException)
         {
             return new AuthServiceResponse
             {

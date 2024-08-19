@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data.Common;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Auth.Contracts;
+using EntityFramework.Exceptions.Common;
 using ProtoBuf.Grpc;
 
 namespace Edelstein.Common.Services.Auth;
@@ -16,12 +18,20 @@ public partial class AuthService
                 Username = request.Username,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password)
             });
-            
+
             return new AuthServiceResponse
             {
                 Result = AuthServiceResult.Success
             };
-        } catch (Exception)
+        }
+        catch (UniqueConstraintException)
+        {
+            return new AuthServiceResponse
+            {
+                Result = AuthServiceResult.FailedUsernameExists
+            };
+        } 
+        catch (DbException)
         {
             return new AuthServiceResponse
             {

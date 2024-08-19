@@ -22,6 +22,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using SqliteExceptionProcessorExtensions = EntityFramework.Exceptions.Sqlite.ExceptionProcessorExtensions;
+using PgSqlExceptionProcessorExtensions = EntityFramework.Exceptions.PostgreSQL.ExceptionProcessorExtensions;
 
 namespace Edelstein.Application.Server;
 
@@ -39,10 +41,14 @@ internal static class ProgramHostBuilder
             switch (builder.Configuration["DatabaseProvider"])
             {
                 case "Sqlite":
-                    options.UseSqlite(builder.Configuration.GetConnectionString(SqliteDbContextFactory.Sqlite.Key));
+                    SqliteExceptionProcessorExtensions.UseExceptionProcessor(options
+                        .UseSqlite(builder.Configuration.GetConnectionString(SqliteDbContextFactory.Sqlite.Key))
+                    );
                     break;
                 case "Pgsql":
-                    options.UseNpgsql(builder.Configuration.GetConnectionString(PgsqlDbContextFactory.Pgsql.Key));
+                    PgSqlExceptionProcessorExtensions.UseExceptionProcessor(options
+                        .UseNpgsql(builder.Configuration.GetConnectionString(PgsqlDbContextFactory.Pgsql.Key))
+                    );
                     break;
             }
         });
