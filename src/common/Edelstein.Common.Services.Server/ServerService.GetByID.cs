@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Server.Contracts;
+using Edelstein.Protocol.Services.Server.Entities;
 using Microsoft.EntityFrameworkCore;
 using ProtoBuf.Grpc;
 

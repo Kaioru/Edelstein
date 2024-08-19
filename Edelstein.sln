@@ -73,6 +73,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Services.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Services.Server", "src\protocol\Edelstein.Protocol.Services.Server\Edelstein.Protocol.Services.Server.csproj", "{87BB8597-06CB-4446-9319-9B71B772476A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Protocol.Services.Session", "src\protocol\Edelstein.Protocol.Services.Session\Edelstein.Protocol.Services.Session.csproj", "{1EB9C264-7964-42B9-B948-88A07D1B194B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Services.Session", "src\common\Edelstein.Common.Services.Session\Edelstein.Common.Services.Session.csproj", "{12A985AC-4F9E-4107-BBE8-4C236E9FACD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Services.Server", "src\common\Edelstein.Common.Services.Server\Edelstein.Common.Services.Server.csproj", "{162AF4DF-E002-4C84-A207-EA41C4E1B164}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +112,9 @@ Global
 		{84B31459-F42F-457D-BA0D-DE95044F4F31} = {82D7864B-19AD-484C-BD2E-897F05B5852C}
 		{89D25CDA-D734-4780-ACE4-048AD22696B4} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
 		{87BB8597-06CB-4446-9319-9B71B772476A} = {82D7864B-19AD-484C-BD2E-897F05B5852C}
+		{1EB9C264-7964-42B9-B948-88A07D1B194B} = {82D7864B-19AD-484C-BD2E-897F05B5852C}
+		{12A985AC-4F9E-4107-BBE8-4C236E9FACD6} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
+		{162AF4DF-E002-4C84-A207-EA41C4E1B164} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6527D18C-B0E2-49BA-B649-4D5DB6216069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -190,5 +199,17 @@ Global
 		{87BB8597-06CB-4446-9319-9B71B772476A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87BB8597-06CB-4446-9319-9B71B772476A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87BB8597-06CB-4446-9319-9B71B772476A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EB9C264-7964-42B9-B948-88A07D1B194B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EB9C264-7964-42B9-B948-88A07D1B194B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EB9C264-7964-42B9-B948-88A07D1B194B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EB9C264-7964-42B9-B948-88A07D1B194B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12A985AC-4F9E-4107-BBE8-4C236E9FACD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12A985AC-4F9E-4107-BBE8-4C236E9FACD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12A985AC-4F9E-4107-BBE8-4C236E9FACD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12A985AC-4F9E-4107-BBE8-4C236E9FACD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{162AF4DF-E002-4C84-A207-EA41C4E1B164}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{162AF4DF-E002-4C84-A207-EA41C4E1B164}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{162AF4DF-E002-4C84-A207-EA41C4E1B164}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{162AF4DF-E002-4C84-A207-EA41C4E1B164}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
