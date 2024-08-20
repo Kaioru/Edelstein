@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Dispatch;
 using Edelstein.Protocol.Services.Dispatch.Contracts;
@@ -11,68 +12,32 @@ public partial class DispatchService
 {
     public async Task<DispatchServiceResponse> Send(DispatchServiceSendRequest request, CallContext context = default)
     {
-        switch (request.Info.TargetType)
+        var info = request.Info;
+        var targets = (await _repository.RetrieveAll()).AsEnumerable();
+
+        if (info.TargetServerID != null)
+            targets = targets.Where(t => t.ServerID == info.TargetServerID);
+        
+        if (info.TargetWorldID.HasValue)
+            targets = targets.Where(t => t.WorldID == info.TargetWorldID);
+        
+        if (info.TargetChannelID.HasValue)
+            targets = targets.Where(t => t.ChannelID == info.TargetChannelID);
+
+        if (info.TargetCharacterID.HasValue)
         {
-            case DispatchTarget.All:
-                await Task.WhenAll(
-                    (await _serverIdIndex.RetrieveAll())
-                    .Select(async e
-                        => await e.Channel.WriteAsync(request.Info, context.CancellationToken)));
-                break;
-            case DispatchTarget.World:
+            var session = await sessions.GetByActiveCharacter(new SessionServiceGetByActiveCharacterRequest
             {
-                var entry = await _worldIdIndex.Retrieve(request.Info.TargetID);
+                CharacterID = info.TargetCharacterID.Value
+            });
 
-                if (entry == null)
-                    return new DispatchServiceResponse
-                    {
-                        Result = DispatchServiceResult.FailedUnknown
-                    };
-
-                await entry.Channel.WriteAsync(request.Info, context.CancellationToken);
-                break;
-            }
-            case DispatchTarget.Channel:
-            {
-                var entry = await _channelIdIndex.Retrieve(request.Info.TargetID);
-
-                if (entry == null)
-                    return new DispatchServiceResponse
-                    {
-                        Result = DispatchServiceResult.FailedUnknown
-                    };
-
-                await entry.Channel.WriteAsync(request.Info, context.CancellationToken);
-                break;
-            }
-            case DispatchTarget.Character:
-            {
-                var session = await sessions.GetByActiveCharacter(new SessionServiceGetByActiveCharacterRequest
-                {
-                    CharacterID = request.Info.TargetID
-                });
-
-                if (session.Info != null)
-                {
-                    var entry = await _serverIdIndex.Retrieve(session.Info.ServerID);
-                    
-                    if (entry == null)
-                        return new DispatchServiceResponse
-                        {
-                            Result = DispatchServiceResult.FailedUnknown
-                        };
-
-                    await entry.Channel.WriteAsync(request.Info, context.CancellationToken);
-                }
-                break;
-            }
-            default:
-                return new DispatchServiceResponse
-                {
-                    Result = DispatchServiceResult.FailedUnknown
-                };
+            if (session.Info != null)
+                targets = targets.Where(t => t.ServerID == session.Info.ServerID);
         }
 
+        await Task.WhenAll(targets
+            .Select(async t 
+                => await t.Channel.WriteAsync(request.Info)));
         return new DispatchServiceResponse
         {
             Result = DispatchServiceResult.Success

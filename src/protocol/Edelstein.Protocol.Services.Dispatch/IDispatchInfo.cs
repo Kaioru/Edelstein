@@ -2,8 +2,10 @@
 
 public interface IDispatchInfo
 {
-    DispatchTarget TargetType { get; }
-    int TargetID { get; }
+    public string? TargetServerID { get; init; }
+    public int? TargetWorldID { get; init; }
+    public int? TargetChannelID { get; init; }
+    public int? TargetCharacterID { get; init; }
     
     byte[] Payload { get; }
 }

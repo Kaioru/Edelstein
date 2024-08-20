@@ -3,6 +3,7 @@ using Edelstein.Application.Server.Services;
 using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
+using Edelstein.Protocol.Services.Dispatch;
 using Edelstein.Protocol.Services.Server;
 using MapsterMapper;
 using Microsoft.Extensions.Configuration;
@@ -51,6 +52,7 @@ internal static class ServiceCollectionExtensions
                 subProvider.GetRequiredService<TServerInfo>(),
                 version,
                 p.GetRequiredService<IPluginManager<TContext>>(),
+                p.GetRequiredService<IDispatchService>(),
                 subProvider.GetRequiredService<TContext>()
             );
         });
