@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Channels;
@@ -36,7 +35,6 @@ public partial class DispatchService
         }
         finally
         {
-            Console.WriteLine("CLEANED");
             await _repository.Delete(subscription);
             channel.Writer.Complete();
         }

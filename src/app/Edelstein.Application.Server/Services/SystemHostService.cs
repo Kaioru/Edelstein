@@ -10,7 +10,6 @@ using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Services.Dispatch;
 using Edelstein.Protocol.Services.Dispatch.Contracts;
 using Edelstein.Protocol.Services.Server;
-using Grpc.Core;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
