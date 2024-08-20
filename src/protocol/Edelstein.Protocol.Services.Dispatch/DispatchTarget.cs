@@ -4,9 +4,10 @@ public enum DispatchTarget
 {
     All,
     
+    Server,
+    
     World,
     Channel,
     
-    Field,
     Character
 }

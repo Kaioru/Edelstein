@@ -13,5 +13,5 @@ public interface IDispatchService
     Task<DispatchServiceResponse> Send(DispatchServiceSendRequest request, CallContext context = default);
     
     [OperationContract]
-    IAsyncEnumerable<DispatchServiceSubscribeResponse> Subscribe(DispatchServiceSubscribeRequest request, CallContext context = default);
+    IAsyncEnumerable<DispatchInfo> Subscribe(DispatchServiceSubscribeRequest request, CallContext context = default);
 }

@@ -7,6 +7,7 @@ using Edelstein.Common.Database.Sqlite;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Plugin;
 using Edelstein.Common.Services.Auth;
+using Edelstein.Common.Services.Dispatch;
 using Edelstein.Common.Services.Migration;
 using Edelstein.Common.Services.Server;
 using Edelstein.Common.Services.Session;
@@ -18,6 +19,7 @@ using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Services.Auth;
+using Edelstein.Protocol.Services.Dispatch;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Session;
@@ -84,6 +86,7 @@ internal static class ProgramHostBuilder
             .WithSingletonLifetime());
 
         // TODO gRPC
+        builder.Services.AddSingleton<IDispatchService, DispatchService>();
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<IServerService, ServerService>();
         builder.Services.AddSingleton<ISessionService, SessionService>();
