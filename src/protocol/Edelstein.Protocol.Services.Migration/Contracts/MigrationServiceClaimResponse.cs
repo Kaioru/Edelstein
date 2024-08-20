@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using Edelstein.Protocol.Services.Migration.Entities;
 
 namespace Edelstein.Protocol.Services.Migration.Contracts;
 
@@ -7,5 +6,5 @@ namespace Edelstein.Protocol.Services.Migration.Contracts;
 public class MigrationServiceClaimResponse
 {
     [DataMember(Order = 1)] public required MigrationServiceResult Result { get; init; }
-    [DataMember(Order = 2)] public MigrationServiceMigrationInfo? Info { get; init; }
+    [DataMember(Order = 2)] public MigrationInfo? Info { get; init; }
 }

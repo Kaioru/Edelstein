@@ -1,6 +1,6 @@
-﻿namespace Edelstein.Protocol.Services.Migration.Entities;
+﻿namespace Edelstein.Protocol.Services.Migration.Contracts;
 
-public record MigrationServiceMigrationInfo : IMigrationInfo
+public record MigrationInfo : IMigrationInfo
 {
     public required int AccountID { get; init; }
     public required int AccountWorldDataID { get; init; }

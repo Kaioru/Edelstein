@@ -3,7 +3,6 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Migration.Contracts;
-using Edelstein.Protocol.Services.Migration.Entities;
 using Microsoft.EntityFrameworkCore;
 using ProtoBuf.Grpc;
 
@@ -30,7 +29,7 @@ public partial class MigrationService
             return new MigrationServiceClaimResponse
             {
                 Result = MigrationServiceResult.Success,
-                Info = mapper.Map<MigrationServiceMigrationInfo>(info)
+                Info = mapper.Map<MigrationInfo>(info)
             };
         }
         catch (DbException)

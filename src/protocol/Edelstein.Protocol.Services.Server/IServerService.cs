@@ -1,7 +1,6 @@
 ﻿using System.ServiceModel;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Server.Contracts;
-using Edelstein.Protocol.Services.Server.Entities;
 using ProtoBuf.Grpc;
 
 namespace Edelstein.Protocol.Services.Server;
@@ -10,7 +9,7 @@ namespace Edelstein.Protocol.Services.Server;
 public interface IServerService
 {
     [OperationContract]
-    Task<ServerServiceRegisterResponse> RegisterLogin(ServerServiceRegisterRequest<ServerServiceServerInfoLogin> request, CallContext context = default);
+    Task<ServerServiceRegisterResponse> RegisterLogin(ServerServiceRegisterRequest<ServerInfoLogin> request, CallContext context = default);
     
     [OperationContract]
     Task<ServerServiceResponse> Ping(ServerServicePingRequest request, CallContext context = default);
@@ -19,8 +18,8 @@ public interface IServerService
     Task<ServerServiceResponse> Deregister(ServerServiceDeregisterRequest request, CallContext context = default);
     
     [OperationContract]
-    Task<ServerServiceGetOneResponse<ServerServiceServerInfo>> GetByID(ServerServiceGetByIDRequest request, CallContext context = default);
+    Task<ServerServiceGetOneResponse<ServerInfo>> GetByID(ServerServiceGetByIDRequest request, CallContext context = default);
     
     [OperationContract]
-    Task<ServerServiceGetAllResponse<ServerServiceServerInfo>> GetAll(CallContext context = default);
+    Task<ServerServiceGetAllResponse<ServerInfo>> GetAll(CallContext context = default);
 }

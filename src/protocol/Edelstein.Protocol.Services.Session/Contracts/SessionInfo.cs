@@ -1,9 +1,9 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Edelstein.Protocol.Services.Session.Entities;
+namespace Edelstein.Protocol.Services.Session.Contracts;
 
 [DataContract]
-public record SessionServiceSessionInfo : ISessionInfo
+public record SessionInfo : ISessionInfo
 {
     [DataMember(Order = 1)] public required string ServerID { get; init; }
     

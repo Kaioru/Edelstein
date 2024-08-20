@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Session.Contracts;
-using Edelstein.Protocol.Services.Session.Entities;
 using Microsoft.EntityFrameworkCore;
 using ProtoBuf.Grpc;
 
@@ -22,7 +21,7 @@ public partial class SessionService
             return new SessionServiceGetOneResponse
             {
                 Result = SessionServiceResult.Success,
-                Info = mapper.Map<SessionServiceSessionInfo>(info)
+                Info = mapper.Map<SessionInfo>(info)
             };
         }
         catch (DbException)

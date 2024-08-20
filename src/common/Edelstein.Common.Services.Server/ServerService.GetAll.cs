@@ -3,7 +3,6 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Server.Contracts;
-using Edelstein.Protocol.Services.Server.Entities;
 using Microsoft.EntityFrameworkCore;
 using ProtoBuf.Grpc;
 
@@ -11,7 +10,7 @@ namespace Edelstein.Common.Services.Server;
 
 public partial class ServerService
 {
-    public async Task<ServerServiceGetAllResponse<ServerServiceServerInfo>> GetAll(CallContext context = default)
+    public async Task<ServerServiceGetAllResponse<ServerInfo>> GetAll(CallContext context = default)
     {
         try
         {
@@ -21,15 +20,15 @@ public partial class ServerService
                 .Where(i => i.DateExpire > now)
                 .ToHashSetAsync();
             
-            return new ServerServiceGetAllResponse<ServerServiceServerInfo>
+            return new ServerServiceGetAllResponse<ServerInfo>
             {
                 Result = ServerServiceResult.Success,
-                Info = info.Select(mapper.Map<ServerServiceServerInfo>).ToHashSet()
+                Info = info.Select(mapper.Map<ServerInfo>).ToHashSet()
             };
         }
         catch (DbException)
         {
-            return new ServerServiceGetAllResponse<ServerServiceServerInfo>
+            return new ServerServiceGetAllResponse<ServerInfo>
             {
                 Result = ServerServiceResult.FailedUnknown
             };

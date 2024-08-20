@@ -10,7 +10,6 @@ using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Auth.Contracts;
 using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Services.Session.Contracts;
-using Edelstein.Protocol.Services.Session.Entities;
 using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Login.Handling.Pipes;
@@ -49,7 +48,7 @@ public class UserOnPacketCheckPasswordPipe(
             {
                 var sessionResponse = await session.Start(new SessionServiceStartRequest
                 {
-                    Info = new SessionServiceSessionInfo
+                    Info = new SessionInfo
                     {
                         ServerID = message.User.System.ID,
                         ActiveAccount = account.ID

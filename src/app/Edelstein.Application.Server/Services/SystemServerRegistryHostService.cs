@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
-using Edelstein.Protocol.Services.Server.Entities;
 using MapsterMapper;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -49,9 +48,9 @@ public class SystemServerRegistryHostService<TServerInfo>(
                 {
                     var response = info switch
                     {
-                        ILoginStageSystemOptions login => await service.RegisterLogin(new ServerServiceRegisterRequest<ServerServiceServerInfoLogin>
+                        ILoginStageSystemOptions login => await service.RegisterLogin(new ServerServiceRegisterRequest<ServerInfoLogin>
                         {
-                            Info = mapper.Map<ServerServiceServerInfoLogin>(login)
+                            Info = mapper.Map<ServerInfoLogin>(login)
                         }),
                         _ => throw new ArgumentOutOfRangeException()
                     };

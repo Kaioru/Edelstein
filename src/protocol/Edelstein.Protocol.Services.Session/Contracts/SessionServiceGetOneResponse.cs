@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using Edelstein.Protocol.Services.Session.Entities;
 
 namespace Edelstein.Protocol.Services.Session.Contracts;
 
@@ -7,5 +6,5 @@ namespace Edelstein.Protocol.Services.Session.Contracts;
 public record SessionServiceGetOneResponse
 {
     [DataMember(Order = 1)] public required SessionServiceResult Result { get; init; }
-    [DataMember(Order = 2)] public SessionServiceSessionInfo? Info { get; init; }
+    [DataMember(Order = 2)] public SessionInfo? Info { get; init; }
 }
