@@ -15,7 +15,7 @@ public partial class MigrationService
         try
         {
             await using var db = await factory.CreateDbContextAsync();
-            var now = DateTime.UtcNow;
+            var now = dateTimeProvider.Now;
             var info = await db.MigrationInfo
                 .Include(i => i.Session)
                 .Where(i => i.CharacterID == request.CharacterID)

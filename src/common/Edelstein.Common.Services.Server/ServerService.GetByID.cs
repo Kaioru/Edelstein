@@ -15,7 +15,7 @@ public partial class ServerService
         try
         {
             await using var db = await factory.CreateDbContextAsync();
-            var now = DateTime.UtcNow;
+            var now = dateTimeProvider.Now;
             var info = await db.ServerInfo
                 .Where(i => i.ID == request.ID)
                 .Where(i => i.DateExpire > now)

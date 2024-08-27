@@ -18,7 +18,7 @@ public partial class MigrationService
         try
         {
             await using var db = await factory.CreateDbContextAsync();
-            var now = DateTime.UtcNow;
+            var now = dateTimeProvider.Now;
             var info = mapper.Map<DbMigrationInfo>(request.Info);
             
             await db.MigrationInfo

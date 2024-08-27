@@ -6,6 +6,7 @@ using Edelstein.Common.Database;
 using Edelstein.Common.Database.Entities.Services.Server;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
+using Edelstein.Protocol.Utilities;
 using EntityFramework.Exceptions.Common;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,8 @@ namespace Edelstein.Common.Services.Server;
 
 public partial class ServerService(
     IDbContextFactory<GameDbContext> factory,
-    IMapper mapper
+    IMapper mapper,
+    IDateTimeProvider dateTimeProvider
 ) : IServerService
 {
     private static readonly TimeSpan Expiry = TimeSpan.FromMinutes(5);
@@ -24,7 +26,7 @@ public partial class ServerService(
         try
         {
             await using var db = await factory.CreateDbContextAsync();
-            var now = DateTime.UtcNow;
+            var now = dateTimeProvider.Now;
 
             await db.ServerInfo
                 .Where(i => i.ID == info.ID)

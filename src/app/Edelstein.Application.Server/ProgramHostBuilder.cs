@@ -10,6 +10,7 @@ using Edelstein.Common.Services.Auth;
 using Edelstein.Common.Services.Migration;
 using Edelstein.Common.Services.Server;
 using Edelstein.Common.Services.Session;
+using Edelstein.Common.Utilities;
 using Edelstein.Common.Utilities.Bootstrap;
 using Edelstein.Common.Utilities.Pipelines;
 using Edelstein.Common.Utilities.Templates;
@@ -21,6 +22,7 @@ using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Session;
+using Edelstein.Protocol.Utilities;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Repositories;
 using Edelstein.Protocol.Utilities.Templates;
@@ -46,6 +48,7 @@ internal static class ProgramHostBuilder
         builder.Services.AddSerilog((_, configuration) => configuration.ReadFrom.Configuration(builder.Configuration));
         builder.Services.Configure<ProgramHostConfig>(builder.Configuration.GetSection("Host"));
 
+        builder.Services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         builder.Services.AddSingleton<ITicker>(p =>
         {
             var options = p.GetRequiredService<IOptions<ProgramHostConfig>>().Value;
