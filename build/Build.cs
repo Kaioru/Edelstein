@@ -31,7 +31,10 @@ partial class Build : NukeBuild
 
     Target Restore => d => d
         .Executes(() => DotNetTasks.DotNetRestore());
-
+    
+    Target Test => d => d
+        .Executes(() => DotNetTasks.DotNetTest());
+    
     Target Compile => d => d
         .DependsOn(Restore)
         .Executes(() => DotNetTasks
