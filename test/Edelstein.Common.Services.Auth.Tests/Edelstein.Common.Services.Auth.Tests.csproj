@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\common\Edelstein.Common.Database\Edelstein.Common.Database.csproj" />
+    <ProjectReference Include="..\..\src\common\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0-preview.7.24405.3" />
+  </ItemGroup>
+</Project>

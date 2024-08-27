@@ -15,7 +15,7 @@ public partial class AuthService
             await repository.Insert(new Identity
             {
                 Username = request.Username,
-                Password = BCrypt.Net.BCrypt.HashPassword(request.Password)
+                Password = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password)
             });
 
             return new AuthServiceResponse
