@@ -8,13 +8,10 @@ using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Network.Packets;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
-using Edelstein.Protocol.Services.Dispatch;
-using Edelstein.Protocol.Services.Dispatch.Contracts;
 using Edelstein.Protocol.Services.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using R3;
 
 namespace Edelstein.Application.Server.Services;
 
@@ -25,7 +22,6 @@ public class SystemHostService<TStageSystem, TStageSystemUser, TContext>(
     IServerInfo info,
     TransportVersion version,
     IPluginManager<TContext> plugins,
-    IDispatchService dispatch,
     TContext context
 ) : IHostedService
     where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser> 
@@ -44,22 +40,6 @@ public class SystemHostService<TStageSystem, TStageSystemUser, TContext>(
             system,
             system
         ).Accept(info.Host, info.Port);
-
-        var request = new DispatchServiceSubscribeRequest
-        {
-            ServerID = info.ID
-        };
-        
-        Subscription = dispatch
-            .Subscribe(request)
-            .ToObservable()
-            .Select(async i =>
-            {
-                using var writer = new RawPacketWriter()
-                    .WriteBytes(i.Payload);
-                await Context.Dispatch(writer);
-            })
-            .Subscribe();
         
         logger.LogSystemHostServiceStarted(
             info.ID,
