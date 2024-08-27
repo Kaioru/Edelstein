@@ -27,14 +27,20 @@ public partial class AuthServiceTests
     [DataRow("username1", "password")]
     [DataRow("uSeRnAmE2", "password")]
     [DataRow("username3", "PASSw0rd")]
-    public async Task AuthServiceTests_Register_Success(string username, string password)
+    public async Task AuthServiceTests_Register_SuccessAndLoginAfter(string username, string password)
     {
-        var response = await service.Register(new AuthServiceRequest
+        var registerResponse = await service.Register(new AuthServiceRequest
+        {
+            Username = username,
+            Password = password
+        });
+        var loginResponse = await service.Login(new AuthServiceRequest
         {
             Username = username,
             Password = password
         });
         
-        Assert.AreEqual(AuthServiceResult.Success, response.Result);
+        Assert.AreEqual(AuthServiceResult.Success, registerResponse.Result);
+        Assert.AreEqual(AuthServiceResult.Success, loginResponse.Result);
     }
 }
