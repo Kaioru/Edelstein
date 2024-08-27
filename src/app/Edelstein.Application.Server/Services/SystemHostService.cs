@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Edelstein.Application.Server.Bindings;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Protocol.Gameplay;
-using Edelstein.Protocol.Network.Packets;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Services.Server;
