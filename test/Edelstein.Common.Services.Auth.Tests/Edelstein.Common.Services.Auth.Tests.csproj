@@ -4,6 +4,8 @@
     <ProjectReference Include="..\..\src\common\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="EntityFrameworkCore.Exceptions.Sqlite" Version="8.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0-preview.7.24405.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-preview.7.24405.3" />
   </ItemGroup>
 </Project>
