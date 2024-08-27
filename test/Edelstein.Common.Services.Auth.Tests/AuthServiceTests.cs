@@ -56,9 +56,9 @@ public class AuthServiceTests
     }
     
     [TestMethod]
-    [DataRow("username", "password")]
-    [DataRow("uSeRnAmE", "password")]
-    [DataRow("username", "PASSw0rd")]
+    [DataRow("username1", "password")]
+    [DataRow("uSeRnAmE2", "password")]
+    [DataRow("username3", "PASSw0rd")]
     public async Task AuthServiceTests_Login_Success(string username, string password)
     {
         await repository.Insert(new Identity
