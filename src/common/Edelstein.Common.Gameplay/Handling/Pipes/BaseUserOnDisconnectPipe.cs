@@ -11,6 +11,7 @@ namespace Edelstein.Common.Gameplay.Handling.Pipes;
 public class BaseUserOnDisconnectPipe<TStageSystem, TStageSystemUser>(
     IAccountRepository accounts,
     IAccountWorldDataRepository accountWorldData,
+    ICharacterRepository characters,
     ISessionService sessions
 ) : IPipe<UserOnDisconnect<TStageSystem, TStageSystemUser>>
     where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser>
@@ -18,6 +19,9 @@ public class BaseUserOnDisconnectPipe<TStageSystem, TStageSystemUser>(
 {
     public async Task Handle(IPipelineContext ctx, UserOnDisconnect<TStageSystem, TStageSystemUser> message)
     {
+        if (message.User.Character != null)
+            await characters.Update(message.User.Character);
+        
         if (message.User.AccountWorldData != null)
             await accountWorldData.Update(message.User.AccountWorldData);
 

@@ -14,6 +14,7 @@ public class GameStageSystemUser(
     
     public Account? Account { get; set; }
     public AccountWorldData? AccountWorldData { get; set; }
+    public Character? Character { get; set; }
 
     public long Key { get; set; }
 }

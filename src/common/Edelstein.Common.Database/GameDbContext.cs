@@ -20,6 +20,7 @@ public class GameDbContext(DbContextOptions<GameDbContext> options) : DbContext(
     
     public DbSet<DbAccount> Accounts => Set<DbAccount>();
     public DbSet<DbAccountWorldData> AccountWorldData => Set<DbAccountWorldData>();
+    public DbSet<DbCharacter> Characters => Set<DbCharacter>();
     
     protected override void OnModelCreating(ModelBuilder builder)
         => builder.ApplyConfigurationsFromAssembly(GetType().Assembly);

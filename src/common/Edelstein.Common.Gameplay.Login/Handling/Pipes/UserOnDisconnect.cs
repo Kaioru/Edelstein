@@ -8,5 +8,6 @@ namespace Edelstein.Common.Gameplay.Login.Handling.Pipes;
 public class UserOnDisconnect(
     IAccountRepository accounts,
     IAccountWorldDataRepository accountWorldData,
+    ICharacterRepository characters,
     ISessionService sessions
-) : BaseUserOnDisconnectPipe<ILoginStageSystem, ILoginStageSystemUser>(accounts, accountWorldData, sessions);
+) : BaseUserOnDisconnectPipe<ILoginStageSystem, ILoginStageSystemUser>(accounts, accountWorldData, characters, sessions);

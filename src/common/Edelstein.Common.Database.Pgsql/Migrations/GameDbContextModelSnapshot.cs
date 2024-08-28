@@ -102,6 +102,103 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                     b.ToTable("account_world_data", (string)null);
                 });
 
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.DbCharacter", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+
+                    b.Property<short>("AP")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("AccountWorldDataID")
+                        .HasColumnType("integer");
+
+                    b.Property<short>("DEX")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("EXP")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Face")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("FieldID")
+                        .HasColumnType("integer");
+
+                    b.Property<byte>("FieldPortal")
+                        .HasColumnType("smallint");
+
+                    b.Property<byte>("Gender")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("HP")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Hair")
+                        .HasColumnType("integer");
+
+                    b.Property<short>("INT")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("Job")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("LUK")
+                        .HasColumnType("smallint");
+
+                    b.Property<byte>("Level")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("MP")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MaxHP")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MaxMP")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Money")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<short>("POP")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("PlayTime")
+                        .HasColumnType("integer");
+
+                    b.Property<short>("SP")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("STR")
+                        .HasColumnType("smallint");
+
+                    b.Property<byte>("Skin")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("SubJob")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("TempEXP")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AccountWorldDataID");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("characters", (string)null);
+                });
+
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Auth.DbIdentity", b =>
                 {
                     b.Property<int>("ID")
@@ -207,10 +304,7 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", b =>
                 {
                     b.Property<int>("ActiveAccount")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ActiveAccount"));
 
                     b.Property<int?>("ActiveCharacter")
                         .HasColumnType("integer");
@@ -223,6 +317,9 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("ActiveAccount");
+
+                    b.HasIndex("ActiveCharacter")
+                        .IsUnique();
 
                     b.HasIndex("ServerID");
 
@@ -267,6 +364,17 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.DbCharacter", b =>
+                {
+                    b.HasOne("Edelstein.Common.Database.Entities.DbAccountWorldData", "AccountWorldData")
+                        .WithMany("Characters")
+                        .HasForeignKey("AccountWorldDataID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AccountWorldData");
+                });
+
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", b =>
                 {
                     b.HasOne("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", "Session")
@@ -287,6 +395,12 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Edelstein.Common.Database.Entities.DbCharacter", "Character")
+                        .WithOne("Migration")
+                        .HasForeignKey("Edelstein.Common.Database.Entities.Services.Migration.DbMigrationInfo", "CharacterID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo", "FromServer")
                         .WithMany("MigrationOut")
                         .HasForeignKey("FromServerID")
@@ -303,6 +417,8 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
 
                     b.Navigation("AccountWorldData");
 
+                    b.Navigation("Character");
+
                     b.Navigation("FromServer");
 
                     b.Navigation("Session");
@@ -312,11 +428,26 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
 
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", b =>
                 {
+                    b.HasOne("Edelstein.Common.Database.Entities.DbAccount", "Account")
+                        .WithOne("Session")
+                        .HasForeignKey("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", "ActiveAccount")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Edelstein.Common.Database.Entities.DbCharacter", "Character")
+                        .WithOne("Session")
+                        .HasForeignKey("Edelstein.Common.Database.Entities.Services.Session.DbSessionInfo", "ActiveCharacter")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo", "Server")
                         .WithMany("Sessions")
                         .HasForeignKey("ServerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Character");
 
                     b.Navigation("Server");
                 });
@@ -326,11 +457,22 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                     b.Navigation("AccountWorldData");
 
                     b.Navigation("Migration");
+
+                    b.Navigation("Session");
                 });
 
             modelBuilder.Entity("Edelstein.Common.Database.Entities.DbAccountWorldData", b =>
                 {
+                    b.Navigation("Characters");
+
                     b.Navigation("Migration");
+                });
+
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.DbCharacter", b =>
+                {
+                    b.Navigation("Migration");
+
+                    b.Navigation("Session");
                 });
 
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo", b =>

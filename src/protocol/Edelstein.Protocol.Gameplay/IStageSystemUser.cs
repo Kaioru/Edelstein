@@ -12,6 +12,7 @@ public interface IStageSystemUser<out TStageSystem, TStageSystemUser> :
     
     Account? Account { get; set; }
     AccountWorldData? AccountWorldData { get; set; }
+    Character? Character { get; set; }
     
     long Key { get; set; }
 }

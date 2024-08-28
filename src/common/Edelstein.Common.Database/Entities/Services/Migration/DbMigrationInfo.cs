@@ -12,6 +12,7 @@ public record DbMigrationInfo : MigrationInfo
     
     public DbAccount Account { get; set; }
     public DbAccountWorldData AccountWorldData { get; set; }
+    public DbCharacter Character { get; set; }
     
     public DbSessionInfo Session { get; set; }
     

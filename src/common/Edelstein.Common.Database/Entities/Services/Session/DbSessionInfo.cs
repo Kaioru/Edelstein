@@ -8,6 +8,8 @@ public record DbSessionInfo : SessionInfo
 {
     public long Secret { get; set; }
     
+    public DbAccount Account { get; set; }
+    public DbCharacter? Character { get; set; }
     public DbServerInfo Server { get; set; }
     public DbMigrationInfo? Migration { get; set; }
 }
