@@ -2,4 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Login;
 
-public interface ILoginStageSystemOptions : IServerInfoLogin;
+public interface ILoginStageSystemOptions : IServerInfoLogin
+{
+    byte[] Worlds { get; }
+}

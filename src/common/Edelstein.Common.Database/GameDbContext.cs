@@ -13,6 +13,7 @@ public class GameDbContext(DbContextOptions<GameDbContext> options) : DbContext(
     
     public DbSet<DbServerInfo> ServerInfo => Set<DbServerInfo>();
     public DbSet<DbServerInfoLogin> ServerInfoLogin => Set<DbServerInfoLogin>();
+    public DbSet<DbServerInfoGame> ServerInfoGame => Set<DbServerInfoGame>();
     
     public DbSet<DbSessionInfo> SessionInfo => Set<DbSessionInfo>();
     public DbSet<DbMigrationInfo> MigrationInfo => Set<DbMigrationInfo>();

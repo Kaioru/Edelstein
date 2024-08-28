@@ -10,6 +10,7 @@ using Edelstein.Protocol.Utilities;
 using EntityFramework.Exceptions.Common;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
+using ProtoBuf.Grpc;
 
 namespace Edelstein.Common.Services.Server;
 

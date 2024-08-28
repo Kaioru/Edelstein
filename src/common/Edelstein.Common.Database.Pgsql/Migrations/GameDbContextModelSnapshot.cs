@@ -229,6 +229,24 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                     b.ToTable("session_info", (string)null);
                 });
 
+            modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Server.DbServerInfoGame", b =>
+                {
+                    b.HasBaseType("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo");
+
+                    b.Property<int>("ChannelID")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsAdultChannel")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("WorldID")
+                        .HasColumnType("integer");
+
+                    b.ToTable("server_info", (string)null);
+
+                    b.HasDiscriminator().HasValue("Game");
+                });
+
             modelBuilder.Entity("Edelstein.Common.Database.Entities.Services.Server.DbServerInfoLogin", b =>
                 {
                     b.HasBaseType("Edelstein.Common.Database.Entities.Services.Server.DbServerInfo");

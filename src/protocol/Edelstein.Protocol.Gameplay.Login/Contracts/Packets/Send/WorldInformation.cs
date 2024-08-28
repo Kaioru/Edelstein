@@ -7,11 +7,10 @@ namespace Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Send;
 
 public record WorldInformation() : StructuredSendPacket((short)PacketSendOperation.WorldInformation)
 {
-    [FieldOrder(0)] 
-    public required byte ID { get; init; }
+    [FieldOrder(0)] public required byte ID { get; init; } = 0xFF;
     
     [FieldOrder(1)]
-    [SerializeWhen(nameof(ID), 0, ComparisonOperator.NotEqual)]
+    [SerializeWhen(nameof(ID), 0xFF, ComparisonOperator.NotEqual)]
     public WorldInformationData? Data { get; init; }
 }
 
@@ -43,7 +42,7 @@ public record WorldInformationData : StructuredBasePacket
     public List<WorldInformationChannel> Channels { get; init; } = new();
     
     [FieldOrder(8)]
-    public byte BalloonCount { get; init; }
+    public short BalloonCount { get; init; }
     
     [FieldOrder(9)] 
     [FieldLength(nameof(BalloonCount))]

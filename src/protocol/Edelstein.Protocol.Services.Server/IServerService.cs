@@ -12,6 +12,9 @@ public interface IServerService
     Task<ServerServiceRegisterResponse> RegisterLogin(ServerServiceRegisterRequest<ServerInfoLogin> request, CallContext context = default);
     
     [OperationContract]
+    Task<ServerServiceRegisterResponse> RegisterGame(ServerServiceRegisterRequest<ServerInfoGame> request, CallContext context = default);
+    
+    [OperationContract]
     Task<ServerServiceResponse> Ping(ServerServicePingRequest request, CallContext context = default);
     
     [OperationContract]
@@ -19,6 +22,12 @@ public interface IServerService
     
     [OperationContract]
     Task<ServerServiceGetOneResponse<ServerInfo>> GetByID(ServerServiceGetByIDRequest request, CallContext context = default);
+    
+    [OperationContract]
+    Task<ServerServiceGetOneResponse<ServerInfoGame>> GetGameByWorldAndChannel(ServerServiceGetByWorldAndChannelRequest request, CallContext context = default);
+    
+    [OperationContract]
+    Task<ServerServiceGetAllResponse<ServerInfoGame>> GetGameByWorld(ServerServiceGetByWorldRequest request, CallContext context = default);
     
     [OperationContract]
     Task<ServerServiceGetAllResponse<ServerInfo>> GetAll(CallContext context = default);
