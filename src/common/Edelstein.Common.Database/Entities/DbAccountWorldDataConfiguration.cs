@@ -12,6 +12,12 @@ public class DbAccountWorldDataConfiguration : IEntityTypeConfiguration<DbAccoun
         builder.ToTable("account_world_data");
 
         builder.HasKey(e => e.ID);
+        builder.HasIndex(e => new
+        {
+            e.AccountID,
+            e.WorldID
+        }).IsUnique();
+        
         builder.HasOne(e => e.Account)
             .WithMany(p => p.AccountWorldData)
             .HasForeignKey(e => e.AccountID)

@@ -7,8 +7,8 @@ public class AccountWorldData : IRepositoryEntry<int>
 {
     public int ID { get; set; }
     
-    public int AccountID { get; set; }
-    public int WorldID { get; set; }
+    public required int AccountID { get; set; }
+    public required int WorldID { get; set; }
 
     public ItemLocker Locker { get; set; } = new();
     public ItemTrunk Trunk { get; set; } = new();
