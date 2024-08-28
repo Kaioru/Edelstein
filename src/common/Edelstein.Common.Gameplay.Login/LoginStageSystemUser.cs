@@ -16,4 +16,6 @@ public class LoginStageSystemUser(
     public AccountWorldData? AccountWorldData { get; set; }
 
     public long Key { get; set; }
+    
+    public LoginState State { get; set; }
 }

@@ -22,7 +22,7 @@ public class UserOnPacketCheckPasswordPipe(
 {
     public async Task Handle(IPipelineContext ctx, PipedPacketMessage<ILoginStageSystem, ILoginStageSystemUser, CheckPassword> message)
     {
-        // TODO state check (logged_out)
+        if (message.User.State != LoginState.CheckPassword) return;
         
         try
         {
@@ -59,6 +59,7 @@ public class UserOnPacketCheckPasswordPipe(
                 {
                     message.User.Account = account;
                     message.User.Key = sessionResponse.Secret ?? 0;
+                    message.User.State = LoginState.SelectWorld;
                 }
                 else 
                     result = LoginResultCode.AlreadyConnected;
