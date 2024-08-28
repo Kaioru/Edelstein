@@ -20,6 +20,8 @@ public class UserOnPacketWorldRequest(
 {
     public async Task Handle(IPipelineContext ctx, PipedPacketMessage<ILoginStageSystem, ILoginStageSystemUser, WorldRequest> message)
     {
+        if (message.User.State != LoginState.SelectWorld) return;
+        
         foreach (var worldID in message.User.System.Options.Worlds)
         {
             var template = await templates.Retrieve(worldID);

@@ -16,6 +16,8 @@ public class UserOnPacketSelectWorld : IPipe<PipedPacketMessage<ILoginStageSyste
 {
     public async Task Handle(IPipelineContext ctx, PipedPacketMessage<ILoginStageSystem, ILoginStageSystemUser, SelectWorld> message)
     {
+        if (message.User.State != LoginState.SelectWorld) return;
+        
         await message.User.Dispatch(new SelectWorldResult
         {
             Result = LoginResultCode.Success,

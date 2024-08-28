@@ -9,6 +9,10 @@ namespace Edelstein.Common.Gameplay.Login.Handling.Pipes;
 
 public class UserOnPacketCheckUserLimit : IPipe<PipedPacketMessage<ILoginStageSystem, ILoginStageSystemUser, CheckUserLimit>>
 {
-    public Task Handle(IPipelineContext ctx, PipedPacketMessage<ILoginStageSystem, ILoginStageSystemUser, CheckUserLimit> message)
-        => message.User.Dispatch(new CheckUserLimitResult());
+    public async Task Handle(IPipelineContext ctx, PipedPacketMessage<ILoginStageSystem, ILoginStageSystemUser, CheckUserLimit> message)
+    {
+        if (message.User.State != LoginState.SelectWorld) return;
+        
+        await message.User.Dispatch(new CheckUserLimitResult());
+    }
 }
