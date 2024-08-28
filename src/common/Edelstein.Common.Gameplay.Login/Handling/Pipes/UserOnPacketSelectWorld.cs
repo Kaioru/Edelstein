@@ -61,7 +61,7 @@ public class UserOnPacketSelectWorld(
                 }
             });
         }
-        catch (Exception)
+        catch
         {
             await message.User.Dispatch(new SelectWorldResult
             {
