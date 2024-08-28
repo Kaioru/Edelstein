@@ -5,8 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Application.Server.Bindings;
 using Edelstein.Application.Server.Extensions;
+using Edelstein.Common.Gameplay.Game;
 using Edelstein.Common.Gameplay.Login;
 using Edelstein.Common.Utilities.Bootstrap;
+using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Network.Transports;
@@ -52,6 +55,16 @@ public class StartCommand : AsyncCommand<StartCommand.Settings>
                             LoginStageSystem,
                             LoginStageSystemConfig,
                             LoginContext
+                        >(version, config);
+                        break;
+                    case "Game":
+                        builder.Services.AddSystemHostService<
+                            IGameStageSystem,
+                            IGameStageSystemUser,
+                            IGameStageSystemOptions,
+                            GameStageSystem,
+                            GameStageSystemConfig,
+                            GameContext
                         >(version, config);
                         break;
                     default:

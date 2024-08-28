@@ -22,9 +22,9 @@ public class LoginWorldInfoTemplateLoader(
         await Task.WhenAll(directory.Select(n =>
         {
             var id = Convert.ToInt32(n.Name.Split(".")[0]);
-            return context.Insert(new TemplateProviderEager<LoginWorldInfoTemplate>(
+            return context.Insert(new TemplateProviderLazy<LoginWorldInfoTemplate>(
                 id, 
-                new LoginWorldInfoTemplate(id, n)
+                () => new LoginWorldInfoTemplate(id, n)
             ));
         }));
     }

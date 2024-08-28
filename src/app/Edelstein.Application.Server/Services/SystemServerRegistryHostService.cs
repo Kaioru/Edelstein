@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
@@ -51,6 +52,10 @@ public class SystemServerRegistryHostService<TServerInfo>(
                         ILoginStageSystemOptions login => await service.RegisterLogin(new ServerServiceRegisterRequest<ServerInfoLogin>
                         {
                             Info = mapper.Map<ServerInfoLogin>(login)
+                        }),
+                        IGameStageSystemOptions game  => await service.RegisterGame(new ServerServiceRegisterRequest<ServerInfoGame>
+                        {
+                            Info = mapper.Map<ServerInfoGame>(game)
                         }),
                         _ => throw new ArgumentOutOfRangeException()
                     };

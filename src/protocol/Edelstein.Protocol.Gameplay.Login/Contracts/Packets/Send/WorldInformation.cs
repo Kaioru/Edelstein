@@ -38,14 +38,14 @@ public record WorldInformationData : StructuredBasePacket
     public byte ChannelCount { get; init; }
 
     [FieldOrder(7)] 
-    [FieldLength(nameof(ChannelCount))]
+    [FieldCount(nameof(ChannelCount))]
     public List<WorldInformationChannel> Channels { get; init; } = new();
     
     [FieldOrder(8)]
     public short BalloonCount { get; init; }
     
     [FieldOrder(9)] 
-    [FieldLength(nameof(BalloonCount))]
+    [FieldCount(nameof(BalloonCount))]
     public List<WorldInformationBalloon> Balloons { get; init; } = new();
 }
 

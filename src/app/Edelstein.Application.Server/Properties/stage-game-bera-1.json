@@ -1,0 +1,9 @@
+{
+  "Type": "Game",
+  "ID": "Bera-1",
+  "Host": "127.0.0.1",
+  "Port": 7675,
+  "WorldID": 1,
+  "ChannelID": 0,
+  "IsAdultChannel": false
+}

@@ -1,0 +1,9 @@
+{
+  "Type": "Game",
+  "ID": "Scania-1",
+  "Host": "127.0.0.1",
+  "Port": 7575,
+  "WorldID": 0,
+  "ChannelID": 0,
+  "IsAdultChannel": false
+}

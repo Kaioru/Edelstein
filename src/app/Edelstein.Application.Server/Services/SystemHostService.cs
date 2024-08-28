@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Application.Server.Bindings;
@@ -27,7 +26,6 @@ public class SystemHostService<TStageSystem, TStageSystemUser, TContext>(
     where TStageSystemUser : class, IStageSystemUser<TStageSystem, TStageSystemUser>
 {
     private ITransportContext? Context { get; set; }
-    private IDisposable? Subscription { get; set; }
     
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -53,7 +51,6 @@ public class SystemHostService<TStageSystem, TStageSystemUser, TContext>(
         
         if (Context != null)
             await Context.Close();
-        Subscription?.Dispose();
 
         logger.LogSystemHostServiceStopped(info.ID);
         

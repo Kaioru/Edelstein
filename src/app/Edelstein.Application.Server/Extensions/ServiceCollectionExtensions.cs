@@ -7,6 +7,7 @@ using Edelstein.Protocol.Services.Server;
 using MapsterMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -34,7 +35,7 @@ internal static class ServiceCollectionExtensions
         where TServerInfoImpl : class, TServerInfo
         where TContext : class
     {
-        collection.AddHostedService(p =>
+        collection.AddSingleton<IHostedService>(p =>
         {
             var subCollection = new ServiceCollection();
 
@@ -54,7 +55,7 @@ internal static class ServiceCollectionExtensions
                 subProvider.GetRequiredService<TContext>()
             );
         });
-        collection.AddHostedService(p => new SystemServerRegistryHostService<TServerInfo>(
+        collection.AddSingleton<IHostedService>(p => new SystemServerRegistryHostService<TServerInfo>(
             p.GetRequiredService<ILogger<SystemServerRegistryHostService<TServerInfo>>>(),
             p.GetRequiredService<IMapper>(),
             p.GetRequiredService<IServerService>(),

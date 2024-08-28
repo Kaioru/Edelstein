@@ -19,6 +19,7 @@ using Edelstein.Common.Utilities.Bootstrap;
 using Edelstein.Common.Utilities.Pipelines;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Common.Utilities.Tickers;
+using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Plugin;
@@ -132,6 +133,7 @@ internal static class ProgramHostBuilder
         builder.Services.Scan(scan => scan
             .FromAssemblyDependencies(Assembly.GetEntryAssembly()!)
             .AddClasses(classes => classes.InExactNamespaceOf<LoginContext>()).AsSelf()
+            .AddClasses(classes => classes.InExactNamespaceOf<GameContext>()).AsSelf()
             .WithScopedLifetime());
 
         return builder;

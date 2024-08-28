@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Login.Templates;
 using Edelstein.Protocol.Gameplay.Handling;
@@ -42,6 +40,7 @@ public class UserOnPacketWorldRequest(
                     State = template.State,
                     IsBlockCharCreation = template.BlockCharCreation,
                     Channels = response.Info
+                        .OrderBy(i => i.ChannelID)
                         .Select(i => new WorldInformationChannel
                         {
                             Name = new LPString(i.ID),
