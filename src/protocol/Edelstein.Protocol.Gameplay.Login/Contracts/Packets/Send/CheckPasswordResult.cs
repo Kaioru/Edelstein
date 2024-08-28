@@ -14,20 +14,20 @@ public record CheckPasswordResult() : StructuredSendPacket((short)PacketSendOper
     
     [FieldOrder(3)]
     [SerializeWhen(nameof(Result), LoginResultCode.Blocked)]
-    public BlockReason? BlockReason { get; init; }
+    public CheckPasswordResultInfoBlockReason? BlockReason { get; init; }
     
     [FieldOrder(4)]
     [SerializeWhen(nameof(Result), LoginResultCode.Success)]
-    public AccountInfo? AccountInfo { get; init; }
+    public CheckPasswordResultInfoAccount? Account { get; init; }
 }
 
-public record BlockReason : StructuredBasePacket
+public record CheckPasswordResultInfoBlockReason : StructuredBasePacket
 {
     [FieldOrder(0)] public required byte Reason { get; init; }
     [FieldOrder(1)] public required FDateTime UnblockDate { get; init; }
 }
 
-public record AccountInfo : StructuredBasePacket
+public record CheckPasswordResultInfoAccount : StructuredBasePacket
 {
     [FieldOrder(0)] public required int ID { get; init; }
     [FieldOrder(1)] public byte Gender { get; init; }

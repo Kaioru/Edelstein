@@ -34,14 +34,14 @@ public class UserOnPacketWorldRequest(
             await message.User.Dispatch(new WorldInformation
             {
                 ID = worldID,
-                Data = new WorldInformationData
+                Info = new WorldInformationInfo
                 {
                     Name = new LPString(template.Name),
                     State = template.State,
                     IsBlockCharCreation = template.BlockCharCreation,
                     Channels = response.Info
                         .OrderBy(i => i.ChannelID)
-                        .Select(i => new WorldInformationChannel
+                        .Select(i => new WorldInformationInfoChannel
                         {
                             Name = new LPString(i.ID),
                             WorldID = (byte)i.WorldID,

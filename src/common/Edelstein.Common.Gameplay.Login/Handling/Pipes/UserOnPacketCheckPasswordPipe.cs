@@ -68,8 +68,8 @@ public class UserOnPacketCheckPasswordPipe(
             await message.User.Dispatch(new CheckPasswordResult
             {
                 Result = result,
-                AccountInfo = result == LoginResultCode.Success
-                    ? new AccountInfo
+                Account = result == LoginResultCode.Success
+                    ? new CheckPasswordResultInfoAccount
                     {
                         ID = account.ID,
                         NexonClubID = new LPString(account.Username),

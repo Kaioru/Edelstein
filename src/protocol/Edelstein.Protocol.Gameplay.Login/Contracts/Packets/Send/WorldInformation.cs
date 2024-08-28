@@ -11,10 +11,10 @@ public record WorldInformation() : StructuredSendPacket((short)PacketSendOperati
     
     [FieldOrder(1)]
     [SerializeWhen(nameof(ID), 0xFF, ComparisonOperator.NotEqual)]
-    public WorldInformationData? Data { get; init; }
+    public WorldInformationInfo? Info { get; init; }
 }
 
-public record WorldInformationData : StructuredBasePacket
+public record WorldInformationInfo : StructuredBasePacket
 {
     [FieldOrder(0)]
     public LPString Name { get; init; } = new();
@@ -39,17 +39,17 @@ public record WorldInformationData : StructuredBasePacket
 
     [FieldOrder(7)] 
     [FieldCount(nameof(ChannelCount))]
-    public List<WorldInformationChannel> Channels { get; init; } = new();
+    public List<WorldInformationInfoChannel> Channels { get; init; } = new();
     
     [FieldOrder(8)]
     public short BalloonCount { get; init; }
     
     [FieldOrder(9)] 
     [FieldCount(nameof(BalloonCount))]
-    public List<WorldInformationBalloon> Balloons { get; init; } = new();
+    public List<WorldInformationInfoBalloon> Balloons { get; init; } = new();
 }
 
-public record WorldInformationChannel : StructuredBasePacket
+public record WorldInformationInfoChannel : StructuredBasePacket
 {
     [FieldOrder(0)] public LPString Name { get; init; } = new();
     [FieldOrder(1)] public int UserNo { get; init; }
@@ -58,7 +58,7 @@ public record WorldInformationChannel : StructuredBasePacket
     [FieldOrder(4)] public bool IsAdultChannel { get; init; }
 }
 
-public record WorldInformationBalloon : StructuredBasePacket
+public record WorldInformationInfoBalloon : StructuredBasePacket
 {
     [FieldOrder(0)] public short X { get; init; }
     [FieldOrder(1)] public short Y { get; init; }
