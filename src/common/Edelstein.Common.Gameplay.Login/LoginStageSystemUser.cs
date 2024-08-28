@@ -19,4 +19,7 @@ public class LoginStageSystemUser(
     public long Key { get; set; }
     
     public LoginState State { get; set; }
+    
+    public byte? SelectedWorldID { get; set; }
+    public byte? SelectedChannelID { get; set; }
 }
