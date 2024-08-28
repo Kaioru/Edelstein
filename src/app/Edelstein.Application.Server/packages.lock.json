@@ -2,6 +2,25 @@
   "version": 2,
   "dependencies": {
     "net9.0": {
+      "Duey.Provider.NX": {
+        "type": "Direct",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "+rUyVKH5twoxsv7Rfy0GUDvA78t0M0vKCGGtfMzljDcsX/RyeeNj0ZJENZ9w7va0J+Nm69XMPEjrxZyWMV5uVQ==",
+        "dependencies": {
+          "Duey.Abstractions": "2.0.0",
+          "K4os.Compression.LZ4": "1.3.6"
+        }
+      },
+      "Duey.Provider.WZ": {
+        "type": "Direct",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "byBI5tAqQvJ8u/Lqyhg0Dg8AkrdKuAP3rF2pA0RkQSBcgdRCsKKLP4ogisCadrt5x+xjN0OMEYOrxjUc1axYoA==",
+        "dependencies": {
+          "Duey.Abstractions": "2.0.0"
+        }
+      },
       "EntityFrameworkCore.Exceptions.PostgreSQL": {
         "type": "Direct",
         "requested": "[8.1.3, )",
@@ -196,6 +215,11 @@
         "dependencies": {
           "System.Memory": "4.5.3"
         }
+      },
+      "K4os.Compression.LZ4": {
+        "type": "Transitive",
+        "resolved": "1.3.6",
+        "contentHash": "RxGhoJBjZCgGeZgDqOP4Krs1cR9PHInbz6d2N19Dic0Y6ZACzVKbR3uSpqfEZf4RiUbHk9aiog2eS22nQPTc2A=="
       },
       "Libuv": {
         "type": "Transitive",
@@ -1585,14 +1609,6 @@
           "Edelstein.Protocol.Services.Auth": "[1.0.0, )",
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
           "EntityFrameworkCore.Exceptions.Common": "[8.1.3, )"
-        }
-      },
-      "edelstein.common.services.dispatch": {
-        "type": "Project",
-        "dependencies": {
-          "Edelstein.Common.Utilities": "[1.0.0, )",
-          "Edelstein.Protocol.Services.Session": "[1.0.0, )",
-          "Edelstein.Protocol.Utilities": "[1.0.0, )"
         }
       },
       "edelstein.common.services.migration": {

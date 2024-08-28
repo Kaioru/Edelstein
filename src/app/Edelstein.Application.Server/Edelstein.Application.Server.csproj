@@ -4,6 +4,8 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="Duey.Provider.NX" />
+    <PackageReference Include="Duey.Provider.WZ" />
     <PackageReference Include="EntityFrameworkCore.Exceptions.PostgreSQL" />
     <PackageReference Include="EntityFrameworkCore.Exceptions.Sqlite" />
     <PackageReference Include="Mapster.DependencyInjection" />

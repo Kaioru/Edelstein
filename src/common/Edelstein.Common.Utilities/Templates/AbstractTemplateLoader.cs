@@ -24,7 +24,7 @@ public abstract class AbstractTemplateLoader<TTemplate>(
         var elapsed = watch.Elapsed.TotalMilliseconds;
         var count = current.Count;
 
-        logger.LogTemplateLoaderLoaded(GetType().Name, count, elapsed);
+        logger.LogTemplateLoaderLoaded(GetType().Name, count, typeof(TTemplate).Name, elapsed);
 
         await Task.WhenAll((await current.RetrieveAll()).Select(context.Insert));
     }

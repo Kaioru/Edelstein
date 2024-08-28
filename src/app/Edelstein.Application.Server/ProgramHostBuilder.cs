@@ -1,4 +1,8 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
+using Duey.Abstractions;
+using Duey.Provider.NX;
+using Duey.Provider.WZ;
 using Edelstein.Application.Server.Bindings;
 using Edelstein.Application.Server.Services;
 using Edelstein.Common.Database;
@@ -64,6 +68,21 @@ internal static class ProgramHostBuilder
             .WithSingletonLifetime());
         builder.Services.AddHostedService<TickerHostService>();
 
+        
+        switch (builder.Configuration.GetSection("Data")["Type"])
+        {
+            case "NX":
+                builder.Services.AddSingleton<IDataNamespace>(
+                    new NXNamespace(builder.Configuration.GetSection("Data")["Directory"] ?? throw new InvalidOperationException())
+                );
+                break;
+            case "WZ":
+                builder.Services.AddSingleton<IDataNamespace>(new WZNamespace(
+                    builder.Configuration.GetSection("Data")["Directory"] ?? throw new InvalidOperationException(),
+                    builder.Configuration.GetSection("Data")["Key"] ?? throw new InvalidOperationException()));
+                break;
+        }
+        
         builder.Services.AddMapster();
         builder.Services.AddPooledDbContextFactory<GameDbContext>(options =>
         {
