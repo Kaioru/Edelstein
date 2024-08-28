@@ -36,7 +36,9 @@ public class StartCommand : AsyncCommand<StartCommand.Settings>
     {
         var builder = ProgramHostBuilder.CreateBuilder();
         
-        foreach (var file in new DirectoryInfo(settings.Path).EnumerateFiles("*.json"))
+        foreach (var file in new DirectoryInfo(settings.Path)
+                     .EnumerateFiles("*.json")
+                     .OrderBy(f => f.Name))
         {
             var config = new ConfigurationBuilder()
                 .AddJsonFile(file.FullName)
