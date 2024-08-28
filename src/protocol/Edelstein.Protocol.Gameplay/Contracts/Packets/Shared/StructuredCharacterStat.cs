@@ -1,5 +1,4 @@
-﻿using System;
-using BinarySerialization;
+﻿using BinarySerialization;
 using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Contracts.Packets.Shared;

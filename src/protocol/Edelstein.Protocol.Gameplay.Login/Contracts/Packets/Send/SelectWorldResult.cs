@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using BinarySerialization;
 using Edelstein.Protocol.Gameplay.Contracts.Packets.Shared;
-using Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Shared;
 using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Send;
@@ -50,5 +49,20 @@ public record SelectWorldResultSuccessInfoCharacter : StructuredBasePacket
 
     [FieldOrder(5)] 
     [SerializeWhen(nameof(IsRanked), true)]
-    public StructuredRankInfo RankInfo { get; init; } = new();
+    public SelectWorldResultSuccessInfoCharacterRank Rank { get; init; } = new();
+}
+
+public record SelectWorldResultSuccessInfoCharacterRank : StructuredBasePacket
+{
+    [FieldOrder(0)]
+    public int WorldRank { get; init; }
+    
+    [FieldOrder(1)]
+    public int WorldRankGap { get; init; }
+    
+    [FieldOrder(2)]
+    public int JobRank { get; init; }
+    
+    [FieldOrder(3)]
+    public int JobRankGap { get; init; }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Contracts.Packets.Shared;
 using Edelstein.Protocol.Gameplay.Handling;
@@ -7,7 +6,6 @@ using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contracts.Packets;
 using Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Recv;
 using Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Send;
-using Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Shared;
 using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Login.Handling.Pipes;
