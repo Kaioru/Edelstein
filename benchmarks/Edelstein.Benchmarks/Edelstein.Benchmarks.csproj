@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\protocol\Edelstein.Protocol.Network\Edelstein.Protocol.Network.csproj" />
+  </ItemGroup>
+</Project>
