@@ -14,11 +14,11 @@ public record StructuredCharacterLook : StructuredBasePacket
 
     [FieldOrder(5)]
     [SerializeUntil((byte)0xFF)]
-    public List<StructuredAvatarLookEquip> HairEquip { get; init; } = new();
+    public List<StructuredCharacterLookEquip> HairEquip { get; init; } = new();
     
     [FieldOrder(6)]
     [SerializeUntil((byte)0xFF)]
-    public List<StructuredAvatarLookEquip> UnseenEquip { get; init; } = new();
+    public List<StructuredCharacterLookEquip> UnseenEquip { get; init; } = new();
     
     [FieldOrder(7)]
     public int WeaponStickerID { get; init; }
@@ -28,7 +28,7 @@ public record StructuredCharacterLook : StructuredBasePacket
     public int[] PetID { get; init; } = {0, 0, 0};
 }
 
-public record StructuredAvatarLookEquip : StructuredBasePacket
+public record StructuredCharacterLookEquip : StructuredBasePacket
 {
     [FieldOrder(0)]
     public required byte BodyPart { get; init; }
