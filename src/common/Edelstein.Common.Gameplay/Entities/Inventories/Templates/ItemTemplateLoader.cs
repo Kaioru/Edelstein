@@ -55,11 +55,11 @@ public class ItemTemplateLoader(
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name.Split(".")[0]);
-                var node = n.ResolvePath("info")?.Cache();
+                var node = n.ResolvePath("info");
                 if (node == null) return;
                 await context.Insert(new TemplateProviderLazy<IItemTemplate>(
                     id,
-                    () => new ItemEquipTemplate(id, node)
+                    () => new ItemEquipTemplate(id, node.Cache())
                 ));
             })
             .ToImmutableList();
@@ -70,11 +70,11 @@ public class ItemTemplateLoader(
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name);
-                var node = n.ResolvePath("info")?.Cache();
+                var node = n.ResolvePath("info");
                 if (node == null) return;
                 await context.Insert(new TemplateProviderLazy<IItemTemplate>(
                     id,
-                    () => new ItemBundleTemplate(id, node)
+                    () => new ItemBundleTemplate(id, node.Cache())
                 ));
             })
             .ToImmutableList();
@@ -82,11 +82,11 @@ public class ItemTemplateLoader(
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name.Split(".")[0]);
-                var node = n.ResolvePath("info")?.Cache();
+                var node = n.ResolvePath("info");
                 if (node == null) return;
                 await context.Insert(new TemplateProviderLazy<IItemTemplate>(
                     id,
-                    () => new ItemPetTemplate(id, node)
+                    () => new ItemPetTemplate(id, node.Cache())
                 ));
             })
             .ToImmutableList();
