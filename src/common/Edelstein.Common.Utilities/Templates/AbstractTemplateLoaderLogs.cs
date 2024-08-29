@@ -6,7 +6,7 @@ internal static partial class AbstractTemplateLoaderLogs
 {
     [LoggerMessage(
         Level = LogLevel.Debug,
-        Message = "{Loader} loaded {Count} {TemplateName} templates in {Elapsed:F2}ms"
+        Message = "{Loader} loaded {Count:n0} {TemplateName} templates in {Elapsed:F2}ms"
     )]
     internal static partial void LogTemplateLoaderLoaded(
         this ILogger logger,

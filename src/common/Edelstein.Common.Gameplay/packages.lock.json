@@ -963,6 +963,14 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
+      "edelstein.common.utilities": {
+        "type": "Project",
+        "dependencies": {
+          "Edelstein.Protocol.Utilities": "[1.0.0, )",
+          "LogicLooper": "[1.6.0, )",
+          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-preview.7.24405.7, )"
+        }
+      },
       "edelstein.protocol.gameplay": {
         "type": "Project",
         "dependencies": {
@@ -1055,6 +1063,12 @@
         "requested": "[2.0.0, )",
         "resolved": "2.0.0",
         "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
+      },
+      "LogicLooper": {
+        "type": "CentralTransitive",
+        "requested": "[1.6.0, )",
+        "resolved": "1.6.0",
+        "contentHash": "qbQ+kukflXfbsLbqZtMfqLPPo0oUgKISLt7ylqrEt3PbIfFVci2dlU9X94k7B++g2h7Rp4oOhL1aY2VCXovzag=="
       },
       "Microsoft.IO.RecyclableMemoryStream": {
         "type": "CentralTransitive",

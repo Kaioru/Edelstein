@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Edelstein.Protocol.Gameplay.Entities.Inventories.Items;
 
 namespace Edelstein.Protocol.Gameplay.Entities.Inventories;
 

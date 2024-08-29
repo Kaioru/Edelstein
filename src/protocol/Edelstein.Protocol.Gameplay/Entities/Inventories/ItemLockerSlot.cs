@@ -1,6 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Entities.Inventories.Items;
-
-namespace Edelstein.Protocol.Gameplay.Entities.Inventories;
+﻿namespace Edelstein.Protocol.Gameplay.Entities.Inventories;
 
 public record ItemLockerSlot
 {

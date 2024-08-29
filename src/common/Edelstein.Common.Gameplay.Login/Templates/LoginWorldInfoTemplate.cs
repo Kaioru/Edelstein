@@ -15,10 +15,8 @@ public record LoginWorldInfoTemplate : ITemplate
     {
         ID = id;
 
-        var cache = node.Cache();
-
-        Name = cache.ResolveString("name") ?? "NO-NAME";
-        State = cache.ResolveByte("state") ?? 0;
-        BlockCharCreation = cache.ResolveBool("blockCharCreation") ?? false;
+        Name = node.ResolveString("name") ?? "NO-NAME";
+        State = node.ResolveByte("state") ?? 0;
+        BlockCharCreation = node.ResolveBool("blockCharCreation") ?? false;
     }
 }

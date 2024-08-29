@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Edelstein.Protocol.Gameplay.Entities.Inventories.Items;
+namespace Edelstein.Protocol.Gameplay.Entities.Inventories;
 
 public record ItemSlotPet : ItemSlotBase
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Edelstein.Protocol.Gameplay.Entities.Inventories.Items;
+namespace Edelstein.Protocol.Gameplay.Entities.Inventories;
 
 [JsonDerivedType(typeof(ItemSlotBase), typeDiscriminator: "base")]
 [JsonDerivedType(typeof(ItemSlotEquip), typeDiscriminator: "equip")]
