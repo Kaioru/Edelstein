@@ -2,9 +2,9 @@
 using BinarySerialization;
 using Edelstein.Protocol.Network.Packets;
 
-namespace Edelstein.Protocol.Gameplay.Contracts.Packets.Shared;
+namespace Edelstein.Protocol.Gameplay.Entities;
 
-public record StructuredAvatarLook : StructuredBasePacket
+public record StructuredCharacterLook : StructuredBasePacket
 {
     [FieldOrder(0)] public byte Gender { get; init; }
     [FieldOrder(1)] public byte Skin { get; init; }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Gameplay.Contracts.Packets.Shared;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Login;
@@ -54,7 +51,7 @@ public class UserOnPacketSelectWorld(
                         .Select(c => new SelectWorldResultSuccessInfoCharacter
                         {
                             CharacterStat = c.ToStructuredCharacterStat(),
-                            AvatarLook = c.ToStructuredAvatarLook()
+                            CharacterLook = c.ToStructuredAvatarLook()
                         })
                         .ToList(),
                     SlotCount = accountWorldData.CharacterSlotMax

@@ -1,7 +1,4 @@
-﻿using System.Text;
-using BenchmarkDotNet.Attributes;
-using BinarySerialization;
-using Edelstein.Protocol.Network.Packets;
+﻿using BenchmarkDotNet.Attributes;
 using Microsoft.IO;
 
 namespace Edelstein.Benchmarks.Packets;

@@ -40,4 +40,6 @@ public record Character : IRepositoryEntry<int>
     public int PlayTime { get; set; }
 
     public short SubJob { get; set; }
+
+    public CharacterInventories Inventories { get; set; } = new();
 }

@@ -1,6 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Contracts.Packets.Shared;
-
-namespace Edelstein.Protocol.Gameplay.Entities;
+﻿namespace Edelstein.Protocol.Gameplay.Entities;
 
 public static class CharacterExtensions
 {
@@ -40,11 +38,11 @@ public static class CharacterExtensions
             SubJob = character.SubJob
         };
 
-    public static StructuredAvatarLook ToStructuredAvatarLook(this Character character)
+    public static StructuredCharacterLook ToStructuredAvatarLook(this Character character)
     {
         // TODO inventories
         
-        return new StructuredAvatarLook
+        return new StructuredCharacterLook
         {
             Gender = character.Gender,
             Skin = character.Skin,

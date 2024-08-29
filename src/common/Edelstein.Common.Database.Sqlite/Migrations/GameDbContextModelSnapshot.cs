@@ -88,7 +88,8 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("AccountID");
+                    b.HasIndex("AccountID", "WorldID")
+                        .IsUnique();
 
                     b.ToTable("account_world_data", (string)null);
                 });
@@ -131,6 +132,12 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
 
                     b.Property<short>("INT")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Inventories")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("jsonb")
+                        .HasDefaultValue("{\"Equip\":{\"SlotMax\":24,\"Items\":{}},\"Consume\":{\"SlotMax\":24,\"Items\":{}},\"Install\":{\"SlotMax\":24,\"Items\":{}},\"Etc\":{\"SlotMax\":24,\"Items\":{}},\"Cash\":{\"SlotMax\":24,\"Items\":{}}}");
 
                     b.Property<short>("Job")
                         .HasColumnType("INTEGER");

@@ -1,0 +1,3 @@
+﻿namespace Edelstein.Protocol.Gameplay.Entities.Inventories.Modifiers.Operations;
+
+public record StructuredModifyInventoryOperationInfoRemove : StructuredModifyInventoryOperationInfo;

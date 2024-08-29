@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Edelstein.Common.Database.Converters;
+using Edelstein.Protocol.Gameplay.Entities;
+using Edelstein.Protocol.Gameplay.Entities.Inventories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Edelstein.Common.Database.Entities;
@@ -16,5 +19,9 @@ public class DbCharacterConfiguration : IEntityTypeConfiguration<DbCharacter>
             .WithMany(p => p.Characters)
             .HasForeignKey(e => e.AccountWorldDataID)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder
+            .Property(e => e.Inventories)
+            .HasJsonConversion(new CharacterInventories());
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using BinarySerialization;
-using Edelstein.Protocol.Gameplay.Contracts.Packets.Shared;
+using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Send;
@@ -39,7 +39,7 @@ public record SelectWorldResultSuccessInfoCharacter : StructuredBasePacket
     public required StructuredCharacterStat CharacterStat { get; init; }
     
     [FieldOrder(1)]
-    public required StructuredAvatarLook AvatarLook { get; init; }
+    public required StructuredCharacterLook CharacterLook { get; init; }
     
     [FieldOrder(3)]
     public bool OnFamily { get; init; }
