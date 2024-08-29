@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
+﻿using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
 
 namespace Edelstein.Protocol.Gameplay.Entities.Inventories.Modifiers;
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Entities.Inventories.Modifiers;
 using Edelstein.Protocol.Gameplay.Entities;
