@@ -5,5 +5,5 @@ namespace Edelstein.Protocol.Gameplay.Entities.Inventories;
 public record ItemInventory
 {
     public short SlotMax { get; set; } = 24;
-    public Dictionary<short, ItemSlotBase> Items { get; } = new();
+    public Dictionary<short, ItemSlotBase> Items { get; set; } = new();
 }

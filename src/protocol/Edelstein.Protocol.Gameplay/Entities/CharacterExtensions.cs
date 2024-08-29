@@ -47,24 +47,29 @@ public static class CharacterExtensions
     public static StructuredCharacterLook ToStructuredCharacterLook(this Character character)
     {
         var inventory = character.Inventories[ItemInventoryType.Equip]?.Items ?? new Dictionary<short, ItemSlotBase>();
-        var unseen = new int[60];
-        var equip = new int[60];
+        var unseen = new Dictionary<byte, int>();
+        var equip = new Dictionary<byte, int>();
+        var weaponStickerID = 0;
         
-        Console.WriteLine(inventory.Count);
         // TODO: evan gloves 1082262
         
         foreach (var kv in inventory.Where(kv => kv.Key < -100))
         {
-            var id = Math.Abs(kv.Key) - 100;
-            if (id == (int)BodyPart.Weapon) continue;
-            equip[id] = kv.Value.TemplateID;
+            var slot = (byte)(Math.Abs(kv.Key) - 100);
+            
+            if (slot == (int)BodyPart.Weapon) 
+                weaponStickerID = kv.Value.TemplateID;
+            equip[slot] = kv.Value.TemplateID;
         }
         
         foreach (var kv in inventory.Where(kv => kv.Key is < 0 and > -100))
         {
-            var id = Math.Abs(kv.Key);
-            if (equip[id] == 0) equip[id] = kv.Value.TemplateID;
-            else unseen[id] = kv.Value.TemplateID;
+            var slot = (byte)Math.Abs(kv.Key);
+            
+            if (!equip.ContainsKey(slot)) 
+                equip[slot] = kv.Value.TemplateID;
+            else 
+                unseen[slot] = kv.Value.TemplateID;
         }
         
         return new StructuredCharacterLook
@@ -74,24 +79,20 @@ public static class CharacterExtensions
             Face = character.Face,
             Hair = character.Hair,
             HairEquip = equip
-                .Where((_, v) => v != 0)
-                .Select((k, v) => new StructuredCharacterLookEquip
+                .Select(kv => new StructuredCharacterLookEquip
                 {
-                    BodyPart = (byte)k,
-                    ItemID = v
+                    BodyPart = kv.Key,
+                    ItemID = kv.Value
                 })
                 .ToList(),
             UnseenEquip = unseen
-                .Where((_, v) => v != 0)
-                .Select((k, v) => new StructuredCharacterLookEquip
+                .Select(kv => new StructuredCharacterLookEquip
                 {
-                    BodyPart = (byte)k,
-                    ItemID = v
+                    BodyPart = kv.Key,
+                    ItemID = kv.Value
                 })
                 .ToList(),
-            WeaponStickerID = inventory.TryGetValue(-((int)BodyPart.Weapon + 100), out var weaponSticker) 
-                ? weaponSticker.TemplateID
-                : 0
+            WeaponStickerID = weaponStickerID
         };
     }
 }

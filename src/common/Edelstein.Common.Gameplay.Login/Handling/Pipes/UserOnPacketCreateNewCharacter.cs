@@ -47,6 +47,8 @@ public class UserOnPacketCreateNewCharacter(
             if (message.Packet.Pants > 0)
                 context.SetEquipped(BodyPart.Pants, message.Packet.Pants);
             
+            Console.WriteLine(character.Inventories.Equip.Items.Count);
+            
             character = await characters.Insert(character);
             
             await message.User.Dispatch(new CreateNewCharacterResult
