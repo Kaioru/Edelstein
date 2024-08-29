@@ -41,16 +41,6 @@
           "Microsoft.Data.SQLite": "8.0.0"
         }
       },
-      "Mapster.DependencyInjection": {
-        "type": "Direct",
-        "requested": "[1.0.2-pre01, )",
-        "resolved": "1.0.2-pre01",
-        "contentHash": "SYsYsi5fUeAIJGTmx4JaV2wm4A5Lz7jlmlVp4nW3RHs6WlCu/5g7heKbnJi72L1DPzFhVRCKRUq1ud1qGxiLQw==",
-        "dependencies": {
-          "Mapster": "7.4.1-pre01",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0"
-        }
-      },
       "Microsoft.Extensions.Configuration": {
         "type": "Direct",
         "requested": "[9.0.0-preview.7.24405.7, )",
@@ -228,11 +218,6 @@
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.0.1"
         }
-      },
-      "Mapster.Core": {
-        "type": "Transitive",
-        "resolved": "1.2.2-pre01",
-        "contentHash": "FuNCfTHytW9yeSuGHZ9f8u4cgbzhPL0GqoypA4LD99m0zkafs73IcaMxmbUtYjRThof+Z+jcEQ/suVYTkMpTkA=="
       },
       "Microsoft.Data.Sqlite": {
         "type": "Transitive",
@@ -1531,12 +1516,11 @@
       "edelstein.common.database": {
         "type": "Project",
         "dependencies": {
+          "AutoMapper": "[13.0.1, )",
           "Edelstein.Common.Gameplay": "[1.0.0, )",
           "Edelstein.Common.Services.Auth": "[1.0.0, )",
           "Edelstein.Protocol.Services.Migration": "[1.0.0, )",
           "Edelstein.Protocol.Services.Session": "[1.0.0, )",
-          "Mapster": "[7.4.1-pre01, )",
-          "Mapster.EFCore": "[5.1.2-pre01, )",
           "Microsoft.EntityFrameworkCore": "[9.0.0-preview.3.24172.4, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[9.0.0-preview.3.24172.4, )",
           "Microsoft.EntityFrameworkCore.Relational": "[9.0.0-preview.3.24172.4, )"
@@ -1624,7 +1608,6 @@
         "dependencies": {
           "Edelstein.Common.Database": "[1.0.0, )",
           "Edelstein.Protocol.Services.Migration": "[1.0.0, )",
-          "Mapster": "[7.4.1-pre01, )",
           "Microsoft.EntityFrameworkCore": "[9.0.0-preview.3.24172.4, )"
         }
       },
@@ -1640,7 +1623,6 @@
         "dependencies": {
           "Edelstein.Common.Database": "[1.0.0, )",
           "Edelstein.Protocol.Services.Session": "[1.0.0, )",
-          "Mapster": "[7.4.1-pre01, )",
           "Microsoft.EntityFrameworkCore": "[9.0.0-preview.3.24172.4, )"
         }
       },
@@ -1725,6 +1707,15 @@
       "edelstein.protocol.utilities": {
         "type": "Project"
       },
+      "AutoMapper": {
+        "type": "CentralTransitive",
+        "requested": "[13.0.1, )",
+        "resolved": "13.0.1",
+        "contentHash": "/Fx1SbJ16qS7dU4i604Sle+U9VLX+WSNVJggk6MupKVkYvvBm4XqYaeFuf67diHefHKHs50uQIS2YEDFhPCakQ==",
+        "dependencies": {
+          "Microsoft.Extensions.Options": "6.0.0"
+        }
+      },
       "BCrypt.Net-Next": {
         "type": "CentralTransitive",
         "requested": "[4.0.3, )",
@@ -1778,25 +1769,6 @@
         "requested": "[1.6.0, )",
         "resolved": "1.6.0",
         "contentHash": "qbQ+kukflXfbsLbqZtMfqLPPo0oUgKISLt7ylqrEt3PbIfFVci2dlU9X94k7B++g2h7Rp4oOhL1aY2VCXovzag=="
-      },
-      "Mapster": {
-        "type": "CentralTransitive",
-        "requested": "[7.4.1-pre01, )",
-        "resolved": "7.4.1-pre01",
-        "contentHash": "b7YEDoh4nuODGF7wUjgkxA3bTLLt7TxfPkKiFQTgCrNYHem1VVaJyXgsG9RVeQQ44+hoo69IfqENNKn0ox9ddg==",
-        "dependencies": {
-          "Mapster.Core": "1.2.2-pre01"
-        }
-      },
-      "Mapster.EFCore": {
-        "type": "CentralTransitive",
-        "requested": "[5.1.2-pre01, )",
-        "resolved": "5.1.2-pre01",
-        "contentHash": "cuXP2ZxOhWrWK12eA+pxY9bVNW/NG+Afl0Di05NwOyO9PGJGPzEOKe59tuMdycNfEyBO4iFvp4GyaETwvTh2eg==",
-        "dependencies": {
-          "Mapster": "7.4.1-pre01",
-          "Microsoft.EntityFrameworkCore": "6.0.1"
-        }
       },
       "McMaster.NETCore.Plugins": {
         "type": "CentralTransitive",

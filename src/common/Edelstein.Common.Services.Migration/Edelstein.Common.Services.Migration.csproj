@@ -4,7 +4,6 @@
     <ProjectReference Include="..\Edelstein.Common.Database\Edelstein.Common.Database.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Mapster" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
 </Project>

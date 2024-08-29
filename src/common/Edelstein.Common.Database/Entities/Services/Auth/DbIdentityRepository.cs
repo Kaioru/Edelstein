@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Edelstein.Common.Services.Auth;
-using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Database.Entities.Services.Auth;

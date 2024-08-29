@@ -1,7 +1,7 @@
-﻿using Edelstein.Common.Database;
+﻿using AutoMapper;
+using Edelstein.Common.Database;
 using Edelstein.Common.Database.Entities.Services.Auth;
 using EntityFramework.Exceptions.Sqlite;
-using MapsterMapper;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -28,7 +28,7 @@ public partial class AuthServiceTests
         
         repository = new DbIdentityRepository(
             factory,
-            new Mapper()
+            new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<GameDbMappingProfile>()))
         );
         service = new AuthService(repository);
 

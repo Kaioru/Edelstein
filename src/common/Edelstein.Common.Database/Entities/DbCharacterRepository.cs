@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Edelstein.Protocol.Gameplay.Entities;
-using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Database.Entities;

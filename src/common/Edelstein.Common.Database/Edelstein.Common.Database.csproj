@@ -6,8 +6,7 @@
     <ProjectReference Include="..\Edelstein.Common.Services.Auth\Edelstein.Common.Services.Auth.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Mapster" />
-    <PackageReference Include="Mapster.EFCore" />
+    <PackageReference Include="AutoMapper" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />

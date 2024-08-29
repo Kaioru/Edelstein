@@ -1,6 +1,6 @@
-﻿using Edelstein.Common.Database;
+﻿using AutoMapper;
+using Edelstein.Common.Database;
 using Edelstein.Protocol.Services.Session;
-using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Services.Session;

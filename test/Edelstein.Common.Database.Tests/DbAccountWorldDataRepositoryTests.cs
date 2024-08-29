@@ -1,8 +1,8 @@
-﻿using Edelstein.Common.Database.Entities;
+﻿using AutoMapper;
+using Edelstein.Common.Database.Entities;
 using Edelstein.Protocol.Gameplay.Entities;
 using EntityFramework.Exceptions.Common;
 using EntityFramework.Exceptions.Sqlite;
-using MapsterMapper;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -26,14 +26,15 @@ public class DbAccountWorldDataRepositoryTests
             .UseSqlite(connection)
             .UseExceptionProcessor()
             .Options);
+        var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<GameDbMappingProfile>()));
         
         accounts = new DbAccountRepository(
             factory,
-            new Mapper()
+            mapper
         );
         repository = new DbAccountWorldDataRepository(
             factory,
-            new Mapper()
+            mapper
         );
         
         factory.CreateDbContext().Database.EnsureCreated();

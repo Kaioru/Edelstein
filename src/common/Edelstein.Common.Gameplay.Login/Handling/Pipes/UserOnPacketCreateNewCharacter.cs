@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Entities.Inventories.Modifiers;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Entities.Inventories;
@@ -45,8 +44,6 @@ public class UserOnPacketCreateNewCharacter(
             context.SetEquipped(BodyPart.Weapon, message.Packet.Weapon);
             if (message.Packet.Pants > 0)
                 context.SetEquipped(BodyPart.Pants, message.Packet.Pants);
-            
-            Console.WriteLine(character.Inventories.Equip.Items.Count);
             
             character = await characters.Insert(character);
             

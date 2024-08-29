@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Edelstein.Protocol.Utilities.Repositories;
-using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Edelstein.Common.Database.Entities;

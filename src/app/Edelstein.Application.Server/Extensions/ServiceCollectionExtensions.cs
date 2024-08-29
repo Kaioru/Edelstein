@@ -1,10 +1,10 @@
-﻿using Edelstein.Application.Server.Bindings;
+﻿using AutoMapper;
+using Edelstein.Application.Server.Bindings;
 using Edelstein.Application.Server.Services;
 using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Services.Server;
-using MapsterMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

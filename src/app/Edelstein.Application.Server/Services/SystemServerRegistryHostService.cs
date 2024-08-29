@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Services.Server;
 using Edelstein.Protocol.Services.Server.Contracts;
-using MapsterMapper;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using R3;
@@ -53,7 +53,7 @@ public class SystemServerRegistryHostService<TServerInfo>(
                         {
                             Info = mapper.Map<ServerInfoLogin>(login)
                         }),
-                        IGameStageSystemOptions game  => await service.RegisterGame(new ServerServiceRegisterRequest<ServerInfoGame>
+                        IGameStageSystemOptions game => await service.RegisterGame(new ServerServiceRegisterRequest<ServerInfoGame>
                         {
                             Info = mapper.Map<ServerInfoGame>(game)
                         }),
@@ -62,7 +62,7 @@ public class SystemServerRegistryHostService<TServerInfo>(
 
                     if (response.Result == ServerServiceResult.Success)
                         logger.LogSystemServerRegistryHostRegistered(info.ID);
-                    else 
+                    else
                         logger.LogSystemServerRegistryHostRegisterFailed(info.ID, response.Result);
 
                     Secret = response.Secret ?? 0;

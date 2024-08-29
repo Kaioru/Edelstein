@@ -32,7 +32,6 @@ using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Repositories;
 using Edelstein.Protocol.Utilities.Templates;
 using Edelstein.Protocol.Utilities.Tickers;
-using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -84,7 +83,7 @@ internal static class ProgramHostBuilder
                 break;
         }
         
-        builder.Services.AddMapster();
+        builder.Services.AddAutoMapper(typeof(Program), typeof(GameDbContext));
         builder.Services.AddPooledDbContextFactory<GameDbContext>(options =>
         {
             switch (builder.Configuration["DatabaseProvider"])
