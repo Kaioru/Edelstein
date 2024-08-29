@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Edelstein.Protocol.Gameplay.Entities.Inventories;
 
@@ -9,4 +10,6 @@ namespace Edelstein.Protocol.Gameplay.Entities.Inventories;
 public record ItemSlotBase
 {
     public int TemplateID { get; set; }
+    
+    public DateTime? DateExpire { get; set; }
 }

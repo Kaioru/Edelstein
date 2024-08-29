@@ -18,13 +18,10 @@ public interface IModifyInventoryContext<TSlot> : IModifyInventory<TSlot> where 
 
 public interface IModifyInventoryContext : IModifyInventoryContext<ItemSlotBase>, IModifyInventory
 {
-    Task SetSlot(short slot, int templateID);
-    Task SetSlot(short slot, int templateID, short count);
-    void SetSlot(short slot, IItemTemplate template);
-    void SetSlot(short slot, IItemTemplate template, short count);
+    void SetSlot(short slot, int templateID, short count = 1);
+    void SetSlot(short slot, IItemTemplate template, short count = 1);
 
-    ItemSlotBase? TakeSlot(short slot);
-    ItemSlotBase? TakeSlot(short slot, short count);
+    ItemSlotBase? TakeSlot(short slot, short count = 1);
 
     void UpdateNumberSlot(short slot, short count);
     void UpdateEXPSlot(short slot, int exp);

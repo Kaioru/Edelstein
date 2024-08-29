@@ -2,7 +2,7 @@
 
 namespace Edelstein.Protocol.Gameplay.Entities.Inventories.Modifiers;
 
-public interface IModifyInventoryContextGroup<TSlot, out TContext> : IModifyInventory<TSlot>
+public interface IModifyInventoryContextGroup<in TSlot, out TContext> : IModifyInventory<TSlot>
     where TSlot : ItemSlotBase
     where TContext : IModifyInventoryContext<TSlot>
 {
@@ -13,11 +13,6 @@ public interface IModifyInventoryContextGroup :
     IModifyInventoryContextGroup<ItemSlotBase, IModifyInventoryContext>,
     IModifyInventory
 {
-    bool HasEquipped(int templateID);
-    bool HasEquipped(IItemTemplate template);
-
-    void SetEquipped(BodyPart part, int templateID);
-    void SetEquipped(BodyPart part, int templateID, short count);
-    void SetEquipped(BodyPart part, IItemTemplate template);
-    void SetEquipped(BodyPart part, IItemTemplate template, short count);
+    void SetEquipped(BodyPart part, int templateID, short count = 1);
+    void SetEquipped(BodyPart part, IItemTemplate template, short count = 1);
 }

@@ -30,7 +30,7 @@ public record StructuredItemSlotInfoEquip : StructuredItemSlotInfoBase
     [FieldOrder(19)] public byte LevelUpType { get; init; }
     [FieldOrder(20)] public byte Level { get; init; }
     [FieldOrder(21)] public int EXP { get; init; }
-    [FieldOrder(22)] public int Durability { get; init; } = -1;
+    [FieldOrder(22)] public int Durability { get; init; }
 
     [FieldOrder(23)] public int IUC { get; init; }
 

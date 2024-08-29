@@ -10,10 +10,9 @@ public interface IModifyInventory<in TSlot> where TSlot : ItemSlotBase
 
     short Add(TSlot item);
 
-    Task Remove(int templateID);
-    Task Remove(int templateID, short count);
+    void Remove(int templateID, short count = 1);
 
-    Task RemoveAll(int templateID);
+    void RemoveAll(int templateID);
 
     void Gather();
     void Sort();
@@ -24,8 +23,6 @@ public interface IModifyInventory<in TSlot> where TSlot : ItemSlotBase
 
 public interface IModifyInventory : IModifyInventory<ItemSlotBase>
 {
-    Task<short> Add(int templateID);
-    Task<short> Add(int templateID, short count);
-    short Add(IItemTemplate template);
-    short Add(IItemTemplate template, short count);
+    short Add(int templateID, short count = 1);
+    short Add(IItemTemplate template, short count = 1);
 }
