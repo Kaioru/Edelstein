@@ -6,7 +6,8 @@ internal static class NettyPacketMemory
 {
     internal static readonly RecyclableMemoryStreamManager Shared = new(new RecyclableMemoryStreamManager.Options
     {
-        BlockSize = 256,
+        BlockSize = 64,
+        LargeBufferMultiple = 256,
         ThrowExceptionOnToArray = true
     });
 }

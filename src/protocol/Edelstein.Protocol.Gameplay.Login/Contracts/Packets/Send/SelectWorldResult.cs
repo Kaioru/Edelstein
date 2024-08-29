@@ -23,7 +23,7 @@ public record SelectWorldResultSuccessInfo : StructuredBasePacket
     [FieldCount(nameof(CharacterCount))]
     public List<SelectWorldResultSuccessInfoCharacter> Characters { get; init; } = new();
     
-    [FieldOrder(2)] 
+    [FieldOrder(2)]
     public byte LoginOpt { get; init; }
     
     [FieldOrder(3)] 
@@ -47,7 +47,7 @@ public record SelectWorldResultSuccessInfoCharacter : StructuredBasePacket
     [FieldOrder(4)]
     public bool IsRanked { get; init; }
 
-    [FieldOrder(5)] 
+    [FieldOrder(5)]
     [SerializeWhen(nameof(IsRanked), true)]
     public SelectWorldResultSuccessInfoCharacterRank Rank { get; init; } = new();
 }

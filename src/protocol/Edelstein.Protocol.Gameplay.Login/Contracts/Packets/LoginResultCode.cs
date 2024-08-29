@@ -27,5 +27,16 @@ public enum LoginResultCode : byte
     WebAuthNeeded = 0x15,
     DeleteCharacterFailedOnGuildMaster = 0x16,
     NotAgreedEULA = 0x17,
-    DeleteCharacterFailedEngaged = 0x18
+    DeleteCharacterFailedEngaged = 0x18,
+    RegisterLimitedIP = 0x19,
+    RequestedCharacterTransfer = 0x1A,
+    CashUserCannotUseSimpleClient = 0x1B,
+    DeleteCharacterFailedOnFamily = 0x1D,
+    InvalidCharacterName = 0x1E,
+    IncorrectSSN = 0x1F,
+    SSNConfirmFailed = 0x20,
+    SSNNotConfirmed = 0x21,
+    WorldTooBusy = 0x22,
+    OTPReissuing = 0x23,
+    OTPInfoNotExist = 0x24
 }

@@ -1,4 +1,6 @@
-﻿using DotNetty.Buffers;
+﻿using System;
+using CommunityToolkit.HighPerformance.Buffers;
+using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
 using Edelstein.Common.Crypto;
@@ -22,8 +24,10 @@ public class NettyPacketEncoder(
         stream.Position = 0;
         
         var dataLen = (int)stream.Length;
-        var buffer = stream.GetMemory()[..dataLen].Span;
-        
+        var buffer = stream
+            .GetBuffer()
+            .AsSpan()[..dataLen];
+
         if (socket != null)
         {
             var seqSend = socket.SeqSend;

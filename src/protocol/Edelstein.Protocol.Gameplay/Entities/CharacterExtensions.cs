@@ -44,12 +44,13 @@ public static class CharacterExtensions
             SubJob = character.SubJob
         };
 
-    public static StructuredCharacterLook ToStructuredAvatarLook(this Character character)
+    public static StructuredCharacterLook ToStructuredCharacterLook(this Character character)
     {
-        var inventory = character.Inventories[ItemInventoryType.Equip]?.Items ?? ImmutableDictionary<short, ItemSlotBase>.Empty;
+        var inventory = character.Inventories[ItemInventoryType.Equip]?.Items ?? new Dictionary<short, ItemSlotBase>();
         var unseen = new int[60];
         var equip = new int[60];
         
+        Console.WriteLine(inventory.Count);
         // TODO: evan gloves 1082262
         
         foreach (var kv in inventory.Where(kv => kv.Key < -100))
