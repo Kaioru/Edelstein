@@ -9,5 +9,5 @@ public record DeleteCharacterResult() : StructuredSendPacket((short)PacketSendOp
     public required int CharacterID { get; init; }
     
     [FieldOrder(1)] 
-    public required LoginResultCode Result { get; init; }
+    public required LoginSPWResultCode Result { get; init; }
 }
