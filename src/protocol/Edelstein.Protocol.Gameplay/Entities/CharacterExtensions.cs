@@ -94,4 +94,16 @@ public static class CharacterExtensions
             WeaponStickerID = weaponStickerID
         };
     }
+
+    public static StructuredCharacterData ToStructuredCharacterData(this Character character, StructuredCharacterDataFlag flags = StructuredCharacterDataFlag.All)
+        => new()
+        {
+            Character = flags.HasFlag(StructuredCharacterDataFlag.Character)
+                ? new StructuredCharacterDataInfoCharacter
+                {
+                    Stats = character.ToStructuredCharacterStat(),
+                    FriendMax = 100
+                }
+                : null
+        };
 }

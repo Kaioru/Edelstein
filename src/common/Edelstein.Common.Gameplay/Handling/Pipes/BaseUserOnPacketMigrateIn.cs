@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Gameplay.Contracts.Packets.Recv;
 using Edelstein.Protocol.Gameplay.Handling;
@@ -18,7 +17,7 @@ public class BaseUserOnPacketMigrateIn<TStageSystem, TStageSystemUser>(
     where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser>
     where TStageSystemUser : class, IStageSystemUser<TStageSystem, TStageSystemUser>
 {
-    public async Task Handle(IPipelineContext ctx, PipedPacketMessage<TStageSystem, TStageSystemUser, MigrateIn> message)
+    public virtual async Task Handle(IPipelineContext ctx, PipedPacketMessage<TStageSystem, TStageSystemUser, MigrateIn> message)
     {
         if (message.User.Account != null || 
             message.User.AccountWorldData != null || 
@@ -59,9 +58,6 @@ public class BaseUserOnPacketMigrateIn<TStageSystem, TStageSystemUser>(
             message.User.Key = message.Packet.ClientKey;
             
             // TODO
-            Console.WriteLine(message.User.Account);
-            Console.WriteLine(message.User.AccountWorldData);
-            Console.WriteLine(message.User.Character);
         }
         catch
         {
