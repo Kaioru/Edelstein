@@ -49,28 +49,28 @@ public static class CharacterExtensions
         var unseen = new Dictionary<byte, int>();
         var equip = new Dictionary<byte, int>();
         var weaponStickerID = 0;
-        
+
         // TODO: evan gloves 1082262
-        
+
         foreach (var kv in inventory.Where(kv => kv.Key < -100))
         {
             var slot = (byte)(Math.Abs(kv.Key) - 100);
-            
-            if (slot == (int)BodyPart.Weapon) 
+
+            if (slot == (int)BodyPart.Weapon)
                 weaponStickerID = kv.Value.TemplateID;
             equip[slot] = kv.Value.TemplateID;
         }
-        
+
         foreach (var kv in inventory.Where(kv => kv.Key is < 0 and > -100))
         {
             var slot = (byte)Math.Abs(kv.Key);
-            
-            if (!equip.ContainsKey(slot)) 
+
+            if (!equip.ContainsKey(slot))
                 equip[slot] = kv.Value.TemplateID;
-            else 
+            else
                 unseen[slot] = kv.Value.TemplateID;
         }
-        
+
         return new StructuredCharacterLook
         {
             Gender = character.Gender,
@@ -95,15 +95,105 @@ public static class CharacterExtensions
         };
     }
 
-    public static StructuredCharacterData ToStructuredCharacterData(this Character character, StructuredCharacterDataFlag flags = StructuredCharacterDataFlag.All)
+    public static StructuredCharacterData ToStructuredCharacterData(this Character character)
         => new()
         {
-            Character = flags.HasFlag(StructuredCharacterDataFlag.Character)
-                ? new StructuredCharacterDataInfoCharacter
-                {
-                    Stats = character.ToStructuredCharacterStat(),
-                    FriendMax = 100
-                }
-                : null
+            Character = new StructuredCharacterDataInfoCharacter
+            {
+                Stats = character.ToStructuredCharacterStat(),
+                FriendMax = 100
+            },
+            Money = character.Money,
+            InventorySize = new StructuredCharacterDataInfoInventorySize
+            {
+                Equip = (byte)character.Inventories.Equip.SlotMax,
+                Consume = (byte)character.Inventories.Consume.SlotMax,
+                Install = (byte)character.Inventories.Install.SlotMax,
+                Etc = (byte)character.Inventories.Etc.SlotMax,
+                Cash = (byte)character.Inventories.Cash.SlotMax
+            },
+            ItemSlotEquip = new StructuredCharacterDataInfoItemSlotEquips
+            {
+                Equipped = character.Inventories.Equip.Items
+                    .Where(kv => kv.Key is >= -100 and < 0)
+                    .Select(kv => new StructuredCharacterDataInfoItemSlotEquip
+                    {
+                        Slot = (short)Math.Abs(kv.Key % 100),
+                        Item = kv.Value.ToStructured()
+                    })
+                    .ToList(),
+                Equipped2 = character.Inventories.Equip.Items
+                    .Where(kv => kv.Key is >= -1000 and < -100)
+                    .Select(kv => new StructuredCharacterDataInfoItemSlotEquip
+                    {
+                        Slot = (short)Math.Abs(kv.Key % 100),
+                        Item = kv.Value.ToStructured()
+                    })
+                    .ToList(),
+                Equip = character.Inventories.Equip.Items
+                    .Where(kv => kv.Key >= 0)
+                    .Select(kv => new StructuredCharacterDataInfoItemSlotEquip
+                    {
+                        Slot = (short)Math.Abs(kv.Key % 100),
+                        Item = kv.Value.ToStructured()
+                    })
+                    .ToList(),
+                Dragon = character.Inventories.Equip.Items
+                    .Where(kv => kv.Key is >= -1100 and < -1000)
+                    .Select(kv => new StructuredCharacterDataInfoItemSlotEquip
+                    {
+                        Slot = (short)Math.Abs(kv.Key % 100),
+                        Item = kv.Value.ToStructured()
+                    })
+                    .ToList(),
+                Mechanic = character.Inventories.Equip.Items
+                    .Where(kv => kv.Key is >= -1200 and < -1100)
+                    .Select(kv => new StructuredCharacterDataInfoItemSlotEquip
+                    {
+                        Slot = (short)Math.Abs(kv.Key % 100),
+                        Item = kv.Value.ToStructured()
+                    })
+                    .ToList(),
+            },
+            ItemSlotConsume = new StructuredCharacterDataInfoItemSlotBundles
+            {
+                Items = character.Inventories.Consume.Items
+                    .Select(kv => new StructuredCharacterDataInfoItemSlotBundle
+                    {
+                        Slot = (byte)kv.Key,
+                        Item = kv.Value.ToStructured()
+                    })
+                    .ToList(),
+            },
+            ItemSlotInstall = new StructuredCharacterDataInfoItemSlotBundles
+            {
+                Items = character.Inventories.Install.Items
+                    .Select(kv => new StructuredCharacterDataInfoItemSlotBundle
+                    {
+                        Slot = (byte)kv.Key,
+                        Item = kv.Value.ToStructured()
+                    })
+                    .ToList(),
+            },
+            ItemSlotEtc = new StructuredCharacterDataInfoItemSlotBundles
+            {
+                Items = character.Inventories.Etc.Items
+                    .Select(kv => new StructuredCharacterDataInfoItemSlotBundle
+                    {
+                        Slot = (byte)kv.Key,
+                        Item = kv.Value.ToStructured()
+                    })
+                    .ToList(),
+            },
+            ItemSlotCash = new StructuredCharacterDataInfoItemSlotBundles
+            {
+                Items = character.Inventories.Cash.Items
+                    .Select(kv => new StructuredCharacterDataInfoItemSlotBundle
+                    {
+                        Slot = (byte)kv.Key,
+                        Item = kv.Value.ToStructured()
+                    })
+                    .ToList(),
+            }
         };
 }
