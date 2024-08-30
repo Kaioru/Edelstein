@@ -3,7 +3,7 @@ using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Protocol.Gameplay.Entities;
 
-public class AccountWorldData : IRepositoryEntry<int>
+public record AccountWorldData : IRepositoryEntry<int>
 {
     public int ID { get; set; }
     

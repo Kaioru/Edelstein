@@ -1,5 +1,4 @@
 ﻿using System;
-using DotNetty.Common.Utilities;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Groups;
 using Edelstein.Protocol.Network;
@@ -17,11 +16,9 @@ public class NettyTransportConnectorHandler<TSocketUser>(
 ) : ChannelHandlerAdapter
     where TSocketUser : class, ISocketUser
 {
-    private readonly AttributeKey<TSocketUser> _userKey = AttributeKey<TSocketUser>.ValueOf("User");
-
     public override void ChannelRead(IChannelHandlerContext context, object message)
     {
-        var user = context.Channel.GetAttribute(_userKey).Get();
+        var user = context.Channel.GetAttribute(NettyAttributes.UserKey).Get() as TSocketUser;
         using var packet = (IRawPacket)message;
 
         if (user != null)
@@ -46,7 +43,7 @@ public class NettyTransportConnectorHandler<TSocketUser>(
             var newUser = initializer.Initialize(newSocket);
 
             context.Channel.GetAttribute(NettyAttributes.SocketKey).Set(newSocket);
-            context.Channel.GetAttribute(_userKey).Set(newUser);
+            context.Channel.GetAttribute(NettyAttributes.UserKey).Set(newUser);
 
             group.Add(context.Channel);
         }
@@ -54,9 +51,8 @@ public class NettyTransportConnectorHandler<TSocketUser>(
     
     public override void ChannelInactive(IChannelHandlerContext context)
     {
-        var user = context.Channel.GetAttribute(_userKey).Get();
-
-        adapter.OnDisconnect(user);
+        if (context.Channel.GetAttribute(NettyAttributes.UserKey).Get() is TSocketUser user) 
+            adapter.OnDisconnect(user);
         group.Remove(context.Channel);
         base.ChannelInactive(context);
     }
@@ -64,9 +60,7 @@ public class NettyTransportConnectorHandler<TSocketUser>(
 
     public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
     {
-        var user = context.Channel.GetAttribute(_userKey).Get();
-        
-        if (user == null) return;
+        if (context.Channel.GetAttribute(NettyAttributes.UserKey).Get() is not TSocketUser user) return;
         
         adapter.OnException(user, exception);
     }

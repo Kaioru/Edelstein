@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Common.Concurrency;
 using DotNetty.Handlers.Timeout;
@@ -44,7 +43,7 @@ public class NettyTransportAcceptor<TSocketUser>(
                 );
             }))
             .BindAsync(port);
-
+        
         return new NettyTransportContext(channel, group, version);
     }
 }

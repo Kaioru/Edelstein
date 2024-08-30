@@ -59,6 +59,9 @@ public class BaseUserOnPacketMigrateIn<TStageSystem, TStageSystemUser>(
             message.User.Key = message.Packet.ClientKey;
             
             // TODO
+            Console.WriteLine(message.User.Account);
+            Console.WriteLine(message.User.AccountWorldData);
+            Console.WriteLine(message.User.Character);
         }
         catch
         {

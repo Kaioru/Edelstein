@@ -2,7 +2,7 @@
 
 namespace Edelstein.Application.Server.Bindings;
 
-public class GameStageSystemConfig : IGameStageSystemOptions
+public record GameStageSystemConfig : IGameStageSystemOptions
 {
     public required string ID { get; init; }
     

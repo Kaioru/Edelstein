@@ -11,7 +11,6 @@ public class TickerHostService(
     IEnumerable<ITickerAction> actions
 ) : IHostedService
 {
-
     public Task StartAsync(CancellationToken cancellationToken)
     {
         foreach (var action in actions)
