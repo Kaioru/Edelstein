@@ -45,7 +45,10 @@ public class UserOnPacketEnableSPWRequest(
                     AccountWorldDataID = message.User.AccountWorldData.ID,
                     CharacterID = character!.ID,
                     FromServerID = message.User.System.Options.ID,
-                    ToServerID = serverResponse.Info!.ID
+                    ToServerID = serverResponse.Info!.ID,
+                    AccountSnapshot = new MigrationInfoSnapshot<Account>(message.User.Account),
+                    AccountWorldDataSnapshot = new MigrationInfoSnapshot<AccountWorldData>(message.User.AccountWorldData),
+                    CharacterSnapshot = new MigrationInfoSnapshot<Character>(character)
                 }
             });
 

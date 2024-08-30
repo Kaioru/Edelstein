@@ -14,7 +14,7 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Login.Handling.Pipes;
 
-public class UserOnPacketCheckPasswordPipe(
+public class UserOnPacketCheckPassword(
     IAuthService auth,
     ISessionService session,
     IAccountRepository accounts

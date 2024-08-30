@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using DotNetty.Common.Concurrency;
 using DotNetty.Handlers.Timeout;

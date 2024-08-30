@@ -6,10 +6,10 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Handling.Packets;
 
-public class BaseUpdateScreenSettingHandler<TStageSystem, TStageSystemUser>(
-    IPipeline<PipedPacketMessage<TStageSystem, TStageSystemUser, UpdateScreenSetting>> pipeline
-) : PipedPacketHandler<TStageSystem, TStageSystemUser, UpdateScreenSetting>(
-    (short)PacketRecvOperation.UpdateScreenSetting,
+public class BaseMigrateInHandler<TStageSystem, TStageSystemUser>(
+    IPipeline<PipedPacketMessage<TStageSystem, TStageSystemUser, MigrateIn>> pipeline
+) : PipedPacketHandler<TStageSystem, TStageSystemUser, MigrateIn>(
+    (short)PacketRecvOperation.MigrateIn,
     pipeline
 )
     where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser> 

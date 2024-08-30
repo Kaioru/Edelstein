@@ -6,4 +6,4 @@ namespace Edelstein.Common.Gameplay.Login.Handling.Pipes;
 
 public class UserOnPacket(
     IPacketHandlerManager<ILoginStageSystem, ILoginStageSystemUser> manager
-) : BaseUserOnPacketPipe<ILoginStageSystem, ILoginStageSystemUser>(manager);
+) : BaseUserOnPacket<ILoginStageSystem, ILoginStageSystemUser>(manager);

@@ -1,4 +1,7 @@
-﻿namespace Edelstein.Protocol.Services.Migration;
+﻿using Edelstein.Protocol.Gameplay.Entities;
+using Edelstein.Protocol.Services.Migration.Contracts;
+
+namespace Edelstein.Protocol.Services.Migration;
 
 public interface IMigrationInfo
 {
@@ -8,4 +11,8 @@ public interface IMigrationInfo
 
     string FromServerID { get; }
     string ToServerID { get; }
+    
+    MigrationInfoSnapshot<Account> AccountSnapshot { get; }
+    MigrationInfoSnapshot<AccountWorldData>  AccountWorldDataSnapshot { get; }
+    MigrationInfoSnapshot<Character> CharacterSnapshot { get; }
 }

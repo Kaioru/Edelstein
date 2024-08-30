@@ -3,7 +3,7 @@
 namespace Edelstein.Protocol.Services.Server.Contracts;
 
 [DataContract]
-public class ServerServiceGetByWorldRequest
+public record ServerServiceGetByWorldRequest
 {
     [DataMember(Order = 1)] public required int WorldID { get; init; }
 }

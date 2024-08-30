@@ -8,7 +8,7 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Handling.Pipes;
 
-public class BaseUserOnDisconnectPipe<TStageSystem, TStageSystemUser>(
+public class BaseUserOnDisconnect<TStageSystem, TStageSystemUser>(
     IAccountRepository accounts,
     IAccountWorldDataRepository accountWorldData,
     ICharacterRepository characters,

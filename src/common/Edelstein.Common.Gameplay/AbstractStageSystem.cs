@@ -18,9 +18,9 @@ public abstract class AbstractStageSystem<TStageSystem, TStageSystemUser> : ISta
     protected abstract IPipeline<UserOnException<TStageSystem, TStageSystemUser>> OnExceptionPipeline { get; }
     protected abstract IPipeline<UserOnDisconnect<TStageSystem, TStageSystemUser>> OnDisconnectPipeline { get; }
 
-    public Task OnPacket(TStageSystemUser user, IRawPacket packet)
+    public Task OnPacket(TStageSystemUser user, IRawPacket packet) 
         => OnPacketPipeline.Process(new UserOnPacket<TStageSystem, TStageSystemUser>(user, packet));
-    
+
     public Task OnException(TStageSystemUser user, Exception exception) 
         => OnExceptionPipeline.Process(new UserOnException<TStageSystem, TStageSystemUser>(user, exception));
     

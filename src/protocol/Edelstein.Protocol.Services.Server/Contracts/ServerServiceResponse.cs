@@ -3,7 +3,7 @@
 namespace Edelstein.Protocol.Services.Server.Contracts;
 
 [DataContract]
-public class ServerServiceResponse
+public record ServerServiceResponse
 {
     [DataMember(Order = 1)] public required ServerServiceResult Result { get; init; }
 }

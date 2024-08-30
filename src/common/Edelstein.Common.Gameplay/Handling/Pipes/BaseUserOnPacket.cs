@@ -6,7 +6,7 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Handling.Pipes;
 
-public class BaseUserOnPacketPipe<TStageSystem, TStageSystemUser>(
+public class BaseUserOnPacket<TStageSystem, TStageSystemUser>(
     IPacketHandlerManager<TStageSystem, TStageSystemUser> manager
 ) : IPipe<UserOnPacket<TStageSystem, TStageSystemUser>>
     where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser>

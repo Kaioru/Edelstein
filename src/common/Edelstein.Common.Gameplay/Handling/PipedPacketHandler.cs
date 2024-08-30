@@ -11,7 +11,7 @@ public class PipedPacketHandler<TStageSystem, TStageSystemUser, TMessage>(
     IPipeline<PipedPacketMessage<TStageSystem, TStageSystemUser, TMessage>> pipeline
 ) : IPacketHandlerManagerEntry<TStageSystem, TStageSystemUser>
     where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser>
-    where TStageSystemUser : IStageSystemUser<TStageSystem, TStageSystemUser>
+    where TStageSystemUser : class, IStageSystemUser<TStageSystem, TStageSystemUser>
     where TMessage : StructuredBasePacket
 {
     public short Operation { get; } = operation;
@@ -20,7 +20,7 @@ public class PipedPacketHandler<TStageSystem, TStageSystemUser, TMessage>(
     {
         using var reader = new RawPacketReader(packet);
         var message = reader.ReadStructured<TMessage>();
-
+        
         return pipeline.Process(new PipedPacketMessage<TStageSystem, TStageSystemUser, TMessage>(user, message));
     }
 }

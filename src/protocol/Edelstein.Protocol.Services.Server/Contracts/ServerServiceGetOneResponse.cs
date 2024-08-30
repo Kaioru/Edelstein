@@ -3,7 +3,7 @@
 namespace Edelstein.Protocol.Services.Server.Contracts;
 
 [DataContract]
-public class ServerServiceGetOneResponse<TServerInfo> 
+public record ServerServiceGetOneResponse<TServerInfo> 
     where TServerInfo : class, IServerInfo
 {
     [DataMember(Order = 1)] public required ServerServiceResult Result { get; init; }

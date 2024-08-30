@@ -228,6 +228,18 @@ namespace Edelstein.Common.Database.Sqlite.Migrations
                     b.Property<int>("CharacterID")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("AccountSnapshot")
+                        .IsRequired()
+                        .HasColumnType("json");
+
+                    b.Property<string>("AccountWorldDataSnapshot")
+                        .IsRequired()
+                        .HasColumnType("json");
+
+                    b.Property<string>("CharacterSnapshot")
+                        .IsRequired()
+                        .HasColumnType("json");
+
                     b.Property<DateTime>("DateExpire")
                         .HasColumnType("TEXT");
 

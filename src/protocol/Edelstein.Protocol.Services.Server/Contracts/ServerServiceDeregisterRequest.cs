@@ -3,7 +3,7 @@
 namespace Edelstein.Protocol.Services.Server.Contracts;
 
 [DataContract]
-public class ServerServiceDeregisterRequest
+public record ServerServiceDeregisterRequest
 {
     [DataMember(Order = 1)] public required string ID { get; init; }
     [DataMember(Order = 2)] public required long Secret { get; init; }

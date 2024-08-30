@@ -3,4 +3,7 @@
     <PackageReference Include="protobuf-net.Grpc" />
     <PackageReference Include="System.ServiceModel.Primitives" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Edelstein.Protocol.Gameplay\Edelstein.Protocol.Gameplay.csproj" />
+  </ItemGroup>
 </Project>

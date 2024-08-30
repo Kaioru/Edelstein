@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Edelstein.Common.Database.Converters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Edelstein.Common.Database.Entities.Services.Migration;
@@ -46,5 +47,15 @@ public class DbMigrationInfoConfiguration : IEntityTypeConfiguration<DbMigration
             .WithMany(p => p.MigrationIn)
             .HasForeignKey(m => m.ToServerID)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder
+            .Property(e => e.AccountSnapshot)
+            .HasJsonConversion();
+        builder
+            .Property(e => e.AccountWorldDataSnapshot)
+            .HasJsonConversion();
+        builder
+            .Property(e => e.CharacterSnapshot)
+            .HasJsonConversion();
     }
 }
