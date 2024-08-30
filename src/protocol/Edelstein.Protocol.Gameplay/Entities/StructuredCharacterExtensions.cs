@@ -5,7 +5,7 @@ using Edelstein.Protocol.Gameplay.Entities.Inventories;
 
 namespace Edelstein.Protocol.Gameplay.Entities;
 
-public static class CharacterExtensions
+public static class StructuredCharacterExtensions
 {
     public static StructuredCharacterStat ToStructuredCharacterStat(this Character character)
         => new()

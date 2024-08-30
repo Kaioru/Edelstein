@@ -51,6 +51,7 @@ public record StructuredCharacterData : StructuredBasePacket, IBinarySerializabl
         ItemSlotEtc?.DispatchTo(stream);
         ItemSlotCash?.DispatchTo(stream);
     }
+    
     public void Deserialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
         using var reader = new BinaryReader(stream);
