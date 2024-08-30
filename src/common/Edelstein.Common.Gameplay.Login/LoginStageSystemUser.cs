@@ -15,7 +15,8 @@ public class LoginStageSystemUser(
     public Account? Account { get; set; }
     public AccountWorldData? AccountWorldData { get; set; }
     public Character? Character { get; set; }
-
+    
+    public bool IsMigrating { get; set; }
     public long Key { get; set; }
     
     public LoginState State { get; set; }

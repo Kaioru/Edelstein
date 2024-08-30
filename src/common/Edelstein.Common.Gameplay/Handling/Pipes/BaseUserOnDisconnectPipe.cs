@@ -28,11 +28,13 @@ public class BaseUserOnDisconnectPipe<TStageSystem, TStageSystemUser>(
         if (message.User.Account != null)
         {
             await accounts.Update(message.User.Account);
-            await sessions.End(new SessionServiceEndRequest
-            {
-                AccountID = message.User.Account.ID,
-                Secret = message.User.Key
-            });
+            
+            if (!message.User.IsMigrating)
+                await sessions.End(new SessionServiceEndRequest
+                {
+                    AccountID = message.User.Account.ID,
+                    Secret = message.User.Key
+                });
         }
     }
 }

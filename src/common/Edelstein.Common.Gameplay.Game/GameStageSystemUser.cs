@@ -16,5 +16,6 @@ public class GameStageSystemUser(
     public AccountWorldData? AccountWorldData { get; set; }
     public Character? Character { get; set; }
 
+    public bool IsMigrating { get; set; }
     public long Key { get; set; }
 }

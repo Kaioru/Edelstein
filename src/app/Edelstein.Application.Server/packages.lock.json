@@ -1565,6 +1565,7 @@
       "edelstein.common.gameplay.login": {
         "type": "Project",
         "dependencies": {
+          "BCrypt.Net-Next": "[4.0.3, )",
           "Edelstein.Common.Gameplay": "[1.0.0, )",
           "Edelstein.Common.Utilities": "[1.0.0, )",
           "Edelstein.Protocol.Gameplay.Login": "[1.0.0, )"

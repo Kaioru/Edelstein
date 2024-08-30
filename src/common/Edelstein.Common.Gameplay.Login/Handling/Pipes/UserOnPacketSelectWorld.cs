@@ -54,6 +54,7 @@ public class UserOnPacketSelectWorld(
                             CharacterLook = c.ToStructuredCharacterLook()
                         })
                         .ToList(),
+                    LoginOpt = (byte)(string.IsNullOrEmpty(message.User.Account.SPW) ? 0 : 1),
                     SlotCount = accountWorldData.CharacterSlotMax
                 }
             });

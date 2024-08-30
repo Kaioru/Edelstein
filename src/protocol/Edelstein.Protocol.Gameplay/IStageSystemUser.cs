@@ -14,5 +14,6 @@ public interface IStageSystemUser<out TStageSystem, TStageSystemUser> :
     AccountWorldData? AccountWorldData { get; set; }
     Character? Character { get; set; }
     
+    bool IsMigrating { get; set; }
     long Key { get; set; }
 }
