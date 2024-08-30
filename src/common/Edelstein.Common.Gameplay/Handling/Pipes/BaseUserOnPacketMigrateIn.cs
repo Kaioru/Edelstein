@@ -20,7 +20,6 @@ public class BaseUserOnPacketMigrateIn<TStageSystem, TStageSystemUser>(
 {
     public async Task Handle(IPipelineContext ctx, PipedPacketMessage<TStageSystem, TStageSystemUser, MigrateIn> message)
     {
-        Console.WriteLine("HEY");
         if (message.User.Account != null || 
             message.User.AccountWorldData != null || 
             message.User.Character != null)
@@ -37,7 +36,6 @@ public class BaseUserOnPacketMigrateIn<TStageSystem, TStageSystemUser>(
                 ServerID = message.User.System.ID,
                 Secret = message.Packet.ClientKey
             });
-            Console.WriteLine(migrationResponse);
             var sessionServerResponse = await sessions.UpdateServer(new SessionServiceUpdateServerRequest
             {
                 AccountID = migrationResponse.Info!.AccountID,
@@ -60,8 +58,7 @@ public class BaseUserOnPacketMigrateIn<TStageSystem, TStageSystemUser>(
             message.User.Character = migrationResponse.Info.CharacterSnapshot.Value;
             message.User.Key = message.Packet.ClientKey;
             
-            
-            Console.WriteLine(message.User.Account);
+            // TODO
         }
         catch
         {
