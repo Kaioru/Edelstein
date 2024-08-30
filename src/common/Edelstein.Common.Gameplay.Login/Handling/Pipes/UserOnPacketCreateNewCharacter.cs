@@ -24,6 +24,9 @@ public class UserOnPacketCreateNewCharacter(
 
         try
         {
+            if (await characters.CountByAccountWorldData(message.User.AccountWorldData!.ID) >= message.User.AccountWorldData!.CharacterSlotMax) 
+                return;
+            
             var character = new Character
             {
                 AccountWorldDataID = message.User.AccountWorldData!.ID,

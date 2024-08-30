@@ -20,6 +20,15 @@ public class DbCharacterRepository(
             .AnyAsync(c => c.Name.ToLower() == name.ToLower());
     }
     
+    public async Task<int> CountByAccountWorldData(int accountWorldData) 
+    {
+        await using var db = await factory.CreateDbContextAsync();
+        return await db.Characters
+            .Include(c => c.AccountWorldData)
+            .Where(c => c.AccountWorldData.ID == accountWorldData)
+            .CountAsync();
+    }
+
     public async Task<Character?> RetrieveByName(string name)
     {
         await using var db = await factory.CreateDbContextAsync();

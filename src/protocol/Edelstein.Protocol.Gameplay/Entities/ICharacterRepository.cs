@@ -7,6 +7,8 @@ namespace Edelstein.Protocol.Gameplay.Entities;
 public interface ICharacterRepository : IQueriedRepository<int, Character>
 {
     Task<bool> CheckExistsByName(string name);
+
+    Task<int> CountByAccountWorldData(int accountWorldData);
     
     Task<Character?> RetrieveByName(string name);
     Task<Character?> RetrieveByAccountWorldDataAndCharacter(int accountWorldData, int character);
