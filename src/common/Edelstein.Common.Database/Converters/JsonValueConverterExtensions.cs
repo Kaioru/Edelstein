@@ -8,7 +8,7 @@ public static class JsonValueConverterExtensions
     public static PropertyBuilder HasJsonConversion<TObject>(this PropertyBuilder<TObject> builder, TObject? defaultValue = default)
     {
         return builder
-            .HasColumnType("jsonb")
+            .HasColumnType("json")
             .HasConversion<JsonValueConverter<TObject>>()
             .HasDefaultValue(defaultValue);
     }

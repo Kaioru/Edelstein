@@ -83,13 +83,13 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                     b.Property<string>("Locker")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("jsonb")
+                        .HasColumnType("json")
                         .HasDefaultValue("{\"SlotMax\":999,\"Items\":[]}");
 
                     b.Property<string>("Trunk")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("jsonb")
+                        .HasColumnType("json")
                         .HasDefaultValue("{\"Money\":0,\"SlotMax\":4,\"Items\":[]}");
 
                     b.Property<int>("WorldID")
@@ -147,7 +147,7 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                     b.Property<string>("Inventories")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("jsonb")
+                        .HasColumnType("json")
                         .HasDefaultValue("{\"Equip\":{\"SlotMax\":24,\"Items\":{}},\"Consume\":{\"SlotMax\":24,\"Items\":{}},\"Install\":{\"SlotMax\":24,\"Items\":{}},\"Etc\":{\"SlotMax\":24,\"Items\":{}},\"Cash\":{\"SlotMax\":24,\"Items\":{}}}");
 
                     b.Property<short>("Job")
