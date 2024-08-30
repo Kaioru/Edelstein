@@ -80,14 +80,14 @@ public static class CharacterExtensions
             HairEquip = equip
                 .Select(kv => new StructuredCharacterLookEquip
                 {
-                    BodyPart = kv.Key,
+                    Slot = kv.Key,
                     ItemID = kv.Value
                 })
                 .ToList(),
             UnseenEquip = unseen
                 .Select(kv => new StructuredCharacterLookEquip
                 {
-                    BodyPart = kv.Key,
+                    Slot = kv.Key,
                     ItemID = kv.Value
                 })
                 .ToList(),

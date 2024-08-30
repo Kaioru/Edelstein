@@ -31,7 +31,7 @@ public record StructuredCharacterLook : StructuredBasePacket
 public record StructuredCharacterLookEquip : StructuredBasePacket
 {
     [FieldOrder(0)]
-    public required byte BodyPart { get; init; }
+    public required byte Slot { get; init; }
     
     [FieldOrder(1)]
     public required int ItemID { get; init; }
