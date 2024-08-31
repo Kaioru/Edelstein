@@ -973,7 +973,8 @@
         "dependencies": {
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
           "LogicLooper": "[1.6.0, )",
-          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-preview.7.24405.7, )"
+          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-preview.7.24405.7, )",
+          "RBush": "[3.2.0, )"
         }
       },
       "edelstein.protocol.gameplay": {
@@ -1101,6 +1102,12 @@
           "Grpc.Core.Api": "2.51.0",
           "protobuf-net": "2.4.8"
         }
+      },
+      "RBush": {
+        "type": "CentralTransitive",
+        "requested": "[3.2.0, )",
+        "resolved": "3.2.0",
+        "contentHash": "ijGh9N0zZ7JfXk3oQkWCwK8SwSSByexbyh/MjbCjNxOft9eG5ZqKC1vdgiYq78h4IZRFmN4s3JZ/b10Jipud5w=="
       },
       "System.ServiceModel.Primitives": {
         "type": "CentralTransitive",
