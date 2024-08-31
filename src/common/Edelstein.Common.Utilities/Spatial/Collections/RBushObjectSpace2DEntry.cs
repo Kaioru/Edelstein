@@ -3,19 +3,16 @@ using RBush;
 
 namespace Edelstein.Common.Utilities.Spatial.Collections;
 
-public class RBushObjectSpace2DEntry<TObject>(
-    TObject obj
+public record RBushObjectSpace2DEntry<TObject>(
+    TObject Object
 ) : ISpatialData
     where TObject : IObject2D
 {
     private readonly Envelope _envelope = new(
-        obj.MinX,
-        obj.MinY,
-        obj.MaxX,
-        obj.MaxY
+        Object.MinX,
+        Object.MinY,
+        Object.MaxX,
+        Object.MaxY
     );
-    
     public ref readonly Envelope Envelope => ref _envelope;
-    public TObject Object { get; } = obj;
-
 }
