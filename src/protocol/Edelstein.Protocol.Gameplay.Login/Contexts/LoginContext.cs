@@ -7,5 +7,6 @@ public record LoginContext(
     LoginContextRepositories Repositories,
     LoginContextServices Services,
     LoginContextManagers Managers,
+    LoginContextTemplates Templates,
     LoginContextPipelines Pipelines
 );
