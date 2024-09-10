@@ -1,3 +1,8 @@
-﻿namespace Edelstein.Protocol.Gameplay.Game;
+﻿using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 
-public interface IGameStageSystemUser : IStageSystemUser<IGameStageSystem, IGameStageSystemUser>;
+namespace Edelstein.Protocol.Gameplay.Game;
+
+public interface IGameStageSystemUser : IStageSystemUser<IGameStageSystem, IGameStageSystemUser>
+{
+    IFieldUser? FieldUser { get; set; }
+}

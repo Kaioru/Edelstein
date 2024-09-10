@@ -1,11 +1,9 @@
 ﻿using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Game.Objects.Users;
 using Edelstein.Common.Gameplay.Handling.Pipes;
 using Edelstein.Protocol.Gameplay.Contracts.Packets.Recv;
-using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Game;
-using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
 using Edelstein.Protocol.Gameplay.Handling;
-using Edelstein.Protocol.Network.Packets.Types;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Utilities;
@@ -16,6 +14,7 @@ namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
 public class UserOnPacketMigrateIn(
     IMigrationService migrations,
     ISessionService sessions,
+    IFieldManager fields,
     IDateTimeProvider dateTimeProvider
 ) : BaseUserOnPacketMigrateIn<IGameStageSystem, IGameStageSystemUser>(migrations, sessions)
 {
@@ -23,20 +22,24 @@ public class UserOnPacketMigrateIn(
     {
         await base.Handle(ctx, message);
 
+        if (message.User.Account == null) return;
+        if (message.User.AccountWorldData == null) return;
         if (message.User.Character == null) return;
 
-        await message.User.Dispatch(new SetField
-        {
-            ChannelID = message.User.System.Options.ChannelID,
-            IsInitialize = true,
-            Info = new SetFieldInfoCharacterInit
-            {
-                Seed1 = 0,
-                Seed2 = 0,
-                Seed3 = 0,
-                Data = message.User.Character.ToStructuredCharacterData()
-            },
-            DateServer = new FDateTime(dateTimeProvider.Now)
-        });
+        var field = await fields.Retrieve(message.User.Character.FieldID);
+        if (field == null) return;
+        var start = await field.Template.StartPoints.Retrieve(message.User.Character.FieldPortal);
+        if (start == null) return;
+        
+        var fieldUser = new FieldUser(
+            message.User, 
+            message.User.Account, 
+            message.User.AccountWorldData, 
+            message.User.Character,
+            start.Position
+        );
+
+        message.User.FieldUser = fieldUser;
+        await field.Enter(fieldUser);
     }
 }

@@ -8,6 +8,7 @@ using Edelstein.Application.Server.Services;
 using Edelstein.Common.Database;
 using Edelstein.Common.Database.Pgsql;
 using Edelstein.Common.Database.Sqlite;
+using Edelstein.Common.Gameplay.Game;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Plugin;
 using Edelstein.Common.Services.Auth;
@@ -19,6 +20,7 @@ using Edelstein.Common.Utilities.Bootstrap;
 using Edelstein.Common.Utilities.Pipelines;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Common.Utilities.Tickers;
+using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
@@ -134,6 +136,8 @@ internal static class ProgramHostBuilder
             .AddClasses(classes => classes.InExactNamespaceOf<LoginContext>()).AsSelf()
             .AddClasses(classes => classes.InExactNamespaceOf<GameContext>()).AsSelf()
             .WithScopedLifetime());
+
+        builder.Services.AddScoped<IFieldManager, FieldManager>();
 
         return builder;
     }
