@@ -55,7 +55,9 @@ public class FieldUser(
     public override IDispatchable GetDispatchEnterField(bool isEnterField = false)
         => new UserEnterField
         {
-            ObjectID = ObjectID ?? 0
+            ObjectID = ObjectID ?? 0,
+            CharacterName = new LPString(character.Name),
+            CharacterLook = character.ToStructuredCharacterLook()
         };
 
     public override IDispatchable GetDispatchLeaveField(bool isLeaveField = false)
