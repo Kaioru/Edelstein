@@ -28,27 +28,36 @@ public class FieldUser(
 
     public ICollection<IFieldSplit> Observing { get; } = new List<IFieldSplit>();
 
+    public bool IsInitialized { get; set; }
+
     public IDispatchable GetDispatchSetField()
         => new SetField
         {
             ChannelID = user.System.Options.ChannelID,
-            IsInitialize = true,
-            Info = new SetFieldInfoCharacterInit
-            {
-                Seed1 = 0,
-                Seed2 = 0,
-                Seed3 = 0,
-                Data = character.ToStructuredCharacterData()
-            },
+            IsInitialize = !IsInitialized,
+            Info = !IsInitialized
+                ? new SetFieldInfoCharacterInit
+                {
+                    Seed1 = 0,
+                    Seed2 = 0,
+                    Seed3 = 0,
+                    Data = character.ToStructuredCharacterData()
+                }
+                : new SetFieldInfoCharacter
+                {
+                    PosMap = character.FieldID,
+                    Portal = character.FieldPortal,
+                    HP = character.HP
+                },
             DateServer = new FDateTime(user.System.Context.DateTime.Now)
         };
-    
-    public override IDispatchable GetDispatchEnterField(bool isEnterField = false) 
+
+    public override IDispatchable GetDispatchEnterField(bool isEnterField = false)
         => new UserEnterField
         {
             ObjectID = ObjectID ?? 0
         };
-    
+
     public override IDispatchable GetDispatchLeaveField(bool isLeaveField = false)
         => new UserLeaveField
         {

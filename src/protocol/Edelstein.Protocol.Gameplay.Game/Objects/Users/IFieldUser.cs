@@ -13,5 +13,7 @@ public interface IFieldUser : IFieldLife, ISocketUser
     
     ICollection<IFieldSplit> Observing { get; }
     
+    bool IsInitialized { get; set; }
+    
     IDispatchable GetDispatchSetField();
 }

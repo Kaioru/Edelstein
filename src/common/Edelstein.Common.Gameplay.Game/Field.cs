@@ -127,10 +127,10 @@ public class Field : AbstractFieldObjectPool, IField
                 await obj.Field.Leave(obj);
             obj.Field = this;
 
-
             if (obj is IFieldUser user)
             {
                 await user.Dispatch(user.GetDispatchSetField());
+                user.IsInitialized = true;
             }
 
             var split = GetSplit(obj.Position);
