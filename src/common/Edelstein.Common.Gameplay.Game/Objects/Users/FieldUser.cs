@@ -43,6 +43,15 @@ public class FieldUser(
             DateServer = new FDateTime(user.System.Context.DateTime.Now)
         };
     
-    public override IDispatchable GetDispatchEnter(bool isEnterField = false) => throw new System.NotImplementedException();
-    public override IDispatchable GetDispatchLeave(bool isLeaveField = false) => throw new System.NotImplementedException();
+    public override IDispatchable GetDispatchEnterField(bool isEnterField = false) 
+        => new UserEnterField
+        {
+            ObjectID = ObjectID ?? 0
+        };
+    
+    public override IDispatchable GetDispatchLeaveField(bool isLeaveField = false)
+        => new UserLeaveField
+        {
+            ObjectID = ObjectID ?? 0
+        };
 }

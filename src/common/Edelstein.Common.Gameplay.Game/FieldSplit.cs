@@ -55,8 +55,8 @@ public class FieldSplit(
             .Except(toObservers)
             .ToImmutableArray();
 
-        var dispatchEnter = obj.GetDispatchEnter(true);
-        var dispatchLeave = obj.GetDispatchLeave();
+        var dispatchEnter = obj.GetDispatchEnterField(true);
+        var dispatchLeave = obj.GetDispatchLeaveField();
 
         await Task.WhenAll(newWatchers.Select(w => w.Dispatch(dispatchEnter)));
         await Task.WhenAll(oldWatchers.Select(w => w.Dispatch(dispatchLeave)));
@@ -83,7 +83,7 @@ public class FieldSplit(
         obj.FieldSplit = null;
 
         await MigrateOut(obj);
-        await Dispatch(obj.GetDispatchLeave(true), obj);
+        await Dispatch(obj.GetDispatchLeaveField(true), obj);
     }
     
     public Task MigrateIn(IFieldObject obj)
@@ -106,7 +106,7 @@ public class FieldSplit(
         await Task.WhenAll(_objects
             .Where(o => o != user)
             .Where(o => o.IsVisibleTo(user))
-            .Select(o => user.Dispatch(o.GetDispatchEnter())));
+            .Select(o => user.Dispatch(o.GetDispatchEnterField())));
     }
     
     public async Task Unobserve(IFieldUser user, bool isLeaveField = false)
@@ -118,6 +118,6 @@ public class FieldSplit(
             await Task.WhenAll(_objects
                 .Where(o => o != user)
                 .Where(o => o.IsVisibleTo(user))
-                .Select(o => user.Dispatch(o.GetDispatchLeave())));
+                .Select(o => user.Dispatch(o.GetDispatchLeaveField())));
     }
 }

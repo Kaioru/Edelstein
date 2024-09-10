@@ -19,6 +19,6 @@ public abstract class AbstractFieldObject(
 
     public bool IsVisibleTo(IFieldObject other) => true;
 
-    public abstract IDispatchable GetDispatchEnter(bool isEnterField = false);
-    public abstract IDispatchable GetDispatchLeave(bool isLeaveField = false);
+    public abstract IDispatchable GetDispatchEnterField(bool isEnterField = false);
+    public abstract IDispatchable GetDispatchLeaveField(bool isLeaveField = false);
 }

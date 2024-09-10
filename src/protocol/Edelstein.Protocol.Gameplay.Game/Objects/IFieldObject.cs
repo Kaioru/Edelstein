@@ -15,6 +15,6 @@ public interface IFieldObject
 
     bool IsVisibleTo(IFieldObject other);
 
-    IDispatchable GetDispatchEnter(bool isEnterField = false);
-    IDispatchable GetDispatchLeave(bool isLeaveField = false);
+    IDispatchable GetDispatchEnterField(bool isEnterField = false);
+    IDispatchable GetDispatchLeaveField(bool isLeaveField = false);
 }
