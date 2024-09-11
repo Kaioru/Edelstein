@@ -18,6 +18,11 @@ public abstract class AbstractMovePath<TMoveAction> : IMovePath<TMoveAction> whe
     
     public void Apply(StructuredMovePath path)
     {
+        X = path.X;
+        Y = path.Y;
+        VX = path.VX;
+        VY = path.VY;
+        
         foreach (var f in path.Fragments)
         {
             if (f.Action != null) Action = GetActionFromValue(f.Action.Value);
