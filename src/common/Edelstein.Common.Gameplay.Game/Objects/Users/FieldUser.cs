@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
@@ -17,7 +18,7 @@ public class FieldUser(
     AccountWorldData accountWorldData,
     Character character,
     IPoint2D position
-) : AbstractFieldObject(position), IFieldUser
+) : AbstractFieldLife(position), IFieldUser
 {
     public override FieldObjectType Type => FieldObjectType.User;
     public ISocket Socket => user.Socket;
@@ -65,4 +66,5 @@ public class FieldUser(
         {
             ObjectID = ObjectID ?? 0
         };
+    public Task MovementInit(IPoint2D position) => throw new System.NotImplementedException();
 }

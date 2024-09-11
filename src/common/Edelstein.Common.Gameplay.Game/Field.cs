@@ -129,6 +129,13 @@ public class Field : AbstractFieldObjectPool, IField
 
             if (obj is IFieldUser user)
             {
+                var portal =
+                    await Template.Portals.Retrieve(user.Character.FieldPortal) ??
+                    Template.Portals.FindClosest(obj.Position).FirstOrDefault();
+
+                if (portal != null)
+                    await user.UpdatePosition(portal);
+                
                 await user.Dispatch(user.GetDispatchSetField());
                 user.IsInitialized = true;
             }

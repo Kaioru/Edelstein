@@ -20,40 +20,42 @@ public record UserEnterField() : StructuredSendPacket((short)PacketSendOperation
     
     [FieldOrder(8)] public long SecondaryStatFlag1 { get; init; }
     [FieldOrder(9)] public long SecondaryStatFlag2 { get; init; }
+    [FieldOrder(10)] public byte SecondaryStatDefenseAtt { get; init; }
+    [FieldOrder(11)] public byte SecondaryStatDefenseState { get; init; }
     
-    [FieldOrder(10)] public short Job { get; init; }
-    [FieldOrder(11)] public required StructuredCharacterLook CharacterLook { get; init; }
+    [FieldOrder(12)] public short Job { get; init; }
+    [FieldOrder(13)] public required StructuredCharacterLook CharacterLook { get; init; }
     
-    [FieldOrder(12)] public int DriverID { get; init; }
-    [FieldOrder(13)] public int PassengerID { get; init; }
+    [FieldOrder(14)] public int DriverID { get; init; }
+    [FieldOrder(15)] public int PassengerID { get; init; }
     
-    [FieldOrder(14)] public int ChocoCount { get; init; }
-    [FieldOrder(15)] public int ActiveEffectItemID { get; init; }
-    [FieldOrder(16)] public int CompletedSetItemID { get; init; }
-    [FieldOrder(17)] public int PortableChairID { get; init; }
+    [FieldOrder(16)] public int ChocoCount { get; init; }
+    [FieldOrder(17)] public int ActiveEffectItemID { get; init; }
+    [FieldOrder(18)] public int CompletedSetItemID { get; init; }
+    [FieldOrder(19)] public int PortableChairID { get; init; }
     
-    [FieldOrder(18)] public short X { get; init; }
-    [FieldOrder(19)] public short Y { get; init; }
-    [FieldOrder(20)] public byte MoveAction { get; init; }
-    [FieldOrder(21)] public short Foothold { get; init; }
+    [FieldOrder(20)] public short X { get; init; }
+    [FieldOrder(21)] public short Y { get; init; }
+    [FieldOrder(22)] public byte MoveAction { get; init; }
+    [FieldOrder(23)] public short Foothold { get; init; }
     
-    [FieldOrder(22)] public bool ShowAdminEffect { get; init; }
+    [FieldOrder(24)] public bool ShowAdminEffect { get; init; }
     
-    [FieldOrder(23)] public bool HasActivePet { get; init; }
+    [FieldOrder(25)] public bool HasActivePet { get; init; }
     
-    [FieldOrder(24)] public int TamingMobLevel { get; init; }
-    [FieldOrder(25)] public int TamingMobEXP { get; init; }
-    [FieldOrder(26)] public int TamingMobFatigue { get; init; }
+    [FieldOrder(26)] public int TamingMobLevel { get; init; }
+    [FieldOrder(27)] public int TamingMobEXP { get; init; }
+    [FieldOrder(28)] public int TamingMobFatigue { get; init; }
     
-    [FieldOrder(27)] public bool HasMiniRoom { get; init; }
-    [FieldOrder(28)] public bool HasAdBoard { get; init; }
-    [FieldOrder(29)] public bool HasCoupleItem { get; init; }
-    [FieldOrder(30)] public bool HasFriendshipItem { get; init; }
-    [FieldOrder(31)] public bool HasMarriage { get; init; }
+    [FieldOrder(29)] public bool HasMiniRoom { get; init; }
+    [FieldOrder(30)] public bool HasAdBoard { get; init; }
+    [FieldOrder(31)] public bool HasCoupleItem { get; init; }
+    [FieldOrder(32)] public bool HasFriendshipItem { get; init; }
+    [FieldOrder(33)] public bool HasMarriage { get; init; }
     
-    [FieldOrder(32)] public byte DelayedEffectFlag { get; init; }
+    [FieldOrder(34)] public byte DelayedEffectFlag { get; init; }
     
-    [FieldOrder(33)] public bool HasNewYearCard { get; init; }
+    [FieldOrder(35)] public bool HasNewYearCard { get; init; }
     
-    [FieldOrder(34)] public int Phase { get; init; }
+    [FieldOrder(36)] public int Phase { get; init; }
 }

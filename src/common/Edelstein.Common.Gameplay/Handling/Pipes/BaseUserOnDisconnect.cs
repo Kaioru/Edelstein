@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Gameplay.Entities;
@@ -19,6 +20,7 @@ public class BaseUserOnDisconnect<TStageSystem, TStageSystemUser>(
 {
     public async Task Handle(IPipelineContext ctx, UserOnDisconnect<TStageSystem, TStageSystemUser> message)
     {
+        Console.WriteLine(message.User.Account);
         if (message.User.Character != null)
             await characters.Update(message.User.Character);
         

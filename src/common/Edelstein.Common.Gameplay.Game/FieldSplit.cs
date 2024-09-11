@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game;
@@ -17,6 +18,7 @@ public class FieldSplit(
 {
     private readonly HashSet<IFieldObject> _objects = new();
     private readonly HashSet<IFieldUser> _observers = new();
+    private readonly SemaphoreSlim _lock = new(1, 1);
     
     public int Row { get; } = row;
     public int Col { get; } = col;
@@ -32,58 +34,75 @@ public class FieldSplit(
     
     public override async Task Enter(IFieldObject obj)
     {
-        var from = obj.FieldSplit;
+        await _lock.WaitAsync();
 
-        if (from != null)
-            await from.MigrateOut(obj);
-        await MigrateIn(obj);
-
-        obj.FieldSplit = this;
-
-        var toObservers = GetObservers()
-            .ToImmutableList();
-        var fromObservers = from?.GetObservers()
-            .ToImmutableList() ?? ImmutableList<IFieldUser>.Empty;
-        var newWatchers = toObservers
-            .Where(w => w != obj)
-            .Where(obj.IsVisibleTo)
-            .Except(fromObservers)
-            .ToImmutableArray();
-        var oldWatchers = fromObservers
-            .Where(w => w != obj)
-            .Where(obj.IsVisibleTo)
-            .Except(toObservers)
-            .ToImmutableArray();
-
-        var dispatchEnter = obj.GetDispatchEnterField(true);
-        var dispatchLeave = obj.GetDispatchLeaveField();
-
-        await Task.WhenAll(newWatchers.Select(w => w.Dispatch(dispatchEnter)));
-        await Task.WhenAll(oldWatchers.Select(w => w.Dispatch(dispatchLeave)));
-
-        if (obj is IFieldUser observer)
+        try
         {
-            var enclosingSplits = observer.Field?.GetEnclosingSplits(this) ?? Array.Empty<IFieldSplit>();
-            var oldSplits = observer.Observing
-                .Except(enclosingSplits)
-                .Where(s => s != null)
+            var from = obj.FieldSplit;
+
+            if (from != null)
+                await from.MigrateOut(obj);
+            await MigrateIn(obj);
+
+            obj.FieldSplit = this;
+
+            var toObservers = GetObservers()
+                .ToImmutableList();
+            var fromObservers = from?.GetObservers()
+                .ToImmutableList() ?? ImmutableList<IFieldUser>.Empty;
+            var newWatchers = toObservers
+                .Where(w => w != obj)
+                .Where(obj.IsVisibleTo)
+                .Except(fromObservers)
                 .ToImmutableArray();
-            var newSplits = enclosingSplits
-                .Except(observer.Observing)
-                .Where(s => s != null)
+            var oldWatchers = fromObservers
+                .Where(w => w != obj)
+                .Where(obj.IsVisibleTo)
+                .Except(toObservers)
                 .ToImmutableArray();
 
-            await Task.WhenAll(oldSplits.Select(s => s!.Unobserve(observer)));
-            await Task.WhenAll(newSplits.Select(s => s!.Observe(observer)));
+            var dispatchEnter = obj.GetDispatchEnterField(true);
+            var dispatchLeave = obj.GetDispatchLeaveField();
+
+            await Task.WhenAll(newWatchers.Select(w => w.Dispatch(dispatchEnter)));
+            await Task.WhenAll(oldWatchers.Select(w => w.Dispatch(dispatchLeave)));
+
+            if (obj is IFieldUser observer)
+            {
+                var enclosingSplits = observer.Field?.GetEnclosingSplits(this) ?? Array.Empty<IFieldSplit>();
+                var oldSplits = observer.Observing
+                    .Except(enclosingSplits)
+                    .Where(s => s != null)
+                    .ToImmutableArray();
+                var newSplits = enclosingSplits
+                    .Except(observer.Observing)
+                    .Where(s => s != null)
+                    .ToImmutableArray();
+
+                await Task.WhenAll(oldSplits.Select(s => s!.Unobserve(observer)));
+                await Task.WhenAll(newSplits.Select(s => s!.Observe(observer)));
+            }
+        }
+        finally
+        {
+            _lock.Release();
         }
     }
     
     public override async Task Leave(IFieldObject obj)
     {
-        obj.FieldSplit = null;
+        await _lock.WaitAsync();
+        
+        try {
+            obj.FieldSplit = null;
 
-        await MigrateOut(obj);
-        await Dispatch(obj.GetDispatchLeaveField(true), obj);
+            await MigrateOut(obj);
+            await Dispatch(obj.GetDispatchLeaveField(true), obj);
+        }
+        finally
+        {
+            _lock.Release();
+        }
     }
     
     public Task MigrateIn(IFieldObject obj)
