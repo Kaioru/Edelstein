@@ -1,11 +1,14 @@
 ﻿using System.Threading.Tasks;
+using Edelstein.Protocol.Gameplay.Game.Movements;
 using Edelstein.Protocol.Gameplay.Game.Templates.Spatial;
-using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects;
 
-public interface IFieldLife : IFieldObject
+public interface IFieldLife<in TMovePath, TMoveAction> : IFieldObject
+    where TMoveAction : IMoveAction
 {
+    TMoveAction Action { get; set; }
+    
     Task UpdatePosition(IFieldPortal portal);
-    Task UpdatePosition();
+    Task UpdatePosition(TMovePath path);
 }

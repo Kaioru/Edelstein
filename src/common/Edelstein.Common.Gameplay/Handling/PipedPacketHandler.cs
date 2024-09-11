@@ -20,7 +20,7 @@ public class PipedPacketHandler<TStageSystem, TStageSystemUser, TMessage>(
     {
         using var reader = new RawPacketReader(packet);
         var message = reader.ReadStructured<TMessage>();
-        
+
         return pipeline.Process(new PipedPacketMessage<TStageSystem, TStageSystemUser, TMessage>(user, message));
     }
 }

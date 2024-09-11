@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
+using Edelstein.Protocol.Gameplay.Game.Movements;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
+using Edelstein.Protocol.Gameplay.Game.Templates.Spatial;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Packets;
 using Edelstein.Protocol.Network.Packets.Types;
@@ -18,7 +20,11 @@ public class FieldUser(
     AccountWorldData accountWorldData,
     Character character,
     IPoint2D position
-) : AbstractFieldLife(position), IFieldUser
+) : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAction>(
+        position, 
+        null, 
+        new FieldUserMoveAction(0)),
+    IFieldUser
 {
     public override FieldObjectType Type => FieldObjectType.User;
     public ISocket Socket => user.Socket;
@@ -58,7 +64,11 @@ public class FieldUser(
         {
             ObjectID = ObjectID ?? 0,
             CharacterName = new LPString(character.Name),
-            CharacterLook = character.ToStructuredCharacterLook()
+            CharacterLook = character.ToStructuredCharacterLook(),
+            X = (short)Position.X,
+            Y = (short)Position.Y,
+            MoveAction = Action.Value,
+            Foothold = (short)(Foothold?.ID ?? 0)
         };
 
     public override IDispatchable GetDispatchLeaveField(bool isLeaveField = false)
@@ -66,5 +76,4 @@ public class FieldUser(
         {
             ObjectID = ObjectID ?? 0
         };
-    public Task MovementInit(IPoint2D position) => throw new System.NotImplementedException();
 }

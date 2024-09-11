@@ -15,7 +15,7 @@ public abstract class AbstractFieldObjectPool : IFieldObjectPool
     public abstract Task Enter(IFieldObject obj);
     public abstract Task Leave(IFieldObject obj);
     
-    public Task Dispatch(IDispatchable dispatch, IFieldObject? source = null)
+    public virtual Task Dispatch(IDispatchable dispatch, IFieldObject? source = null)
         => Task.WhenAll(GetObjects()
             .OfType<IFieldUser>()
             .Where(o => o != source)

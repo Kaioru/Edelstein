@@ -8,6 +8,7 @@ using Edelstein.Common.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
+using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Common.Gameplay.Game;
 
@@ -139,4 +140,9 @@ public class FieldSplit(
                 .Where(o => o.IsVisibleTo(user))
                 .Select(o => user.Dispatch(o.GetDispatchLeaveField())));
     }
+    
+    public override Task Dispatch(IDispatchable dispatch, IFieldObject? source = null)
+        => Task.WhenAll(_observers
+            .Where(o => o != source)
+            .Select(o => o.Dispatch(dispatch)));
 }

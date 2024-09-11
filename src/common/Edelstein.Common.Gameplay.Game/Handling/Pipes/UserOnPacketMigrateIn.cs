@@ -4,6 +4,7 @@ using Edelstein.Common.Gameplay.Game.Objects.Users;
 using Edelstein.Common.Gameplay.Handling.Pipes;
 using Edelstein.Protocol.Gameplay.Contracts.Packets.Recv;
 using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Gameplay.Game.Movements;
 using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Session;

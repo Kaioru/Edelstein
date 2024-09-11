@@ -5,7 +5,9 @@ using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Users;
 
-public interface IFieldUser : IFieldLife, ISocketUser
+public interface IFieldUser : 
+    IFieldLife<IFieldUserMovePath, IFieldUserMoveAction>, 
+    ISocketUser
 {
     Account Account { get; }
     AccountWorldData AccountWorldData { get; }

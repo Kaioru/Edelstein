@@ -1,17 +1,24 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Common.Utilities.Spatial.Collections;
+using Edelstein.Common.Utilities.Spatial;
+using Edelstein.Protocol.Gameplay.Game.Movements;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Templates.Spatial;
 using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Common.Gameplay.Game.Objects;
 
-public abstract class AbstractFieldLife(
+public abstract class AbstractFieldLife<TMovePath, TMoveAction>(
     IPoint2D position,
-    IFieldFoothold? foothold = null
-) : AbstractFieldObject(position, foothold), IFieldLife
+    IFieldFoothold? foothold,
+    TMoveAction action
+) : AbstractFieldObject(position, foothold),
+    IFieldLife<TMovePath, TMoveAction>
+    where TMovePath : IMovePath<TMoveAction>
+    where TMoveAction : IMoveAction
 {
+    public TMoveAction Action { get; set; } = action;
+    
     public async Task UpdatePosition(IFieldPortal portal)
     {
         if (Field == null) return;
@@ -22,8 +29,14 @@ public abstract class AbstractFieldLife(
             .FirstOrDefault();
     }
     
-    public async Task UpdatePosition()
+    public async Task UpdatePosition(TMovePath path)
     {
+        if (Field == null) return;
+        
+        if (path.Action != null) Action = path.Action;
+        if (path.X != null && path.Y != null) Position = new Point2D(path.X.Value, path.Y.Value);
+        if (path.Fh != null) Foothold = await Field.Template.Footholds.Retrieve(path.Fh.Value);
+        
         await UpdateFieldSplit();
     }
 
