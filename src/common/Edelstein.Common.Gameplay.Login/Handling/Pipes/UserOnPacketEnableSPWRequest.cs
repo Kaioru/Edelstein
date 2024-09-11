@@ -37,6 +37,11 @@ public class UserOnPacketEnableSPWRequest(
                 WorldID = (int)message.User.SelectedWorldID!,
                 ChannelID = (int)message.User.SelectedChannelID!
             });
+            
+            message.User.Account!.SPW = BCrypt.Net.BCrypt.EnhancedHashPassword(message.Packet.SPW.Value);
+            message.User.Character = character;
+            message.User.IsMigrating = true;
+            
             var migrationResponse = await migrations.Start(new MigrationServiceStartRequest
             {
                 Info = new MigrationInfo
@@ -64,10 +69,6 @@ public class UserOnPacketEnableSPWRequest(
             var endpoint = new IPEndPoint(IPAddress.Parse(serverResponse.Info.Host), serverResponse.Info.Port);
             var address = endpoint.Address.MapToIPv4().GetAddressBytes();
             var port = (short)endpoint.Port;
-            
-            message.User.Account!.SPW = BCrypt.Net.BCrypt.EnhancedHashPassword(message.Packet.SPW.Value);
-            message.User.Character = character;
-            message.User.IsMigrating = true;
 
             await message.User.Dispatch(new SelectCharacterResult
             {
