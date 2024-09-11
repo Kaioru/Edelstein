@@ -23,7 +23,7 @@ public class UserOnPacketCheckPassword(
     public async Task Handle(IPipelineContext ctx, PipedPacketMessage<ILoginStageSystem, ILoginStageSystemUser, CheckPassword> message)
     {
         if (message.User.State != LoginState.CheckPassword) return;
-        
+
         try
         {
             var response = await auth.Login(new AuthServiceRequest
@@ -38,13 +38,15 @@ public class UserOnPacketCheckPassword(
                 AuthServiceResult.FailedInvalidPassword => LoginResultCode.IncorrectPassword,
                 _ => LoginResultCode.Unknown
             };
-            var account = await accounts.RetrieveByUsername(message.Packet.Username.Value) ??
-                          await accounts.Insert(new Account
-                          {
-                              Username = message.Packet.Username.Value
-                          });
+            var account = result == LoginResultCode.Success
+                ? await accounts.RetrieveByUsername(message.Packet.Username.Value) ??
+                  await accounts.Insert(new Account
+                  {
+                      Username = message.Packet.Username.Value
+                  })
+                : null;
 
-            if (result == LoginResultCode.Success)
+            if (account != null)
             {
                 var sessionResponse = await session.Start(new SessionServiceStartRequest
                 {
@@ -61,14 +63,14 @@ public class UserOnPacketCheckPassword(
                     message.User.Key = sessionResponse.Secret ?? 0;
                     message.User.State = LoginState.SelectWorld;
                 }
-                else 
+                else
                     result = LoginResultCode.AlreadyConnected;
             }
 
             await message.User.Dispatch(new CheckPasswordResult
             {
                 Result = result,
-                Account = result == LoginResultCode.Success
+                Account = result == LoginResultCode.Success && account != null
                     ? new CheckPasswordResultInfoAccount
                     {
                         ID = account.ID,
