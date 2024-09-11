@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Game.Objects.Users;
-using Edelstein.Protocol.Gameplay.Game;
-using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Utilities.Pipelines;
 using UserMoveRecv = Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv.UserMove;
 using UserMoveSend = Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send.UserMove;

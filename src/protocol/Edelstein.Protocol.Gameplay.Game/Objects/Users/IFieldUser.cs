@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Entities;
+using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Packets;
 
@@ -15,7 +17,11 @@ public interface IFieldUser :
     
     ICollection<IFieldSplit> Observing { get; }
     
-    bool IsInitialized { get; set; }
+    IFieldUserStats Stats { get; }
     
+    bool IsFirstEnter { get; set; }
+
     IDispatchable GetDispatchSetField();
+
+    Task Initialize();
 }

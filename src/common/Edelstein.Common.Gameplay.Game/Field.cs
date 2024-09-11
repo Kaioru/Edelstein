@@ -137,7 +137,7 @@ public class Field : AbstractFieldObjectPool, IField
                     await user.UpdatePosition(portal);
                 
                 await user.Dispatch(user.GetDispatchSetField());
-                user.IsInitialized = true;
+                user.IsFirstEnter = false;
             }
 
             var split = GetSplit(obj.Position);

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
-using Edelstein.Protocol.Gameplay.Game.Movements;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
-using Edelstein.Protocol.Gameplay.Game.Templates.Spatial;
+using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Packets;
 using Edelstein.Protocol.Network.Packets.Types;
@@ -35,14 +35,16 @@ public class FieldUser(
 
     public ICollection<IFieldSplit> Observing { get; } = new List<IFieldSplit>();
 
-    public bool IsInitialized { get; set; }
+    public IFieldUserStats Stats { get; private set; } = new FieldUserStats();
+
+    public bool IsFirstEnter { get; set; } = true;
 
     public IDispatchable GetDispatchSetField()
         => new SetField
         {
             ChannelID = user.System.Options.ChannelID,
-            IsInitialize = !IsInitialized,
-            Info = !IsInitialized
+            IsInitialize = IsFirstEnter,
+            Info = IsFirstEnter
                 ? new SetFieldInfoCharacterInit
                 {
                     Seed1 = 0,
@@ -58,7 +60,7 @@ public class FieldUser(
                 },
             DateServer = new FDateTime(user.System.Context.DateTime.Now)
         };
-
+    
     public override IDispatchable GetDispatchEnterField(bool isEnterField = false)
         => new UserEnterField
         {
@@ -76,4 +78,10 @@ public class FieldUser(
         {
             ObjectID = ObjectID ?? 0
         };
+    
+    public Task Initialize()
+        => UpdateStats();
+
+    private async Task UpdateStats()
+        => Stats = await user.System.Context.Calculators.UserStats.Calculate(this);
 }

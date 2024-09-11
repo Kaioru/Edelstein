@@ -1,14 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Game.Objects.Users;
 using Edelstein.Common.Gameplay.Handling.Pipes;
 using Edelstein.Protocol.Gameplay.Contracts.Packets.Recv;
 using Edelstein.Protocol.Gameplay.Game;
-using Edelstein.Protocol.Gameplay.Game.Movements;
 using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Services.Migration;
 using Edelstein.Protocol.Services.Session;
-using Edelstein.Protocol.Utilities;
 using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
@@ -16,8 +13,7 @@ namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
 public class UserOnPacketMigrateIn(
     IMigrationService migrations,
     ISessionService sessions,
-    IFieldManager fields,
-    IDateTimeProvider dateTimeProvider
+    IFieldManager fields
 ) : BaseUserOnPacketMigrateIn<IGameStageSystem, IGameStageSystemUser>(migrations, sessions)
 {
     public override async Task Handle(IPipelineContext ctx, PipedPacketMessage<IGameStageSystem, IGameStageSystemUser, MigrateIn> message)
@@ -42,6 +38,7 @@ public class UserOnPacketMigrateIn(
         );
 
         message.User.FieldUser = fieldUser;
+        await fieldUser.Initialize();
         await field.Enter(fieldUser);
     }
 }
