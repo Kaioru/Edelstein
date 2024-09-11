@@ -12,6 +12,6 @@ public class BaseUserOnPacket<TStageSystem, TStageSystemUser>(
     where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser>
     where TStageSystemUser : IStageSystemUser<TStageSystem, TStageSystemUser>
 {
-    public Task Handle(IPipelineContext ctx, UserOnPacket<TStageSystem, TStageSystemUser> message)
+    public virtual Task Handle(IPipelineContext ctx, UserOnPacket<TStageSystem, TStageSystemUser> message)
         => manager.Process(message.User, message.Packet);
 }

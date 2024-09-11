@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
@@ -11,35 +12,52 @@ public class FieldObjectPool : AbstractFieldObjectPool, IFieldObjectPool
 {
     private readonly ConcurrentDictionary<int, IFieldObject> _objects = new();
     private readonly Queue<int> _runningObjectID = new(Enumerable.Range(1, 99_999));
-    
-    public override IFieldObject? GetObject(int id) 
-        =>  _objects.TryGetValue(id, out var obj) ? obj : null;
-    
+    private readonly SemaphoreSlim _lock = new(1, 1);
+
+    public override IFieldObject? GetObject(int id)
+        => _objects.TryGetValue(id, out var obj) ? obj : null;
+
     public override IEnumerable<IFieldObject> GetObjects()
         => _objects.Values;
 
-    public override Task Enter(IFieldObject obj)
+    public override async Task Enter(IFieldObject obj)
     {
-        if (obj is IFieldUser user) user.ObjectID = user.Character.ID;
-        else obj.ObjectID = _runningObjectID.Dequeue();
+        await _lock.WaitAsync();
 
-        _objects[obj.ObjectID!.Value] = obj;
-        return Task.CompletedTask;
+        try
+        {
+            if (obj is IFieldUser user) user.ObjectID = user.Character.ID;
+            else obj.ObjectID = _runningObjectID.Dequeue();
+
+            _objects[obj.ObjectID!.Value] = obj;
+        }
+        finally
+        {
+            _lock.Release();
+        }
     }
-    
-    public override Task Leave(IFieldObject obj)
+
+    public override async Task Leave(IFieldObject obj)
     {
-        var objectID = obj.ObjectID;
+        await _lock.WaitAsync();
 
-        if (objectID == null) 
-            return Task.CompletedTask;
+        try
+        {
+            var objectID = obj.ObjectID;
 
-        _objects.Remove(objectID.Value, out _);
-        
-        if (obj is not IFieldUser)
-            _runningObjectID.Enqueue(objectID.Value);
+            if (objectID == null)
+                return;
 
-        obj.ObjectID = null;
-        return Task.CompletedTask;
+            _objects.Remove(objectID.Value, out _);
+
+            if (obj is not IFieldUser)
+                _runningObjectID.Enqueue(objectID.Value);
+
+            obj.ObjectID = null;
+        }
+        finally
+        {
+            _lock.Release();
+        }
     }
 }
