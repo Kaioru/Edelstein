@@ -1,4 +1,6 @@
-﻿namespace Edelstein.Protocol.Plugin;
+﻿using System.Collections.Generic;
+
+namespace Edelstein.Protocol.Plugin;
 
 public interface IPluginHostManifest
 {
@@ -6,4 +8,6 @@ public interface IPluginHostManifest
     string Description { get; }
     
     string EntryPoint { get; }
+    
+    ICollection<string> Dependencies { get; }
 }

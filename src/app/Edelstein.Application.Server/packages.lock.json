@@ -1589,6 +1589,7 @@
           "Edelstein.Common.Utilities": "[1.0.0, )",
           "Edelstein.Protocol.Plugin": "[1.0.0, )",
           "McMaster.NETCore.Plugins": "[1.4.0, )",
+          "MedallionTopologicalSort": "[1.0.0, )",
           "Microsoft.Extensions.Configuration": "[9.0.0-preview.7.24405.7, )",
           "Microsoft.Extensions.Configuration.Binder": "[9.0.0-preview.7.24405.7, )",
           "Microsoft.Extensions.Configuration.Json": "[9.0.0-preview.7.24405.7, )",
@@ -1782,6 +1783,12 @@
           "Microsoft.DotNet.PlatformAbstractions": "3.1.6",
           "Microsoft.Extensions.DependencyModel": "5.0.0"
         }
+      },
+      "MedallionTopologicalSort": {
+        "type": "CentralTransitive",
+        "requested": "[1.0.0, )",
+        "resolved": "1.0.0",
+        "contentHash": "dcAqM8TcyZQ/T466CvqNMUUn/G0FQE+4R7l62ngXH7hLFP9yA7yoP/ySsLgiXx3pGUQC3J+cUvXmJOOR/eC+oQ=="
       },
       "Microsoft.EntityFrameworkCore": {
         "type": "CentralTransitive",

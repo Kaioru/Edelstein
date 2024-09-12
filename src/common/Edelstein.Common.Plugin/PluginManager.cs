@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Edelstein.Common.Utilities.Repositories;
 using Edelstein.Protocol.Plugin;
 using McMaster.NETCore.Plugins;
+using Medallion.Collections;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -15,14 +16,14 @@ public class PluginManager<TContext>(
     ILogger<PluginManager<TContext>> logger
 ) : Repository<string, PluginManagerEntry<TContext>>, IPluginManager<TContext>
 {
-    public new async Task<IPlugin<TContext>?> Retrieve(string key) 
-        => (await base.Retrieve(key))?.Plugin;
+    public new async Task<IPluginHost<TContext>?> Retrieve(string key) 
+        => (await base.Retrieve(key))?.Host;
     
-    public new async Task<ICollection<IPlugin<TContext>>> RetrieveAll() 
-        => (await base.RetrieveAll()).Select(h => h.Plugin).ToList();
+    public new async Task<ICollection<IPluginHost<TContext>>> RetrieveAll() 
+        => (await base.RetrieveAll()).Select(h => h.Host).ToList();
     
-    public async Task<IPlugin<TContext>> Insert(IPlugin<TContext> entry) 
-        => (await base.Insert(new PluginManagerEntry<TContext>(new PluginHost<TContext>(null, this), entry))).Plugin;
+    public async Task<IPluginHost<TContext>> Insert(IPluginHost<TContext> entry) 
+        => (await base.Insert(new PluginManagerEntry<TContext>(entry, entry.Plugin))).Host;
 
     public Task LoadFromFile(string path) => LoadFromFile(path, null);
 
@@ -51,7 +52,7 @@ public class PluginManager<TContext>(
                 }
                 
                 await Insert(new PluginManagerEntry<TContext>(
-                    new PluginHost<TContext>(manifest, this),
+                    new PluginHost<TContext>(manifest, this, plugin),
                     plugin
                 ));
             }
@@ -69,7 +70,7 @@ public class PluginManager<TContext>(
             logger.LogPluginManagerFailedDirectory(directory);
             return;
         }
-
+        
         foreach (var subdirectory in Directory.GetDirectories(Path.GetFullPath(directory)))
         {
             var name = Path.GetFileName(subdirectory);
@@ -91,13 +92,30 @@ public class PluginManager<TContext>(
                     file = Path.Combine(subdirectory, name);
                 }
             }
-            
+
             await LoadFromFile(Path.ChangeExtension(file, "dll"), manifest);
         }
     }
     public async Task InvokeStart(TContext context)
-        => await Task.WhenAll((await base.RetrieveAll()).Select(p => p.Plugin.OnStart(p.Host, context)));
-    
+    {
+        var entries = await base.RetrieveAll();
+        var dependencies = entries
+            .ToDictionary(
+                e => e.Plugin.ID,
+                e => e.Host.Manifest?.Dependencies ?? new List<string>()
+            );
+        
+        foreach (var id in dependencies
+                     .Keys
+                     .OrderTopologicallyBy(e => dependencies[e]))
+        {
+            var entry = await Retrieve(id);
+
+            if (entry != null)
+                await entry.Plugin.OnStart(entry, context);
+        }
+    }
+
     public async Task InvokeStop()
         => await Task.WhenAll((await base.RetrieveAll()).Select(p => p.Plugin.OnStop()));
 }

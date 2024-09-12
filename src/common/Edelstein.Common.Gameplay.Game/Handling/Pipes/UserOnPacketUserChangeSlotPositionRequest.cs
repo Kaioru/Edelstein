@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Edelstein.Common.Gameplay.Game.Objects.Users;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 using Edelstein.Protocol.Utilities.Pipelines;

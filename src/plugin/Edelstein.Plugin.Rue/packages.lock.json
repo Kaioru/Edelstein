@@ -955,6 +955,9 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
+      "edelstein.plugin.rue.interop": {
+        "type": "Project"
+      },
       "edelstein.protocol.gameplay": {
         "type": "Project",
         "dependencies": {
