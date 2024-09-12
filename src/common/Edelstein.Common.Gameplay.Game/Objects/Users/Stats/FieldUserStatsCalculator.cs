@@ -60,9 +60,9 @@ public class FieldUserStatsCalculator :
             MDD = context.MDD.Apply(0),
             
             PACC = pacc.Apply((int)(totalDEX * 1.2 + totalLUK) + context.ACC.IncBase),
-            MACC = pacc.Apply((int)(totalLUK * 1.2 + totalINT) + context.ACC.IncBase),
-            PEVA = pacc.Apply(totalLUK * 2 + totalDEX + context.EVA.IncBase),
-            MEVA = pacc.Apply(totalLUK * 2 + totalINT + context.EVA.IncBase),
+            MACC = macc.Apply((int)(totalLUK * 1.2 + totalINT) + context.ACC.IncBase),
+            PEVA = peva.Apply(totalLUK * 2 + totalDEX + context.EVA.IncBase),
+            MEVA = meva.Apply(totalLUK * 2 + totalINT + context.EVA.IncBase),
             
             Craft = context.Craft.Apply(character.DEX + character.INT + character.LUK),
             Speed = context.Speed.Apply(100),
