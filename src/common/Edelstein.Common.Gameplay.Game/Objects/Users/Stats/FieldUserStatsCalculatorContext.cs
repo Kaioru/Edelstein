@@ -14,15 +14,15 @@ public record FieldUserStatsCalculatorContext(
     public IStatModifier INT { get; } = new StatModifier();
     public IStatModifier LUK { get; } = new StatModifier();
     
-    public IStatModifier MaxHP { get; } = new StatModifier(max: 99999);
-    public IStatModifier MaxMP { get; } = new StatModifier(max: 99999);
+    public IStatModifier MaxHP { get; } = new StatModifier(Max: 99999);
+    public IStatModifier MaxMP { get; } = new StatModifier(Max: 99999);
     
-    public IStatModifier PAD { get; } = new StatModifier(max: 29999);
-    public IStatModifier PDD { get; } = new StatModifier(max: 30000);
-    public IStatModifier MAD { get; } = new StatModifier(max: 29999);
-    public IStatModifier MDD { get; } = new StatModifier(max: 30000);
-    public IStatModifier ACC { get; } = new StatModifier(max: 9999);
-    public IStatModifier EVA { get; } = new StatModifier(max: 9999);
+    public IStatModifier PAD { get; } = new StatModifier(Max: 29999);
+    public IStatModifier PDD { get; } = new StatModifier(Max: 30000);
+    public IStatModifier MAD { get; } = new StatModifier(Max: 29999);
+    public IStatModifier MDD { get; } = new StatModifier(Max: 30000);
+    public IStatModifier ACC { get; } = new StatModifier();
+    public IStatModifier EVA { get; } = new StatModifier();
     
     public IStatModifier Craft { get; } = new StatModifier();
     public IStatModifier Speed { get; } = new StatModifier(100, 140);

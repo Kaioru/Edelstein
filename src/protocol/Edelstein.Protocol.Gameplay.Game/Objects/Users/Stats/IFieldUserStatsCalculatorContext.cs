@@ -10,4 +10,18 @@ public interface IFieldUserStatsCalculatorContext
     IStatModifier DEX { get; }
     IStatModifier INT { get; }
     IStatModifier LUK { get; }
+    
+    IStatModifier MaxHP { get; }
+    IStatModifier MaxMP { get; }
+    
+    IStatModifier PAD { get; }
+    IStatModifier PDD { get; }
+    IStatModifier MAD { get; }
+    IStatModifier MDD { get; }
+    IStatModifier ACC { get; }
+    IStatModifier EVA { get; }
+    
+    IStatModifier Craft { get; }
+    IStatModifier Speed { get; }
+    IStatModifier Jump { get; }
 }

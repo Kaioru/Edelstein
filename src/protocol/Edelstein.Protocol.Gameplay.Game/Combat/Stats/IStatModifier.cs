@@ -8,6 +8,6 @@ public interface IStatModifier
     int IncBase { get; set; }
     int IncRate { get; set; }
     int IncFlat { get; set; }
-
+    
     int Apply(int value);
 }

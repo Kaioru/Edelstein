@@ -16,8 +16,11 @@ public record FieldUserStats : IFieldUserStats
     public int PDD { get; init; }
     public int MAD { get; init; }
     public int MDD { get; init; }
-    public int ACC { get; init; }
-    public int EVA { get; init; }
+    
+    public int PACC { get; init; }
+    public int MACC { get; init; }
+    public int PEVA { get; init; }
+    public int MEVA { get; init; }
 
     public int Craft { get; init; }
     public int Speed { get; init; }

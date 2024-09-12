@@ -4,5 +4,5 @@ namespace Edelstein.Common.Gameplay.Game.Objects.Users.Stats;
 
 public static class FieldUserStatsCalculatorSteps
 {
-    public const int Equip = PipePriority.Normal;
+    public const int Equip = PipePriority.Normal + 0x0;
 }

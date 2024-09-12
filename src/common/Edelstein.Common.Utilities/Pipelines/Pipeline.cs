@@ -6,22 +6,19 @@ namespace Edelstein.Common.Utilities.Pipelines;
 
 public class Pipeline<TMessage> : Pipework<TMessage>, IPipeline<TMessage>
 {
-    private readonly ICollection<PipeStep<TMessage>> _steps 
-        = new SortedSet<PipeStep<TMessage>>(new PipeStepComparator<TMessage>());
-
     protected Pipeline() {}
     
     public Pipeline(IEnumerable<IPipe<TMessage>> pipes)
     {
         foreach (var pipe in pipes)
-            _steps.Add(new PipeStep<TMessage>(PipePriority.Default, pipe));
+            Steps.Add(new PipeStep<TMessage>(PipePriority.Default, pipe));
     }
     
     public async Task<IPipelineContext> Process(TMessage message)
     {
         var ctx = new PipelineContext();
 
-        foreach (var part in _steps)
+        foreach (var part in Steps)
         {
             if (ctx.IsRequestedSkipToDefault && part.Priority != PipePriority.Default)
                 continue;

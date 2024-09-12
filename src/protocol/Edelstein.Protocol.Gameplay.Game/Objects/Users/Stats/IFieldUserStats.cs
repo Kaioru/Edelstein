@@ -2,4 +2,27 @@
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 
-public interface IFieldUserStats : IStats;
+public interface IFieldUserStats : IStats
+{
+    int STR { get; }
+    int DEX { get; }
+    int INT { get; }
+    int LUK { get; }
+    
+    int MaxHP { get; }
+    int MaxMP { get; }
+    
+    int PAD { get; }
+    int PDD { get; }
+    int MAD { get; }
+    int MDD { get; }
+    
+    int PACC { get; }   
+    int MACC { get; }
+    int PEVA { get; }
+    int MEVA { get; }
+
+    int Craft { get; }
+    int Speed { get; }
+    int Jump { get; }
+}

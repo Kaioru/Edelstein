@@ -4,12 +4,12 @@ using Edelstein.Protocol.Gameplay.Game.Combat.Stats;
 namespace Edelstein.Common.Gameplay.Game.Combat.Stats;
 
 public record StatModifier(
-    int min = 0,
-    int max = int.MaxValue
+    int Min = 0,
+    int Max = int.MaxValue
 ) : IStatModifier
 {
-    public int Min { get; set; } = min;
-    public int Max { get; set; } = max;
+    public int Min { get; set; } = Min;
+    public int Max { get; set; } = Max;
     
     public int IncBase { get; set; }
     

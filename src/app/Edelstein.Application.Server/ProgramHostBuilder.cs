@@ -141,7 +141,7 @@ internal static class ProgramHostBuilder
 
         builder.Services.AddScoped<IFieldManager, FieldManager>();
         builder.Services.AddScoped<IFieldUserStatsCalculator, FieldUserStatsCalculator>();
-
+        
         return builder;
     }
 }
