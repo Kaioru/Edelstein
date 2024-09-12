@@ -64,7 +64,7 @@ public class FieldUserStatsCalculator :
             PEVA = pacc.Apply(totalLUK * 2 + totalDEX + context.EVA.IncBase),
             MEVA = pacc.Apply(totalLUK * 2 + totalINT + context.EVA.IncBase),
             
-            Craft = context.Craft.Apply(0),
+            Craft = context.Craft.Apply(character.DEX + character.INT + character.LUK),
             Speed = context.Speed.Apply(100),
             Jump = context.Jump.Apply(100)
         };
