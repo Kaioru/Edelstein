@@ -15,7 +15,7 @@ public class UserOnPacketUserMove : AbstractUserOnPacketInFieldPipe<UserMoveRecv
         var path = new FieldUserMovePath();
 
         path.Apply(message.Packet.Path);
-
+        
         await message.User.UpdatePosition(path);
         await message.User.FieldSplit.Dispatch(
             new UserMoveSend

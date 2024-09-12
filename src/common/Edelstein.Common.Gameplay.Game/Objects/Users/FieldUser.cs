@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Gameplay.Entities;
@@ -29,6 +31,8 @@ public class FieldUser(
     public override FieldObjectType Type => FieldObjectType.User;
     public ISocket Socket => user.Socket;
 
+    public IGameStageSystem System => user.System;
+    
     public Account Account => account;
     public AccountWorldData AccountWorldData => accountWorldData;
     public Character Character => character;
@@ -38,6 +42,8 @@ public class FieldUser(
     public IFieldUserStats Stats { get; private set; } = new FieldUserStats();
 
     public bool IsFirstEnter { get; set; } = true;
+
+    private readonly SemaphoreSlim _lock = new(1, 1);
 
     public IDispatchable GetDispatchSetField()
         => new SetField
@@ -79,9 +85,44 @@ public class FieldUser(
             ObjectID = ObjectID ?? 0
         };
     
-    public Task Initialize()
-        => UpdateStats();
+    public async Task Initialize()
+    {
+        await _lock.WaitAsync();
+
+        try
+        {
+            await UpdateStats();
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
+
+    public async Task Modify(Action<IFieldUserModify> action)
+    {
+        await _lock.WaitAsync();
+
+        try
+        {
+            var modify = new FieldUserModify(this);
+
+            action.Invoke(modify);
+
+            if (modify.IsRequireUpdate)
+                await UpdateStats();
+            if (modify.IsRequireUpdateAvatar)
+                await UpdateAvatar();
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
 
     private async Task UpdateStats()
         => Stats = await user.System.Context.Calculators.UserStats.Calculate(this);
+
+    private Task UpdateAvatar()
+        => Task.CompletedTask; // TODO
 }

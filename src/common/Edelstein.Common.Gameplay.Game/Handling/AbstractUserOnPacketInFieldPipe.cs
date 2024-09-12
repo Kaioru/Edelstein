@@ -6,7 +6,9 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Handling;
 
-public abstract class AbstractUserOnPacketInFieldPipe<TPacket> : IPipe<PipedPacketMessage<IGameStageSystem, IGameStageSystemUser, TPacket>> where TPacket : StructuredBasePacket
+public abstract class AbstractUserOnPacketInFieldPipe<TPacket> :
+    IPipe<PipedPacketMessage<IGameStageSystem, IGameStageSystemUser, TPacket>> 
+    where TPacket : StructuredBasePacket
 {
     public async Task Handle(IPipelineContext ctx, PipedPacketMessage<IGameStageSystem, IGameStageSystemUser, TPacket> message)
     {

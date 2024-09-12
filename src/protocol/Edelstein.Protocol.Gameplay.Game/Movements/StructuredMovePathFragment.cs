@@ -23,7 +23,7 @@ public record StructuredMovePathFragment : StructuredBasePacket, IBinarySerializ
     [Ignore] public short? XOffset { get; set; }
     [Ignore] public short? YOffset { get; set; }
     
-    [Ignore] public bool? Stat { get; set; }
+    [Ignore] public byte? Stat { get; set; }
     
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
@@ -74,7 +74,7 @@ public record StructuredMovePathFragment : StructuredBasePacket, IBinarySerializ
                 writer.Write(Fh ?? 0);
                 goto default;
             case MovePathFragmentType.StatChange:
-                writer.Write(Stat ?? false);
+                writer.Write(Stat ?? 0);
                 break;
             case MovePathFragmentType.StartFallDown:
                 writer.Write(VX ?? 0);
@@ -156,7 +156,7 @@ public record StructuredMovePathFragment : StructuredBasePacket, IBinarySerializ
                 Fh = reader.ReadInt16();
                 goto default;
             case MovePathFragmentType.StatChange:
-                Stat = reader.ReadBoolean();
+                Stat = reader.ReadByte();
                 break;
             case MovePathFragmentType.StartFallDown:
                 VX = reader.ReadInt16();

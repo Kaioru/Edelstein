@@ -14,7 +14,7 @@ public abstract class AbstractMovePath<TMoveAction> : IMovePath<TMoveAction> whe
     public short? FhFallStart { get; set; }
     public short? XOffset { get; set; }
     public short? YOffset { get; set; }
-    public bool? Stat { get; set; }
+    public byte? Stat { get; set; }
     
     public void Apply(StructuredMovePath path)
     {

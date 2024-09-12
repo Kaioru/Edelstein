@@ -17,7 +17,7 @@ public interface IMovePath<TMoveAction> where TMoveAction : IMoveAction
     short? XOffset { get; set; }
     short? YOffset { get; set; }
     
-    bool? Stat { get; set; }
+    byte? Stat { get; set; }
 
     void Apply(StructuredMovePath path);
 }
