@@ -16,9 +16,9 @@ public record PluginHost<TContext>(
 
     public string ID => Plugin.ID;
     
-    public void Export(Type type)
+    public void Export<T>()
     {
-        foreach (var method in type
+        foreach (var method in typeof(T)
                      .GetMethods(BindingFlags.Public | BindingFlags.Static))
         {
             if (!_exports.TryGetValue(method.Name, out var methods))
@@ -29,9 +29,9 @@ public record PluginHost<TContext>(
         }
     }
     
-    public void Import(Type type)
+    public void Import<T>()
     {
-        foreach (var field in type
+        foreach (var field in typeof(T)
                      .GetFields(BindingFlags.Public | BindingFlags.Static)
                      .Where(f => typeof(Delegate).IsAssignableFrom(f.FieldType)))
         {

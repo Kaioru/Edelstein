@@ -9,6 +9,6 @@ public interface IPluginHost<TContext> : IRepositoryEntry<string>
     IPluginManager<TContext> Manager { get; }
     IPlugin<TContext> Plugin { get; }
 
-    void Export(Type type);
-    void Import(Type type);
+    void Export<T>();
+    void Import<T>();
 }
