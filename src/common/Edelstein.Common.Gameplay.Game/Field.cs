@@ -135,8 +135,10 @@ public class Field : AbstractFieldObjectPool, IField
 
                 if (portal != null)
                     await user.UpdatePosition(portal);
-                
+
+                await user.Initialize();
                 await user.Dispatch(user.GetDispatchSetField());
+
                 user.IsFirstEnter = false;
             }
 

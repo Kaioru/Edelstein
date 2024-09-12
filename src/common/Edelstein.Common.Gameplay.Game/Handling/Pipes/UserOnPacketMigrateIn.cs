@@ -38,7 +38,6 @@ public class UserOnPacketMigrateIn(
         );
 
         message.User.FieldUser = fieldUser;
-        await fieldUser.Initialize();
         await field.Enter(fieldUser);
     }
 }
