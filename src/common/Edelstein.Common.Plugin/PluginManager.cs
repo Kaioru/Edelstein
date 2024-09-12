@@ -96,6 +96,7 @@ public class PluginManager<TContext>(
             await LoadFromFile(Path.ChangeExtension(file, "dll"), manifest);
         }
     }
+    
     public async Task InvokeStart(TContext context)
     {
         var entries = await base.RetrieveAll();
