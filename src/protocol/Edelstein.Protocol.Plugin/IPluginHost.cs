@@ -1,5 +1,4 @@
-﻿using System;
-using Edelstein.Protocol.Utilities.Repositories;
+﻿using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Protocol.Plugin;
 

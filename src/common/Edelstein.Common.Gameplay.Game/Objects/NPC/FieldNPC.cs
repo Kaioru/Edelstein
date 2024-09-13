@@ -1,11 +1,9 @@
 ﻿using System;
-using Edelstein.Common.Gameplay.Game.Objects.Users;
 using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
-using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 using Edelstein.Protocol.Gameplay.Game.Templates.Spatial;
 using Edelstein.Protocol.Network.Packets;
 using Edelstein.Protocol.Utilities.Spatial;

@@ -165,7 +165,7 @@ public class Field : AbstractFieldObjectPool, IField
 
             if (obj.FieldSplit != null)
             {
-                if (obj is IFieldUser observer)
+                if (obj is IFieldSplitObserver observer)
                     foreach (var split in observer.Observing.ToImmutableArray())
                         await split.Unobserve(observer, true);
                 await obj.FieldSplit.Leave(obj);

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Duey.Abstractions;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
-using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 using Microsoft.Extensions.Logging;
 

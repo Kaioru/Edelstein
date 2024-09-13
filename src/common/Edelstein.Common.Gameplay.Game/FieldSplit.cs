@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Objects;
-using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Common.Gameplay.Game;
@@ -18,7 +17,7 @@ public class FieldSplit(
 ) : AbstractFieldObjectPool, IFieldSplit
 {
     private readonly HashSet<IFieldObject> _objects = new();
-    private readonly HashSet<IFieldUser> _observers = new();
+    private readonly HashSet<IFieldSplitObserver> _observers = new();
     private readonly SemaphoreSlim _lock = new(1, 1);
     
     public int Row { get; } = row;
@@ -30,7 +29,7 @@ public class FieldSplit(
     public override IEnumerable<IFieldObject> GetObjects()
         => _objects;
 
-    public IEnumerable<IFieldUser> GetObservers()
+    public IEnumerable<IFieldSplitObserver> GetObservers()
         => _observers;
     
     public override async Task Enter(IFieldObject obj)
@@ -50,7 +49,7 @@ public class FieldSplit(
             var toObservers = GetObservers()
                 .ToImmutableList();
             var fromObservers = from?.GetObservers()
-                .ToImmutableList() ?? ImmutableList<IFieldUser>.Empty;
+                .ToImmutableList() ?? ImmutableList<IFieldSplitObserver>.Empty;
             var newWatchers = toObservers
                 .Where(w => w != obj)
                 .Where(obj.IsVisibleTo)
@@ -68,7 +67,7 @@ public class FieldSplit(
             await Task.WhenAll(newWatchers.Select(w => w.Dispatch(dispatchEnter)));
             await Task.WhenAll(oldWatchers.Select(w => w.Dispatch(dispatchLeave)));
 
-            if (obj is IFieldUser observer)
+            if (obj is IFieldSplitObserver observer)
             {
                 var enclosingSplits = observer.Field?.GetEnclosingSplits(this) ?? Array.Empty<IFieldSplit>();
                 var oldSplits = observer.Observing
@@ -118,27 +117,27 @@ public class FieldSplit(
         return Task.CompletedTask;
     }
     
-    public async Task Observe(IFieldUser user)
+    public async Task Observe(IFieldSplitObserver observer)
     {
-        _observers.Add(user);
-        user.Observing.Add(this);
+        _observers.Add(observer);
+        observer.Observing.Add(this);
 
         await Task.WhenAll(_objects
-            .Where(o => o != user)
-            .Where(o => o.IsVisibleTo(user))
-            .Select(o => user.Dispatch(o.GetDispatchEnterField())));
+            .Where(o => o != observer)
+            .Where(o => o.IsVisibleTo(observer))
+            .Select(o => observer.Dispatch(o.GetDispatchEnterField())));
     }
     
-    public async Task Unobserve(IFieldUser user, bool isLeaveField = false)
+    public async Task Unobserve(IFieldSplitObserver observer, bool isLeaveField = false)
     {
-        _observers.Remove(user);
-        user.Observing.Remove(this);
+        _observers.Remove(observer);
+        observer.Observing.Remove(this);
 
         if (!isLeaveField)
             await Task.WhenAll(_objects
-                .Where(o => o != user)
-                .Where(o => o.IsVisibleTo(user))
-                .Select(o => user.Dispatch(o.GetDispatchLeaveField())));
+                .Where(o => o != observer)
+                .Where(o => o.IsVisibleTo(observer))
+                .Select(o => observer.Dispatch(o.GetDispatchLeaveField())));
     }
     
     public override Task Dispatch(IDispatchable dispatch, IFieldObject? source = null)

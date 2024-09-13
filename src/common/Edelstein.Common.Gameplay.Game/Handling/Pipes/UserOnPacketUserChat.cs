@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Gameplay.Game.Objects.Users;
+using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Network.Packets.Types;
 using Edelstein.Protocol.Utilities.Pipelines;
 using UserChatRecv = Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv.UserChat;
@@ -27,7 +27,7 @@ public class UserOnPacketUserChat : AbstractUserOnPacketInFieldPipe<UserChatRecv
         if (message.Packet.OnlyBalloon) return;
         
         await Task.WhenAll(message.User.Field.GetObjects()
-            .OfType<IFieldUser>()
+            .OfType<IFieldSplitObserver>()
             .Except(message.User.FieldSplit.GetObservers())
             .Select(u => u.Dispatch(new UserChatNLCPQSend
             {
