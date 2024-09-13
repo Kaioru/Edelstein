@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Edelstein.Common.Utilities.Repositories;
 using Edelstein.Protocol.Plugin;
 using McMaster.NETCore.Plugins;
-using Medallion.Collections;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -97,25 +96,11 @@ public class PluginManager<TContext>(
         }
     }
     
+    public async Task InvokeInit(TContext context)
+        => await Task.WhenAll((await base.RetrieveAll()).Select(p => p.Plugin.OnInit(p.Host, context)));
+    
     public async Task InvokeStart(TContext context)
-    {
-        var entries = await base.RetrieveAll();
-        var dependencies = entries
-            .ToDictionary(
-                e => e.Plugin.ID,
-                e => e.Host.Manifest?.Dependencies ?? new List<string>()
-            );
-        
-        foreach (var id in dependencies
-                     .Keys
-                     .OrderTopologicallyBy(e => dependencies[e]))
-        {
-            var entry = await Retrieve(id);
-
-            if (entry != null)
-                await entry.Plugin.OnStart(entry, context);
-        }
-    }
+        => await Task.WhenAll((await base.RetrieveAll()).Select(p => p.Plugin.OnStart(p.Host, context)));
 
     public async Task InvokeStop()
         => await Task.WhenAll((await base.RetrieveAll()).Select(p => p.Plugin.OnStop()));

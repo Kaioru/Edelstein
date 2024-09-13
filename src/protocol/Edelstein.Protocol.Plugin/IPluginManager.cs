@@ -11,6 +11,7 @@ public interface IPluginManager<TContext> :
     Task LoadFromFile(string path);
     Task LoadFromDirectory(string directory);
 
+    Task InvokeInit(TContext context);
     Task InvokeStart(TContext context);
     Task InvokeStop();
 }

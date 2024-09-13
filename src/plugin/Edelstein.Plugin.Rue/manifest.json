@@ -2,7 +2,5 @@
   "Name": "Rue",
   "Description": "A collection of sensible additions to Edelstein",
 
-  "EntryPoint": "Edelstein.Plugin.Rue.dll",
-  
-  "Dependencies": []
+  "EntryPoint": "Edelstein.Plugin.Rue.dll"
 }

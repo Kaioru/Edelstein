@@ -30,6 +30,7 @@ public class SystemHostService<TStageSystem, TStageSystemUser, TContext>(
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await plugins.LoadFromDirectory(Path.GetFullPath(config.Value.PluginDirectory));
+        await plugins.InvokeInit(context);
         await plugins.InvokeStart(context);
 
         Context = await new NettyTransportAcceptor<TStageSystemUser>(
