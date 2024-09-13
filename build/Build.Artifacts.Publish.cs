@@ -38,9 +38,11 @@ partial class Build
             foreach (var runtime in Runtimes)
             {
                 var outputRuntimeDirectory = OutputExeDirectory / $"{runtime}-{version}";
+                var outputRuntimePluginsDirectory = outputRuntimeDirectory / "plugins";
                 var outputRuntimeMigrationsDirectory = outputRuntimeDirectory / "migrations";
 
                 outputRuntimeDirectory.CreateOrCleanDirectory();
+                outputRuntimePluginsDirectory.CreateOrCleanDirectory();
                 
                 foreach (var project in SourceAppSolutionFolder.Projects)
                 {
