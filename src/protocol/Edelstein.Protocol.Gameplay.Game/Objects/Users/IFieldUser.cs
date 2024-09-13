@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
-using Edelstein.Protocol.Network;
 using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Users;

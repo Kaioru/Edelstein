@@ -35,7 +35,7 @@ public class FieldNPC(
             ObjectID = ObjectID ?? 0,
             Info = this.ToStructured()
         };
- 
+
     public override IDispatchable GetDispatchLeaveField(bool isLeaveField = false)
         => new NPCLeaveField
         {

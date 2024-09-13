@@ -1,5 +1,4 @@
 ﻿using Edelstein.Protocol.Utilities.Spatial;
-using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Protocol.Gameplay.Game.Templates;
 

@@ -5,11 +5,9 @@ using System.Linq;
 using Duey.Abstractions;
 using Edelstein.Common.Gameplay.Game.Templates.Spatial;
 using Edelstein.Common.Utilities.Spatial;
-using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Gameplay.Game.Templates.Spatial;
 using Edelstein.Protocol.Utilities.Spatial;
-using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Templates;
 

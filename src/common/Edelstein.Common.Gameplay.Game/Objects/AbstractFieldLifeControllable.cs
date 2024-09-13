@@ -31,6 +31,7 @@ public abstract class AbstractFieldLifeControllable<TMovePath, TMoveAction>(
         if (controller == null) return;
 
         controller.Controlling.Add(this);
+        
         await controller.Dispatch(GetDispatchChangeController(controller));
     }
 
