@@ -38,6 +38,7 @@ public class FieldUser(
     public Character Character => character;
 
     public ICollection<IFieldSplit> Observing { get; } = new List<IFieldSplit>();
+    public ICollection<IFieldObjectControllable> Controlling { get; } = new List<IFieldObjectControllable>();
 
     public IFieldUserStats Stats { get; private set; } = new FieldUserStats();
 

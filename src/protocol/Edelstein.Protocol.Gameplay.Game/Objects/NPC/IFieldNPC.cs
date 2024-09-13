@@ -3,7 +3,7 @@ using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 
-public interface IFieldNPC : IFieldLife<IFieldNPCMovePath, IFieldNPCMoveAction>
+public interface IFieldNPC : IFieldLife<IFieldNPCMovePath, IFieldNPCMoveAction>, IFieldObjectControllable
 {
     INPCTemplate Template { get; }
     IRect2D Bounds { get; }

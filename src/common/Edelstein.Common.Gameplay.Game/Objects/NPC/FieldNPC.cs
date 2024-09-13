@@ -17,9 +17,9 @@ public class FieldNPC(
     IRect2D? bounds = null,
     bool facingLeft = true,
     bool enabled = true
-) : AbstractFieldLife<IFieldNPCMovePath, IFieldNPCMoveAction>(
-        position, 
-        foothold, 
+) : AbstractFieldLifeControllable<IFieldNPCMovePath, IFieldNPCMoveAction>(
+        position,
+        foothold,
         new FieldNPCMoveAction(Convert.ToByte(facingLeft))),
     IFieldNPC
 {
@@ -33,22 +33,22 @@ public class FieldNPC(
         => new NPCEnterField
         {
             ObjectID = ObjectID ?? 0,
-            TemplateID = Template.ID,
-            
-            X = (short)position.X,
-            Y = (short)position.Y,
-            MoveAction = Action.Value,
-            Foothold = (byte)(Foothold?.ID ?? 0),
-            
-            RangeMin = (short)Bounds.Left,
-            RangeMax = (short)Bounds.Right,
-            
-            Enabled = IsEnabled
+            Info = this.ToStructured()
         };
 
     public override IDispatchable GetDispatchLeaveField(bool isLeaveField = false)
         => new NPCLeaveField
         {
             ObjectID = ObjectID ?? 0
+        };
+
+    public override IDispatchable GetDispatchChangeController(IFieldObjectController? controller = null)
+        => new NPCChangeController
+        {
+            IsSetLocalNPC = controller != null,
+            ObjectID = ObjectID ?? 0,
+            Info = controller != null
+                ? this.ToStructured()
+                : null
         };
 }

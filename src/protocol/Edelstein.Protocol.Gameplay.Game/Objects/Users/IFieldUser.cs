@@ -9,6 +9,7 @@ namespace Edelstein.Protocol.Gameplay.Game.Objects.Users;
 
 public interface IFieldUser : 
     IFieldLife<IFieldUserMovePath, IFieldUserMoveAction>, 
+    IFieldObjectController,
     IFieldSplitObserver
 {
     IGameStageSystem System { get; }

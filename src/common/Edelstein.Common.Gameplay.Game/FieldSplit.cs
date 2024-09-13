@@ -82,6 +82,8 @@ public class FieldSplit(
                 await Task.WhenAll(oldSplits.Select(s => s!.Unobserve(observer)));
                 await Task.WhenAll(newSplits.Select(s => s!.Observe(observer)));
             }
+            
+            await UpdateControllableObjects();
         }
         finally
         {
@@ -98,6 +100,7 @@ public class FieldSplit(
 
             await MigrateOut(obj);
             await Dispatch(obj.GetDispatchLeaveField(true), obj);
+            await UpdateControllableObjects();
         }
         finally
         {
@@ -126,6 +129,7 @@ public class FieldSplit(
             .Where(o => o != observer)
             .Where(o => o.IsVisibleTo(observer))
             .Select(o => observer.Dispatch(o.GetDispatchEnterField())));
+        await UpdateControllableObjects();
     }
     
     public async Task Unobserve(IFieldSplitObserver observer, bool isLeaveField = false)
@@ -138,10 +142,26 @@ public class FieldSplit(
                 .Where(o => o != observer)
                 .Where(o => o.IsVisibleTo(observer))
                 .Select(o => observer.Dispatch(o.GetDispatchLeaveField())));
+        await UpdateControllableObjects();
     }
     
     public override Task Dispatch(IDispatchable dispatch, IFieldObject? source = null)
         => Task.WhenAll(_observers
             .Where(o => o != source)
             .Select(o => o.Dispatch(dispatch)));
+    
+    private async Task UpdateControllableObjects()
+    {
+        var controllers = GetObservers()
+            .OfType<IFieldObjectController>()
+            .OrderBy(u => u.Controlling.Count)
+            .ToImmutableArray();
+        var controlled = GetObjects()
+            .OfType<IFieldObjectControllable>()
+            .ToImmutableArray();
+
+        await Task.WhenAll(controlled
+            .Where(c => c.Controller == null || !controllers.Contains(c.Controller))
+            .Select(c => c.Control(controllers.FirstOrDefault(u => u.IsVisibleTo(c)))));
+    }
 }
