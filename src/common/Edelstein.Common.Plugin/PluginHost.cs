@@ -55,4 +55,23 @@ public record PluginHost<TContext>(
             }
         }
     }
+    
+    public T? ImportMethod<T>(string name) where T : Delegate
+    {
+        if (!_exports.TryGetValue(name, out var methods)) return null;
+        
+        foreach (var method in methods)
+        {
+            try
+            {
+                return (T)Delegate.CreateDelegate(typeof(T), null, method);
+            }
+            catch
+            {
+                continue;
+            }
+        }
+
+        return default;
+    }
 }

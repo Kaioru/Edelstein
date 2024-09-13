@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Utilities.Repositories;
+﻿using System;
+using Edelstein.Protocol.Utilities.Repositories;
 
 namespace Edelstein.Protocol.Plugin;
 
@@ -10,4 +11,6 @@ public interface IPluginHost<TContext> : IRepositoryEntry<string>
 
     void Export<T>();
     void Import<T>();
+    
+    T? ImportMethod<T>(string name) where T : Delegate;
 }

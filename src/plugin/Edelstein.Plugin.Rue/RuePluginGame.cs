@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Edelstein.Protocol.Gameplay.Login.Contexts;
+using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Plugin;
-using Edelstein.Protocol.Plugin.Login;
+using Edelstein.Protocol.Plugin.Game;
 
 namespace Edelstein.Plugin.Rue;
 
-public class TestPlugin : ILoginPlugin
+public class RuePluginGame : IGamePlugin
 {
     public string ID => "Rue";
     
-    public Task OnStart(IPluginHost<LoginContext> host, LoginContext ctx)
+    public Task OnStart(IPluginHost<GameContext> host, GameContext ctx)
     {
         Console.WriteLine("Started");
         return Task.CompletedTask;
