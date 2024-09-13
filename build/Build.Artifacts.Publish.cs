@@ -14,7 +14,6 @@ partial class Build
 
     [CanBeNull] SolutionFolder SourceSolutionFolder => Solution?.GetSolutionFolder("src");
     [CanBeNull] SolutionFolder SourceAppSolutionFolder => SourceSolutionFolder?.GetSolutionFolder("app");
-    [CanBeNull] SolutionFolder SourcePluginSolutionFolder => SourceSolutionFolder?.GetSolutionFolder("plugin");
     [CanBeNull] SolutionFolder SourceCommonSolutionFolder => SourceSolutionFolder?.GetSolutionFolder("common");
 
     IEnumerable<string> Runtimes => new[]
@@ -39,7 +38,6 @@ partial class Build
             foreach (var runtime in Runtimes)
             {
                 var outputRuntimeDirectory = OutputExeDirectory / $"{runtime}-{version}";
-                var outputRuntimePluginsDirectory = outputRuntimeDirectory / "plugins";
                 var outputRuntimeMigrationsDirectory = outputRuntimeDirectory / "migrations";
 
                 outputRuntimeDirectory.CreateOrCleanDirectory();
@@ -69,15 +67,6 @@ partial class Build
                         }
                     }
 
-                if (SourcePluginSolutionFolder?.Projects != null)
-                    foreach (var project in SourcePluginSolutionFolder.Projects)
-                    {
-                        DotNetTasks.DotNetPublish(s => s
-                            .SetProject(project)
-                            .SetConfiguration(Configuration)
-                            .SetOutput(outputRuntimePluginsDirectory / project.Name));
-                    }
-                
                 outputRuntimeDirectory.ZipTo(OutputExeDirectory / $"{outputRuntimeDirectory.Name}.zip");
             }
         });
