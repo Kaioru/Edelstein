@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Frozen;
+using System.Collections.Generic;
 using System.Linq;
 using Duey.Abstractions;
 using Edelstein.Common.Gameplay.Game.Templates.Spatial;
 using Edelstein.Common.Utilities.Spatial;
+using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Gameplay.Game.Templates.Spatial;
 using Edelstein.Protocol.Utilities.Spatial;
+using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Templates;
 
@@ -32,6 +35,8 @@ public record FieldTemplate : IFieldTemplate
     public int MobCapacityMin { get; }
     public int MobCapacityMax { get; }
     
+    public IReadOnlyCollection<IFieldTemplateLife> Life { get; }
+
     public FieldTemplate(
         int id,
         IDataNode foothold,
@@ -102,5 +107,9 @@ public record FieldTemplate : IFieldTemplate
 
         MobCapacityMin = (int)mobCapacity;
         MobCapacityMax = (int)mobCapacity * 2;
+
+        Life = life.Children
+            .Select(p => new FieldTemplateLife(p))
+            .ToFrozenSet();
     }
 }

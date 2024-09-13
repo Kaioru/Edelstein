@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Templates.Spatial;
+﻿using System.Collections.Generic;
+using Edelstein.Protocol.Gameplay.Game.Templates.Spatial;
 using Edelstein.Protocol.Utilities.Spatial;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -22,4 +23,6 @@ public interface IFieldTemplate : ITemplate
     double MobRate { get; }
     int MobCapacityMin { get; }
     int MobCapacityMax { get; }
+    
+    IReadOnlyCollection<IFieldTemplateLife> Life { get; }
 }

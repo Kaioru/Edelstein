@@ -10,7 +10,7 @@ public static class IFieldNPCExtensions
             X = (short)npc.Position.X,
             Y = (short)npc.Position.Y,
             MoveAction = npc.Action.Value,
-            Foothold = (byte)(npc.Foothold?.ID ?? 0),
+            Foothold = (short)(npc.Foothold?.ID ?? 0),
 
             RangeMin = (short)npc.Bounds.Left,
             RangeMax = (short)npc.Bounds.Right,

@@ -13,7 +13,7 @@ namespace Edelstein.Common.Gameplay.Game.Objects.NPC;
 public class FieldNPC(
     INPCTemplate template,
     IPoint2D position,
-    IFieldFoothold foothold,
+    IFieldFoothold? foothold = null,
     IRect2D? bounds = null,
     bool facingLeft = true,
     bool enabled = true
