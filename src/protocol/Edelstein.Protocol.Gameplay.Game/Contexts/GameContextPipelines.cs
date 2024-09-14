@@ -1,5 +1,6 @@
 ﻿using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Gameplay.Contracts.Packets.Recv;
+using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
 using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Utilities.Pipelines;
 
@@ -13,5 +14,6 @@ public record GameContextPipelines(
     IPipeline<UserOnException<IGameStageSystem, IGameStageSystemUser>> UserOnException,
     IPipeline<UserOnDisconnect<IGameStageSystem, IGameStageSystemUser>> UserOnDisconnect,
     
-    IPipeline<PipedPacketMessage<IGameStageSystem, IGameStageSystemUser, MigrateIn>> UserOnPacketMigrateIn 
+    IPipeline<PipedPacketMessage<IGameStageSystem, IGameStageSystemUser, MigrateIn>> UserOnPacketMigrateIn,
+    IPipeline<PipedPacketMessage<IGameStageSystem, IGameStageSystemUser, UserChat>> UserOnPacketUserChat
 );
