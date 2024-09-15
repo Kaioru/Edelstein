@@ -1,6 +1,5 @@
 ﻿using Edelstein.Application.Server;
 using Edelstein.Application.Server.Commands;
-using Edelstein.Application.Server.Commands.Accounts;
 using Spectre.Console.Cli;
 using Spectre.Console.Cli.Extensions.DependencyInjection;
 

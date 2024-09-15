@@ -6,9 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace Edelstein.Application.Server.Commands.Accounts;
+namespace Edelstein.Application.Server.Commands;
 
-public class AccountCreateCommand : AsyncCommand<AccountCreateCommand.Settings>
+public class AccountCreateCommand(
+    IAuthService service
+) : AsyncCommand<AccountCreateCommand.Settings>
 {
     public class Settings : CommandSettings
     {
@@ -23,9 +25,6 @@ public class AccountCreateCommand : AsyncCommand<AccountCreateCommand.Settings>
 
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
-        var builder = ProgramHostBuilder.CreateBuilder();
-        var host = builder.Build();
-        var service = host.Services.GetRequiredService<IAuthService>();
         var response = await service.Register(new AuthServiceRequest
         {
             Username = settings.Username,
