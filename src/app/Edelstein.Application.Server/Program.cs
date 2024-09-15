@@ -12,10 +12,19 @@ app.Configure(c =>
     c
         .AddCommand<StartCommand>("start")
         .WithDescription("Starts the service daemon");
-    
-    c.AddBranch("accounts", c =>
+
+    c
+        .AddBranch("database", c2 =>
+        {
+            c2
+                .AddCommand<DatabaseMigrateCommand>("migrate")
+                .WithDescription("Migrates the current database");
+        })
+        .WithAlias("db");
+
+    c.AddBranch("accounts", c2 =>
     {
-        c
+        c2
             .AddCommand<AccountCreateCommand>("create")
             .WithDescription("Creates an account");
     });
