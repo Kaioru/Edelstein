@@ -19,6 +19,9 @@ app.Configure(c =>
             c2
                 .AddCommand<DatabaseMigrateCommand>("migrate")
                 .WithDescription("Migrates the current database");
+            c2
+                .AddCommand<DatabaseDeleteCommand>("delete")
+                .WithDescription("Deletes the current database");
         })
         .WithAlias("db");
 
