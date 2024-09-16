@@ -56,6 +56,17 @@ public record PluginHost<TContext>(
         }
     }
     
+    public T? ExportMethod<T>(string name, T method) where T : Delegate
+    {
+        if (!_exports.TryGetValue(name, out var methods))
+            _exports[name] = methods = new List<MethodInfo>();
+        
+        if (!methods.Contains(method.Method))
+            methods.Add(method.Method);
+
+        return method;
+    }
+
     public T? ImportMethod<T>(string name) where T : Delegate
     {
         if (!_exports.TryGetValue(name, out var methods)) return null;

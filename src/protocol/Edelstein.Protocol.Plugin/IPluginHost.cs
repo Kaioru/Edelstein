@@ -11,6 +11,7 @@ public interface IPluginHost<TContext> : IRepositoryEntry<string>
 
     void Export<T>();
     void Import<T>();
-    
+
+    T? ExportMethod<T>(string name, T method) where T : Delegate;
     T? ImportMethod<T>(string name) where T : Delegate;
 }
