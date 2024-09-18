@@ -94,12 +94,18 @@ internal static class ProgramHostBuilder
             {
                 case "Sqlite":
                     SqliteExceptionProcessorExtensions.UseExceptionProcessor(options
-                        .UseSqlite(builder.Configuration.GetConnectionString(SqliteDbContextFactory.Sqlite.Key))
+                        .UseSqlite(
+                            builder.Configuration.GetConnectionString(SqliteDbContextFactory.Sqlite.Key),
+                            x => x.MigrationsAssembly(typeof(SqliteDbMarker).Assembly)
+                        )
                     );
                     break;
                 case "Pgsql":
                     PgSqlExceptionProcessorExtensions.UseExceptionProcessor(options
-                        .UseNpgsql(builder.Configuration.GetConnectionString(PgsqlDbContextFactory.Pgsql.Key))
+                        .UseNpgsql(builder.Configuration.GetConnectionString(
+                                PgsqlDbContextFactory.Pgsql.Key),
+                            x => x.MigrationsAssembly(typeof(PgsqlDbMarker).Assembly)
+                        )
                     );
                     break;
             }

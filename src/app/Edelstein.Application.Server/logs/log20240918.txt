@@ -1,0 +1,74 @@
+2024-09-18 10:16:43.422 +08:00 [DBG] LoginWorldInfoTemplateLoader loaded 24 LoginWorldInfoTemplate templates in 00:00:00.0030859
+2024-09-18 10:16:43.422 +08:00 [DBG] NPCTemplateLoader loaded 1,838 INPCTemplate templates in 00:00:00.0048105
+2024-09-18 10:16:43.422 +08:00 [DBG] FieldTemplateLoader loaded 6,444 IFieldTemplate templates in 00:00:00.0108997
+2024-09-18 10:16:43.422 +08:00 [DBG] MobTemplateLoader loaded 1,887 IMobTemplate templates in 00:00:00.0057478
+2024-09-18 10:16:43.544 +08:00 [DBG] ItemTemplateLoader loaded 12,470 IItemTemplate templates in 00:00:00.1328005
+2024-09-18 10:16:43.699 +08:00 [INF] Bera-1 socket acceptor for v95.1 (Locale 8) bound at 127.0.0.1:7675
+2024-09-18 10:16:43.710 +08:00 [INF] Scania-1 socket acceptor for v95.1 (Locale 8) bound at 127.0.0.1:7575
+2024-09-18 10:16:43.719 +08:00 [INF] Scania-2 socket acceptor for v95.1 (Locale 8) bound at 127.0.0.1:7576
+2024-09-18 10:16:43.729 +08:00 [INF] Login-1 socket acceptor for v95.1 (Locale 8) bound at 127.0.0.1:8484
+2024-09-18 10:16:43.731 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2024-09-18 10:16:43.732 +08:00 [INF] Hosting environment: Production
+2024-09-18 10:16:43.732 +08:00 [INF] Content root path: /Users/keith/Workspace/Edelstein/src/app/Edelstein.Application.Server
+2024-09-18 10:16:44.648 +08:00 [INF] Registered stage Scania-1 in server registry
+2024-09-18 10:16:44.648 +08:00 [INF] Registered stage Bera-1 in server registry
+2024-09-18 10:16:44.648 +08:00 [INF] Registered stage Login-1 in server registry
+2024-09-18 10:16:44.648 +08:00 [INF] Registered stage Scania-2 in server registry
+2024-09-18 10:17:45.571 +08:00 [INF] Application is shutting down...
+2024-09-18 10:17:45.594 +08:00 [INF] Deregistered stage Login-1 from server registry
+2024-09-18 10:17:45.596 +08:00 [INF] Login-1 socket acceptor shutting down, this may take awhile..
+2024-09-18 10:17:45.607 +08:00 [INF] Login-1 socket acceptor finished shutting down
+2024-09-18 10:17:45.612 +08:00 [INF] Deregistered stage Scania-2 from server registry
+2024-09-18 10:17:45.612 +08:00 [INF] Scania-2 socket acceptor shutting down, this may take awhile..
+2024-09-18 10:17:45.612 +08:00 [INF] Scania-2 socket acceptor finished shutting down
+2024-09-18 10:17:45.615 +08:00 [INF] Deregistered stage Scania-1 from server registry
+2024-09-18 10:17:45.615 +08:00 [INF] Scania-1 socket acceptor shutting down, this may take awhile..
+2024-09-18 10:17:45.615 +08:00 [INF] Scania-1 socket acceptor finished shutting down
+2024-09-18 10:17:45.618 +08:00 [INF] Deregistered stage Bera-1 from server registry
+2024-09-18 10:17:45.618 +08:00 [INF] Bera-1 socket acceptor shutting down, this may take awhile..
+2024-09-18 10:17:45.618 +08:00 [INF] Bera-1 socket acceptor finished shutting down
+2024-09-18 11:04:15.225 +08:00 [ERR] Failed executing DbCommand (6ms) [Parameters=[@p0='?' (Size = 60), @p1='?' (Size = 10)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "identities" ("Password", "Username")
+VALUES (@p0, @p1)
+RETURNING "ID";
+2024-09-18 11:04:15.259 +08:00 [ERR] An exception occurred in the database while saving changes for context type 'Edelstein.Common.Database.GameDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such table: identities'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such table: identities'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
