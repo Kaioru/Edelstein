@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Edelstein.Protocol.Services.Auth;
 using Edelstein.Protocol.Services.Auth.Contracts;
-using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
 using Spectre.Console.Cli;
 

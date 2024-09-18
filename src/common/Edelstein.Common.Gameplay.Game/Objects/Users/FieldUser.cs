@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
+using Edelstein.Protocol.Gameplay.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
@@ -41,6 +44,10 @@ public class FieldUser(
     public ICollection<IFieldObjectControllable> Controlling { get; } = new List<IFieldObjectControllable>();
 
     public IFieldUserStats Stats { get; private set; } = new FieldUserStats();
+
+    public bool IsConversing => ActiveConversation != null;
+
+    public IConversationContext? ActiveConversation { get; private set; }
 
     public bool IsFirstEnter { get; set; } = true;
 
@@ -119,6 +126,44 @@ public class FieldUser(
         {
             _lock.Release();
         }
+    }
+    
+    public async Task Converse<TSelf, TTarget>(
+        IConversation<TSelf, TTarget> conversation, 
+        Func<IConversationContext, TSelf> getSpeakerSelf, 
+        Func<IConversationContext, TTarget> getSpeakerTarget
+    )
+        where TSelf : IConversationSpeaker 
+        where TTarget : IConversationSpeaker
+    {
+        if (IsConversing) return;
+
+        var ctx = new ConversationContext(this);
+        var speakerSelf = getSpeakerSelf.Invoke(ctx);
+        var speakerTarget = getSpeakerTarget.Invoke(ctx);
+
+        ActiveConversation = ctx;
+
+        try
+        {
+            await Task.Run(
+                () => conversation.Start(ctx, speakerSelf, speakerTarget),
+                ctx.Token
+            );
+        }
+        finally
+        {
+            await EndConversation();
+            // await ModifyStats(exclRequest: true);
+        }
+    }
+
+    public Task EndConversation()
+    {
+        if (!IsConversing) return Task.CompletedTask;
+        ActiveConversation?.Dispose();
+        ActiveConversation = null;
+        return Task.CompletedTask;
     }
 
     private async Task UpdateStats()

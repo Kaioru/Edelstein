@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Game.Objects;
 
-public enum FieldObjectType
+public enum FieldObjectType: byte
 {
     User,
     Summoned,

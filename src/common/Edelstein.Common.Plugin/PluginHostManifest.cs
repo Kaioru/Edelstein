@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Edelstein.Protocol.Plugin;
+﻿using Edelstein.Protocol.Plugin;
 
 namespace Edelstein.Common.Plugin;
 
