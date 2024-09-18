@@ -9,6 +9,7 @@ using Edelstein.Common.Database;
 using Edelstein.Common.Database.Pgsql;
 using Edelstein.Common.Database.Sqlite;
 using Edelstein.Common.Gameplay.Game;
+using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Plugin;
@@ -23,6 +24,7 @@ using Edelstein.Common.Utilities.Templates;
 using Edelstein.Common.Utilities.Tickers;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contexts;
+using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
@@ -147,6 +149,7 @@ internal static class ProgramHostBuilder
 
         builder.Services.AddScoped<IFieldManager, FieldManager>();
         builder.Services.AddScoped<IFieldUserStatsCalculator, FieldUserStatsCalculator>();
+        builder.Services.AddScoped(typeof(IConversationManager<,>), typeof(ConversationManager<,>));
         
         return builder;
     }

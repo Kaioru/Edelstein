@@ -7,6 +7,7 @@ public record GameContext(
     ITicker Ticker,
     IDateTimeProvider DateTime,
     GameContextManagers Managers,
+    GameContextConversations Conversations,
     GameContextCalculators Calculators,
     GameContextTemplates Templates,
     GameContextPipelines Pipelines
