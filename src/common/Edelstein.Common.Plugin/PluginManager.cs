@@ -51,7 +51,13 @@ public class PluginManager<TContext>(
                 }
                 
                 await Insert(new PluginManagerEntry<TContext>(
-                    new PluginHost<TContext>(manifest, this, plugin),
+                    new PluginHost<TContext>(
+                        manifest, 
+                        this, 
+                        plugin,
+                        AppDomain.CurrentDomain.BaseDirectory,
+                        path
+                    ),
                     plugin
                 ));
             }

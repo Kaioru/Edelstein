@@ -9,13 +9,14 @@ namespace Edelstein.Common.Plugin;
 public record PluginHost<TContext>(
     IPluginHostManifest? Manifest,
     IPluginManager<TContext> Manager,
-    IPlugin<TContext> Plugin
+    IPlugin<TContext> Plugin, 
+    string DirectoryApp, 
+    string DirectoryPlugin
 ) : IPluginHost<TContext>
 {
     private readonly Dictionary<string, List<MethodInfo>> _exports = new();
 
     public string ID => Plugin.ID;
-    
     public void Export<T>()
     {
         foreach (var method in typeof(T)
