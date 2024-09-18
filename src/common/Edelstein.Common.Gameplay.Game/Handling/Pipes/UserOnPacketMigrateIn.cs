@@ -1,6 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Edelstein.Common.Gameplay.Game.Conversations;
-using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Game.Objects.Users;
 using Edelstein.Common.Gameplay.Handling.Pipes;
 using Edelstein.Protocol.Gameplay.Contracts.Packets.Recv;
@@ -41,11 +39,5 @@ public class UserOnPacketMigrateIn(
 
         message.User.FieldUser = fieldUser;
         await field.Enter(fieldUser);
-
-        await fieldUser.Converse(
-            new TestConversation(),
-            c => new ConversationSpeaker(c),
-            c => new ConversationSpeaker(c)
-        );
     }
 }
