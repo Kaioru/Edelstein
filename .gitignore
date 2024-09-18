@@ -13,6 +13,8 @@
 !**/devsettings.json
 !**/stage*.json
 
+*.txt
+
 !**/packages.lock.json
 
 .env

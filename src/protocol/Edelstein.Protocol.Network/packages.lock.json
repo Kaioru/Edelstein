@@ -934,9 +934,6 @@
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
         }
-      },
-      "edelstein.protocol.utilities": {
-        "type": "Project"
       }
     }
   }
