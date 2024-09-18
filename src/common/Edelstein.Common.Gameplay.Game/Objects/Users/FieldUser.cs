@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Game.Conversations;
+using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Game;
@@ -127,7 +128,24 @@ public class FieldUser(
             _lock.Release();
         }
     }
+
+    public Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt)
+        => Prompt((s1, s2) => prompt.Invoke(s1));
     
+    public async Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt)
+    {
+        T? result = default;
+        
+        await Converse(
+            new SystemConversation((self, target) 
+                => result = prompt.Invoke(self, target)),
+            ctx => new ConversationSpeaker(ctx),
+            ctx => new ConversationSpeaker(ctx)
+        );
+        
+        return result;
+    }
+
     public async Task Converse<TSelf, TTarget>(
         IConversation<TSelf, TTarget> conversation, 
         Func<IConversationContext, TSelf> getSpeakerSelf, 
