@@ -16,7 +16,26 @@ public class UserOnPacketUserScriptMessageAnswer : AbstractUserOnPacketInFieldPi
 
         var type = message.Packet.Type;
         var conversation = message.User.ActiveConversation;
-        
+
+        if (message.Packet.Info is StructuredScriptMessageAnswerInfoStatus status)
+        {
+            if (
+                type != ConversationMessageType.Say &&
+                type != ConversationMessageType.AskYesNo &&
+                type != ConversationMessageType.AskAccept &&
+                status.Status == byte.MinValue ||
+                type is
+                    ConversationMessageType.Say or
+                    ConversationMessageType.AskYesNo or
+                    ConversationMessageType.AskAccept &&
+                status.Status == byte.MaxValue
+            )
+            {
+                await message.User.EndConversation();
+                return;
+            }
+        }
+
         switch (message.Packet.Info)
         {
             case StructuredScriptMessageAnswerInfoAnswer<LPString> answerString:
@@ -31,27 +50,11 @@ public class UserOnPacketUserScriptMessageAnswer : AbstractUserOnPacketInFieldPi
             case StructuredScriptMessageAnswerInfoAnswer<bool> answerBool:
                 await conversation.Answer(new ConversationMessageAnswer<bool>(type, answerBool.Answer));
                 break;
-            case StructuredScriptMessageAnswerInfoQuiz quiz:
-                await conversation.Answer(new ConversationMessageAnswer<string>(type, quiz.Answer.Value));
+            case StructuredScriptMessageAnswerInfoQuiz answerQuiz:
+                await conversation.Answer(new ConversationMessageAnswer<string>(type, answerQuiz.Answer.Value));
                 break;
-            case StructuredScriptMessageAnswerInfoStatus status:
-                if (
-                    type != ConversationMessageType.Say &&
-                    type != ConversationMessageType.AskYesNo &&
-                    type != ConversationMessageType.AskAccept &&
-                    status.Status == byte.MinValue ||
-                    type is
-                        ConversationMessageType.Say or
-                        ConversationMessageType.AskYesNo or
-                        ConversationMessageType.AskAccept &&
-                    status.Status == byte.MaxValue
-                )
-                {
-                    await message.User.EndConversation();
-                    return;
-                }
-                
-                await conversation.Answer(new ConversationMessageAnswer<byte>(type, status.Status));
+            case StructuredScriptMessageAnswerInfoStatus answerStatus:
+                await conversation.Answer(new ConversationMessageAnswer<byte>(type, answerStatus.Status));
                 break;
         }
     }
