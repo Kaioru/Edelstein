@@ -56,7 +56,7 @@ public class PluginManager<TContext>(
                         this, 
                         plugin,
                         AppDomain.CurrentDomain.BaseDirectory,
-                        path
+                        Path.GetDirectoryName(path) ?? path
                     ),
                     plugin
                 ));
