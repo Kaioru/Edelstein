@@ -16,6 +16,11 @@
           "System.Memory": "4.5.3"
         }
       },
+      "Microsoft.Extensions.DependencyInjection.Abstractions": {
+        "type": "Transitive",
+        "resolved": "9.0.0-preview.7.24405.7",
+        "contentHash": "ZuoB/44UTW4IbYfHk0yHtZH9LdHkfEeclxvniWs90T+f9x/NQtN4556iNIKar3MASCcrD0n2AE5y/Kv6buuNIA=="
+      },
       "Microsoft.Extensions.ObjectPool": {
         "type": "Transitive",
         "resolved": "6.0.16",
@@ -278,15 +283,8 @@
       },
       "System.Diagnostics.DiagnosticSource": {
         "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "tD6kosZnTAGdrEa0tZSuFyunMbt/5KYDnHdndJYGqZoNy00XVXyACd5d6KnE1YgYv3ne2CjtAfNXo/fwEhnKUA==",
-        "dependencies": {
-          "System.Collections": "4.3.0",
-          "System.Diagnostics.Tracing": "4.3.0",
-          "System.Reflection": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Threading": "4.3.0"
-        }
+        "resolved": "9.0.0-preview.7.24405.7",
+        "contentHash": "aAM2ASxG7VL+BPIO4SgSnIkrFSkrgXff6oENeHJig2JDeQyo6HjoP5X6kSuMxUUOTLpHWVvoEnK1fJHJUtMItg=="
       },
       "System.Diagnostics.Tools": {
         "type": "Transitive",
@@ -986,7 +984,8 @@
       "edelstein.protocol.plugin": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+          "Edelstein.Protocol.Utilities": "[1.0.0, )",
+          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-preview.7.24405.7, )"
         }
       },
       "edelstein.protocol.services.auth": {
@@ -1054,6 +1053,16 @@
         "requested": "[2.0.0, )",
         "resolved": "2.0.0",
         "contentHash": "KP3l7yZoT1uMk8B+rAjZ3VL+2/XfXZxKTx31wDz7JNfcPnUmllJpgoqnDYQcVEJ5e4WLWToBQHZ3OIgOm6T/kg=="
+      },
+      "Microsoft.Extensions.Logging.Abstractions": {
+        "type": "CentralTransitive",
+        "requested": "[9.0.0-preview.7.24405.7, )",
+        "resolved": "9.0.0-preview.7.24405.7",
+        "contentHash": "WFzKiQ5cfQruJgK4vQEklG5Wwiu/Wt+T+eP80AGzzCq9iVgbOo7O1VC9amyO+Bw5WERAt1Yzfye0I0+wVSLhKA==",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-preview.7.24405.7",
+          "System.Diagnostics.DiagnosticSource": "9.0.0-preview.7.24405.7"
+        }
       },
       "Microsoft.IO.RecyclableMemoryStream": {
         "type": "CentralTransitive",

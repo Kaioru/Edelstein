@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Edelstein.Protocol.Plugin;
+using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Plugin;
 
@@ -10,6 +11,7 @@ public record PluginHost<TContext>(
     IPluginHostManifest? Manifest,
     IPluginManager<TContext> Manager,
     IPlugin<TContext> Plugin, 
+    ILogger Logger,
     string DirectoryApp, 
     string DirectoryPlugin
 ) : IPluginHost<TContext>

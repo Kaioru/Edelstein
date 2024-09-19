@@ -12,7 +12,8 @@ using Microsoft.Extensions.Logging;
 namespace Edelstein.Common.Plugin;
 
 public class PluginManager<TContext>(
-    ILogger<PluginManager<TContext>> logger
+    ILogger<PluginManager<TContext>> logger,
+    ILoggerProvider loggerProvider
 ) : Repository<string, PluginManagerEntry<TContext>>, IPluginManager<TContext>
 {
     public new async Task<IPluginHost<TContext>?> Retrieve(string key) 
@@ -55,6 +56,7 @@ public class PluginManager<TContext>(
                         manifest, 
                         this, 
                         plugin,
+                        loggerProvider.CreateLogger(type.FullName ?? type.Name),
                         AppDomain.CurrentDomain.BaseDirectory,
                         Path.GetDirectoryName(path) ?? path
                     ),

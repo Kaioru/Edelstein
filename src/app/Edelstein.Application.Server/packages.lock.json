@@ -1674,7 +1674,8 @@
       "edelstein.protocol.plugin": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Protocol.Utilities": "[1.0.0, )"
+          "Edelstein.Protocol.Utilities": "[1.0.0, )",
+          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-preview.7.24405.7, )"
         }
       },
       "edelstein.protocol.services.auth": {

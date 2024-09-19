@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Edelstein.Protocol.Utilities.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Protocol.Plugin;
 
@@ -9,6 +10,8 @@ public interface IPluginHost<TContext> : IRepositoryEntry<string>
     IPluginHostManifest? Manifest { get; }
     IPluginManager<TContext> Manager { get; }
     IPlugin<TContext> Plugin { get; }
+    
+    ILogger Logger { get; }
     
     string DirectoryApp { get; }
     string DirectoryPlugin { get; }
