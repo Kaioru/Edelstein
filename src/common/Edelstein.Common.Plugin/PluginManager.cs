@@ -13,7 +13,7 @@ namespace Edelstein.Common.Plugin;
 
 public class PluginManager<TContext>(
     ILogger<PluginManager<TContext>> logger,
-    ILoggerProvider loggerProvider
+    ILoggerFactory loggerFactory
 ) : Repository<string, PluginManagerEntry<TContext>>, IPluginManager<TContext>
 {
     public new async Task<IPluginHost<TContext>?> Retrieve(string key) 
@@ -56,7 +56,7 @@ public class PluginManager<TContext>(
                         manifest, 
                         this, 
                         plugin,
-                        loggerProvider.CreateLogger(type.FullName ?? type.Name),
+                        loggerFactory.CreateLogger(type),
                         AppDomain.CurrentDomain.BaseDirectory,
                         Path.GetDirectoryName(path) ?? path
                     ),
