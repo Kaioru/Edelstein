@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Edelstein.Protocol.Utilities.Repositories;
 using Microsoft.Extensions.Logging;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Edelstein.Common.Gameplay.Game.Conversations.Messages;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
@@ -35,13 +34,13 @@ public class ConversationSpeaker(
         => context.Ask(new ConversationMessageAskYesNo(
             this,
             text
-        )).Result;
+        )).Result > 0;
     
     public bool AskAccept(string text)
         => context.Ask(new ConversationMessageAskAccept(
             this,
             text
-        )).Result;
+        )).Result > 0;
     
     public string AskText(string text, string def = "", short lenMin = 0, short lenMax = short.MaxValue) 
         => context.Ask(new ConversationMessageAskText(

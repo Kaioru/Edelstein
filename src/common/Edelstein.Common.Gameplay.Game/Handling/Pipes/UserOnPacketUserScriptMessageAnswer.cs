@@ -47,9 +47,6 @@ public class UserOnPacketUserScriptMessageAnswer : AbstractUserOnPacketInFieldPi
             case StructuredScriptMessageAnswerInfoAnswer<byte> answerByte:
                 await conversation.Answer(new ConversationMessageAnswer<byte>(type, answerByte.Answer));
                 break;
-            case StructuredScriptMessageAnswerInfoAnswer<bool> answerBool:
-                await conversation.Answer(new ConversationMessageAnswer<bool>(type, answerBool.Answer));
-                break;
             case StructuredScriptMessageAnswerInfoQuiz answerQuiz:
                 await conversation.Answer(new ConversationMessageAnswer<string>(type, answerQuiz.Answer.Value));
                 break;

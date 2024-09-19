@@ -6,9 +6,9 @@ namespace Edelstein.Common.Gameplay.Game.Conversations.Messages;
 public record ConversationMessageAskYesNo(
     IConversationSpeaker Speaker,
     string Text
-) : IConversationMessage<bool>
+) : IConversationMessage<byte>
 {
     public ConversationMessageType Type => ConversationMessageType.AskYesNo;
 
-    public bool Check(bool answer) => true;
+    public bool Check(byte answer) => true;
 }

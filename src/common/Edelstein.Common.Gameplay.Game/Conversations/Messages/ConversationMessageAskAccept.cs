@@ -6,9 +6,9 @@ namespace Edelstein.Common.Gameplay.Game.Conversations.Messages;
 public record ConversationMessageAskAccept(
     IConversationSpeaker Speaker,
     string Text
-) : IConversationMessage<bool>
+) : IConversationMessage<byte>
 {
     public ConversationMessageType Type => ConversationMessageType.AskAccept;
 
-    public bool Check(bool answer) => true;
+    public bool Check(byte answer) => true;
 }
