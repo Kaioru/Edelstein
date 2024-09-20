@@ -29,7 +29,7 @@ public abstract class AbstractModifyInventory : IModifyInventory
     public abstract void Sort();
     public abstract void Clear();
 
-    public StructuredModifyInventoryOperations ToStructured()
+    public StructuredModifyInventoryOperations GetDispatch()
         => new()
         {
             Operations = Operations.ToList()

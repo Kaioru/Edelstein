@@ -17,7 +17,7 @@ public interface IModifyInventory<in TSlot> where TSlot : ItemSlotBase
     void Sort();
     void Clear();
 
-    StructuredModifyInventoryOperations ToStructured();
+    StructuredModifyInventoryOperations GetDispatch();
 }
 
 public interface IModifyInventory : IModifyInventory<ItemSlotBase>
