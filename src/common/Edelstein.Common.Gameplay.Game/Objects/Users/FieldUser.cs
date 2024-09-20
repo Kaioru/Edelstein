@@ -172,7 +172,7 @@ public class FieldUser(
         finally
         {
             await EndConversation();
-            // await ModifyStats(exclRequest: true);
+            await this.ModifyStats(exclRequest: true);
         }
     }
 
