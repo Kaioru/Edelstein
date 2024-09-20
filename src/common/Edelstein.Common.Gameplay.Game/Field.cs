@@ -117,14 +117,15 @@ public class Field : AbstractFieldObjectPool, IField
     
     public override async Task Enter(IFieldObject obj)
     {
+        if (obj.Field != null)
+            await obj.Field.Leave(obj);
+        
         await _lock.WaitAsync();
 
         try
         {
             var pool = GetPool(obj.Type);
 
-            if (obj.Field != null)
-                await obj.Field.Leave(obj);
             obj.Field = this;
 
             if (obj is IFieldUser user)
