@@ -32,8 +32,8 @@ public interface IFieldUser :
     Task Initialize();
     Task Modify(Action<IFieldUserModify> action);
 
-    Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt);
-    Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt);
+    Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt) where T : struct;
+    Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt) where T : struct;
     
     Task Converse<TSelf, TTarget>(
         IConversation<TSelf, TTarget> conversation,
