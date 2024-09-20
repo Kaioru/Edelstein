@@ -6,35 +6,35 @@ namespace Edelstein.Protocol.Gameplay.Entities.Modifiers;
 
 public record StructuredModifyStat : StructuredBasePacket, IBinarySerializable
 {
-    public byte? Skin { get; set; }
-    public int? Face { get; set; }
-    public int? Hair { get; set; }
+    [Ignore] public byte? Skin { get; set; }
+    [Ignore] public int? Face { get; set; }
+    [Ignore] public int? Hair { get; set; }
 
     // long Pet1 { get; set; }
     // long Pet2 { get; set; }
     // long Pet3 { get; set; }
 
-    public byte? Level { get; set; }
-    public short? Job { get; set; }
+    [Ignore] public byte? Level { get; set; }
+    [Ignore] public short? Job { get; set; }
 
-    public short? STR { get; set; }
-    public short? DEX { get; set; }
-    public short? INT { get; set; }
-    public short? LUK { get; set; }
+    [Ignore] public short? STR { get; set; }
+    [Ignore] public short? DEX { get; set; }
+    [Ignore] public short? INT { get; set; }
+    [Ignore] public short? LUK { get; set; }
 
-    public int? HP { get; set; }
-    public int? MaxHP { get; set; }
-    public int? MP { get; set; }
-    public int? MaxMP { get; set; }
+    [Ignore] public int? HP { get; set; }
+    [Ignore] public int? MaxHP { get; set; }
+    [Ignore] public int? MP { get; set; }
+    [Ignore] public int? MaxMP { get; set; }
 
-    public short? AP { get; set; }
-    public short? SP { get; set; }
+    [Ignore] public short? AP { get; set; }
+    [Ignore] public short? SP { get; set; }
 
-    public int? EXP { get; set; }
-    public short? POP { get; set; }
+    [Ignore] public int? EXP { get; set; }
+    [Ignore] public short? POP { get; set; }
 
-    public int? Money { get; set; }
-    public int? TempEXP { get; set; }
+    [Ignore] public int? Money { get; set; }
+    [Ignore] public int? TempEXP { get; set; }
     
     public void Serialize(Stream stream, Endianness endianness, BinarySerializationContext serializationContext)
     {
