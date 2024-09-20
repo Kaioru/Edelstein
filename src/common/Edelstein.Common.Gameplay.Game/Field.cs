@@ -133,9 +133,14 @@ public class Field : AbstractFieldObjectPool, IField
                     await Template.Portals.Retrieve(user.Character.FieldPortal) ??
                     Template.Portals.FindClosest(obj.Position).FirstOrDefault();
 
-                if (portal != null)
-                    await user.UpdatePosition(portal);
+                user.Character.FieldID = Template.ID;
 
+                if (portal != null)
+                {
+                    user.Character.FieldPortal = (byte)portal.ID;
+                    await user.UpdatePosition(portal);
+                }
+                
                 await user.Initialize();
                 await user.Dispatch(user.GetDispatchSetField());
 
