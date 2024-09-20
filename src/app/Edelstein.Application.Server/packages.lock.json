@@ -1646,6 +1646,7 @@
       "edelstein.protocol.gameplay.game": {
         "type": "Project",
         "dependencies": {
+          "Duey.Abstractions": "[2.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Services.Server": "[1.0.0, )"
         }
