@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace Edelstein.Common.Utilities.Templates;
 
 public abstract class AbstractTemplateLoader<TTemplate>(
-    ILogger<AbstractTemplateLoader<TTemplate>> logger,
+    ILogger logger,
     ITemplateManagerContext<TTemplate> context
 ) : IBootLoader
     where TTemplate : ITemplate
