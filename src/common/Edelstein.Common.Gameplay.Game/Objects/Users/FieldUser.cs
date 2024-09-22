@@ -27,8 +27,8 @@ public class FieldUser(
     Character character,
     IPoint2D position
 ) : AbstractFieldLife<IFieldUserMovePath, IFieldUserMoveAction>(
-        position, 
-        null, 
+        position,
+        null,
         new FieldUserMoveAction(0)),
     IFieldUser
 {
@@ -36,7 +36,7 @@ public class FieldUser(
     public ISocket Socket => user.Socket;
 
     public IGameStageSystem System => user.System;
-    
+
     public Account Account => account;
     public AccountWorldData AccountWorldData => accountWorldData;
     public Character Character => character;
@@ -75,7 +75,7 @@ public class FieldUser(
                 },
             DateServer = new FDateTime(user.System.Context.DateTime.Now)
         };
-    
+
     public override IDispatchable GetDispatchEnterField(bool isEnterField = false)
         => new UserEnterField
         {
@@ -93,7 +93,7 @@ public class FieldUser(
         {
             ObjectID = ObjectID ?? 0
         };
-    
+
     public async Task Initialize()
     {
         await _lock.WaitAsync();
@@ -131,27 +131,27 @@ public class FieldUser(
 
     public Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt) where T : struct
         => Prompt((s1, s2) => prompt.Invoke(s1));
-    
+
     public async Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt) where T : struct
     {
         T? result = default;
 
         await Converse(
-            new SystemConversation((self, target) 
+            new SystemConversation((self, target)
                 => result = prompt.Invoke(self, target)),
             ctx => new ConversationSpeaker(ctx),
             ctx => new ConversationSpeaker(ctx)
         );
-        
+
         return result;
     }
 
     public async Task Converse<TSelf, TTarget>(
-        IConversation<TSelf, TTarget> conversation, 
-        Func<IConversationContext, TSelf> getSpeakerSelf, 
+        IConversation<TSelf, TTarget> conversation,
+        Func<IConversationContext, TSelf> getSpeakerSelf,
         Func<IConversationContext, TTarget> getSpeakerTarget
     )
-        where TSelf : IConversationSpeaker 
+        where TSelf : IConversationSpeaker
         where TTarget : IConversationSpeaker
     {
         if (IsConversing) return;
@@ -187,6 +187,19 @@ public class FieldUser(
     private async Task UpdateStats()
         => Stats = await user.System.Context.Calculators.UserStats.Calculate(this);
 
-    private Task UpdateAvatar()
-        => Task.CompletedTask; // TODO
+    private async Task UpdateAvatar()
+    {
+        if (FieldSplit != null)
+            await FieldSplit.Dispatch(new UserAvatarModified
+                {
+                    ObjectID = Character.ID,
+                    Info = new UserAvatarModifiedInfo 
+                    {
+                        CharacterLook = Character.ToStructuredCharacterLook(),
+                        CharacterSpeed = (byte)Stats.Speed
+                    }
+                },
+                this
+            );
+    }
 }
