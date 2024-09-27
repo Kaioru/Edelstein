@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using BinarySerialization;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Network.Packets;
@@ -9,6 +10,14 @@ public record UserAvatarModified() : StructuredSendPacket((short)PacketSendOpera
 {
     [FieldOrder(0)] public required int ObjectID { get; init; }
     [FieldOrder(1)] public required UserAvatarModifiedInfo Info { get; init; }
+}
+
+[Flags]
+public enum UserAvatarModifiedFlags
+{
+    Look = 0x1,
+    Speed = 0x2,
+    Choco = 0x4
 }
 
 public record UserAvatarModifiedInfo : StructuredBasePacket, IBinarySerializable
@@ -27,9 +36,9 @@ public record UserAvatarModifiedInfo : StructuredBasePacket, IBinarySerializable
     {
         using var writer = new BinaryWriter(stream);
         var flags =
-            (CharacterLook != null ? 0x1 : 0) |
-            (CharacterSpeed != null ? 0x2 : 0) |
-            (CarryItemEffectCount != null ? 0x4 : 0);
+            (CharacterLook != null ? UserAvatarModifiedFlags.Look : 0) |
+            (CharacterSpeed != null ? UserAvatarModifiedFlags.Speed : 0) |
+            (CarryItemEffectCount != null ? UserAvatarModifiedFlags.Choco : 0);
         
         writer.Write((byte)flags);
         
@@ -48,13 +57,13 @@ public record UserAvatarModifiedInfo : StructuredBasePacket, IBinarySerializable
     {
         using var reader = new BinaryReader(stream);
         var serializer = new BinarySerializer();
-        var flags = reader.ReadByte();
+        var flags = (UserAvatarModifiedFlags)reader.ReadByte();
         
-        if ((flags & 1) != 0)
+        if (flags.HasFlag(UserAvatarModifiedFlags.Look))
             CharacterLook = serializer.Deserialize<StructuredCharacterLook>(stream);
-        if ((flags & 2) != 0)
+        if (flags.HasFlag(UserAvatarModifiedFlags.Speed))
             CharacterSpeed = reader.ReadByte();
-        if ((flags & 4) != 0)
+        if (flags.HasFlag(UserAvatarModifiedFlags.Choco))
             CarryItemEffectCount = reader.ReadByte();
 
         Couple = reader.ReadBoolean();
