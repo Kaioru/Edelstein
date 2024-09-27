@@ -1,8 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Game.Objects.Mob;
 using Edelstein.Common.Gameplay.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Templates;
@@ -11,7 +13,8 @@ namespace Edelstein.Common.Gameplay.Game;
 
 public class FieldManager(
     ITemplateManager<IFieldTemplate> templates,
-    ITemplateManager<INPCTemplate> npcs
+    ITemplateManager<INPCTemplate> npcs,
+    ITemplateManager<IMobTemplate> mobs
 ) : IFieldManager
 {
     private readonly ConcurrentDictionary<int, IField> _fields = new();
@@ -41,6 +44,21 @@ public class FieldManager(
                     );
 
                     await field.Enter(npc);
+                    break;
+                }
+                case FieldLifeType.Monster:
+                {
+                    var mobTemplate = await mobs.Retrieve(life.TemplateID);
+                    if (mobTemplate == null) continue;
+                    var mob = new FieldMob(
+                        mobTemplate,
+                        life.Position,
+                        await template.Footholds.Retrieve(life.Foothold),
+                        await template.Footholds.Retrieve(life.Foothold),
+                        life.IsFacingLeft
+                    );
+
+                    await field.Enter(mob);
                     break;
                 }
             }
