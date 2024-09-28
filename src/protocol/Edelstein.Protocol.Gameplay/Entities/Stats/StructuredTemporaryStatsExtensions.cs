@@ -9,29 +9,8 @@ internal static class StructuredTemporaryStatsExtensions
 {
     internal static void WriteTSFlag(this BinaryWriter writer, ITemporaryStats stats)
     {
-        var flag = new Flags(128);
-
-        foreach (var type in stats.Records.Keys)
-            flag.SetFlag((int)type);
-
-        if (stats.DiceInfo != null)
-            flag.SetFlag((int)TemporaryStatType.Dice);
-
-        if (stats.EnergyCharged != null)
-            flag.SetFlag((int)TemporaryStatType.EnergyCharged);
-        if (stats.DashSpeed != null)
-            flag.SetFlag((int)TemporaryStatType.Dash_Speed);
-        if (stats.DashJump != null)
-            flag.SetFlag((int)TemporaryStatType.Dash_Jump);
-        if (stats.RideVehicle != null)
-            flag.SetFlag((int)TemporaryStatType.RideVehicle);
-        if (stats.PartyBooster != null)
-            flag.SetFlag((int)TemporaryStatType.PartyBooster);
-        if (stats.GuidedBullet != null)
-            flag.SetFlag((int)TemporaryStatType.GuidedBullet);
-        if (stats.Undead != null)
-            flag.SetFlag((int)TemporaryStatType.Undead);
-
+        var flag = stats.GetFlags();
+        
         foreach (var i in flag.ToArray())
             writer.Write(i);
     }
