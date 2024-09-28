@@ -1,18 +1,17 @@
 using System;
+using Edelstein.Common.Utilities.Tickers;
 using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Utilities;
-using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Common.Gameplay.Game.Continent;
 
 public class ContiMoveManagerTicker(
     IDateTimeProvider dateTime,
     IContiMoveManager manager
-) : ITickerAction
+) : AbstractTickerActionTerm(dateTime, TimeSpan.FromSeconds(20))
 {
-    public void Act()
+    protected override void ActAfter(DateTime now)
     {
-        var now = dateTime.Now;
         var records = manager.RetrieveAll().Result;
 
         foreach (var contimove in records)
