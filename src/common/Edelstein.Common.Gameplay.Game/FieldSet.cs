@@ -15,7 +15,7 @@ public class FieldSet(
 {
     public string ID { get; } = id;
 
-    private ISet<IField> _fields { get; } = new HashSet<IField>();
+    private HashSet<IField> _fields { get; } = new();
     
     protected IField? FieldEnter { get; set; }
     protected IField? FieldLeave { get; set; }
