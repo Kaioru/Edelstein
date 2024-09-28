@@ -34,6 +34,7 @@ public record FieldTemplate : IFieldTemplate
     public int MobCapacityMax { get; }
     
     public IReadOnlyCollection<IFieldTemplateLife> Life { get; }
+    public IReadOnlyCollection<IFieldTemplateReactor> Reactors { get; }
 
     public FieldTemplate(
         int id,
@@ -41,6 +42,7 @@ public record FieldTemplate : IFieldTemplate
         IDataNode portal,
         IDataNode ladderRope,
         IDataNode life,
+        IDataNode reactor,
         IDataNode info
     )
     {
@@ -108,6 +110,9 @@ public record FieldTemplate : IFieldTemplate
 
         Life = life.Children
             .Select(p => new FieldTemplateLife(p))
+            .ToFrozenSet();
+        Reactors = reactor.Children
+            .Select(p => new FieldTemplateReactor(p))
             .ToFrozenSet();
     }
 }

@@ -35,6 +35,7 @@ public class FieldTemplateLoader(
                         n.ResolvePath("portal")!.Cache(),
                         n.ResolvePath("ladderRope")!.Cache(),
                         n.ResolvePath("life")!.Cache(),
+                        n.ResolvePath("reactor")!.Cache(),
                         n.ResolvePath("info")!.Cache()
                     )
                 ));

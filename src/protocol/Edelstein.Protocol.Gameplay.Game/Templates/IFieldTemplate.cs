@@ -25,4 +25,5 @@ public interface IFieldTemplate : ITemplate
     int MobCapacityMax { get; }
     
     IReadOnlyCollection<IFieldTemplateLife> Life { get; }
+    IReadOnlyCollection<IFieldTemplateReactor> Reactors { get; }
 }

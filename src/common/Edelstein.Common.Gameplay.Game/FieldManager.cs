@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Game.Objects.Mob;
 using Edelstein.Common.Gameplay.Game.Objects.NPC;
+using Edelstein.Common.Gameplay.Game.Objects.Reactors;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC.Templates;
+using Edelstein.Protocol.Gameplay.Game.Objects.Reactors.Templates;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -14,7 +16,8 @@ namespace Edelstein.Common.Gameplay.Game;
 public class FieldManager(
     ITemplateManager<IFieldTemplate> templates,
     ITemplateManager<INPCTemplate> npcs,
-    ITemplateManager<IMobTemplate> mobs
+    ITemplateManager<IMobTemplate> mobs,
+    ITemplateManager<IReactorTemplate> reactors
 ) : IFieldManager
 {
     private readonly ConcurrentDictionary<int, IField> _fields = new();
@@ -62,6 +65,18 @@ public class FieldManager(
                     break;
                 }
             }
+        
+        foreach (var reactor in template.Reactors)
+        {
+            var reactorTemplate = await reactors.Retrieve(reactor.TemplateID);
+            if (reactorTemplate == null) continue;
+            var reactorObj = new FieldReactor(
+                reactorTemplate,
+                reactor.Position
+            );
+
+            await field.Enter(reactorObj);
+        }
         
         return _fields.TryAdd(key, field) ? field : null;
     }
