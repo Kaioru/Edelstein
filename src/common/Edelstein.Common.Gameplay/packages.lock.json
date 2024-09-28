@@ -963,6 +963,9 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
+      "edelstein.common.constants": {
+        "type": "Project"
+      },
       "edelstein.common.utilities": {
         "type": "Project",
         "dependencies": {
