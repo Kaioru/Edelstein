@@ -8,6 +8,6 @@ public record StatChanged() : StructuredSendPacket((short)PacketSendOperation.St
 {
     [FieldOrder(0)] public required bool ExclRequest { get; init; }
     [FieldOrder(1)] public required StructuredModifyStat Stats { get; init; }
-    [FieldOrder(2)] public bool Unk1 { get; init; } // SN
+    [FieldOrder(2)] public byte SN { get; init; }
     [FieldOrder(3)] public bool Unk2 { get; init; } // HPRecovery, MPRecovery
 }

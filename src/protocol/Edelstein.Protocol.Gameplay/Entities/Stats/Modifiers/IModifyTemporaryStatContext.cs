@@ -7,15 +7,15 @@ public interface IModifyTemporaryStatContext
     ITemporaryStats StatsReset { get; }
     ITemporaryStats StatsSet { get; }
 
-    void Set(TemporaryStatType type, int value, int reason, DateTime? dateExpire = null);
+    void Set(TemporaryStatType type, int option, int reason, DateTime? dateExpire = null);
     
-    void SetEnergyCharged(int? value = null, int? reason = null, TimeSpan? term = null);
-    void SetDashSpeed(int? value = null, int? reason = null, TimeSpan? term = null);
-    void SetDashJump(int? value = null, int? reason = null, TimeSpan? term = null);
-    void SetRideVehicle(int? value = null, int? reason = null);
-    void SetPartyBooster(int? value = null, int? reason = null, DateTime? dateStart = null, TimeSpan? term = null);
-    void SetGuidedBullet(int? value = null, int? reason = null, int? mobID = null);
-    void SetUndead(int? value = null, int? reason = null, TimeSpan? term = null);
+    void SetEnergyCharged(int? option = null, int? reason = null, TimeSpan? term = null);
+    void SetDashSpeed(int? option = null, int? reason = null, TimeSpan? term = null);
+    void SetDashJump(int? option = null, int? reason = null, TimeSpan? term = null);
+    void SetRideVehicle(int? option = null, int? reason = null);
+    void SetPartyBooster(int? option = null, int? reason = null, DateTime? dateStart = null, TimeSpan? term = null);
+    void SetGuidedBullet(int? option = null, int? reason = null, int? mobID = null);
+    void SetUndead(int? option = null, int? reason = null, TimeSpan? term = null);
     
     void ResetEnergyCharged();
     void ResetDashSpeed();

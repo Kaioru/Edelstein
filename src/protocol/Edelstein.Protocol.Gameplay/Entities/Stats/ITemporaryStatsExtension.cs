@@ -32,6 +32,15 @@ public static class ITemporaryStatsExtension
         return flag;
     }
     
+    public static bool HasTwoStateStats(this ITemporaryStats stats)
+        => stats.EnergyCharged != null ||
+           stats.DashSpeed!= null ||
+           stats.DashJump != null ||
+           stats.RideVehicle != null ||
+           stats.PartyBooster != null ||
+           stats.GuidedBullet != null ||
+           stats.Undead != null;
+    
     public static StructuredTemporaryStatsLocal ToStructuredLocal(this ITemporaryStats stats)
         => new()
         {

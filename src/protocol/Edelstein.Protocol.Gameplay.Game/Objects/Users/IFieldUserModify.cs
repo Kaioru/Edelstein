@@ -11,5 +11,7 @@ public interface IFieldUserModify
     bool IsRequireUpdateAvatar { get; }
     
     Task Stats(Action<IModifyStatContext>? action = null, bool exclRequest = false);
+    Task TemporaryStats(Action<IModifyTemporaryStatContext> action, short delay = 0);
+
     Task Inventory(Action<IModifyInventoryContextGroup>? action = null, bool exclRequest = false);
 }

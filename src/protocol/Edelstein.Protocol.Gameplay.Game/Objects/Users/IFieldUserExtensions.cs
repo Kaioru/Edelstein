@@ -23,6 +23,9 @@ public static class IFieldUserExtensions
     public static Task ModifyStats(this IFieldUser user, Action<IModifyStatContext>? action = null, bool exclRequest = false)
         => user.Modify(m => m.Stats(action, exclRequest));
     
+    public static Task ModifyTemporaryStats(this IFieldUser user, Action<IModifyTemporaryStatContext> action, short delay = 0)
+        => user.Modify(m => m.TemporaryStats(action, delay));
+    
     public static Task ModifyInventory(this IFieldUser user, Action<IModifyInventoryContextGroup>? action = null, bool exclRequest = false)
         => user.Modify(m => m.Inventory(action, exclRequest));
 }

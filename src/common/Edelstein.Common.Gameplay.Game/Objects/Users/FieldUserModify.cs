@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Entities.Inventories.Modifiers;
 using Edelstein.Common.Gameplay.Entities.Modifiers;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Modifiers;
+using Edelstein.Protocol.Gameplay.Entities.Stats;
 using Edelstein.Protocol.Gameplay.Entities.Stats.Modifiers;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
@@ -32,6 +34,53 @@ public class FieldUserModify(
         });
     }
     
+    public async Task TemporaryStats(Action<IModifyTemporaryStatContext> action, short delay = 0)
+    {
+        var context = new ModifyTemporaryStatContext(user.Character.TemporaryStats);
+        
+        action.Invoke(context);
+        
+        var isUpdateReset = context.StatsReset.Records.Any() ||
+                            context.StatsReset.HasTwoStateStats();
+        var isUpdateSet = context.StatsSet.Records.Any() ||
+                          context.StatsSet.HasTwoStateStats();
+        
+        if (!IsRequireUpdate)
+            IsRequireUpdate = isUpdateReset || isUpdateSet;
+
+        if (isUpdateReset)
+        {
+            var flag = context.StatsReset.GetFlags().ToArray();
+
+            await user.Dispatch(new TemporaryStatReset
+            {
+                Flag = flag
+            });
+            if (user.FieldSplit != null)
+                await user.FieldSplit.Dispatch(new UserTemporaryStatReset
+                {
+                    ObjectID = user.ObjectID ?? 0,
+                    Flag = flag
+                }, user);
+        }
+
+        if (isUpdateSet)
+        {
+            await user.Dispatch(new TemporaryStatSet
+            {
+                Stats = context.StatsSet.ToStructuredLocal(),
+                Delay = delay
+            });
+            if (user.FieldSplit != null)
+                await user.FieldSplit.Dispatch(new UserTemporaryStatSet
+                {
+                    ObjectID = user.ObjectID ?? 0,
+                    Stats = context.StatsSet.ToStructuredRemote(),
+                    Delay = delay
+                }, user);
+        }
+    }
+
     public Task Inventory(Action<IModifyInventoryContextGroup>? action = null, bool exclRequest = false)
     {
         var context = new ModifyInventoryContextGroup(
