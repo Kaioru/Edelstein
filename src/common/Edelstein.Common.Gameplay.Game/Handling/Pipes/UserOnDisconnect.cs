@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Edelstein.Common.Gameplay.Entities.Modifiers;
 using Edelstein.Common.Gameplay.Handling.Pipes;
 using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Game;
+using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Utilities.Pipelines;
 
@@ -24,6 +26,8 @@ public class UserOnDisconnect(
         {
             if (message.User.Character != null)
             {
+                new ModifyTemporaryStatContext(message.User.Character.TemporaryStats).ResetAll();
+                
                 message.User.Character.FieldID = message.User.FieldUser.Field.Template.ForcedReturn ?? message.User.FieldUser.Field.Template.ID;
                 message.User.Character.FieldPortal = (byte)(message.User.FieldUser.Field.Template.ForcedReturn != null
                         ? 0
