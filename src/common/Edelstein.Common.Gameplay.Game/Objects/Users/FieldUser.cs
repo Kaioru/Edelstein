@@ -161,19 +161,17 @@ public class FieldUser(
         var speakerTarget = getSpeakerTarget.Invoke(ctx);
 
         ActiveConversation = ctx;
-
-        try
-        {
-            await Task.Run(
+        
+        await Task
+            .Run(
                 () => conversation.Start(ctx, speakerSelf, speakerTarget),
                 ctx.Token
-            );
-        }
-        finally
-        {
-            await EndConversation();
-            await this.ModifyStats(exclRequest: true);
-        }
+            )
+            .ContinueWith(async _ =>
+            {
+                await EndConversation();
+                await this.ModifyStats(exclRequest: true);
+            });
     }
 
     public Task EndConversation()
