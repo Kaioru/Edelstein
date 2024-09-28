@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 
 namespace Edelstein.Protocol.Utilities;
 
@@ -27,7 +28,9 @@ public readonly struct Flags
         var arr = new int[num];
 
         _bits.CopyTo(arr, 0);
-        return arr;
+        return arr
+            .Reverse()
+            .ToArray();
     }
 
     private Flags And(Flags b) => new(_bits.And(b._bits));

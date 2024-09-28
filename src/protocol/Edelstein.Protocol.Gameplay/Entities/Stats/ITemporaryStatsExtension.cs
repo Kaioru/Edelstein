@@ -1,4 +1,5 @@
-﻿using Edelstein.Protocol.Utilities;
+﻿using System;
+using Edelstein.Protocol.Utilities;
 
 namespace Edelstein.Protocol.Gameplay.Entities.Stats;
 
@@ -8,7 +9,7 @@ public static class ITemporaryStatsExtension
     {
         var flag = new Flags(128);
 
-        foreach (var type in stats.Records.Keys)
+        foreach (var type in stats.Records.Keys) 
             flag.SetFlag((int)type);
 
         if (stats.DiceInfo != null)
