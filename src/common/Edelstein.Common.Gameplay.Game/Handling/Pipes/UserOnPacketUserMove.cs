@@ -6,7 +6,7 @@ using UserMoveSend = Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send.Use
 
 namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
 
-public class UserOnPacketUserMove : AbstractUserOnPacketInFieldPipe<UserMoveRecv>
+public class UserOnPacketUserMove : AbstractUserOnPacketInField<UserMoveRecv>
 {
     protected override async Task HandleAfter(IPipelineContext ctx, PipedFieldPacketMessage<UserMoveRecv> message)
     {

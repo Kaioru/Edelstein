@@ -8,7 +8,7 @@ using NPCMoveSend = Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send.NPCM
 
 namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
 
-public class UserOnPacketNPCMove : AbstractUserOnPacketInFieldPipe<NPCMoveRecv>
+public class UserOnPacketNPCMove : AbstractUserOnPacketInField<NPCMoveRecv>
 {
     protected override async Task HandleAfter(IPipelineContext ctx, PipedFieldPacketMessage<NPCMoveRecv> message)
     {

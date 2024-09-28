@@ -9,7 +9,7 @@ using UserChatNLCPQSend = Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Sen
 
 namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
 
-public class UserOnPacketUserChat : AbstractUserOnPacketInFieldPipe<UserChatRecv>
+public class UserOnPacketUserChat : AbstractUserOnPacketInField<UserChatRecv>
 {
     protected override async Task HandleAfter(IPipelineContext ctx, PipedFieldPacketMessage<UserChatRecv> message)
     {

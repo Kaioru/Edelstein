@@ -9,7 +9,7 @@ using MobMoveSend = Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send.MobM
 
 namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
 
-public class UserOnPacketMobMove : AbstractUserOnPacketInFieldPipe<MobMoveRecv>
+public class UserOnPacketMobMove : AbstractUserOnPacketInField<MobMoveRecv>
 {
     protected override async Task HandleAfter(IPipelineContext ctx, PipedFieldPacketMessage<MobMoveRecv> message)
     {

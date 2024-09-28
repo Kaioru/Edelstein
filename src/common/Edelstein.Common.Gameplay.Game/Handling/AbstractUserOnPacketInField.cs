@@ -6,7 +6,7 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Handling;
 
-public abstract class AbstractUserOnPacketInFieldPipe<TPacket> :
+public abstract class AbstractUserOnPacketInField<TPacket> :
     IPipe<PipedPacketMessage<IGameStageSystem, IGameStageSystemUser, TPacket>> 
     where TPacket : StructuredBasePacket
 {

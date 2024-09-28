@@ -7,7 +7,7 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
 
-public class UserOnPacketUserScriptMessageAnswer : AbstractUserOnPacketInFieldPipe<UserScriptMessageAnswer>
+public class UserOnPacketUserScriptMessageAnswer : AbstractUserOnPacketInField<UserScriptMessageAnswer>
 {
     protected override async Task HandleAfter(IPipelineContext ctx, PipedFieldPacketMessage<UserScriptMessageAnswer> message)
     {

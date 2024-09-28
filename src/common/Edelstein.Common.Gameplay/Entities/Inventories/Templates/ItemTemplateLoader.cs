@@ -4,6 +4,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Duey.Abstractions;
+using Edelstein.Common.Gameplay.Constants;
+using Edelstein.Common.Gameplay.Entities.Inventories.Templates.Special;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
 using Edelstein.Protocol.Utilities.Templates;
@@ -70,11 +72,20 @@ public class ItemTemplateLoader(
             .Select(async n =>
             {
                 var id = Convert.ToInt32(n.Name);
-                var node = n.ResolvePath("info");
-                if (node == null) return;
+                var info = n.ResolvePath("info");
+                if (info == null) return;
                 await context.Insert(new TemplateProviderLazy<IItemTemplate>(
                     id,
-                    () => new ItemBundleTemplate(id, node.Cache())
+                    () =>
+                    {
+                        var spec = n.ResolvePath("spec")?.Cache();
+                        info = info.Cache();
+
+                        if (id.IsStatChangeItem())
+                            return new ItemStatChangeTemplate(id, info, spec);
+                        
+                        return new ItemBundleTemplate(id, info);
+                    }
                 ));
             })
             .ToImmutableList();

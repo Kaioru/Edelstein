@@ -5,7 +5,7 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
 
-public class UserOnPacketUserChangeSlotPositionRequest : AbstractUserOnPacketInFieldPipe<UserChangeSlotPositionRequest>
+public class UserOnPacketUserChangeSlotPositionRequest : AbstractUserOnPacketInField<UserChangeSlotPositionRequest>
 {
     protected override async Task HandleAfter(IPipelineContext ctx, PipedFieldPacketMessage<UserChangeSlotPositionRequest> message)
     {
