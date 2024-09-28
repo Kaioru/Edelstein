@@ -9,6 +9,6 @@ public interface IFieldTemplateReactor
     
     int ReactorTime { get; }
     
-    bool IsFacingLeft { get; }
+    bool Flip { get; }
     IPoint2D Position { get; }
 }

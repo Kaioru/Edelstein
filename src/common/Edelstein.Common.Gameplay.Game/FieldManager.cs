@@ -72,7 +72,8 @@ public class FieldManager(
             if (reactorTemplate == null) continue;
             var reactorObj = new FieldReactor(
                 reactorTemplate,
-                reactor.Position
+                reactor.Position,
+                reactor.Flip
             );
 
             await field.Enter(reactorObj);

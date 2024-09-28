@@ -13,7 +13,7 @@ public record FieldTemplateReactor : IFieldTemplateReactor
     
     public int ReactorTime { get; }
     
-    public bool IsFacingLeft { get; }
+    public bool Flip { get; }
     public IPoint2D Position { get; }
     
     public FieldTemplateReactor(IDataNode node)
@@ -22,7 +22,7 @@ public record FieldTemplateReactor : IFieldTemplateReactor
 
         ReactorTime = node.ResolveInt("reactorTime") ?? 0;
 
-        IsFacingLeft = !(node.ResolveBool("f") ?? false);
+        Flip = node.ResolveBool("f") ?? false;
         
         Position = new Point2D(
             node.ResolveInt("x") ?? int.MinValue,
