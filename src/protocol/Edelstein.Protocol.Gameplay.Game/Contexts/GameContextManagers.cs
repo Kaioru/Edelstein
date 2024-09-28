@@ -1,6 +1,9 @@
-﻿namespace Edelstein.Protocol.Gameplay.Game.Contexts;
+﻿using Edelstein.Protocol.Gameplay.Game.Continents;
+
+namespace Edelstein.Protocol.Gameplay.Game.Contexts;
 
 public record GameContextManagers(
     IFieldManager Field,
-    IFieldSetManager FieldSet
+    IFieldSetManager FieldSet,
+    IContiMoveManager ContiMove
 );
