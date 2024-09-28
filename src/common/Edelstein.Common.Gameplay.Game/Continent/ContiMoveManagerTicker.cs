@@ -28,6 +28,8 @@ public class ContiMoveManagerTicker(
                         contimove.Trigger(ContiMoveStateTrigger.Start);
                     break;
                 case ContiMoveState.Move:
+                    if (now > contimove.NextEnd)
+                        contimove.Trigger(ContiMoveStateTrigger.End);
                     if (contimove.NextEvent.HasValue && now > contimove.NextEvent.Value)
                         contimove.Trigger(ContiMoveStateTrigger.MobGen);
                     break;
