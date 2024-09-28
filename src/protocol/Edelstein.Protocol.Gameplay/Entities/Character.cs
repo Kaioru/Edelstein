@@ -42,4 +42,5 @@ public record Character : IRepositoryEntry<int>
     public short SubJob { get; set; }
 
     public CharacterInventories Inventories { get; set; } = new();
+    public CharacterTemporaryStats TemporaryStats { get; set; } = new();
 }

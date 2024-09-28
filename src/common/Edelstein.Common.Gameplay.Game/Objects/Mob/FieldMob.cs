@@ -1,5 +1,4 @@
-﻿using System;
-using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
+﻿using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;

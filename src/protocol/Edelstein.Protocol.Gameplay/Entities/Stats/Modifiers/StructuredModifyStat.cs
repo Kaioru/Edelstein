@@ -2,7 +2,7 @@
 using BinarySerialization;
 using Edelstein.Protocol.Network.Packets;
 
-namespace Edelstein.Protocol.Gameplay.Entities.Modifiers;
+namespace Edelstein.Protocol.Gameplay.Entities.Stats.Modifiers;
 
 public record StructuredModifyStat : StructuredBasePacket, IBinarySerializable
 {

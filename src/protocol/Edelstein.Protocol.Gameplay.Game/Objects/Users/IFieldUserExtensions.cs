@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Modifiers;
-using Edelstein.Protocol.Gameplay.Entities.Modifiers;
+using Edelstein.Protocol.Gameplay.Entities.Stats.Modifiers;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users.Messages;
 using Edelstein.Protocol.Network.Packets.Types;

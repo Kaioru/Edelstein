@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Entities.Inventories.Modifiers;
 using Edelstein.Common.Gameplay.Entities.Modifiers;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Modifiers;
-using Edelstein.Protocol.Gameplay.Entities.Modifiers;
+using Edelstein.Protocol.Gameplay.Entities.Stats.Modifiers;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 

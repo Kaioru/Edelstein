@@ -22,5 +22,8 @@ public class DbCharacterConfiguration : IEntityTypeConfiguration<DbCharacter>
         builder
             .Property(e => e.Inventories)
             .HasJsonConversion(new CharacterInventories());
+        builder
+            .Property(e => e.TemporaryStats)
+            .HasJsonConversion(new CharacterTemporaryStats());
     }
 }

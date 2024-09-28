@@ -1,6 +1,5 @@
 ﻿using Edelstein.Protocol.Gameplay.Entities;
-using Edelstein.Protocol.Gameplay.Entities.Modifiers;
-using Edelstein.Protocol.Network.Packets;
+using Edelstein.Protocol.Gameplay.Entities.Stats.Modifiers;
 
 namespace Edelstein.Common.Gameplay.Entities.Modifiers;
 

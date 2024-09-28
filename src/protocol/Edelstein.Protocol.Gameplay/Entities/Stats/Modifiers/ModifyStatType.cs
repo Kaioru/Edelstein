@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Edelstein.Protocol.Gameplay.Entities.Modifiers;
+namespace Edelstein.Protocol.Gameplay.Entities.Stats.Modifiers;
 
 [Flags]
 public enum ModifyStatType

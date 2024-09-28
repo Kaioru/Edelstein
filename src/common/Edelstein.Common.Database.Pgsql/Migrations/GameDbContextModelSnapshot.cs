@@ -196,6 +196,12 @@ namespace Edelstein.Common.Database.Pgsql.Migrations
                     b.Property<int>("TempEXP")
                         .HasColumnType("integer");
 
+                    b.Property<string>("TemporaryStats")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("json")
+                        .HasDefaultValue("{\"Records\":{},\"DiceInfo\":null,\"EnergyCharged\":null,\"DashSpeed\":null,\"DashJump\":null,\"RideVehicle\":null,\"PartyBooster\":null,\"GuidedBullet\":null,\"Undead\":null}");
+
                     b.HasKey("ID");
 
                     b.HasIndex("AccountWorldDataID");

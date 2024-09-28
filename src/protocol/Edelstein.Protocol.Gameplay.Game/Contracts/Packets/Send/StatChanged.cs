@@ -1,5 +1,5 @@
 ﻿using BinarySerialization;
-using Edelstein.Protocol.Gameplay.Entities.Modifiers;
+using Edelstein.Protocol.Gameplay.Entities.Stats.Modifiers;
 using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
