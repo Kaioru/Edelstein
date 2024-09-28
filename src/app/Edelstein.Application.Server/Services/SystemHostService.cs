@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using Edelstein.Application.Server.Bindings;
 using Edelstein.Common.Network.DotNetty.Transports;
 using Edelstein.Protocol.Gameplay;
+using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Services.Server;
+using Edelstein.Protocol.Utilities.Pipelines;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -20,7 +22,9 @@ public class SystemHostService<TStageSystem, TStageSystemUser, TContext>(
     IServerInfo info,
     TransportVersion version,
     IPluginManager<TContext> plugins,
-    TContext context
+    TContext context,
+    IPipeline<SystemOnStart<TStageSystem, TStageSystemUser>> onStart,
+    IPipeline<SystemOnStop<TStageSystem, TStageSystemUser>> onStop
 ) : IHostedService
     where TStageSystem : IStageSystem<TStageSystem, TStageSystemUser> 
     where TStageSystemUser : class, IStageSystemUser<TStageSystem, TStageSystemUser>
@@ -29,6 +33,11 @@ public class SystemHostService<TStageSystem, TStageSystemUser, TContext>(
     
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        await onStart.Process(new SystemOnStart<TStageSystem, TStageSystemUser>
+        {
+            System = system
+        });
+        
         await plugins.LoadFromDirectory(Path.GetFullPath(config.Value.PluginDirectory));
         await plugins.InvokeInit(context);
         await plugins.InvokeStart(context);
@@ -49,6 +58,11 @@ public class SystemHostService<TStageSystem, TStageSystemUser, TContext>(
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         logger.LogSystemHostServiceStopping(info.ID);
+        
+        await onStop.Process(new SystemOnStop<TStageSystem, TStageSystemUser>
+        {
+            System = system
+        });
         
         if (Context != null)
             await Context.Close();

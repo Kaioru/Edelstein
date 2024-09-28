@@ -7,8 +7,8 @@ using Edelstein.Protocol.Utilities.Pipelines;
 namespace Edelstein.Protocol.Gameplay.Game.Contexts;
 
 public record GameContextPipelines(
-    IPipeline<SystemOnStart> SystemOnStart,
-    IPipeline<SystemOnStop> SystemOnStop,
+    IPipeline<SystemOnStart<IGameStageSystem, IGameStageSystemUser>> SystemOnStart,
+    IPipeline<SystemOnStop<IGameStageSystem, IGameStageSystemUser>> SystemOnStop,
 
     IPipeline<UserOnPacket<IGameStageSystem, IGameStageSystemUser>> UserOnPacket,
     IPipeline<UserOnException<IGameStageSystem, IGameStageSystemUser>> UserOnException,

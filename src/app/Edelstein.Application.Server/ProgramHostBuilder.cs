@@ -148,6 +148,7 @@ internal static class ProgramHostBuilder
             .WithScopedLifetime());
 
         builder.Services.AddScoped<IFieldManager, FieldManager>();
+        builder.Services.AddScoped<IFieldSetManager, FieldSetManager>();
         builder.Services.AddScoped<IFieldUserStatsCalculator, FieldUserStatsCalculator>();
         builder.Services.AddScoped(typeof(IConversationManager<,>), typeof(ConversationManager<,>));
         

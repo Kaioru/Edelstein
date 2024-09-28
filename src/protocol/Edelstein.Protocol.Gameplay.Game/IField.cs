@@ -8,6 +8,7 @@ namespace Edelstein.Protocol.Gameplay.Game;
 public interface IField : IRepositoryEntry<int>, IFieldObjectPool
 {
     IFieldTemplate Template { get; }
+    IFieldSet? FieldSet { get; set; }
     
     IFieldSplit? GetSplit(IPoint2D position);
     IFieldSplit?[] GetSplits(IRect2D bounds);

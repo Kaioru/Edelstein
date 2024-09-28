@@ -27,7 +27,8 @@ public class Field : AbstractFieldObjectPool, IField
 
     public int ID => Template.ID;
     public IFieldTemplate Template { get; }
-    
+    public IFieldSet? FieldSet { get; set; }
+
     public Field(IFieldTemplate template)
     {
         Template = template;
@@ -117,8 +118,10 @@ public class Field : AbstractFieldObjectPool, IField
     
     public override async Task Enter(IFieldObject obj)
     {
-        if (obj.Field != null)
-            await obj.Field.Leave(obj);
+        var from = obj.Field;
+        
+        if (from != null)
+            await from.Leave(obj);
         
         await _lock.WaitAsync();
 
@@ -146,6 +149,14 @@ public class Field : AbstractFieldObjectPool, IField
                 await user.Dispatch(user.GetDispatchSetField());
 
                 user.IsFirstEnter = false;
+
+                if (from?.FieldSet != FieldSet)
+                {
+                    if (from?.FieldSet != null) await from.FieldSet.OnUserLeave(user);
+                    if (FieldSet != null) await FieldSet.OnUserEnter(user);
+                }
+                else if (from != null && FieldSet != null)
+                    await FieldSet.OnUserMigrate(user, from, this);
             }
 
             var split = GetSplit(obj.Position);
@@ -176,6 +187,7 @@ public class Field : AbstractFieldObjectPool, IField
                         await split.Unobserve(observer, true);
                 await obj.FieldSplit.Leave(obj);
             }
+            
             if (pool != null) await pool.Leave(obj);
         }
         finally

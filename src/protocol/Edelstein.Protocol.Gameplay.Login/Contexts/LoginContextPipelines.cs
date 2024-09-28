@@ -6,8 +6,8 @@ using Edelstein.Protocol.Utilities.Pipelines;
 namespace Edelstein.Protocol.Gameplay.Login.Contexts;
 
 public record LoginContextPipelines(
-    IPipeline<SystemOnStart> SystemOnStart,
-    IPipeline<SystemOnStop> SystemOnStop,
+    IPipeline<SystemOnStart<ILoginStageSystem, ILoginStageSystemUser>> SystemOnStart,
+    IPipeline<SystemOnStop<ILoginStageSystem, ILoginStageSystemUser>> SystemOnStop,
 
     IPipeline<UserOnPacket<ILoginStageSystem, ILoginStageSystemUser>> UserOnPacket,
     IPipeline<UserOnException<ILoginStageSystem, ILoginStageSystemUser>> UserOnException,

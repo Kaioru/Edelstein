@@ -2,9 +2,11 @@
 using Edelstein.Application.Server.Bindings;
 using Edelstein.Application.Server.Services;
 using Edelstein.Protocol.Gameplay;
+using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Network.Transports;
 using Edelstein.Protocol.Plugin;
 using Edelstein.Protocol.Services.Server;
+using Edelstein.Protocol.Utilities.Pipelines;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -52,7 +54,9 @@ internal static class ServiceCollectionExtensions
                 subProvider.GetRequiredService<TServerInfo>(),
                 version,
                 p.GetRequiredService<IPluginManager<TContext>>(),
-                subProvider.GetRequiredService<TContext>()
+                subProvider.GetRequiredService<TContext>(),
+                p.GetRequiredService<IPipeline<SystemOnStart<TStageSystem, TStageSystemUser>>>(),
+                p.GetRequiredService<IPipeline<SystemOnStop<TStageSystem, TStageSystemUser>>>()
             );
         });
         collection.AddSingleton<IHostedService>(p => new SystemServerRegistryHostService<TServerInfo>(

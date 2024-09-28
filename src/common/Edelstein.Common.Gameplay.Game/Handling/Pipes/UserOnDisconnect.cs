@@ -36,7 +36,9 @@ public class UserOnDisconnect(
                             .FirstOrDefault()?.ID ?? 0
                     );
             }
-            
+
+            if (message.User.FieldUser.Field.FieldSet != null)
+                await message.User.FieldUser.Field.FieldSet.OnUserLeave(message.User.FieldUser);
             await message.User.FieldUser.Field.Leave(message.User.FieldUser);
         }
         
