@@ -15,43 +15,58 @@ public class UserOnPacketUserScriptMessageAnswer : AbstractUserOnPacketInFieldPi
         if (message.User.ActiveConversation == null) return;
 
         var type = message.Packet.Type;
+        var action = message.Packet.Action;
         var conversation = message.User.ActiveConversation;
-
-        if (message.Packet.Info is StructuredScriptMessageAnswerInfoStatus status)
+        
+        if (
+            type != ConversationMessageType.Say &&
+            type != ConversationMessageType.SayImage &&
+            type != ConversationMessageType.AskYesNo &&
+            type != ConversationMessageType.AskAccept &&
+            action == byte.MinValue ||
+            type is
+                ConversationMessageType.Say or
+                ConversationMessageType.SayImage or
+                ConversationMessageType.AskYesNo or
+                ConversationMessageType.AskAccept &&
+            action == byte.MaxValue
+        )
         {
-            if (
-                type != ConversationMessageType.Say &&
-                type != ConversationMessageType.AskYesNo &&
-                type != ConversationMessageType.AskAccept &&
-                status.Status == byte.MinValue ||
-                type is
-                    ConversationMessageType.Say or
-                    ConversationMessageType.AskYesNo or
-                    ConversationMessageType.AskAccept &&
-                status.Status == byte.MaxValue
-            )
-            {
-                await message.User.EndConversation();
-                return;
-            }
+            await message.User.EndConversation();
+            return;
         }
 
         switch (message.Packet.Info)
         {
             case StructuredScriptMessageAnswerInfoAnswer<LPString> answerString:
+                if (action == 0)
+                {
+                    await message.User.EndConversation();
+                    return;
+                }
+                
                 await conversation.Answer(new ConversationMessageAnswer<string>(type, answerString.Answer.Value));
                 break;
             case StructuredScriptMessageAnswerInfoAnswer<int> answerInt:
+                if (action == 0)
+                {
+                    await message.User.EndConversation();
+                    return;
+                }
+
                 await conversation.Answer(new ConversationMessageAnswer<int>(type, answerInt.Answer));
                 break;
             case StructuredScriptMessageAnswerInfoAnswer<byte> answerByte:
+                if (action == 0)
+                {
+                    await message.User.EndConversation();
+                    return;
+                }
+
                 await conversation.Answer(new ConversationMessageAnswer<byte>(type, answerByte.Answer));
                 break;
-            case StructuredScriptMessageAnswerInfoQuiz answerQuiz:
-                await conversation.Answer(new ConversationMessageAnswer<string>(type, answerQuiz.Answer.Value));
-                break;
-            case StructuredScriptMessageAnswerInfoStatus answerStatus:
-                await conversation.Answer(new ConversationMessageAnswer<byte>(type, answerStatus.Status));
+            default:
+                await conversation.Answer(new ConversationMessageAnswer<byte>(type, action));
                 break;
         }
     }
