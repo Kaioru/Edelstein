@@ -122,6 +122,11 @@ public class FieldUser(
                 await UpdateStats();
             if (modify.IsRequireUpdateAvatar)
                 await UpdateAvatar();
+
+            if (Character.HP > Stats.MaxHP)
+                await modify.Stats(s => s.HP = Stats.MaxHP);
+            if (Character.MP > Stats.MaxMP)
+                await modify.Stats(s => s.MP = Stats.MaxMP);
         }
         finally
         {
