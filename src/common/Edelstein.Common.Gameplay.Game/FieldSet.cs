@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -58,8 +59,10 @@ public class FieldSet(
     
     public void Dispose()
     {
+        GC.SuppressFinalize(this);
+        
         foreach (var field in _fields)
-            field.FieldSet = null;
+            Deregister(field);
     }
     
     protected IField? Register(IField? field)
@@ -69,5 +72,13 @@ public class FieldSet(
         field.FieldSet = this;
         _fields.Add(field);
         return field;
+    }
+
+    protected void Deregister(IField field)
+    {
+        if (field.FieldSet != this) return;
+        
+        field.FieldSet = null;
+        _fields.Remove(field);
     }
 }
