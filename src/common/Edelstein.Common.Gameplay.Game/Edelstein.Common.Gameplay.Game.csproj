@@ -6,4 +6,7 @@
   <ItemGroup>
     <Folder Include="Combat\" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Stateless" />
+  </ItemGroup>
 </Project>

@@ -1559,7 +1559,8 @@
         "type": "Project",
         "dependencies": {
           "Edelstein.Common.Gameplay": "[1.0.0, )",
-          "Edelstein.Protocol.Gameplay.Game": "[1.0.0, )"
+          "Edelstein.Protocol.Gameplay.Game": "[1.0.0, )",
+          "Stateless": "[5.16.0, )"
         }
       },
       "edelstein.common.gameplay.login": {
@@ -1922,6 +1923,12 @@
         "dependencies": {
           "SpanNetty.Buffers": "0.7.2012.2221"
         }
+      },
+      "Stateless": {
+        "type": "CentralTransitive",
+        "requested": "[5.16.0, )",
+        "resolved": "5.16.0",
+        "contentHash": "oGMd62r6wdj7LDOl7oOD2wJdjjK1Zum5UnV4lTDLdKiJAfAGF1SRaBKpX1TtmP1QKocPy4+94zazSZfHcowZCw=="
       },
       "System.ServiceModel.Primitives": {
         "type": "CentralTransitive",

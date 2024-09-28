@@ -10,12 +10,12 @@ public interface IContiMove : IFieldSet
 
     ContiMoveState State { get; }
 
-    IField StartShipMoveField { get; }
-    IField WaitField { get; }
-    IField MoveField { get; }
+    IField? StartShipMoveField { get; }
+    IField? WaitField { get; }
+    IField? MoveField { get; }
     IField? CabinField { get; }
-    IField EndField { get; }
-    IField EndShipMoveField { get; }
+    IField? EndField { get; }
+    IField? EndShipMoveField { get; }
 
     DateTime NextBoarding { get; }
     DateTime NextStart { get; }

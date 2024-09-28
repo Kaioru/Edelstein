@@ -8,6 +8,12 @@
         "resolved": "5.0.0",
         "contentHash": "ybkgpQMtt0Fo91l5rYtE3TZtD+Nmy5Ko091xvfXXOosQdMi30XO2EZ2+ShZt89gdu7RMmJqZaJ+e1q6d+6+KNw=="
       },
+      "Stateless": {
+        "type": "Direct",
+        "requested": "[5.16.0, )",
+        "resolved": "5.16.0",
+        "contentHash": "oGMd62r6wdj7LDOl7oOD2wJdjjK1Zum5UnV4lTDLdKiJAfAGF1SRaBKpX1TtmP1QKocPy4+94zazSZfHcowZCw=="
+      },
       "Grpc.Core.Api": {
         "type": "Transitive",
         "resolved": "2.51.0",

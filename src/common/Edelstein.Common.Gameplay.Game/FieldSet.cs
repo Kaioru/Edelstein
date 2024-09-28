@@ -39,13 +39,13 @@ public class FieldSet(
 
     public virtual Task Initialize(IFieldManager manager) => Task.CompletedTask;
 
-    public async Task Enter(IFieldObject obj)
+    public virtual async Task Enter(IFieldObject obj)
     {
         if (FieldEnter != null)
             await FieldEnter.Enter(obj);
     }
     
-    public async Task Leave(IFieldObject obj)
+    public virtual async Task Leave(IFieldObject obj)
     {
         if (FieldLeave != null)
             await FieldLeave.Enter(obj);
