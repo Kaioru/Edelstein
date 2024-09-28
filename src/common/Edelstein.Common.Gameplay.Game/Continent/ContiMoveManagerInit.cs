@@ -16,7 +16,6 @@ namespace Edelstein.Common.Gameplay.Game.Continent;
 public class ContiMoveManagerInit(
     ILogger<ContiMove> logger,
     IDateTimeProvider dateTime,
-    ITicker ticker,
     ITemplateManager<IContiMoveTemplate> templates,
     IContiMoveManager manager
 ) : IPipe<SystemOnStart<IGameStageSystem, IGameStageSystemUser>>
