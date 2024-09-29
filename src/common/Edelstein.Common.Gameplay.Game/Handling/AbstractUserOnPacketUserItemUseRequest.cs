@@ -19,7 +19,6 @@ public abstract class AbstractUserOnPacketUserItemUseRequest<TPacket, TContext, 
         => manager.Use(
             message.User,
             inventory,
-            message.Packet,
-            true
+            message.Packet
         );
 }

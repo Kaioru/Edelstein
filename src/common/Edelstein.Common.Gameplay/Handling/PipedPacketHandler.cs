@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay;
 using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Network.Packets;
@@ -18,9 +19,17 @@ public class PipedPacketHandler<TStageSystem, TStageSystemUser, TMessage>(
     
     public Task Handle(TStageSystemUser user, IRawPacket packet)
     {
-        using var reader = new RawPacketReader(packet);
-        var message = reader.ReadStructured<TMessage>();
+        try
+        {
+            using var reader = new RawPacketReader(packet);
+            var message = reader.ReadStructured<TMessage>();
 
-        return pipeline.Process(new PipedPacketMessage<TStageSystem, TStageSystemUser, TMessage>(user, message));
+            return pipeline.Process(new PipedPacketMessage<TStageSystem, TStageSystemUser, TMessage>(user, message));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return Task.CompletedTask;
+        }
     }
 }

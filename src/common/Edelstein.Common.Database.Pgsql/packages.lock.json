@@ -1352,9 +1352,6 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "edelstein.common.constants": {
-        "type": "Project"
-      },
       "edelstein.common.database": {
         "type": "Project",
         "dependencies": {
@@ -1371,7 +1368,6 @@
       "edelstein.common.gameplay": {
         "type": "Project",
         "dependencies": {
-          "Edelstein.Common.Constants": "[1.0.0, )",
           "Edelstein.Common.Utilities": "[1.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Gameplay.Login": "[1.0.0, )",

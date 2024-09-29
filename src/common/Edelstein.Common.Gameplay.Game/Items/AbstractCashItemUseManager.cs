@@ -8,22 +8,24 @@ using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Items;
 
-public abstract class AbstractCashItemUseManager<TContext, TInfo, TInfoEx, TTemplate>(
-    ITemplateManager<IItemTemplate> templates
+public abstract class AbstractCashItemUseManager<TContext, TInfoEx, TTemplate>(
+    ITemplateManager<IItemTemplate> templates,
+    bool initSkipConsumption = false
 ) : Pipeline<TContext>,
-    ICashItemUseManager<TContext, TInfo, TInfoEx, TTemplate>
-    where TContext : ICashItemUseManagerContext<TTemplate, TInfo, TInfoEx>
-    where TInfo : ICashItemUseInfo
+    ICashItemUseManager<TContext, TInfoEx, TTemplate>
+    where TContext : ICashItemUseManagerContext<TTemplate, TInfoEx>
     where TInfoEx : ICashItemUseInfoEx
     where TTemplate : class, IItemTemplate
 {
-    public async Task Use(IFieldUser user, ItemInventoryType type, TInfo info, TInfoEx infoEx, bool exclRequest = false) 
+    public async Task Use(IFieldUser user, ItemInventoryType type, ICashItemUseInfo info, TInfoEx infoEx) 
     {
         try
         {
             var item = user.Character.Inventories[type]?.Items[info.Pos]!;
             var template = await templates.Retrieve(item.TemplateID);
             var context = Create(user, item, (template as TTemplate)!, info, infoEx);
+
+            context.SkipConsumption = initSkipConsumption;
 
             await Process(context);
             
@@ -35,18 +37,18 @@ public abstract class AbstractCashItemUseManager<TContext, TInfo, TInfoEx, TTemp
                         if (!context.SkipConsumption)
                             i[type]?.TakeSlot(info.Pos);
                     },
-                    exclRequest);
+                    true);
             });
 
             if (!context.SkipHandle)
-                Handle(context, user);
+                await Handle(context, user);
         }
         catch
         {
-            await user.ModifyInventory(exclRequest: exclRequest);
+            await user.ModifyInventory(exclRequest: true);
         }
     }
     
-    protected abstract TContext Create(IFieldUser user, ItemSlotBase item, TTemplate template, TInfo info, TInfoEx infoEx);
-    protected abstract void Handle(TContext context, IFieldUser user);
+    protected abstract TContext Create(IFieldUser user, ItemSlotBase item, TTemplate template, ICashItemUseInfo info, TInfoEx infoEx);
+    protected abstract Task Handle(TContext context, IFieldUser user);
 }

@@ -5,7 +5,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Combat\" />
-    <Folder Include="Items\Cash\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Duey.Abstractions" />

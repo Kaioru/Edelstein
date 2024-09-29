@@ -5,14 +5,13 @@ using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 
 namespace Edelstein.Common.Gameplay.Game.Items;
 
-public abstract record AbstractCashItemUseManagerContext<TTemplate, TInfo, TInfoEx>(
+public abstract record AbstractCashItemUseManagerContext<TTemplate, TInfoEx>(
     IFieldUser User,
     ItemSlotBase Item,
     TTemplate Template, 
-    TInfo Info, 
+    ICashItemUseInfo Info, 
     TInfoEx InfoEx
-) : AbstractItemUseManagerContext<TTemplate, TInfo>(User, Item, Template, Info), 
-    ICashItemUseManagerContext<TTemplate, TInfo, TInfoEx>
+) : AbstractItemUseManagerContext<TTemplate, ICashItemUseInfo>(User, Item, Template, Info), 
+    ICashItemUseManagerContext<TTemplate, TInfoEx>
     where TTemplate : IItemTemplate 
-    where TInfo : ICashItemUseInfo 
     where TInfoEx : ICashItemUseInfoEx;

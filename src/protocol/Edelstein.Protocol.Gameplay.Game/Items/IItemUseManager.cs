@@ -15,7 +15,6 @@ public interface IItemUseManager<out TContext, in TInfo, TTemplate> :
     Task Use(
         IFieldUser user,
         ItemInventoryType type, 
-        TInfo info, 
-        bool exclRequest = false
+        TInfo info
     );
 }

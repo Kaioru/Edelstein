@@ -16,7 +16,7 @@ public abstract class AbstractItemUseManager<TContext, TInfo, TTemplate>(
     where TInfo : IItemUseInfo
     where TTemplate : class, IItemTemplate
 {
-    public async Task Use(IFieldUser user, ItemInventoryType type, TInfo info, bool exclRequest = false)
+    public async Task Use(IFieldUser user, ItemInventoryType type, TInfo info)
     {
         try
         {
@@ -34,18 +34,18 @@ public abstract class AbstractItemUseManager<TContext, TInfo, TTemplate>(
                         if (!context.SkipConsumption)
                             i[type]?.TakeSlot(info.Pos);
                     },
-                    exclRequest);
+                    true);
             });
 
             if (!context.SkipHandle)
-                Handle(context, user);
+                await Handle(context, user);
         }
         catch
         {
-            await user.ModifyInventory(exclRequest: exclRequest);
+            await user.ModifyInventory(exclRequest: true);
         }
     }
 
     protected abstract TContext Create(IFieldUser user, ItemSlotBase item, TTemplate template, TInfo info);
-    protected abstract void Handle(TContext context, IFieldUser user);
+    protected abstract Task Handle(TContext context, IFieldUser user);
 }

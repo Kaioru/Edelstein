@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Common.Constants;
+﻿namespace Edelstein.Protocol.Gameplay.Constants;
 
 public static class ItemConstants
 {

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Special;
@@ -21,9 +22,9 @@ public class StatChangeItemUseManager(
     ) 
         => new StatChangeItemUseManagerContext(user, item, template, info);
 
-    protected override void Handle(IStatChangeItemUseManagerContext context, IFieldUser user)
+    protected override async Task Handle(IStatChangeItemUseManagerContext context, IFieldUser user)
     {
-        user.ModifyStats(s =>
+        await user.ModifyStats(s =>
         {
             if (context.HP.HasValue) s.HP += context.HP.Value;
             if (context.MP.HasValue) s.MP += context.MP.Value;

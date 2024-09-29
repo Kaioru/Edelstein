@@ -97,8 +97,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Benchmarks", "benchmarks\Edelstein.Benchmarks\Edelstein.Benchmarks.csproj", "{492FE1C7-5672-4BC9-81CC-35FC03D082B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edelstein.Common.Constants", "src\common\Edelstein.Common.Constants\Edelstein.Common.Constants.csproj", "{280E89DB-32A5-4D7F-AFEE-C813F5D2CB44}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,7 +139,6 @@ Global
 		{7F1B5F76-72E1-4BD6-8A3B-C1DB60AD928E} = {82D7864B-19AD-484C-BD2E-897F05B5852C}
 		{F9A5686D-2B9F-4324-B723-2F01D20179C5} = {9170CBBC-0B0B-4553-AE40-CC48A0D856A1}
 		{492FE1C7-5672-4BC9-81CC-35FC03D082B7} = {9FA21AD7-E78E-45D0-B15C-0BB96A18D55A}
-		{280E89DB-32A5-4D7F-AFEE-C813F5D2CB44} = {E50DFCDF-39D5-4D0D-A46E-94D11D795087}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6527D18C-B0E2-49BA-B649-4D5DB6216069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -266,9 +263,5 @@ Global
 		{492FE1C7-5672-4BC9-81CC-35FC03D082B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{492FE1C7-5672-4BC9-81CC-35FC03D082B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{492FE1C7-5672-4BC9-81CC-35FC03D082B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{280E89DB-32A5-4D7F-AFEE-C813F5D2CB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{280E89DB-32A5-4D7F-AFEE-C813F5D2CB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{280E89DB-32A5-4D7F-AFEE-C813F5D2CB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{280E89DB-32A5-4D7F-AFEE-C813F5D2CB44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
