@@ -116,6 +116,12 @@ public class Field : AbstractFieldObjectPool, IField
     public IFieldObjectPool? GetPool(FieldObjectType type)
         => _pools.TryGetValue(type, out var pool) ? pool : null;
     
+    public Task Enter(IFieldUser user, byte portal)
+    {
+        user.Character.FieldPortal = portal;
+        return Enter(user);
+    }
+
     public override async Task Enter(IFieldObject obj)
     {
         var from = obj.Field;

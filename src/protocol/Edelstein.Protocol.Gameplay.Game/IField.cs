@@ -1,4 +1,6 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Objects;
+﻿using System.Threading.Tasks;
+using Edelstein.Protocol.Gameplay.Game.Objects;
+using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Repositories;
 using Edelstein.Protocol.Utilities.Spatial;
@@ -16,4 +18,6 @@ public interface IField : IRepositoryEntry<int>, IFieldObjectPool
     IFieldSplit?[] GetEnclosingSplits(IFieldSplit split);
     
     IFieldObjectPool? GetPool(FieldObjectType type);
+
+    Task Enter(IFieldUser user, byte portal);
 }
