@@ -141,7 +141,7 @@ public class ContiMove : FieldSet, IContiMove
     {
         await base.Initialize(manager);
 
-        StartShipMoveField = Register(await manager.Retrieve(Template.StartShipMoveFieldID));
+        StartShipMoveField = await manager.Retrieve(Template.StartShipMoveFieldID);
         WaitField = Register(await manager.Retrieve(Template.WaitFieldID));
         MoveField = Register(await manager.Retrieve(Template.MoveFieldID));
         if (Template.CabinFieldID.HasValue)
