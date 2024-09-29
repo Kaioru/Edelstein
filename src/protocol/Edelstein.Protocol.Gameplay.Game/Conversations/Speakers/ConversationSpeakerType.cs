@@ -2,5 +2,6 @@
 
 public enum ConversationSpeakerType : byte
 {
-    User
+    User,
+    NPC
 }

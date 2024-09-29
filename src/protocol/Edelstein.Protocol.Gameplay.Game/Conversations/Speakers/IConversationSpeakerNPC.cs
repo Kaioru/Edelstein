@@ -1,3 +1,8 @@
-﻿namespace Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+﻿using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 
-public interface IConversationSpeakerNPC : IConversationSpeaker;
+namespace Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+
+public interface IConversationSpeakerNPC : IConversationSpeaker
+{
+    IFieldNPC NPC { get; }
+}
