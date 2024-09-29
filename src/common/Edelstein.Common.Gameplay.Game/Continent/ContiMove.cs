@@ -203,7 +203,7 @@ public class ContiMove : FieldSet, IContiMove
     private static Task Move(IField from, IField to) =>
         Task.WhenAll(from.GetObjects()
             .OfType<IFieldUser>()
-            .Select(to.Enter));
+            .Select(u => to.Enter(u, 0)));
     
     private void ResetEvent()
     {

@@ -5,6 +5,7 @@ using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Reactors;
 using Edelstein.Protocol.Gameplay.Game.Objects.Reactors.Templates;
 using Edelstein.Protocol.Network.Packets;
+using Edelstein.Protocol.Network.Packets.Types;
 using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Reactors;
@@ -56,7 +57,8 @@ public class FieldReactor(
             State = State,
             X = (short)position.X,
             Y = (short)position.Y,
-            Flip = facingLeft
+            Flip = facingLeft,
+            Name = new LPString(Name ?? "")
         };
 
     public override IDispatchable GetDispatchLeaveField(bool isLeaveField = false) 
