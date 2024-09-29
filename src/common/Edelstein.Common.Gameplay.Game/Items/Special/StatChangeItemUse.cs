@@ -9,4 +9,6 @@ public record StatChangeItemUse(
 {
     public int? HP { get; set; } = Template.HP;
     public int? MP { get; set; } = Template.MP;
+    public int? HPr { get; set; } = Template.HPr;
+    public int? MPr { get; set; } = Template.MPr;
 }

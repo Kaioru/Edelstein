@@ -9,8 +9,9 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Common.Gameplay.Game.Handling;
 
-public class AbstractUserOnPacketUserItemUseRequest<TPacket, TContext, TTemplate>(
-    IItemUseManager<TContext, TTemplate> manager
+public abstract class AbstractUserOnPacketUserItemUseRequest<TPacket, TContext, TTemplate>(
+    IItemUseManager<TContext, TTemplate> manager,
+    ItemInventoryType inventory
 ) : AbstractUserOnPacketInField<TPacket>
     where TPacket : StructuredItemUseRequest
     where TContext : IItemUse<TTemplate>
@@ -19,7 +20,7 @@ public class AbstractUserOnPacketUserItemUseRequest<TPacket, TContext, TTemplate
     protected override Task HandleAfter(IPipelineContext ctx, PipedFieldPacketMessage<TPacket> message)
         => manager.Use(
             message.User,
-            ItemInventoryType.Consume,
+            inventory,
             message.Packet.Pos,
             true
         );
