@@ -972,7 +972,7 @@
         "type": "Project",
         "dependencies": {
           "BinarySerializer": "[8.6.4.1, )",
-          "CommunityToolkit.HighPerformance": "[8.2.2, )",
+          "CommunityToolkit.HighPerformance": "[8.3.2, )",
           "Microsoft.IO.RecyclableMemoryStream": "[3.0.1, )"
         }
       },
@@ -1032,9 +1032,9 @@
       },
       "CommunityToolkit.HighPerformance": {
         "type": "CentralTransitive",
-        "requested": "[8.2.2, )",
-        "resolved": "8.2.2",
-        "contentHash": "+zIp8d3sbtYaRbM6hqDs4Ui/z34j7DcUmleruZlYLE4CVxXq+MO8XJyIs42vzeTYFX+k0Iq1dEbBUnQ4z/Gnrw=="
+        "requested": "[8.3.2, )",
+        "resolved": "8.3.2",
+        "contentHash": "1Os81ua0FmIOtiSgOk5C1KBraQ3SDfxs/7BG4qDagm48nGplr//lAVqLH9I2TLDVqRFdhqTUaEITFA5Ho/Ovkw=="
       },
       "Microsoft.IO.RecyclableMemoryStream": {
         "type": "CentralTransitive",

@@ -18,8 +18,8 @@
       },
       "Microsoft.Extensions.DependencyInjection.Abstractions": {
         "type": "Transitive",
-        "resolved": "9.0.0-preview.7.24405.7",
-        "contentHash": "ZuoB/44UTW4IbYfHk0yHtZH9LdHkfEeclxvniWs90T+f9x/NQtN4556iNIKar3MASCcrD0n2AE5y/Kv6buuNIA=="
+        "resolved": "9.0.0-rc.1.24431.7",
+        "contentHash": "/Gtbv7/vlcUUx8rsVwI3zMS2gUMewMU2ukUa1mh00lRwBBmPPnempruehrhq/3LHLE4LO8tEaFtTYi1Z33PCWQ=="
       },
       "Microsoft.Extensions.ObjectPool": {
         "type": "Transitive",
@@ -283,8 +283,15 @@
       },
       "System.Diagnostics.DiagnosticSource": {
         "type": "Transitive",
-        "resolved": "9.0.0-preview.7.24405.7",
-        "contentHash": "aAM2ASxG7VL+BPIO4SgSnIkrFSkrgXff6oENeHJig2JDeQyo6HjoP5X6kSuMxUUOTLpHWVvoEnK1fJHJUtMItg=="
+        "resolved": "4.3.0",
+        "contentHash": "tD6kosZnTAGdrEa0tZSuFyunMbt/5KYDnHdndJYGqZoNy00XVXyACd5d6KnE1YgYv3ne2CjtAfNXo/fwEhnKUA==",
+        "dependencies": {
+          "System.Collections": "4.3.0",
+          "System.Diagnostics.Tracing": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Threading": "4.3.0"
+        }
       },
       "System.Diagnostics.Tools": {
         "type": "Transitive",
@@ -977,7 +984,7 @@
         "type": "Project",
         "dependencies": {
           "BinarySerializer": "[8.6.4.1, )",
-          "CommunityToolkit.HighPerformance": "[8.2.2, )",
+          "CommunityToolkit.HighPerformance": "[8.3.2, )",
           "Microsoft.IO.RecyclableMemoryStream": "[3.0.1, )"
         }
       },
@@ -985,7 +992,7 @@
         "type": "Project",
         "dependencies": {
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
-          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-preview.7.24405.7, )"
+          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-rc.1.24431.7, )"
         }
       },
       "edelstein.protocol.services.auth": {
@@ -1044,9 +1051,9 @@
       },
       "CommunityToolkit.HighPerformance": {
         "type": "CentralTransitive",
-        "requested": "[8.2.2, )",
-        "resolved": "8.2.2",
-        "contentHash": "+zIp8d3sbtYaRbM6hqDs4Ui/z34j7DcUmleruZlYLE4CVxXq+MO8XJyIs42vzeTYFX+k0Iq1dEbBUnQ4z/Gnrw=="
+        "requested": "[8.3.2, )",
+        "resolved": "8.3.2",
+        "contentHash": "1Os81ua0FmIOtiSgOk5C1KBraQ3SDfxs/7BG4qDagm48nGplr//lAVqLH9I2TLDVqRFdhqTUaEITFA5Ho/Ovkw=="
       },
       "Duey.Abstractions": {
         "type": "CentralTransitive",
@@ -1056,12 +1063,11 @@
       },
       "Microsoft.Extensions.Logging.Abstractions": {
         "type": "CentralTransitive",
-        "requested": "[9.0.0-preview.7.24405.7, )",
-        "resolved": "9.0.0-preview.7.24405.7",
-        "contentHash": "WFzKiQ5cfQruJgK4vQEklG5Wwiu/Wt+T+eP80AGzzCq9iVgbOo7O1VC9amyO+Bw5WERAt1Yzfye0I0+wVSLhKA==",
+        "requested": "[9.0.0-rc.1.24431.7, )",
+        "resolved": "9.0.0-rc.1.24431.7",
+        "contentHash": "Dq4rgVJXE1SwINhR/D36O5fd9yZ4hQ4sWTt+gykLbWotaBEz16NhU95VKE4umsex147ZfkmDWr2Q0XldBQjuaA==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-preview.7.24405.7",
-          "System.Diagnostics.DiagnosticSource": "9.0.0-preview.7.24405.7"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.1.24431.7"
         }
       },
       "Microsoft.IO.RecyclableMemoryStream": {

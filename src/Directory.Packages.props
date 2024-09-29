@@ -1,14 +1,14 @@
 <Project>
   <PropertyGroup>
-    <DotNetPackageVersion>9.0.0-preview.7.24405.7</DotNetPackageVersion>
-    <EfcoreVersion>9.0.0-preview.3.24172.4</EfcoreVersion>
+    <DotNetPackageVersion>9.0.0-rc.1.24431.7</DotNetPackageVersion>
+    <EfcoreVersion>9.0.0-rc.1.24451.1</EfcoreVersion>
     <DotNettyVersion>0.7.2012.2221</DotNettyVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="AutoMapper" Version="13.0.1" />
     <PackageVersion Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageVersion Include="BinarySerializer" Version="8.6.4.1" />
-    <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.2.2" />
+    <PackageVersion Include="CommunityToolkit.HighPerformance" Version="8.3.2" />
     <PackageVersion Include="Duey.Abstractions" Version="2.0.0" />
     <PackageVersion Include="Duey.Provider.NX" Version="2.0.0" />
     <PackageVersion Include="Duey.Provider.WZ" Version="2.0.0" />
@@ -29,7 +29,7 @@
     <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="$(DotNetPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(DotNetPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNetPackageVersion)" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-preview.3" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-rc.1" />
     <PackageVersion Include="protobuf-net.Grpc" Version="1.1.1" />
     <PackageVersion Include="R3" Version="1.2.7" />
     <PackageVersion Include="RBush" Version="3.2.0" />

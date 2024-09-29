@@ -1016,7 +1016,7 @@
         "type": "Project",
         "dependencies": {
           "BinarySerializer": "[8.6.4.1, )",
-          "CommunityToolkit.HighPerformance": "[8.2.2, )",
+          "CommunityToolkit.HighPerformance": "[8.3.2, )",
           "Microsoft.IO.RecyclableMemoryStream": "[3.0.1, )"
         }
       },
@@ -1043,13 +1043,13 @@
       },
       "CommunityToolkit.HighPerformance": {
         "type": "CentralTransitive",
-        "requested": "[8.2.2, )",
-        "resolved": "8.2.2",
-        "contentHash": "+zIp8d3sbtYaRbM6hqDs4Ui/z34j7DcUmleruZlYLE4CVxXq+MO8XJyIs42vzeTYFX+k0Iq1dEbBUnQ4z/Gnrw=="
+        "requested": "[8.3.2, )",
+        "resolved": "8.3.2",
+        "contentHash": "1Os81ua0FmIOtiSgOk5C1KBraQ3SDfxs/7BG4qDagm48nGplr//lAVqLH9I2TLDVqRFdhqTUaEITFA5Ho/Ovkw=="
       },
       "Microsoft.Extensions.Configuration": {
         "type": "CentralTransitive",
-        "requested": "[9.0.0-preview.7.24405.7, )",
+        "requested": "[9.0.0-rc.1.24431.7, )",
         "resolved": "3.1.8",
         "contentHash": "xWvtu/ra8xDOy62ZXzQj1ElmmH3GpZBSKvw4LbfNXKCy+PaziS5Uh0gQ47D4H4w3u+PJfhNWCCGCp9ORNEzkRw==",
         "dependencies": {
@@ -1058,7 +1058,7 @@
       },
       "Microsoft.Extensions.Configuration.Abstractions": {
         "type": "CentralTransitive",
-        "requested": "[9.0.0-preview.7.24405.7, )",
+        "requested": "[9.0.0-rc.1.24431.7, )",
         "resolved": "3.1.8",
         "contentHash": "0qbNyxGpuNP/fuQ3FLHesm1Vn/83qYcAgVsi1UQCQN1peY4YH1uiizOh4xbYkQyxiVMD/c/zhiYYv94G0DXSSA==",
         "dependencies": {
@@ -1067,7 +1067,7 @@
       },
       "Microsoft.Extensions.Configuration.Binder": {
         "type": "CentralTransitive",
-        "requested": "[9.0.0-preview.7.24405.7, )",
+        "requested": "[9.0.0-rc.1.24431.7, )",
         "resolved": "3.1.8",
         "contentHash": "l/oqIWRM4YF62mlCOrIKGUOCemsaID/lngK2SZEtpYI8LrktpjPd4QzvENWj5GebbLbqOtsFhF6Ko6dgzmUnBw==",
         "dependencies": {
@@ -1076,7 +1076,7 @@
       },
       "Microsoft.Extensions.Logging.Abstractions": {
         "type": "CentralTransitive",
-        "requested": "[9.0.0-preview.7.24405.7, )",
+        "requested": "[9.0.0-rc.1.24431.7, )",
         "resolved": "3.1.8",
         "contentHash": "LxQPR/KE4P9nx304VcFipWPcW8ZOZOGHuiYlG0ncAQJItogDzR9nyYUNvziLObx2MfX2Z9iCTdAqEtoImaQOYg=="
       },
