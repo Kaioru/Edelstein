@@ -73,7 +73,7 @@ public enum CashItemType : byte
     CashItemGachapon = 0x44,
     CashGachaponOpen = 0x45,
     ChangeMaplePoint = 0x46,
-    VEGA = 0x47,
+    Vega = 0x47,
     Reward = 0x48,
     MasteryBook = 0x49,
     ItemUnrelease = 0x4A,
