@@ -22,11 +22,11 @@ public enum FieldLimitType
     CashWeatherConsumeLimit = 0x4000,
     NoPet = 0x8000,
     AntiMacroLimit = 0x10000,
-    FalldownLimit = 0x20000,
+    FallDownLimit = 0x20000,
     SummonNPCLimit = 0x40000,
     NoEXPDecrease = 0x80000,
     NoDamageOnFalling = 0x100000,
-    PacelOpenLimit = 0x200000,
+    ParcelOpenLimit = 0x200000,
     DropLimit = 0x400000,
     RocketBoosterLimit = 0x800000
 }
