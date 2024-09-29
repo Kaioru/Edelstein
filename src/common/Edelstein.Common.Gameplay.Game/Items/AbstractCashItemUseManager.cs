@@ -26,7 +26,13 @@ public abstract class AbstractCashItemUseManager<TContext, TInfoEx, TTemplate>(
             var context = Create(user, item, (template as TTemplate)!, info, infoEx);
 
             context.SkipConsumption = initSkipConsumption;
-
+            
+            if (!await Check(context, user))
+            {
+                await user.ModifyInventory(exclRequest: true);
+                return;
+            }
+            
             await Process(context);
             
             await user.Modify(m =>
@@ -50,5 +56,7 @@ public abstract class AbstractCashItemUseManager<TContext, TInfoEx, TTemplate>(
     }
     
     protected abstract TContext Create(IFieldUser user, ItemSlotBase item, TTemplate template, ICashItemUseInfo info, TInfoEx infoEx);
+    
+    protected virtual Task<bool> Check(TContext context, IFieldUser user) => Task.FromResult(true);
     protected abstract Task Handle(TContext context, IFieldUser user);
 }

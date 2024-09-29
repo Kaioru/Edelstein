@@ -5,6 +5,7 @@ using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Special;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
 using Edelstein.Protocol.Gameplay.Game.Items.Consume;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
+using Edelstein.Protocol.Gameplay.Game.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Items.Consume;
@@ -21,6 +22,12 @@ public class StatChangeItemUseManager(
         UserStatChangeItemUseRequest info
     ) 
         => new StatChangeItemUseManagerContext(user, item, template, info);
+
+    protected override Task<bool> Check(IStatChangeItemUseManagerContext context, IFieldUser user) 
+        => Task.FromResult(
+            user.Field != null && 
+            !user.Field.Template.Limit.HasFlag(FieldLimitType.StatChangeItemConsumeLimit)
+        );
 
     protected override async Task Handle(IStatChangeItemUseManagerContext context, IFieldUser user)
     {

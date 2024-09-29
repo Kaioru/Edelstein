@@ -24,6 +24,12 @@ public abstract class AbstractItemUseManager<TContext, TInfo, TTemplate>(
             var template = await templates.Retrieve(item.TemplateID);
             var context = Create(user, item, (template as TTemplate)!, info);
 
+            if (!await Check(context, user))
+            {
+                await user.ModifyInventory(exclRequest: true);
+                return;
+            }
+            
             await Process(context);
             
             await user.Modify(m =>
@@ -47,5 +53,7 @@ public abstract class AbstractItemUseManager<TContext, TInfo, TTemplate>(
     }
 
     protected abstract TContext Create(IFieldUser user, ItemSlotBase item, TTemplate template, TInfo info);
+
+    protected virtual Task<bool> Check(TContext context, IFieldUser user) => Task.FromResult(true);
     protected abstract Task Handle(TContext context, IFieldUser user);
 }
