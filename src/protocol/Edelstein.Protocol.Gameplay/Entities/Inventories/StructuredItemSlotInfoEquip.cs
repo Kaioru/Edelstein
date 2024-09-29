@@ -42,9 +42,11 @@ public record StructuredItemSlotInfoEquip : StructuredItemSlotInfoBase
     [FieldOrder(28)] public short Option3 { get; init; }
     [FieldOrder(29)] public short Socket1 { get; init; }
     [FieldOrder(30)] public short Socket2 { get; init; }
+
+    [Ignore] public bool HasSN => !CashItemSN.HasValue;
     
     [FieldOrder(31)]
-    [SerializeWhen(nameof(CashItemSN), null)]
+    [SerializeWhen(nameof(HasSN), true)]
     public long SN { get; init; }
 
     [FieldOrder(32)] public FDateTime DateEquipped { get; init; } = new();
