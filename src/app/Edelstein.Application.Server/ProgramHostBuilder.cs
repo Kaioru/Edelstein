@@ -27,6 +27,7 @@ using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Items;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Gameplay.Handling;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
@@ -155,6 +156,10 @@ internal static class ProgramHostBuilder
         builder.Services.AddScoped<IFieldUserStatsCalculator, FieldUserStatsCalculator>();
         builder.Services.AddScoped(typeof(IConversationManager<,>), typeof(ConversationManager<,>));
         
+        builder.Services.Scan(scan => scan
+            .FromAssemblyDependencies(Assembly.GetEntryAssembly()!)
+            .AddClasses(classes => classes.AssignableTo(typeof(IItemUseManager<,>))).AsImplementedInterfaces()
+            .WithScopedLifetime());
         return builder;
     }
 }
