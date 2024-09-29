@@ -2,14 +2,16 @@ using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Special;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
 using Edelstein.Protocol.Gameplay.Game.Items.Consume;
+using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 
 namespace Edelstein.Common.Gameplay.Game.Items.Consume;
 
 public record StatChangeItemUseManagerContext(
+    IFieldUser User,
     ItemSlotBase Item,
     IItemStatChangeTemplate Template,
     UserStatChangeItemUseRequest Info
-) : AbstractItemUseManagerContext<IItemStatChangeTemplate, UserStatChangeItemUseRequest>(Item, Template, Info), 
+) : AbstractItemUseManagerContext<IItemStatChangeTemplate, UserStatChangeItemUseRequest>(User, Item, Template, Info), 
     IStatChangeItemUseManagerContext
 {
     public int? HP { get; set; } = Template.HP;

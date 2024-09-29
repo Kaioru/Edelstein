@@ -23,7 +23,7 @@ public abstract class AbstractCashItemUseManager<TContext, TInfo, TInfoEx, TTemp
         {
             var item = user.Character.Inventories[type]?.Items[info.Pos]!;
             var template = await templates.Retrieve(item.TemplateID);
-            var context = Create(item, (template as TTemplate)!, info, infoEx);
+            var context = Create(user, item, (template as TTemplate)!, info, infoEx);
 
             await Process(context);
             
@@ -47,6 +47,6 @@ public abstract class AbstractCashItemUseManager<TContext, TInfo, TInfoEx, TTemp
         }
     }
     
-    protected abstract TContext Create(ItemSlotBase item, TTemplate template, TInfo info, TInfoEx infoEx);
+    protected abstract TContext Create(IFieldUser user, ItemSlotBase item, TTemplate template, TInfo info, TInfoEx infoEx);
     protected abstract void Handle(TContext context, IFieldUser user);
 }

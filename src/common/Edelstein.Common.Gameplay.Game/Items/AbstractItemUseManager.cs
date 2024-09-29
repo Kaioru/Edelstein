@@ -22,7 +22,7 @@ public abstract class AbstractItemUseManager<TContext, TInfo, TTemplate>(
         {
             var item = user.Character.Inventories[type]?.Items[info.Pos]!;
             var template = await templates.Retrieve(item.TemplateID);
-            var context = Create(item, (template as TTemplate)!, info);
+            var context = Create(user, item, (template as TTemplate)!, info);
 
             await Process(context);
             
@@ -46,6 +46,6 @@ public abstract class AbstractItemUseManager<TContext, TInfo, TTemplate>(
         }
     }
 
-    protected abstract TContext Create(ItemSlotBase item, TTemplate template, TInfo info);
+    protected abstract TContext Create(IFieldUser user, ItemSlotBase item, TTemplate template, TInfo info);
     protected abstract void Handle(TContext context, IFieldUser user);
 }

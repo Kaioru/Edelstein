@@ -13,8 +13,13 @@ public class StatChangeItemUseManager(
 ) : AbstractItemUseManager<IStatChangeItemUseManagerContext, UserStatChangeItemUseRequest, IItemStatChangeTemplate>(templates),
     IStatChangeItemUseManager
 {
-    protected override IStatChangeItemUseManagerContext Create(ItemSlotBase item, IItemStatChangeTemplate template, UserStatChangeItemUseRequest info)
-        => new StatChangeItemUseManagerContext(item, template, info);
+    protected override IStatChangeItemUseManagerContext Create(
+        IFieldUser user, 
+        ItemSlotBase item,
+        IItemStatChangeTemplate template, 
+        UserStatChangeItemUseRequest info
+    ) 
+        => new StatChangeItemUseManagerContext(user, item, template, info);
 
     protected override void Handle(IStatChangeItemUseManagerContext context, IFieldUser user)
     {
