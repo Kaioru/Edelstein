@@ -10,11 +10,8 @@ public record StructuredItemSlotInfoBase : StructuredBasePacket
     public required int ItemID { get; init; }
 
     [FieldOrder(1)]
-    public bool HasCashItemSN => CashItemSN != null;
-    
-    [FieldOrder(2)]
-    public long? CashItemSN { get; init; }
+    public BPNullable<long> CashItemSN { get; init; } = new();
 
-    [FieldOrder(3)] 
+    [FieldOrder(2)] 
     public FDateTime DateExpire { get; init; } = new();
 }

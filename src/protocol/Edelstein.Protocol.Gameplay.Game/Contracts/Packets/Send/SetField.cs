@@ -73,13 +73,9 @@ public record SetFieldInfoCharacter : SetFieldInfo
     
     [FieldOrder(3)]
     public required int HP { get; init; }
-    
-    [FieldOrder(4)]
-    public bool ChaseEnable { get; init; }
-    
-    [FieldOrder(5)]
-    [SerializeWhen(nameof(ChaseEnable), true)]
-    public SetFieldInfoCharacterChase? ChaseInfo { get; init; }
+
+    [FieldOrder(4)] 
+    public BPNullable<SetFieldInfoCharacterChase> Chase { get; init; } = new();
 }
 
 public record SetFieldInfoCharacterChase : StructuredBasePacket

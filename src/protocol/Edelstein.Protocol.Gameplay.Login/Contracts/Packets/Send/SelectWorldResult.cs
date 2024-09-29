@@ -2,6 +2,7 @@
 using BinarySerialization;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Network.Packets;
+using Edelstein.Protocol.Network.Packets.Types;
 
 namespace Edelstein.Protocol.Gameplay.Login.Contracts.Packets.Send;
 
@@ -45,11 +46,7 @@ public record SelectWorldResultSuccessInfoCharacter : StructuredBasePacket
     public bool OnFamily { get; init; }
     
     [FieldOrder(4)]
-    public bool IsRanked { get; init; }
-
-    [FieldOrder(5)]
-    [SerializeWhen(nameof(IsRanked), true)]
-    public SelectWorldResultSuccessInfoCharacterRank Rank { get; init; } = new();
+    public BPNullable<SelectWorldResultSuccessInfoCharacterRank> Rank { get; init; } = new();
 }
 
 public record SelectWorldResultSuccessInfoCharacterRank : StructuredBasePacket
