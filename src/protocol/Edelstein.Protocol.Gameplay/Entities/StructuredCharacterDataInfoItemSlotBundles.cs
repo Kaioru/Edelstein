@@ -8,7 +8,7 @@ namespace Edelstein.Protocol.Gameplay.Entities;
 public record StructuredCharacterDataInfoItemSlotBundles : StructuredBasePacket
 {
     [FieldOrder(0)]
-    [SerializeUntil((short)0)]
+    [SerializeUntil((byte)0)]
     public required List<StructuredCharacterDataInfoItemSlotBundle> Items { get; init; }
 }
 
