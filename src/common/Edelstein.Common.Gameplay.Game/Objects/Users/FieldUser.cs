@@ -135,17 +135,17 @@ public class FieldUser(
     }
 
     public Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt) where T : struct
-        => Prompt((s1, s2) => prompt.Invoke(s1));
+        => Prompt((s, _) => prompt.Invoke(s));
 
     public async Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt) where T : struct
     {
         T? result = default;
-
+        
         await Converse(
             new SystemConversation((self, target)
                 => result = prompt.Invoke(self, target)),
             ctx => new ConversationSpeaker(ctx),
-            ctx => new ConversationSpeaker(ctx)
+            ctx => new ConversationSpeaker(ctx, @params: ConversationSpeakerParam.NPCReplacedByUser)
         );
 
         return result;
