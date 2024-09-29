@@ -3,9 +3,9 @@ using Edelstein.Protocol.Gameplay.Game.Items;
 
 namespace Edelstein.Common.Gameplay.Game.Items;
 
-public abstract record AbstractItemUse<TTemplate>(
+public abstract record AbstractItemUseManagerContext<TTemplate>(
     TTemplate Template
-) : IItemUse<TTemplate> 
+) : IItemUseManagerContext<TTemplate> 
     where TTemplate : IItemTemplate
 {
     public bool SkipHandle { get; set; }

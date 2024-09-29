@@ -7,8 +7,8 @@ using Edelstein.Protocol.Gameplay.Game.Items.Consume;
 namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
 
 public class UserOnPacketUserStatChangeItemUseRequest(
-    IItemUseManager<IStatChangeItemUse, IItemStatChangeTemplate> manager
-) : AbstractUserOnPacketUserItemUseRequest<UserStatChangeItemUseRequest, IStatChangeItemUse, IItemStatChangeTemplate>(
+    IItemUseManager<IStatChangeItemUseManagerContext, UserStatChangeItemUseRequest, IItemStatChangeTemplate> manager
+) : AbstractUserOnPacketUserItemUseRequest<UserStatChangeItemUseRequest, IStatChangeItemUseManagerContext, IItemStatChangeTemplate>(
     manager, 
     ItemInventoryType.Consume
 );

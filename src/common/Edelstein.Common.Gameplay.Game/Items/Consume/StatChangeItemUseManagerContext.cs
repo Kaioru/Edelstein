@@ -3,9 +3,9 @@ using Edelstein.Protocol.Gameplay.Game.Items.Consume;
 
 namespace Edelstein.Common.Gameplay.Game.Items.Consume;
 
-public record StatChangeItemUse(
+public record StatChangeItemUseManagerContext(
     IItemStatChangeTemplate Template
-) : AbstractItemUse<IItemStatChangeTemplate>(Template), IStatChangeItemUse
+) : AbstractItemUseManagerContext<IItemStatChangeTemplate>(Template), IStatChangeItemUseManagerContext
 {
     public int? HP { get; set; } = Template.HP;
     public int? MP { get; set; } = Template.MP;

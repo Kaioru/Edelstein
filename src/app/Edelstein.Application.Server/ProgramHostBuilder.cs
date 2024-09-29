@@ -158,7 +158,7 @@ internal static class ProgramHostBuilder
         
         builder.Services.Scan(scan => scan
             .FromAssemblyDependencies(Assembly.GetEntryAssembly()!)
-            .AddClasses(classes => classes.AssignableTo(typeof(IItemUseManager<,>))).AsImplementedInterfaces()
+            .AddClasses(classes => classes.AssignableTo(typeof(IItemUseManager<,,>))).AsImplementedInterfaces()
             .WithScopedLifetime());
         return builder;
     }

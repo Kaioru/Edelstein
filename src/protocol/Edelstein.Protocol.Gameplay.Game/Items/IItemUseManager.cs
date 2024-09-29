@@ -6,11 +6,16 @@ using Edelstein.Protocol.Utilities.Pipelines;
 
 namespace Edelstein.Protocol.Gameplay.Game.Items;
 
-public interface IItemUseManager<TContext, TTemplate> : 
+public interface IItemUseManager<out TContext, TInfo, TTemplate> : 
     IPipework<TContext>
-    where TContext : IItemUse<TTemplate>
+    where TContext : IItemUseManagerContext<TTemplate>
+    where TInfo : IItemUseInfo
     where TTemplate : IItemTemplate
 {
-    Task<TContext?> Process(int templateID);
-    Task Use(IFieldUser user, ItemInventoryType type, short slot, bool exclRequest = false);
+    Task Use(
+        IFieldUser user,
+        ItemInventoryType type, 
+        TInfo info, 
+        bool exclRequest = false
+    );
 }

@@ -2,7 +2,7 @@ using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
 
 namespace Edelstein.Protocol.Gameplay.Game.Items;
 
-public interface IItemUse<out TTemplate>
+public interface IItemUseManagerContext<out TTemplate>
     where TTemplate : IItemTemplate
 {
     TTemplate Template { get; }
