@@ -1,3 +1,4 @@
+using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Special;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
@@ -9,10 +10,11 @@ namespace Edelstein.Common.Gameplay.Game.Items.Consume;
 
 public class StatChangeItemUseManager(
     ITemplateManager<IItemTemplate> templates
-) : AbstractItemUseManager<IStatChangeItemUseManagerContext, UserStatChangeItemUseRequest, IItemStatChangeTemplate>(templates)
+) : AbstractItemUseManager<IStatChangeItemUseManagerContext, UserStatChangeItemUseRequest, IItemStatChangeTemplate>(templates),
+    IStatChangeItemUseManager
 {
-    protected override IStatChangeItemUseManagerContext Create(IItemStatChangeTemplate template)
-        => new StatChangeItemUseManagerContext(template);
+    protected override IStatChangeItemUseManagerContext Create(ItemSlotBase item, IItemStatChangeTemplate template, UserStatChangeItemUseRequest info)
+        => new StatChangeItemUseManagerContext(item, template, info);
 
     protected override void Handle(IStatChangeItemUseManagerContext context, IFieldUser user)
     {

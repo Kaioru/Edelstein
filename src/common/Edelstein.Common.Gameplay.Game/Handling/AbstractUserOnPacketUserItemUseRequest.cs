@@ -11,7 +11,7 @@ public abstract class AbstractUserOnPacketUserItemUseRequest<TPacket, TContext, 
     IItemUseManager<TContext, TPacket, TTemplate> manager,
     ItemInventoryType inventory
 ) : AbstractUserOnPacketInField<TPacket>
-    where TContext : IItemUseManagerContext<TTemplate>
+    where TContext : IItemUseManagerContext<TTemplate, TPacket>
     where TPacket : StructuredBasePacket, IItemUseInfo
     where TTemplate : IItemTemplate
 {

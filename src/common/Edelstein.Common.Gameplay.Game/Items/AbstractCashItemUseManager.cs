@@ -8,21 +8,22 @@ using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Items;
 
-public abstract class AbstractItemUseManager<TContext, TInfo, TTemplate>(
+public abstract class AbstractCashItemUseManager<TContext, TInfo, TInfoEx, TTemplate>(
     ITemplateManager<IItemTemplate> templates
 ) : Pipeline<TContext>,
-    IItemUseManager<TContext, TInfo, TTemplate>
-    where TContext : IItemUseManagerContext<TTemplate, TInfo>
-    where TInfo : IItemUseInfo
+    ICashItemUseManager<TContext, TInfo, TInfoEx, TTemplate>
+    where TContext : ICashItemUseManagerContext<TTemplate, TInfo, TInfoEx>
+    where TInfo : ICashItemUseInfo
+    where TInfoEx : ICashItemUseInfoEx
     where TTemplate : class, IItemTemplate
 {
-    public async Task Use(IFieldUser user, ItemInventoryType type, TInfo info, bool exclRequest = false)
+    public async Task Use(IFieldUser user, ItemInventoryType type, TInfo info, TInfoEx infoEx, bool exclRequest = false) 
     {
         try
         {
             var item = user.Character.Inventories[type]?.Items[info.Pos]!;
             var template = await templates.Retrieve(item.TemplateID);
-            var context = Create(item, (template as TTemplate)!, info);
+            var context = Create(item, (template as TTemplate)!, info, infoEx);
 
             await Process(context);
             
@@ -45,7 +46,7 @@ public abstract class AbstractItemUseManager<TContext, TInfo, TTemplate>(
             await user.ModifyInventory(exclRequest: exclRequest);
         }
     }
-
-    protected abstract TContext Create(ItemSlotBase item, TTemplate template, TInfo info);
+    
+    protected abstract TContext Create(ItemSlotBase item, TTemplate template, TInfo info, TInfoEx infoEx);
     protected abstract void Handle(TContext context, IFieldUser user);
 }
