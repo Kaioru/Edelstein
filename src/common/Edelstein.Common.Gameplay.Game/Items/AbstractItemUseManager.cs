@@ -4,7 +4,6 @@ using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Game.Items;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
-using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Items;

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Contracts;
@@ -8,7 +7,6 @@ using Edelstein.Protocol.Gameplay.Game.Continents.Templates;
 using Edelstein.Protocol.Utilities;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Templates;
-using Edelstein.Protocol.Utilities.Tickers;
 using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Game.Continent;

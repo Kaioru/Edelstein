@@ -1,5 +1,4 @@
-﻿using System;
-using Edelstein.Protocol.Utilities;
+﻿using Edelstein.Protocol.Utilities;
 
 namespace Edelstein.Protocol.Gameplay.Entities.Stats;
 

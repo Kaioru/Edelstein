@@ -1,12 +1,10 @@
-using System;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Special;
-using Edelstein.Protocol.Gameplay.Game.Items.Special;
+using Edelstein.Protocol.Gameplay.Game.Items.Consume;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
-using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Utilities.Templates;
 
-namespace Edelstein.Common.Gameplay.Game.Items.Special;
+namespace Edelstein.Common.Gameplay.Game.Items.Consume;
 
 public class StatChangeItemUseManager(
     ITemplateManager<IItemTemplate> templates

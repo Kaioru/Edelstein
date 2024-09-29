@@ -1,10 +1,8 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Utilities.Repositories;
 using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Continents;
-using Edelstein.Protocol.Utilities.Tickers;
 
 namespace Edelstein.Common.Gameplay.Game.Continent;
 

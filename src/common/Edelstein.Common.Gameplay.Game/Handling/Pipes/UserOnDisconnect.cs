@@ -5,7 +5,6 @@ using Edelstein.Common.Gameplay.Handling.Pipes;
 using Edelstein.Protocol.Gameplay.Contracts;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Game;
-using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 using Edelstein.Protocol.Services.Session;
 using Edelstein.Protocol.Utilities.Pipelines;
 

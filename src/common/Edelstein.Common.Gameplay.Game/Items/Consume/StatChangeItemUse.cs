@@ -1,7 +1,7 @@
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Special;
-using Edelstein.Protocol.Gameplay.Game.Items.Special;
+using Edelstein.Protocol.Gameplay.Game.Items.Consume;
 
-namespace Edelstein.Common.Gameplay.Game.Items.Special;
+namespace Edelstein.Common.Gameplay.Game.Items.Consume;
 
 public record StatChangeItemUse(
     IItemStatChangeTemplate Template

@@ -1,5 +1,4 @@
 using Duey.Abstractions;
-using Edelstein.Common.Utilities.Spatial;
 using Edelstein.Protocol.Gameplay.Game.Continents.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Continent.Templates;

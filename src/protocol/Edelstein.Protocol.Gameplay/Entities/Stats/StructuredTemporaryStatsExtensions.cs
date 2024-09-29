@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Edelstein.Protocol.Gameplay.Entities.Stats.TwoState;
-using Edelstein.Protocol.Utilities;
 
 namespace Edelstein.Protocol.Gameplay.Entities.Stats;
 
