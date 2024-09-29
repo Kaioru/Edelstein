@@ -25,4 +25,9 @@ public interface IFieldUserStats : IStats
     int Craft { get; }
     int Speed { get; }
     int Jump { get; }
+    
+    int Mastery { get; }
+    
+    int DamageMin { get; }
+    int DamageMax { get; }
 }

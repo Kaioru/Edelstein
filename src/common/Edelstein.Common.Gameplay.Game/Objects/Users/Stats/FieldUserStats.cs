@@ -25,4 +25,9 @@ public record FieldUserStats : IFieldUserStats
     public int Craft { get; init; }
     public int Speed { get; init; }
     public int Jump { get; init; }
+    
+    public int Mastery { get; init; }
+    
+    public int DamageMin { get; init; }
+    public int DamageMax { get; init; }
 }

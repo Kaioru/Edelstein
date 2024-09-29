@@ -1,10 +1,14 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Combat.Stats;
+﻿using Edelstein.Protocol.Gameplay.Constants;
+using Edelstein.Protocol.Gameplay.Game.Combat.Stats;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 
 public interface IFieldUserStatsCalculatorContext
 {
     IFieldUser User { get; }
+    
+    WeaponType Weapon { get; }
+    WeaponType WeaponSub { get; }
     
     IStatModifier STR { get; }
     IStatModifier DEX { get; }
@@ -24,4 +28,9 @@ public interface IFieldUserStatsCalculatorContext
     IStatModifier Craft { get; }
     IStatModifier Speed { get; }
     IStatModifier Jump { get; }
+    
+    IStatModifier Mastery { get; }
+    
+    IStatModifier DamageMin { get; }
+    IStatModifier DamageMax { get; }
 }
