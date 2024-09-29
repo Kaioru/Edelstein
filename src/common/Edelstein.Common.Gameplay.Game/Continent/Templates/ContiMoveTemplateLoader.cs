@@ -33,6 +33,7 @@ public class ContiMoveTemplateLoader(
                         n.ResolvePath("field")!.Cache(),
                         n.ResolvePath("scheduler")!.Cache(),
                         n.ResolvePath("genMob")?.Cache(),
+                        n.ResolvePath("reactor")?.Cache(),
                         n.ResolvePath("time")!.Cache()
                     )
                 ));

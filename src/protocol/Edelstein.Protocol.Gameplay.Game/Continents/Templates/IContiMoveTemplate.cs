@@ -18,6 +18,7 @@ public interface IContiMoveTemplate : ITemplate
 
     bool Event { get; }
     IContiMoveTemplateGenMob? GenMob { get; }
+    IContiMoveTemplateReactor? Reactor { get; }
 
     int Wait { get; }
     int EventEnd { get; }

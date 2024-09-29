@@ -21,7 +21,8 @@ public record ContiMoveTemplate : IContiMoveTemplate
     
     public bool Event => GenMob != null;
     public IContiMoveTemplateGenMob? GenMob { get; }
-    
+    public IContiMoveTemplateReactor? Reactor { get; }
+
     public int Wait { get; }
     public int EventEnd { get; }
     public int Required { get; }
@@ -32,6 +33,7 @@ public record ContiMoveTemplate : IContiMoveTemplate
         IDataNode field,
         IDataNode scheduler,
         IDataNode? genMob,
+        IDataNode? reactor,
         IDataNode time
     )
     {
@@ -50,6 +52,7 @@ public record ContiMoveTemplate : IContiMoveTemplate
         Delay = scheduler.ResolveInt("tDelay") ?? 0;
 
         if (genMob != null) GenMob = new ContiMoveTemplateGenMob(genMob);
+        if (reactor != null) Reactor = new ContiMoveTemplateReactor(reactor);
 
         Wait = time.ResolveInt("tWait") ?? 1;
         EventEnd = time.ResolveInt("tEventEnd") ?? 0;

@@ -6,6 +6,7 @@ using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Gameplay.Game.Continents.Templates;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
 using Edelstein.Protocol.Gameplay.Game.Objects;
+using Edelstein.Protocol.Gameplay.Game.Objects.Reactors;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 using Edelstein.Protocol.Utilities;
 using Microsoft.Extensions.Logging;
@@ -29,6 +30,9 @@ public class ContiMove : FieldSet, IContiMove
     public IField? CabinField { get; private set; }
     public IField? EndField { get; private set; }
     public IField? EndShipMoveField { get; private set; }
+    
+    protected IFieldReactor? StartReactor { get; private set; }
+    protected IFieldReactor? EndReactor { get; private set; }
     
     public DateTime NextBoarding { get; private set; }
     public DateTime NextStart => NextBoarding.AddMinutes(Template.Wait);
@@ -65,6 +69,8 @@ public class ContiMove : FieldSet, IContiMove
                         Target = ContiMoveTarget.TargetStartShipMoveField,
                         Trigger = ContiMoveStateTrigger.Start
                     });
+                if (Template.Reactor != null && StartReactor != null)
+                    await StartReactor.SetState((byte)Template.Reactor.StateOnStart);
             })
             .OnExitAsync(async () =>
             {
@@ -78,6 +84,8 @@ public class ContiMove : FieldSet, IContiMove
                         Target = ContiMoveTarget.TargetEndShipMoveField,
                         Trigger = ContiMoveStateTrigger.End
                     });
+                if (Template.Reactor != null && EndReactor != null)
+                    await EndReactor.SetState((byte)Template.Reactor.StateOnEnd);
 
                 NextBoarding = NextBoarding.AddMinutes(Template.Term);
                 ResetEvent();
@@ -133,13 +141,27 @@ public class ContiMove : FieldSet, IContiMove
     {
         await base.Initialize(manager);
 
-        StartShipMoveField = Register(await manager.Retrieve(Template.StartShipMoveFieldID));
+        StartShipMoveField = await manager.Retrieve(Template.StartShipMoveFieldID);
         WaitField = Register(await manager.Retrieve(Template.WaitFieldID));
         MoveField = Register(await manager.Retrieve(Template.MoveFieldID));
         if (Template.CabinFieldID.HasValue)
             CabinField = Register(await manager.Retrieve(Template.CabinFieldID.Value));
-        EndField = Register(await manager.Retrieve(Template.EndFieldID));
-        EndShipMoveField = Register(await manager.Retrieve(Template.EndShipMoveFieldID));
+        EndField = await manager.Retrieve(Template.EndFieldID);
+        EndShipMoveField = await manager.Retrieve(Template.EndShipMoveFieldID);
+
+        if (Template.Reactor != null)
+        {
+            StartReactor = StartShipMoveField?
+                .GetPool(FieldObjectType.Reactor)?
+                .GetObjects()
+                .OfType<IFieldReactor>()
+                .FirstOrDefault(r => r.Name == Template.Reactor.Name);
+            EndReactor = EndShipMoveField?
+                .GetPool(FieldObjectType.Reactor)?
+                .GetObjects()
+                .OfType<IFieldReactor>()
+                .FirstOrDefault(r => r.Name == Template.Reactor.Name);
+        }
 
         var now = _dateTime.Now;
         
