@@ -1,13 +1,16 @@
-using System;
 using System.Threading.Tasks;
+using Edelstein.Protocol.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
 using Edelstein.Protocol.Gameplay.Game.Items.Cash;
+using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 using Edelstein.Protocol.Utilities.Pipelines;
+using Microsoft.Extensions.Logging;
 
 namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
 
 public class UserOnPacketUserConsumeCashItemUseRequest(
+    ILogger<UserOnPacketUserConsumeCashItemUseRequest> logger,
     IAdBoardCashItemUseManager adBoard
 ) : AbstractUserOnPacketInField<UserConsumeCashItemUseRequest>
 {
@@ -21,6 +24,10 @@ public class UserOnPacketUserConsumeCashItemUseRequest(
         {
             case StructuredAdBoardCashItemUseInfoEx adBoardInfoEx:
                 await adBoard.Use(user, type, info, adBoardInfoEx);
+                break;
+            default:
+                logger.LogCashItemUseUnhandled(info.InfoEx.TemplateID, info.InfoEx.TemplateID.GetCashItemType());
+                await user.ModifyInventory(exclRequest: true);
                 break;
         }
     }

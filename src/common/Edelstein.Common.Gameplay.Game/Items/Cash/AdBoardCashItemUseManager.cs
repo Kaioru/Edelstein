@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
