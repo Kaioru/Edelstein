@@ -1,5 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Combat.Stats;
+﻿using Edelstein.Protocol.Utilities.Calculators;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 
-public interface IFieldMobStatsCalculator : IStatsCalculator<IFieldMob, IFieldMobStatsCalculatorContext, IFieldMobStats>;
+public interface IFieldMobStatsCalculator : ICalculator<IFieldMob, IFieldMobStatsCalculatorContext, IFieldMobStats>;

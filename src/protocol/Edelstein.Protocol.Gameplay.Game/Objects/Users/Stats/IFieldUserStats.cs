@@ -1,8 +1,6 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Combat.Stats;
+﻿namespace Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 
-namespace Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
-
-public interface IFieldUserStats : IStats
+public interface IFieldUserStats
 {
     int STR { get; }
     int DEX { get; }

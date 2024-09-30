@@ -1,4 +1,4 @@
-﻿namespace Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Special;
+﻿namespace Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Consume;
 
 public interface IItemStatChangeTemplate : IItemBundleTemplate
 {

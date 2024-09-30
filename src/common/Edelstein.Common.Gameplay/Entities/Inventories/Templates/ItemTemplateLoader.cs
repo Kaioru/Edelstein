@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Duey.Abstractions;
-using Edelstein.Common.Gameplay.Entities.Inventories.Templates.Special;
+using Edelstein.Common.Gameplay.Entities.Inventories.Templates.Consume;
 using Edelstein.Common.Utilities.Templates;
 using Edelstein.Protocol.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;

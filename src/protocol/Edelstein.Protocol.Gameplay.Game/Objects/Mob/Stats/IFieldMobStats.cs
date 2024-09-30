@@ -1,8 +1,6 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Combat.Stats;
+﻿namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 
-namespace Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
-
-public interface IFieldMobStats : IStats
+public interface IFieldMobStats
 {
     int PAD { get; }
     int PDD { get; }

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
-using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Special;
+using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Consume;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
 using Edelstein.Protocol.Gameplay.Game.Items.Consume;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;

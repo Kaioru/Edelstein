@@ -1,5 +1,5 @@
 using Edelstein.Protocol.Gameplay.Entities.Inventories;
-using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Special;
+using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Consume;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
 using Edelstein.Protocol.Gameplay.Game.Items;
 using Edelstein.Protocol.Gameplay.Game.Items.Consume;

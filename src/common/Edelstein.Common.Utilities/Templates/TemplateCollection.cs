@@ -6,7 +6,7 @@ using Edelstein.Protocol.Utilities.Templates;
 namespace Edelstein.Common.Utilities.Templates;
 
 public class TemplateCollection<TTemplate>(
-    IReadOnlyDictionary<int, ITemplateProvider<TTemplate>> providers
+    IDictionary<int, ITemplateProvider<TTemplate>> providers
 ) : ITemplateCollection<TTemplate>
     where TTemplate : ITemplate
 {

@@ -1,7 +1,7 @@
 ﻿using Duey.Abstractions;
-using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Special;
+using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Consume;
 
-namespace Edelstein.Common.Gameplay.Entities.Inventories.Templates.Special;
+namespace Edelstein.Common.Gameplay.Entities.Inventories.Templates.Consume;
 
 public record ItemStatChangeTemplate : ItemBundleTemplate, IItemStatChangeTemplate
 {
