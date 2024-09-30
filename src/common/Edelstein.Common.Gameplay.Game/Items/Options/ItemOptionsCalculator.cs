@@ -17,13 +17,13 @@ public class ItemOptionsCalculator(
     Pipeline<IItemOptionsCalculatorContext>,
     IItemOptionsCalculator
 {
-    private const double GradeIncRateEpic = 0.8;
-    private const double GradeIncRateUnique = 0.4;
+    private const double GradeIncRateEpic = 0.06;
+    private const double GradeIncRateUnique = 0.018;
 
-    private const double Option2SetRate = 0.4;
-    private const double Option2IncRate = 0.8;
-    private const double Option3SetRate = 0.2;
-    private const double Option3IncRate = 0.4;
+    private const double Option2SetRate = 0.10;
+    private const double Option2IncRate = 0.10;
+    private const double Option3SetRate = 0.01;
+    private const double Option3IncRate = 0.01;
 
     public async Task<IItemOptions> Calculate(ItemSlotEquip input)
     {
@@ -52,16 +52,16 @@ public class ItemOptionsCalculator(
             if (grade == ItemOptionGrade.Epic && random.NextDouble() < context.GradeIncRateUnique)
                 grade = ItemOptionGrade.Unique;
 
-            var option1Grade = (ItemOptionGrade)input.Grade;
+            var option1Grade = grade;
             var option2Grade = (ItemOptionGrade)Math.Max(
                 (int)ItemOptionGrade.Rare,
-                input.Grade - (random.NextDouble() < context.Option2IncRate ? 0 : 1)
+                (int)grade - (random.NextDouble() < context.Option2IncRate ? 0 : 1)
             );
             var option3Grade = (ItemOptionGrade)Math.Max(
                 (int)ItemOptionGrade.Rare,
-                input.Grade - (random.NextDouble() < context.Option3IncRate ? 0 : 1)
+                (int)grade - (random.NextDouble() < context.Option3IncRate ? 0 : 1)
             );
-
+            
             var options = await itemOptions.RetrieveAll();
 
             // TODO filters
