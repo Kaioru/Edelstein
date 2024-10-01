@@ -43,7 +43,7 @@ public class ItemOptionsCalculator(
 
             await Process(context);
 
-            var grade = (ItemOptionGrade)input.Grade;
+            var grade = (ItemOptionGrade)(input.Grade & 0x3);
 
             if (grade == ItemOptionGrade.Normal)
                 grade = ItemOptionGrade.Rare;
@@ -53,17 +53,11 @@ public class ItemOptionsCalculator(
                 grade = ItemOptionGrade.Unique;
 
             var option1Grade = grade;
-            var option2Grade = (ItemOptionGrade)Math.Max(
-                (int)ItemOptionGrade.Rare,
-                (int)grade - (random.NextDouble() < context.Option2IncRate ? 0 : 1)
-            );
-            var option3Grade = (ItemOptionGrade)Math.Max(
-                (int)ItemOptionGrade.Rare,
-                (int)grade - (random.NextDouble() < context.Option3IncRate ? 0 : 1)
-            );
+            var option2Grade = (ItemOptionGrade)((int)grade - (random.NextDouble() < context.Option2IncRate ? 0 : 1));
+            var option3Grade = (ItemOptionGrade)((int)grade - (random.NextDouble() < context.Option3IncRate ? 0 : 1));
             
             var options = await itemOptions.RetrieveAll();
-
+            
             // TODO filters
             
             var option1 = (short)random.GetItems(options
