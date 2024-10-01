@@ -14,5 +14,12 @@ public record ItemOptionUpgradeItemUseManagerContext(
 ) : AbstractItemUseManagerContext<IItemBundleTemplate, UserItemOptionUpgradeItemUseRequest>(User, Item, Template, Info),
     IItemOptionUpgradeItemUseManagerContext
 {
-    public double Prob { get; set; }
+    public double Prob { get; set; } = (Template.ID % 10) switch
+    {
+        0 => 0.9, // Advanced Potential Scroll
+        1 => 0.7, // Potential Scroll
+        _ => 0.0
+    };
+
+    public bool SkipCursed { get; set; }
 }

@@ -6,4 +6,6 @@ namespace Edelstein.Protocol.Gameplay.Game.Items.Consume;
 public interface IItemOptionUpgradeItemUseManagerContext : IItemUseManagerContext<IItemBundleTemplate, UserItemOptionUpgradeItemUseRequest>
 {
     double Prob { get; set; }
+    
+    bool SkipCursed { get; set; }
 }

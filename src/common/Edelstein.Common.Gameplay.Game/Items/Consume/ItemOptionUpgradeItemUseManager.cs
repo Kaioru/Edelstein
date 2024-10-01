@@ -23,22 +23,44 @@ public class ItemOptionUpgradeItemUseManager(
         IItemBundleTemplate template,
         UserItemOptionUpgradeItemUseRequest info
     ) => new ItemOptionUpgradeItemUseManagerContext(user, item, template, info);
+
+    protected override async Task<bool> Check(IItemOptionUpgradeItemUseManagerContext context, IFieldUser user)
+    {
+        if (user.Character.Inventories[ItemInventoryType.Equip]?[context.Info.EPOS] is not ItemSlotEquip) 
+            return false;
+        return await base.Check(context, user);
+    }
     
     protected override async Task Handle(IItemOptionUpgradeItemUseManagerContext context, IFieldUser user)
     {
         var random = new Random();
-        var success = random.Next() < context.Prob;
-        const bool cursed = true;
-        var equip = user.Character.Inventories[ItemInventoryType.Equip]?.Items[context.Info.EPOS]! as ItemSlotEquip;
+        var success = random.NextDouble() < context.Prob;
+        var cursed = !context.SkipCursed && !success;
 
-        if (equip == null) return;
-        
-        await user.Message((await calculator.Calculate(equip)).ToString() ?? "");
+        if (user.Character.Inventories[ItemInventoryType.Equip]?[context.Info.EPOS] is not ItemSlotEquip equip) 
+            return;
+
+        if (success)
+        {
+            var options = await calculator.Calculate(equip);
+
+            equip.Grade = (byte)options.Grade;
+            equip.Option1 = (short)options.Option1;
+            equip.Option2 = (short)options.Option2;
+            equip.Option3 = (short)options.Option3;
+            
+            await user.ModifyInventory(i => i[ItemInventoryType.Equip]?.UpdateSlot(context.Info.EPOS));
+        }
+
+        if (cursed) 
+            await user.ModifyInventory(i => i[ItemInventoryType.Equip]?.RemoveSlot(context.Info.EPOS));
+
         await user.Dispatch(new UserItemOptionUpgradeEffect
         {
             ObjectID = user.ObjectID ?? 0,
             Success = success,
-            Cursed = cursed
+            Cursed = cursed,
+            EnchantSkill = context.Info.EnchantSkill
         });
     }
 }
