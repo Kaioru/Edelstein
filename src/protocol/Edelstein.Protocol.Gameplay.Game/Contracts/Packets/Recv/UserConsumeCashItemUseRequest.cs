@@ -33,6 +33,7 @@ public record UserConsumeCashItemUseRequestInfoEx : StructuredBasePacket, IBinar
         Value = TemplateID.GetCashItemType() switch
         {
             CashItemType.AdBoard => serializer.Deserialize<StructuredAdBoardCashItemUseInfoEx>(stream),
+            CashItemType.ItemUnrelease => serializer.Deserialize<StructuredItemUnreleaseCashItemUseInfoEx>(stream),
             _ => serializer.Deserialize<StructuredCashItemUseInfoEx>(stream)
         };
     }

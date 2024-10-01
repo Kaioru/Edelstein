@@ -8,8 +8,9 @@ using Edelstein.Protocol.Utilities.Templates;
 
 namespace Edelstein.Common.Gameplay.Game.Items.Cash;
 
-public class AdBoardCashItemUseManager(ITemplateManager<IItemTemplate> templates) : 
-    AbstractCashItemUseManager<IAdBoardCashItemUseManagerContext, StructuredAdBoardCashItemUseInfoEx, IItemTemplate>(templates, true), 
+public class AdBoardCashItemUseManager(
+    ITemplateManager<IItemTemplate> templates
+) : AbstractCashItemUseManager<IAdBoardCashItemUseManagerContext, StructuredAdBoardCashItemUseInfoEx, IItemTemplate>(templates, true), 
     IAdBoardCashItemUseManager
 {
     protected override IAdBoardCashItemUseManagerContext Create(

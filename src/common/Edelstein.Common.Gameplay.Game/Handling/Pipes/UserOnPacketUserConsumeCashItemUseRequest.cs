@@ -11,7 +11,9 @@ namespace Edelstein.Common.Gameplay.Game.Handling.Pipes;
 
 public class UserOnPacketUserConsumeCashItemUseRequest(
     ILogger<UserOnPacketUserConsumeCashItemUseRequest> logger,
-    IAdBoardCashItemUseManager adBoard
+    IAdBoardCashItemUseManager adBoard,
+    IItemUnreleaseCashItemUseManager itemUnrelease
+
 ) : AbstractUserOnPacketInField<UserConsumeCashItemUseRequest>
 {
     protected override async Task HandleAfter(IPipelineContext ctx, PipedFieldPacketMessage<UserConsumeCashItemUseRequest> message)
@@ -24,6 +26,9 @@ public class UserOnPacketUserConsumeCashItemUseRequest(
         {
             case StructuredAdBoardCashItemUseInfoEx adBoardInfoEx:
                 await adBoard.Use(user, type, info, adBoardInfoEx);
+                break;
+            case StructuredItemUnreleaseCashItemUseInfoEx unreleaseItemInfoEx:
+                await itemUnrelease.Use(user, type, info, unreleaseItemInfoEx);
                 break;
             default:
                 logger.LogCashItemUseUnhandled(info.InfoEx.TemplateID, info.InfoEx.TemplateID.GetCashItemType());
