@@ -101,6 +101,9 @@ public class FieldUser(
         try
         {
             await UpdateStats();
+
+            character.HP = Math.Min(character.HP, Stats.MaxHP);
+            character.MP = Math.Min(character.MP, Stats.MaxMP);
         }
         finally
         {
