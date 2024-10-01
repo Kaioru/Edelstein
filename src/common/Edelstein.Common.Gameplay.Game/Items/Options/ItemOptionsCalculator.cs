@@ -84,11 +84,11 @@ public class ItemOptionsCalculator(
             var option2 = input.Option2;
             var option3 = input.Option3;
 
-            if (option2 > 0 || random.NextDouble() < context.Option2IncRate)
+            if (option2 > 0 || random.NextDouble() < context.Option2SetRate)
                 option2 = (short)random.GetItems(options
                     .Where(o => o.Grade == option2Grade)
                     .ToArray(), 1).First().ID;
-            if (option3 > 0 || random.NextDouble() < context.Option3IncRate)
+            if (option3 > 0 || random.NextDouble() < context.Option3SetRate)
                 option3 = (short)random.GetItems(options
                     .Where(o => o.Grade == option3Grade)
                     .ToArray(), 1).First().ID;
