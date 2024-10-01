@@ -12,6 +12,12 @@ public static class ItemConstants
             236 or
             238 or
             245;
+    
+    public static bool IsItemOptionUpgradeItem(this int itemId) 
+        => itemId / 100 == 20494;
+
+    public static bool IsReleaseItem(this int itemId) 
+        => itemId / 10000 == 246;
 
     public static CashItemType GetCashItemType(this int itemID)
         => (itemID / 10000) switch

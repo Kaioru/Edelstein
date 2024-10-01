@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Edelstein.Protocol.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Consume;
@@ -16,18 +17,20 @@ public class StatChangeItemUseManager(
     IStatChangeItemUseManager
 {
     protected override IStatChangeItemUseManagerContext Create(
-        IFieldUser user, 
+        IFieldUser user,
         ItemSlotBase item,
-        IItemStatChangeTemplate template, 
+        IItemStatChangeTemplate template,
         UserStatChangeItemUseRequest info
-    ) 
+    )
         => new StatChangeItemUseManagerContext(user, item, template, info);
 
-    protected override Task<bool> Check(IStatChangeItemUseManagerContext context, IFieldUser user) 
-        => Task.FromResult(
-            user.Field != null && 
-            !user.Field.Template.Limit.HasFlag(FieldLimitType.StatChangeItemConsumeLimit)
-        );
+    protected override async Task<bool> Check(IStatChangeItemUseManagerContext context, IFieldUser user)
+    {
+        if (!context.Template.ID.IsStatChangeItem())
+            return false;
+        return user.Field != null &&
+               !user.Field.Template.Limit.HasFlag(FieldLimitType.StatChangeItemConsumeLimit);
+    }
 
     protected override async Task Handle(IStatChangeItemUseManagerContext context, IFieldUser user)
     {

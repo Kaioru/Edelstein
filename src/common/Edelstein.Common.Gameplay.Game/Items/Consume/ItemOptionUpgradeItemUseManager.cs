@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Edelstein.Protocol.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
@@ -26,6 +27,8 @@ public class ItemOptionUpgradeItemUseManager(
 
     protected override async Task<bool> Check(IItemOptionUpgradeItemUseManagerContext context, IFieldUser user)
     {
+        if (!context.Template.ID.IsItemOptionUpgradeItem())
+            return false;
         if (user.Character.Inventories[ItemInventoryType.Equip]?[context.Info.EPOS] is not ItemSlotEquip) 
             return false;
         return await base.Check(context, user);
