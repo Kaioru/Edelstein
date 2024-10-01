@@ -34,13 +34,13 @@ public class ItemOptionUpgradeItemUseManager(
     protected override async Task Handle(IItemOptionUpgradeItemUseManagerContext context, IFieldUser user)
     {
         var random = new Random();
-        var success = random.NextDouble() < context.Prob;
-        var cursed = !context.SkipCursed && !success;
+        var success = random.NextDouble() < context.SuccessRate;
+        var cursed = !success && random.NextDouble() < context.CursedRate;
 
         if (user.Character.Inventories[ItemInventoryType.Equip]?[context.Info.EPOS] is not ItemSlotEquip equip) 
             return;
 
-        if (success)
+        if (!context.SkipSuccess && success)
         {
             var options = await calculator.Calculate(equip);
 
@@ -52,7 +52,7 @@ public class ItemOptionUpgradeItemUseManager(
             await user.ModifyInventory(i => i[ItemInventoryType.Equip]?.UpdateSlot(context.Info.EPOS));
         }
 
-        if (cursed) 
+        if (!context.SkipCursed && cursed) 
             await user.ModifyInventory(i => i[ItemInventoryType.Equip]?.RemoveSlot(context.Info.EPOS));
 
         await user.Dispatch(new UserItemOptionUpgradeEffect

@@ -5,7 +5,9 @@ namespace Edelstein.Protocol.Gameplay.Game.Items.Consume;
 
 public interface IItemOptionUpgradeItemUseManagerContext : IItemUseManagerContext<IItemBundleTemplate, UserItemOptionUpgradeItemUseRequest>
 {
-    double Prob { get; set; }
+    double SuccessRate { get; set; }
+    double CursedRate { get; set; }
     
+    bool SkipSuccess { get; set; }
     bool SkipCursed { get; set; }
 }
