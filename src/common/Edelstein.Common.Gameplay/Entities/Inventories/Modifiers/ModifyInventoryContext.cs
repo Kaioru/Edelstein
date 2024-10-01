@@ -121,8 +121,17 @@ public class ModifyInventoryContext(
     {
         var item = this[slot];
         if (item == null) return;
-        RemoveSlot(slot);
-        SetSlot(slot, item);
+        
+        Operations.Enqueue(new StructuredModifyInventoryOperation
+        {
+            Type = ModifyInventoryOperationType.Add,
+            Info = new StructuredModifyInventoryOperationInfoAdd
+            {
+                Item = item.ToStructured(),
+                Inventory = type,
+                Slot = slot
+            }
+        });
     }
     
     public override short Add(ItemSlotBase item)
