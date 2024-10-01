@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Common.Utilities.Pipelines;
+using Edelstein.Protocol.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Options;
@@ -55,10 +57,26 @@ public class ItemOptionsCalculator(
             var option1Grade = grade;
             var option2Grade = (ItemOptionGrade)((int)grade - (random.NextDouble() < context.Option2IncRate ? 0 : 1));
             var option3Grade = (ItemOptionGrade)((int)grade - (random.NextDouble() < context.Option3IncRate ? 0 : 1));
-            
-            var options = await itemOptions.RetrieveAll();
-            
-            // TODO filters
+
+            var bodyParts = template.ID.GetBodyParts();
+            var options = (await itemOptions.RetrieveAll())
+                .Where(o => o.Type switch
+                {
+                    ItemOptionType.AnyEquip => true,
+                    ItemOptionType.AnyWeapon => bodyParts.Contains(BodyPart.Weapon),
+                    ItemOptionType.AnyArmorOrAccessory => bodyParts.Any(bp => bp.IsArmor() || bp.IsAccessory()),
+                    ItemOptionType.AnyArmorOrShield => bodyParts.Any(bp => bp.IsArmor() || bp == BodyPart.Shield),
+                    ItemOptionType.AnyAccessory => bodyParts.Any(bp => bp.IsAccessory()),
+                    ItemOptionType.AnyCap  => bodyParts.Any(bp => bp == BodyPart.Cap),
+                    ItemOptionType.AnyCoat => bodyParts.Any(bp => bp == BodyPart.Clothes),
+                    ItemOptionType.AnyPants => bodyParts.Any(bp => bp == BodyPart.Pants),
+                    ItemOptionType.AnyGloves => bodyParts.Any(bp => bp == BodyPart.Gloves),
+                    ItemOptionType.AnyShoe => bodyParts.Any(bp => bp == BodyPart.Shoes),
+                    ItemOptionType.AnyAccessoryNotBelt => bodyParts.Any(bp => bp.IsAccessory()) && 
+                                                          bodyParts.All(bp => bp != BodyPart.Belt),
+                    _ => false
+                })
+                .ToImmutableList();
             
             var option1 = (short)random.GetItems(options
                 .Where(o => o.Grade == option1Grade)

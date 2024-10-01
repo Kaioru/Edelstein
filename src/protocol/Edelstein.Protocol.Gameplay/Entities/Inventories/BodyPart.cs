@@ -32,7 +32,7 @@ public enum BodyPart : short
     PetAbilItem = 22,
     PetAbilMeso = 23,
     PetAbilHpConsume = 24,
-    PetAbilMechanicConsume = 25,
+    PetAbilMpConsume = 25,
     PetAbilSweepForDrop = 26,
     PetAbilLongRange = 27,
     PetAbilPickupOthers = 28,
