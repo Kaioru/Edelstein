@@ -166,16 +166,16 @@ public class FieldUser(
         var speakerTarget = getSpeakerTarget.Invoke(ctx);
 
         await Task
-            .Run(async () =>
-            {
-                await Dialog(new ConversationDialog(ctx));
-                await conversation.Start(ctx, speakerSelf, speakerTarget);
-            }, ctx.Token)
-            .ContinueWith(async _ =>
-            {
-                await EndDialog();
-                await this.ModifyStats(exclRequest: true);
-            });
+            .Run( () => 
+                Dialog(new ConversationDialog<TSelf, TTarget>(
+                    this,
+                    ctx,
+                    conversation, 
+                    speakerSelf, 
+                    speakerTarget
+                )), ctx.Token)
+            .ContinueWith(_ => 
+                EndDialog());
     }
 
     public async Task Dialog(IDialog dialog)
@@ -186,28 +186,34 @@ public class FieldUser(
         {
             if (ActiveDialog != null) return;
             ActiveDialog = dialog;
-            ActiveDialog?.OnOpen(this);
         }
         finally
         {
             _lock.Release();
         }
+        
+        if (ActiveDialog != null)
+            await ActiveDialog.OnOpen(this);
     }
 
     public async Task EndDialog()
     {
         await _lock.WaitAsync();
 
+        var dialog = ActiveDialog;
+        
         try
         {
             if (ActiveDialog == null) return;
             ActiveDialog = null;
-            ActiveDialog?.OnClose(this);
         }
         finally
         {
             _lock.Release();
         }
+        
+        if (dialog != null)
+            await dialog.OnClose(this);
     }
 
     private async Task UpdateStats()
