@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+namespace Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations.Speakers;
 
 [Flags]
 public enum ConversationSpeakerParam : byte

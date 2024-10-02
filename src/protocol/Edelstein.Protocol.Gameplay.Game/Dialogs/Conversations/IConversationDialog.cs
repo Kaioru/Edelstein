@@ -1,6 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Dialogs;
-
-namespace Edelstein.Protocol.Gameplay.Game.Conversations;
+﻿namespace Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations;
 
 public interface IConversationDialog : IDialog
 {

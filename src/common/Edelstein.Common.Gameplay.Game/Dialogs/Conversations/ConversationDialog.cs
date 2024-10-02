@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Edelstein.Protocol.Gameplay.Game.Conversations;
-using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 
-namespace Edelstein.Common.Gameplay.Game.Conversations;
+namespace Edelstein.Common.Gameplay.Game.Dialogs.Conversations;
 
 public class ConversationDialog<TSelf, TTarget>(
     IFieldUser user,
