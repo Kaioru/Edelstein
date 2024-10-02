@@ -4,5 +4,5 @@ namespace Edelstein.Protocol.Gameplay.Game.Conversations;
 
 public interface IConversationDialog : IDialog
 {
-    IConversationContext Context { get; init; }
+    IConversationContext Context { get; }
 }
