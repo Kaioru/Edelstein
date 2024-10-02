@@ -161,6 +161,8 @@ public class FieldUser(
         where TSelf : IConversationSpeaker
         where TTarget : IConversationSpeaker
     {
+        if (ActiveDialog != null) return;
+            
         var ctx = new ConversationContext(this);
         var speakerSelf = getSpeakerSelf.Invoke(ctx);
         var speakerTarget = getSpeakerTarget.Invoke(ctx);

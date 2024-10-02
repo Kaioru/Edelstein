@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Edelstein.Protocol.Gameplay.Constants;
 using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Modifiers;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Modifiers.Operations;

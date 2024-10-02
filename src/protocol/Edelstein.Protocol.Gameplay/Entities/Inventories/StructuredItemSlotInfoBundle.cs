@@ -1,5 +1,4 @@
 ﻿using BinarySerialization;
-using Edelstein.Protocol.Gameplay.Constants;
 using Edelstein.Protocol.Network.Packets.Types;
 
 namespace Edelstein.Protocol.Gameplay.Entities.Inventories;

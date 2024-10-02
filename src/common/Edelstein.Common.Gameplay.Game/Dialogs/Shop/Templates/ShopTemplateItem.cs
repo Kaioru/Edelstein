@@ -8,7 +8,7 @@ public record ShopTemplateItem : IShopTemplateItem
     public int ItemID { get; }
     
     public int Price { get; }
-    public int DiscountRate { get; }
+    public byte DiscountRate { get; }
     
     public int TokenItemID { get; }
     public int TokenPrice { get; }
@@ -16,11 +16,12 @@ public record ShopTemplateItem : IShopTemplateItem
     public int ItemPeriod { get; }
     public int LevelLimited { get; }
     
+    public short Quantity { get; }
+    
     public double UnitPrice { get; }
     public short MaxPerSlot { get; }
     
     public int Stock { get; }
-    public int Quantity { get; }
 
     public ShopTemplateItem(IDataNode node)
     {
@@ -35,10 +36,11 @@ public record ShopTemplateItem : IShopTemplateItem
         ItemPeriod = node.ResolveInt("period") ?? 0;
         LevelLimited = node.ResolveInt("levelLimit") ?? 0;
         
+        Quantity = node.ResolveShort("quantity") ?? 1;
+        
         UnitPrice = node.ResolveDouble("unitPrice") ?? 0.0;
         MaxPerSlot = node.ResolveShort("maxPerSlot") ?? 100;
         
         Stock = node.ResolveShort("stock") ?? 1;
-        Quantity = node.ResolveShort("quantity") ?? 1;
     }
 }
