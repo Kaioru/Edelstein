@@ -1,4 +1,5 @@
 ﻿using System;
+using Edelstein.Protocol.Gameplay.Constants;
 using Edelstein.Protocol.Network.Packets.Types;
 
 namespace Edelstein.Protocol.Gameplay.Entities.Inventories;
@@ -65,7 +66,8 @@ public static class ItemSlotBaseExtensions
                     
                     Number = bundle.Number,
                     Title = new LPString(bundle.Title ?? ""),
-                    Attribute = bundle.Attribute
+                    Attribute = bundle.Attribute,
+                    SN = bundle.TemplateID.IsRechargeableItem() ? 0 : null
                 },
                 ItemSlotPet pet => new StructuredItemSlotInfoPet
                 {
