@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Entities;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Protocol.Gameplay.Game.Dialogs;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Network.Packets;
 
@@ -21,9 +22,7 @@ public interface IFieldUser :
     
     IFieldUserStats Stats { get; }
     
-    bool IsConversing { get; }
-    
-    IConversationContext? ActiveConversation { get; }
+    IDialog? ActiveDialog { get; }
     
     bool IsFirstEnter { get; set; }
 
@@ -42,5 +41,8 @@ public interface IFieldUser :
     ) 
         where TSelf : IConversationSpeaker 
         where TTarget : IConversationSpeaker;
-    Task EndConversation();
+
+    Task Dialog(IDialog dialog);
+    
+    Task EndDialog();
 }

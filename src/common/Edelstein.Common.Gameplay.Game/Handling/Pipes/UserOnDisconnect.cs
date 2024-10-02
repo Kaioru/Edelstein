@@ -19,7 +19,7 @@ public class UserOnDisconnect(
 {
     public override async Task Handle(IPipelineContext ctx, UserOnDisconnect<IGameStageSystem, IGameStageSystemUser> message)
     {
-        _ = message.User.FieldUser?.EndConversation();
+        _ = message.User.FieldUser?.EndDialog();
         
         if (message.User.FieldUser is { Field: not null })
         {

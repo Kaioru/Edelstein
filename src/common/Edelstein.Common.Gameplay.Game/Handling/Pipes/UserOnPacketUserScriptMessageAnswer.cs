@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Edelstein.Common.Gameplay.Game.Conversations.Messages;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
+using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Messages;
 using Edelstein.Protocol.Network.Packets.Types;
 using Edelstein.Protocol.Utilities.Pipelines;
@@ -12,11 +14,11 @@ public class UserOnPacketUserScriptMessageAnswer : AbstractUserOnPacketInField<U
     protected override async Task HandleAfter(IPipelineContext ctx, PipedFieldPacketMessage<UserScriptMessageAnswer> message)
     {
         if (message.User.FieldSplit == null) return;
-        if (message.User.ActiveConversation == null) return;
+        if (message.User.ActiveDialog is not IConversationDialog conversation) return;
 
         var type = message.Packet.Type;
         var action = message.Packet.Action;
-        var conversation = message.User.ActiveConversation;
+        var context = conversation.Context;
         
         if (
             type != ConversationMessageType.Say &&
@@ -32,7 +34,7 @@ public class UserOnPacketUserScriptMessageAnswer : AbstractUserOnPacketInField<U
             action == byte.MaxValue
         )
         {
-            await message.User.EndConversation();
+            await message.User.EndDialog();
             return;
         }
 
@@ -41,32 +43,32 @@ public class UserOnPacketUserScriptMessageAnswer : AbstractUserOnPacketInField<U
             case StructuredScriptMessageAnswerInfoAnswer<LPString> answerString:
                 if (action == 0)
                 {
-                    await message.User.EndConversation();
+                    await message.User.EndDialog();
                     return;
                 }
                 
-                await conversation.Answer(new ConversationMessageAnswer<string>(type, answerString.Answer.Value));
+                await context.Answer(new ConversationMessageAnswer<string>(type, answerString.Answer.Value));
                 break;
             case StructuredScriptMessageAnswerInfoAnswer<int> answerInt:
                 if (action == 0)
                 {
-                    await message.User.EndConversation();
+                    await message.User.EndDialog();
                     return;
                 }
 
-                await conversation.Answer(new ConversationMessageAnswer<int>(type, answerInt.Answer));
+                await context.Answer(new ConversationMessageAnswer<int>(type, answerInt.Answer));
                 break;
             case StructuredScriptMessageAnswerInfoAnswer<byte> answerByte:
                 if (action == 0)
                 {
-                    await message.User.EndConversation();
+                    await message.User.EndDialog();
                     return;
                 }
 
-                await conversation.Answer(new ConversationMessageAnswer<byte>(type, answerByte.Answer));
+                await context.Answer(new ConversationMessageAnswer<byte>(type, answerByte.Answer));
                 break;
             default:
-                await conversation.Answer(new ConversationMessageAnswer<byte>(type, action));
+                await context.Answer(new ConversationMessageAnswer<byte>(type, action));
                 break;
         }
     }

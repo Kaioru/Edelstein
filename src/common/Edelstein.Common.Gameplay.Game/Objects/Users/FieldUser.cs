@@ -10,6 +10,7 @@ using Edelstein.Protocol.Gameplay.Game;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Protocol.Gameplay.Game.Dialogs;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
@@ -46,9 +47,7 @@ public class FieldUser(
 
     public IFieldUserStats Stats { get; private set; } = new FieldUserStats();
 
-    public bool IsConversing => ActiveConversation != null;
-
-    public IConversationContext? ActiveConversation { get; private set; }
+    public IDialog? ActiveDialog { get; private set; }
 
     public bool IsFirstEnter { get; set; } = true;
 
@@ -143,7 +142,7 @@ public class FieldUser(
     public async Task<T?> Prompt<T>(Func<IConversationSpeaker, IConversationSpeaker, T> prompt) where T : struct
     {
         T? result = default;
-        
+
         await Converse(
             new SystemConversation((self, target)
                 => result = prompt.Invoke(self, target)),
@@ -162,32 +161,53 @@ public class FieldUser(
         where TSelf : IConversationSpeaker
         where TTarget : IConversationSpeaker
     {
-        if (IsConversing) return;
-
         var ctx = new ConversationContext(this);
         var speakerSelf = getSpeakerSelf.Invoke(ctx);
         var speakerTarget = getSpeakerTarget.Invoke(ctx);
 
-        ActiveConversation = ctx;
-        
         await Task
-            .Run(
-                () => conversation.Start(ctx, speakerSelf, speakerTarget),
-                ctx.Token
-            )
+            .Run(async () =>
+            {
+                await Dialog(new ConversationDialog(ctx));
+                await conversation.Start(ctx, speakerSelf, speakerTarget);
+            }, ctx.Token)
             .ContinueWith(async _ =>
             {
-                await EndConversation();
+                await EndDialog();
                 await this.ModifyStats(exclRequest: true);
             });
     }
 
-    public Task EndConversation()
+    public async Task Dialog(IDialog dialog)
     {
-        if (!IsConversing) return Task.CompletedTask;
-        ActiveConversation?.Dispose();
-        ActiveConversation = null;
-        return Task.CompletedTask;
+        await _lock.WaitAsync();
+
+        try
+        {
+            if (ActiveDialog != null) return;
+            ActiveDialog = dialog;
+            ActiveDialog?.OnOpen(this);
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
+
+    public async Task EndDialog()
+    {
+        await _lock.WaitAsync();
+
+        try
+        {
+            if (ActiveDialog == null) return;
+            ActiveDialog = null;
+            ActiveDialog?.OnClose(this);
+        }
+        finally
+        {
+            _lock.Release();
+        }
     }
 
     private async Task UpdateStats()
@@ -199,7 +219,7 @@ public class FieldUser(
             await FieldSplit.Dispatch(new UserAvatarModified
                 {
                     ObjectID = Character.ID,
-                    Info = new UserAvatarModifiedInfo 
+                    Info = new UserAvatarModifiedInfo
                     {
                         CharacterLook = Character.ToStructuredCharacterLook(),
                         CharacterSpeed = (byte)Stats.Speed
