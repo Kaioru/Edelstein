@@ -40,9 +40,9 @@ public record FieldTemplate : IFieldTemplate
         int id,
         IDataNode foothold,
         IDataNode portal,
-        IDataNode ladderRope,
-        IDataNode life,
-        IDataNode reactor,
+        IDataNode? ladderRope,
+        IDataNode? life,
+        IDataNode? reactor,
         IDataNode info
     )
     {
@@ -108,11 +108,11 @@ public record FieldTemplate : IFieldTemplate
         MobCapacityMin = (int)mobCapacity;
         MobCapacityMax = (int)mobCapacity * 2;
 
-        Life = life.Children
+        Life = life?.Children
             .Select(p => new FieldTemplateLife(p))
-            .ToFrozenSet();
-        Reactors = reactor.Children
+            .ToFrozenSet() ?? FrozenSet<FieldTemplateLife>.Empty;
+        Reactors = reactor?.Children
             .Select(p => new FieldTemplateReactor(p))
-            .ToFrozenSet();
+            .ToFrozenSet() ?? FrozenSet<FieldTemplateReactor>.Empty;
     }
 }

@@ -33,9 +33,9 @@ public class FieldTemplateLoader(
                         id,
                         n.ResolvePath("foothold")!.Cache(),
                         n.ResolvePath("portal")!.Cache(),
-                        n.ResolvePath("ladderRope")!.Cache(),
-                        n.ResolvePath("life")!.Cache(),
-                        n.ResolvePath("reactor")!.Cache(),
+                        n.ResolvePath("ladderRope")?.Cache(),
+                        n.ResolvePath("life")?.Cache(),
+                        n.ResolvePath("reactor")?.Cache(),
                         n.ResolvePath("info")!.Cache()
                     )
                 ));
