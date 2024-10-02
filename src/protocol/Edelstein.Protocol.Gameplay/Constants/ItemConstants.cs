@@ -17,11 +17,7 @@ public static class ItemConstants
         => itemID / 100 == 20494;
 
     public static bool IsRechargeableItem(this int itemID)
-        => (itemID / 10000) switch
-        {
-            207 or 233 => true,
-            _ => false
-        };
+        => itemID / 10000 is 207 or 233;
 
     public static bool IsReleaseItem(this int itemID) 
         => itemID / 10000 == 246;
