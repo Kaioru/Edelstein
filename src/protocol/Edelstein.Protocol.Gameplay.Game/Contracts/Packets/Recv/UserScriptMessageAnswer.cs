@@ -1,4 +1,4 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Conversations.Messages;
+﻿using Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations.Messages;
 
 namespace Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
 

@@ -1,5 +1,5 @@
-﻿using Edelstein.Protocol.Gameplay.Game.Conversations;
-using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+﻿using Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations.Speakers;
 
 namespace Edelstein.Protocol.Gameplay.Game.Contexts;
 

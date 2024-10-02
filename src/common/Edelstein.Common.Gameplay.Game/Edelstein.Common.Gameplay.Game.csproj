@@ -5,6 +5,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Combat\" />
+    <Folder Include="Dialogs\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Stateless" />

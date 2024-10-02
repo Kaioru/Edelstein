@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Edelstein.Common.Gameplay.Game.Conversations;
-using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Common.Gameplay.Game.Dialogs.Conversations;
+using Edelstein.Common.Gameplay.Game.Dialogs.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
-using Edelstein.Protocol.Gameplay.Game.Conversations;
-using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
+using Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 using Edelstein.Protocol.Utilities.Pipelines;

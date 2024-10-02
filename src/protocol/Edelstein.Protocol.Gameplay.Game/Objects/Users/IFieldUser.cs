@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Entities;
-using Edelstein.Protocol.Gameplay.Game.Conversations;
-using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Dialogs;
+using Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Network.Packets;
 

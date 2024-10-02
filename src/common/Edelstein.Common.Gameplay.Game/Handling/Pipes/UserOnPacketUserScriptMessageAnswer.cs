@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Edelstein.Common.Gameplay.Game.Conversations.Messages;
+using Edelstein.Common.Gameplay.Game.Dialogs.Conversations.Messages;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Recv;
-using Edelstein.Protocol.Gameplay.Game.Conversations;
-using Edelstein.Protocol.Gameplay.Game.Conversations.Messages;
+using Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations;
+using Edelstein.Protocol.Gameplay.Game.Dialogs.Conversations.Messages;
 using Edelstein.Protocol.Network.Packets.Types;
 using Edelstein.Protocol.Utilities.Pipelines;
 
