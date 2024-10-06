@@ -65,4 +65,66 @@ public class AccessInventory(
             .All(kv => inventories[kv.Key]?.Items
                 .Count(i => i.Key > 0) >= kv.Value);
     }
+    
+    public Task<bool> CanHold(ItemSlotBase item)
+        => CanHold(ImmutableHashSet.Create(item));
+    
+    public async Task<bool> CanHold(IEnumerable<ItemSlotBase> items)
+    {
+        var groups = items.GroupBy(i => i.TemplateID.GetInventoryType());
+
+        foreach (var group in groups)
+        {
+            var inventory = inventories[group.Key];
+
+            if (inventory == null)
+                return false;
+            
+            var bundles = group
+                .OfType<ItemSlotBundle>()
+                .Where(b => !b.TemplateID.IsRechargeableItem())
+                .ToImmutableList();
+            var merged = new List<ItemSlotBundle>();
+            
+            foreach (var bundle in bundles)
+            {
+                var mergeable = merged
+                    .FirstOrDefault(b => b.IsMergeableWith(bundle));
+
+                if (mergeable == null)
+                {
+                    merged.Add(bundle);
+                    continue;
+                }
+
+                mergeable.Number += bundle.Number;
+            }
+
+            var cache = new Dictionary<ItemSlotBundle, int>();
+            var slots = group.Except(bundles).Count();
+            
+            foreach (var bundle in merged)
+            {
+                var count = (int)bundle.Number;
+
+                if (await templates.Retrieve(bundle.TemplateID) is not IItemBundleTemplate template) return false;
+
+                count = inventory.Items.Values
+                    .OfType<ItemSlotBundle>()
+                    .Where(b => b.IsMergeableWith(bundle))
+                    .Where(b => (cache.TryGetValue(b, out var number) ? number : b.Number) < template.MaxPerSlot)
+                    .Aggregate(count, (current, merge) =>
+                    {
+                        cache.Add(merge, template.MaxPerSlot);
+                        return current - Math.Min(current, template.MaxPerSlot - merge.Number);
+                    });
+                slots += (int)Math.Ceiling(count / (double)template.MaxPerSlot);
+            }
+
+            if (inventory.Items.Count(kv => kv.Key > 0) + slots <= inventory.SlotMax)
+                return false;
+        }
+
+        return true;
+    }
 }

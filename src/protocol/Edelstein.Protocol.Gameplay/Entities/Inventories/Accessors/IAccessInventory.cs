@@ -16,4 +16,7 @@ public interface IAccessInventory
 
     Task<bool> CanHold(int itemID, short number = 1);
     Task<bool> CanHold(IEnumerable<Tuple<int, short>> items);
+    
+    Task<bool> CanHold(ItemSlotBase item);
+    Task<bool> CanHold(IEnumerable<ItemSlotBase> items);
 }
