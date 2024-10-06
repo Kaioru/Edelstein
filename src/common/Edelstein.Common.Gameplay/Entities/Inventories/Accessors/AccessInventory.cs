@@ -121,7 +121,7 @@ public class AccessInventory(
                 slots += (int)Math.Ceiling(count / (double)template.MaxPerSlot);
             }
 
-            if (inventory.Items.Count(kv => kv.Key > 0) + slots <= inventory.SlotMax)
+            if (inventory.Items.Count(kv => kv.Key > 0) + slots > inventory.SlotMax)
                 return false;
         }
 
