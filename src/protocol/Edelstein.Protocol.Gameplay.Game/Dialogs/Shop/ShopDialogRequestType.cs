@@ -1,6 +1,6 @@
 ﻿namespace Edelstein.Protocol.Gameplay.Game.Dialogs.Shop;
 
-public enum ShopDialogRequestType
+public enum ShopDialogRequestType : byte
 {
     Buy = 0x0,
     Sell = 0x1,
