@@ -29,6 +29,7 @@ public interface IFieldUser :
     IDispatchable GetDispatchSetField();
 
     Task Initialize();
+    Task<T> Access<T>(Func<IFieldUserAccess, Task<T>> action);
     Task Modify(Action<IFieldUserModify> action);
 
     Task<T?> Prompt<T>(Func<IConversationSpeaker, T> prompt) where T : struct;

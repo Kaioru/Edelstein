@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Edelstein.Protocol.Gameplay.Entities.Inventories.Accessors;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Modifiers;
 using Edelstein.Protocol.Gameplay.Entities.Stats.Modifiers;
 using Edelstein.Protocol.Gameplay.Game.Contracts.Packets.Send;
@@ -19,6 +20,9 @@ public static class IFieldUserExtensions
                 Chat = new LPString(chat)
             }
         });
+
+    public static Task<T> AccessInventory<T>(this IFieldUser user, Func<IAccessInventory, Task<T>> action)
+        => user.Access(a => a.Inventory(action));
     
     public static Task ModifyStats(this IFieldUser user, Action<IModifyStatContext>? action = null, bool exclRequest = false)
         => user.Modify(m => m.Stats(action, exclRequest));

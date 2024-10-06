@@ -109,6 +109,20 @@ public class FieldUser(
             _lock.Release();
         }
     }
+    
+    public async Task<T> Access<T>(Func<IFieldUserAccess, Task<T>> action)
+    {
+        await _lock.WaitAsync();
+
+        try
+        {
+            return await action.Invoke(new FieldUserAccess(this));
+        }
+        finally
+        {
+            _lock.Release();
+        }
+    }
 
     public async Task Modify(Action<IFieldUserModify> action)
     {

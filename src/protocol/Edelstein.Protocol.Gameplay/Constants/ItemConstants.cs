@@ -1,7 +1,12 @@
-﻿namespace Edelstein.Protocol.Gameplay.Constants;
+﻿using Edelstein.Protocol.Gameplay.Entities.Inventories;
+
+namespace Edelstein.Protocol.Gameplay.Constants;
 
 public static class ItemConstants
 {
+    public static ItemInventoryType GetInventoryType(this int itemID)
+        => (ItemInventoryType)(itemID / 1_000_000);
+    
     public static bool IsStatChangeItem(this int itemID)
         => itemID / 10000 is 
             200 or 
