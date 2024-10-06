@@ -10,7 +10,8 @@ public record Message() : StructuredSendPacket((short)PacketSendOperation.Messag
     public required MessageType Type { get; init; }
     
     [FieldOrder(1)]
-    [Subtype(nameof(Type), MessageType.SystemMessage, typeof(StructuredMessageInfoSystemMessage))]
+    [Subtype(nameof(Type), MessageType.IncEXPMessage, typeof(StructuredMessageInfoIncEXP))]
+    [Subtype(nameof(Type), MessageType.SystemMessage, typeof(StructuredMessageInfoSystem))]
     [SubtypeDefault(typeof(StructuredMessageInfo))]
     public required StructuredMessageInfo Info { get; init; }
 }

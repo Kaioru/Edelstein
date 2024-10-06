@@ -15,7 +15,7 @@ public static class IFieldUserExtensions
         => user.Dispatch(new Message
         {
             Type = MessageType.SystemMessage,
-            Info = new StructuredMessageInfoSystemMessage
+            Info = new StructuredMessageInfoSystem
             {
                 Chat = new LPString(chat)
             }
