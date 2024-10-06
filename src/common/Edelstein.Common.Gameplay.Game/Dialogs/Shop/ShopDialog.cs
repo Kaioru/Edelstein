@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -51,11 +52,23 @@ public class ShopDialog : IShopDialog
 
     public Task OnClose(IFieldUser user) => Task.CompletedTask;
 
-    public Task Buy(IFieldUser user, UserShopRequestInfoBuy info) => user.ModifyStats(exclRequest: true);
+    public Task Buy(IFieldUser user, UserShopRequestInfoBuy info)
+    {
+        Console.WriteLine(info);
+        return user.ModifyStats(exclRequest: true);
+    }
 
-    public Task Sell(IFieldUser user, UserShopRequestInfoSell info) => user.ModifyStats(exclRequest: true);
+    public Task Sell(IFieldUser user, UserShopRequestInfoSell info)
+    {
+        Console.WriteLine(info);
+        return user.ModifyStats(exclRequest: true);
+    }
 
-    public Task Recharge(IFieldUser user, UserShopRequestInfoRecharge info) => user.ModifyStats(exclRequest: true);
+    public Task Recharge(IFieldUser user, UserShopRequestInfoRecharge info)
+    {
+        Console.WriteLine(info);
+        return user.ModifyStats(exclRequest: true);
+    }
 
     public Task Close(IFieldUser user) => user.EndDialog();
 }

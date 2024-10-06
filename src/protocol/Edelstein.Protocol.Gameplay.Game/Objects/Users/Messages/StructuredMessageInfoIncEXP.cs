@@ -1,9 +1,8 @@
 ﻿using BinarySerialization;
-using Edelstein.Protocol.Network.Packets;
 
 namespace Edelstein.Protocol.Gameplay.Game.Objects.Users.Messages;
 
-public record StructuredMessageInfoIncEXP : StructuredBasePacket
+public record StructuredMessageInfoIncEXP : StructuredMessageInfo
 {
     [FieldOrder(0)] public bool Unk1 { get; init; }
     [FieldOrder(1)] public int EXP { get; init; }
