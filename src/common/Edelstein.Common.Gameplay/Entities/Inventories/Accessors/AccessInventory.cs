@@ -57,7 +57,7 @@ public class AccessInventory(
             var template = await templates.Retrieve(itemID);
             
             required[itemID.GetInventoryType()] += template is IItemBundleTemplate bundle
-                ? number / bundle.MaxPerSlot
+                ? (int)Math.Ceiling(number / (double)bundle.MaxPerSlot)
                 : 1;
         }
 
