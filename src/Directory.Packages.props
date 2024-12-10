@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
-    <DotNetPackageVersion>9.0.0-rc.1.24431.7</DotNetPackageVersion>
-    <EfcoreVersion>9.0.0-rc.1.24451.1</EfcoreVersion>
+    <DotNetPackageVersion>9.0.0</DotNetPackageVersion>
+    <EfcoreVersion>9.0.0</EfcoreVersion>
     <DotNettyVersion>0.7.2012.2221</DotNettyVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -29,7 +29,7 @@
     <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="$(DotNetPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(DotNetPackageVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(DotNetPackageVersion)" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-rc.1" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.2" />
     <PackageVersion Include="protobuf-net.Grpc" Version="1.1.1" />
     <PackageVersion Include="R3" Version="1.2.7" />
     <PackageVersion Include="RBush" Version="3.2.0" />
@@ -50,6 +50,6 @@
     <PackageVersion Include="Spectre.Console.Cli" Version="0.49.2-preview.0.16" />
     <PackageVersion Include="Spectre.Console.Cli.Extensions.DependencyInjection" Version="0.2.0" />
     <PackageVersion Include="Stateless" Version="5.16.0" />
-    <PackageVersion Include="System.ServiceModel.Primitives" Version="8.0.0" />
+    <PackageVersion Include="System.ServiceModel.Primitives" Version="8.1.0" />
   </ItemGroup>
 </Project>

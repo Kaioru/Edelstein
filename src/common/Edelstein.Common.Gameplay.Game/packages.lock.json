@@ -24,13 +24,13 @@
       },
       "Microsoft.Extensions.DependencyInjection.Abstractions": {
         "type": "Transitive",
-        "resolved": "9.0.0-rc.1.24431.7",
-        "contentHash": "/Gtbv7/vlcUUx8rsVwI3zMS2gUMewMU2ukUa1mh00lRwBBmPPnempruehrhq/3LHLE4LO8tEaFtTYi1Z33PCWQ=="
+        "resolved": "9.0.0",
+        "contentHash": "+6f2qv2a3dLwd5w6JanPIPs47CxRbnk+ZocMJUhv9NxP88VlOcJYZs9jY+MYSjxvady08bUZn6qgiNh7DadGgg=="
       },
       "Microsoft.Extensions.ObjectPool": {
         "type": "Transitive",
-        "resolved": "6.0.16",
-        "contentHash": "OVX5tlKg6LY+XKqlUn7i9KY+6Liut0iewWff2DNr7129i/NJ8rpUzbmxavPydZgcLREEWHklXZiPKCS895tNIQ=="
+        "resolved": "8.0.10",
+        "contentHash": "u7gAG7JgxF8VSJUGPSudAcPxOt+ymJKQCSxNRxiuKV+klCQbHljQR75SilpedCTfhPWDhtUwIJpnDVtspr9nMg=="
       },
       "Microsoft.NETCore.Platforms": {
         "type": "Transitive",
@@ -318,11 +318,6 @@
           "Microsoft.NETCore.Targets": "1.1.0",
           "System.Runtime": "4.3.0"
         }
-      },
-      "System.Formats.Asn1": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "T6fD00dQ3NTbPDy31m4eQUwKW84s03z0N2C8HpOklyeaDgaJPa/TexP4/SkORMSOwc7WhKifnA6Ya33AkzmafA=="
       },
       "System.Globalization": {
         "type": "Transitive",
@@ -691,11 +686,6 @@
           "System.Runtime.Extensions": "4.3.0"
         }
       },
-      "System.Security.AccessControl": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "AUADIc0LIEQe7MzC+I0cl0rAT8RrTAKFHl53yHjEUzNVIaUlhFY11vc2ebiVJzVBuOzun6F7FBA+8KAbGTTedQ=="
-      },
       "System.Security.Cryptography.Algorithms": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -796,11 +786,8 @@
       },
       "System.Security.Cryptography.Pkcs": {
         "type": "Transitive",
-        "resolved": "6.0.1",
-        "contentHash": "ynmbW2GjIGg9K1wXmVIRs4IlyDolf0JXNpzFQ8JCVgwM+myUC2JeUggl2PwQig2PNVMegKmN1aAx7WPQ8tI3vA==",
-        "dependencies": {
-          "System.Formats.Asn1": "6.0.0"
-        }
+        "resolved": "8.0.1",
+        "contentHash": "CoCRHFym33aUSf/NtWSVSZa99dkd0Hm7OCZUxORBjRB16LNhIEOf8THPqzIYlvKM0nNDAPTRBa1FxEECrgaxxA=="
       },
       "System.Security.Cryptography.Primitives": {
         "type": "Transitive",
@@ -850,11 +837,10 @@
       },
       "System.Security.Cryptography.Xml": {
         "type": "Transitive",
-        "resolved": "6.0.1",
-        "contentHash": "5e5bI28T0x73AwTsbuFP4qSRzthmU2C0Gqgg3AZ3KTxmSyA+Uhk31puA3srdaeWaacVnHhLdJywCzqOiEpbO/w==",
+        "resolved": "8.0.2",
+        "contentHash": "aDM/wm0ZGEZ6ZYJLzgqjp2FZdHbDHh6/OmpGfb7AdZ105zYmPn/83JRU2xLIbwgoNz9U1SLUTJN0v5th3qmvjA==",
         "dependencies": {
-          "System.Security.AccessControl": "6.0.0",
-          "System.Security.Cryptography.Pkcs": "6.0.1"
+          "System.Security.Cryptography.Pkcs": "8.0.1"
         }
       },
       "System.Text.Encoding": {
@@ -972,7 +958,7 @@
           "Edelstein.Common.Utilities": "[1.0.0, )",
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
           "Edelstein.Protocol.Gameplay.Login": "[1.0.0, )",
-          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-rc.1.24431.7, )"
+          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0, )"
         }
       },
       "edelstein.common.utilities": {
@@ -980,7 +966,7 @@
         "dependencies": {
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
           "LogicLooper": "[1.6.0, )",
-          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0-rc.1.24431.7, )",
+          "Microsoft.Extensions.Logging.Abstractions": "[9.0.0, )",
           "RBush": "[3.2.0, )"
         }
       },
@@ -1023,7 +1009,7 @@
       "edelstein.protocol.services.auth": {
         "type": "Project",
         "dependencies": {
-          "System.ServiceModel.Primitives": "[8.0.0, )",
+          "System.ServiceModel.Primitives": "[8.1.0, )",
           "protobuf-net.Grpc": "[1.1.1, )"
         }
       },
@@ -1031,7 +1017,7 @@
         "type": "Project",
         "dependencies": {
           "Edelstein.Protocol.Gameplay": "[1.0.0, )",
-          "System.ServiceModel.Primitives": "[8.0.0, )",
+          "System.ServiceModel.Primitives": "[8.1.0, )",
           "protobuf-net.Grpc": "[1.1.1, )"
         }
       },
@@ -1039,14 +1025,14 @@
         "type": "Project",
         "dependencies": {
           "Edelstein.Protocol.Utilities": "[1.0.0, )",
-          "System.ServiceModel.Primitives": "[8.0.0, )",
+          "System.ServiceModel.Primitives": "[8.1.0, )",
           "protobuf-net.Grpc": "[1.1.1, )"
         }
       },
       "edelstein.protocol.services.session": {
         "type": "Project",
         "dependencies": {
-          "System.ServiceModel.Primitives": "[8.0.0, )",
+          "System.ServiceModel.Primitives": "[8.1.0, )",
           "protobuf-net.Grpc": "[1.1.1, )"
         }
       },
@@ -1094,11 +1080,11 @@
       },
       "Microsoft.Extensions.Logging.Abstractions": {
         "type": "CentralTransitive",
-        "requested": "[9.0.0-rc.1.24431.7, )",
-        "resolved": "9.0.0-rc.1.24431.7",
-        "contentHash": "Dq4rgVJXE1SwINhR/D36O5fd9yZ4hQ4sWTt+gykLbWotaBEz16NhU95VKE4umsex147ZfkmDWr2Q0XldBQjuaA==",
+        "requested": "[9.0.0, )",
+        "resolved": "9.0.0",
+        "contentHash": "g0UfujELzlLbHoVG8kPKVBaW470Ewi+jnptGS9KUi6jcb+k2StujtK3m26DFSGGwQ/+bVgZfsWqNzlP6YOejvw==",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0-rc.1.24431.7"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0"
         }
       },
       "Microsoft.IO.RecyclableMemoryStream": {
@@ -1125,12 +1111,12 @@
       },
       "System.ServiceModel.Primitives": {
         "type": "CentralTransitive",
-        "requested": "[8.0.0, )",
-        "resolved": "8.0.0",
-        "contentHash": "hVzK77Bl00H+1V7ho7h03tKlgxAIKssV3eUnRdH+gTCZCK4Ywnv2CR35AV9ly/tRpvsGwNL1d/jkAwB1MWw3Fw==",
+        "requested": "[8.1.0, )",
+        "resolved": "8.1.0",
+        "contentHash": "/NGnzQSp2lmTlCfKzcD2PVKRnx6bQCbEqlb5sXo31TA2C7oA8g5I7Wfjk8dNRNUo1uSqZUcj3htED6tWA/mX9w==",
         "dependencies": {
-          "Microsoft.Extensions.ObjectPool": "6.0.16",
-          "System.Security.Cryptography.Xml": "6.0.1"
+          "Microsoft.Extensions.ObjectPool": "8.0.10",
+          "System.Security.Cryptography.Xml": "8.0.2"
         }
       }
     }
