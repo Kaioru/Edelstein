@@ -24,4 +24,9 @@
     <Folder Include="ci\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="..\.github\workflows\pack.yml" />
+    <None Remove="..\.github\workflows\publish.yml" />
+  </ItemGroup>
+
 </Project>
