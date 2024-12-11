@@ -10,12 +10,12 @@ public record DbMigrationInfo : MigrationInfo
     public DateTime DateUpdated { get; set; }
     public DateTime DateExpire { get; set; }
     
-    public DbAccount Account { get; set; }
-    public DbAccountWorldData AccountWorldData { get; set; }
-    public DbCharacter Character { get; set; }
+    public required DbAccount Account { get; set; }
+    public required DbAccountWorldData AccountWorldData { get; set; }
+    public required DbCharacter Character { get; set; }
     
-    public DbSessionInfo Session { get; set; }
+    public required DbSessionInfo Session { get; set; }
     
-    public DbServerInfo FromServer { get; set; }
-    public DbServerInfo ToServer { get; set; }
+    public required DbServerInfo FromServer { get; set; }
+    public required DbServerInfo ToServer { get; set; }
 }

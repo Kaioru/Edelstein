@@ -6,8 +6,8 @@ namespace Edelstein.Common.Database.Entities;
 
 public record DbAccountWorldData : AccountWorldData
 {
-    public DbAccount Account { get; set; }
-    public ICollection<DbCharacter> Characters { get; set; }
+    public required DbAccount Account { get; set; }
+    public required ICollection<DbCharacter> Characters { get; set; }
     
     public DbMigrationInfo? Migration { get; set; }
 }

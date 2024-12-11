@@ -6,7 +6,7 @@ namespace Edelstein.Common.Database.Entities;
 
 public record DbCharacter : Character
 {
-    public DbAccountWorldData AccountWorldData { get; set; }
+    public required DbAccountWorldData AccountWorldData { get; set; }
     public DbSessionInfo? Session { get; set; }
     public DbMigrationInfo? Migration { get; set; }
 }

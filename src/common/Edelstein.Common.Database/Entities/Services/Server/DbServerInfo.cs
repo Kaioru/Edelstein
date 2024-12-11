@@ -13,8 +13,8 @@ public record DbServerInfo : ServerInfo
     
     public long Secret { get; set; }
 
-    public ICollection<DbSessionInfo> Sessions { get; set; }
+    public required ICollection<DbSessionInfo> Sessions { get; set; }
     
-    public ICollection<DbMigrationInfo> MigrationOut { get; set; }
-    public ICollection<DbMigrationInfo> MigrationIn { get; set; }
+    public required ICollection<DbMigrationInfo> MigrationOut { get; set; }
+    public required ICollection<DbMigrationInfo> MigrationIn { get; set; }
 }

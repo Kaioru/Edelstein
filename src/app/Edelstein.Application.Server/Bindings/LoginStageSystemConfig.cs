@@ -9,5 +9,5 @@ public record LoginStageSystemConfig : ILoginStageSystemOptions
     public required string Host { get; init; }
     public required int Port { get; init; }
     
-    public byte[] Worlds { get; init; }
+    public required byte[] Worlds { get; init; }
 }
