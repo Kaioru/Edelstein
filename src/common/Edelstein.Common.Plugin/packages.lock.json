@@ -52,6 +52,12 @@
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.0"
         }
       },
+      "Microsoft.NET.ILLink.Tasks": {
+        "type": "Direct",
+        "requested": "[9.0.0, )",
+        "resolved": "9.0.0",
+        "contentHash": "zAwp213evC3UkimtVXRb+Dlgc/40QG145nmZDtp2LO9zJJMfrp+i/87BnXN7tRXEA4liyzdFkjqG1HE8/RPb4A=="
+      },
       "MinVer": {
         "type": "Direct",
         "requested": "[5.0.0, )",
@@ -153,6 +159,11 @@
         "resolved": "3.2.0",
         "contentHash": "ijGh9N0zZ7JfXk3oQkWCwK8SwSSByexbyh/MjbCjNxOft9eG5ZqKC1vdgiYq78h4IZRFmN4s3JZ/b10Jipud5w=="
       }
-    }
+    },
+    "net9.0/linux-arm64": {},
+    "net9.0/linux-x64": {},
+    "net9.0/osx-arm64": {},
+    "net9.0/win-arm64": {},
+    "net9.0/win-x64": {}
   }
 }

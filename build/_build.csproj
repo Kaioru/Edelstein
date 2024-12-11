@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageDownload Include="dotnet-ef" Version="[9.0.0]" />
     <PackageDownload Include="minver-cli" Version="[5.0.0]" />
   </ItemGroup>
 
