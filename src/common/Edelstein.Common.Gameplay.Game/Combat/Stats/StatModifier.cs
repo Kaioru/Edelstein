@@ -17,5 +17,5 @@ public record StatModifier(
     public int IncFlat { get; set; }
 
     public int Apply(int value) 
-        => Math.Min(Math.Max((int)((value + IncBase) * (1 + IncRate / 100d) + IncFlat), Min), Max);
+        => Math.Min(Math.Max(value + IncBase + (int)((value + IncBase) * IncRate / 100d) + IncFlat, Min), Max);
 }

@@ -1,8 +1,10 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Edelstein.Protocol.Gameplay.Entities.Inventories;
 using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates;
+using Edelstein.Protocol.Gameplay.Entities.Inventories.Templates.Options;
 using Edelstein.Protocol.Gameplay.Game.Objects.Users.Stats;
 using Edelstein.Protocol.Utilities.Pipelines;
 using Edelstein.Protocol.Utilities.Templates;
@@ -10,7 +12,8 @@ using Edelstein.Protocol.Utilities.Templates;
 namespace Edelstein.Common.Gameplay.Game.Objects.Users.Stats.Calculations;
 
 public class FieldUserStatsCalculatorEquip(
-    ITemplateManager<IItemTemplate> items
+    ITemplateManager<IItemTemplate> items,
+    ITemplateManager<IItemOptionTemplate> options
 ) : IFieldUserStatsCalculatorEntry
 {
     public int Priority => FieldUserStatsCalculatorSteps.Equip;
@@ -60,7 +63,65 @@ public class FieldUserStatsCalculatorEquip(
 
                 stats.MaxHP.IncRate += template.IncMaxHPr;
                 stats.MaxMP.IncRate += template.IncMaxMPr;
+
+                var grade = (ItemOptionGrade)(item.Grade & 0x3);
+                if ((item.Grade & (int)ItemOptionGradeState.Released) > 0 &&
+                    grade is 
+                        ItemOptionGrade.Rare or 
+                        ItemOptionGrade.Epic or 
+                        ItemOptionGrade.Unique)
+                {
+                    var level = (template.ReqLevel - 1) / 10;
+
+                    level = Math.Max(1, level);
+                    level = Math.Min(20, level);
+
+                    await ApplyItemOption(stats, item.Option1, level);
+                    await ApplyItemOption(stats, item.Option2, level);
+                    await ApplyItemOption(stats, item.Option3, level);
+                }
             }
         }
+    }
+
+    private async Task ApplyItemOption(IFieldUserStatsCalculatorContext stats, int option, int level)
+    {
+        var template = await options.Retrieve(option);
+        if (template == null) return;
+        var templateLevel = await template.Levels.Retrieve(level);
+        if (templateLevel == null) return;
+        
+        stats.STR.IncBase += templateLevel.IncSTR;
+        stats.DEX.IncBase += templateLevel.IncDEX;
+        stats.LUK.IncBase += templateLevel.IncLUK;
+        stats.INT.IncBase += templateLevel.IncINT;
+        
+        stats.STR.IncRate += templateLevel.IncSTRr;
+        stats.DEX.IncRate += templateLevel.IncDEXr;
+        stats.LUK.IncRate += templateLevel.IncLUKr;
+        stats.INT.IncRate += templateLevel.IncINTr;
+
+        stats.MaxHP.IncBase += templateLevel.IncMaxHP;
+        stats.MaxMP.IncBase += templateLevel.IncMaxMP;
+        
+        stats.MaxHP.IncRate += templateLevel.IncMaxHPr;
+        stats.MaxMP.IncRate += templateLevel.IncMaxMPr;
+
+        stats.PAD.IncBase += templateLevel.IncPAD;
+        stats.PDD.IncBase += templateLevel.IncPDD;
+        stats.MAD.IncBase += templateLevel.IncMAD;
+        stats.MDD.IncBase += templateLevel.IncMDD;
+        stats.ACC.IncBase += templateLevel.IncACC;
+        stats.EVA.IncBase += templateLevel.IncEVA;
+        
+        stats.PAD.IncRate += templateLevel.IncPADr;
+        stats.PDD.IncRate += templateLevel.IncPDDr;
+        stats.MAD.IncRate += templateLevel.IncMADr;
+        stats.MDD.IncRate += templateLevel.IncMDDr;
+        stats.ACC.IncRate += templateLevel.IncACCr;
+        stats.EVA.IncRate += templateLevel.IncEVAr;
+
+        stats.Speed.IncBase += templateLevel.IncSpeed;
+        stats.Jump.IncBase += templateLevel.IncJump;
     }
 }
