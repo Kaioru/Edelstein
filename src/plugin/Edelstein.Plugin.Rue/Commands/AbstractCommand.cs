@@ -30,7 +30,7 @@ public abstract class AbstractCommand : CommandManager, ICommand
     public string ID => Name;
     public abstract string Name { get; }
     public abstract string Description { get; }
-    
+
     public ICollection<string> Aliases { get; }
 
     protected AbstractCommand()

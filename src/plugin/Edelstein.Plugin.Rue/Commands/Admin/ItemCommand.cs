@@ -21,13 +21,17 @@ public class ItemCommand : AbstractTemplateCommand<IItemTemplate>
         Aliases.Add("Create");
     }
 
-    protected override async Task<IEnumerable<TemplateCommandIndex>> Indices()
+    protected override async Task<IReadOnlyList<TemplateCommandIndex>> Indices()
     {
-        var result = new List<TemplateCommandIndex>();
         var strings = await _strings.RetrieveAll();
+        var result = new TemplateCommandIndex[strings.Count * 2];
+        var i = 0;
 
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.ID.ToString(), s.Name)));
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.Name, s.Name)));
+        foreach (var s in strings)
+        {
+            result[i++] = TemplateCommandIndex.CreateFromId(s.ID, s.Name);
+            result[i++] = TemplateCommandIndex.Create(s.ID, s.Name, s.Name);
+        }
 
         return result;
     }
@@ -35,12 +39,12 @@ public class ItemCommand : AbstractTemplateCommand<IItemTemplate>
     protected override async Task Execute(IFieldUser user, IItemTemplate template, TemplateCommandArgs args)
     {
         var quantity = 1;
-        
+
         if (template is IItemBundleTemplate)
-            quantity = await user.Prompt(s => s.AskNumber($"How many would you like?", 1), -1);
-        if (quantity == -1) 
+            quantity = await user.Prompt(s => s.AskNumber("How many would you like?", 1), -1);
+        if (quantity == -1)
             return;
-        
+
         await user.ModifyInventory(i => i.Add(template.ID, (short)quantity));
     }
 }

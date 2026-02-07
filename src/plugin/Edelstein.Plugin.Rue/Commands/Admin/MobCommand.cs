@@ -7,27 +7,31 @@ namespace Edelstein.Plugin.Rue.Commands.Admin;
 public class MobCommand : AbstractTemplateCommand<IMobTemplate>
 {
     private readonly ITemplateManager<IMobStringTemplate> _strings;
-    
+
     public MobCommand(
-        ITemplateManager<IMobTemplate> templates, 
+        ITemplateManager<IMobTemplate> templates,
         ITemplateManager<IMobStringTemplate> strings
-    ) : base(templates) 
+    ) : base(templates)
         => _strings = strings;
 
     public override string Name => "Mob";
     public override string Description => "Searches a specified mob";
-    
-    protected override async Task<IEnumerable<TemplateCommandIndex>> Indices()
-    {
-        var result = new List<TemplateCommandIndex>();
-        var strings = await _strings.RetrieveAll();
 
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.ID.ToString(), s.Name)));
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.Name, s.Name)));
+    protected override async Task<IReadOnlyList<TemplateCommandIndex>> Indices()
+    {
+        var strings = await _strings.RetrieveAll();
+        var result = new TemplateCommandIndex[strings.Count * 2];
+        var i = 0;
+
+        foreach (var s in strings)
+        {
+            result[i++] = TemplateCommandIndex.CreateFromId(s.ID, s.Name);
+            result[i++] = TemplateCommandIndex.Create(s.ID, s.Name, s.Name);
+        }
 
         return result;
     }
-    
+
     protected override Task Execute(IFieldUser user, IMobTemplate template, TemplateCommandArgs args)
         => Task.CompletedTask;
 }

@@ -1,0 +1,52 @@
+﻿namespace Edelstein.Plugin.Rue.ClientAnalysis;
+
+public static partial class V95ClientStructs
+{
+    /// <summary>CQuestMan struct (sizeof=0x34C, singleton at 0x00C6AB68)</summary>
+    public static readonly Dictionary<int, string> CQuestMan = new()
+    {
+        [Offsets.CQuestMan.SeriesQuest] = "CQuestMan.m_mSeriesQuest",
+        [Offsets.CQuestMan.SeriesQuestName] = "CQuestMan.m_mSeriesQuestName",
+        [Offsets.CQuestMan.QuestName] = "CQuestMan.m_mQuestName",
+        [Offsets.CQuestMan.BlockedQuest] = "CQuestMan.m_mBlockedQuest",
+        [Offsets.CQuestMan.WorldId] = "CQuestMan.m_nWorldID",
+        [Offsets.CQuestMan.StartDemand] = "CQuestMan.m_mStartDemand",
+        [Offsets.CQuestMan.CompleteDemand] = "CQuestMan.m_mCompleteDemand",
+        [Offsets.CQuestMan.DisallowedDelivery] = "CQuestMan.m_aDisallowedDelivery",
+        [Offsets.CQuestMan.QuestCategoryName] = "CQuestMan.m_asQuestCategoryName",
+        [Offsets.CQuestMan.Quest] = "CQuestMan.m_aQuest",
+        [Offsets.CQuestMan.NpcQuest] = "CQuestMan.m_mNpcQuest",
+        [Offsets.CQuestMan.ItemQuest] = "CQuestMan.m_mItemQuest",
+        [Offsets.CQuestMan.ItemQuestDemand] = "CQuestMan.m_mItemQuestDemand",
+        [Offsets.CQuestMan.MesoQuest] = "CQuestMan.m_aMesoQuest",
+        [Offsets.CQuestMan.LevelQuest] = "CQuestMan.m_aLevelQuest",
+        [Offsets.CQuestMan.PartyQuestIconPath] = "CQuestMan.m_mPartyQuestIconPath",
+        [Offsets.CQuestMan.QuestSortKey] = "CQuestMan.m_mQuestSortKey",
+        [Offsets.CQuestMan.ShowLayerTag] = "CQuestMan.m_mShowLayerTag",
+        [Offsets.CQuestMan.ShowEffect] = "CQuestMan.m_mShowEffect",
+        [Offsets.CQuestMan.ModifiedQuestTime] = "CQuestMan.m_aModifiedQuestTime",
+        [Offsets.CQuestMan.Exclusive] = "CQuestMan.m_mExclusive",
+        [Offsets.CQuestMan.AutoStartQuest] = "CQuestMan.m_mAutoStartQuest",
+        [Offsets.CQuestMan.AutoAcceptQuest] = "CQuestMan.m_mAutoAcceptQuest",
+        [Offsets.CQuestMan.AutoCompleteQuest] = "CQuestMan.m_mAutoCompleteQuest",
+        [Offsets.CQuestMan.AutoCancelQuest] = "CQuestMan.m_mAutoCancelQuest",
+        [Offsets.CQuestMan.OneShotQuest] = "CQuestMan.m_mOneShotQuest",
+        [Offsets.CQuestMan.QuestTimeLimit] = "CQuestMan.m_mQuestTimeLimit",
+        [Offsets.CQuestMan.QuestTimeLimit2] = "CQuestMan.m_mQuestTimeLimit2",
+        [Offsets.CQuestMan.QuestDailyPlay] = "CQuestMan.m_mQuestDailyPlay",
+        [Offsets.CQuestMan.EquipOnAutoQuestStart] = "CQuestMan.m_mEquipOnAutoQuestStart",
+        [Offsets.CQuestMan.FieldOnAutoQuestStart] = "CQuestMan.m_mFieldOnAutoQuestStart",
+        [Offsets.CQuestMan.IsEquipAutoQuestStart] = "CQuestMan.m_mIsEquipAutoQuestStart",
+        [Offsets.CQuestMan.IsFieldAutoQuestStart] = "CQuestMan.m_mIsFieldAutoQuestStart",
+        [Offsets.CQuestMan.NormalAutoStartQuest] = "CQuestMan.m_aNormalAutoStartQuest",
+        [Offsets.CQuestMan.AutoCompletionAlertQuest] = "CQuestMan.m_lAutoCompletionAlertQuest",
+        [Offsets.CQuestMan.TimeKeepQuest] = "CQuestMan.m_lTimeKeepQuest",
+        [Offsets.CQuestMan.QuestCategory] = "CQuestMan.m_mQuestCategory",
+        [Offsets.CQuestMan.RecentlyUpdatedQuest] = "CQuestMan.m_lRecentlyUpdatedQuest",
+        [Offsets.CQuestMan.RecentlyViewedQuest] = "CQuestMan.m_usRecentlyViewdQuest",
+        [Offsets.CQuestMan.RankInfo] = "CQuestMan.m_mRankInfo",
+        [Offsets.CQuestMan.QuestExpByLevel] = "CQuestMan.m_mQuestExpByLevel",
+        [Offsets.CQuestMan.QuestPerformByDay] = "CQuestMan.m_mQuestPerformByDay",
+        [Offsets.CQuestMan.RankStringInfo] = "CQuestMan.m_mRankStringInfo",
+    };
+}

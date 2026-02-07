@@ -2,6 +2,8 @@
 using Edelstein.Common.Gameplay.Game.Objects.Drop;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Stats.Modify;
+using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Common.Gameplay.Game.Rates;
 using Edelstein.Common.Gameplay.Handling;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
 using Edelstein.Common.Utilities.Packets;
@@ -14,6 +16,7 @@ using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Stats.Modify;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Templates;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Game.Rates;
 using Edelstein.Protocol.Gameplay.Game.Spatial;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 using Edelstein.Protocol.Utilities.Packets;
@@ -149,7 +152,21 @@ public class FieldMob :
                         offset = offset < 0 ? Math.Abs(offset) : -(offset + 25);
                         index++;
                     }
-                    
+
+                    if (Template.EXP > 0)
+                    {
+                        var rates = attacker.StageUser.Context.Managers.Rates;
+                        var rateContext = new RateContext(attacker, attacker.StageUser.Context.Options);
+                        var expRate = await rates.GetFinalRateAsync(RateType.Exp, rateContext);
+                        var expAmount = RateModifier.Apply(Template.EXP, expRate);
+
+                        if (expAmount > 0)
+                        {
+                            await attacker.ModifyStats(s => s.EXP += expAmount);
+                            await attacker.Message(new IncEXPMessage(expAmount));
+                        }
+                    }
+
                     _ = attacker.StageUser.Context.Managers.Quest.UpdateMobKill(attacker, Template.ID);
                 }
                 

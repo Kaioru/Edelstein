@@ -1,10 +1,11 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using System.Text;
 using Edelstein.Common.Constants;
 using Edelstein.Common.Gameplay.Game.Conversations;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
 using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Common.Gameplay.Game.Rates;
 using Edelstein.Common.Gameplay.Models.Characters.Quests;
 using Edelstein.Common.Gameplay.Models.Characters.Stats.Modify;
 using Edelstein.Common.Gameplay.Models.Inventories.Items;
@@ -14,6 +15,7 @@ using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Gameplay.Game.Quests;
 using Edelstein.Protocol.Gameplay.Game.Quests.Templates;
+using Edelstein.Protocol.Gameplay.Game.Rates;
 using Edelstein.Protocol.Gameplay.Models.Inventories.Templates;
 using Edelstein.Protocol.Utilities.Templates;
 
@@ -270,21 +272,28 @@ public class QuestManager : IQuestManager
         
         var stats = new ModifyStatContext(user.Character);
 
-        if (actTemplate.IncMoney > 0 && stats.Money > int.MaxValue - (actTemplate.IncMoney ?? 0))
+        var rates = user.StageUser.Context.Managers.Rates;
+        var rateContext = new RateContext(user, user.StageUser.Context.Options);
+        var expRate = await rates.GetFinalRateAsync(RateType.Exp, rateContext);
+        var mesoRate = await rates.GetFinalRateAsync(RateType.Meso, rateContext);
+        var incEXP = actTemplate.IncEXP > 0 ? RateModifier.Apply(actTemplate.IncEXP.Value, expRate) : 0;
+        var incMoney = actTemplate.IncMoney > 0 ? RateModifier.Apply(actTemplate.IncMoney.Value, mesoRate) : 0;
+
+        if (incMoney > 0 && stats.Money > int.MaxValue - incMoney)
             return QuestResultType.FailedMeso;
         if (actTemplate.IncPOP > 0 && stats.POP > short.MaxValue - (actTemplate.IncPOP ?? 0))
             return QuestResultType.FailedUnknown;
 
-        if (actTemplate.IncEXP > 0)
+        if (incEXP > 0)
         {
-            stats.EXP += actTemplate.IncEXP.Value;
-            await user.Message(new IncEXPMessage(actTemplate.IncEXP.Value, true));
+            stats.EXP += incEXP;
+            await user.Message(new IncEXPMessage(incEXP, true));
         }
         
-        if (actTemplate.IncMoney > 0)
+        if (incMoney > 0)
         {
-            stats.Money += actTemplate.IncMoney.Value;
-            await user.Message(new IncMoneyMessage(actTemplate.IncMoney.Value));
+            stats.Money += incMoney;
+            await user.Message(new IncMoneyMessage(incMoney));
         }
 
         if (actTemplate.IncPOP > 0)

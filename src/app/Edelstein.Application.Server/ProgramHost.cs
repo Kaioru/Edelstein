@@ -8,6 +8,7 @@ using Edelstein.Common.Gameplay.Game;
 using Edelstein.Common.Gameplay.Game.Combat;
 using Edelstein.Common.Gameplay.Game.Continents;
 using Edelstein.Common.Gameplay.Game.Conversations;
+using Edelstein.Common.Gameplay.Game.Rates;
 using Edelstein.Common.Gameplay.Game.Objects.Mob.Rewards;
 using Edelstein.Common.Gameplay.Game.Objects.NPC;
 using Edelstein.Common.Gameplay.Game.Quests;
@@ -33,6 +34,7 @@ using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Rewards;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Game.Quests;
+using Edelstein.Protocol.Gameplay.Game.Rates;
 using Edelstein.Protocol.Gameplay.Login;
 using Edelstein.Protocol.Gameplay.Login.Contexts;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
@@ -185,6 +187,10 @@ public class ProgramHost : IHostedService
                         b.RegisterType<ModifiedQuestTimeManager>().As<IModifiedQuestTimeManager>().SingleInstance();
                         b.RegisterType<QuestManager>().As<IQuestManager>().SingleInstance();
                         b.RegisterType<MobQuestCacheManager>().As<IMobQuestCacheManager>().SingleInstance();
+                        b.RegisterType<RateModifierManager>().As<IRateModifierManager>().SingleInstance();
+                        b.RegisterType<TemporaryStatRateModifierSource>().As<IRateModifierSource>().SingleInstance();
+                        b.RegisterType<GuildRateModifierSource>().As<IRateModifierSource>().SingleInstance();
+                        b.RegisterType<StageOptionsRateModifierSource>().As<IRateModifierSource>().SingleInstance();
                         
                         b
                             .RegisterAssemblyTypes(Assembly.GetAssembly(typeof(GameStage))!)
@@ -318,6 +324,11 @@ public class ProgramHost : IHostedService
                 _bootstraps.Add(bootstrap);
         }
 
+        _bootstraps.Add(new CleanupRegistryBootstrap(
+            programScope.Resolve<ILogger<CleanupRegistryBootstrap>>(),
+            programScope.Resolve<IDbContextFactory<ServerDbContext>>(),
+            _config
+        ));
         _bootstraps.Add(new InitDatabaseBootstrap(
             programScope.Resolve<ILogger<InitDatabaseBootstrap>>(),
             programScope.Resolve<IDbContextFactory<AuthDbContext>>(),

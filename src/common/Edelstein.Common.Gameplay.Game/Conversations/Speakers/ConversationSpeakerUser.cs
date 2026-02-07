@@ -1,12 +1,14 @@
-﻿using Edelstein.Common.Constants;
+using Edelstein.Common.Constants;
 using Edelstein.Common.Gameplay.Game.Conversations.Speakers.Facades;
 using Edelstein.Common.Gameplay.Game.Objects.User.Effects;
 using Edelstein.Common.Gameplay.Game.Objects.User.Effects.Field;
 using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Common.Gameplay.Game.Rates;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers;
 using Edelstein.Protocol.Gameplay.Game.Conversations.Speakers.Facades;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Game.Rates;
 using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Common.Gameplay.Game.Conversations.Speakers;
@@ -144,20 +146,28 @@ public class ConversationSpeakerUser : ConversationSpeaker, IConversationSpeaker
 
     public void IncEXP(int amount)
     {
-        EXP += amount;
-        _user.Message(new IncEXPMessage(amount, true));
+        var rates = _user.StageUser.Context.Managers.Rates;
+        var rateContext = new RateContext(_user, _user.StageUser.Context.Options);
+        var finalAmount = RateModifier.Apply(amount, rates.GetFinalRate(RateType.Exp, rateContext));
+
+        EXP += finalAmount;
+        _user.Message(new IncEXPMessage(finalAmount, true));
     }
-    
+
     public void IncPOP(short amount)
     {
         POP += amount;
         _user.Message(new IncPOPMessage(amount));
     }
-    
+
     public void IncMoney(int amount)
     {
-        Money += amount;
-        _user.Message(new IncMoneyMessage(amount));
+        var rates = _user.StageUser.Context.Managers.Rates;
+        var rateContext = new RateContext(_user, _user.StageUser.Context.Options);
+        var finalAmount = RateModifier.Apply(amount, rates.GetFinalRate(RateType.Meso, rateContext));
+
+        Money += finalAmount;
+        _user.Message(new IncMoneyMessage(finalAmount));
     }
     
     public void TransferField(int fieldID, string portal = "")

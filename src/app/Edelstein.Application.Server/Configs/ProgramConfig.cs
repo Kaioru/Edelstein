@@ -8,6 +8,7 @@ public class ProgramConfig
     public ICollection<ProgramConfigStageTrade> TradeStages { get; set; } = new List<ProgramConfigStageTrade>();
 
     public bool MigrateDatabaseOnInit { get; set; } = false;
+    public bool CleanupRegistryOnInit { get; set; } = false;
     public int TicksPerSecond { get; set; } = 4;
     
     public ICollection<string> Plugins { get; set; } = new List<string>();

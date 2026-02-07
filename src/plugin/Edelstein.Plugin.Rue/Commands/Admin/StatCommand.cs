@@ -53,7 +53,7 @@ public class StatCommand : AbstractCommand<StatCommandArgs>
                 }
                 break;
         }
-        
+
         await user.ModifyStats(s =>
         {
             switch (args.Type)

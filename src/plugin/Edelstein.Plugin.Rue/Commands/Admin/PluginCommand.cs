@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Edelstein.Protocol.Gameplay.Game.Contexts;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
 using Edelstein.Protocol.Plugin;
@@ -8,14 +8,14 @@ namespace Edelstein.Plugin.Rue.Commands.Admin;
 public class PluginCommand : AbstractCommand
 {
     private readonly IPluginManager<GameContext> _pluginManager;
-    
-    public PluginCommand(IPluginManager<GameContext> pluginManager) 
+
+    public PluginCommand(IPluginManager<GameContext> pluginManager)
         => _pluginManager = pluginManager;
-    
+
     public override string Name => "Plugins";
 
     public override string Description => "Lists all loaded plugins";
-    
+
     public override async Task Execute(IFieldUser user, string[] args)
     {
         var id = 0;

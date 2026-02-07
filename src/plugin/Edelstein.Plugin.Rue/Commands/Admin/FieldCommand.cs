@@ -26,14 +26,19 @@ public class FieldCommand : AbstractTemplateCommand<IFieldTemplate>
         Aliases.Add("Warp");
     }
 
-    protected override async Task<IEnumerable<TemplateCommandIndex>> Indices()
+    protected override async Task<IReadOnlyList<TemplateCommandIndex>> Indices()
     {
-        var result = new List<TemplateCommandIndex>();
         var strings = await _strings.RetrieveAll();
+        var result = new TemplateCommandIndex[strings.Count * 3];
+        var i = 0;
 
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.ID.ToString(), $"{s.StreetName}: {s.MapName}")));
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.MapName, $"{s.StreetName}: {s.MapName}")));
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.StreetName, $"{s.StreetName}: {s.MapName}")));
+        foreach (var s in strings)
+        {
+            var displayName = $"{s.StreetName}: {s.MapName}";
+            result[i++] = TemplateCommandIndex.CreateFromId(s.ID, displayName);
+            result[i++] = TemplateCommandIndex.Create(s.ID, s.MapName, displayName);
+            result[i++] = TemplateCommandIndex.Create(s.ID, s.StreetName, displayName);
+        }
 
         return result;
     }

@@ -1,6 +1,8 @@
-﻿using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Common.Gameplay.Game.Objects.User.Messages;
+using Edelstein.Common.Gameplay.Game.Rates;
 using Edelstein.Protocol.Gameplay.Game.Objects.Drop;
 using Edelstein.Protocol.Gameplay.Game.Objects.User;
+using Edelstein.Protocol.Gameplay.Game.Rates;
 using Edelstein.Protocol.Utilities.Spatial;
 
 namespace Edelstein.Common.Gameplay.Game.Objects.Drop;
@@ -24,7 +26,12 @@ public class FieldDropMoney : AbstractFieldDrop
 
     protected override async Task Update(IFieldUser user)
     {
-        await user.ModifyStats(s => s.Money += Info);
-        await user.Message(new DropPickUpMoneyMessage(Info));
+        var rates = user.StageUser.Context.Managers.Rates;
+        var rateContext = new RateContext(user, user.StageUser.Context.Options);
+        var rate = await rates.GetFinalRateAsync(RateType.Meso, rateContext);
+        var amount = RateModifier.Apply(Info, rate);
+
+        await user.ModifyStats(s => s.Money += amount);
+        await user.Message(new DropPickUpMoneyMessage(amount));
     }
 }

@@ -4,15 +4,32 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\common\Edelstein.Common.Constants\Edelstein.Common.Constants.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Login\Edelstein.Common.Gameplay.Login.csproj" />
+    <ProjectReference Include="..\..\common\Edelstein.Common.Gameplay.Game\Edelstein.Common.Gameplay.Game.csproj" />
     <ProjectReference Include="..\..\common\Edelstein.Common.Utilities\Edelstein.Common.Utilities.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin.Game\Edelstein.Protocol.Plugin.Game.csproj" />
     <ProjectReference Include="..\..\protocol\Edelstein.Protocol.Plugin.Login\Edelstein.Protocol.Plugin.Login.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Iced" Version="1.21.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
     <PackageReference Include="PowerArgs" Version="4.0.2" />
     <PackageReference Include="TrieNet" Version="1.0.3.26316" />
   </ItemGroup>
+
+  <!-- Copy only changed files to the server's Plugins/rue folder after build -->
+  <Target Name="CopyToServerPlugins" AfterTargets="Build">
+    <PropertyGroup>
+      <ServerPluginDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\app\Edelstein.Application.Server\bin\$(Configuration)\$(TargetFramework)\Plugins\Rue\'))</ServerPluginDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <RueOutputFiles Include="$(OutputPath)**\*.*" />
+    </ItemGroup>
+    <MakeDir Directories="$(ServerPluginDir)" />
+    <Copy SourceFiles="@(RueOutputFiles)" DestinationFiles="@(RueOutputFiles->'$(ServerPluginDir)%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="[Rue] Copied changed files to $(ServerPluginDir)" />
+  </Target>
 
 </Project>

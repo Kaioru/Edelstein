@@ -1,10 +1,11 @@
-﻿using Duey.Abstractions;
+using Duey.Abstractions;
 using Edelstein.Protocol.Gameplay.Game.Combat;
 using Edelstein.Protocol.Gameplay.Game.Continents;
 using Edelstein.Protocol.Gameplay.Game.Conversations;
 using Edelstein.Protocol.Gameplay.Game.Objects.Mob.Rewards;
 using Edelstein.Protocol.Gameplay.Game.Objects.NPC;
 using Edelstein.Protocol.Gameplay.Game.Quests;
+using Edelstein.Protocol.Gameplay.Game.Rates;
 using Edelstein.Protocol.Gameplay.Models.Inventories;
 using Edelstein.Protocol.Utilities.Tickers;
 
@@ -22,5 +23,6 @@ public record GameContextManagers(
     IMobRewardPoolManager MobRewardPool,
     ISkillManager Skill,
     IQuestManager Quest,
-    IModifiedQuestTimeManager QuestTime
+    IModifiedQuestTimeManager QuestTime,
+    IRateModifierManager Rates
 );

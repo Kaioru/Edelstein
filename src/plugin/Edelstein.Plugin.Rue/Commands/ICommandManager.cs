@@ -3,7 +3,7 @@ using Edelstein.Protocol.Utilities.Repositories.Methods;
 
 namespace Edelstein.Plugin.Rue.Commands;
 
-public interface ICommandManager : 
+public interface ICommandManager :
     IRepositoryMethodRetrieve<string, ICommand>,
     IRepositoryMethodRetrieveAll<string, ICommand>,
     IRepositoryMethodInsert<string, ICommand>,

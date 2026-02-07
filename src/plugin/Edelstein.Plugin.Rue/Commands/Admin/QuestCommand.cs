@@ -9,22 +9,22 @@ public class QuestCommand : AbstractTemplateCommand<IQuestTemplate>
     public override string Name => "Quest";
     public override string Description => "Searches a specified quest";
 
-    private readonly ITemplateManager<IQuestTemplate> _strings;
+    private readonly ITemplateManager<IQuestTemplate> _templates;
 
-    public QuestCommand(
-        ITemplateManager<IQuestTemplate> templates
-    ) : base(templates)
+    public QuestCommand(ITemplateManager<IQuestTemplate> templates) : base(templates)
+        => _templates = templates;
+
+    protected override async Task<IReadOnlyList<TemplateCommandIndex>> Indices()
     {
-        _strings = templates;
-    }
+        var strings = await _templates.RetrieveAll();
+        var result = new TemplateCommandIndex[strings.Count * 2];
+        var i = 0;
 
-    protected override async Task<IEnumerable<TemplateCommandIndex>> Indices()
-    {
-        var result = new List<TemplateCommandIndex>();
-        var strings = await _strings.RetrieveAll();
-
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.ID.ToString(), s.Name)));
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.Name, s.Name)));
+        foreach (var s in strings)
+        {
+            result[i++] = TemplateCommandIndex.CreateFromId(s.ID, s.Name);
+            result[i++] = TemplateCommandIndex.Create(s.ID, s.Name, s.Name);
+        }
 
         return result;
     }

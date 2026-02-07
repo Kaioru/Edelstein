@@ -8,7 +8,7 @@ public class ClearDropsCommand : AbstractCommand
 {
     public override string Name => "ClearDrops";
     public override string Description => "Clears all drops in the map";
-    
+
     public override async Task Execute(IFieldUser user, string[] args)
     {
         if (user.Field == null) return;

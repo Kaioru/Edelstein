@@ -32,6 +32,6 @@ public class TemporaryStatCommand : AbstractCommand<TemporaryStatCommandArgs>
         Aliases.Add("TS");
     }
 
-    protected override async Task Execute(IFieldUser user, TemporaryStatCommandArgs args) 
+    protected override async Task Execute(IFieldUser user, TemporaryStatCommandArgs args)
         => await user.ModifyTemporaryStats(s => s.Set(args.Type, args.Value, args.Reason));
 }

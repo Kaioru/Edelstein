@@ -23,14 +23,18 @@ public sealed class SkillCommand : AbstractTemplateCommand<ISkillTemplate>
         Insert(new SkillResetAllCommand()).Wait();
     }
 
-    protected override async Task<IEnumerable<TemplateCommandIndex>> Indices()
+    protected override async Task<IReadOnlyList<TemplateCommandIndex>> Indices()
     {
-        var result = new List<TemplateCommandIndex>();
         var strings = await _strings.RetrieveAll();
+        var result = new TemplateCommandIndex[strings.Count * 3];
+        var i = 0;
 
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.ID.ToString(), s.Name)));
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.Name, s.Name)));
-        result.AddRange(strings.Select(s => new TemplateCommandIndex(s.ID, s.Desc, s.Name)));
+        foreach (var s in strings)
+        {
+            result[i++] = TemplateCommandIndex.CreateFromId(s.ID, s.Name);
+            result[i++] = TemplateCommandIndex.Create(s.ID, s.Name, s.Name);
+            result[i++] = TemplateCommandIndex.CreateDescription(s.ID, s.Desc ?? string.Empty, s.Name);
+        }
 
         return result;
     }
